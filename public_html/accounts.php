@@ -122,8 +122,8 @@ while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
     } else {
         print '<td>&nbsp;</td>';
     }
-    print "\n  <td><a href=\"account-edit.php?handle=".$row['handle']."\">[E]</a>&nbsp;
-                 <a href=\"account-info.php?handle=".$row['handle']."\">[I]</A></td>\n";
+    print "\n  <td><a href=\"account-edit.php?handle=".$row['handle']."\">[Edit]</a>&nbsp;
+                 <a href=\"account-info.php?handle=".$row['handle']."\">[Info]</A></td>\n";
     print " </tr>\n";
 }
 

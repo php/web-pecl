@@ -98,7 +98,7 @@ do {
 	}
         list($purpose, $moreinfo) = @unserialize($requser->userinfo);
 
-	border_box_start("Account request from $requser->name &lt;$requser->email&gt;");
+	$bb = new BorderBox("Account request from $requser->name &lt;$requser->email&gt;");
 ?>      <table cellpadding="2" cellspacing="0" border="0">
        <tr>
         <td>Requested User Name:</td>
@@ -127,9 +127,9 @@ do {
       </table>
 <?php
 
-	border_box_end();
+	$bb->end();
 	print "<br />\n";
-	border_box_start("Notes for user $requser->handle");
+	$bb = new BorderBox("Notes for user $requser->handle");
 	$notes = $dbh->getAssoc("SELECT id,nby,ntime,note FROM notes ".
 				"WHERE uid = ? ORDER BY ntime", true,
 				array($requser->handle));
@@ -171,7 +171,7 @@ do {
 	print "$i</table>\n";
 	print "$i</form>\n";
 
-	border_box_end();
+	$bb->end();
 ?>
 
 <form action="<?= $PHP_SELF ?>" method="POST">
@@ -197,7 +197,7 @@ do {
     // {{{ admin menu
     } else {
 
-	border_box_start("Account Requests", "30%");
+	$bb = new BorderBox("Account Requests", "30%");
 	$requests = $dbh->getAssoc("SELECT handle,name,email FROM users ".
 				   "WHERE registered = 0");
 	if (is_array($requests) && sizeof($requests) > 0) {
@@ -208,7 +208,7 @@ do {
 	} else {
 	    print "No account requests.";
 	}
-	border_box_end();
+	$bb->end();
     }
 
     // }}}

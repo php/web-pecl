@@ -108,8 +108,8 @@ if ($display_verification) {
 	}
 //	print "<pre>\n"; var_dump($info); print "</pre>\n";
 	// XXX ADD MASSIVE SANITY CHECKS HERE
-	border_box_start("Please verify that the following release information ".
-					 "is correct:");
+	$bb = new BorderBox("Please verify that the following release ".
+						"information is correct:");
 	print "<table border=\"0\" cellpadding=\"3\" cellspacing=\"0\">\n";
 	print "<tr><th align=\"right\">Package:</th><td>$info[package]</td></tr>\n";
 	print "<tr><th align=\"right\">Version:</th><td>$info[version]</td></tr>\n";
@@ -120,7 +120,7 @@ if ($display_verification) {
 	print "<tr><th align=\"right\">Release Notes:</th><td>$info[release_notes]</td></tr>\n";
 	print "</table>\n";
 	$form->display();
-	border_box_end();
+	$bb->end();
 }
 
 response_footer();

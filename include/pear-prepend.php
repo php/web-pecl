@@ -80,7 +80,7 @@ function get($name)
 }
     
 if (empty($dbh)) {
-    $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
+    $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => false));
 }
 
 $LAST_UPDATED = date("D M d H:i:s Y T", filectime($_SERVER['SCRIPT_FILENAME']));

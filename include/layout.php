@@ -184,6 +184,7 @@ function commonHeader($title) {
  <title>PEAR :: <?php echo $title; ?></title>
  <link rel="shortcut icon" href="/gifs/favicon.ico" />
  <link rel="stylesheet" href="/style.css" />
+ <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/rss.php" />
  <meta name="description" content="This is the homepage of the PHP PEAR project." />
  <?php // XXX: Add more keywords here. ?>
  <meta name="keywords" content="PEAR, PECL, PHP, PHP Extension and Application Repository, Code, download" />

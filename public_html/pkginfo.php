@@ -32,7 +32,7 @@ $maturity = 'stable';
 $summary  = 'This is the Pear Ping Class';
 $authors  = '';
 // foreach ($maintainers as $key => $values) {
-$authors .= '<tr><td>$name &lt;<a href="mailto:$mail">$mail</a>> ($role)</td></tr>\n';
+$authors .= '<tr><td>$name &lt;<a href="mailto:$mail">$mail</a>> ($role)</td></tr>'."\n";
 // }
 $release_date  = '2000-01-34';
 $release_notes = 'Bug fix release';

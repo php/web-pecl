@@ -3,14 +3,10 @@ require_once "HTML/Form.php";
 
 $form = new HTML_Form($_SERVER['PHP_SELF']);
 
-/*
-* TODO
-*  - More stuff to search on, eg summary, version
-*/
-
-/***************************************
-** Header
-***************************************/
+/**
+ * TODO
+ *  - More stuff to search on, eg summary, version
+ */
 
 response_header("Package search");
 echo '<h1>Package search</h1>';
@@ -68,7 +64,7 @@ $bb->end();
 ***************************************/
 
 if(!empty($_GET)) {
-    $dbh->setErrorHandling(PEAR_ERROR_DIE);
+    //    $dbh->setErrorHandling(PEAR_ERROR_DIE);
     $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
     $where = array();
     $bool  = @$_GET['bool'] == 'AND' ? ' AND ' : ' OR ';
@@ -77,14 +73,14 @@ if(!empty($_GET)) {
     if(!empty($_GET['pkg_name'])) {
         $searchwords = preg_split('/\s+/', $_GET['pkg_name']);
         for($i=0; $i<count($searchwords); $i++) {
-            $searchwords[$i] = "name like '%".addslashes($searchwords[$i])."%'";
+            $searchwords[$i] = "name LIKE '%".addslashes($searchwords[$i])."%'";
         }
         $where[] = '('.implode($bool, $searchwords).')';
     }
 
     // Build maintainer part of query
     if(!empty($_GET['pkg_maintainer'])) {
-        $where[] = "handle like '%".addslashes($_GET['pkg_maintainer'])."%'";
+        $where[] = "handle LIKE '%".addslashes($_GET['pkg_maintainer'])."%'";
     }
 
     // Build category part of query
@@ -93,8 +89,8 @@ if(!empty($_GET)) {
     }
     
     // Compose query and execute
-    $where  = !empty($where) ? ' AND '.implode(' AND ', $where) : '';
-    $sql    = "select p.id, p.name, p.category, p.summary, m.handle from packages p, maintains m where p.id = m.package " . $where . " group by p.id order by p.name";
+    $where  = !empty($where) ? 'AND '.implode(' AND ', $where) : '';
+    $sql    = "SELECT p.id, p.name, p.category, p.summary FROM packages p, maintains m WHERE p.id = m.package " . $where . " GROUP BY p.id ORDER BY p.name";
     $result = $dbh->query($sql);
 
     // Print any results
@@ -121,7 +117,7 @@ if(!empty($_GET)) {
         $bb = new Borderbox($title_html);
 
         while ($result->fetchInto($row, DB_FETCHMODE_ASSOC, $rownum++) AND $rownum <= $to) {
-            echo ' <dt><a href="package-info.php?pacid='.$row['id'].'">'.$row['name'].'</a> (<a href="/account-info.php?handle='.$row['handle'].'">'.$row['handle'].'</a>)</dt>';
+            echo ' <dt><a href="package-info.php?pacid='.$row['id'].'">'.$row['name'].'</a></dt>';
             echo ' <dd>'.$row['summary'].'</dd>';
             echo ' <br /><br />';
         }

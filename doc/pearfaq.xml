@@ -1,16 +1,51 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.19 2001-10-14 08:58:50 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.20 2001-11-12 22:57:13 alexmerz Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
-          "../../phpdoc/dbxml/docbookx.dtd">
+          "./dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-10-14 08:58:50 $</date>
-  <version>$Revision: 1.19 $</version>
+  <date>$Date: 2001-11-12 22:57:13 $</date>
+  <version>$Revision: 1.20 $</version>
  </artheader>
 
  <qandaset>
+  <qandaentry>
+   <question title="What is PEAR exactly?" />
+    <answer>
+     <author name="Tomas V.V. Cox"/>
+      <para>
+        The PEAR concept it self is only a Repository, a unique web repository
+        and the works done in this area (pear web and pear installer/packager)
+        are in this direction. Also it's not a common repository, is a
+        repository with software that:
+        <simplelist>
+         <member>
+          has been approved to be in by the Pear developers and has the general
+          concensus of the Pear community (Pear users)
+         </member>
+         <member>
+          follows a unique coding standard (avaible to read, already standarized
+          and used in all PEAR)
+         </member>
+         <member>
+          uses a common error handling mechanism
+         </member>
+         <member>
+          tries to have a similar way of use
+         </member>
+         <member>
+          has documentation about its API in the PHPDoc format
+         </member>
+         <member>
+          has documentation/examples/tests (to be marked as stable)
+         </member>
+        </simplelist>
+      </para>
+    </answer>
+  </qandaentry>
+ 
   <qandaentry>
    <question title="How to become a PEAR contributer and/or how to get CVS access to PEAR?" />
     <answer>
@@ -234,6 +269,24 @@
     </para>
     </answer>
   </qandaentry>
+  <qandaentry> 
+   <question title="Am I expected to add examples and/or test files to my package and
+   where to store them?" />
+   <answer>
+    <author name="Alexander Merz"/>
+    <para>
+     Examples are a good idea, especially when your class has a complex API. But examples
+     are only a part of a documention. Don't create examples instead of a documentation.
+     You should store the documention and the examples in a sub directory 'docs' of the package 
+     directory.
+    </para>
+    <para>
+     Test scripts are recommanded when your class has to by compiled, requires
+     special extentions/ programs or needs correct installed additional files
+     (i.e. templates, graphics). Store them in sub directory called 'tests'.
+    </para>
+   </answer>  
+  </qandaentry>   
   <qandaentry>
    <question title="Are different packages or classes with similar features 
    allowed?" />

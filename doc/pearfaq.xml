@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.38 2002-01-26 13:15:23 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.39 2002-02-02 11:34:41 mj Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
@@ -22,7 +22,7 @@
           the general concensus of the PEAR community
          </member>
          <member>
-          follows a unique <ulink url="/manual/standards.php">coding standard</ulink>
+          follows a unique <ulink url="/manual/en/standards.php">coding standard</ulink>
           (already standarized and used all over PEAR)
          </member>
          <member>
@@ -62,7 +62,7 @@
 	 <member>
          Rewrite and <emphasis>maintain</emphasis> an existing class to
          match the <ulink
-         url="/manual/standards.php">PEAR Coding
+         url="/manual/en/standards.php">PEAR Coding
          Standards</ulink>.
         </member>
 	</simplelist>
@@ -164,7 +164,7 @@
     <author name="Stig Bakken and Martin Jansen"/>
     <para>
      If you just want to make a simple extension that does not follow the
-     <ulink url="/manual/standards.php">PEAR coding standards</ulink>,
+     <ulink url="/manual/en/standards.php">PEAR coding standards</ulink>,
      put it in pear/PECL/extname (that is where extensions from
      php4/ext/extname will be moved). If you want to write
      an extension following PEAR's function/class naming, put it in

@@ -243,7 +243,7 @@
         <td>Maintainer:</td>
         <td colspan="2">
             <input name="pkg_maintainer" type="text" value="<?=$_GET['pkg_maintainer']?>">
-            <select onchange="document.forms['search'].pkg_maintainer.value = this.options[this.selectedIndex].value; this.selectedIndex = 0">
+            <select onchange="document.forms['search_form'].pkg_maintainer.value = this.options[this.selectedIndex].value; this.selectedIndex = 0">
                 <option value="">Select user...</option>
                 <?foreach($users as $u):?>
                     <option value="<?=$u['handle']?>"><?=$u['name']?></option>

@@ -2,7 +2,7 @@
 CREATE TABLE packages (
        id             INTEGER NOT NULL,
        name           VARCHAR(80) NOT NULL,
-       type           ENUM('pear','pecl') NOT NULL default 'pear',
+       package_type   ENUM('pear','pecl') NOT NULL default 'pear',
        category       INTEGER, -- REFERENCES categories(id),
        stablerelease  VARCHAR(20),
        develrelease   VARCHAR(20),

@@ -44,13 +44,14 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
     // format: array( array(returntype, methodname, paramlist), ... )
     settype($signatures, "array");
     $matches = array();
-    if (preg_match_all('/([ \*\+])?proto\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)\s*?\n(\s*?\/\/\s+?(.*?)\s*?\n)?/s',
+    if (preg_match_all('/([ \*\+])?proto\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)\s+API ([0-9\.]*)\s*?\n(\s*?\/\/\s+?(.*?)\s*?\n)?/s',
                        $contents, $matches)) {
         for ($i = 0; $i < sizeof($matches[0]); $i++) {
             $auth_type   =  $matches[1][$i];
             $return_type =  $matches[2][$i];
             $method_name =  $matches[3][$i];
             $parameters  =  $matches[4][$i];
+            $APIversion =  $matches[5][$i];
             //$purpose     = @$matches[6][$i]; // XXX unfinished
             $return_type_permutations = explode("|", $return_type);
             $xmlrpc_method = str_replace("::", ".", $method_name);
@@ -118,15 +119,15 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
                         $signatures["auth"][$xmlrpc_method] = "all";
                     }
                 }
-
-
-
-
-
-
-
-
-
+            } elseif ($out_format == 'api') {
+                foreach ($return_type_permutations as $ret_type) {
+                    $signatures[] = array(
+                        'method_name' => $xmlrpc_method,
+                        'return_type' => $ret_type,
+                        'param_types' => array_keys($paramlist_permutations),
+                        'apiversion' => $APIversion,
+                    );
+                }
             } else {
                 foreach ($return_type_permutations as $ret_type) {
                     $signatures[] = array(
@@ -138,34 +139,36 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
             }
         }
     }
-    $mode = LOCK_EX;
-    $lock_fp = false;
-    if (!eregi('Windows 9', php_uname())) {
-        $lock_fp = @fopen(PEAR_TMPDIR . '/.siglock', 'w');
-
-        if (!is_resource($lock_fp)) {
-            return true;
+    if (false) {
+        $mode = LOCK_EX;
+        $lock_fp = false;
+        if (!eregi('Windows 9', php_uname())) {
+            $lock_fp = @fopen(PEAR_TMPDIR . '/.siglock', 'w');
+    
+            if (!is_resource($lock_fp)) {
+                return true;
+            }
+            if (!(int)flock($lock_fp, $mode)) {
+                fclose($lock_fp);
+                return true;
+            }
         }
-        if (!(int)flock($lock_fp, $mode)) {
+        if ($wp = @fopen($cache_file, "w")) {
+            fwrite($wp, serialize($signatures));
+            fclose($wp);
+        }
+        $mode = LOCK_UN;
+        if (!eregi('Windows 9', php_uname())) {
+    
+            if (!is_resource($lock_fp)) {
+                return true;
+            }
+            if (!(int)flock($lock_fp, $mode)) {
+                fclose($lock_fp);
+                return true;
+            }
             fclose($lock_fp);
-            return true;
         }
-    }
-    if ($wp = @fopen($cache_file, "w")) {
-        fwrite($wp, serialize($signatures));
-        fclose($wp);
-    }
-    $mode = LOCK_UN;
-    if (!eregi('Windows 9', php_uname())) {
-
-        if (!is_resource($lock_fp)) {
-            return true;
-        }
-        if (!(int)flock($lock_fp, $mode)) {
-            fclose($lock_fp);
-            return true;
-        }
-        fclose($lock_fp);
     }
     return true;
 }

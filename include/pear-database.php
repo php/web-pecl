@@ -77,7 +77,7 @@ To get all leaf nodes:
 
  */
 
-function renumber_visitations($id, $parent)
+function renumber_visitations($id, $parent = null)
 {
     global $dbh;
     if ($parent === null) {
@@ -141,7 +141,7 @@ function version_compare_firstelem($a, $b)
  */
 class category
 {
-    // {{{ *proto int    category::add(struct)
+    // {{{ *proto int    category::add(struct) API 1.0
 
     /**
      * Add new category
@@ -180,13 +180,13 @@ class category
     }
 
     /**
-    * Updates a categories details
-    *
-    * @param  integer $id   Category ID
-    * @param  string  $name Category name
-    * @param  string  $desc Category Description
-    * @return mixed         True on success, pear_error otherwise
-    */
+     * Updates a categories details
+     *
+     * @param  integer $id   Category ID
+     * @param  string  $name Category name
+     * @param  string  $desc Category Description
+     * @return mixed         True on success, pear_error otherwise
+     */
     function update($id, $name, $desc = '')
     {
         return $GLOBALS['dbh']->query(sprintf('UPDATE categories SET name = %s, description = %s WHERE id = %d',
@@ -196,10 +196,10 @@ class category
     }
 
     /**
-    * Deletes a category
-    *
-    * @param integer $id Cateogry ID
-    */
+     * Deletes a category
+     *
+     * @param integer $id Cateogry ID
+     */
     function delete($id)
     {
     /*
@@ -235,7 +235,7 @@ class category
     }
 
     // }}}
-    // {{{  proto array  category::listAll()
+    // {{{  proto array  category::listAll() API 1.0
 
     /**
      * List all categories
@@ -250,7 +250,7 @@ class category
     }
 
     // }}}
-    // {{{  proto array  category::getRecent(int, string)
+    // {{{  proto array  category::getRecent(int, string) API 1.0
 
     /**
      * Get list of recent releases for the given category
@@ -286,7 +286,7 @@ class category
     }
 
     // }}}
-    // {{{ *proto bool   category::isValid(string)
+    // {{{ *proto bool   category::isValid(string) API 1.0
 
     /**
      * Determines if the given category is valid
@@ -317,7 +317,7 @@ class category
  */
 class package
 {
-    // {{{ *proto int    package::add(struct)
+    // {{{ *proto int    package::add(struct) API 1.0
 
     /**
      * Add new package
@@ -365,14 +365,265 @@ class package
     }
 
     // }}}
+    // {{{ proto array package::getDownloadURL(struct, [string], [string], [string]) API 1.0
 
     /**
-     * Implemented $field values:
-     * releases, notes, category, description, authors, categoryid,
-     * packageid, authors
+     * Get a download URL, or an array containing the latest version and its
+     * release info.
+     *
+     * If a bundle is specified, then an array of information from getDownloadURL()
+     * will be returned
+     * @param array an array in format:
+     *              array(
+     *                'channel' => channel name (not used in pear),
+     *                'package' => package name,
+     *                ['version' => specific version to retrieve,]
+     *                ['state' => specific state to retrieve,]
+     *                ['bundle' => specific bundle to retrieve,]
+     *              )
+     * @param string preferred_state configuration value
+     * @param string user IP address, used to retrieve the closest mirror
+     *               (not implemented)
+     * @param string preferred mirror
+     *               (not implemented)
+     * @return bool|array
      */
+    function getDownloadURL($packageinfo, $prefstate = 'stable', $loc = null, $mirror = null)
+    {
+        if (!isset($packageinfo['package'])) {
+            return PEAR::raiseError('getDownloadURL parameter $packageinfo must ' .
+                'contain a "package" index');
+        }
+        if (isset($packageinfo['channel']) &&
+              $packageinfo['channel'] != 'pecl.php.net' &&
+              $packageinfo['channel'] != 'pear.php.net') {
+            return PEAR::raiseError('getDownloadURL channel must be pecl.php.net');
+        }
+        $states = release::betterStates($prefstate, true);
+        if (!$states) {
+            return PEAR::raiseError("getDownloadURL: preferred state '$prefstate' " .
+                'is not a valid stability state');
+        }
+        $package = $packageinfo['package'];
+        $state = $version = null;
+        if (isset($packageinfo['state'])) {
+            $state = $packageinfo['state'];
+        }
+        if (isset($packageinfo['version'])) {
+            $version = $packageinfo['version'];
+        }
+        $info = package::info($package, 'releases', true);
+        if (!count($info)) {
+            return false;
+        }
+        $found = false;
+        $release = false;
+        foreach ($info as $ver => $release) {
+            if (isset($state)) {
+                if ($release['state'] == $state) {
+                    $found = true;
+                    break;
+                }
+            } elseif (isset($version)) {
+                if ($ver == $version) {
+                    $found = true;
+                    break;
+                }
+            } else {
+                if (in_array($release['state'], $states)) {
+                    $found = true;
+                    break;
+                }
+            }
+        }
+        if ($found) {
+            return 
+                array('version' => $ver,
+                      'info' => package::getPackageFile($packageinfo['package'], $ver), 
+                      'url' => 'http://' . $_SERVER['SERVER_NAME'] . '/get/' .
+                               $package . '-' . $ver);
+        } else {
+            reset($info);
+            list($ver, $release) = each($info);
+            return array('version' => $ver,
+                         'info' => package::getPackageFile($packageinfo['package'], $ver));
+        }
+    }
 
-    // {{{  proto struct package::info(string|int, [string])
+    // }}}
+    // {{{ proto string package::getPackageFile(string|int, string) API 1.0
+
+    /**
+     * @param string|int package name or id
+     * @param string     release version
+     * @return string|PEAR_Error|null package.xml contents from this release
+     */
+    function getPackageFile($package, $version)
+    {
+        global $dbh;
+        if (is_numeric($package)) {
+            $what = "id";
+        } else {
+            $what = "name";
+        }
+        $relids = $dbh->getRow('SELECT releases.id as rid, packages.id as pid' .
+            ' FROM releases, packages WHERE ' .
+            "packages.$what = ? AND releases.version = ? AND " .
+            'releases.package = packages.id', array($package, $version), DB_FETCHMODE_ASSOC);
+        if (PEAR::isError($relids)) {
+            return $relids;
+        }
+        if ($relids === null) {
+            $ptest = $dbh->getOne('SELECT id FROM packages WHERE ' . $what . ' = ?', array($package));
+            if ($ptest === null) {
+                return PEAR::raiseError('Unknown package "' . $package . '"');
+            }
+            $rtest = $dbh->getOne('SELECT id FROM releases WHERE version = ?', array($version));
+            if ($rtest === null) {
+                return PEAR::raiseError('No release of version "' . $version . '" for package "' .
+                    $package . '"');
+            }
+        }
+        if (is_array($relids) && isset($relids['rid'])) {
+            $packagexml = $dbh->getOne('SELECT packagexml FROM files WHERE ' .
+                'package = ? AND release = ?', array($relids['pid'], $relids['rid']));
+            if (is_string($packagexml)) {
+                return $packagexml;
+            }
+        }
+    }
+
+    // }}}
+    // {{{ proto array package::getDepDownloadURL(string, struct, struct, [string], [string], [string]) API 1.0
+
+    /**
+     * Get a download URL for a dependency, or an array containing the
+     * latest version and its release info.
+     *
+     * If a bundle is specified, then an array of information
+     * will be returned
+     * @param string package.xml version for the dependency (1.0 or 2.0)
+     * @param array dependency information
+     * @param array dependent package information
+     * @param string preferred state
+     * @param string version_compare() relation to use for checking version
+     * @param string user IP address, used to retrieve the closest mirror
+     *               (not implemented)
+     * @param string preferred mirror
+     *               (not implemented)
+     * @return bool|array
+     */
+    function getDepDownloadURL($xsdversion, $dependency, $deppackage,
+                               $prefstate = 'stable', $loc = null, $mirror = null)
+    {
+        $info = package::info($dependency['name'], 'releases', true);
+        if (!count($info)) {
+            return false;
+        }
+        $states = release::betterStates($prefstate, true);
+        if (!$states) {
+            return PEAR::raiseError("getDownloadURL: preferred state '$prefstate' " .
+                'is not a valid stability state');
+        }
+        $exclude = array();
+        $min = $max = $recommended = false;
+        if ($xsdversion == '1.0') {
+            $pinfo['package'] = $dependency['name'];
+            $pinfo['channel'] = 'pear.php.net';
+            switch ($dependency['rel']) {
+                case 'ge' :
+                    $min = $dependency['version'];
+                break;
+                case 'gt' :
+                    $min = $dependency['version'];
+                    $exclude = array($dependency['version']);
+                break;
+                case 'eq' :
+                    $recommended = $dependency['version'];
+                break;
+                case 'lt' :
+                    $max = $dependency['version'];
+                    $exclude = array($dependency['version']);
+                break;
+                case 'le' :
+                    $max = $dependency['version'];
+                break;
+                case 'ne' :
+                    $exclude = array($dependency['version']);
+                break;
+            }
+        } elseif ($xsdversion == '2.0') {
+            $pinfo['package'] = $dependency['name'];
+            if ($dependency['channel'] != 'pecl.php.net' &&
+                  $dependency['channel'] != 'pear.php.net') {
+                return PEAR::raiseError('getDepDownloadURL channel must be pecl.php.net');
+            }
+            $min = isset($dependency['min']) ? $dependency['min'] : false;
+            $max = isset($dependency['max']) ? $dependency['max'] : false;
+            $recommended = isset($dependency['recommended']) ?
+                $dependency['recommended'] : false;
+            if (isset($dependency['exclude'])) {
+                if (!isset($dependency['exclude'][0])) {
+                    $exclude = array($dependency['exclude']);
+                }
+            }
+        }
+        $found = false;
+        $release = false;
+        foreach ($info as $ver => $release) {
+            if (in_array($ver, $exclude)) { // skip excluded versions
+                continue;
+            }
+            // allow newer releases to say "I'm OK with the dependent package"
+            if ($xsdversion == '2.0' && isset($release['compatibility'])) {
+                if (isset($release['compatibility'][$deppackage['channel']]
+                      [$deppackage['package']]) && in_array($ver,
+                        $release['compatibility'][$deppackage['channel']]
+                        [$deppackage['package']])) {
+                    $recommended = $ver;
+                }
+            }
+            if ($recommended) {
+                if ($ver != $recommended) { // if we want a specific
+                    // version, then skip all others
+                    continue;
+                } else {
+                    if (!in_array($release['state'], $states)) {
+                        // the stability is too low, but we must return the
+                        // recommended version if possible
+                        return array('version' => $ver,
+                                     'info' => package::getPackageFile($dependency['name'], $ver));
+                    }
+                }
+            }
+            if ($min && version_compare($ver, $min, 'lt')) { // skip too old versions
+                continue;
+            }
+            if ($max && version_compare($ver, $max, 'gt')) { // skip too new versions
+                continue;
+            }
+            if (in_array($release['state'], $states)) { // if in the preferred state...
+                $found = true; // ... then use it
+                break;
+            }
+        }
+        if ($found) {
+            return
+                array('version' => $ver,
+                      'info' => package::getPackageFile($dependency['name'], $ver), 
+                      'url' => 'http://' . $_SERVER['SERVER_NAME'] . '/get/' .
+                               $pinfo['package'] . '-' . $ver);
+        } else {
+            reset($info);
+            list($ver, $release) = each($info);
+            return array('version' => $ver,
+                         'info' => package::getPackageFile($dependency['name'], $ver));
+        }
+    }
+
+    // }}}
+
+    // {{{  proto struct package::info(string|int, [string], [bool]) API 1.0
     /*
      * Implemented $field values:
      * releases, notes, category, description, authors, categoryid,
@@ -383,9 +634,9 @@ class package
      * Get package information
      *
      * @static
-     * @param  mixed  Name of the package or it's ID
-     * @param  string Single field to fetch
-     * @param  boolean Should PEARd packages also be taken into account?
+     * @param  mixed   Name of the package or it's ID
+     * @param  string  Single field to fetch
+     * @param  boolean Should PEAR packages also be taken into account?
      * @return mixed
      */
     function info($pkg, $field = null, $allow_pear = false)
@@ -496,24 +747,47 @@ class package
     }
 
     // }}}
-    // {{{  proto struct package::listAll([bool])
+    // {{{  proto struct package::search(string, [bool|string], [bool], [bool], [bool]) API 1.0
+
+    /**
+     *
+     */
+    function search($fragment, $summary = false, $released_only = true, $stable_only = true,
+                    $include_pear = false)
+    {
+        $all = package::listAll($released_only, $stable_only, $include_pear);
+        if (!$all) {
+            return PEAR::raiseError('no packages found');
+        }
+        $ret = array();
+        foreach ($all as $name => $info) {
+            $found = (!empty($fragment) && stristr($name, $fragment) !== false);
+            if (!$found && !(isset($summary) && !empty($summary)
+                && (stristr($info['summary'], $summary) !== false
+                    || stristr($info['description'], $summary) !== false)))
+            {
+                continue;
+            };
+            $ret[$name] = $info;
+        }
+        return $ret;
+    }
+
+    // }}}
+    // {{{  proto struct package::listAll([bool], [bool], [bool]) API 1.0
 
     /**
      * List all packages
      *
      * @static
-     * @param boolean Only list releases packages?
+     * @param boolean Only list released packages?
      * @param boolean If listing released packages only, only list stable releases?
      * @param boolean List also PEAR packages
      * @return array
      */
     function listAll($released_only = true, $stable_only = true, $include_pear = false)
     {
-        global $dbh, $HTTP_RAW_POST_DATA;
-
-        if (isset($HTTP_RAW_POST_DATA)) {
-            $include_pecl = true;
-        }
+        global $dbh;
         
         $package_type = '';
         if (!$include_pear) {
@@ -559,9 +833,15 @@ class package
         if (!$stable_only) {
             foreach ($allreleases as $pkg => $stable) {
                 if ($stable['state'] == 'stable') {
-                    $packageinfo[$pkg]['stable'] = $stable['stable'];
+                    if (version_compare($packageinfo[$pkg]['stable'], $stable['stable'], '<')) {
+                        // only change it if the version number is newer
+                        $packageinfo[$pkg]['stable'] = $stable['stable'];
+                    }
                 } else {
-                    $packageinfo[$pkg]['unstable'] = $stable['stable'];
+                    if (version_compare($packageinfo[$pkg]['unstable'], $stable['stable'], '<')) {
+                        // only change it if the version number is newer
+                        $packageinfo[$pkg]['unstable'] = $stable['stable'];
+                    }
                 }
                 $packageinfo[$pkg]['state']  = $stable['state'];
             }
@@ -606,8 +886,7 @@ class package
     }
 
     // }}}
-
-    // {{{  proto struct package::listAllwithReleases()
+    // {{{  proto struct package::listAllwithReleases() API 1.0
 
     /**
      * Get list of packages and their releases
@@ -643,7 +922,7 @@ class package
     }
 
     // }}}
-    // {{{  proto struct package::listLatestReleases([string])
+    // {{{  proto struct package::listLatestReleases([string]) API 1.0
 
     /**
      * List latest releases
@@ -664,8 +943,7 @@ class package
              "FROM packages p, releases r, files f ".
              "WHERE p.package_type = 'pecl' AND p.approved = 1 AND p.id = r.package ".
              "AND f.package = p.id ".
-             "AND f.release = r.id ".
-             "AND p.package_type = 'pecl'";
+             "AND f.release = r.id ";
         if (release::isValidState($state)) {
             $better = release::betterStates($state);
             $query .= " AND (r.state = '$state'";
@@ -692,7 +970,7 @@ class package
     }
 
     // }}}
-    // {{{  proto struct package::listUpgrades(struct)
+    // {{{  proto struct package::listUpgrades(struct) API 1.0
 
     /**
      * List available upgrades
@@ -730,7 +1008,8 @@ class package
     }
 
     // }}}
-    // {{{ +proto bool   package::updateInfo(string|int, struct)
+    // {{{ +proto bool   package::updateInfo(string|int, struct) API 1.0
+
     /**
      * Updates fields of an existant package
      *
@@ -745,7 +1024,7 @@ class package
         if (PEAR::isError($package_id) || empty($package_id)) {
             return PEAR::raiseError("Package not registered. Please register it first with \"New Package\"");
         }
-        if (empty($auth_user->admin)) {
+        if ($auth_user->isAdmin() == false) {
             $role = user::maintains($auth_user->handle, $package_id);
             if ($role != 'lead' && $role != 'developer') {
                 return PEAR::raiseError('package::updateInfo: insufficient privileges');
@@ -788,7 +1067,7 @@ class package
     }
 
     // }}}
-    // {{{  proto array  package::getRecent(int, string)
+    // {{{  proto array  package::getRecent(int, string) API 1.0
 
     /**
      * Get list of recent releases for the given package
@@ -824,7 +1103,7 @@ class package
     }
 
     // }}}
-    // {{{ *proto bool   package::isValid(string)
+    // {{{ *proto bool   package::isValid(string) API 1.0
 
     /**
      * Determines if the given package is valid
@@ -842,6 +1121,24 @@ class package
     }
 
     // }}}
+    // {{{ getNotes()
+
+    /**
+     * Get all notes for given package
+     *
+     * @access public
+     * @param  int ID of the package
+     * @return array
+     */
+    function getNotes($package)
+    {
+        global $dbh;
+
+        $query = "SELECT * FROM notes WHERE pid = ? ORDER BY ntime";
+        return $dbh->getAll($query, array($package), DB_FETCHMODE_ASSOC);
+    }
+
+    // }}}
 }
 
 /**
@@ -855,7 +1152,7 @@ class package
  */
 class maintainer
 {
-    // {{{ +proto int    maintainer::add(int|string, string, string)
+    // {{{ +proto int    maintainer::add(int|string, string, string) API 1.0
 
     /**
      * Add new maintainer
@@ -864,24 +1161,21 @@ class maintainer
      * @param  mixed  Name of the package or it's ID
      * @param  string Handle of the user
      * @param  string Role of the user
+     * @param  integer Is the developer actively working on the project?
      * @return mixed True or PEAR error object
      */
-    function add($package, $user, $role)
+    function add($package, $user, $role, $active = 1)
     {
         global $dbh, $auth_user;
-        /*
-        That breaks package-new.php, as the new package do not have any lead assigned
-        if (empty($auth_user->admin) && !user::maintains($auth_user->handle, $package, 'lead')) {
-            return PEAR::raiseError('maintainer::add: insufficient privileges');
-        }*/
+
         if (!user::exists($user)) {
             return PEAR::raiseError("User $user does not exist");
         }
         if (is_string($package)) {
             $package = package::info($package, 'id');
         }
-        $err = $dbh->query("INSERT INTO maintains VALUES(?,?,?,1)",
-                           array($user, $package, $role));
+        $err = $dbh->query("INSERT INTO maintains VALUES(?,?,?,?)",
+                           array($user, $package, $role, $active));
         if (DB::isError($err)) {
             return $err;
         }
@@ -889,7 +1183,7 @@ class maintainer
     }
 
     // }}}
-    // {{{  proto struct maintainer::get(int|string, [bool])
+    // {{{  proto struct maintainer::get(int|string, [bool]) API 1.0
 
     /**
      * Get maintainer(s) for package
@@ -905,15 +1199,17 @@ class maintainer
         if (is_string($package)) {
             $package = package::info($package, 'id');
         }
-        $query = "SELECT handle, role FROM maintains WHERE package = '" . $package . "'";
+        $query = "SELECT handle, role, active FROM maintains WHERE package = ?";
         if ($lead) {
             $query .= " AND role = 'lead'";
         }
-        return $dbh->getAssoc($query);
+        $query .= " ORDER BY active DESC";
+
+        return $dbh->getAssoc($query, true, array($package), DB_FETCHMODE_ASSOC);
     }
 
     // }}}
-    // {{{  proto struct maintainer::getByUser(string)
+    // {{{  proto struct maintainer::getByUser(string) API 1.0
 
     /**
      * Get the roles of a specific user
@@ -925,12 +1221,12 @@ class maintainer
     function getByUser($user)
     {
         global $dbh;
-        $query = 'SELECT p.name, m.role FROM packages p, maintains m WHERE m.package = p.id AND m.handle = ?';
-        return $dbh->getAssoc($query, false, array($user));
+        $query = 'SELECT p.name, m.role FROM packages p, maintains m WHERE p.package_type = ? AND p.approved = 1 AND m.package = p.id AND m.handle = ?';
+        return $dbh->getAssoc($query, array('pecl'), array($user));
     }
 
     // }}}
-    // {{{  proto bool   maintainer::isValidRole(string)
+    // {{{  proto bool   maintainer::isValidRole(string) API 1.0
 
     /**
      * Check if role is valid
@@ -949,7 +1245,7 @@ class maintainer
     }
 
     // }}}
-    // {{{ +proto bool   maintainer::remove(int|string, string)
+    // {{{ +proto bool   maintainer::remove(int|string, string) API 1.0
 
     /**
      * Remove user from package
@@ -962,8 +1258,8 @@ class maintainer
     function remove($package, $user)
     {
         global $dbh, $auth_user;
-        if (empty($auth_user->admin) && !user::maintains($auth_user->handle, $package, 'lead')) {
-            return PEAR::raiseError('maintainer::drop: insufficient privileges');
+        if (!$auth_user->isAdmin() && !user::maintains($auth_user->handle, $package, 'lead')) {
+            return PEAR::raiseError('maintainer::remove: insufficient privileges');
         }
         if (is_string($package)) {
             $package = package::info($package, 'id');
@@ -973,7 +1269,7 @@ class maintainer
     }
 
     // }}}
-    // {{{ +proto bool   maintainer::updateAll(int, array)
+    // {{{ +proto bool   maintainer::updateAll(int, array) API 1.0
 
     /**
      * Update user and roles of a package
@@ -981,45 +1277,57 @@ class maintainer
      * @static
      * @param int $pkgid The package id to update
      * @param array $users Assoc array containing the list of users
-     *                     in the form: '<user>' => '<role>'
+     *                     in the form: '<user>' => array('role' => '<role>', 'active' => '<active>')
      * @return mixed PEAR_Error or true
      */
     function updateAll($pkgid, $users)
     {
-        // Only admins and leads can do this.
+
         global $dbh, $auth_user;
-        if (empty($auth_user->admin) && !user::maintains($auth_user->handle, $pkgid, 'lead')) {
+
+        $admin = $auth_user->isAdmin();
+
+        // Only admins and leads can do this.
+        if (maintainer::mayUpdate($pkgid) == false) {
             return PEAR::raiseError('maintainer::updateAll: insufficient privileges');
         }
-        $sql = "SELECT handle, role FROM maintains WHERE package = ?";
-        $old = $dbh->getAssoc($sql, false, array($pkgid));
+
+        $pkg_name = package::info((int)$pkgid, "name", true); // Needed for logging
+        if (empty($pkg_name)) {
+            PEAR::raiseError('maintainer::updateAll: no such package');
+        }
+
+        $old = maintainer::get($pkgid);
         if (DB::isError($old)) {
             return $old;
         }
         $old_users = array_keys($old);
         $new_users = array_keys($users);
-        if (!$auth_user->admin && !in_array($auth_user->handle, $new_users)) {
+
+        if (!$admin && !in_array($auth_user->handle, $new_users)) {
             return PEAR::raiseError("You can not delete your own maintainer role or you will not ".
                                     "be able to complete the update process. Set your name ".
                                     "in package.xml or let the new lead developer upload ".
                                     "the new release");
         }
-        foreach ($users as $user => $role) {
+        foreach ($users as $user => $u) {
+            $role = $u['role'];
+            $active = $u['active'];
+
             if (!maintainer::isValidRole($role)) {
                 return PEAR::raiseError("invalid role '$role' for user '$user'");
             }
             // The user is not present -> add him
             if (!in_array($user, $old_users)) {
-                $e = maintainer::add($pkgid, $user, $role);
+                $e = maintainer::add($pkgid, $user, $role, $active);
                 if (PEAR::isError($e)) {
                     return $e;
                 }
                 continue;
             }
             // Users exists but role has changed -> update it
-            if ($role != $old[$user]) {
-                $sql = "UPDATE maintains SET role=? WHERE package=? AND handle=?";
-                $res = $dbh->query($sql, array($role, $pkgid, $user));
+            if ($role != $old[$user]['role']) {
+                $res = maintainer::update($pkgid, $user, $role, $active);
                 if (DB::isError($res)) {
                     return $res;
                 }
@@ -1028,13 +1336,53 @@ class maintainer
         // Drop users who are no longer maintainers
         foreach ($old_users as $old_user) {
             if (!in_array($old_user, $new_users)) {
-                $sql = "DELETE FROM maintains WHERE package=? AND handle=?";
-                $res = $dbh->query($sql, array($pkgid, $old_user));
+                $res = maintainer::remove($pkgid, $old_user);
                 if (DB::isError($res)) {
                     return $res;
                 }
             }
         }
+        return true;
+    }
+
+    // }}}
+    // {{{
+
+    /**
+     * Update maintainer entry
+     *
+     * @access public
+     * @param  int Package ID
+     * @param  string Username
+     * @param  string Role
+     * @param  string Is the developer actively working on the package?
+     */
+    function update($package, $user, $role, $active) {
+        global $dbh;
+
+        $query = "UPDATE maintains SET role = ?, active = ? " .
+            "WHERE package = ? AND handle = ?";
+        return $dbh->query($query, array($role, $active, $package, $user));
+    }
+
+    // {{{ NOEXPORT  maintainer::mayUpdate(int)
+
+    /**
+     * Checks if the current user is allowed to update the maintainer data
+     *
+     * @access public
+     * @param  int  ID of the package
+     * @return boolean
+     */
+    function mayUpdate($package) {
+        global $auth_user;
+
+        $admin = $auth_user->isAdmin();
+
+        if (!$admin && !user::maintains($auth_user->handle, $package, 'lead')) {
+            return false;
+        }
+
         return true;
     }
 
@@ -1052,7 +1400,7 @@ class maintainer
  */
 class release
 {
-    // {{{  proto array  release::getRecent([int])
+    // {{{  proto array  release::getRecent([int]) API 1.0
 
     /**
      * Get recent releases
@@ -1074,7 +1422,8 @@ class release
                                 "releases.state AS state ".
                                 "FROM packages, releases ".
                                 "WHERE packages.id = releases.package ".
-            			"AND packages.package_type = 'pecl' " . 
+                                "AND packages.approved = 1 ".
+                                "AND packages.package_type = 'pecl' ".
                                 "ORDER BY releases.releasedate DESC", 0, $n);
         $recent = array();
         // XXX Fixme when DB gets limited getAll()
@@ -1085,7 +1434,7 @@ class release
     }
 
     // }}}
-    // {{{  proto array  release::getDateRange(int,int)
+    // {{{  proto array  release::getDateRange(int,int) API 1.0
 
     /**
      * Get release in a specific time range
@@ -1130,7 +1479,7 @@ class release
     }
 
     // }}}
-    // {{{ +proto string release::upload(string, string, string, string, binary, string)
+    // {{{ +proto string release::upload(string, string, string, string, binary, string) API 1.0
 
     /**
      * Upload new release
@@ -1147,18 +1496,19 @@ class release
     {
         global $auth_user;
         $role = user::maintains($auth_user->handle, $package);
-        if ($role != 'lead' && $role != 'developer' && !$auth_user->admin) {
+        if ($role != 'lead' && $role != 'developer' && !$auth_user->isAdmin()) {
             return PEAR::raiseError('release::upload: insufficient privileges');
         }
         $ref = release::validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum);
         if (PEAR::isError($ref)) {
             return $ref;
         }
-        return release::confirmUpload($ref);
+
+        return release::confirmUpload($package, $version, $state, $relnotes, $md5sum, $ref['package_id'], $ref['file']);
     }
 
     // }}}
-    // {{{ +proto string release::validateUpload(string, string, string, string, binary, string)
+    // {{{ +proto string release::validateUpload(string, string, string, string, binary, string) API 1.0
 
     /**
      * Determine if uploaded file is a valid release
@@ -1175,7 +1525,7 @@ class release
     {
         global $dbh, $auth_user;
         $role = user::maintains($auth_user->handle, $package);
-        if ($role != 'lead' && $role != 'developer' && !$auth_user->admin) {
+        if ($role != 'lead' && $role != 'developer' && !$auth_user->isAdmin()) {
             return PEAR::raiseError('release::validateUpload: insufficient privileges');
         }
         // (2) verify that package exists
@@ -1234,95 +1584,180 @@ class release
         }
         fwrite($fp, serialize($info));
         fclose($fp);
-        return $infofile;
+        return $info;
     }
 
     // }}}
-    // {{{ +proto bool   release::confirmUpload(string)
+    // {{{ +proto bool   release::confirmUpload(string, string, string, string, string, int, binary) API 1.0
 
     /**
      * Confirm release upload
      *
+     * @param string Package name
+     * @param string Package version
+     * @param string Package state
+     * @param string Release notes
+     * @param string md5
+     * @param int    Package id from database
+     * @param string package contents
      * @static
-     * @param string Reference to upload file (?)
-     * @return boolean
+     * @return string  the file name of the upload or PEAR_Error object if problems
      */
-    function confirmUpload($upload_ref)
+    function confirmUpload($package, $version, $state, $relnotes, $md5sum, $package_id, $file)
     {
-        global $dbh, $auth_user;
-        $fp = @fopen($upload_ref, "r");
-        if (!is_resource($fp)) {
-            return PEAR::raiseError("invalid upload reference: $upload_ref");
-        }
-        $info = unserialize(fread($fp, filesize($upload_ref)));
-        extract($info);
-        @unlink($upload_ref);
+        global $dbh, $auth_user, $_PEAR_Common_dependency_types,
+               $_PEAR_Common_dependency_relations;
 
-        $role = user::maintains($auth_user->handle, $package_id);
-        if ($role != 'lead' && $role != 'developer' && !$auth_user->admin) {
-            return PEAR::raiseError('release::confirmUpload: insufficient privileges');
+        require_once 'Archive/Tar.php';
+        $tar = &new Archive_Tar($file);
+        if (($packagexml = $tar->extractInString('package2.xml')) ||
+              ($packagexml = $tar->extractInString('package.xml'))) {
+            // success
+        } else {
+            return PEAR::raiseError('Archive uploaded does not appear to contain a package.xml!');
         }
-
         // Update releases table
         $query = "INSERT INTO releases (id,package,version,state,doneby,".
-             "releasedate,releasenotes) VALUES(?,?,?,?,?,?,?)";
+             "releasedate,releasenotes) VALUES(?,?,?,?,?,NOW(),?)";
         $sth = $dbh->prepare($query);
         $release_id = $dbh->nextId("releases");
         $dbh->execute($sth, array($release_id, $package_id, $version, $state,
-                                  $_COOKIE['PEAR_USER'], gmdate('Y-m-d H:i'),
-                                  $relnotes));
+                                  $auth_user->handle, $relnotes));
         // Update files table
         $query = "INSERT INTO files ".
-             "(id,package,release,md5sum,basename,fullpath) ".
-             "VALUES(?,?,?,?,?,?)";
+             "(id,package,release,md5sum,basename,fullpath,packagexml) ".
+             "VALUES(?,?,?,?,?,?,?)";
         $sth = $dbh->prepare($query);
         $file_id = $dbh->nextId("files");
         $ok = $dbh->execute($sth, array($file_id, $package_id, $release_id,
-                                        $md5sum, basename($file), $file));
+                                        $md5sum, basename($file), $file, $packagexml));
+        /*
+         * Code duplication with deps error
+         * Should be droped soon or later using transaction
+         * (and add mysql4 as a pe(ar|cl)web requirement)
+         */
+        if (PEAR::isError($ok)) {
+            $dbh->query("DELETE FROM releases WHERE id = $release_id");
+            @unlink($file);
+            return $ok;
+        }
 
         // Update dependency table
         $query = "INSERT INTO deps " .
-            "(package, release, type, relation, version, name) " .
-            "VALUES (?,?,?,?,?,?)";
+            "(package, release, type, relation, version, name, optional) " .
+            "VALUES (?,?,?,?,?,?,?)";
         $sth = $dbh->prepare($query);
 
-        /**
+        /*
          * The dependencies are only accessible via the package
          * definition. Because of this we need to instantiate
          * a PEAR_Common object here.
          */
         $common = new PEAR_Common();
-        $pkg_info = $common->InfoFromTgzFile($info['file']);
+        $pkg_info = $common->InfoFromTgzFile($file);
 
         foreach ($pkg_info as $key => $value) {
             if ($key == "release_deps") {
                 foreach ($value as $dep) {
-                    $dbh->execute($sth, array($package_id, $release_id,
-                                              @$dep['type'], @$dep['rel'],
-                                              @$dep['version'], @$dep['name'])
-                                  );
+                    $prob = array();
+
+                    if (empty($dep['type']) ||
+                        !in_array($dep['type'], $_PEAR_Common_dependency_types))
+                    {
+                        $prob[] = 'type';
+                    }
+
+                    if (empty($dep['name'])) {
+                        /*
+                         * NOTE from pajoye in ver 1.166:
+                         * This works for now.
+                         * This would require a 'cleaner' InfoFromXXX
+                         * which may return a defined set of data using
+                         * default values if required.
+                         */
+                        if (strtolower($dep['type']) == 'php') {
+                            $dep['name'] = 'PHP';
+                        } else {
+                            $prob[] = 'name';
+                        }
+                    }
+
+                    if (empty($dep['rel']) ||
+                        !in_array($dep['rel'], $_PEAR_Common_dependency_relations))
+                    {
+                        $prob[] = 'rel';
+                    }
+
+                    if (empty($dep['optional'])) {
+                        $optional = 0;
+                    } else {
+                        if ($dep['optional'] != strtolower($dep['optional'])) {
+                            $prob[] = 'optional';
+                        }
+                        if ($dep['optional'] == 'yes') {
+                            $optional = 1;
+                        } else {
+                            $optional = 0;
+                        }
+                    }
+
+                    if (count($prob)) {
+                        $res = PEAR::raiseError('The following attribute(s) ' .
+                                'were missing or need proper values: ' .
+                                implode(', ', $prob));
+                    } else {
+                        $res = $dbh->execute($sth,
+                                array(
+                                    $package_id,
+                                    $release_id,
+                                    $dep['type'],
+                                    $dep['rel'],
+                                    @$dep['version'],
+                                    $dep['name'],
+                                    $optional));
+                    }
+
+                    if (PEAR::isError($res)) {
+                        $dbh->query('DELETE FROM deps WHERE ' .
+                                    "release = $release_id");
+                        $dbh->query('DELETE FROM releases WHERE ' .
+                                    "id = $release_id");
+                        @unlink($file);
+                        return $res;
+                    }
                 }
             }
         }
 
-        if (PEAR::isError($ok)) {
-            $dbh->query("DELETE FROM releases WHERE id = $release_id");
-            @unlink($file);
-            return $ok;
-        };
+
 
         // Update Cache
         include_once 'xmlrpc-cache.php';
         $cache = new XMLRPC_Cache;
+        // gotta clear all the permutations
         $cache->remove('package.listAll', array(false));
         $cache->remove('package.listAll', array(true));
+
+        $cache->remove('package.listAll', array(false, true));
+        $cache->remove('package.listAll', array(false, false));
+        
+        $cache->remove('package.listAll', array(true, true));
+        $cache->remove('package.listAll', array(true, false));
+        
+        $cache->remove('package.listAll', array(false, true, true));
+        $cache->remove('package.listAll', array(false, true, false));
+        $cache->remove('package.listAll', array(false, false, true));
+        $cache->remove('package.listAll', array(false, false, false));
+
+        // make sure pear is also removed
         $cache->remove('package.info', array($package, null));
+        $cache->remove('package.info', array($package, array(null, null, true)));
 
         return $file;
     }
 
     // }}}
-    // {{{ +proto bool   release::dismissUpload(string)
+    // {{{ +proto bool   release::dismissUpload(string) API 1.0
 
     /**
      * Dismiss release upload
@@ -1348,11 +1783,12 @@ class release
      * @param string Filename
      * @param boolean Uncompress file before downloading?
      * @return mixed
+     * @static
      */
     function HTTPdownload($package, $version = null, $file = null, $uncompress = false)
     {
         global $dbh;
-        $package_id = package::info($package, 'packageid');
+        $package_id = package::info($package, 'packageid', true);
 
         if (!$package_id) {
             return PEAR::raiseError("release download:: package '".htmlspecialchars($package).
@@ -1372,7 +1808,7 @@ class release
             if (PEAR::isError($row)) {
                 return $row;
             } elseif ($row === null) {
-                return $this->raiseError("File '$file' not found");
+                return PEAR::raiseError("File '$file' not found");
             }
             $path = $row['fullpath'];
             $log_release = $row['release'];
@@ -1420,7 +1856,6 @@ class release
             if (PEAR::isError($row)) {
                 return $row;
             }
-
             list($path, $basename, $log_file) = $row;
             if (empty($path) || !@is_file($path)) {
                 return PEAR::raiseError("release download:: no version information found");
@@ -1452,7 +1887,7 @@ class release
     }
 
     // }}}
-    // {{{  proto bool   release::isValidState(string)
+    // {{{  proto bool   release::isValidState(string) API 1.0
 
     /**
      * Determine if release state is valid
@@ -1468,18 +1903,22 @@ class release
     }
 
     // }}}
-    // {{{  proto array  release::betterStates(string)
+    // {{{  proto array  release::betterStates(string) API 1.0
 
     /**
-     * ???
+     * Convert a state into an array of less stable states
      *
      * @param string Release state
+     * @param boolean include the state in the array returned
      * @return boolean
      */
-    function betterStates($state)
+    function betterStates($state, $include = false)
     {
         static $states = array('snapshot', 'devel', 'alpha', 'beta', 'stable');
         $i = array_search($state, $states);
+        if ($include) {
+            $i--;
+        }
         if ($i === false) {
             return false;
         }
@@ -1493,7 +1932,7 @@ class release
      * Log release download
      *
      * @param integer ID of the package
-     * @param string Version string of the release
+     * @param integer ID of the release
      * @param string Filename
      * @return boolean
      */
@@ -1504,27 +1943,56 @@ class release
         $id = $dbh->nextId("downloads");
 
         $query = "INSERT INTO downloads (id, file, package, release, dl_when, dl_who, dl_host) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $sth = $dbh->prepare($query);
 
-        if (DB::isError($sth)) {
-            return false;
-        }
-
-        $err = $dbh->execute($sth, array($id, $file, $package,
+        $err = $dbh->query($query, array($id, (int)$file, $package,
                                          $release_id, date("Y-m-d H:i:s"),
                                          $_SERVER['REMOTE_ADDR'],
                                          gethostbyaddr($_SERVER['REMOTE_ADDR'])
-                                        ));
+                                         ));
 
-        if (DB::isError($err)) {
-            return false;
+        // {{{ Update package_stats table
+
+        // Check if an entry for the release already exists
+        $query = "SELECT COUNT(pid) FROM package_stats WHERE pid = ? AND rid = ?";
+        $exists = $dbh->getOne($query, array($package, $release_id));
+
+        if ($exists == 0) {
+            $pkg_info = package::info($package, null, true);
+
+            $query = 'SELECT version FROM releases'
+                   . ' WHERE package = ? AND id = ?';
+            $version = $dbh->getOne($query, array($package, $release_id));
+
+            if (!$version) {
+                return PEAR::raiseError('release:: the package you requested'
+                                        . ' has no release by that number');
+            }
+
+            $query = 'INSERT INTO package_stats'
+                   . ' (dl_number, package, release, pid, rid, cid, last_dl)'
+                   . ' VALUES (1, ?, ?, ?, ?, ?, ?)';
+
+            $dbh->query($query, array($pkg_info['name'],
+                                      $version,
+                                      $package,
+                                      $release_id,
+                                      $pkg_info['categoryid'],
+                                      date('Y-m-d H:i:s')
+                                      )
+                        );
         } else {
-            return true;
+            $query = 'UPDATE package_stats '
+                   . ' SET dl_number = dl_number + 1,'
+                   . " last_dl = '" . date('Y-m-d H:i:s') . "'"
+                   . ' WHERE pid = ? AND rid = ?';
+            $dbh->query($query, array($package, $release_id));
         }
+
+        // }}}
     }
 
     // }}}
-    // {{{ +proto string release::promote(array, string)
+    // {{{ +proto string release::promote(array, string) API 1.0
 
     /**
      * Promote new release
@@ -1535,6 +2003,9 @@ class release
      */
     function promote($pkginfo, $upload)
     {
+        if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
+            return;
+        }
         $pacid   = package::info($pkginfo['package'], 'packageid');
         $authors = package::info($pkginfo['package'], 'authors');
         $txt_authors = '';
@@ -1575,6 +2046,60 @@ END;
     }
 
     // }}}
+    // {{{ +proto string release::promote_v2(array, string) API 1.0
+
+    /**
+     * Promote new release
+     *
+     * @param PEAR_PackageFile_v1|PEAR_PackageFile_v2
+     * @param string Filename of the new uploaded release
+     * @return void
+     */
+    function promote_v2($pkginfo, $upload)
+    {
+        if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
+            return;
+        }
+        $pacid   = package::info($pkginfo->getPackage(), 'packageid');
+        $authors = package::info($pkginfo->getPackage(), 'authors');
+        $txt_authors = '';
+        foreach ($authors as $a) {
+            $txt_authors .= $a['name'];
+            if ($a['showemail']) {
+                $txt_authors .= " <{$a['email']}>";
+            }
+            $txt_authors .= " ({$a['role']})\n";
+        }
+        $upload = basename($upload);
+        $release = $pkginfo->getPackage() . '-' . $pkginfo->getVersion() .
+             ' (' . $pkginfo->getState() . ')';
+        $txtanounce ='The new PECL package ' . $release . ' has been released at http://pecl.php.net/.
+
+Release notes
+-------------
+' . $pkginfo->getNotes() . '
+
+Package Info
+-------------
+' . $pkginfo->getDescription() . '
+
+Related Links
+-------------
+Package home: http://pecl.php.net/package/' . $pkginfo->getPackage() . '
+   Changelog: http://pecl.php.net/package-changelog.php?package=' . $pkginfo->getPackage() . '
+    Download: http://pecl.php.net/get/' . $upload . '
+
+Authors
+-------------
+' . $txt_authors;
+
+        $to   = '"PECL developers list" <pecl-dev@lists.php.net>';
+        $from = '"PECL Announce" <pecl-dev@lists.php.net>';
+        $subject = "[ANNOUNCEMENT] $release Released.";
+        mail($to, $subject, $txtanounce, "From: $from", "-f pear-sys@php.net");
+    }
+
+    // }}}
     // {{{ NOEXPORT      release::remove(int, int)
 
     /**
@@ -1587,7 +2112,7 @@ END;
     function remove($package, $release)
     {
         global $dbh, $auth_user;
-        if (empty($auth_user->admin) &&
+        if (!$auth_user->isAdmin() &&
             !user::maintains($auth_user->handle, $package, 'lead')) {
             return PEAR::raiseError('release::remove: insufficient privileges');
         }
@@ -1641,15 +2166,18 @@ END;
  */
 class note
 {
-    // {{{ +proto bool   note::add(string, int, string)
+    // {{{ +proto bool   note::add(string, int, string, string) API 1.0
 
-    function add($key, $value, $note)
+    function add($key, $value, $note, $author = "")
     {
         global $dbh;
+        if (empty($author)) {
+            $author = $_COOKIE['PEAR_USER'];
+        }
         $nid = $dbh->nextId("notes");
         $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
                               "VALUES(?,?,?,?,?)");
-        $res = $dbh->execute($stmt, array($nid, $value, $_COOKIE['PEAR_USER'],
+        $res = $dbh->execute($stmt, array($nid, $value, $author,
                              gmdate('Y-m-d H:i'), $note));
         if (DB::isError($res)) {
             return $res;
@@ -1658,7 +2186,7 @@ class note
     }
 
     // }}}
-    // {{{ +proto bool   note::remove(int)
+    // {{{ +proto bool   note::remove(int) API 1.0
 
     function remove($id)
     {
@@ -1672,7 +2200,7 @@ class note
     }
 
     // }}}
-    // {{{ +proto bool   note::removeAll(string, int)
+    // {{{ +proto bool   note::removeAll(string, int) API 1.0
 
     function removeAll($key, $value)
     {
@@ -1689,7 +2217,7 @@ class note
 
 class user
 {
-    // {{{ *proto bool   user::remove(string)
+    // {{{ *proto bool   user::remove(string) API 1.0
 
     function remove($uid)
     {
@@ -1700,7 +2228,7 @@ class user
     }
 
     // }}}
-    // {{{ *proto bool   user::rejectRequest(string, string)
+    // {{{ *proto bool   user::rejectRequest(string, string) API 1.0
 
     function rejectRequest($uid, $reason)
     {
@@ -1716,7 +2244,7 @@ class user
     }
 
     // }}}
-    // {{{ *proto bool   user::activate(string)
+    // {{{ *proto bool   user::activate(string) API 1.0
 
     function activate($uid)
     {
@@ -1746,20 +2274,33 @@ class user
     }
 
     // }}}
-    // {{{ +proto bool   user::isAdmin(string)
+    // {{{ +proto bool   user::isAdmin(string) API 1.0
 
     function isAdmin($handle)
     {
+
+
         global $dbh;
+
 
         $query = "SELECT handle FROM users WHERE handle = ? AND admin = 1";
         $sth = $dbh->query($query, array($handle));
 
+
+
+
+
+
+
+
         return ($sth->numRows() > 0);
+
+
+
     }
 
     // }}}
-    // {{{  proto bool   user::listAdmins()
+    // {{{  proto bool   user::listAdmins() API 1.0
 
     function listAdmins()
     {
@@ -1770,7 +2311,7 @@ class user
     }
 
     // }}}
-    // {{{ +proto bool   user::exists(string)
+    // {{{ +proto bool   user::exists(string) API 1.0
 
     function exists($handle)
     {
@@ -1781,7 +2322,7 @@ class user
     }
 
     // }}}
-    // {{{ +proto string user::maintains(string|int, [string])
+    // {{{ +proto string user::maintains(string|int, [string]) API 1.0
 
     function maintains($user, $pkgid, $role = 'any')
     {
@@ -1800,7 +2341,7 @@ class user
     }
 
     // }}}
-    // {{{  proto string user::info(string, [string])
+    // {{{  proto string user::info(string, [string]) API 1.0
 
     function info($user, $field = null)
     {
@@ -1808,8 +2349,10 @@ class user
         if ($field === null) {
             return $dbh->getRow('SELECT * FROM users WHERE handle = ?',
                                 array($user), DB_FETCHMODE_ASSOC);
+            unset($row['password']);
+            return $row;
         }
-        if (preg_match('/[^a-z]/', $user)) {
+        if ($field == 'password' || preg_match('/[^a-z]/', $user)) {
             return null;
         }
         return $dbh->getRow('SELECT ! FROM users WHERE handle = ?',
@@ -1832,6 +2375,7 @@ class user
     }
 
     // }}}
+
 }
 
 class statistics
@@ -1847,7 +2391,7 @@ class statistics
     function package($id)
     {
         global $dbh;
-        $query = "SELECT COUNT(*) AS total FROM downloads WHERE package = '" . $id . "'";
+        $query = "SELECT SUM(dl_number) FROM package_stats WHERE pid = " . (int)$id;
         return $dbh->getOne($query);
     }
 
@@ -1879,7 +2423,7 @@ class statistics
     // }}}
 }
 
-// {{{ +proto string logintest()
+// {{{ +proto string logintest() API 1.0
 
 function logintest()
 {

@@ -52,9 +52,6 @@ href="/manual/">manual</a> for more information.
 
 response_header();
 
-menu_link("Summary of the PEAR Meeting", "/news/meeting-2003-summary.php");
-echo hdelim();
-
 menu_link("Documentation", "/manual/");
 menu_link("News", "/news/");
 menu_link("Frequently Asked Questions", "/manual/en/faq.php");

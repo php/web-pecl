@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>by Alan Knowles(alan_k@php.net)</small></i></p>
+    
+<p>This week on the PEAR development list saw more activity related to PHP
+4.3 release, along with continuing discussion on Virtual File systems, LiveUser
+nearing it's first release, some Pear banners&nbsp; and dealing with Zend
+Engine 2 issues. Along with ... new releases and two more package proposals
+and peardoc2 finally hitting CVS.</p>
+    
+<hr>  
+<h2>New Releases</h2>
+    
+<h3>Stable</h3>
+    
+<ul>
+  <li><b>..</b>&nbsp; -..</li>
+  <li><b>..</b>&nbsp; -.</li>
+  
+</ul>
+<h3>Beta</h3>
+    
+<ul>
+  <li><b>..</b>&nbsp;  -..</li>
+  
+</ul>
+         
+<hr>  
+<h2>PEAR-DEV traffic</h2>
+    
+<h3>Virtual File Systems</h3>
+Just a short follow up to last weeks notes on Virtual File systems, Wez Ferlong
+sent an email about the new streams feature in PHP4.3, which allows you to
+write your own File system driver in PHP, (and use the standard PHP fopen
+etc. commands) to access the file system.
+<h3>Pear in PHP 4.3</h3>
+As the release of PHP 4.3 draws nears, sorting out the last remaining issues
+for the release are high on the priority list, at present, the two key issues
+appear to be a mysterious Archive_Tar bug and final testing of the Win32
+installer.  
+<h3>Branches for Zend Engine 2</h3>
+Last week Sebastian Bergmann mentioned that he had branched PHPUnit for Zend
+Engine 2, and talked about generally branching packages for the new Engine.
+After some discussion, It was concluded that this was not the preferred method
+of supporting the new Engine, rather making packages work on both engines
+was better, however if it was really not possible then branching would have
+to be done. 
+<h3>Live User nearing release</h3>
+Markus Wolff announced that LiveUser was nearing completion, thanking Christian,
+Lukas and Pierre-Alain for the their help in bringing the new authentication
+/ Permission Framework to this point so quickly.<br>
+<br>
+<h3>Some more PEAR banners</h3>
+Bertrand Mansion posted a link to his PHP banner
+<h3><img src="http://www.mamasam.com/pear_ad_2.gif" title=""
+ alt="pear banner" style="width: 468px; height: 60px;" align="top"></h3>
+<br>
+which is available to advertise PEAR, and Colin Viebrock responded to a request
+for small pear icons by adding a few more to the <a
+ href="http://pear.php.net/support.php">PEAR support page.</a> &nbsp;Available
+as Gifs and Pngs<br>
+for Pear <img src="http://pear.php.net/gifs/pear-icon.gif"> and PECL <img
+ src="http://pear.php.net/gifs/pecl-icon.gif">  
+<h3>Bugs and Fixes</h3>
+  Thanks to these people for spotting bugs and sending fixes: Francisco Benza,
+Jason Rust, phpsurf, Pawe&#322; Go&#322;aszewski, Urs Gehrig   
+<hr>   
+<h2>New and Proposed Packages</h2>
+    
+<h3>Message for hash calculations and HMAC signatures.</h3>
+Jesus Castagnetto announced a package to create hashes using the common PHP
+hash functions, normally used to verify data messages. 
+<h3>Net_Auth_SASL</h3>
+Richard Heyes announced a package to implement SASL encryption to communicate
+over sockets, this could then be used in common clear text protocols (eg.
+SMTP, IMAP and Sieve) to improve security.<br>
+<br>
+    
+<hr>    
+<h2>Development</h2>
+  Active on CVS this week has been &nbsp;Auth_SASL, Cache_Lite, DBA, DBA_Relational,
+HTTP_Request, Inline_C, Log, Message, Net_DIME, Net_Ident, Net_URL, PECL::ecasound,
+PECL::python, Perm_LiveUser, SOAP, SOAP_Interop, SQL_Parser, Text_Password,
+Tree, XML_Transformer, XML_XSLT_Wrapper and the PEAR installer.    
+<h3>New and updated documentation</h3>
+PEARdoc2 is now in CVS, under peardoc/peardoc2, so writers should now start
+looking at converting old documentation or writing new documentation for
+it.
+</body>
+</html>

@@ -225,10 +225,10 @@ class package
     // {{{  proto struct package::info(string|int, [string])
 
     /**
-    * Implemented $field values:
-    * releases, notes, category, description, authors, categoryid,
-    * packageid, authors
-    */
+     * Implemented $field values:
+     * releases, notes, category, description, authors, categoryid,
+     * packageid, authors
+     */
     function info($pkg, $field = null)
     {
         global $dbh;
@@ -511,13 +511,13 @@ class maintainer
     // {{{ +proto bool   maintainer::updateAll(int, array)
 
     /**
-    * Update user and roles of a package
-    *
-    * @param int $pkgid The package id to update
-    * @param array $users Assoc array containing the list of users
-    *                     in the form: '<user>' => '<role>'
-    * @return mixed PEAR_Error or true
-    */
+     * Update user and roles of a package
+     *
+     * @param int $pkgid The package id to update
+     * @param array $users Assoc array containing the list of users
+     *                     in the form: '<user>' => '<role>'
+     * @return mixed PEAR_Error or true
+     */
     function updateAll($pkgid, $users)
     {
         // Only admins and leads can do this.
@@ -864,9 +864,9 @@ class release
     // {{{ +proto string release::promote(array, string)
 
     /**
-    * $pkginfo array comming from PEAR_common::inforFromDescFile('package.xml')
-    * $upload file name of the new uploaded release
-    */
+     * $pkginfo array comming from PEAR_common::inforFromDescFile('package.xml')
+     * $upload file name of the new uploaded release
+     */
     function promote($pkginfo, $upload)
     {
         if ($_SERVER['SERVER_NAME'] != 'pear.php.net') {

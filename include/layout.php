@@ -128,7 +128,7 @@ function delim($color=false) {
 //
 
 function hdelim() {
-    return '<hr noshade="yes" size="1" />';
+    return '<hr />';
 }
 
 
@@ -246,7 +246,7 @@ function commonHeader($title) {
     <option value="pear-general">General mailing list</option>
     <option value="pear-cvs">CVS commits mailing list</option>
     </select>
-    <?php echo make_submit('small_submit_white.gif', 'search', 'bottom'); ?></font>&nbsp;<br /></form></td></tr>
+    <input type="image" src="/gifs/small_submit_white.gif" alt="search" align="bottom" /></font>&nbsp;<br /></form></td></tr>
 
   <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
 

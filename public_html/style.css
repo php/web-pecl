@@ -28,6 +28,16 @@ em {
     font-style: italic;
 }
 
+hr {
+    border: 0px;
+    height: 1px;
+    background-color: #ccc;
+}
+
+submit {
+    border: 0px;
+}
+
 .newsDate {
     font-size: 85%;
     font-style: italic;

@@ -29,7 +29,7 @@ $access = $dbh->getCol("SELECT path FROM cvs_acl WHERE username = ?", 0,
                        array($handle));
 
 print "<h1>Information about account \"$handle\"</h1>\n";
-print "<a href=\"account-edit.php?handle=$handle\">[Edit]</a>";
+print "<a href=\"account-edit.php?handle=$handle\">". make_image("edit.gif", "Edit") . "</a>";
 print "<br />\n";
 print "<br />\n";
 

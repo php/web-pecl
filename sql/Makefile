@@ -18,10 +18,8 @@
 #
 
 TABLE_FILES=\
-	domain_acl.sql \
-	domains.sql \
+	acl.sql \
 	maintains.sql \
-	package_acl.sql \
 	packages.sql \
 	releases.sql \
 	users.sql
@@ -96,9 +94,9 @@ test:
 # if the table "foo" has foreign keys to the table "bar", add
 # "foo.res: bar.res".
 
-packages.res: users.res domains.res
-releases.res: packages.res
-package_acl.res: packages.res users.res
-domain_acl.res: domains.res users.res
+acl.res: packages.res users.res
 maintains.res: packages.res users.res
-data.res: users.res packages.res domains.res
+packages.res: users.res
+releases.res: packages.res
+users.res:
+data.res: users.res packages.res

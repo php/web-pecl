@@ -45,14 +45,14 @@ do {
         if (!@is_file($distfile)) {
             display_error("No verified file found"); break;
         }
-		$ok = release::upload($info['package'], $info['version'], $info['release_state'],
+		$file = release::upload($info['package'], $info['version'], $info['release_state'],
 		                      $info['release_notes'], $distfile, md5_file($distfile));
 		@unlink($distfile);
-		if (PEAR::isError($ok)) {
+		if (PEAR::isError($file)) {
 			display_error("Error while uploading package: ".$ok->getMessage());
 			break;
 		}
-        release::promote($info, $distfile);
+        release::promote($info, $file);
 		response_header("Release Upload Finished");
 		print "The release of package `" . $info['package'] . "' version `" . $info['version'] . "' ";
 		print "was completed successfully and the marketing for it started.<br /><br />";

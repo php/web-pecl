@@ -544,7 +544,7 @@ class release
             $dbh->query("DELETE FROM releases WHERE id = $release_id");
             @unlink($file);
         }
-        return true;
+        return $file;
     }
 
     // }}}

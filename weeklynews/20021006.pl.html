@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>autor: Alan Knowles alan_k@php.net (t³umaczenie: Robert Janeczek rashid@php.net)</small></i></p>
+    
+<p>W tym tygodniu na li¶cie programistów PEAR widocznie wiêksza aktywno¶æ 
+zwi±zana z nadchodz±cym wydaniem PHP 4.3, do tego dyskusja o Virtual File systems,
+LiveUser zbli¿aj±cy siê do pierwszego wydania, trochê o banerach Pear i rozwi±zywaniu
+problemów z Zend Engine 2. W tym tygodniu 8 nowych wydañ (1 stabilne, 
+2 bety, 3 alphy i 2 rozwojowe), dwa proponowane pakiety i peardoc2 nareszcie
+w CVS.</p>
+    
+
+
+<hr>  
+<h2>Nowe wydania</h2>
+    
+<h3>Stable</h3>
+<ul>
+  <li><b>Auth</b> - udostêpnia metody do tworzenia systemu autentykacji przy u¿yciu PHP.</li> 
+</ul>
+
+
+
+<h3>Beta</h3>    
+<ul>
+  <li><b>Tree</b>  - Udostêpnia metody do odczytu i manipulacji drzewami, które
+  s± przechowywane w bazie danych lub pliku XML.</li>
+  <li><b>DBA</b>  - Nak³adka na phpowe funkcje DBA emuluj±ca bazê danych
+  DBA przy u¿yciu zwyk³ych plików. </li>
+</ul>
+
+
+<h3>Alpha</h3>   
+<ul>
+  <li><b>PECL::ecasound</b>  - rozszerzenie, które jest nak³adk± na bilbioteki
+  Ecasound - udostêpnia zaawansowane mo¿liwo¶ci przetwarzania d¼wiêku.</li>
+  <li><b>XML_XSLT_Wrapper</b>  - prostszy, niezale¿ny od bilbioteki i
+  poleceñ interfejs do transformacji XSL.</li>
+  <li><b>Inline_C</b>  -  pozwala na umieszczanie kodu w C wewn±trz plików PHP.</li>
+</ul>
+
+
+<h3>Rozwojowe</h3>   
+<ul>
+  <li><b>SQL_Parser</b>  - Parser i tokenizer (lexer) do zapytañ SQL</li>
+  <li><b>DBA_Relational</b>  -Interfejs SQL dla baz danych DBA</li>
+</ul>
+<h3><br>
+</h3>
+         
+
+
+<hr>  
+<h2>Skrót z PEAR-DEV</h2>
+    
+<h3>Virtual File Systems</h3>
+Krótka kontynuacja w±tków z poprzednich tygodni na temat Virtual File systems, Wez Ferlong
+podes³a³ email o nowej strumieniowej w³a¶ciwo¶ci PHP4.3, która pozwala napisaæ w³asny
+sterownik systemu plików w PHP (i u¿ywaæ standardowych komend takich jak fopen do 
+ich u¿ywania)
+
+<h3>Pear w PHP 4.3</h3>
+Jako, ¿e zbli¿a siê termin wypuszczenia PHP 4.3, porz±dkowanie ostatnich pozosta³ych
+problemów na potrzeby tego wydania s± wysoko na li¶cie priorytetów. Obecnie, 2 podstawowe
+problemy to tajemniczy b³±d Archive_Tar i koñcowe testy instalatora dla Win32.
+ 
+<h3>Odga³êzienia dla Zend Engine 2</h3>
+W zesz³ym tygodniu Sebastian Bergmann wspomnia³, ¿e odga³êzi³ PHPUnit na potrzeby Zend
+Engine 2 i omawia³ ogólnie rozga³êzianie pakietów dla nowego Engine'u.
+Po krótkiej dyskucji postanowiono, ¿e to nie jest najlepsza metoda wspierania
+nowego Engine'u, lepiej dopracowaæ pakiety, aby pracowa³y na obu Engine'ach. Je¶li
+nie jest to mo¿liwe, to bêdzie trzeba odga³êziæ. 
+
+<h3>Live User zbli¿a siê do wydania</h3>
+Markus Wolff og³osi³, ¿e LiveUser zbli¿a siê do ukoñczenia, dziêkuj±c równocze¶nie Christianowi,
+Lukasowi i Pierre-Alain za ich pomoc w doprowadzeniu nowego systemu
+autentykacji/uprawnieñ do tego punktu tak szybko.<br>
+
+<h3>Wiêcej banerów PEAR</h3>
+Bertrand Mansion nades³a³ link do swojego banera PHP
+<img src="http://www.mamasam.com/pear_ad_2.gif" alt="pear banner" align="top">
+<br>
+który ma s³u¿yæ promocji PEAR a Colin Viebrock odpowiedzia³ na pro¶bê o ma³e
+ikonki gruszek dodaj±c kilka do <a
+ href="http://pear.php.net/support.php">strony wspierania PEAR.</a> Dostêpne
+ jako Gify i Png<br>
+dla Pear <img src="http://pear.php.net/gifs/pear-icon.gif"> i PECL <img
+ src="http://pear.php.net/gifs/pecl-icon.gif">  
+ 
+<h3>Bugi i poprawki</h3>
+  Dziêki za znajdywanie b³êdów i pare poprawek otrzymuj±:  Francisco Benza,
+Jason Rust, phpsurf, Pawe&#322; Go&#322;aszewski and Urs Gehrig   
+
+
+<hr>   
+<h2>New and Proposed Packages</h2>
+    
+<h3>Informacja o obliczeniach typu hash i sygnaturach HMAC.</h3>
+Jesus Castagnetto zg³osi³ pakiet do tworzenia hashy przy u¿yciu zwyk³ych funkcji
+mieszaj±cycg PHP, najczêsciej u¿ywanych do weryfikowania przesy³anych danych.
+
+<h3>Net_Auth_SASL</h3>
+Richard Heyes zg³osi³ pakiet implementuj±cy kodowanie SASL do komunikacji
+przez gniazdka, mo¿na z tego korzystaæ przy zwyk³ych protoko³ach z otwartym 
+tekstem (np. SMTP, IMAP and Sieve) do zwiêkszenia bezpieczeñstwa.
+
+    
+<hr>    
+<h2>Rozwój</h2>
+   Ruch w CVS w tym tygodniu odbywa³ siê w nastêpuj±cych pakietach: Auth_SASL, Cache_Lite, DBA, DBA_Relational,
+HTTP_Request, Inline_C, Log, Message, Net_DIME, Net_Ident, Net_URL, PECL::ecasound,
+PECL::python, Perm_LiveUser, SOAP, SOAP_Interop, SQL_Parser, Text_Password,
+Tree, XML_Transformer, XML_XSLT_Wrapper and the PEAR installer.    
+
+<h3>Nowa i uaktualniona dokumentacja</h3>
+PEARdoc2 jest ju¿ w CVS w katalogu peardoc/peardoc2, wiêc pisz±cy powinni teraz 
+zacz±c pracê nad konwertowaniem starej dokumentacji albo pisaniem nowej.
+</body>
+</html>

@@ -49,12 +49,11 @@ complete your request.
 
 ?>
 <p>
-There are many PHP-related mailing lists available. Most of them
-have archives are available, and many are also available as newsgroups
+There are three PEAR-related mailing lists available. All of them
+have archives available, and they are also available as newsgroups
 on our <a href="news://news.php.net">news server</a>. The archives
 are searchable.
 </p>
-
 <?php
 
   // array of lists (list, name, short desc., moderated, archive, digest, newsgroup)
@@ -81,9 +80,7 @@ are searchable.
     )
   
   );
-
 ?>
-
 <form method="POST" action="http://pear.php.net/support.php">
 <p>
 <table cellpadding="5" cellspacing="1">
@@ -136,16 +133,10 @@ following the directions in that mail.
 
 <p>
 There are a variety of commands you can use to modify your subscription.
-Either send a message to php-whatever-help@lists.php.net (as in,
-php-general-help@lists.php.net) or you can view the commands for
+Either send a message to pear-whatever-help@lists.php.net (as in,
+pear-general-help@lists.php.net) or you can view the commands for
 ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
 </p>
-
-<p>
-Archives for some of these mailing lists are also available at
-<a href="http://www.phpbuilder.com/mail/">http://www.phpbuilder.com/mail/</a>.
-</p>
-
 
 <?php
 }

@@ -31,7 +31,7 @@ function getQueryString($catpid, $catname, $showempty = false){
 // Expected url vars: catpid (category parent id), catname, showempty
 $catpid  = isset($_GET['catpid'])  ? (int)$_GET['catpid']   : null;
 $showempty = isset($_GET['showempty']) ? (bool)$_GET['showempty'] : false;
-	
+
 if (empty($catpid)) {
     $category_where = "IS NULL";
     $catname = "Top Level";
@@ -52,9 +52,9 @@ response_header($category_title);
 
 //	$dbh->setErrorHandling(PEAR_ERROR_DIE);
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
-	
+
 // 1) Show categories of this level
-	
+
 $sth     = $dbh->query("SELECT * from categories WHERE parent $category_where ORDER BY name");
 $table   = new HTML_Table('border="0" cellpadding="6" cellspacing="2" width="100%"');
 $nrow    = 0;
@@ -73,6 +73,7 @@ $subpkgs = $dbh->getAssoc("SELECT p.category, p.id AS id, p.name AS name, p.summ
                           " WHERE c.parent $category_where AND p.category = c.id ORDER BY p.name",
                           false, null, DB_FETCHMODE_ASSOC, true);
 
+$max_sub_links = 4;
 while ($sth->fetchInto($row)) {
 
     extract($row);
@@ -84,7 +85,6 @@ while ($sth->fetchInto($row)) {
     }
 
     $sub_items = 0;
-    $max_sub_links = 4;
 
     $sub_links = array();
     if (isset($subcats[$id])) {
@@ -120,15 +120,15 @@ while ($sth->fetchInto($row)) {
     $data  = '<font size="+1"><b><a href="'.$_SERVER['PHP_SELF'].'?catpid='.$id.'&catname='.urlencode($name).'">'.$name.'</a></b></font> ('.$npackages.')<br />';//$name; //array($name, $npackages, $ncategories, $summary);
     $data .= $sub_links.'<br />';
     $catdata[] = $data;
-		
+
     if($nrow++ % 2 == 1) {
         $table->addRow(array($catdata[0], $catdata[1]));
         $table->setCellAttributes($table->getRowCount()-1, 0, 'width="50%"');
         $table->setCellAttributes($table->getRowCount()-1, 1, 'width="50%"');
-        $catdata = array();			
+        $catdata = array();
     }
 } // End while
-	
+
 // Any left over (odd number of categories).
 if(count($catdata) > 0){
     $table->addRow(array($catdata[0]));
@@ -142,7 +142,7 @@ if(count($catdata) > 0){
 ***************************************/
 
 echo '<table border="0" width="100%"><tr><th valign="top" align="left">Contents of :: ';
-html_category_urhere($catpid, $catname);
+html_category_urhere($catpid, false);
 echo '</th><td valign="top" align="right">'.$showempty_link.'</td></tr>';
 //	echo '<tr><td colspan="2">Looking for something specific? Try the <a href="package-search.php">package search</a>.</td></tr>';
 print '</table>';
@@ -150,23 +150,34 @@ print '</table>';
 /***************************************
 ** Begin code for showing packages if we
 ** aren't at the top level.
-***************************************/	
+***************************************/
 
-if (isset($catpid)){
-    /* XXXX TODO:
-    - Show link to direct download
-    - Paginate results (use my Pager?)
-    */
+if (!empty($catpid)) {
     $nrow = 0;
-    if (!empty($catpid)) {
-        $sth = $dbh->query("SELECT id, name, summary FROM packages WHERE category=$catpid ORDER BY name");
-        print "<dl>\n";
-        while ($sth->fetchInto($row)) {
-            extract($row);
-            print " <dt><a href=\"package-info.php?pacid=$id\">$name</a></dt>\n";
-            print " <dd>$summary</dd>\n";
-            print " <br /><br />\n";
+    // Subcategories list
+    $more = ($showempty) ? 0 : 1;
+    $subcats = $dbh->getAll("SELECT id, name, summary FROM categories WHERE ".
+                            "parent = $catpid AND npackages >= $more", DB_FETCHMODE_ASSOC);
+    if (count($subcats) > 0) {
+        $sub_links = array();
+        foreach ($subcats as $subcat) {
+            $sub_links[] = '<b><a href="'.$_SERVER['PHP_SELF'].'?catpid='.$subcat['id'].'&catname='.
+                            urlencode($subcat['name']).'" title="'.htmlspecialchars($subcat['summary']).'">'.$subcat['name'].'</a></b>';
+            if (sizeof($sub_links) >= $max_sub_links) {
+                break;
+            }
         }
+        print '<br />Sub-categories: ' . implode(', ', $sub_links) . '<br />';
+    }
+
+    // Package list
+    $sth = $dbh->query("SELECT id, name, summary FROM packages WHERE category=$catpid ORDER BY name");
+    print "<dl>\n";
+    while ($sth->fetchInto($row)) {
+        extract($row);
+        print " <dt><a href=\"package-info.php?pacid=$id\">$name</a></dt>\n";
+        print " <dd>$summary</dd>\n";
+        print " <br /><br />\n";
     }
 }
 

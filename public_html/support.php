@@ -177,11 +177,11 @@ Eris Free Net</a>.
     <li><a href="http://cvs.php.net/cvs.php/php-src/CODING_STANDARDS">PECL/PHP Coding Standards</a>
     <li><a href="http://cvs.php.net/cvs.php/ZendEngine2/OBJECTS2_HOWTO">PHP5/ZendEngine 2 Object internals</a>
     <li><a href="http://www.phpconcept.net/articles/article.en.php?id=1">Configure WinCVS for PEAR/PECL</a> by Vincent Blavet</li>
-    <li><a href="http://"http://talks.php.net/show/vancouver-ext/">Extention Writing (php5), January 22nd, 2004. Vancouver, Canada</a>
+    <li><a href="http://talks.php.net/show/vancouver-ext/">Extention Writing (PHP 4/PHP 5), January 22nd, 2004. Vancouver, Canada</a>
     by Derick Rethans</li>
-    <li><a href="http://talks.php.net/show/extending-php-apachecon2003">Writing a PHP Extension (PHP4), Apachecon 
+    <li><a href="http://talks.php.net/show/extending-php-apachecon2003">Writing a PHP Extension (PHP 4), Apachecon 
     November 19, 2003. Las Vegas, NV</a> by Jon Parise</li>
-    <li><a href="http://www.derickrethans.nl/ze-ext/talk.html">Zend and Extending PHP (PHP4), PHP Forum 2002
+    <li><a href="http://www.derickrethans.nl/ze-ext/talk.html">Zend and Extending PHP (PHP 4), PHP Forum 2002
     Paris, France - December 10, 2002</a> by Derick Rethans</li>
 </ul>
 

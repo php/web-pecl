@@ -3,7 +3,7 @@ Version:       $Revision$
 Status:        proposal
 Maintainer:    Stig S. Bakken <ssb@fast.no>
 Created:       2001-08-28
-Modified:      2001-08-28
+Modified:      2001-09-06
 
 1. Introduction
 
@@ -46,23 +46,24 @@ whether PHP is running in safe mode, and so on.
 These are the different types of dependencies we would like to
 support:
 
- * another PEAR package installed
- * specific version of another PEAR package installed
- * minimum version of another PEAR package installed
- * bundled PHP extension available
- * specific version of PHP with bundled extension available
- * minimum version of PHP with bundled extension available
- * specific version of PHP
- * minimum version of PHP
- * external program
- * external library for linking
- * external runtime library
- * operating system
- * specific version of operating system
- * minimum version of operating system
- * web server
- * specific version of web server
- * minimum version of web server
- * SAPI backend
- * specific version of PHP with SAPI backend
- * minimum version of PHP with SAPI backend
+ Type      Relation   Description
++---------+----------+---------------------------------------------------+
+|pkg      | has      |another PEAR package installed                     |
+|pkg      | v.eq     |specific version of another PEAR package installed |
+|pkg      | v.ge     |minimum version of another PEAR package installed  |
+|ext      | has      |bundled PHP extension available                    |
+|ext      | v.eq     |specific version of PHP with bundled extension     |
+|ext      | v.gt     |minimum version of PHP with bundled extension      |
+|php      | v.eq     |specific version of PHP                            |
+|php      | v.ge     |minimum version of PHP                             |
+|prog     | has      |external program                                   |
+|ldlib    | has      |external library for linking                       |
+|rtlib    | has      |external runtime library                           |
+|os       | has      |operating system                                   |
+|websrv   | has      |web server                                         |
+|websrv   | v.eq     |specific version of web server                     |
+|websrv   | v.ge     |minimum version of web server                      |
+|sapi     | has      |SAPI backend                                       |
+|sapi     | v.eq     |specific version of PHP with SAPI backend          |
+|sapi     | v.ge     |minimum version of PHP with SAPI backend           |
++---------+----------+---------------------------------------------------+

@@ -65,6 +65,12 @@ function makeBorderTOC($this) {
 	}
 
 	$SIDEBAR_DATA.= '</small></td></tr>';
+
+    $SIDEBAR_DATA .= '<tr valign="top"><td><small>&nbsp;'
+                     . make_image("box-0.gif")
+                     . make_link("/download-docs.php", "Download Documentation")
+                     . '</small></td></tr>';
+
 	$SIDEBAR_DATA.= '</table></form>';
 
 }
@@ -92,7 +98,10 @@ function navigationBar($title,$id,$loc) {
 	echo '<br></td></tr>';
 
 	echo '<tr>';
-	echo '<td align="right" colspan="2"><small>Last updated: '.$tstamp.'<br>';
+	echo '<td valign="top" align="left"><small>'
+	     . make_link("/download-docs.php", "Download Documentation")
+	     . '</small</td>';
+	echo '<td align="right"><small>Last updated: '.$tstamp.'<br>';
 
 	if ($loc != 'bottom') {
 		global $LANGUAGES;

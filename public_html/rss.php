@@ -23,7 +23,7 @@ header("Content-type: text/xml");
 echo "<?xml version=\"1.0\"?>\n";
 ?>
 
-<rss version="0.91">
+<rss version="0.9">
 <channel>
   <title>PEAR</title>
   <link>http://pear.php.net/</link>

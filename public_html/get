@@ -37,6 +37,12 @@ function error_404($obj) {
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'error_404');
 
+// This is needed to be able to test the downloads with "wget"
+// ot the pear installer
+if (empty($dbh)) {
+    $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
+}
+
 if (!isset($PATH_INFO) || $PATH_INFO == '/') {
     PEAR::raiseError('no package selected');
 }

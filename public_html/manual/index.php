@@ -68,9 +68,9 @@ foreach ($languages as $domain => $name) {
     foreach ($formats as $filename => $information) {
         $filename = str_replace("{LANG}", $domain, $filename);
 
-        $link = make_link("distributions/manual/" . $filename, $information[0]);
+        $link = make_link("/distributions/manual/" . $filename, $information[0]);
         $bb->plainRow($link, $information[1],
-                      (int) (@filesize("distributions/manual/" . $filename)/1024) . "KB");
+                      (int) (@filesize("/distributions/manual/" . $filename)/1024) . "KB");
     }
 
 }

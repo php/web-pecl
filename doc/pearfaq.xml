@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.9 2001-09-02 12:24:14 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.10 2001-09-03 10:46:12 ssb Exp $ -->
 <!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "./dbxml/docbookx.dtd">
 
@@ -8,8 +8,8 @@
 <article class="faq">
 <artheader>
     <title>PEAR-Developer FAQ</title>
-    <date>$Date: 2001-09-02 12:24:14 $</date>
-    <version>$Revision: 1.9 $</version>    
+    <date>$Date: 2001-09-03 10:46:12 $</date>
+    <version>$Revision: 1.10 $</version>    
 </artheader>
 
 <qandaset>
@@ -152,19 +152,28 @@
     <qandaentry>
         <question title="Why differs the directory structure of pear/ and php4/pear/?" />
         <answer>
-            <author name=""/>
-            <para>
-                There is no answer yet.
-            </para>
+  	  <author name="Stig Bakken"/>
+  	  <para>
+ 	    The directory structure of <filename>php4/pear/</filename>
+ 	    matches that of the install tree (by default
+ 	    <filename>/usr/local/lib/php</filename>), and are organized as a
+ 	    simple hierarchy.  However, the directory structure of
+ 	    <filename>pear/</filename> is based on what package the files
+ 	    belong to.  Where files are located in each package directory is
+ 	    completely independent from where they end up being installed,
+ 	    this is all determined by the package description file.
+  	  </para>
         </answer>
     </qandaentry>    
     <qandaentry>
         <question title="Why a flat directory structure instead of a deep?" />
         <answer>
-            <author name=""/>
-            <para>
-                There is no answer yet.
-            </para>
+           <author name="Stig Bakken"/>
+           <para>
+             A deep directory structure does not go well with the idea of
+             having separately managed packages with their own release
+             cycles, CVS access control and so on.
+           </para>
         </answer>
     </qandaentry>    
     <qandaentry>

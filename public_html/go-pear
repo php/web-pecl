@@ -70,12 +70,8 @@ Please upgrade PHP to a newer version, and try again.  See you then.
 
 define('WINDOWS', (substr(PHP_OS, 0, 3) == 'WIN'));
 
-if (WINDOWS) {
+if (!($tty = @fopen("/dev/tty", "r"))) {
     $tty = fopen("php://stdin", "r");
-} else {
-    // this allows for a stdin that is not the terminal, as you
-    // get with "lynx -source .../go-pear | php"
-    $tty = fopen("/dev/tty", "r");
 }
 
 $installer_packages = array(
@@ -111,23 +107,6 @@ if (my_env('HTTP_PROXY')) {
 } else {
     $http_proxy = '';
 }
-if (WINDOWS) {
-    $prefix = PHP_BINDIR;
-    $bin_dir   = '$prefix';
-    $php_dir   = '$prefix\pear';
-    $doc_dir   = '$php_dir\docs';
-    $data_dir  = '$php_dir\data';
-    $tests_dir = '$php_dir\tests';
-} else {
-    $prefix    = dirname(PHP_BINDIR);
-    $bin_dir   = '$prefix/bin';
-    $php_dir   = '$prefix/share/pear';
-    $doc_dir   = '$php_dir/docs';
-    $data_dir  = '$php_dir/data';
-    $tests_dir = '$php_dir/tests';
-}
-
-$origpwd = getcwd();
 
 register_shutdown_function('bail');
 
@@ -141,6 +120,10 @@ $tmp = trim(fgets($tty, 1024));
 if (!empty($tmp)) {
     $http_proxy = $tmp;
 }
+
+detect_install_dirs();
+
+$origpwd = getcwd();
 
 $config_desc = array(
     'prefix' => 'Installation prefix',
@@ -183,8 +166,12 @@ accept these locations.
         $current = $$var;
         print "$desc [$current] : ";
         $tmp = trim(fgets($tty, 1024));
+        $old = $$var;
         if (!empty($tmp)) {
             $$var = $tmp;
+        }
+        if ($var == 'prefix' && $$var != $old) {
+            detect_install_dirs($prefix);
         }
     } elseif ($tmp == 'all') {
         foreach ($config_vars as $n => $var) {
@@ -366,7 +353,19 @@ the installer works, but please look over your php.ini or Apache
 configuration to make sure $php_dir is in your include_path.
 ";
     }
-    $php_ini = PHP_CONFIG_FILE_PATH . DIRECTORY_SEPARATOR . 'php.ini';
+    if (WINDOWS) {
+	// on Windows, we can be pretty sure that there is a php.ini
+	// file somewhere
+	do {
+	    $php_ini = PHP_CONFIG_FILE_PATH . DIRECTORY_SEPARATOR . 'php.ini';
+	    if (@file_exists($php_ini)) break;
+	    $php_ini = 'c:\winnt\php.ini';
+	    if (@file_exists($php_ini)) break;
+	    $php_ini = 'c:\windows\php.ini';
+	} while (false);
+    } else {
+	$php_ini = PHP_CONFIG_FILE_PATH . DIRECTORY_SEPARATOR . 'php.ini';
+    }
     print "
 Current include path           : ".ini_get('include_path')."
 Configured directory           : $php_dir
@@ -648,6 +647,55 @@ function my_env($var)
         return $_ENV[$var];
     }
     return getenv($var);
+}
+
+// }}}
+
+// {{{ detect_install_dirs()
+
+function detect_install_dirs($_prefix = null) {
+    global $prefix, $bin_dir, $php_dir, $doc_dir, $data_dir, $tests_dir;
+    if (WINDOWS) {
+        if ($_prefix === null) {
+            $prefix = PHP_BINDIR;
+        } else {
+            $prefix = $_prefix;
+        }
+        if (!@is_dir($prefix)) {
+            if (@is_dir('c:\php4')) {
+                $prefix = 'c:\php4';
+            } elseif (@is_dir('c:\php')) {
+                $prefix = 'c:\php';
+            }
+        }
+        $bin_dir   = '$prefix';
+        $php_dir   = '$prefix\pear';
+        $doc_dir   = '$php_dir\docs';
+        $data_dir  = '$php_dir\data';
+        $tests_dir = '$php_dir\tests';
+    } else {
+        if ($_prefix === null) {
+            $prefix    = dirname(PHP_BINDIR);
+        } else {
+            $prefix = $_prefix;
+        }
+        $bin_dir   = '$prefix/bin';
+        $php_dir   = '$prefix/share/pear';
+        $doc_dir   = '$php_dir/docs';
+        $data_dir  = '$php_dir/data';
+        $tests_dir = '$php_dir/tests';
+        // check if the user has installed PHP with PHP or GNU layout
+        if (@is_dir("$prefix/lib/php/.registry")) {
+            $php_dir = '$prefix/lib/php';
+        } elseif (@is_dir("$prefix/share/pear/lib/.registry")) {
+            $php_dir = '$prefix/share/pear/lib';
+            $doc_dir   = '$prefix/share/pear/docs';
+            $data_dir  = '$prefix/share/pear/data';
+            $tests_dir = '$prefix/share/pear/tests';
+        } elseif (@is_dir("$prefix/share/php/.registry")) {
+            $php_dir = '$prefix/share/php';
+        }
+    }
 }
 
 // }}}

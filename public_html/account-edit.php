@@ -1,6 +1,6 @@
 <?php
 
-auth_require(true);
+auth_require();
 
 require_once "HTML/Form.php";
 
@@ -13,6 +13,15 @@ if (isset($HTTP_GET_VARS['handle'])) {
 }
 
 response_header("Edit Account: $handle");
+
+$admin = user::isAdmin($PHP_AUTH_USER);
+$user = ($PHP_AUTH_USER === $_GET['handle']);
+
+if (!$admin && !$user) {
+    PEAR::raiseError("Only the user himself or PEAR administrators can edit the account information.");
+    response_footer();
+    exit();
+}
 
 if (empty($handle) && !isset($HTTP_POST_VARS['command'])) {
     PEAR::raiseError("No valid handle found!");

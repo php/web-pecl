@@ -15,6 +15,6 @@ CREATE TABLE users (
        pgpkey	     TEXT,
 
        PRIMARY KEY(handle),
-       INDEX(handle,registered)
+       INDEX(handle,registered),
        INDEX(pgpkeyid)
 );

@@ -49,7 +49,7 @@ do {
 		                      $info['release_notes'], $distfile, md5_file($distfile));
 		@unlink($distfile);
 		if (PEAR::isError($file)) {
-			display_error("Error while uploading package: ".$ok->getMessage());
+			display_error("Error while uploading package: ".$file->getMessage());
 			break;
 		}
         release::promote($info, $file);

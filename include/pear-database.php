@@ -519,7 +519,7 @@ class maintainer
                 return $test;
             }
             if (empty($test) || ($test[0] != 'lead' && $test[0] != 'developer')) {
-                return PEAR::raiseError("You don't have enought priviledges ({$test[0]})");
+                return PEAR::raiseError("You don't have enough privileges ({$test[0]})");
             }
         }
         $sql = "SELECT handle, role FROM maintains WHERE package = ?";
@@ -530,9 +530,9 @@ class maintainer
         $old_users = array_keys($old);
         $new_users = array_keys($users);
         if (!$auth_user->admin && !in_array($auth_user->handle, $new_users)) {
-            return PEAR::raiseError("You can not delete your self as maintainer or won't ".
+            return PEAR::raiseError("You can not delete your own maintainer role or you will not ".
                                     "be able to complete the update process. Set your name ".
-                                    "in package.xml or let the new lead developer to upload ".
+                                    "in package.xml or let the new lead developer upload ".
                                     "the new release");
         }
         foreach ($users as $user => $role) {
@@ -647,7 +647,7 @@ class release
 
         // later: do lots of integrity checks on the tarball
         if (!@rename($tempfile, $file)) {
-            return PEAR::raiseError("rename failed: $php_errormsg");
+            return PEAR::raiseError("renaming failed: $php_errormsg");
         }
 
         // (5) verify MD5 checksum

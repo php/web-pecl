@@ -57,7 +57,7 @@ switch ($HTTP_POST_VARS['command']) {
                          $HTTP_POST_VARS['name'],
                          $HTTP_POST_VARS['email'],
                          $HTTP_POST_VARS['homepage'],
-                         $HTTP_POST_VARS['userinfo'],
+                         addslashes($HTTP_POST_VARS['userinfo']),
                          $HTTP_POST_VARS['wishlist'],
                          isset($HTTP_POST_VARS['showemail']) ? 1 : 0,
                          isset($HTTP_POST_VARS['admin']) ? 1 : 0);

@@ -325,8 +325,8 @@ if (@!$_GET['pid']) {
 		<td width="25%" align="center" bgcolor="#cccccc"><?=$total_categories?></td>
 	</tr>
     <?php
-    if(!empty($_GET['cid']) {
-    echo "<tr>\n<td width="25%">\nTotal Downloads:</td>\n<td width="25%" align="center" bgcolor=\"#cccccc\">$total_downloads</td>\n</td>\n"
+    if(!empty($_GET['cid'])) {
+    echo "<tr>\n<td width=\"25%\">\nTotal Downloads:</td>\n<td width=\"25%\" align=\"center\" bgcolor=\"#cccccc\">$total_downloads</td>\n</td>\n"
    }
    ?>
 </table>

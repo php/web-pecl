@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head><body>
+<small>
+	<i>by Alan Knowles (alan_k@php.net) (&uuml;bersetzt von Alexander Merz alexmerz(at)php.net)</i>
+</small>
+<p>5 neue Releases, 2 neue Packages hinzugef&uuml;gt, 
+dazu eine Diskussion &uuml;ber den Zustand der PEAR-Webseite, 
+das wieder erweckte Forum, und ein neuer MDB Release-Kandidate.
+</p>
+
+<hr>
+
+<h2>Neue Releases</h2>
+
+<h3>Stable</h3>
+<p>
+<ul>
+	<li><b>Var_Dump</b> - Eine optisch aufpolierte Variante der var_dump()-Funktion</li>
+	<li><b>Cache</b> - Ein m&auml;chtiges Cache-System f&uuml;r eine Vielzahl von Daten</li>
+	<li><b>Date</b>- Eine Klasse zum Umgang mit Datumsangaben unabh&auml;ngig vom Unix-Timestamp</li>
+</ul>
+</p>
+
+<h3>Beta</h3>
+<p>
+<ul>
+<li><b>Cache_Lite</b> - Ein schnelles und sicheres Cache f&uuml;r die Ausgaben eines PHP-Skriptes</li>
+</ul>
+</p>
+
+<h3>Development</h3>
+<p>
+<ul>
+  <li><b>MDB</b> - Die Fusion aus PEAR-DB und Metabase</li>
+</ul>
+</p>
+
+<hr>
+
+<h2>PEAR-DEV Meldungen</h2>
+
+<h3>Wo gibt es die Package-&Uuml;bersicht?</h3>
+<p>
+Es gab eine kleine Diskussion &uuml;ber einen fehlenden Link zur <a href="http://pear.php.net/packages.php">Package-&Uuml;bersicht</a>
+auf der Start-Webseite. Grund: Erst mit PHP 4.3.0 wird der aktuelle PEAR-Installer regul&auml;r ausgeliefert. Aber ohne ihn ist die 
+Package-&Uuml;bersicht sinnlos.
+</p>
+<p>
+Nat&uuml;rlich kann der aktuelle PEAR-Installer mit dem Kommando
+<pre>lynx -source http://pear.php.net/go-pear | php</pre>
+bereits installiert werden. Man muss aber noch mit Fehlern rechnen - genauso wie bei der Webseite.
+Um die 'Entwickler'-Version der Webseite zu sehen, ruft man einfach 
+<a href="http://pear.php.net/?devme">http://pear.php.net/?devme</a> auf.
+</p>
+<p>
+Mit dem PHP 4.3-Release soll die 'volle' Webseite auch offiziell sichtbar sein. Bis dahin ist aber noch
+mit &Auml;nderungen und Fehlern in der Webseite und zugeh&ouml;rigen Programmen zu rechnen. So &uuml;berarbeitete
+Tomas Cox z.B. die Erzeugung neuer Packages und das Hochladen des Erst-Releases eines Packages.
+
+</p>
+
+<h3>Neuer &Uuml;bersetzer</h3>
+<p>
+Jesus M. Castagnetto (Co-Autor von "Professional PHP Programming" und Betreuer einiger PEAR-Packages)
+&uuml;bersetzt k&uuml;nftig die "Weekly News" ins Spanische.
+</p>
+
+<h3>MDB Release Candidate 1</h3>
+<p>
+Lukas Smith k&uuml;ndigte eine MDB-Test-Version an. Ziel dieser
+Version ist das Finden m&ouml;glicher Fehler und Ungereimtheiten.
+</p>
+
+<h3>PHP Kategorie wird gef&uuml;llt</h3>
+<p>
+Frederic Poeydomenges Var_Dump-Package wurde der Kategorie "PHP" hinzugef&uuml;gt,
+PHPDoc, PHPUnit und bcompiler von "PEAR" nach "PHP" verschoben. Var_Dump muss noch
+nach den PEAR-Namensregeln umbenannt werden - z.B: PHP_VarDump oder PHP_Var_Dump.
+</p>
+
+<h3>Zend Engine 2 Problem</h3>
+<p>
+Brad Bulger nutzte das Package "System_Command" unter der ZE2. 
+Es enth&auml;lt die Funktion System_Command::mkdir(). Wird die Funktion lokal innerhalb dieser
+Klasse verwendet, so kann unter ZE2 auf '$this-&gt;' verzichtet werden.
+Problem: mkdir() heisst auch eine PHP-Funktion - welche Funktion ist also gemeint?. Die ZE2 ist derzeit nicht
+in der Lage diese Problem aufzul&ouml;sen. Das Problem kann auch noch bei
+anderen Klassen zuk&uuml;nftig auftreten, Vorsicht ist angesagt.
+</p>
+
+<h3>Forum wieder erweckt</h3>
+<p>
+&#1050;&#1074;&#1086;&#1090;&#1080;&#1088;&#1086;&#1085;&#1080;&#1077; Wodzu fragte, ob er die
+Betreuung und Weiterentwicklung des Forums &uuml;bernehmen kann. Er kann.
+</p>
+
+<h3>Docbook leicht gemacht - OpenOffice XSLT</h3>
+<p>
+Sandro Zic bemerkte, es gbe bereits einen OpenOffice-zu-Docbook XSLT-Konverter auf
+<a href="http://www.chez.com/ebellot/ooo2sdbk/">http://www.chez.com/ebellot/ooo2sdbk/</a>
+den man testen sollte. Es wird auf Erlebnisberichte gewartet.
+</p>
+
+<h3>Bugs und Fixes</h3>
+<p>
+Dank an James Flemer, Mike
+Tuupola, Matt Allen, Rob, Pierre-Alain Joye, Arnaud Limbourg,Troels Arvin und
+Wim Vinckier f&uuml;r Bug-Meldungen und Korrekturen.
+</p>
+
+<hr>
+
+<h2>Neue und vorgeschlagene Packages</h2>
+
+<h3>Var_Dump</h3>
+<p>
+Var_Dump ist ein Ersatz f&uuml;r var_dump(). Es gibt den Inhalt einer Variable
+auf verschiedene Weise aus. Im Moment liegt der Fokus auf der HTML-Ausgabe.
+</p>
+
+<h3>PECL::Threads</h3>
+<p>
+Alan Knowles und Shane Caraveo haben einen ersten Prototypen f&uuml;r Thread-Unterst&uuml;tzung
+in PHP. Die "cross-platform"-PHP-Extension erlaubt den Start neuer Threads innerhalb eines
+Skriptes. Der Start eines Threads geschieht &auml;hnlich zum Einbinden einer Datei mit include();
+die &Uuml;bergabe von Variablen ist m&ouml;glich. Das er&ouml;ffnet neue M&ouml;glichkeiten beim Umgang mit 
+TCP-Servern oder GTK-Programmen. Das von anderen Sprachen bekannte thread_create('funktionsname') ist ebenfalls in Arbeit.
+</p>
+
+<hr>
+
+<h2>Development</h2>
+<p>
+CVS-Aktivit&auml;ten fanden letzte Woche bei MDB, HTML_Javascript,
+HTML_Post, DB_DataObject, PECL::Threads, I18N, Console_Getopt, Cache_Lite,
+Auth, DB, Date, HTML_QuickForm, DB_ldap, HTTP_Upload, Math_Numbers and Net_Ping statt.
+</p>
+
+</body></html>

@@ -1,3 +1,8 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
 body, td, th {
     font-family: verdana,arial,helvetica,sans-serif;
     font-size: 90%;
@@ -130,8 +135,11 @@ form {
 }
 
 .error {
-	font-size: 80%;
-	color: red;
+	font-size: 120%;
+    color: #0;
+    background-color: #fee;
+    border: 1px solid #c00;
+    padding: 5px;
 }
 
 .tip {

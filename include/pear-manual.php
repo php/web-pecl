@@ -38,7 +38,7 @@ function setupNavigation($data) {
 
 function makeBorderTOC($this) {
     global $NEXT, $PREV, $UP, $HOME, $TOC, $DOCUMENT_ROOT;
-    global $SIDEBAR_DATA, $LANG;
+    global $SIDEBAR_DATA, $LANG,$CHARSET;
 
     $SIDEBAR_DATA = '<form method="get" action="/manual-lookup.php">' .
     $SIDEBAR_DATA.= '<table border="0" cellpadding="4" cellspacing="0">';
@@ -78,7 +78,7 @@ function makeBorderTOC($this) {
         }
 
         $SIDEBAR_DATA .= '&nbsp;' . 
-            make_link($url, make_image($img, $title) . $title ) . 
+            make_link($url, make_image($img, htmlspecialchars($title,$CHARSET)) . htmlspecialchars($title,$CHARSET) ) . 
             '<br />';
     }
 
@@ -150,8 +150,9 @@ function navigationBar($title,$id,$loc) {
 }
 
 function sendManualHeaders($charset,$lang) {
-        global $LANG;
+        global $LANG,$CHARSET;
         $LANG = $lang;
+        $CHARSET = $charset;
     Header("Cache-Control: public, max-age=600");
     Header("Vary: Cookie");
     Header("Content-type: text/html;charset=$charset");

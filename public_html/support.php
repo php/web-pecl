@@ -199,7 +199,8 @@ Eris Free Net</a>.
 	    
     <li><a href="http://www.pearfr.org/index.php/en/article/db_pager">Pear DB_Pager package Tutorial</a> by Tomas V.V.Cox,
     Arnaud Limbourg.
-    This package handles all the stuff needed for displaying paginated results from a database query.</li>
+    This package handles all the stuff needed for displaying paginated results from an array or a database result.
+    </li>
 
     <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li>
 

@@ -5,11 +5,10 @@ $handle = $HTTP_GET_VARS['handle'];
 if (empty($handle)) {
     PEAR::raiseError("No author information found!");
 }
-// XXXX Temporal hack until Pear DB libs are updated
-$handle = substr($dbh->quoteString($handle), 1, -1);
 
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
-$row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 AND handle = '$handle'");
+$row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 AND handle = ?",
+					array($handle));
 if ($row === null) {
     PEAR::raiseError("No author information found!");
 }

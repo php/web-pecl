@@ -21,12 +21,12 @@
 /**
  * This script creates an RSS file that contains the latest
  * PEAR releases. The default number of releases thar are
- * listed is 5. The number can be specified by the GET parameter
+ * listed is 10. The number can be specified by the GET parameter
  * "limit".
  */
 
 if (!isset($_GET['limit']) || $_GET['limit'] == "") {
-    $limit = 5;
+    $limit = 10;
 } else {
     $limit = (int)$_GET['limit'];
 
@@ -44,6 +44,7 @@ echo "<?xml version=\"1.0\"?>\n";
   <title>PEAR</title>
   <link>http://pear.php.net/</link>
   <description>This is a list containing the latest releases from PEAR.</description>
+  <language>en</language>
   <image>
     <url>http://pear.php.net/gifs/pearsmall.gif</url>
     <title>PEAR</title>
@@ -53,7 +54,8 @@ echo "<?xml version=\"1.0\"?>\n";
   </image>
 
 <?php
-foreach (release::getRecent($limit) as $release) {
+$releases = release::getRecent($limit);
+foreach ($releases as $release) {
     echo "  <item>\n";
     echo "    <title>" . $release['name'] . "</title>\n";
     echo "    <pubDate>" . $release['releasedate'] . "</pubDate>\n";

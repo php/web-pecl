@@ -131,7 +131,7 @@ function endElement($parser, $elementName)
 	    }
 
         case "answer" : {
-            $content .= "<a href=\"#top\"><img src=\"gifs/arrow_top.gif\" border=\"0\" alt=\"\" /> top</a><br /><br /></td></tr>\n";
+            $content .= "<a href=\"#top\">" . make_image("arrow_top.gif") . " top</a><br /><br /></td></tr>\n";
             return;
 	    }
 

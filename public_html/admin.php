@@ -120,35 +120,15 @@ do {
         }
         list($purpose, $moreinfo) = @unserialize($requser->userinfo);
 
-        $bb = new BorderBox("Account request from $requser->name &lt;$requser->email&gt;");
-?>      <table cellpadding="2" cellspacing="0" border="0">
-       <tr>
-        <td>Requested User Name:</td>
-        <td><?= $requser->handle ?></td>
-       </tr>
-       <tr>
-        <td>Real Name:</td>
-        <td><?= $requser->name ?></td>
-       </tr>
-       <tr>
-        <td>Email Address:</td>
-        <td><a href="mailto:<?= $requser->email ?>"><?= $requser->email ?></td>
-       </tr>
-       <tr>
-        <td>MD5-encrypted password:</td>
-        <td><?= $requser->password ?></td>
-       </tr>
-       <tr>
-        <td>Purpose of account:</td>
-        <td valign="top"><?= $purpose ?></td>
-       </tr>
-       <tr>
-        <td>More information:</td>
-        <td><?= $moreinfo ?></td>
-       </tr>
-      </table>
-<?php
-    $bb->end();
+        $bb = new BorderBox("Account request from $requser->name &lt;$requser->email&gt;", "100%", "", 2, true);
+        $bb->horizHeadRow("Requested username:", $requser->handle);
+        $bb->horizHeadRow("Realname:", $requser->name);
+        $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . $requser->email . "\">" . $requser->email . "</a>");
+        $bb->horizHeadRow("MD5-encrypted password:", $requser->password);
+        $bb->horizHeadRow("Purpose of account:", $purpose);
+        $bb->horizHeadRow("More information:", $moreinfo);
+        $bb->end();
+
     print "<br />\n";
     $bb = new BorderBox("Notes for user $requser->handle");
     $notes = $dbh->getAssoc("SELECT id,nby,ntime,note FROM notes ".
@@ -240,27 +220,27 @@ do {
             print "No account requests.";
         }
         $bb->end();
+
+        echo "<br/><br/>";
+
+        $bb = new BorderBox("System information", "50%");
+
+        echo "<ul>\n";
+        echo "<li>Uptime: " . uptime() . "</li>\n";
+        echo "<li>Disk space: " . round((disk_total_space("/")/(1000*1000*1000)),2) . " GB (available: " . round((diskfreespace("/")/(1000*1000*1000)),2) . " GB)</li>\n";
+        echo "<li>" . make_link($_SERVER['PHP_SELF'] . "?phpinfo=1", "Output of phpinfo()") . "</li>\n";
+        echo "<li>Server name: " . $_SERVER['SERVER_NAME'] . "</li>\n";
+        echo "<li>System date: " . date("Y-m-d H:i:s") . "</li>\n";
+        echo "</ul>\n";
+        $bb->end();
+
+        echo "<br /><br />\n";
     }
 
     // }}}
 
 } while (false);
 
-echo "<br/><br/>";
-
-$bb = new BorderBox("System information", "50%");
-
-echo "<ul>\n";
-
-echo "<li>Uptime: " . uptime() . "</li>\n";
-echo "<li>Disk space: " . round((disk_total_space("/")/(1000*1000*1000)),2) . " GB (available: " . round((diskfreespace("/")/(1000*1000*1000)),2) . " GB)</li>\n";
-echo "<li>" . make_link($_SERVER['PHP_SELF'] . "?phpinfo=1", "Output of phpinfo()") . "</li>\n";
-echo "<li>Server name: " . $_SERVER['SERVER_NAME'] . "</li>\n";
-echo "<li>System date: " . date("Y-m-d H:i:s") . "</li>\n";
-
-$bb->end();
-
-echo "<br /><br />\n";
 
 response_footer();
 ?>

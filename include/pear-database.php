@@ -331,7 +331,7 @@ class package
     {
         global $dbh;
 
-        if (is_int($pkg)) {
+        if (is_numeric($pkg)) {
             $what = "id";
         } else {
             $what = "name";

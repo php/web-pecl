@@ -4,21 +4,21 @@
 
 function validate($entity, $field, $value /* , $oldvalue, $object */) {
     switch ("$entity/$field") {
-	case "users/handle":
-	    if (!preg_match('/^[a-z][a-z0-9]+$/i', $value)) {
-		return false;
-	    }
-	    break;
-	case "users/name":
-	    if (!$value) {
-		return false;
-	    }
-	    break;
-	case "users/email":
-	    if (!preg_match('/[a-z0-9_\.\+%]@[a-z0-9\.]+\.[a-z]+$', $email)) {
-		return false;
-	    }
-	    break;
+        case "users/handle":
+            if (!preg_match('/^[a-z][a-z0-9]+$/i', $value)) {
+                return false;
+            }
+            break;
+        case "users/name":
+            if (!$value) {
+                return false;
+            }
+            break;
+        case "users/email":
+            if (!preg_match('/[a-z0-9_\.\+%]@[a-z0-9\.]+\.[a-z]+$', $email)) {
+                return false;
+            }
+            break;
     }
     return true;
 }
@@ -106,7 +106,7 @@ function renumber_visitations($debug = false)
             print "updating $node\n";
         }
         $query = "UPDATE packages SET leftvisit = $l, rightvisit = $r ".
-            "WHERE name = '$node'";
+                 "WHERE name = '$node'";
         $dbh->query($query);
     }
     return DB_OK;
@@ -119,28 +119,28 @@ function add_package($data)
 {
     global $dbh;
     $defaults = array(
-	"virtual" => false,
-	"parent" => null,
-	"license" => "PHP License"
+        "virtual" => false,
+        "parent" => null,
+        "license" => "PHP License"
     );
     foreach ($defaults as $property => $default_value) {
-	if (!isset($data[$property])) {
-	    $data[$property] = $default_value;
-	}
+        if (!isset($data[$property])) {
+            $data[$property] = $default_value;
+        }
     }
     extract($data);
 
     $query = "INSERT INTO packages (id,name,virtual,parent,license,summary,".
-	 "description) VALUES(?,?,?,?,?,?,?)";
+             "description) VALUES(?,?,?,?,?,?,?)";
     $id = $dbh->nextId("packages");
     $sth = $dbh->prepare($query);
     if (DB::isError($sth)) {
-	return $sth;
+        return $sth;
     }
     $err = $dbh->execute($sth, array($id, $name, $virtual, $parent, $license,
                                      $summary, $desc));
     if (DB::isError($err)) {
-	return $err;
+        return $err;
     }
     return renumber_visitations();
 }
@@ -221,7 +221,7 @@ function release_upload($package, $version, $relnotes, &$tarball, $md5sum)
                               gmdate('Y-m-d H:i'), $relnotes, $md5sum,
                               $file));
     if (isset($_return_value)) return $_return_value;
-    
+
 }
 
 // }}}
@@ -234,7 +234,7 @@ function add_note($key, $value, $note)
     $nby = $PHP_AUTH_USER;
     $nid = $dbh->nextId("notes");
     $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
-			  "VALUES(?,?,?,?,?)");
+                          "VALUES(?,?,?,?,?)");
     return $dbh->execute($stmt, array($nid, $value, $nby,
                                       gmdate('Y-m-d H:i'), $note));
 }
@@ -255,8 +255,7 @@ function delete_note($id)
 function delete_all_notes($key, $value)
 {
     global $dbh;
-    return $dbh->query("DELETE FROM notes WHERE $key = ".
-	               $dbh->quote($value));
+    return $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
 }
 
 // }}}
@@ -267,8 +266,7 @@ function delete_account($uid)
 {
     global $dbh;
     delete_all_notes("uid", $uid);
-    $dbh->query('DELETE FROM users WHERE handle = '.
-		$dbh->quote($uid));
+    $dbh->query('DELETE FROM users WHERE handle = '. $dbh->quote($uid));
     return ($dbh->affectedRows() > 0);
 }
 
@@ -279,10 +277,10 @@ function reject_account_request($uid, $reason)
 {
     global $PHP_AUTH_USER, $dbh;
     list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
-				array($uid));
+                                array($uid));
     add_note("uid", $uid, "Account rejected: $reason");
     $msg = "Your PEAR account request was rejected by $PHP_AUTH_USER:\n".
-	 "$reason\n";
+           "$reason\n";
     $xhdr = "From: $PHP_AUTH_USER@php.net";
     mail($email, "Your PEAR Account Request", $msg, $xhdr);
     return true;
@@ -297,21 +295,21 @@ function open_account($uid)
 
     $user =& new PEAR_User($dbh, $uid);
     if (@$user->registered) {
-	return false;
+        return false;
     }
     @$arr = unserialize($user->userinfo);
     delete_all_notes("uid", $uid);
     $user->set('registered', 1);
     if (is_array($arr)) {
-	$user->set('userinfo', $arr[1]);
+        $user->set('userinfo', $arr[1]);
     }
     $user->set('created', gmdate('Y-m-d H:i'));
     $user->set('createdby', $PHP_AUTH_USER);
     $user->store();
     add_note("uid", $uid, "Account opened");
     $msg = "Your PEAR account request has been opened.\n".
-	 "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
-	 "the top-right menu.\n";
+           "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
+           "the top-right menu.\n";
     $xhdr = "From: $PHP_AUTH_USER@php.net";
     mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
     return true;
@@ -326,13 +324,13 @@ function mail_pear_admins($subject, $msg, $xhdr = '')
     global $dbh;
     $admins = $dbh->getCol("SELECT email FROM users WHERE admin = 1");
     if (is_array($admins)) {
-	$oks = 0;
-	foreach ($admins as $email) {
-	    $oks += mail($email, "PEAR Account Request", $msg, $xhdr);
-	}
-	if ($oks == sizeof($admins)) {
-	    return true;
-	}
+        $oks = 0;
+        foreach ($admins as $email) {
+            $oks += mail($email, "PEAR Account Request", $msg, $xhdr);
+        }
+        if ($oks == sizeof($admins)) {
+            return true;
+        }
     }
     return false;
 }
@@ -345,16 +343,16 @@ class PEAR_User extends DB_storage
 {
     function PEAR_User(&$dbh, $user)
     {
-	$this->DB_storage("users", "handle", $dbh);
-	// XXX horrible hack until we get temporary error handlers
-	$oldmode = $this->_default_error_mode;
-	$this->_default_error_mode = PEAR_ERROR_RETURN;
+        $this->DB_storage("users", "handle", $dbh);
+        // XXX horrible hack until we get temporary error handlers
+        $oldmode = $this->_default_error_mode;
+        $this->_default_error_mode = PEAR_ERROR_RETURN;
         $this->setup($user);
-	if (empty($oldmode)) {
-	    unset($this->_default_error_mode);
-	} else {
-	    $this->_default_error_mode = $oldmode;
-	}
+        if (empty($oldmode)) {
+            unset($this->_default_error_mode);
+        } else {
+            $this->_default_error_mode = $oldmode;
+        }
     }
 }
 
@@ -366,15 +364,15 @@ class PEAR_Package extends DB_storage
     function PEAR_Package(&$dbh, $package, $keycol = "id")
     {
         $this->DB_storage("packages", $keycol, $dbh);
-	// XXX horrible hack until we get temporary error handlers
-	$oldmode = $this->_default_error_mode;
-	$this->_default_error_mode = PEAR_ERROR_RETURN;
+        // XXX horrible hack until we get temporary error handlers
+        $oldmode = $this->_default_error_mode;
+        $this->_default_error_mode = PEAR_ERROR_RETURN;
         $this->setup($package);
-	if (empty($oldmode)) {
-	    unset($this->_default_error_mode);
-	} else {
-	    $this->_default_error_mode = $oldmode;
-	}
+        if (empty($oldmode)) {
+            unset($this->_default_error_mode);
+        } else {
+            $this->_default_error_mode = $oldmode;
+        }
     }
 }
 
@@ -386,15 +384,15 @@ class PEAR_Release extends DB_storage
     function PEAR_Release(&$dbh, $release)
     {
         $this->DB_storage("releases", "id", $dbh);
-	// XXX horrible hack until we get temporary error handlers
-	$oldmode = $this->_default_error_mode;
-	$this->_default_error_mode = PEAR_ERROR_RETURN;
+        // XXX horrible hack until we get temporary error handlers
+        $oldmode = $this->_default_error_mode;
+        $this->_default_error_mode = PEAR_ERROR_RETURN;
         $this->setup($release);
-	if (empty($oldmode)) {
-	    unset($this->_default_error_mode);
-	} else {
-	    $this->_default_error_mode = $oldmode;
-	}
+        if (empty($oldmode)) {
+            unset($this->_default_error_mode);
+        } else {
+            $this->_default_error_mode = $oldmode;
+        }
     }
 }
 

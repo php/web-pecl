@@ -271,7 +271,6 @@ foreach ($icons as $file=>$desc) {
 
 echo '</table>';
 
-<?php
 }
 response_footer();
 ?>

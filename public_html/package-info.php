@@ -188,16 +188,16 @@ $stats_link = make_link("/package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=
     <td align="center">[ <?php print $changelog_link; ?> ]</td>
     <td align="center">[ <?php print $stats_link; ?> ]</td>
 </tr>
+<tr>
+<td align="center">
 <?php
 if ($cvs_link) {
-    print '
-    <tr>
-        <td align="center">[ ' . make_link($cvs_link, 'CVS Web', 'top') . ' ]</td>
-        <td align="center">[ ' . make_link('/bugs/search.php?cmd=display&status=Open&bug_type[]='.$pkg['name'], 'Package Bugs') . ' ]</td>
-    </tr>
-    ';
+    print '[ ' . make_link($cvs_link, 'CVS Web', 'top') . ' ]';
 }
+print '&nbsp;</td>';
+print '<td align="center">[ ' . make_link('/bugs/search.php?cmd=display&status=Open&bug_type[]='.$pkg['name'], 'Package Bugs') . ' ]</td>';
 ?>
+</tr>
 </table>
 
 <br />
@@ -259,8 +259,8 @@ $rels =& $pkg['releases'];
 // Check if there are too much things to show
 $too_much = false;
 if (count ($rels) > 3) {
-	$too_much = true;
-	$rels = array_slice($rels, 0, 3);
+    $too_much = true;
+    $rels = array_slice($rels, 0, 3);
 }
 
 if ($sth->numRows() == 0) {

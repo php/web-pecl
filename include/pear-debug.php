@@ -1,5 +1,24 @@
 <?php
 /*
+   +----------------------------------------------------------------------+
+   | PEAR Web site version 1.0                                            |
+   +----------------------------------------------------------------------+
+   | Copyright (c) 2001 The PHP Group                                     |
+   +----------------------------------------------------------------------+
+   | This source file is subject to version 2.02 of the PHP license,      |
+   | that is bundled with this package in the file LICENSE, and is        |
+   | available at through the world-wide-web at                           |
+   | http://www.php.net/license/2_02.txt.                                 |
+   | If you did not receive a copy of the PHP license and are unable to   |
+   | obtain it through the world-wide-web, please send a note to          |
+   | license@php.net so we can mail you a copy immediately.               |
+   +----------------------------------------------------------------------+
+   | Authors:                                                             |
+   +----------------------------------------------------------------------+
+   $Id$
+*/
+
+/*
     The PEAR Team debug functions
     (this is too personal for having only one for all ;-)
 */
@@ -11,21 +30,40 @@
 	}
 
     /* Richard */
-	// Print Dump & Die
-	function pdd($var){
-		echo '<pre>';
-		print_r($var);
-		echo '</pre>';
-		exit;
+	function pd($var)
+	{
+		dd($var, 'print_r');
 	}
 
-    /* Richard */
-	// Var Dump & Die
-	function vdd($var){
+	function vd($var)
+	{
+		dd($var, 'var_dump');
+	}
+	
+	function pdd($var)
+	{
+		dd($var, 'print_r', true);
+	}
+	
+	function vdd($var)
+	{
+		dd($var, 'var_dump', true);
+	}
+	
+	function dd($var, $function, $exit = false)
+	{
+		ob_start();
+		$function($var);
+		$output = ob_get_contents();
+		ob_end_clean();
+
 		echo '<pre>';
-		var_dump($var);
+		echo htmlspecialchars($output);
 		echo '</pre>';
-		exit;
+
+		if ($exit) {
+			exit;
+		}
 	}
 
     /* Tomas */

@@ -285,6 +285,24 @@ class category
     }
 
     // }}}
+    // {{{ *proto bool   category::isValid(string)
+
+    /**
+     * Determines if the given category is valid
+     *
+     * @access public
+     * @param  string Name of the category
+     * @return  boolean
+     */
+    function isValid($category)
+    {
+        global $dbh;
+        $query = "SELECT id FROM categories WHERE name = ?";
+        $sth = $dbh->query($query, array($category));
+        return ($sth->numRows() > 0);
+    }
+
+    // }}}
 }
 
 /**
@@ -740,6 +758,24 @@ class package
             $recent[] = $row;
         }
         return $recent;
+    }
+
+    // }}}
+    // {{{ *proto bool   package::isValid(string)
+
+    /**
+     * Determines if the given package is valid
+     *
+     * @access public
+     * @param  string Name of the package
+     * @return  boolean
+     */
+    function isValid($package)
+    {
+        global $dbh;
+        $query = "SELECT id FROM packages WHERE name = ?";
+        $sth = $dbh->query($query, array($package));
+        return ($sth->numRows() > 0);
     }
 
     // }}}

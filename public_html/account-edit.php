@@ -94,7 +94,7 @@ switch ($HTTP_POST_VARS['command']) {
         }
 
 
-        print "<form action=\"" . $HTTP_SERVER_VARS['PHP_SELF'] . "\" method=\"post\">\n";
+        print "<form action=\"" . $HTTP_SERVER_VARS['PHP_SELF'] . "?handle=" . $_GET['handle'] . "\" method=\"post\">\n";
         print "<input type=\"hidden\" name=\"command\" value=\"update\" />\n";
         print "<input type=\"hidden\" name=\"handle\" value=\"$handle\" />\n";
 

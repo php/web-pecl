@@ -100,8 +100,9 @@ test:
 
 package_acl.res: packages.res users.res
 maintains.res: packages.res users.res
-packages.res: users.res
+packages.res: users.res categories.res
 releases.res: packages.res
 deps.res: packages.res
 users.res:
 notes.res: packages.res users.res
+categories.res:

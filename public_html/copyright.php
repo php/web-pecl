@@ -38,7 +38,8 @@ elements of the Site are protected by trade dress and other laws
 and may not be copied or imitated in whole or in part.
 </UL>
 
-
+<P>
+You can contact the webmaster at <?php print_link('mailto:pear-webmaster@php.net', 'pear-webmaster@php.net'); ?>.
 <P>
 For more information on the PHP Group and the PHP project, please see 
 <?php print_link('http://www.php.net/'); ?>.

@@ -1,4 +1,22 @@
 <?php
+/*
+   +----------------------------------------------------------------------+
+   | PEAR Web site version 1.0                                            |
+   +----------------------------------------------------------------------+
+   | Copyright (c) 2001 The PHP Group                                     |
+   +----------------------------------------------------------------------+
+   | This source file is subject to version 2.02 of the PHP license,      |
+   | that is bundled with this package in the file LICENSE, and is        |
+   | available at through the world-wide-web at                           |
+   | http://www.php.net/license/2_02.txt.                                 |
+   | If you did not receive a copy of the PHP license and are unable to   |
+   | obtain it through the world-wide-web, please send a note to          |
+   | license@php.net so we can mail you a copy immediately.               |
+   +----------------------------------------------------------------------+
+   | Authors: Stig Sæther Bakken <ssb@fast.no>                            |
+   |          Tomas V.V.Cox <cox@php.net>                                 |
+   +----------------------------------------------------------------------+
+ */
 
 require_once "DB/storage.php";
 
@@ -98,7 +116,7 @@ function renumber_visitations($id, $parent)
 
 class category
 {
-    // {{{ proto int category::add(struct)
+    // {{{ *proto int category::add(struct)
 
     /*
     $data = array(
@@ -136,7 +154,7 @@ class category
     }
 
     // }}}
-    // {{{ proto array category::listAll()
+    // {{{ -proto array category::listAll()
 
 	function listAll()
     {
@@ -150,7 +168,7 @@ class category
 
 class package
 {
-    // {{{ proto int package::add(struct)
+    // {{{ *proto int package::add(struct)
 
     // add a package, return new package id or PEAR error
     function add($data)
@@ -194,7 +212,7 @@ class package
     }
 
     // }}}
-    // {{{ proto struct package::info(string|int)
+    // {{{ *proto struct package::info(string|int)
 
     function info($pkg)
     {
@@ -225,7 +243,7 @@ class package
     }
 
     // }}}
-    // {{{ proto struct package::listAll()
+    // {{{ -proto struct package::listAll()
 
     function listAll()
     {
@@ -249,7 +267,7 @@ class package
 
 class maintainer
 {
-    // {{{ proto int maintainer::add(int, string, string)
+    // {{{ +proto int maintainer::add(int, string, string)
 
     function add($package, $user, $role)
     {
@@ -271,7 +289,7 @@ class maintainer
 
 class release
 {
-    // {{{ proto array release::getRecent([int])
+    // {{{ -proto array release::getRecent([int])
 
     function getRecent($n = 5)
     {
@@ -295,7 +313,7 @@ class release
     }
 
     // }}}
-    // {{{ proto bool release::upload(string, string, string, string, binary, string)
+    // {{{ +proto bool release::upload(string, string, string, string, binary, string)
 
     function upload($package, $version, $state, $relnotes, &$tarball, $md5sum)
     {
@@ -359,7 +377,7 @@ class release
 
 class note
 {
-    // {{{ proto bool note::add(string, int, string)
+    // {{{ +proto bool note::add(string, int, string)
 
     function add($key, $value, $note)
     {
@@ -377,7 +395,7 @@ class note
     }
 
     // }}}
-    // {{{ proto bool note::delete(int)
+    // {{{ +proto bool note::delete(int)
 
     function delete($id)
     {
@@ -391,7 +409,7 @@ class note
     }
 
     // }}}
-    // {{{ proto bool note::deleteAll(string, int)
+    // {{{ +proto bool note::deleteAll(string, int)
 
     function deleteAll($key, $value)
     {
@@ -408,7 +426,7 @@ class note
 
 class user
 {
-    // {{{ proto bool user::delete(string)
+    // {{{ *proto bool user::delete(string)
 
     function delete($uid)
     {
@@ -419,7 +437,7 @@ class user
     }
 
     // }}}
-    // {{{ proto bool user::rejectRequest(string, string)
+    // {{{ *proto bool user::rejectRequest(string, string)
 
     function rejectRequest($uid, $reason)
     {
@@ -435,7 +453,7 @@ class user
     }
 
     // }}}
-    // {{{ proto bool user::activate(string)
+    // {{{ *proto bool user::activate(string)
 
     function activate($uid)
     {
@@ -466,7 +484,7 @@ class user
     // }}}
 }
 
-// {{{ proto array testerror()
+// {{{ +proto array testerror()
 
 function testerror()
 {

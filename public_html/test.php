@@ -3,8 +3,11 @@
 require_once "signatures.php";
 
 parse_signatures_from_file("../include/pear-database.php", &$signatures,
-						   "signatures");
+						   "index");
 
+pre_dump($signatures);
+
+exit;
 print "<pre>";
 $ret = "<introspection version='1.0'>\n";
 $ret .= " <methodList>\n";

@@ -1,4 +1,24 @@
 <?php
+/*
+   +----------------------------------------------------------------------+
+   | PEAR Web site version 1.0                                            |
+   +----------------------------------------------------------------------+
+   | Copyright (c) 2001 The PHP Group                                     |
+   +----------------------------------------------------------------------+
+   | This source file is subject to version 2.02 of the PHP license,      |
+   | that is bundled with this package in the file LICENSE, and is        |
+   | available at through the world-wide-web at                           |
+   | http://www.php.net/license/2_02.txt.                                 |
+   | If you did not receive a copy of the PHP license and are unable to   |
+   | obtain it through the world-wide-web, please send a note to          |
+   | license@php.net so we can mail you a copy immediately.               |
+   +----------------------------------------------------------------------+
+   | Authors: Stig Sæther Bakken <ssb@fast.no>                            |
+   |                                                                      |
+   +----------------------------------------------------------------------+
+ */
+
+// {{{ parse_signatures_from_file()
 
 function parse_signatures_from_file($file, &$signatures, $out_format = "signatures")
 {
@@ -13,13 +33,14 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 	// format: array( array(returntype, methodname, paramlist), ... )
 	settype($signatures, "array");
 	$matches = array();
-	if (preg_match_all('/proto\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)\s*?\n(\s*?\/\/\s+?(.*?)\s*?\n)?/s',
+	if (preg_match_all('/([ \*\+])?proto\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)\s*?\n(\s*?\/\/\s+?(.*?)\s*?\n)?/s',
 					   $contents, $matches)) {
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
-			$return_type =  $matches[1][$i];
-			$method_name =  $matches[2][$i];
-			$parameters  =  $matches[3][$i];
-			//$purpose     = @$matches[5][$i]; // XXX unfinished
+			$auth_type   =  $matches[1][$i];
+			$return_type =  $matches[2][$i];
+			$method_name =  $matches[3][$i];
+			$parameters  =  $matches[4][$i];
+			//$purpose     = @$matches[6][$i]; // XXX unfinished
 			$return_type_permutations = explode("|", $return_type);
 			$xmlrpc_method = str_replace("::", ".", $method_name);
 			$param_list = preg_split('/\s*,\s*/', $parameters);
@@ -77,7 +98,14 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 				}
 			} elseif ($out_format == "index") {
 				foreach ($paramlist_permutations as $paramlist => $dummy) {
-					$signatures[$xmlrpc_method][$paramlist] = $method_name;
+					$signatures["index"][$xmlrpc_method][$paramlist] = $method_name;
+					if ($auth_type == "*") {
+						$signatures["auth"][$xmlrpc_method] = "admin";
+					} elseif ($auth_type == "+") {
+						$signatures["auth"][$xmlrpc_method] = "user";
+					} else {
+						$signatures["auth"][$xmlrpc_method] = "all";
+					}
 				}
 			} else {
 				foreach ($return_type_permutations as $ret_type) {
@@ -93,6 +121,9 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 	return true;
 }
 
+// }}}
+// {{{ _signature_worker()
+
 function _signature_worker(&$storage, $params, &$varyat, &$param_variations, $j = 0)
 {
 	$n = $varyat[$j];
@@ -105,5 +136,7 @@ function _signature_worker(&$storage, $params, &$varyat, &$param_variations, $j 
 		}
 	}
 }
+
+// }}}
 
 ?>

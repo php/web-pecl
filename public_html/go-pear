@@ -384,12 +384,12 @@ Press Enter to continue: ";
         $fp = @fopen($pear_cmd, "r");
         $wp = @fopen($tmpfile, "w");
         if ($fp && $wp) {
-            $hashbang = rtrim(fgets($fp, 1024));
-            if (substr($hashbang, 0, 9) != "#!/bin/sh" &&
-                !strstr($hashbang, "include_path=")) {
-                $hashbang .= "d include_path=$php_dir";
+            $hashbang = fgets($fp, 1024);
+            fwrite($wp, $hashbang);
+            if (substr($hashbang, 0, 9) == "#!/bin/sh") {
+                fwrite($wp, "PHP_PEAR_INSTALL_DIR=$php_dir;".
+                       "export PHP_PEAR_INSTALL_DIR\n");
             }
-            fwrite($wp, "$hashbang\n");
             while ($data = fread($fp, 2048)) {
                 fwrite($wp, $data);
             }

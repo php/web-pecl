@@ -180,8 +180,6 @@ Eris Free Net</a>.
 <h4>Tutorials about the PEAR DB class:</h4>
 
 <ul>
-    <li><a href="http://vulcanonet.com/soft/?pack=pear_tut">PEAR DB Tutorial</a> by Tomas V.V.Cox</li><br /><br />
-
     <li><a href="http://vulcanonet.com/soft/?pack=pager">Pear DB Pager Class Tutorial</a> by Tomas V.V.Cox.
     This class handles all the stuff needed for displaying paginated results from a database query.</li><br /><br />
 

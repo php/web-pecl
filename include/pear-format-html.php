@@ -106,7 +106,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="#330099">
     <td align="left" rowspan="2" width="120" colspan="2" height="1">
-<?php print_link('/', make_image('peclsmall.gif', 'PEAR', false, 'vspace="5" hspace="5"') ); ?><br />
+<?php print_link('/', make_image('peclsmall.gif', 'PECL', false, 'vspace="5" hspace="5"') ); ?><br />
     </td>
     <td align="right" valign="top" colspan="3" height="1">
       <font color="#ffffff"><b>

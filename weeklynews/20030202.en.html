@@ -8,27 +8,42 @@
 <p>
  <i>
   <small>
-   by Mika Tuupola (tuupola@appelsiini.net), Pierre-Alain Joye (paj@pearfr.org)
+   by 
+   <a href="http://www.appelsiini.net/~tuupola/">Mika Tuupola</a> (tuupola@appelsiini.net), 
+   <a href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a> (paj@pearfr.org)
   </small>
  </i>
 </p>
 <p>
 
+<p>
+ It has been a moderately quiet week in the mailinglists. Consequently
+ there has been more CVS traffic and more releases than usual. As a 
+ time of writing total number of new PEAR releases this week is 14.
+</p>
+<p>
+ This weeks news include details on <a href="#2">error handling</a> in
+ constructors, new <a href="#3">phpDocumentor features</a>, 
+ another <a href="#1">Mac OS X tutorial</a> and
+ <a href="#4">seven new proposed packages</a>.
+</p>
+
 <hr>
 <h2>In the press</h2>
 <!-- SECTION --><a name="1">
-<h3></h3>
+<h3>PEAR on Mac OS X revisited</h3>
 <p>
+ The Mac OS X tutorial mentioned in a previous issue is now
+ also published in
+ <a href="http://www.macdevcenter.com/pub/a/mac/2003/01/21/pear_macosx.html">MacDevCenter</a>. 
+ Since this site is part of 
+ <a href="http://www.oreillynet.com/">O'Reilly Network</a> PEAR will get
+ nice coverage from this article.
 </p>
 
-<!-- SECTION --><a name="2">
-<h3></h3>
+<hr>
 <p>
-</p>
-
-<p>
-We are pleased to see that there are more and more articles
-about the PEAR project. If you come accross such an article feel free to
+If you come accross PEAR related article article feel free to
 send (<a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>) us the references and they will be added weekly news.
 </p>
 
@@ -36,38 +51,86 @@ send (<a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>) us the
 
 <h2>PEAR-DEV traffic</h2>
 
+<!-- SECTION --><a name="2">
+<h3>Error handling in constructors?</h3>
+<p>
+ There was a short discussion on what is the recommended way of handling
+ errors in constructors. The answer is really simple: Even though 
+ it is possible to set $this to be an instance of PEAR_Error it is 
+ discouraged to use this undocumented feature. This behaviour will
+ be changed in PHP5. A better aproach is to avoid all failing logic in
+ constructor and use a separate method for calls which need to be 
+ able to return an error. A good example of such method would be
+ any factory method. 
+</p>
 <!-- SECTION --><a name="3">
-<h3></h3>
+<h3>New phpDocumentor features</h3>
 <p>
+ <a href="http://phpdocu.sourceforge.net/">phpDocumentor</a> 
+ development team has implemented support for new 
+ tags in their documentation tool. These include such tags as @source,
+ @internal, @filesource, @example and @internal. For more info please
+ see the <a href="http://phpdocu.sourceforge.net/Release-1.2.0beta2">release
+ notes</a>.
 </p>
-<!-- SECTION --><a name="4">
-<h3></h3>
-<p>
-</p>
+
 
 <h3>Bugs and Fixes</h3>
 <p>
   Thanks to these people for spotting and fixing some bugs:
+  Ondrej Jombik, Andres Käver, Patrick O'Lone, Bruno Pedro and
+  Samuli Tuomola
 </p>
 <hr>
 
 <h2>New and Proposed Packages</h2>
-<!-- SECTION --><a name="5">
-<h3></h3>
+<!-- SECTION --><a name="4">
+<h3>MDB_QueryTool</h3>
 <p>
+ Lorenzo Alberton ported Wolfram Kriesing's DB_QueryTool to work with
+ MDB.
+</p>
+<!-- SECTION --><a name="5">
+<h3>Net_UserAgent_Mobile</h3>
+<p>
+ Kubo Atsuhiro proposed his Net_UserAgent_Mobile which can be used to
+ get keitai (mobile phone) display characteristics. Supported systems
+ are NTT DoCoMo's i-mode, KDDI's EZweb and J-PHONE's J-Sky.
 </p>
 <!-- SECTION --><a name="6">
-<h3></h3>
+<h3>Auth_Container_POP3</h3>
 <p>
+ Yavor Shahpasov proposed a new container for Auth. This new container
+ enables authentication against POP3 servers.
 </p>
+
 <!-- SECTION --><a name="7">
-<h3></h3>
+<h3>Auth_RADIUS, Auth_Container_Radius, Crypt_CHAP</h3>
 <p>
+ Michael Bretterklieber, the maintainer of PECL::radius, proposed
+ several authentication related packages. Auth_RADIUS is a wrapper class
+ for PECL::radius. Crypt_CHAP is used for generating CHAP-packets for
+ the different versions of CHAP. Auth_Container_Radius is a new
+ container for Auth package.
+</p>
+<!-- SECTION --><a name="8">
+<h3>SearchEngine_Mnogosearch</h3>
+<p>
+ Bertrand Mansion proposed his SearchEngine_Mnogosearch package, which
+ is a PHP frontend for the popular 
+ <a href="http://www.mnogosearch.org/">mnoGoSearch</a> searchengine.
 </p>
 
 <h2>Development</h2>
 <p>
   Active on CVS this week have been:
+  HTML_Template_Flexy, Cache_Lite, PECL::Radius, PEAR, DBA, 
+  DBA_Relational, HTTP_Header, MDB, Net_SMTP, Mail, Log, File,
+  I18N, SpreadSheet_Excel_Writer, MDB_QueryTool, Payment_Clieop,
+  PECL::bcompiler, Tree, DB_QueryTool, HTML_Template_Xipe, 
+  DB_DataObject, HTML_QuickForm, PECL::imagick, Auth,
+  SearchEngine_Mnogosearch, Net_URL, HTTP_Request and PECL::apd.
+   
 </p>
 
 </body>

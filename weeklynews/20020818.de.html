@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+ 
+<p><i><small>by Alan Knowles(alan_k@php.net) (&uuml;bersetzt von Alexander Merz alexmerz(at)php.net)</small></i></p>
+  
+<p>
+Neu und kurz: 4 neue Releases, ein Package-Vorschlag; Diskussionen &uuml;ber
+PHPDoc-Tags, OpenOffice-zu-Docbook-Konverter, Zugriffrechts-Verwaltung; und ein Upgrade
+des Net_Whois-Packages.
+</p>
+  
+<hr>  
+<h2>Neue Releases</h2>
+  
+<h3>Stable</h3>
+<ul>
+
+</ul>
+ 
+<h3>Beta</h3>
+   
+<ul>
+ <li> 
+ 	<b>DB_DataObject </b>- Ein SQL- und Daten-Modelierungs-Schicht.
+  </li>
+  <li>
+  	<b>Tree </b>- Ein Package f&uuml;r den Zugriff und Bearbeitung
+	von Baumstrukturen aus Datenbanken oder XML
+  </li> 
+</ul>
+ 
+<h3>Alpha</h3>
+  
+<ul>
+   <li>
+   	<b>Net_DNS </b>- Eine API f&uuml;r DNS-Abfragen, Zonen-Vermittlungen
+	und dynamischer DNS-Aktualisierungen
+   </li> 
+</ul>
+  
+<h3>Development</h3>
+  
+<ul>
+ <li>
+ 	<b>MDB </b>- "Release Candidate 1" von PEAR MDB, der "Metabase
+Merger Database Abastraction Layer".
+ </li> 
+</ul>
+ 
+<hr>  
+<h2>PEAR-DEV Meldungen</h2>
+  
+<h3>PHPDoc-Tag-Standards</h3>
+  
+<p>Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior fragte nach einem Standard f&uuml;r
+PHPDoc-Tags. Korrekte Tags erlauben eine einfache Generierung der Dokumentation. 
+Ihn irretierte die unterschiedliche Verwendung von Tags im PEAR-Quellcode.
+Ant&ocirc;nio will eine Syntax-Liste der Tags schreiben. Eine deutsche Syntax-&Uuml;bersicht liegt
+auf <a href="http://www.phpdoc.de/kongress/tags.html">http://www.phpdoc.de/kongress/tags.html</a>.
+</p>
+  
+<h3>ISO-8601 in Date</h3>
+  
+<p>
+Baba Buehler f&uuml;gte Date::format() Elemente von ISO-8601 hinzu. 
+Die Zusammenarbeit mit PEAR::SOAP wird damit vereinfacht.
+</p>
+<p>
+Syntaxbeispiel:
+<pre>
+%o - liefert die unbearbeited Differenz zur Zeitzone in der Form: &plusmn;hh:mm
+%O - liefert die DST-bezogene Differenz in der Form &plusmn;hh:mm<br>
+z.B.:
+Date::format("%Y-%m-%dT%H:%M:%S%O");
+</pre>
+</p>    
+
+<h3>OpenOffice zu Docbook und weiter Fortschritte zur Dokumentationserstellung</h3>
+  
+<p>
+Pierre-Alain Joye arbeitet gesch&auml;ftig am OpenOffice-zu-Docbook-Konverter.
+Dank an <a href="http://www.chez.com/ebellot">&Eacute;ric Bellot</a> 
+f&uuml;r seine Mitarbeit und Hilfe dazu. Die aktuelle version des 
+Konverters steht unter 
+<a href="http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz">http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz</a>
+bereit. OpenOffice wird in den n&auml;chsten Version analog zu Microsofts 'save as HTML' ein 'save as DocBook' bzw.
+DocBook zu anderen Formaten anbieten.
+</p>
+  
+<p>
+Alan Knowles <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102946826409440&amp;w=2">
+beschrieb</a> seine ersten Bem&uuml;hungen zur Erzeugung der Dokumentation
+auf Basis der PHPDoc-Kommentare mit Hilfe von PHP_CodeDoc.
+Es sieht halt leichter aus, als es ist...
+</p>
+  
+<h3>Massen-EMail-Versand</h3>
+  
+<p>Radek Maciaszek arbeit an einer Klasse zur Verwaltung gro&szlig;er 
+EMail-Queues. Richard Heyes &uuml;berpr&uuml;ft derzeit den Quellcode.
+</p>
+  
+<h3>PHPUnit zu pingelig</h3>
+  
+<p>
+Wolfram Kreising hat PHPUnit getested und fand es teilweise "zu strikt".
+Schliesslich ist PHP eine schwach typisierte Sprache; ein Vergleich von
+"1" == 1 innerhalb von Arrays f&uuml;hrt zu einem negativen Ergebniss.
+Vorschl&auml;ge zur Probleml&ouml;sung werden gerne angenommen.
+</p>
+  
+<h3>Zugriffsrechte-Verwaltung</h3>
+  
+<p>
+Einen allgemein verwendbaren
+Authentifizierungs - Authorisierungs - Zugriffrechte - Benutzerverwaltungs - Mechanismus (<i>AABZM</i>)
+w&uuml;nscht wohl jeder Entwickler.
+Marcus Wolff ist mit seinem "LiveUser"-Package nahe daran.
+Es soll eine API besitzen, die verschiedenste Packages und Programme erlaubt, ohne Code-&Auml;nderung
+auf einen einheitlichen <i>AABZM</i> aufzubauen.
+</p>
+  
+<p>
+Bleibt noch das Problem der Benennung und Einbettung innerhalb PEARs:
+Neben Auth_User und Perm_LiveUser wurde die Kombination aus einer Top-Level-Kategorie
+plus dem eindeutigem Namen 'LiveUser' vorgeschlagen. Abgelehnt wurden eher allgemeine Namen
+wie "Auth_Simple" oder "Auth_Complex".
+</p>
+  
+<p>
+Als Nebeneffekt dieser Diskussion sei auf die verschiedenen Diskussionen
+hinsichtlich der Sicherheit von Sessions, Cookies und HTTP selbst verwiesen.
+Eine zusammenfassung dazu wird es hoffentlich bald im PHP-Manual geben.
+</p>
+  
+<h3>Net_Whois - komplett neu</h3>
+  
+<p>
+Seamus Venasse schuf ein neues Net_Whois. Da ein Package mit diesem Namen
+bereits existiert, stand eine Diskussion an. Venasses Package ist funktionsreicher
+als das jetzige. Beide sollen nach allgemeiner Meinung zu einem Verschmolzen werden.
+Die endg&uuml;ltige Entscheidung h&auml;ngt von Sebastian Nohn ab. Er ist der Maintainer 
+von Net_Whois.
+</p>
+  
+<h3>Bugs und Fixes</h3>
+  
+<p>
+Dank an Radek Maciaszek,
+Arnaud Limbourg, Tim White und Roman Neuhauser
+f&uuml;r Bug-Meldungen und Korrekturen.
+</p>
+  
+<hr> 
+<h2>Neue und vorgeschlagene Packages</h2>
+  
+<h3>Math_Distance</h3>
+  
+<p>
+Alfredos Package bietet verschiedene Funktionen um Distanzen zwischen
+verschiedenen Punkten zu berechnen. Dazu stehen verschiedene mathematische
+Funktionen bereit.
+</p>
+  
+<hr> 
+<h2>Entwicklung</h2>
+  
+<p>VS-Aktivit&auml;ten fanden letzte Woche bei Auth, Benchmark, Cache_Lite, Date, DB,
+DB_DataObject, HTML_Javascript, HTML_TreeMenu, I18N, MDB, Net_DNS, Net_Ping,
+PECL::Soap, PHPDoc, Tree, XML_RSS, XML_XPath, System statt.
+</p>
+
+</body>
+</html>

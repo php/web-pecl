@@ -2,7 +2,13 @@ body, td, th {
 	font-family: arial,helvetica,sans-serif;
 	font-size: 95%;
 }
-
+th.pack {
+        color: #FFFFFF;
+}
+th.others {
+        color: #006600;
+        text-align: left;
+}
 em {
 	font-weight: bold;
 	font-style: italic;

@@ -1,5 +1,12 @@
 <?php
 
+if (isset($_SERVER['PHP_AUTH_USER']) && !isset($_COOKIE['PEAR_USER'])) {
+    $_COOKIE['PEAR_USER'] = $_SERVER['PHP_AUTH_USER'];
+}
+if (isset($_SERVER['PHP_AUTH_PW']) && !isset($_COOKIE['PEAR_PW'])) {
+    $_COOKIE['PEAR_PW'] = $_SERVER['PHP_AUTH_PW'];
+}
+
 PEAR::setErrorHandling(PEAR_ERROR_RETURN);
 
 // {{{ pear_xmlrpc_error()

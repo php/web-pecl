@@ -72,7 +72,11 @@ if (!empty($_COOKIE['PEAR_USER']) && !@auth_verify($_COOKIE['PEAR_USER'], $_COOK
     unset($_COOKIE['PEAR_USER']);
     setcookie('PEAR_PW', '', 0, '/');
     unset($_COOKIE['PEAR_PW']);
-    auth_reject(null, "Invalid username ($__user) or password <a href=\"/?logout=1\">[logout]</a>");
+    $msg = "Invalid username ($__user) or password";
+    if ($format == 'html') {
+        $msg .= " <a href=\"/?logout=1\">[logout]</a>";
+    }
+    auth_reject(null, $msg);
 }
 
 if (!function_exists('file_get_contents')) {

@@ -172,7 +172,7 @@ function commonHeader($title) {
         alink="#cccc00"
         vlink="#003300"
 ><a name="TOP" />
-<table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="#339900">
     <td align="left" rowspan="2" width="120" colspan="2" height="1">
 <?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="5" hspace="5"') ); ?><br />

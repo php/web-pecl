@@ -56,7 +56,7 @@ response_header();
 As of PHP 4.3.0, PEAR is an officially supported
 part of PHP.  From this release, the PEAR installer with all its
 prerequisites is installed by default on Unix-style systems (Windows
-will follow in 4.3.1).  It has been a long pregnancy.
+will follow in 4.3.2).  It has been a long pregnancy.
 <br /><br />
 Some historical highlights:
 <br /><br />

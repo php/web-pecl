@@ -145,8 +145,8 @@ following the directions in that mail.
 
 <p>
 There are a variety of commands you can use to modify your subscription.
-Either send a message to pear-<tt>whatever</tt>-help@lists.php.net (as in,
-pear-general-help@lists.php.net) or you can view the commands for
+Either send a message to pear-<tt>whatever</tt>@lists.php.net (as in,
+pear-general@lists.php.net) or you can view the commands for
 ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here</a>.
 </p>
 

@@ -11,7 +11,7 @@
 
 $MIRRORS = array(
   'http://pear.php.net/'        => array('us', 'pair Networks', 0, 'http://www.pair.com/', 1, 0, 'en' ),
-  'http://pear.php.easydns.ca/' => array('ca', 'easyDNS Technologies', 0, 'http://www.easydns.com/', 1, 0, 'en' )
+//  'http://pear.php.easydns.ca/' => array('ca', 'easyDNS Technologies', 0, 'http://www.easydns.com/', 1, 0, 'en' )
 );
 
 $COUNTRIES = array(

@@ -91,11 +91,6 @@ HREF="packages.php"
 ><DL
 ><DT
 ><A
-HREF="packages.skeleton.php"
->Skeleton for creating PEAR docbook documentation</A
-></DT
-><DT
-><A
 HREF="packages.auth.php"
 >Auth: creating authentication realms</A
 ></DT
@@ -103,6 +98,20 @@ HREF="packages.auth.php"
 ><A
 HREF="packages.net_checkip.php"
 >Net_CheckIP: Validation of IPv4 adresses</A
+></DT
+></DL
+></DD
+><DT
+>III. <A
+HREF="contributing.php"
+>Contributing to PEAR</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="packages.skeleton.php"
+>Skeleton for creating PEAR docbook documentation</A
 ></DT
 ></DL
 ></DD

@@ -2,17 +2,13 @@
 sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
-  'prev' => array('packages.php', 'PEAR Packages'),
-  'next' => array('packages.auth.php', ''),
-  'up'   => array('packages.php', 'PEAR Packages'),
+  'prev' => array('contributing.php', 'Contributing to PEAR'),
+  'next' => array('index.php#AEN0', ''),
+  'up'   => array('contributing.php', 'Contributing to PEAR'),
   'toc'  => array(
-    array('packages.php#packages', ''),
-    array('packages.php#AEN0', ''),
-    array('packages.skeleton.php', ''),
-    array('packages.php#AEN0', ''),
-    array('packages.auth.php', ''),
-    array('packages.php#AEN0', ''),
-    array('packages.net_checkip.php', ''))));
+    array('contributing.php#contributing', ''),
+    array('contributing.php#AEN0', ''),
+    array('packages.skeleton.php', ''))));
 manualHeader('','packages.skeleton.php');
 ?><DIV
 CLASS="ARTICLE"
@@ -21,7 +17,7 @@ CLASS="TITLEPAGE"
 ><H1
 CLASS="title"
 ><A
-NAME="AEN416"
+NAME="AEN448"
 >Skeleton for creating PEAR docbook documentation</A
 ></H1
 ><HR></DIV

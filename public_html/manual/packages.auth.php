@@ -2,13 +2,11 @@
 sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
-  'prev' => array('packages.skeleton.php', ''),
+  'prev' => array('packages.php', 'PEAR Packages'),
   'next' => array('packages.net_checkip.php', ''),
   'up'   => array('packages.php', 'PEAR Packages'),
   'toc'  => array(
     array('packages.php#packages', ''),
-    array('packages.php#AEN0', ''),
-    array('packages.skeleton.php', ''),
     array('packages.php#AEN0', ''),
     array('packages.auth.php', ''),
     array('packages.php#AEN0', ''),
@@ -21,7 +19,7 @@ CLASS="TITLEPAGE"
 ><H1
 CLASS="title"
 ><A
-NAME="AEN435"
+NAME="AEN416"
 >Auth: creating authentication realms</A
 ></H1
 ><HR></DIV

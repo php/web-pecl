@@ -3,12 +3,10 @@ sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
   'prev' => array('packages.auth.php', ''),
-  'next' => array('index.php#AEN0', ''),
+  'next' => array('contributing.php', 'Contributing to PEAR'),
   'up'   => array('packages.php', 'PEAR Packages'),
   'toc'  => array(
     array('packages.php#packages', ''),
-    array('packages.php#AEN0', ''),
-    array('packages.skeleton.php', ''),
     array('packages.php#AEN0', ''),
     array('packages.auth.php', ''),
     array('packages.php#AEN0', ''),
@@ -21,7 +19,7 @@ CLASS="TITLEPAGE"
 ><H1
 CLASS="title"
 ><A
-NAME="AEN454"
+NAME="AEN435"
 >Net_CheckIP: Validation of IPv4 adresses</A
 ></H1
 ><HR></DIV

@@ -12,7 +12,8 @@ setupNavigation(array(
     array('index.php#AEN0', ''),
     array('preface.php', 'Preface'),
     array('getting-started.php', 'Getting Started'),
-    array('packages.php', 'PEAR Packages'))));
+    array('packages.php', 'PEAR Packages'),
+    array('contributing.php', 'Contributing to PEAR'))));
 manualHeader('Preface','preface.php');
 ?><DIV
 CLASS="preface"

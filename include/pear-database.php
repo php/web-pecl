@@ -809,6 +809,7 @@ class release
                 readgzfile($path);
             } else {
                 header('Content-disposition: attachment; filename="'.$basename.'"');
+                header('Content-length: '.filesize($path));
                 readfile($path);
             }
 

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>by Alan Knowles (alan_k@php.net)</small></i></p>
+    
+<p>Another Quiet week, as a number of the PEAR developers are preparing for
+the forthcomming PHP conference in Frankfurt. Discussion on the dirname(__FILE__)
+issue continued, with the original Architect explaining the reasoning behind
+the design decision. New Packages continue to be proposed, with 3 new proposals,
+Along with a continuing flow of new releases .. stable, and .. beta.</p>
+    
+<hr>   
+<h2>New Releases</h2>
+    
+<h3>Stable</h3>
+    
+<ul>
+    <li><b>...</b>&nbsp; -....</li>
+</ul>
+<h3>Beta</h3>
+  
+<ul>
+  <li><b>..</b>&nbsp;  -....</li>
+  <li><b>..</b>&nbsp;  -...</li>
+</ul>
+         
+<hr>   
+<h2>PEAR-DEV traffic</h2>
+    
+<h3>PEAR paths in require_once, and using dirname(__FILE__) continued</h3>
+Following last weeks discussion on using dirname(__FILE__) for paths, Stig
+Bakken pointed out the serious problems of using this in conjunction with
+multiple PEAR installations (eg. a global + user one). The problem being
+that require_once, would become seriously confused and may end up loading
+2 classes with the same name from 2 different files, hence causing a conflict.
+The current method of letting the include path sort this out is the only
+currently viable solution.
+<h3>new MDB Containers for PEAR cache and mail queue</h3>
+<p>Lorenzon Alberton announced he had written MDB containers for PEAR cache
+and mail queue.&nbsp;</p>
+<h3>User notes for the PEAR manual</h3>
+It was suggested by Jon Wood, that one of the most popular feature of the
+PHP manual be added to the PEAR manual, although there weren't many responses,
+It is likely that when peardoc2 goes live, this will be a key feature that
+will be added.
+<h3>Bugs and Fixes</h3>
+Thanks to these people for spotting and fixing some bugs, David Viner, Daniel
+C, Lorenzo Alberton, Sebastian R&ouml;bke, Mika Tuupola, Alan Richmond, Robin
+Ericsson,&nbsp;
+<p></p>
+<hr>   
+<h2>New and Proposed Packages</h2>
+    
+<h3>APC &nbsp;- Advanced PHP cache now in PECL</h3>
+<p>George Schlossnagle announced his intention to add APC, a freely available
+PHP cache to PECL.<br>
+</p>
+<h3>ezSQL - a simplified Database API</h3>
+<p>Justin Vncent Proposed his simplified Database API for PEAR, after some
+confusion about how it would fit into PEAR, a general consensus that this
+kind of wrapper as an extension to DB or MDB may be of some use to some users.
+Although the purists amount the pear developers where not that keen on the
+over-hiding of the database connection details. <br>
+</p>
+<h3>Net_Cyrus - an interface to the Cyrus IMAP server managment commands.</h3>
+Richard Heyes Proposed a Package to provide an interface to the Cyrus IMAP
+mail server, enabling the adding users, and changing &nbsp;their Access rights.
+ 
+<hr>     
+<h2>Development</h2>
+<p>  Active on CVS this week has been Benchmark, Cache, DBA_Relational, File_Find,
+HTML_QuickFrom, HTML_Table, Image_Transform, Inline_C, Log, Mail_Queue, MDB,
+PECL::bcompiler, PECL::python, Perm_LiveUser, Scince_Chemistry, SOAP, SQL_Parser,along
+with updates to peardoc2, including file and the faq.</p>
+</body>
+</html>

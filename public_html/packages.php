@@ -25,24 +25,28 @@ $table = new HTML_Table('border="0" cellpadding="2" cellspacing="1" width="100%"
 $nrow = 0;
 while ($sth->fetchInto($row)) {
     extract($row);
-    $npackages = $rightvisit - $leftvisit - 1;
-//    $d = $rightvisit - $leftvisit;
+    $ncategories = $cat_right - $cat_left - 1;
+    $npackages = $pkg_right - $pkg_left - 1;
+//    $d = $pkg_right - $pkg_left;
 //    if ($d > 0) $npackages = ($d + 1) / 2;
-    if ($npackages == 0) {
+    if ($npackages + $ncategories <= 0) {
         //continue;  // XXXX Uncomment me to only show categories with packages
     } // XXXX change me with elseif (show table head only when there are values)
     if ($nrow == 0) {
-        $table->addRow(array("Category", "#&nbsp;Packages", "Summary"),
+        $table->addRow(array("Category", "#&nbsp;Packages",
+							 "#&nbsp;Sub-<br />categories", "Summary"),
                              'bgcolor="#ffffff"', 'TH');
     }
     settype($npackages, 'string');
+    settype($ncategories, 'string');
     $bg = ($nrow++ % 2) ? '#f0f0f0' : '#e0e0e0';
     $name = "<a href=\"$PHP_SELF?catpid=$id&catname=".urlencode($name)."\">$name</a>";
 
-    $table->addRow(array($name, $npackages, $summary));
+    $table->addRow(array($name, $npackages, $ncategories, $summary));
     $table->setCellAttributes($nrow, 0, "width=\"20%\" bgcolor=\"$bg\"");
     $table->setCellAttributes($nrow, 1, "width=\"10%\" bgcolor=\"$bg\" align=\"center\"");
-    $table->setCellAttributes($nrow, 2, "width=\"70%\" bgcolor=\"$bg\"");
+    $table->setCellAttributes($nrow, 2, "width=\"10%\" bgcolor=\"$bg\" align=\"center\"");
+    $table->setCellAttributes($nrow, 3, "width=\"60%\" bgcolor=\"$bg\"");
 }
 if ($nrow == 0) {
     print '<center><p>No sub-categories in this level</p></center>';

@@ -55,11 +55,15 @@ To get all leaf nodes:
 
  */
 function visit_node(&$tree, $node, &$cnt, $debug) {
-    static $visitno;
-    if (empty($visitno) || empty($node)) {
-        $visitno = 1;
+	static $pkg_visitno, $cat_visitno;
+    if (empty($pkg_visitno) || empty($node)) {
+        $pkg_visitno = 1;
     }
-    $tree[$node]['leftvisit'] = $visitno;
+	if (empty($cat_visitno) || empty($node)) {
+		$cat_visitno = 1;
+	}
+	$tree[$node]['cat_left'] = $cat_visitno++;
+    $tree[$node]['pkg_left'] = $pkg_visitno;
     $inc = 1;
     if (isset($cnt[$node])) {
         $inc += $cnt[$node];
@@ -68,14 +72,15 @@ function visit_node(&$tree, $node, &$cnt, $debug) {
         var_dump($cnt[$node]);
         print "inc=$inc<br />\n";
     }
-    $visitno += $inc;
+    $pkg_visitno += $inc;
     if (isset($tree[$node]['children'])) {
         foreach ($tree[$node]['children'] as $cnode) {
             visit_node($tree, $cnode, $cnt, $debug);
         }
     }
-    $tree[$node]['rightvisit'] = $visitno;
-    $visitno += $inc;
+    $tree[$node]['cat_right'] = $cat_visitno++;
+    $tree[$node]['pkg_right'] = $pkg_visitno;
+    $pkg_visitno += $inc;
 }
 
 // }}}
@@ -102,30 +107,39 @@ function renumber_visitations($debug = false)
         return $sth;
     }
     $tree = array(0 => array("children" => array()));
-    $oldleft = array();
-    $oldright = array();
+    $cat_oldleft = array();
+    $cat_oldright = array();
+    $pkg_oldleft = array();
+    $pkg_oldright = array();
     $new_count = array();
     while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC) === DB_OK) {
         extract($row);
         settype($parent, 'integer');
         $tree[$parent]["children"][] = $id;
         $tree[$id]["parent"] = $parent;
-        $oldleft[$id] = (int)$leftvisit;
-        $oldright[$id] = (int)$rightvisit;
+		$cat_oldleft[$id] = (int)$cat_left;
+		$cat_oldright[$id] = (int)$cat_right;
+        $pkg_oldleft[$id] = (int)$pkg_left;
+        $pkg_oldright[$id] = (int)$pkg_right;
         if (!isset($pkg_count[$id])) {
             $new_count[$id] = 0;
         } elseif ($npackages != $pkg_count[$id]) {
             $new_count[$id] = $pkg_count[$id];
         }
     }
-    visit_node($tree, 0, $pkg_count, $debug);
+	$pkg_visitno = 0;
+	$cat_visitno = 0;
+    visit_node($tree, 0, $pkg_count, $pkg_visitno, $debug);
     foreach ($tree as $node => $data) {
-        if (!isset($oldleft[$node])) {
+        if (!isset($pkg_oldleft[$node])) {
             continue;
         }
-        $l = $data["leftvisit"];
-        $r = $data["rightvisit"];
-        if ($oldleft[$node] == $l && $oldright[$node] == $r) {
+        $pl = $data["pkg_left"];
+        $pr = $data["pkg_right"];
+        $cl = $data["cat_left"];
+        $cr = $data["cat_right"];
+        if ($pkg_oldleft[$node] == $pl && $pkg_oldright[$node] == $pr &&
+		    $cat_oldleft[$node] == $cl && $cat_oldright[$node] == $cr) {
             if ($debug) {
                 print "keeping $node<br />\n";
             }
@@ -134,11 +148,15 @@ function renumber_visitations($debug = false)
         if ($debug) {
             print "updating $node<br />\n";
         }
-        $query = "UPDATE categories SET leftvisit = $l, rightvisit = $r";
+        $query = "UPDATE categories SET pkg_left=$pl, pkg_right=$pr";
+		$query .= ", cat_left=$cl, cat_right=$cr";
         if (isset($new_count[$node])) {
-            $query .= ", npackages = {$new_count[$node]}";
+            $query .= ", npackages={$new_count[$node]}";
         }
-        $query .= " WHERE id = $node";
+        $query .= " WHERE id=$node";
+		if ($debug) {
+			print "$query\n";
+		}
         $dbh->query($query);
     }
     return DB_OK;
@@ -184,6 +202,7 @@ function add_package($data)
     global $dbh;
     // name, category
     // license, summary, description
+	// lead
     extract($data);
     if (empty($license)) {
         $license = "PEAR License";

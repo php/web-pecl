@@ -5,8 +5,10 @@ CREATE TABLE categories (
        summary	      TEXT,
        description    TEXT,
        npackages      INTEGER,
-       leftvisit      INTEGER,
-       rightvisit     INTEGER,
+       pkg_left	      INTEGER,
+       pkg_right      INTEGER,
+       cat_left	      INTEGER,
+       cat_right      INTEGER,
 
        PRIMARY KEY(id),
        UNIQUE INDEX(name)

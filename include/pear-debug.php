@@ -3,7 +3,7 @@
     The PEAR Team debug functions
     (this is too personal for having only one for all ;-)
 */
-    /* Stig */
+    /* Stig, Martin */
 	function pre_dump($var) {
 	    print "<pre>";
 	    var_dump($var);

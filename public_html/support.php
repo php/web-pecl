@@ -30,7 +30,7 @@ response_header("Support");
   <li><a href="#lists">Mailing Lists</a></li>
   <li><a href="#tutorials">Tutorials</a></li>
   <li><a href="#resources">Resources</a></li>
-  <li><a href="#icons">PEAR Icons</a></li>
+  <li><a href="#icons">PECL Icons</a></li>
 </ul>
 
 <a name="lists" /><h3>Mailing Lists</h3>

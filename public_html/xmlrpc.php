@@ -31,7 +31,7 @@ pear_register_xmlrpc_methods($xs);
 
 
 $method   = "";
-$response = false;
+$response = null;
 $params   = xmlrpc_decode_request($HTTP_RAW_POST_DATA, &$method);
 
 // Read cache
@@ -50,7 +50,7 @@ if ($method == "package.info" && $params[1] === null)
     $response = XMLRPC_Cache::get($method, $params, $maxAge);
 };
 
-if ($response !== false) {
+if ($response !== null) {
     if (strlen($response) > 0) {
         $response .= '<!-- Used Cache -->';
         header('Content-type: text/xml');

@@ -18,8 +18,6 @@
    $Id$
 */
 
-ini_set('y2k_compliance', 'on');
-
 if ($_SERVER['QUERY_STRING'] == 'devme') {
     $duration = 86400 * 360;
     setcookie('pear_dev', 'on', time() + $duration, '/');
@@ -84,7 +82,6 @@ if (isset($_COOKIE['PEAR_USER'])) {
 // XXX Hide for the moment?
 menu_link("Request PEAR Account", "account-request.php");
 
-echo hdelim();
 $recent = release::getRecent();
 if (@sizeof($recent) > 0) {
     $RSIDEBAR_DATA = "<h3>Recent Releases</h3>\n";

@@ -33,52 +33,28 @@ print "<a href=\"account-edit.php?handle=$handle\">[Edit]</a>";
 print "<br />\n";
 print "<br />\n";
 
-print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
-print " <tr>\n";
-print "  <th bgcolor=\"#CCCCCC\">Handle:</th>\n";
-print "  <td bgcolor=\"#e8e8e8\">$handle</td>\n";
-print " </tr>\n";
+print "<table border=\"0\" cellspacing=\"4\" cellpadding=\"0\">\n";
+print "<tr><td valign=\"top\">\n";
 
-print " <tr>\n";
-print "  <th bgcolor=\"#CCCCCC\">Name:</th>\n";
-print "  <td bgcolor=\"#e8e8e8\">".$row['name']."</td>\n";
-print " </tr>\n";
-
+$bb = new BorderBox("Account Details", "100%", "", 2, true);
+$bb->horizHeadRow("Handle:", $handle);
+$bb->horizHeadRow("Name:", $row['name']);
 if ($row['showemail'] != 0) {
-    print " <tr>\n";
-    print "  <th bgcolor=\"#CCCCCC\">EMail:</th>\n";
-    print "  <td bgcolor=\"#e8e8e8\"><a href=\"mailto:".$row['email']."\">".$row['email']."</a></td>\n";
-    print " </tr>\n";
+	$bb->horizHeadRow("Email:", $row['email']);
 }
-
 if ($row['homepage'] != "") {
-    print " <tr>\n";
-    print "  <th bgcolor=\"#CCCCCC\">Homepage:</th>\n";
-    print "  <td bgcolor=\"#e8e8e8\"><a href=\"".$row['homepage']."\" target=\"_blank\">".$row['homepage']."</a></td>\n";
-    print " </tr>\n";
+	$bb->horizHeadRow("Homepage:",
+					  "<a href=\"$row[homepage]\" target=\"_blank\">".
+					  "$row[homepage]</a></td>\n");
 }
 
-print " <tr>\n";
-print "  <th bgcolor=\"#CCCCCC\">Registered since:</th>\n";
-print "  <td bgcolor=\"#e8e8e8\">".$row['created']."</td>\n";
-print " </tr>\n";
-
-print " <tr>\n";
-print "  <th bgcolor=\"#CCCCCC\">Additional information:</th>\n";
-print "  <td bgcolor=\"#e8e8e8\">".$row['userinfo']."&nbsp;</td>\n";
-print " </tr>\n";
-
-print " <tr>\n";
-print "  <th valign=\"top\" bgcolor=\"#cccccc\">CVS Access:</th>\n";
-print "  <td bgcolor=\"#e8e8e8\">".implode("<br />", $access)."</td>\n";
-print " </tr>\n";
+$bb->horizHeadRow("Registered since:", $row['created']);
+$bb->horizHeadRow("Additional information:", $row['userinfo']);
+$bb->horizHeadRow("CVS Access:", implode("<br />", $access));
 
 if ($row['admin'] == 1) {
-    print " <tr>\n";
-    print "  <td colspan=\"2\" bgcolor=\"#e8e8e8\">".$row['name']." is a PEAR administrator.</td>\n";
-    print " </tr>\n";
+	$bb->fullRow("$row[name] is a PEAR administrator.");
 }
-print "</table>\n";
 
 $query = "SELECT p.id, p.name, m.role
           FROM packages p, maintains m
@@ -92,26 +68,28 @@ if (DB::IsError($sth)) {
     DB::raiseError("query failed: ".$sth->message);
 }
 
+$bb->end();
+
+print "</td><td valign=\"top\">\n";
+
+$bb = new BorderBox("Maintaining These Packages:", "100%", "", 2, true);
+
 if ($sth->numRows() > 0) {
-    print "<br /><br />\n";
-    print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
-    print " <tr>\n";
-    print "  <th colspan=\"2\" bgcolor=\"#e8e8e8\">Maintaining the following packages:</td>";
-    print " </tr>\n<tr><th bgcolor=\"#e8e8e8\">Package Name</th>";
-    print "<th bgcolor=\"#e8e8e8\">Role</th></tr>\n";
-
+	$bb->headRow("Package Name", "Role");
     while (is_array($row = $sth->fetchRow())) {
-        print " <tr>\n";
-        print "  <td bgcolor=\"#e8e8e8\">";
-        print "  <a href=\"pkginfo.php?pacid={$row['id']}\">{$row['name']}</a>";
-        print "  </td>\n";
-        print "  <td bgcolor=\"#e8e8e8\" align=\"center\">{$row['role']}";
-        print "  </td>\n";
-        print " </tr>\n";
+		$bb->plainRow("<a href=\"pkginfo.php?pacid=$row[id]\">$row[name]</a>",
+					  $row['role']);
     }
-
-    print "</table>";
 }
+
+$bb->end();
+
+print "<br />\n";
+
+display_user_notes($handle, "100%");
+
+print "</td></tr></table>\n";
+
 response_footer();
 
 ?>

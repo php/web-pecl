@@ -166,13 +166,13 @@ chmod +x $TARGET
 
 PEAR="php -C -d include_path=$PTMP/php4/pear -f $TARGET -- "
 $PEAR -D php_dir=$destdir -S
-$PEAR -r install php4/pear/package-Archive_Tar.xml
-$PEAR -r install php4/pear/package-Console_Getopt.xml
-$PEAR -r install php4/pear/package-PEAR.xml
+$PEAR install -r php4/pear/package-Archive_Tar.xml
+$PEAR install -r php4/pear/package-Console_Getopt.xml
+$PEAR install -r php4/pear/package-PEAR.xml
 $PEAR install -s php4/pear/packages/XML_RPC-1.0.2.tar
 if [ "$installall" != "n" ]; then
 	for i in "php4/pear/packages/*"; do
-		$PEAR -s install $i
+		$PEAR install -s $i
 	done
 fi
 

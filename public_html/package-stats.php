@@ -309,7 +309,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
 */
 if (@!$_GET['pid']) {
 	echo '<br />';
-	$bb = new BorderBox(!empty($_GET['cid']) ? 'Category statistics for: <i>' . $category_name . '</i>' : 'Global statistics');
+	$bb = new BorderBox(!empty($_GET['cid']) ? 'Category statistics for: <i><a href="http://pear.php.net/packages.php?catpid='.$_GET['cid'].'&catname='.str_replace(' ', '+', $category_name).'">' . $category_name . '</a></i>' : 'Global statistics');
 	?>
 <table border="0" width="100%">
 	<tr>

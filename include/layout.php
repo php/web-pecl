@@ -4,6 +4,7 @@
 
 require_once 'site.php';
 
+if (empty($prevsearch)) $prevsearch = '';
 
 # spacer()
 # print a IMG tag for a sized spacer GIF
@@ -204,11 +205,11 @@ function commonHeader($title) {
 
   <tr bgcolor="#006633">
       <td align="right" valign="top" colspan="2">&nbsp;
-<!--
+<?php /*
         <form method="POST" action="/search.php">
         <font color="#ffffff">
         <small>search for</small>
-<INPUT CLASS="small" TYPE="text" NAME="pattern" VALUE="<? echo htmlspecialchars($prevsearch) ?>" SIZE="30">
+<INPUT CLASS="small" TYPE="text" NAME="pattern" VALUE="<? echo htmlspecialchars($GLOBALS['prevsearch']) ?>" SIZE="30">
 <small>in the</small>
 <SELECT NAME="show" CLASS="small">
 <OPTION VALUE="packages" SELECTED>packages
@@ -222,7 +223,7 @@ function commonHeader($title) {
 <?	echo make_submit('small_submit_white.gif', 'search', 'bottom');
       ?>&nbsp;<br>
      </font></form>
-//-->     
+*/ ?>
      </td>
   </tr>
 

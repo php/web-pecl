@@ -1,8 +1,8 @@
-<?php
+<?php // -*- C++ -*-
 
 require_once "html_form.php";
 
-authRequire();
+authRequire(1);
 
 $display_form = true;
 
@@ -79,28 +79,27 @@ if ($display_form) {
      }
 
     $width = 60;
+    $form = new HTML_Form($PHP_SELF, "POST");
+    $form->addText("handle", "Handle", $handle, 12);
+    $form->addText("name", "Name", $name, $width);
+    $form->addText("email", "Email", $email, $width);
+    $form->addText("homepage", "Homepage", $homepage, $width);
+    $form->addCheckbox("showemail", "Show Email Address?", (bool)$showemail);
+    $form->addCheckbox("admin", "Administrator?", (bool)$admin);
+    $form->addPassword("password", "Password", $password);
+    $form->addTextarea("info", "More info", '', $width, 5);
+    $form->addSubmit("submit", "Add Author");
 
-    formInputRow("Handle", "handle", $handle, 12);
-    formInputRow("Name", "name", $name, $width);
-    formInputRow("Email", "email", $email, $width);
-    formInputRow("Homepage", "homepage", $homepage, $width);
-    formCheckboxRow("Show Email Address?", "showemail", (bool)$showemail);
-    formCheckboxRow("Administrator?", "admin", (bool)$admin);
-    formPasswordRow("Password", "password", $password);
-    formTextareaRow("More info", "info", '', $width, 5);
-    formSubmitRow("Add Author");
-
-?></TABLE>
-</FORM>
-<?php
+    $form->display();
 
     if ($jumpto) {
 	print "<SCRIPT LANGUAGE=\"JavaScript\">\n<!--\n";
 	print "document.forms[0].$jumpto.focus();\n";
 	print "\n// -->\n</SCRIPT>\n";
     }
-    pageFooter();
-
 }
+
+pageFooter();
+
 
 ?>

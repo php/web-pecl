@@ -1,4 +1,4 @@
-<?php
+<?php // -*- C++ -*-
 
 // {{{ constants
 
@@ -71,7 +71,7 @@ class HTML_Form {
     // }}}
     // {{{ addTextarea()
 
-    function addTextarea($name, $title, &$default,
+    function addTextarea($name, $title, $default,
 			 $width = HTML_FORM_TEXTAREA_WT,
 			 $height = HTML_FORM_TEXTAREA_HT) {
 	$this->fields[] = array("textarea", $name, $title, &$default, $width, $height);
@@ -125,10 +125,10 @@ class HTML_Form {
 
     // {{{ start()
 
-    function start($action, $method = 'GET', $name = '') {
-	print "<FORM ACTION=\"$action\" METHOD=\"$method\"";
-	if ($name) {
-	    print " NAME=\"$name\"";
+    function start() {
+	print "<FORM ACTION=\"$this->action\" METHOD=\"$this->method\"";
+	if ($this->name) {
+	    print " NAME=\"$this->name\"";
 	}
 	print ">";
     }
@@ -143,9 +143,9 @@ class HTML_Form {
 	    if ($data[0] == 'reset') {
 		continue;
 	    }
-	    $name = $data[1];
+	    $fields[$data[1]] = true;
 	}
-	$this->displayHidden("_fields", implode(":", $fields));
+	$this->displayHidden("_fields", implode(":", array_keys($fields)));
 	print "</FORM>";
     }
 

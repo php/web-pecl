@@ -9,6 +9,11 @@ $sth = $dbh->query('SELECT handle,name,email,homepage,showemail '.
 if (DB::isError($sth)) {
     die("query failed: ".DB::errorMessage($dbh)."<BR>\n");
 }
+
+print "<A HREF=\"add-author.php\">NEW</A> \n";
+
+print "<P>\n";
+
 print "<TABLE BORDER=1>\n";
 print " <TR>\n";
 print "  <TH>Handle</TH>\n";

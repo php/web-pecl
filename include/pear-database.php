@@ -1301,7 +1301,7 @@ class release
      */
     function betterStates($state)
     {
-        static $states = array('devel', 'snapshot', 'alpha', 'beta', 'stable');
+        static $states = array('snapshot', 'devel', 'alpha', 'beta', 'stable');
         $i = array_search($state, $states);
         if ($i === false) {
             return false;

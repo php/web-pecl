@@ -56,15 +56,15 @@ class browser
     */
     var $subVersion = 0;
 
-	/**
+    /**
     * Constructor
-	*
-	* @param
+    *
+    * @param
     */
-	function browser($in_useragent = null)
-	{
-		$this->detect($in_useragent);
-	}
+    function browser($in_useragent = null)
+    {
+        $this->detect($in_useragent);
+    }
 
     /**
     * Detect the user agent and prepare flags, features and quirks based on what is found
@@ -77,8 +77,8 @@ class browser
     * @param  string (optional) user agent override
     * @return void
     */
-	function detect($in_userAgent = null)
-	{
+    function detect($in_userAgent = null)
+    {
         // Detemine what user agent we are using
         if (is_null($in_userAgent)) {
                 $this->userAgent = $GLOBALS['HTTP_SERVER_VARS']['HTTP_USER_AGENT'];
@@ -100,55 +100,55 @@ class browser
             $this->leadingIdentifier = 'Unknown';
         }
 
-		$this->version = $this->majorVersion . '.' . $this->subVersion;
+        $this->version = $this->majorVersion . '.' . $this->subVersion;
 
-		$brwsr['konq']    = (strpos($agt, 'konqueror') !== false);
-		$brwsr['text']    = (strpos($agt, 'links') !== false) || (strpos($agt, 'lynx') !== false) || (strpos($agt, 'w3m') !== false);
-		$brwsr['ns']      = (strpos($agt, 'mozilla') !== false) && !(strpos($agt, 'spoofer') !== false) && !(strpos($agt, 'compatible') !== false) && !(strpos($agt, 'hotjava') !== false) && !(strpos($agt, 'opera') !== false) && !(strpos($agt, 'webtv') !== false) ? 1 : 0;
-		$brwsr['ns2']     = $brwsr['ns'] && $this->majorVersion == 2;
-		$brwsr['ns3']     = $brwsr['ns'] && $this->majorVersion == 3;
-		$brwsr['ns4']     = $brwsr['ns'] && $this->majorVersion == 4;
-		$brwsr['ns4up']   = $brwsr['ns'] && $this->majorVersion >= 4;
-		// determine if this is a Netscape Navigator
-		$brwsr['nav']     = $brwsr['ns'] && ((strpos($agt, ';nav') !== false) || ((strpos($agt, '; nav') !== false)));
-		$brwsr['ns6']     = !$brwsr['konq'] && $brwsr['ns'] && $this->majorVersion == 5;
-		$brwsr['ns6up']   = $brwsr['ns6'] && $this->majorVersion >= 5;
-		$brwsr['gecko']   = (strpos($agt, 'gecko') !== false);
-		$brwsr['ie']      = (strpos($agt, 'msie') !== false) && !(strpos($agt, 'opera') !== false);
-		$brwsr['ie3']     = $brwsr['ie'] && $this->majorVersion < 4;
-		$brwsr['ie4']     = $brwsr['ie'] && $this->majorVersion == 4 && (strpos($agt, 'msie 4') !== false);
-		$brwsr['ie4up']   = $brwsr['ie'] && $this->majorVersion >= 4;
-		$brwsr['ie5']     = $brwsr['ie'] && $this->majorVersion == 4 && (strpos($agt, 'msie 5.0') !== false);
-		$brwsr['ie5_5']   = $brwsr['ie'] && $this->majorVersion == 4 && (strpos($agt, 'msie 5.5') !== false);
-		$brwsr['ie5up']   = $brwsr['ie'] && !$brwsr['ie3'] && !$brwsr['ie4'];
-		$brwsr['ie5_5up'] = $brwsr['ie'] && !$brwsr['ie3'] && !$brwsr['ie4'] && !$brwsr['ie5'];
-		$brwsr['ie6']     = $brwsr['ie'] && $this->majorVersion == 4 && (strpos($agt, 'msie 6.') !== false);
-		$brwsr['ie6up']   = $brwsr['ie'] && !$brwsr['ie3'] && !$brwsr['ie4'] && !$brwsr['ie5'] && !$brwsr['ie5_5'];
-		$brwsr['opera']   = (strpos($agt, 'opera') !== false);
-		$brwsr['opera2']  = (strpos($agt, 'opera 2') !== false) || (strpos($agt, 'opera/2') !== false);
-		$brwsr['opera3']  = (strpos($agt, 'opera 3') !== false) || (strpos($agt, 'opera/3') !== false);
-		$brwsr['opera4']  = (strpos($agt, 'opera 4') !== false) || (strpos($agt, 'opera/4') !== false);
-		$brwsr['opera5']  = (strpos($agt, 'opera 5') !== false) || (strpos($agt, 'opera/5') !== false);
-		$brwsr['opera5up'] = $brwsr['opera'] && !$brwsr['opera2'] && !$brwsr['opera3'] && !$brwsr['opera4'];
-		
-		$brwsr['aol']   = (strpos($agt, 'aol') !== false);
-		$brwsr['aol3']  = $brwsr['aol'] && $brwsr['ie3'];
-		$brwsr['aol4']  = $brwsr['aol'] && $brwsr['ie4'];
-		$brwsr['aol5']  = (strpos($agt, 'aol 5') !== false);
-		$brwsr['aol6']  = (strpos($agt, 'aol 6') !== false);
-		$brwsr['aol7']  = (strpos($agt, 'aol 7') !== false);
-		$brwsr['webtv'] = (strpos($agt, 'webtv') !== false); 
-		$brwsr['aoltv'] = $brwsr['tvnavigator'] = (strpos($agt, 'navio') !== false) || (strpos($agt, 'navio_aoltv') !== false); 
-		$brwsr['hotjava'] = (strpos($agt, 'hotjava') !== false);
-		$brwsr['hotjava3'] = $brwsr['hotjava'] && $this->majorVersion == 3;
-		$brwsr['hotjava3up'] = $brwsr['hotjava'] && $this->majorVersion >= 3;
+        $brwsr['konq']    = (strpos($agt, 'konqueror') !== false);
+        $brwsr['text']    = (strpos($agt, 'links') !== false) || (strpos($agt, 'lynx') !== false) || (strpos($agt, 'w3m') !== false);
+        $brwsr['ns']      = (strpos($agt, 'mozilla') !== false) && !(strpos($agt, 'spoofer') !== false) && !(strpos($agt, 'compatible') !== false) && !(strpos($agt, 'hotjava') !== false) && !(strpos($agt, 'opera') !== false) && !(strpos($agt, 'webtv') !== false) ? 1 : 0;
+        $brwsr['ns2']     = $brwsr['ns'] && $this->majorVersion == 2;
+        $brwsr['ns3']     = $brwsr['ns'] && $this->majorVersion == 3;
+        $brwsr['ns4']     = $brwsr['ns'] && $this->majorVersion == 4;
+        $brwsr['ns4up']   = $brwsr['ns'] && $this->majorVersion >= 4;
+        // determine if this is a Netscape Navigator
+        $brwsr['nav']     = $brwsr['ns'] && ((strpos($agt, ';nav') !== false) || ((strpos($agt, '; nav') !== false)));
+        $brwsr['ns6']     = !$brwsr['konq'] && $brwsr['ns'] && $this->majorVersion == 5;
+        $brwsr['ns6up']   = $brwsr['ns6'] && $this->majorVersion >= 5;
+        $brwsr['gecko']   = (strpos($agt, 'gecko') !== false);
+        $brwsr['ie']      = (strpos($agt, 'msie') !== false) && !(strpos($agt, 'opera') !== false);
+        $brwsr['ie3']     = $brwsr['ie'] && $this->majorVersion < 4;
+        $brwsr['ie4']     = $brwsr['ie'] && $this->majorVersion == 4 && (strpos($agt, 'msie 4') !== false);
+        $brwsr['ie4up']   = $brwsr['ie'] && $this->majorVersion >= 4;
+        $brwsr['ie5']     = $brwsr['ie'] && $this->majorVersion == 4 && (strpos($agt, 'msie 5.0') !== false);
+        $brwsr['ie5_5']   = $brwsr['ie'] && $this->majorVersion == 4 && (strpos($agt, 'msie 5.5') !== false);
+        $brwsr['ie5up']   = $brwsr['ie'] && !$brwsr['ie3'] && !$brwsr['ie4'];
+        $brwsr['ie5_5up'] = $brwsr['ie'] && !$brwsr['ie3'] && !$brwsr['ie4'] && !$brwsr['ie5'];
+        $brwsr['ie6']     = $brwsr['ie'] && $this->majorVersion == 4 && (strpos($agt, 'msie 6.') !== false);
+        $brwsr['ie6up']   = $brwsr['ie'] && !$brwsr['ie3'] && !$brwsr['ie4'] && !$brwsr['ie5'] && !$brwsr['ie5_5'];
+        $brwsr['opera']   = (strpos($agt, 'opera') !== false);
+        $brwsr['opera2']  = (strpos($agt, 'opera 2') !== false) || (strpos($agt, 'opera/2') !== false);
+        $brwsr['opera3']  = (strpos($agt, 'opera 3') !== false) || (strpos($agt, 'opera/3') !== false);
+        $brwsr['opera4']  = (strpos($agt, 'opera 4') !== false) || (strpos($agt, 'opera/4') !== false);
+        $brwsr['opera5']  = (strpos($agt, 'opera 5') !== false) || (strpos($agt, 'opera/5') !== false);
+        $brwsr['opera5up'] = $brwsr['opera'] && !$brwsr['opera2'] && !$brwsr['opera3'] && !$brwsr['opera4'];
+        
+        $brwsr['aol']   = (strpos($agt, 'aol') !== false);
+        $brwsr['aol3']  = $brwsr['aol'] && $brwsr['ie3'];
+        $brwsr['aol4']  = $brwsr['aol'] && $brwsr['ie4'];
+        $brwsr['aol5']  = (strpos($agt, 'aol 5') !== false);
+        $brwsr['aol6']  = (strpos($agt, 'aol 6') !== false);
+        $brwsr['aol7']  = (strpos($agt, 'aol 7') !== false);
+        $brwsr['webtv'] = (strpos($agt, 'webtv') !== false); 
+        $brwsr['aoltv'] = $brwsr['tvnavigator'] = (strpos($agt, 'navio') !== false) || (strpos($agt, 'navio_aoltv') !== false); 
+        $brwsr['hotjava'] = (strpos($agt, 'hotjava') !== false);
+        $brwsr['hotjava3'] = $brwsr['hotjava'] && $this->majorVersion == 3;
+        $brwsr['hotjava3up'] = $brwsr['hotjava'] && $this->majorVersion >= 3;
 
-		/**
+        /**
         * Setup easy access to the above variables
         */
-		foreach ($brwsr as $key => $value) {
-			$this->{'is_' . $key} = $value;
-		}
-	}
+        foreach ($brwsr as $key => $value) {
+            $this->{'is_' . $key} = $value;
+        }
+    }
 }
 ?>

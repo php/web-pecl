@@ -74,7 +74,6 @@ do {
         response_header("Package Registered");
         print "The package `$name' has been registered in PEAR.<br />\n";
         print "You have been assigned as lead developer.<br />\n";
->>>>>>> 1.13
     }
 } while (false);
 

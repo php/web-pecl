@@ -29,6 +29,7 @@ $GLOBALS['main_menu'] = array(
     '/index.php'           => 'Home',
     '/manual/index.php'    => 'Documentation',
     '/faq.php'             => 'PEAR FAQ',
+    '/weklynews.php'       => 'Weekly News',
     '/packages.php'        => 'Package Browser',
     '/package-search.php'  => 'Package Search',
     '/package-stats.php'   => 'Package Statistics',

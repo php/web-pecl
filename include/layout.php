@@ -224,19 +224,21 @@ function commonHeader($title) {
       <?php
 
     if (empty($_COOKIE['PEAR_USER'])) {
-        print_link('/login.php', 'LOGIN', false, 'class="menuBlack"');
+        print_link('/login.php', 'Login', false, 'class="menuBlack"');
     } else {
         print '<span class="menuWhite">logged in as ';
         print strtoupper($_COOKIE['PEAR_USER']);
         print '&nbsp;</span><br />';
-        print_link('/?logout=1', 'LOGOUT', false, 'class="menuBlack"');
+        print_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
     }
     echo delim();
-    print_link('/manual/', 'DOCS', false, 'class="menuBlack"');
+    print_link('/manual/', 'Docs', false, 'class="menuBlack"');
     echo delim();
-    print_link('/support.php','SUPPORT',false,'class="menuBlack"');
+    print_link('/support.php','Support',false,'class="menuBlack"');
     echo delim();
     print_link('/manual/en/faq.php','FAQ',false,'class="menuBlack"');
+    echo delim();
+    print_link('/weeklynews.php','Weekly News',false,'class="menuBlack"');
       ?>&nbsp;<br />
       <?php spacer(2,2); ?><br />
     </td>
@@ -261,7 +263,7 @@ function commonHeader($title) {
   <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
 
   <!-- Middle section -->
-  
+
  <tr valign="top">
 <?php if (isset($SIDEBAR_DATA)) { ?>
   <td bgcolor="#f0f0f0" width="149">
@@ -304,7 +306,7 @@ function commonFooter() {
  </tr>
 
  <!-- Lower bar -->
- 
+
   <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
   <tr bgcolor="#339900">
       <td align="right" valign="bottom" colspan="5" height="1">

@@ -41,24 +41,17 @@ PEAR is a framework and distribution system for reusable PHP
 components.
 
 <br />
-'.hdelim().'
-<br />
-<a href="weeklynews.php">PEAR Weekly News</a>
-
-<br /><br />
-
-</p>
--
-';
+-';
 
 response_header();
 
 menu_link("Documentation", "/manual/");
 menu_link("Frequently Asked Questions", "/manual/en/faq.php");
+menu_link("Weekly News", "/weeklynews.php");
 
 if (DEVBOX) {
     menu_link("Browse Packages", "packages.php");
-	menu_link("Search Packages", "package-search.php");
+    menu_link("Search Packages", "package-search.php");
     menu_link("Request PEAR Account", "account-request.php");
     echo hdelim();
     echo "<h3>Available when logged in:</h3>";

@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.28 2001-11-19 23:39:26 chregu Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.29 2001-11-30 12:24:06 mj Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-11-19 23:39:26 $</date>
-  <version>$Revision: 1.28 $</version>
+  <date>$Date: 2001-11-30 12:24:06 $</date>
+  <version>$Revision: 1.29 $</version>
  </artheader>
 
  <qandaset>
   <qandaentry>
-   <question title="What is PEAR exactly?" />
+   <question title="What exactly is PEAR?" />
     <answer>
      <author name="Tomas V.V. Cox"/>
       <para>

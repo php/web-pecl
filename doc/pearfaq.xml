@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.27 2001-11-19 23:32:18 chregu Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.28 2001-11-19 23:39:26 chregu Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-11-19 23:32:18 $</date>
-  <version>$Revision: 1.27 $</version>
+  <date>$Date: 2001-11-19 23:39:26 $</date>
+  <version>$Revision: 1.28 $</version>
  </artheader>
 
  <qandaset>
@@ -192,12 +192,12 @@
   </qandaentry> 
 
   <qandaentry>
-   <question title="How do I install a PEAR module written in C?" />
+   <question title="How do I install a PECL module written in C?" />
    <answer>
     <author name="Christian Stocker"/>
     <para>
-    The support for c-extension in PEAR is not very sophisticated at the moment.
-    Here's a short description of how to get c-modules running on your system until
+    The support for C-extensions in PEAR/PECL is not very sophisticated at the moment.
+    Here's a short description of how to get C-modules running on your system until
     the PEAR::Installer does that for you .
     </para>
     <para>

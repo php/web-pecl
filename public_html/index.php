@@ -53,44 +53,36 @@ href="/manual/">manual</a> for more information.
 response_header();
 
 ?>
-<h1>PEAR 1.0 is released!</h1>
+<h1>PEAR Meeting in Amsterdam</h1>
 
 <div style="margin-left:2em;margin-right:2em">
-As of PHP 4.3.0, PEAR is an officially supported
-part of PHP.  From this release, the PEAR installer with all its
-prerequisites is installed by default on Unix-style systems (Windows
-will follow in 4.3.2).  It has been a long pregnancy.
+We will hold the first PEAR Meeting in Amsterdam on May 9th at 17:30.
 <br /><br />
-Some historical highlights:
+The <a href="http://www.terena.nl/about/secretariat/location.html">location</a>
+has been graciously sponsored by Jeroen Houben. We will provide a live
+stream from the meeting so that people that did not make it to the meeting in
+person can participate via web. Apart from that there will be the
+possibility to join the discussion via IRC.
 <br /><br />
-1999-11-21 : Malin Bakken was born<br />
-1999-11-22 : the first few lines of PEAR code were committed (DB.php)<br />
-2000-07-24 : the PEAR and PEAR_Error classes were born<br />
-2000-08-01 : first working version of the "pear" command<br />
-2001-05-15 : first contributor to base system<br />
-2001-12-28 : first package uploaded to the current pear.php.net<br />
-2002-05-26 : installer can upgrade itself<br />
-2002-06-13 : first version of Gtk installer<br />
-2002-07-11 : first version of Web installer<br />
-<br /><br />
-Thanks to all PEAR contributors, and special thanks to those who have
-pitching in when I've been too busy with family and work to do any PHP
-hacking:
-<br /><br />
-* Tomas V.V.Cox<br />
-* Martin Jansen<br />
-* Christian Dickmann<br />
-* Jon Parise<br />
-* Richard Heyes<br />
-* Pierre-Alain Joye
-<br /><br />
-<a href="account-info.php?handle=ssb">Stig Bakken &lt;stig&#64;php.net&gt;</a>
-<br /><br />
-<a href="/weeklynews.php/en/20030119.html">READ THE INTERVIEW OF STIG BAKKEN</a><br />
+The current preliminary agenda is as follows:
+<ul>
+<li>Quality vs. Quantity?</li>
+<li>Possible regulations to prevent some of the recent conflicts on the mailinglist</li>
+<li>PEAR CS (method naming conventions?)</li>
+<li><a href="http://marc.theaimsgroup.com/?l=pear-dev&m=104617534710384&w=2">PFC RfC</a></li>
+<li>PEAR Installer</li>
+<li>PEAR on windows</li>
+<li>PEARweb (rating system, comment system, package proposal)</li>
+<li>PEAR promotion</li>
+<li>PHP 5</li>
+</ul>
+
+<a href="news/meeting-2003.php">More information can be found here.</a>
+
 </div>
-
 <?php
-
+echo hdelim();
+menu_link("PEAR 1.0 has been released!", "news/release-1.0.php");
 echo hdelim();
 menu_link("Documentation", "/manual/");
 menu_link("Frequently Asked Questions", "/manual/en/faq.php");
@@ -127,3 +119,4 @@ if (@sizeof($recent) > 0) {
 response_footer();
 
 ?>
+

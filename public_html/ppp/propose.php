@@ -97,15 +97,26 @@ if ($display_form) {
     $title = "Propose new Package";
     response_header($title);
 
-    print "<h1>$title</h1>Use this form to propose a new package.";
+    print "<h1>$title</h1>";
 
-    if (isset($errorMsg)) {
+    if (!empty($errorMsg)) {
         print "<table>\n";
         print " <tr>\n";
         print "  <td>&nbsp;</td>\n";
         print "  <td><b>$errorMsg</b></td>\n";
         print " </tr>\n";
         print "</table>\n";
+    } else {
+        print "<p>Use this form to propose a new package. " .
+              "If you already have an account for pear.php.net and " .
+              " aren't logged in yet, please " . 
+              make_link("/login.php", "login now") . 
+              ".</p>";
+
+        print "<p>If you are unsure about the category and the name for your ";
+        print "proposal, please ask on the " . 
+              make_mailto_link("pear-dev@lists.php.net", "mailinglist") .
+              "</p>";
     }
 
     $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");

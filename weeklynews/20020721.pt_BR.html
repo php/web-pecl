@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>PEAR :: PEAR Weekly News - 21 Jul 2002</title>
+  </head>
+<body>
+<small><i>por Alan Knowles alan_k@php.net (traduzido por Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior floripa@php.net)</i></small>
+
+<!-- week resume >> -->
+<p>Nesta semana foram inclu&iacute;dos 3 novos releases tanto para vers&otilde;es beta como para vers&otilde;es de desenvolvimento, prontas para serem testadas. Tamb&eacute;m novas not&iacute;cias sobre o PEAR Package Installer, Smarty e anivers&aacute;rios de desenvolvedores.</p>
+<!-- week resume << -->
+
+<hr noshade>
+
+<!-- new releases >> -->
+<h2>Novos Releases</h2>
+
+<h3>Beta</h3>
+MDB, a uni&atilde;o do PEAR DB e Metabase inclue novas corre&ccedil;&otilde;es para o driver do PostgreSQL e algumas limpezas na API, o HTML_Javascript: pacote para ajudar a converter vari&aacute;veis do PHP para o uso em Javascript e em algumas ferramentas de Javascript.
+
+<h3>Desenvolvimento</h3>
+DBA, um wrapper para as fun&ccedil;&otilde;es DBA do PHP e uma implementa&ccedil;&atilde;o de um driver SQL para o banco DBA.
+<!-- new releases << -->
+
+<hr noshade>
+
+<!-- pear-dev traffic >> -->
+<h2>Tr&aacute;fego na lista PEAR-DEV</h2>
+
+<!-- list traffic note >> -->
+<h3>MDB Retorna por Refer&ecirc;ncia</h3>
+Ocorreu uma breve discuss&atilde;o sobre como o Metabase deveria lidar com o retorno de vari&aacute;veis. Aparentemente, o Metabase (no que o MDB est&aacute; baseado) tende a retornar valores usando o retorno por refer&ecirc;ncia, por exemplo:
+<pre>
+getTextValue($bar, $bar_quoted);
+$query = 'SELECT * from foo WHERE bar = '.$bar_quoted;
+</pre>
+Entretanto foi considerado que este m&eacute;todo era geralmente incomum no PEAR. O padr&atilde;o atual &eacute; returnar mixed, PEAR_error ou o resultado ainda ser&aacute; o m&eacute;todo preferido para retornar argumentos. Stig ainda est&aacute; experimentando isto com os m&eacute;todos try e catch do Zend Engine 2 e o futuro dos retornos de PEAR_errors (para os pacotes apenas do ZE2) ser&aacute; decidido mais tarde. Enquanto isso, Paul Cooper tem ajudado Lukas Smith com o driver Postgres.
+<!-- list traffic note << -->
+
+<!-- list traffic note >> -->
+<h3>Instalador Acelerando</h3>
+Mais testes estavam a caminho para eliminar os bugs no instalador, especialmente em plataformas Win32. O pipe junto com o lynx ainda tem problemas com o Win32 e o m&eacute;todo atualmente recomemdado para instalar no Win32 &eacute; ainda:
+<pre>
+c&gt; lynx -source <a href="http://pear.php.net/go-pear">http://pear.php.net/go-pear</a> &gt; go-pear
+c&gt; php -d output_bufering=0 -q go-pear
+</pre>
+<!-- list traffic note << -->
+
+<!-- list traffic note >> -->
+<h3>Package.xml - Checando Consist&ecirc;ncia</h3>
+Numa discuss&atilde;o sobre o empacotamento dos HTML_OOH_Forms foi mencinado que o PEAR Package Manager pode checar um package.xml usando:
+<pre>pear pv</pre>
+Neste caso a raz&atilde;o para problemas com um pacote foi que um espa&ccedil;o para um arquivo em um pacote tem que estar em um destes tipos: &lt;file role="???"&gt;filename.x&lt;/file&gt;
+<pre>php ext test doc data src script</pre>
+<!-- list traffic note << -->
+
+<!-- list traffic note >> -->
+<h3>PEAR e Smarty</h3>
+Foi perguntando na lista principal porque o Smarty <a href="http://smarty.php.net">http://smarty.php.net</a>
+n&atilde;o tornou-se parte do PEAR. A raz&atilde;o circundou no fato de que ningu&eacute;m se disp&ocirc;s a gastar tempo e esfor&ccedil;o para "pearficar" o Smarty (e prover uma camada BC).
+<!-- list traffic note << -->
+
+<!-- list traffic note >> -->
+<h3>DB::Sybase</h3>
+Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior tem trabalhado bastante com o componente DB::Sybase para o DB abstraction layer e perguntou se algu&eacute;m estaria dispon&iacute;vel para ajudar a test&aacute;-lo. Ele tambem tem ajudado adicionando coment&aacute;rios no formato PHPDoc.
+<!-- list traffic note << -->
+
+<!-- list traffic note >> -->
+<h3>Manual do PEAR e Anivers&aacute;rios</h3>
+<a href="http://pear.php.net/wishlist.php/alexmerz">
+Alexander</a> prometeu tentar ter um novo manual do PEAR funcionando at&eacute; seu anivers&aacute;rio no dia 25 (o de <a href="http://pear.php.net/wishlist.php/cox">Thomas Cox</a> &eacute; dia 24) - se o PEAR ajudou voc&ecirc; d&ecirc; uma olhada nas respectivas wishlists. O resultado destas corre&ccedil;&otilde;es no manual significam que uma documenta&ccedil;&atilde;o mais a fundo pode ser feita para cada pacote e a navega&ccedil;&atilde;o do manual deve funcionar muito melhor.
+<!-- list traffic note << -->
+<!-- pear-dev traffic << -->
+
+<hr noshade>
+
+<!-- proposed packages >> -->
+<h2>Pacotes Propostos:</h2>
+Sebasti&atilde;o Rocha prop&ocirc;s uma classe para gera&ccedil;&atilde;o de relat&oacute;rios e as id&eacute;ias s&atilde;o mostradas num layout em <a href="http://www.i-node.com.br/report">http://www.i-node.com.br/report</a>
+<!-- proposed packages << -->
+
+<hr noshade>
+
+<!-- development >> -->
+<h2>Desenvolvimento</h2>
+Foram feitas altera&ccedil;&otilde;es no CVS esta semana no DB, DB_DataObject, DBA, HTML_Javascript, HTML_OOH_Form, HTML_QuickForm, Log, Mail_Mime, MDB, Net_NNTP, PEAR_Frontend_Gtk, PECL/soap, PHPUnit, SOAP, XML_Tree e XML_XPath.
+<!-- development << -->
+
+</body>
+</html>

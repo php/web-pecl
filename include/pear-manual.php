@@ -104,13 +104,13 @@ function navigationBar($title,$id,$loc) {
 
     echo '<tr><td>';
     if ($PREV[1]) {
-        print_link( $PREV[0] , make_image('caret-l.gif', 'previous') . $PREV[1] ) ;
+        print_link( $PREV[0] , make_image('caret-l.gif', 'previous') .  htmlspecialchars($PREV[1],ENT_QUOTES,$CHARSET) ) ;
     }
     echo '<br /></td>';
 
     echo '<td align="right">';
     if ($NEXT[1]) {
-        print_link( $NEXT[0] , $NEXT[1] . make_image('caret-r.gif', 'next') ) ;
+        print_link( $NEXT[0] , htmlspecialchars($NEXT[1],ENT_QUOTES,$CHARSET)  . make_image('caret-r.gif', 'next') ) ;
     }
     echo '<br /></td>';
     echo '</tr>';

@@ -345,6 +345,12 @@ if ($sth->numRows() == 0) {
             print "<br />\n";
         }
         print "        ";
+		
+		// Print link if it's a PEAR package and it's in the db
+		if ($row['type'] == 'pkg' AND $pid = $dbh->getOne(sprintf("SELECT id FROM packages WHERE name = '%s'", $row['name']))) {
+			$row['name'] = sprintf('<a href="package-info.php?pacid=%s">%s</a>', $pid, $row['name']);
+		}
+
         if (isset($rel_trans[$row['relation']])) {
             $rel = sprintf($rel_trans[$row['relation']], $row['version']);
             printf("%s: %s %s",

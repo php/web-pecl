@@ -37,14 +37,14 @@ $form = new HTML_Form($_SERVER['PHP_SELF'] . "?id=" . $_GET['id'], "POST");
 if (!isset($_POST['confirm'])) {
 
     $bb = new Borderbox("Confirmation");
-    
+
     $form->start();
 
     echo "Are you sure that you want to delete the package?<br /><br />";
     $form->displaySubmit("yes", "confirm");
     echo "&nbsp;";
     $form->displaySubmit("no", "confirm");
-    
+
     echo "<br /><br /><font color=\"#ff0000\"><b>Warning:</b> Deleting
           the package will remove all package information and all
           releases!</font>";
@@ -88,6 +88,9 @@ if (!isset($_POST['confirm'])) {
 
     echo "\n" . $file_rm . " file(s) deleted\n\n";
 
+    $catid = package::info($_GET['id'], 'categoryid');
+    $dbh->query("UPDATE categories SET npackages = npackages-1 WHERE id=$catid");
+
     foreach ($tables as $table => $field) {
         $query = sprintf("DELETE FROM %s WHERE %s = '%s'",
                          $table,
@@ -97,7 +100,7 @@ if (!isset($_POST['confirm'])) {
 
         echo "Removing package information from table \"" . $table . "\": ";
         $dbh->query($query);
-        
+
         echo "<b>" . $dbh->affectedRows() . "</b> rows affected.\n";
     }
 

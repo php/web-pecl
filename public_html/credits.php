@@ -8,17 +8,17 @@ response_header('Credits');
 
 <ul>
   <li>Stig S&aelig;ther Bakken</li>
+  <li>Tomas V.V. Cox</li>
   <li>Martin Jansen</li>
   <li>Colin Viebrock</li>
-  <li>Tomas V.V.Cox</li>
 </ul>
 
 <h3>PEAR documentation team</h3>
 
 <ul>
+  <li>Tomas V.V. Cox</li>
   <li>Martin Jansen</li>
   <li>Alexander Merz</li>
-  <li>Tomas V.V.Cox</li>
 </ul>
 
 <small>(All in alphabetic order)</small>

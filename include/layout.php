@@ -298,7 +298,6 @@ print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
 	  	<tr>
 		 <td>
 		  <small>
-	      <?php print_link('http://www.php.net/', make_image('php-logo.gif', 'PHP', 'left') ); ?>
 	      <?php print_link('/copyright.php', 'Copyright &copy; 2001, 2002, 2003 The PHP Group'); ?><br />
 	      All rights reserved.<br />
 	      </small>
@@ -306,6 +305,7 @@ print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
 		 <td align="right" valign="top">
 		  <small>
 	      Last updated: <?php echo $LAST_UPDATED; ?><br />
+	      Bandwidth and hardware provided by: <?php print_link("http://www.pair.com/", "pair Networks"); ?>
 	      </small>
 		 </td>
 		</tr>

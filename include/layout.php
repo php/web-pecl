@@ -234,7 +234,7 @@ function commonHeader($title) {
 
  <tr valign="top">
 <?php if (isset($SIDEBAR_DATA)) { ?>
-  <td class="sidebar_left" bgcolor="#f0f0f0" width="149">
+  <td colspan="2" class="sidebar_left" bgcolor="#f0f0f0" width="149">
    <table width="149" cellpadding="4" cellspacing="0">
     <tr valign="top">
      <td><?php echo $SIDEBAR_DATA?><br /></td>

@@ -52,9 +52,8 @@ The agenda is as follows:
 
 The following people will participate in person:<br />
 Sebastian Bergmann, Hartmut Holzgraefe, Jeroen Houben, 
-Pierre-Alain Joye, Wolfram Kriesing, Jan Lehnardt,
-Derick Rethans, George Schlossnagle, Lukas Smith, Markus Wolff,
-Sterling Hughes.
+Sterling Hughes, Pierre-Alain Joye, Wolfram Kriesing, Jan Lehnardt,
+Derick Rethans, George Schlossnagle, Lukas Smith, Markus Wolff.
 <br /><br />
 
 Everyone who will participate should be prepared accordingly. The

@@ -200,8 +200,8 @@ function commonHeader($title) {
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br></td></tr>
 
   <tr bgcolor="#006633">
-    <form method="POST" action="/search.php">
       <td align="right" valign="top" colspan="2"><font color="#ffffff">
+        <form method="POST" action="/search.php">
         <small>search for</small>
 <INPUT CLASS="small" TYPE="text" NAME="pattern" VALUE="<? echo htmlspecialchars($prevsearch) ?>" SIZE="30">
 <small>in the</small>
@@ -216,8 +216,7 @@ function commonHeader($title) {
 </SELECT>
 <?	echo make_submit('small_submit_white.gif', 'search', 'bottom');
       ?>&nbsp;<br>
-     </font></td>
-    </form>
+     </form></font></td>
   </tr>
 
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br></td></tr>
@@ -266,7 +265,7 @@ function commonFooter() {
   <tr bgcolor="#009933">
     <form method="GET" action="/mirrors.php" onsubmit="return gotomirror(this);">
       <td align="right" valign="bottom">
-      <script language="javascript">
+      <script language="javascript" type="text/javascript">
       <!--
         function gotomirror(form) {
           url = form.country.options[form.country.selectedIndex].value;

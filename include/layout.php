@@ -165,6 +165,7 @@ function commonHeader($title) {
 <html>
 <head>
  <title>PEAR :: <?php echo $title; ?></title>
+ <link rel="shortcut icon" href="/gifs/favicon.ico" />
  <link rel="stylesheet" href="/style.css" />
 </head>
 

@@ -74,7 +74,7 @@ $bb->end();
 ?>
 
 </form>
-<br /><a href="list.php">Back</a>
+<br /><a href="/ppp/">Back</a>
 
 <p>Note: During the voting process, we will try to set a cookie on your
 system. This cookie is harmless and is just there to prevent you from

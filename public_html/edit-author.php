@@ -23,10 +23,11 @@ switch ($HTTP_POST_VARS['command']) {
     
     case "update" : {
 
-        $query = sprintf("UPDATE users SET name = '%s', email = '%s', homepage = '%s', showemail = '%s', admin = '%s'",
+        $query = sprintf("UPDATE users SET name = '%s', email = '%s', homepage = '%s', userinfo = '%s', showemail = '%s', admin = '%s'",
                          $HTTP_POST_VARS['name'],
                          $HTTP_POST_VARS['email'],
                          $HTTP_POST_VARS['homepage'],
+                         $HTTP_POST_VARS['userinfo'],
                          isset($HTTP_POST_VARS['showemail']) ? 1 : 0,
                          isset($HTTP_POST_VARS['admin']) ? 1 : 0);
 

@@ -117,61 +117,9 @@ if (empty($id)) {
         exit();
     }
 
-    echo '<script language="JavaScript" type="text/javascript">';
-    echo 'function stripName(name) {';
-    echo '    pos = name.indexOf("(");';
-    echo '    return name.substr(0, pos-1);';
-    echo '}';
-    echo 'function getRole() {';
-    echo '    for (z = 0; z < document.form.role.length; z++) {';
-    echo '        if (document.form.role.options[z].selected == true) {';
-    echo '            return document.form.role.options[z].value;';
-    echo '        }';
-    echo '    }';
-    echo '    return "lead";';
-    echo '}';
-
-    echo 'function addMaintainer() {';
-    echo '    for (i = 0; i < document.form.accounts.length; i++) {';
-    echo '        if (document.form.accounts.options[i].selected == true) {';
-    echo '            name = stripName(document.form.accounts.options[i].text);';
-    echo '            role = getRole();';
-    echo '            handle = document.form.accounts.options[i].value;';
-    echo '            value = handle + "||" + role;';
-    echo '            item = new Option(name + " (" + handle + ", " + role + ")", value);';
-    echo '            document.form[\'maintainers[]\'].options[document.form[\'maintainers[]\'].length] = item;';
-    echo '        }';
-    echo '    }';
-    echo '}';
-
-    echo 'function removeMaintainer() {';
-    echo '    for (i = 0; i < document.form[\'maintainers[]\'].length; i++) {';
-    echo '        field = document.form[\'maintainers[]\'].options[i];';
-    echo '        if (field.selected == true) {';
-    echo '            if (document.form[\'maintainers[]\'].length == 1) {';
-    echo '                alert(\'Removing the only maintainer is not possible!\');';
-    echo '                return;';
-    echo '            }';
-    echo '            if (confirm(\'Do you really want to remove \' + field.text + \'?\')) {';
-    echo '                document.form[\'maintainers[]\'].options[i] = null;';
-    echo '            }';
-    echo '        }';
-    echo '    }';
-    echo '}';
-
-    echo 'function beforeSubmit() {';
-    echo '    for (i = 0; i < document.form[\'maintainers[]\'].length; i++) {';
-    echo '        field = document.form[\'maintainers[]\'].options[i].selected = true;';
-    echo '    }';
-    echo '}';
-
-    echo 'function activateAdd() { document.form.add.disabled = false; document.form.role.disabled = false }';
-    echo 'function activateRemove() { document.form.remove.disabled = false; }';
-
-    echo '</script>';
-
     $bb = new BorderBox("Manage maintainers", "100%");
 
+    echo '<script src="/javascript/package-maintainers.js" type="text/javascript"></script>';
     echo '<form onSubmit="javascript:beforeSubmit()" name="form" method="get" action="' . $_SERVER['PHP_SELF'] . '">';
     echo '<input type="hidden" name="update" value="yes" />';
     echo '<input type="hidden" name="pid" value="' . $id . '" />';

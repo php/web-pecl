@@ -69,7 +69,7 @@ if (empty($id)) {
     $query = "SELECT role FROM maintains WHERE handle = ? AND package = ?";
     $check = $dbh->prepare($query);
 
-    $query  = "INSERT INTO maintains VALUES (?, ?, ?)";
+    $query  = "INSERT INTO maintains VALUES (?, ?, ?, 1)";
     $insert = $dbh->prepare($query);
 
     $query  = "UPDATE maintains SET role = ? WHERE handle = ? AND package = ?";

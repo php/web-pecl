@@ -188,11 +188,12 @@ function commonHeader($title) {
  <meta name="description" content="This is the homepage of the PHP PEAR project." />
  <?php // XXX: Add more keywords here. ?>
  <meta name="keywords" content="PEAR, PECL, PHP, PHP Extension and Application Repository, Code, download" />
+
 </head>
 
 <body <?php
     if (!empty($GLOBALS['ONLOAD'])) {
-        print "onload=\"$GLOBALS[ONLOAD]\"";
+        print "onload=\"" . $GLOBALS['ONLOAD']. "\"";
     }
 ?>	topmargin="0" leftmargin="0"
 	marginheight="0" marginwidth="0"
@@ -250,7 +251,7 @@ function commonHeader($title) {
   <tr bgcolor="#006600">
     <td align="right" valign="top" colspan="5" height="1">
     <form method="post" action="/search.php">
-    <font color="#ffffff"><small>search for</small>
+    <font color="#ffffff"><small>Search for</small>
     <input class="small" type="text" name="search_string" value="" size="20" />
     <small>in the</small>
     <select name="search_in" class="small">

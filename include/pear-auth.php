@@ -18,7 +18,7 @@
    $Id$
 */
 
-function auth_reject($realm = null, $message = null, $refresh = false)
+function auth_reject($realm = null, $message = null)
 {
     global $format;
     if ($realm === null) {
@@ -125,14 +125,14 @@ function auth_verify($user, $passwd)
     return false;
 }
 
-function auth_require($admin = false, $refresh = false)
+function auth_require($admin = false)
 {
     global $auth_user;
 
     $user = @$_COOKIE['PEAR_USER'];
     $passwd = @$_COOKIE['PEAR_PW'];
     if (!auth_verify($user, $passwd)) {
-        auth_reject(null, null, $refresh); // exits
+        auth_reject(); // exits
     }
     if ($admin && empty($auth_user->admin)) {
         response_header("Insufficient Privileges");

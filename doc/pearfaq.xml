@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.26 2001-11-19 15:54:34 alexmerz Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.27 2001-11-19 23:32:18 chregu Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-11-19 15:54:34 $</date>
-  <version>$Revision: 1.26 $</version>
+  <date>$Date: 2001-11-19 23:32:18 $</date>
+  <version>$Revision: 1.27 $</version>
  </artheader>
 
  <qandaset>
@@ -188,6 +188,44 @@
      This used to be the former name of PEAR: PHP Extension and Code Library 
      (pronounced "pickle").
     </para>
+   </answer>
+  </qandaentry> 
+
+  <qandaentry>
+   <question title="How do I install a PEAR module written in C?" />
+   <answer>
+    <author name="Christian Stocker"/>
+    <para>
+    The support for c-extension in PEAR is not very sophisticated at the moment.
+    Here's a short description of how to get c-modules running on your system until
+    the PEAR::Installer does that for you .
+    </para>
+    <para>
+     Download the package from pear, then untar it somewhere. Go into the newly
+     built directory and do the following steps:
+     </para>
+      <simplelist>
+     <member>phpize</member>
+    <member>./configure</member>
+    <member>make</member>
+    <member>cp modules/module.so /usr/local/lib/php</member>
+    </simplelist>
+    <para>
+    The path, where the module.so is expected, can be different on your system 
+    (check php.ini and phpinfo()). 
+    To actually use the module, you have to add it to the extension directive in php.ini 
+    or to load it with dl("module.so") within your php-files.
+   </para>
+   <para>
+     You can compile this extension directly into your php-binary, too. For this you
+     have to extract the package into php4/ext (in your source directory). After that do 
+     also phpize in this new module-directory. But before you can configure your main
+     php-exectuable, you have to do a ./buildconf on the toplevel of the php-sources.
+     Now you can configure/compile your php-executable with the new extension, as you 
+     would with all other extensions.
+    </para>
+
+
    </answer>
   </qandaentry> 
    

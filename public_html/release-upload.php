@@ -75,6 +75,26 @@ do {
             display_error("You don't have permissions to upload this release."); break;
         }
 
+		  $lic = trim($info['release_license']);
+		  if (!strcasecmp($lic, "GPL") || !strcasecmp($lic, "LGPL")) {
+			  display_error("Illegal license $lic");
+			  break;
+		  }
+		  /* sanity check for C code */
+		  $tar = new Archive_Tar($distfile);
+		  $contains_C = false;
+		  foreach ($tar->listContent() as $file_in_tar) {
+				if (substr($file_in_tar, -2) == ".c") {
+					$contains_C = true;
+					break;
+				}
+		  }
+
+		  if (!$contains_C) {
+			  display_error("This package contains no C code");
+			  break;
+		  }
+
         $e = package::updateInfo($pacid, array(
                                             'summary'     => $info['summary'],
                                             'description' => $info['description'],

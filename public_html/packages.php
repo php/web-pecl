@@ -10,20 +10,13 @@ if (empty($domain)) {
     $package_title = "Package Browser: $domain";
 }
 
-$sth = $dbh->query("SELECT packages.name, packages.leftvisit, packages.rightvisit, packages.placeholder, releases.version FROM packages LEFT JOIN releases ON packages.name = releases.package WHERE $package_where");
+$sth = $dbh->query("SELECT packages.name, packages.leftvisit, packages.rightvisit, packages.virtual, releases.version FROM packages LEFT JOIN releases ON packages.name = releases.package WHERE $package_where");
 
 //$sth = $dbh->query("SELECT * FROM packages WHERE $package_where");
 
-print "<H2>$package_title</H2>\n";
+print "<h2>$package_title</h2>\n";
 
-print "<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=1>";
-print "<TR><TD BGCOLOR=\"#000000\">\n";
-print "<TABLE CELLSPACING=1 BORDER=0 CELLPADDING=3>\n";
-print " <TR BGCOLOR=\"#e0e0e0\">\n";
-print "  <TH>Package</TH>\n";
-print "  <TH>Stable</TH>\n";
-print "  <TH>Sub-packages</TH>\n";
-print " </TR>\n";
+border_box_start(array("Package", "Stable", "Sub-packages"));
 $i = 0;
 while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC) === DB_OK) {
     if (++$i % 2) {
@@ -33,7 +26,7 @@ while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC) === DB_OK) {
         $bg1 = "#f0f0f0";
         $bg2 = "#e0e0e0";
     }
-    print " <TR>\n";
+    print " <tr>\n";
     extract($row);
     if ($leftvisit && $rightvisit) {
         $lv = $leftvisit + 1;
@@ -42,28 +35,28 @@ while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC) === DB_OK) {
     } else {
         $num = 0;
     }
-    print "  <TD BGCOLOR=\"$bg1\">";
+    print "  <td bgcolor=\"$bg1\">";
     if ($placeholder) {
         print "$name";
     } else {
-        print "<A HREF=\"pkginfo.php?package=$name\">$name</A>";
+        print "<a href=\"pkginfo.php?package=$name\">$name</a>";
     }
-    print "</TD>\n  <TD BGCOLOR=\"$bg2\">";
+    print "</td>\n  <td bgcolor=\"$bg2\">";
     if ($version) {
-        print "<A HREF=\"pkginfo.php?package=$name&release=$version\">";
-        print "$version</A>";
+        print "<a href=\"pkginfo.php?package=$name&release=$version\">";
+        print "$version</a>";
     } else {
         print "&nbsp;";
     }
-    print "</TD>\n  <TD BGCOLOR=\"$bg1\">";
+    print "</td>\n  <td bgcolor=\"$bg1\">";
     if ($num > 0) {
-        print "$num <A HREF=\"$PHP_SELF?domain=$name\">sub-packages</A>";
+        print "$num <a href=\"$PHP_SELF?domain=$name\">sub-packages</a>";
     } else {
         print "&nbsp;";
     }
-    print "</TD>\n </TR>\n";
+    print "</td>\n </tr>\n";
 }
-print "</TABLE></TD></TR></TABLE>\n";
+border_box_end();
 
 response_footer();
 

@@ -60,9 +60,12 @@ if (DEVBOX) {
     menu_link("New Package", "package-new.php");
     menu_link("Upload Release", "release-upload.php");
     menu_link("Administrators", "admin.php");
+    
+    $RSIDEBAR_DATA = "<a href=\"weeklynews.php\">PEAR Weekly News</a><br /><br />";
+    
     $recent = release::getRecent();
     if (@sizeof($recent) > 0) {
-        $RSIDEBAR_DATA = "<h3>Recent Releases</h3>\n";
+        $RSIDEBAR_DATA .= "<h3>Recent Releases</h3>\n";
         $RSIDEBAR_DATA .= "<table>";
         foreach ($recent as $release) {
             extract($release);

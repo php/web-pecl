@@ -252,7 +252,7 @@ function commonHeader($title) {
 #
 
 function commonFooter() {
-	global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES;
+	global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES,$SCRIPT_NAME;
 ?>
       <br>
      </td>

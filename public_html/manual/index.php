@@ -99,6 +99,11 @@ HREF="packages.auth.php"
 HREF="packages.net_checkip.php"
 >Net_CheckIP: Validation of IPv4 adresses</A
 ></DT
+><DT
+>III. <A
+HREF="packages.net_portscan.php"
+>Net_Portscan</A
+></DT
 ></DL
 ></DD
 ><DT

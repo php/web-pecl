@@ -2,7 +2,7 @@
 sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
-  'prev' => array('packages.net_checkip.php', ''),
+  'prev' => array('packages.net_portscan.net_portscan.php', 'Net_Portscan'),
   'next' => array('contributing-howto.php', 'How to contribute to PEAR'),
   'up'   => array('index.php', 'PEAR Manual'),
   'toc'  => array(

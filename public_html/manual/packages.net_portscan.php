@@ -2,8 +2,8 @@
 sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
-  'prev' => array('packages.php', 'PEAR Packages'),
-  'next' => array('packages.auth.auth.php', 'Auth'),
+  'prev' => array('packages.net_checkip.php', ''),
+  'next' => array('packages.net_portscan.net_portscan.php', 'Net_Portscan'),
   'up'   => array('packages.php', 'PEAR Packages'),
   'toc'  => array(
     array('packages.php#packages', ''),
@@ -11,25 +11,24 @@ setupNavigation(array(
     array('packages.php#AEN0', ''),
     array('packages.net_checkip.php', ''),
     array('packages.net_portscan.php', 'Net_Portscan'))));
-manualHeader('Auth','packages.auth.php');
+manualHeader('Net_Portscan','packages.net_portscan.php');
 ?><DIV
 CLASS="reference"
 ><A
-NAME="packages.Auth"
+NAME="packages.Net_Portscan"
 ></A
 ><DIV
 CLASS="TITLEPAGE"
 ><H1
 CLASS="title"
->II. Auth</H1
+>III. Net_Portscan</H1
 ><DIV
 CLASS="PARTINTRO"
 ><A
-NAME="AEN417"
+NAME="AEN471"
 ></A
 ><P
->&#13;   The PEAR::Auth package helps you to create PHP based
-   authentication systems.
+>&#13;    The Net_Portscan package provides 
   </P
 ></DIV
 ><DIV
@@ -41,17 +40,17 @@ CLASS="TOC"
 ></DT
 ><DT
 ><A
-HREF="packages.auth.auth.php"
+HREF="packages.net_portscan.net_portscan.php"
 ><B
 CLASS="classname"
->Auth</B
+>Net_Portscan</B
 ></A
 > &#8212; 
-    PHP based authentication systems.
+    Portscanner utilities.
    </DT
 ></DL
 ></DIV
 ></DIV
 ></DIV
-><?php manualFooter('Auth','packages.auth.php');
+><?php manualFooter('Net_Portscan','packages.net_portscan.php');
 ?>

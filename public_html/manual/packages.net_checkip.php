@@ -3,13 +3,14 @@ sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
   'prev' => array('packages.auth.auth.php', 'Auth'),
-  'next' => array('contributing.php', 'Contributing to PEAR'),
+  'next' => array('packages.net_portscan.php', 'Net_Portscan'),
   'up'   => array('packages.php', 'PEAR Packages'),
   'toc'  => array(
     array('packages.php#packages', ''),
     array('packages.auth.php', 'Auth'),
     array('packages.php#AEN0', ''),
-    array('packages.net_checkip.php', ''))));
+    array('packages.net_checkip.php', ''),
+    array('packages.net_portscan.php', 'Net_Portscan'))));
 manualHeader('','packages.net_checkip.php');
 ?><DIV
 CLASS="ARTICLE"

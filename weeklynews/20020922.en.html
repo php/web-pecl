@@ -167,14 +167,17 @@ fournit  des patches: Nigel Armstrong, Adam Morton, Rob, Richard Heyes.
 With this class you can forgot about annoying awaiting while all these mails 
 will be send via eg: smtp or qmail.<br>
  Mail_Queue performs 5 tasks:<br>
- * Puts mails in temporary container waiting to be fed to MTA, put( $from, 
-$recipient, $hdrs, $body ); where $hdrs and $body are in mime format.<br>
- * Allows define after how many seconds Mail_Queue should send each mail.<br>
- * Can backup or delete mails after send.<br>
- * Provides checking for failed delivered mails, it probes to send them during 
-the next session until success or a given number of iterations. On defeat 
-a backup each mail will be done.<br>
- * Allow easly sending mails in background by crontab or in over way.<br>
+<ul>
+  <li>Puts mails in temporary container waiting to be fed to MTA, put( $from, 
+$recipient, $hdrs, $body ); where $hdrs and $body are in mime format.</li>
+  <li>Allows define after how many seconds Mail_Queue should send each mail.</li>
+  <li>Can backup or delete mails after send.</li>
+  <li>Provides checking for failed delivered mails, it probes to send them
+during the next session until success or a given number of iterations. On
+defeat a backup each mail will be done.</li>
+  <li>Allow easly sending mails in background by crontab or in over way.<br>
+  </li>
+</ul>
  
 <h3>DB_Grid</h3>
   Yavor Shahpasov <a
@@ -182,12 +185,12 @@ a backup each mail will be done.<br>
 his module that provide dynamic binding betwin a database (table or sql)
 and a table (html or plain text).<br>
 <h3>File_Repository </h3>
-&nbsp;Mike McCallister proposed his files repository module, taking all its
-importance on big volumes of files. Indeed, we noticed that the performances
-of the systems of traditional files quickly fall as soon as the quantity
-of files being in the same folder is important. This module thus proposes
-as a viable and very usefill alternative. The features are very interesting,
-you can consult them in detail in the message of <a
+Mike McCallister proposed his files repository module, taking all its importance
+on big volumes of files. Indeed, we noticed that the performances of the
+systems of traditional files quickly fall as soon as the quantity of files
+being in the same folder is important. This module thus proposes as a viable
+and very usefill alternative. The features are very interesting, you can
+consult them in detail in the message of <a
  href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=9226">announcement.</a><br>
             
 <h3>Spread API</h3>

@@ -27,6 +27,11 @@ em {
     color: #66cc66;
 }
 
+.compact {
+    font-family: arial, helvetica, sans-serif;
+    font-size: 90%;
+}
+
 .menuWhite {
     font-family: verdana,arial,helvetica,sans-serif;
     font-size: 75%;
@@ -35,6 +40,7 @@ em {
 .menuBlack {
     font-family: verdana,arial,helvetica,sans-serif;
     text-decoration: none;
+    font-weight: bold;
     font-size: 75%;
     color: #000000;
 }

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>x</title>
+</head>
+<body>
+	<small><i>by Alan Knowles alan_k@php.net (&uuml;bersetzt von Alexander Merz alexmerz(at)php.net)</i></small>
+
+<p>
+Diese Woche gibt es drei neue Beta/Entwickler-Releases zum Testen, dazu Neues vom 
+PEAR-Package-Installer, zu Smarty und &uuml;ber unsere Geburtstagskinder.
+</p>
+
+<hr>
+<h2>Neue Releases</h2>
+
+<h3>Beta</h3>
+<p>
+MDB (die Symbiose von PEAR::DB und Metabase) erhielt einige Korrekturen
+f&uuml;r den PostgreSQL-Treiber und die API wurde etwas aufger&uuml;mt.
+</p>
+<p>
+HTML_Javascript, ein Package um PHP-Variablen in JavaScript zu nutzen
+und andere Helferlein f&uuml;r die JavaScript-Generierung.
+</p>
+
+<h3>Devel</h3>
+<p>
+DBA, ein  Wrapper f&uuml;r die PHP-DBA-Funcktion und einer Implementierung eines SQL 
+Treibers f&uuml;r DBA-Datenbanken.
+</p>
+
+<hr>
+
+<h2>PEAR-DEV Meldungen</h2>
+<h3>MDB - Return by reference</h3>
+<p>
+In einer kurzen Diskussion ging es um die Entscheidung,
+ob MDB Ergebnisse 'per reference' analog Metabase (Basis f&uuml;r MDB) 
+zur&uuml;ckgeben soll, z.B.:
+<br>
+<pre>
+getTextValue($bar, $bar_quoted);<br>
+<span class="moz-txt-citetags"></span>
+$query = 'SELECT * from foo WHERE bar = '.$bar_quoted;
+<span class="moz-txt-citetags"></span><br>
+</pre>
+Diese Form der R&uuml;ckgabe &uuml;ber Eingabeparameter ist aber in PEAR un&uuml;blich. 
+Standard ist die R&uuml;ckgabe von Ergebnisse bzw. im Fehlerfall eines PEAR_Error-Objekt.
+Paull Cooper unterst&uuml;tzte Lukas Smith mit dem Postgres-Treiber.
+</p>
+
+<h3>Zend Engine 2</h3>
+<p>
+Stig experimentiert immer noch mit der dem try/catch-Mechanismus. &Uuml;ber die Zukunft 
+&uuml;ber die Form der Fehlerr&uuml;ckgabe f&uuml;r "ZE2 only"-Packages wird sp&auml;ter
+entschieden.
+</p>
+
+<h3>PEAR-Installer schreitet voran</h3>
+<p>
+Der PEAR-Installer wurde verst&auml;rkt getestet, um weitere Bugs auszub&uuml;geln.
+Insbesondere die PEAR-Installation ist unter Windows noch nicht unproblematisch.
+Die Basis-Installation sollte unabh&auml;ngig davon, auch unter Win32, &uuml;ber Lynx funktionieren:
+<pre wrap="">
+c&gt; lynx -source <a class="moz-txt-link-freetext" href="http://pear.php.net/go-pear">http://pear.php.net/go-pear</a> &gt; go-pear<br>c&gt; php -d output_bufering=0 -q go-pear<br>
+</pre>
+</p>
+
+<h3>Package.xml - auf Korrektheit &uuml;berpr&uuml;fen</h3>
+<p>
+W&auml;hrend der Diskussion &uuml;ber die Erzeugung des HTML_OOH_Forms-Packages wurde darauf hingewiesen,
+dass der PEAR-Package-Manager die 'package.xml'-Datei &uuml;berpr&uuml;fen kann.
+<pre wrap="">pear pv</pre>
+In diesem Fall war das Problem, dass das 'role'-Attribut (&lt;file role="???"&gt;filename.x&lt;/file&gt;)
+f&uuml;r einen Datei in einem Package einer der folgenden Werte annehmen kann:
+<pre wrap="">php ext test doc data src script</pre>
+</p>
+
+<h3>Pear und Smarty </h3>
+<p>
+Es wurde auf der PEAR-Mailingliste angefragt, warum Smarty (<a href="http://smarty.php.net">http://smarty.php.net</a>)
+nicht ein Bestandteil von PEAR ist. Der Grund: Es gab bis jetzt keinen Freiwilligen,
+die Smarty auf die PEAR-Standards (plus einer Schicht f&uuml;r R&uuml;ckw&auml;rtskompatibilt&auml;t) umgeschrieben hat.
+</p>
+
+<h3>DB::Sybase</h3>
+<p>
+Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior hat am DB::Sybase-Treiber gearbeitet
+und sucht nach Testern. Ausserdem hat er die PHPDoc-Kommentare &uuml;berarbeitet.
+</p>
+
+<h3>PEAR Manual und Geburtstage</h3>
+<p>
+<a href="http://pear.php.net/wishlist.php/alexmerz">
+Alexander</a> versprach das &uuml;berarbeitet Manual bis zu seinem Geburstag am 25. Juli fertig zu stellen.
+(<a href="http://pear.php.net/wishlist.php/cox">Thomas Cox's</a>
+seiner ist &uuml;brigens am 24.) - Wenn PEAR Euch geholfen hat, werft mal einen Blick auf ihre Wunschzettel.
+Das Ziel der Neubearbeitung des Manuals ist eine verbesserte Dokumentation aller Packages und eine 
+Vereinheitlichung und Verbesserung der Navigation innerhalb des Manuals.
+</p>
+
+<hr>
+
+<h2>Package-Vorschl&auml;ge:</h2>
+<p>
+Sebasti&atilde;o Rocha schlug seine Report-Generator-Klasse vor, auf <a href="http://www.i-node.com.br/report">http://www.i-node.com.br/report</a>
+findet man einige Beispiele.
+</p>
+
+<hr>
+
+<h2>Development</h2>
+<p>
+CVS-Aktivit&auml;ten fanden letzte Woche bei DB, DB_DataObject ,
+DBA, HTML_Javascript, HTML_OOH_Form, HTML_QuickForm, Log, Mail_Mime, MDB,
+Net_NNTP, PEAR_Frontend_Gtk, PECL/soap, PHPUnit, SOAP, XML_Tree und XML_XPath statt.
+</p>
+
+</body>
+</html>

@@ -571,11 +571,14 @@ class release
         }
 
 		if ($file !== null) {
-			$path = $dbh->getRow("SELECT fullpath, release, id FROM files ".
+			$row = $dbh->getRow("SELECT fullpath, release, id FROM files ".
 								 "WHERE basename = '" . $file . "'");
-			if (PEAR::isError($path)) {
-				return $path;
-			}
+			if (PEAR::isError($row)) {
+				return $row;
+			} elseif ($row === null) {
+                return $this->raiseError("File '$file' not found");
+            }
+            $path = $row[0];
 			$log_release = $path[1];
 			$log_file = $path[2];
 			$basename = $file;

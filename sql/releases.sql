@@ -1,10 +1,11 @@
 CREATE TABLE releases (
        id             INTEGER NOT NULL AUTO_INCREMENT,
        package        VARCHAR(80) NOT NULL REFERENCES packages(name),
-       release	      VARCHAR(20) NOT NULL,
-       releasedate    DATETIME,
-       releasenotes   TEXT,
+       version	      VARCHAR(20) NOT NULL,
+       doneby	      VARCHAR(20) NOT NULL REFERENCES users(handle),
+       releasedate    DATETIME NOT NULL,
+       releasenotes   TEXT DEFAULT '',
 
        PRIMARY KEY(id),
-       UNIQUE(package, release)
+       UNIQUE INDEX(package, version)
 );

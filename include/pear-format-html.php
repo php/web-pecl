@@ -5,7 +5,7 @@ $pear_green = "#00b03b";
 function response_header($title = "PEAR: the PHP Extension and Application Repository",
                          $style = false)
 {
-    global $_style, $pear_green, $PHP_AUTH_NAME, $PHP_AUTH_PW;
+    global $_style, $pear_green, $PHP_AUTH_USER, $PHP_AUTH_PW;
     global $_header_done;
     if ($_header_done) {
         return;
@@ -22,8 +22,9 @@ function response_header($title = "PEAR: the PHP Extension and Application Repos
     print "<IMG SRC=\"/gifs/pearsmall.gif\" WIDTH=96 HEIGHT=48 ALT=\"\">";
     print "</TD><TD ALIGN=\"left\" VALIGN=\"top\">";
     print "<FONT SIZE=\"-1\">";
-    if ($PHP_AUTH_NAME) {
-	print '&nbsp;<A HREF="logout.php"><FONT COLOR="#ffffff">';
+    if ($PHP_AUTH_USER) {
+	print "&nbsp;<FONT COLOR=\"#ffffff\">user:&nbsp;<B>$PHP_AUTH_USER</B></FONT>".
+            '<BR>&nbsp;<A HREF="logout.php"><FONT COLOR="#ffffff">';
 	print "logout</FONT></A><BR>\n";
     } else {
 	print '&nbsp;<A HREF="login.php"><FONT COLOR="#ffffff">';

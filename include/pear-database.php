@@ -39,6 +39,9 @@ function renumber_visitations($debug = false)
 {
     global $dbh;
     $sth = $dbh->query("SELECT * FROM packages ORDER BY name");
+    if (DB::isError($sth)) {
+        return $sth;
+    }
     $tree = array('' => array("children" => array()));
     $oldleft = array();
     $oldright = array();
@@ -72,11 +75,23 @@ function renumber_visitations($debug = false)
             "WHERE name = '$node'";
         $dbh->query($query);
     }
+    return true;
+}
 
-    $from = $tree['Science_Chemistry']['leftvisit'];
-    $to = $tree['Science_Chemistry']['rightvisit'];
-    $test = $dbh->getAll("SELECT name FROM packages WHERE leftvisit <= $from ".
-                         "AND rightvisit >= $to");
+function &get_recent_releases($n = 5) {
+    global $dbh;
+    $sth = $dbh->query("SELECT packages.name, packages.summary, ".
+                       "releases.version, releases.releasedate, ".
+                       "releases.releasenotes, releases.doneby ".
+                       "FROM packages, releases ".
+                       "WHERE packages.name = releases.package ".
+                       "ORDER BY releases.releasedate DESC");
+    $recent = array();
+    // XXX FIXME when DB gets rowlimit support
+    while ($n-- > 0 && ($err = $sth->fetchInto($row, DB_FETCHMODE_ASSOC)) === DB_OK) {
+        $recent[] = $row;
+    }
+    return $recent;
 }
 
 function invalidHandle($handle) {
@@ -107,6 +122,8 @@ function invalidHomepage($homepage) {
     return 'invalid URL';
 }
 
+
+
 class PEAR_User extends DB_storage
 {
     function PEAR_User(&$dbh, $user)
@@ -133,6 +150,5 @@ class PEAR_Release extends DB_storage
         $this->setup(array($package, $release));
     }
 }
-
 
 ?>

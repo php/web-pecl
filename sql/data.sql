@@ -1,5 +1,5 @@
-INSERT INTO users VALUES('SSB', '8c38dfa80e2bf8b2076a30848f111300', 'Stig Bakken', 'ssb@fast.no', 'http://www.pvv.org/~ssb/', 944079834, 944079834, 'SSB', 1, 1, 1, NULL);
-INSERT INTO maintains VALUES('SSB','DB','lead');
+INSERT INTO users VALUES('ssb', '738aa8d3bc02eb8712acd0eb2cf6dfd5', 'Stig S. Bakken', 'stig@php.net', 'http://www.pvv.org/~ssb/', '2001-04-18', 'ssb', NULL, 1, 1, 1, NULL);
+INSERT INTO maintains VALUES('ssb','HTTP','lead');
 
 -- INSERT INTO packages (name,placeholder) VALUES('',1);
 INSERT INTO packages (name,summary,copyright) VALUES('DB','PEAR database abstraction layer','PHP License');
@@ -19,7 +19,7 @@ INSERT INTO packages (name,parent) VALUES('HTML_IT[X]','HTML');
 INSERT INTO packages (name,parent) VALUES('HTML_Form','HTML');
 INSERT INTO packages (name,parent) VALUES('HTML_Menu','HTML');
 INSERT INTO packages (name,parent) VALUES('HTML_Processor','HTML');
-INSERT INTO packages (name,parent) VALUES('HTTP',NULL);
+INSERT INTO packages (name,parent,summary) VALUES('HTTP',NULL,'Some HTTP-related functions');
 INSERT INTO packages (name,parent) VALUES('HTTP_Compress','HTTP');
 INSERT INTO packages (name,parent,placeholder) VALUES('Image',NULL,1);
 INSERT INTO packages (name,parent) VALUES('Image_Remote','Image');
@@ -41,3 +41,5 @@ INSERT INTO packages (name,parent,placeholder) VALUES('XML',NULL,1);
 INSERT INTO packages (name,parent) VALUES('XML_RPC','XML');
 INSERT INTO packages (name,parent) VALUES('XML_Parser','XML');
 INSERT INTO packages (name,parent) VALUES('XML_Render','XML');
+
+-- INSERT INTO releases VALUES(NULL, 'HTTP', '1.0', 'ssb', '2001-04-18', 'Initial release');

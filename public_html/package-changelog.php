@@ -45,14 +45,13 @@ if (count($pkg['releases']) == 0) {
     $bb->headRow("Release", "What has changed?");
 
     foreach ($pkg['releases'] as $version => $release) {
+        $link = make_link("package-info.php?package=" . $pkg['name'] .
+                          "&amp;version=" . urlencode($version), $version);
+
         if (!empty($_GET['release']) && $version == $_GET['release']) {
-            $bb->horizHeadRow($version,
-                          nl2br($release['releasenotes'])
-                          );
+            $bb->horizHeadRow($link, nl2br($release['releasenotes']));
         } else {
-            $bb->plainRow($version,
-                          nl2br($release['releasenotes'])
-                          );
+            $bb->plainRow($link, nl2br($release['releasenotes']));
         }
     }
 }

@@ -26,7 +26,7 @@ require_once 'Date.php' ;
 /*
 * 
 Notes about this script:
-- it is really just includes the body from the /news/{lang} folder, and adds the list of releases.
+- it is really just includes the body from the /weeklynews/{lang} folder, and adds the list of releases.
 - (Very file based)
 
 
@@ -47,7 +47,7 @@ function show_languages() {
     );
     echo 'View In :: ';
     foreach ($available_langs  as $lang => $string) {
-        echo "<a href=\"/news.php/{$lang}/\">{$string}</a> :: ";
+        echo "<a href=\"/weeklynews.php/{$lang}/\">{$string}</a> :: ";
     }
 }
 
@@ -55,7 +55,7 @@ function show_languages() {
 function show_news_menu() {
     response_header("PEAR Weekly News");
     $lang = "en";
-    if (preg_match("/^\/news.php\/([a-z]{2})\/.*$/", $_SERVER['REQUEST_URI'],$args)) {
+    if (preg_match("/^\/weeklynews.php\/([a-z]{2})\/.*$/", $_SERVER['REQUEST_URI'],$args)) {
         $lang = $args[1];
     }
     show_languages();
@@ -66,10 +66,10 @@ function show_news_menu() {
         $uweeks[] = mktime (0,0,0,date("m",$start)  ,date("d",$start)-($i*7),date("Y",$start));
     }
     foreach($uweeks as $utime) {
-        if (!@file_exists(dirname(__FILE__) . "/../news/".date("Ymd",$utime). ".{$lang}.html")) {
+        if (!@file_exists(dirname(__FILE__) . "/../weeklynews/".date("Ymd",$utime). ".{$lang}.html")) {
             continue;
         }
-        menu_link("Weekly Summary for " . date("d M Y",$utime), "/news.php/$lang/".date("Ymd",$utime). ".html");
+        menu_link("Weekly Summary for " . date("d M Y",$utime), "/weeklynews.php/$lang/".date("Ymd",$utime). ".html");
     }
 }
 
@@ -82,7 +82,7 @@ function show_news($lang,$date) {
     echo "<H1>PEAR Weekly News for week ending " . $week->format("%d %B %Y") . "</H1>";
     
     
-    $summary = implode('',file(dirname(__FILE__) . "/../news/$date.{$lang}.html"));
+    $summary = implode('',file(dirname(__FILE__) . "/../weeklynews/$date.{$lang}.html"));
     // get the body!
     $summary = preg_replace("/^(.*)<body/si", "",$summary);
     $summary = preg_replace("/^([^>]*)>/si", "",$summary);
@@ -125,8 +125,8 @@ function show_news($lang,$date) {
 */ 
 $args = array();
 $show_menu = TRUE;
-if (preg_match("/^\/news.php\/([a-z]{2})\/([0-9]+)\.html$/", $_SERVER['REQUEST_URI'],$args)) {
-    if (@file_exists(dirname(__FILE__) . "/../news/".$args[2] . "." .$args[1] .".html")) { 
+if (preg_match("/^\/weeklynews.php\/([a-z]{2})\/([0-9]+)\.html$/", $_SERVER['REQUEST_URI'],$args)) {
+    if (@file_exists(dirname(__FILE__) . "/../weeklynews/".$args[2] . "." .$args[1] .".html")) { 
         $show_menu = FALSE;
     }
 }

@@ -65,7 +65,7 @@ echo hdelim();
 echo "<h3>Available when logged in:</h3>";
 menu_link("New Package", "package-new.php");
 menu_link("Upload Release", "release-upload.php");
-menu_link("Administrators", "admin.php");
+menu_link("Administrators", "/admin/");
 $recent = release::getRecent();
 if (@sizeof($recent) > 0) {
     $RSIDEBAR_DATA = "<h3>Recent Releases</h3>\n";

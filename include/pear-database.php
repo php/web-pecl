@@ -781,10 +781,7 @@ END;
         $to   = '"PEAR general list" <pear-general@lists.php.net>';
         $from = '"PEAR Announce" <pear-dev@lists.php.net>';
         $subject = "[ANNOUNCEMENT] $release Released.";
-        // XXX Don't send emails for local PEAR web instalations
-        if ($_SERVER['SERVER_NAME'] == 'pear.php.net') {
-            mail($to, $subject, $txtanounce, "FROM: $from");
-        }
+        mail($to, $subject, $txtanounce, "From: $from");
     }
 
     // }}}

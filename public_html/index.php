@@ -6,7 +6,7 @@ if ($HTTP_SERVER_VARS['QUERY_STRING'] == 'devme') {
     setcookie('pear_dev', 'on', time() + $duration, '/');
     $HTTP_COOKIE_VARS['pear_dev'] = 'on';
 } elseif ($HTTP_SERVER_VARS['QUERY_STRING'] == 'undevme') {
-    setcookie('pear_dev');
+    setcookie('pear_dev', '', time() - 3600, '/');
     unset($HTTP_COOKIE_VARS['pear_dev']);
 }
 

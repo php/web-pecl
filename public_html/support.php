@@ -18,12 +18,7 @@
    $Id$
 */
 
-$SIDEBAR_DATA='
-<h3>Documentation</h3>
-<p>
-The manual section for PECL can be found
-<a href="/manual/">here</a>.</p>
-';
+$SIDEBAR_DATA='';
 
 response_header("Support");
 ?>

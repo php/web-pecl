@@ -31,9 +31,6 @@ $GLOBALS['main_menu'] = array(
 );
 
 $GLOBALS['docu_menu'] = array(
-    '/manual/en/about-pear.php' => 'About PEAR',
-    '/manual/index.php'    => 'Manual',
-    '/manual/en/faq.php'   => 'FAQ',
     '/support.php'         => 'Support'
 );
 
@@ -131,8 +128,6 @@ function response_header($title = 'The PHP Extension Community Library', $style 
         print '&nbsp;</small></span><br />';
         print_link('/?logout=1', 'Logout', false, 'class="menuLink"');
     }
-    echo delim();
-    print_link('/manual/', 'Docs', false, 'class="menuLink"');
     echo delim();
     print_link('/packages.php', 'Packages', false, 'class="menuLink"');
     echo delim();

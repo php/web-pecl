@@ -30,14 +30,7 @@ extensions.
 The packaging and distribution system used by PECL is shared with its
 sister, <acronym title="PHP Extension and Application Repository"
 >PEAR</acronym>.
-</p>
-
-<p>
-See the <a href="/manual/en/faq.php">FAQ</a> and <a
-href="/manual/">manual</a> for more information.
-
-<br /></p>
--';
+</p>-';
 
 response_header();
 

@@ -17,7 +17,7 @@ if ($HTTP_SERVER_VARS['SERVER_NAME'] != 'pear.php.net' || isset($HTTP_COOKIE_VAR
 }
 
 if (empty($format)) {
-    if (basename($PHP_SELF) == "xmlrpc.php") {
+    if (basename($_SERVER['PHP_SELF']) == "xmlrpc.php") {
         $format = "xmlrpc";
     } else {
         $format = "html";
@@ -53,5 +53,5 @@ if (empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }
 
-$LAST_UPDATED = date("D M d H:i:s Y T", filectime($SCRIPT_FILENAME));
+$LAST_UPDATED = date("D M d H:i:s Y T", filectime($_SERVER['SCRIPT_FILENAME']));
 ?>

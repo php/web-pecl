@@ -23,7 +23,7 @@ if (@$cmd == "Add note" && !empty($note) && !empty($key) && !empty($id)) {
 }
 
 elseif (@$cmd == "Delete note" && !empty($id)) {
-    note::delete($id);
+    note::remove($id);
 }
 
 // }}}
@@ -51,7 +51,7 @@ elseif (@$cmd == "Reject Request" && !empty($uid)) {
 // {{{ delete account request
 
 elseif (@$cmd == "Delete Request" && !empty($uid)) {
-    if (user::delete($uid)) {
+    if (user::remove($uid)) {
         print "<p>Deleted account request for \"$uid\"...</p>";
     }
 }

@@ -153,7 +153,7 @@ class BorderBox {
 		print "$i<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"$this->width\">\n";
 		print "$i <tr>\n";
 		print "$i  <td bgcolor=\"#000000\">\n";
-		print "   <table cellpadding=\"2\" cellspacing=\"1\" border=\"0\" width=\"100%\">\n";
+		print "$i   <table cellpadding=\"2\" cellspacing=\"1\" border=\"0\" width=\"100%\">\n";
 		print "$i    <tr bgcolor=\"#cccccc\">\n";
 		print "$i     <th";
 		if ($this->cols > 1) {

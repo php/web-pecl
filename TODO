@@ -32,6 +32,7 @@ SHORT TERM:
 * "pear" script:
 ** windows support: System class and Tar.php test under win
 
+* add bug reporting system
 
 MEDIUM TERM:
 

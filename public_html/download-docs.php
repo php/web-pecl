@@ -13,7 +13,7 @@
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
-   | Authors:                                                             |
+   | Authors: Martin Jansen <mj@php.net>                                  |
    +----------------------------------------------------------------------+
    $Id$
 */
@@ -33,26 +33,21 @@ $formats = array(
 
 $languages = array("en" => "English", "de" => "German", "it" => "Italian", "ru" => "Russian");
 
-$bb = new Borderbox("Download documentation");
-
-echo "<ul>\n";
+$bb = new BorderBox("Download documentation", "70%", "", 3, true);
+$bb->HeadRow("Type", "Format", "Size");
 
 foreach ($languages as $domain => $name) {
-    echo "<li><b>" . $name . ":</b><br />\n";
-    echo "<a href=\"manual/" . $domain . "/\">Read online</a><br /><br />\n";
+    $bb->fullRow("<b>" . $name . "</b>");
+
     foreach ($formats as $filename => $information) {
         $filename = str_replace("{LANG}", $domain, $filename);
-        printf("<a href=\"distributions/manual/%s\" title=\"%s\">%s</a> (%s)<br />\n",
-                $filename,
-                "Size: " . (int) (@filesize("distributions/manual/" . $filename)/1024) . "KB",
-                $information[0],
-                $information[1]
-              );
-    }
-    echo "</li><br /><br />\n";
-}
 
-echo "</ul>\n";
+        $link = make_link("distributions/manual/" . $filename, $information[0]);
+        $bb->plainRow($link, $information[1],
+                      (int) (@filesize("distributions/manual/" . $filename)/1024) . "KB");
+    }
+
+}
 
 $bb->end();
 

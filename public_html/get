@@ -43,23 +43,29 @@ if (empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }
 
-if (!isset($PATH_INFO) || $PATH_INFO == '/') {
+if (!isset($_SERVER['PATH_INFO']) || $_SERVER['PATH_INFO'] == '/') {
     PEAR::raiseError('no package selected');
 }
-$opts = explode('/', $PATH_INFO);
+$opts = explode('/', $_SERVER['PATH_INFO']);
 $ok = false;
+if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], array('1', 'yes', 'on'))) {
+    $uncompress = true;
+} else {
+    $uncompress = false;
+}
+@error_log("get: uncompress=$_GET[uncompress] PATH_INFO=$_SERVER[PATH_INFO]", 0);
 switch (sizeof($opts)) {
 	case 2: {
 		if (preg_match('/^([a-zA-Z0-9_]+)-(.*)\.(tar|tgz)$/', $opts[1], $matches)) {
 			list(, $package, $version) = $matches;
-			$ok = release::HTTPdownload($package, $version, $opts[1]);
+			$ok = release::HTTPdownload($package, $version, $opts[1], $uncompress);
 		} else {
-			$ok = release::HTTPdownload($opts[1]);
+			$ok = release::HTTPdownload($opts[1], null, null, $uncompress);
 		}
 		break;
 	}
 	case 3: {
-		$ok = release::HTTPdownload($opts[1], $opts[2]);
+		$ok = release::HTTPdownload($opts[1], $opts[2], null, $uncompress);
 		break;
 	}
 	default: {

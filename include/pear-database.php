@@ -399,7 +399,7 @@ class package
     {
         global $dbh;
 
-        $query = "SELECT p.id AS pid, p.name, r.id AS rid, r.version, r.state FROM packages p, releases r WHERE p.id = r.package ORDER BY p.name";
+        $query = "SELECT p.id AS pid, p.name, r.id AS rid, r.version, r.state FROM packages p, releases r WHERE p.id = r.package ORDER BY p.name, r.version DESC";
         $sth = $dbh->query($query);
 
         if (DB::isError($sth)) {

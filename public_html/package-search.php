@@ -50,7 +50,7 @@
 /**
 * Fetch list of users/maintainers
 */
-	$users = $dbh->getAll('SELECT handle, name FROM users ORDER BY name', DB_FETCHMODE_ASSOC);
+	$users = $dbh->getAll('SELECT u.handle, u.name FROM users u, maintains m WHERE u.handle = m.handle GROUP BY handle ORDER BY u.name', DB_FETCHMODE_ASSOC);
 	for ($i=0; $i<count($users); $i++) {
 		if (empty($users[$i]['name'])) {
 			$users[$i]['name'] = $users[$i]['handle'];

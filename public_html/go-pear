@@ -58,7 +58,7 @@
 set_time_limit(0);
 @ob_end_flush();
 ob_implicit_flush(true);
-define('WEBINSTALLER', (php_sapi_name() != 'cli' && !(php_sapi_name() == 'cgi' && !isset($_SERVER['GATEWAY_INTERFACE']))));
+define('WEBINSTALLER', (php_sapi_name() != 'cli' && !( substr(php_sapi_name(),0,3)=='cgi' && !isset($_SERVER['GATEWAY_INTERFACE']))));
 
 ini_set('track_errors', true);
 ini_set('html_errors', WEBINSTALLER);
@@ -740,39 +740,34 @@ configuration to make sure $php_dir is in your include_path.
             }
         }
 
-	    print "
+    print "
 Current include path           : ".ini_get('include_path')."
 Configured directory           : $php_dir
 Currently used php.ini (guess) : $php_ini
 ";
 
-		print "Press Enter to continue: ";
-	    fgets($tty, 1024);
-	    }
-	}
-
-    if (WINDOWS && !WEBINSTALLER) {
-        win32CreateRegEnv();
+        print "Press Enter to continue: ";
+        fgets($tty, 1024);
     }
 
-	$pear_cmd = $bin_dir . DIRECTORY_SEPARATOR . 'pear';
+    $pear_cmd = $bin_dir . DIRECTORY_SEPARATOR . 'pear';
 
-	// check that the installed pear and the one in tha path are the same (if any)
-	$pear_old = which('pear', $bin_dir);
-	if ($pear_old && $pear_old != $pear_cmd) {
-	    // check if it is a link or symlink
-	    $islink = WINDOWS ? is_link($pear_old) : false;
-	    if ($islink && readlink($pear_old) != $pear_cmd) {
-	        print "\n** WARNING! The link $pear_old does not point to the " .
-	              "installed $pear_cmd\n";
-	    } elseif (is_writable($pear_old)) {
-	        rename($pear_old, "{$pear_old}_old");
-	        print "\n** WARNING! Backed up old pear to {$pear_old}_old\n";
-	    } else {
-	        print "\n** WARNING! Old version found at $pear_old, please remove it or ".
-	              "be sure to use the new $pear_cmd command\n";
-	    }
-	}
+    // check that the installed pear and the one in tha path are the same (if any)
+    $pear_old = which('pear', $bin_dir);
+    if ($pear_old && $pear_old != $pear_cmd) {
+        // check if it is a link or symlink
+        $islink = WINDOWS ? is_link($pear_old) : false;
+        if ($islink && readlink($pear_old) != $pear_cmd) {
+            print "\n** WARNING! The link $pear_old does not point to the " .
+                  "installed $pear_cmd\n";
+        } elseif (is_writable($pear_old)) {
+            rename($pear_old, "{$pear_old}_old");
+            print "\n** WARNING! Backed up old pear to {$pear_old}_old\n";
+        } else {
+            print "\n** WARNING! Old version found at $pear_old, please remove it or ".
+                  "be sure to use the new $pear_cmd command\n";
+        }
+    }
 
 	print "\nThe 'pear' command is now at your service at $pear_cmd\n";
 
@@ -786,8 +781,6 @@ Currently used php.ini (guess) : $php_ini
 
 ";
 
-	}
-
 	print "Run it without parameters to see the available actions, try 'pear list'
 to see what packages are installed, or 'pear help' for help.
 
@@ -800,12 +793,7 @@ For more information about PEAR, see:
 Thanks for using go-pear!
 
 ";
-
-}
-
-// Little cleanup, this will be fixed in PEAR later
-if ( WINDOWS ) {
-    @unlink($php_dir.DIRECTORY_SEPARATOR.'.tmppear');
+    }
 }
 
 if (WEBINSTALLER) {
@@ -857,7 +845,14 @@ if (WEBINSTALLER) {
 	exit;
 };
 
+// Little cleanup, this will be fixed in PEAR later
+if ( WINDOWS ) {
+    @unlink($php_dir.DIRECTORY_SEPARATOR.'.tmppear');
+}
 
+if (WINDOWS && !WEBINSTALLER) {
+    win32CreateRegEnv();
+}
 // Set of functions following
 
 // {{{ download_url()
@@ -2008,7 +2003,6 @@ End If
 ';
     if( !$wshSaved){
         $cscript = $ptmp.DIRECTORY_SEPARATOR."bf.vbs";
-        echo "CSCRIPT: ".$cscript."\n\n\n\n";
         $fh = fopen($cscript,"wb+");
         fwrite($fh,$wsh_browserfolder,strlen($wsh_browserfolder));
         fclose($fh);
@@ -2075,10 +2069,10 @@ function win32DetectPHPSAPI()
     if($php_bin!=''){
         exec($php_bin.' -v', $res);
         if(is_array($res)) {
-            if( strpos($res[0],"(cli)") ) {
+            if( strpos($res[0],"cli")!==false ) {
                 return 'cli';
             }
-            if( strpos($res[0],"cgi") ) {
+            if( strpos($res[0],"cgi")!==false ) {
                 return 'cgi';
             } else {
                 return 'unknown';

@@ -22,6 +22,7 @@
 // This script will provoke different errors in the database backend
 // and output code to insert into the DB_dbtype constructor.
 //
+auth_require(true);
 
 require_once 'DB.php';
 

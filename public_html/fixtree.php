@@ -17,6 +17,7 @@
    +----------------------------------------------------------------------+
    $Id$
 */
+auth_require(true);
 
 header("Content-type: text/plain");
 $dbh->setErrorHandling(PEAR_ERROR_DIE);

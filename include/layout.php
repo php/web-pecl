@@ -11,11 +11,11 @@ if (empty($prevsearch)) $prevsearch = '';
 //
 
 function spacer($width=1, $height=1, $align=false, $extras=false) {
-    printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt=""%s%s />',
+    printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt="" %s%s />',
         $width,
         $height,
-        ($align ? ' align="'.$align.'" ' : ''),
-        ($extras ? ' '.$extras : '')
+        ($align ? 'align="'.$align.'" ' : ''),
+        ($extras ? $extras : '')
     );
 }
 
@@ -160,10 +160,9 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
 function commonHeader($title) {
     global $SIDEBAR_DATA, $HTTP_SERVER_VARS;
 
-?><!DOCTYPE html
-  PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN'
-  'http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
 <head>
  <title>PEAR :: <?php echo $title; ?></title>
  <link rel="stylesheet" href="/style.css" />
@@ -178,17 +177,28 @@ function commonHeader($title) {
         link="#006600"
         alink="#cccc00"
         vlink="#003300"
->
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
+><a name="TOP" /></a>
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
   <tr bgcolor="#339900">
-    <td align="left" valign="top">
+    <td align="left" rowspan="2" width="120">
 <?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="2" hspace="2"') ); ?><br />
     </td>
-    <td align="right" valign="bottom" nowrap>
+    <td align="right" valign="top">
+      <font color="#ffffff"><b>
+        <?php echo strftime("%A, %B %d, %Y"); ?>
+      </b>&nbsp;<br />
 <?php
     if (isset($GLOBALS['HTTP_COOKIE_VARS']['pear_dev'])) {
-        print "pear_dev cookie set&nbsp;<br />";
+    print "pear_dev cookie set&nbsp;<br />";
     }
+?>      </font>
+    </td>
+  </tr>
+
+  <tr bgcolor="#339900">
+    <td align="right" valign="bottom">
+      <?php
+
     if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER'])) {
         print '<span class="menuWhite">logged in as ';
         print strtoupper($HTTP_SERVER_VARS['PHP_AUTH_USER']);
@@ -203,7 +213,7 @@ function commonHeader($title) {
     print_link('/support.php','SUPPORT',false,'class="menuBlack"');
     echo delim();
     print_link('/faq.php','FAQ',false,'class="menuBlack"');
-?>&nbsp;<br />
+      ?>&nbsp;<br />
       <?php spacer(2,2); ?><br />
     </td>
   </tr>
@@ -227,11 +237,11 @@ function commonHeader($title) {
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 </table>
 
-<table cellpadding="0" cellspacing="0" border="0">
+<table cellpadding="0" cellspacing="0" width="100%">
  <tr valign="top">
 <?php if (isset($SIDEBAR_DATA)) { ?>
-  <td bgcolor="#f0f0f0" width="150">
-   <table width="100%" cellpadding="4" cellspacing="0">
+  <td bgcolor="#f0f0f0" width="149">
+   <table width="149" cellpadding="4" cellspacing="0">
     <tr valign="top">
      <td style="font-size: 90%"><?php echo $SIDEBAR_DATA?><br /></td>
     </tr>
@@ -239,8 +249,8 @@ function commonHeader($title) {
   </td>
   <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
 <?php } ?>
-  <td>
-   <table width="620" cellpadding="10" cellspacing="0">
+  <td width="625">
+   <table width="100%" cellpadding="10" cellspacing="0">
     <tr>
      <td valign="top">
 <?php
@@ -263,9 +273,8 @@ function commonFooter() {
 
 <?php if (isset($RSIDEBAR_DATA)) { ?>
   <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
-
-  <td width="150" bgcolor="#f0f0f0">
-    <table width="100%" cellpadding="4" cellspacing="0"><tr valign="top"><td class="sidebar"><?php echo $RSIDEBAR_DATA; ?></td></tr></table>
+  <td width="149" bgcolor="#f0f0f0">
+    <table width="100%" cellpadding="4" cellspacing="0"><tr valign="top"><td class="sidebar"><?php echo $RSIDEBAR_DATA; ?><br /></td></tr></table>
   </td>
 <?php } ?>
  </tr>

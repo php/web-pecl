@@ -16,16 +16,16 @@
 
 // The full absolute name of directory to be used as a cache. This directory MUST
 // be readable and writable for PHP. Must end with '/'
-DEFINE("CACHE_DIR","/tmp/jpgraph_cache/");
+DEFINE("CACHE_DIR", dirname(__FILE__) . "/cache/");
 
 // The URL relative name where the cache can be found, i.e
 // under what HTTP directory can the cache be found. Normally
 // you would probably assign an alias in apache configuration
 // for the cache directory. Must end with '/'
-DEFINE("APACHE_CACHE_DIR","/jpgraph_cache/");
+DEFINE("APACHE_CACHE_DIR", dirname(__FILE__) . "/cache/");
 
 // Directory for TTF fonts. Must end with '/'
-DEFINE("TTF_DIR","/usr/local/fonts/ttf/");
+DEFINE("TTF_DIR", dirname(__FILE__) . "/ttf/");
 
 //------------------------------------------------------------------------
 // Various JpGraph Settings. PLEASE adjust accordingly to you
@@ -56,14 +56,14 @@ DEFINE('USE_TRUECOLOR',true);
 // false will still create the image in the cache directory
 // just not use it. By setting USE_CACHE=false no files will even
 // be generated in the cache directory.
-DEFINE("USE_CACHE",false);
+DEFINE("USE_CACHE", true);
 
 // Should we try to find an image in the cache before generating it? 
 // Set this define to false to bypass the reading of the cache and always
 // regenerate the image. Note that even if reading the cache is 
 // disabled the cached will still be updated with the newly generated
 // image. Set also "USE_CACHE" below.
-DEFINE("READ_CACHE",true);
+DEFINE("READ_CACHE", true);
 
 // Deafult graphic format set to "auto" which will automtically
 // choose the best available format in the order png,gif,jpg
@@ -106,7 +106,7 @@ DEFINE("BRAND_TIME_FORMAT","Generated in: %01.3fs");
 // Please note that the Apache user must be a member of the
 // specified group since otherwise it is impossible for Apache
 // to set the specified group.
-DEFINE("CACHE_FILE_GROUP","wwwadmin");
+DEFINE("CACHE_FILE_GROUP","");
 
 // What permissions should the cached file have
 // (Set to "" will give the default persmissions for the "PHP-user")

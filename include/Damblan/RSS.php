@@ -46,6 +46,7 @@ class Damblan_RSS {
             $value = $cache = $type;
         }
 
+	$cache = 'pecl_'.$cache;
         require_once "Damblan/RSS/Cache.php";
         if (Damblan_RSS_Cache::isCached($cache) == true) {
             return Damblan_RSS_Cache::get($cache);

@@ -44,10 +44,10 @@ class Damblan_RSS_Common {
         $this->_root->setAttribute("xmlns:dc", "http://purl.org/dc/elements/1.1/");
 
         $this->_channel = &$this->_root->addChild("channel");
-        $this->_channel->setAttribute("rdf:about", "http://pear.php.net/");
-        $this->_channel->addChild("link", "http://pear.php.net/");
-        $this->_channel->addChild("dc:creator", "pear-webmaster@php.net");
-        $this->_channel->addChild("dc:publisher", "pear-webmaster@php.net");
+        $this->_channel->setAttribute("rdf:about", "http://pecl.php.net/");
+        $this->_channel->addChild("link", "http://pecl.php.net/");
+        $this->_channel->addChild("dc:creator", "pecl-webmaster@php.net");
+        $this->_channel->addChild("dc:publisher", "pecl-webmaster@php.net");
         $this->_channel->addChild("dc:language", "en-us");
 
         $c_items = &$this->_channel->addChild("items");
@@ -118,7 +118,7 @@ class Damblan_RSS_Common {
      */
     function __addItems($list) {
         foreach ($list as $item) {
-            $node = $this->newItem($item['name'] . " " . $item['version'], "http://pear.php.net/package/" . $item['name'], $item['releasenotes']);
+            $node = $this->newItem($item['name'] . " " . $item['version'], "http://pecl.php.net/package/" . $item['name'], $item['releasenotes']);
             $this->addItem($node);
         }
     }

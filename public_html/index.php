@@ -39,7 +39,6 @@ if (DEVBOX) {
     menu_link("New Package", "package-new.php");
     menu_link("Administrators", "admin.php");
     menu_link("Browse Packages", "packages.php");
-    menu_link("Want to contribute?", "signup.php");
     menu_link("Upload Release", "release-upload.php");
     $recent = release::getRecent();
     if (@sizeof($recent) > 0) {

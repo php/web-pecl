@@ -372,6 +372,11 @@ class package
      */
 
     // {{{  proto struct package::info(string|int, [string])
+    /*
+     * Implemented $field values:
+     * releases, notes, category, description, authors, categoryid,
+     * packageid, authors
+     */
 
     /**
      * Get package information
@@ -379,9 +384,10 @@ class package
      * @static
      * @param  mixed  Name of the package or it's ID
      * @param  string Single field to fetch
+     * @param  boolean Should PEARd packages also be taken into account?
      * @return mixed
      */
-    function info($pkg, $field = null)
+    function info($pkg, $field = null, $allow_pear = false)
     {
         global $dbh;
 
@@ -390,6 +396,14 @@ class package
         } else {
             $what = "name";
         }
+
+        $package_type = '';
+        if ($allow_pear) {
+             $package_type = "((p.package_type = 'pear' AND p.approved = 1) OR p.package_type = 'pecl') AND ";
+        } else {
+             $package_type = "p.package_type = 'pecl' AND ";
+        }
+
         $pkg_sql = "SELECT p.id AS packageid, p.name AS name, ".
              "p.package_type AS type, ".
              "c.id AS categoryid, c.name AS category, ".
@@ -398,16 +412,16 @@ class package
              "p.description AS description, p.cvs_link AS cvs_link, ".
              "p.doc_link as doc_link".
              " FROM packages p, categories c ".
-             "WHERE c.id = p.category AND p.{$what} = ?";
+             "WHERE " . $package_type . " c.id = p.category AND p.{$what} = ?";
         $rel_sql = "SELECT version, id, doneby, license, summary, ".
-             "description, releasedate, releasenotes, state ".
+             "description, releasedate, releasenotes, state " . //, packagexmlversion ".
              "FROM releases ".
              "WHERE package = ? ".
              "ORDER BY releasedate DESC";
         $notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
-        $deps_sql = "SELECT type, relation, version, name, release
+        $deps_sql = "SELECT type, relation, version, name, release, optional
                      FROM deps
-                     WHERE package = ?";
+                     WHERE package = ? ORDER BY optional ASC";
         if ($field === null) {
             $info =
                  $dbh->getRow($pkg_sql, array($pkg), DB_FETCHMODE_ASSOC);
@@ -439,8 +453,8 @@ class package
             // get a single field
             if ($field == 'releases' || $field == 'notes') {
                 if ($what == "name") {
-                    $pid = $dbh->getOne("SELECT id FROM packages ".
-                                        "WHERE name = ?", array($pkg));
+                    $pid = $dbh->getOne("SELECT p.id FROM packages p ".
+                                        "WHERE " . $package_type . " p.name = ?", array($pkg));
                 } else {
                     $pid = $pkg;
                 }
@@ -453,15 +467,15 @@ class package
                 }
             } elseif ($field == 'category') {
                 $sql = "SELECT c.name FROM categories c, packages p ".
-                     "WHERE c.id = p.category AND p.$what = ?";
+                     "WHERE c.id = p.category AND " . $package_type . " p.{$what} = ?";
                 $info = $dbh->getAssoc($sql, false, array($pkg));
             } elseif ($field == 'description') {
-                $sql = "SELECT description FROM packages WHERE $what = ?";
+                $sql = "SELECT description FROM packages p WHERE " . $package_type . " p.{$what} = ?";
                 $info = $dbh->query($sql, array($pkg));
             } elseif ($field == 'authors') {
                 $sql = "SELECT u.handle, u.name, u.email, u.showemail, m.role
                         FROM maintains m, users u, packages p
-                        WHERE m.package = p.id
+                        WHERE " . $package_type ." m.package = p.id
                         AND p.$what = ?
                         AND m.handle = u.handle";
                 $info = $dbh->getAll($sql, array($pkg), DB_FETCHMODE_ASSOC);
@@ -473,7 +487,7 @@ class package
                 } else {
                     $dbfield = $field;
                 }
-                $sql = "SELECT $dbfield FROM packages WHERE $what = ?";
+                $sql = "SELECT $dbfield FROM packages p WHERE " . $package_type ." p.{$what} = ?";
                 $info = $dbh->getOne($sql, array($pkg));
             }
         }
@@ -488,47 +502,80 @@ class package
      *
      * @static
      * @param boolean Only list releases packages?
+     * @param boolean If listing released packages only, only list stable releases?
+     * @param boolean List also PEAR packages
      * @return array
      */
-    function listAll($released_only = true)
+    function listAll($released_only = true, $stable_only = true, $include_pear = false)
     {
-        global $dbh;
+        global $dbh, $HTTP_RAW_POST_DATA;
 
-        $packageinfo = $dbh->getAssoc(
-            "SELECT p.name, p.id AS packageid, ".
+        if (isset($HTTP_RAW_POST_DATA)) {
+            $include_pecl = true;
+        }
+        
+        $package_type = '';
+        if (!$include_pear) {
+            $package_type = "p.package_type = 'pecl' AND p.approved = 1 AND ";
+        }
+
+        $packageinfo = $dbh->getAssoc("SELECT p.name, p.id AS packageid, ".
             "c.id AS categoryid, c.name AS category, ".
             "p.license AS license, ".
             "p.summary AS summary, ".
             "p.description AS description, ".
             "m.handle AS lead ".
             " FROM packages p, categories c, maintains m ".
-            "WHERE c.id = p.category ".
+            "WHERE " . $package_type .
+            " c.id = p.category ".
             "  AND p.id = m.package ".
             "  AND m.role = 'lead' ".
             "ORDER BY p.name", false, null, DB_FETCHMODE_ASSOC);
+        $allreleases = $dbh->getAssoc(
+            "SELECT p.name, r.id AS rid, r.version AS stable, r.state AS state ".
+            "FROM packages p, releases r ".
+            "WHERE " . $package_type .
+            "p.id = r.package ".
+            "ORDER BY r.releasedate ASC ", false, null, DB_FETCHMODE_ASSOC);
         $stablereleases = $dbh->getAssoc(
             "SELECT p.name, r.id AS rid, r.version AS stable, r.state AS state ".
             "FROM packages p, releases r ".
-            "WHERE p.id = r.package ".
+            "WHERE " . $package_type .
+            "p.id = r.package ".
             ($released_only ? "AND r.state = 'stable' " : "").
             "ORDER BY r.releasedate ASC ", false, null, DB_FETCHMODE_ASSOC);
         $deps = $dbh->getAll(
             "SELECT package, release , type, relation, version, name ".
             "FROM deps", null, DB_FETCHMODE_ASSOC);
+        foreach ($packageinfo as $pkg => $info) {
+            $packageinfo[$pkg]['stable'] = false;
+        }
         foreach ($stablereleases as $pkg => $stable) {
             $packageinfo[$pkg]['stable'] = $stable['stable'];
+            $packageinfo[$pkg]['unstable'] = false;
             $packageinfo[$pkg]['state']  = $stable['state'];
         }
+        if (!$stable_only) {
+            foreach ($allreleases as $pkg => $stable) {
+                if ($stable['state'] == 'stable') {
+                    $packageinfo[$pkg]['stable'] = $stable['stable'];
+                } else {
+                    $packageinfo[$pkg]['unstable'] = $stable['stable'];
+                }
+                $packageinfo[$pkg]['state']  = $stable['state'];
+            }
+        }
+        $var = !$stable_only ? 'allreleases' : 'stablereleases';
         foreach(array_keys($packageinfo) as $pkg) {
             $_deps = array();
             foreach($deps as $dep) {
                 if ($dep['package'] == $packageinfo[$pkg]['packageid']
-                    && isset($stablereleases[$pkg])
-                    && $dep['release'] == $stablereleases[$pkg]['rid'])
+                    && isset($$var[$pkg])
+                    && $dep['release'] == $$var[$pkg]['rid'])
                 {
                     unset($dep['rid']);
                     unset($dep['release']);
-                    if ($dep['type'] == 'pkg' && $packageinfo[$dep['name']]) {
+                    if ($dep['type'] == 'pkg' && isset($packageinfo[$dep['name']])) {
                         $dep['package'] = $packageinfo[$dep['name']]['packageid'];
                     } else {
                         $dep['package'] = 0;
@@ -540,9 +587,17 @@ class package
         };
 
         if ($released_only) {
-            foreach ($packageinfo as $pkg => $info) {
-                if (!isset($stablereleases[$pkg])) {
-                    unset($packageinfo[$pkg]);
+            if (!$stable_only) {
+                foreach ($packageinfo as $pkg => $info) {
+                    if (!isset($allreleases[$pkg]) && !isset($stablereleases[$pkg])) {
+                        unset($packageinfo[$pkg]);
+                    }
+                }
+            } else {
+                foreach ($packageinfo as $pkg => $info) {
+                    if (!isset($stablereleases[$pkg])) {
+                        unset($packageinfo[$pkg]);
+                    }
                 }
             }
         }
@@ -564,7 +619,11 @@ class package
     {
         global $dbh;
 
-        $query = "SELECT p.id AS pid, p.name, r.id AS rid, r.version, r.state FROM packages p, releases r WHERE p.id = r.package ORDER BY p.name, r.version DESC";
+        $query = "SELECT
+                      p.id AS pid, p.name, r.id AS rid, r.version, r.state
+                  FROM packages p, releases r 
+                  WHERE p.package_type = 'pecl' AND p.approved = 1 AND p.id = r.package
+                  ORDER BY p.name, r.version DESC";
         $sth = $dbh->query($query);
 
         if (DB::isError($sth)) {
@@ -602,7 +661,7 @@ class package
              "r.state AS state, ".
              "f.fullpath AS fullpath ".
              "FROM packages p, releases r, files f ".
-             "WHERE p.id = r.package ".
+             "WHERE p.package_type = 'pecl' AND p.approved = 1 AND p.id = r.package ".
              "AND f.package = p.id ".
              "AND f.release = r.id ".
              "AND p.package_type = 'pecl'";
@@ -659,7 +718,7 @@ class package
              "r.description AS description, ".
              "r.releasedate AS releasedate, ".
              "r.releasenotes AS releasenotes ".
-             "FROM releases r, packages p WHERE r.package = p.id AND (";
+             "FROM releases r, packages p WHERE p.package_type = 'pecl' AND p.approved = 1 AND r.package = p.id AND (";
         $conditions = array();
         foreach ($currently_installed as $package => $info) {
             extract($info); // state, version
@@ -752,7 +811,7 @@ class package
             "r.state AS state " .
             "FROM packages p, releases r " .
             "WHERE p.id = r.package " .
-            "AND p.package_type = 'pecl' " . 
+            "AND p.package_type = 'pecl' AND p.approved = 1" . 
             "AND p.name = '" . $package . "'" .
             "ORDER BY r.releasedate DESC";
 
@@ -776,7 +835,7 @@ class package
     function isValid($package)
     {
         global $dbh;
-        $query = "SELECT id FROM packages WHERE name = ?";
+         $query = "SELECT id FROM packages WHERE package_type = 'pecl' AND approved = 1 AND name = ?";
         $sth = $dbh->query($query, array($package));
         return ($sth->numRows() > 0);
     }
@@ -1931,6 +1990,22 @@ if (!function_exists("md5_file")) {
         }
         return null;
     }
+}
+
+/**
+ * Converts a Unix timestamp to a date() formatted string in the UTC time zone
+ *
+ * @param int    $ts      a Unix timestamp from the local machine.  If none
+ *                         is provided the current time is used.
+ * @param string $format  a format string, as per http://php.net/date
+ *
+ * @return string  the time formatted time
+ */
+function make_utc_date($ts = null, $format = 'Y-m-d H:i \U\T\C') {
+    if (!$ts) {
+        $ts = time();
+    }
+    return gmdate($format, $ts);
 }
 
 ?>

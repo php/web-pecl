@@ -18,6 +18,30 @@
    $Id$
 */
 
+/*
+ * If the PHPSESSID cookie isn't set, the user MAY have cookies turned off.
+ * To figure out cookies are REALLY off, check to see if the person came
+ * from within the PEAR website or just submitted the login form.
+ */
+if (!isset($_COOKIE['PHPSESSID']) &&
+    ((strpos(@$_SERVER['HTTP_REFERER'], @$_GET['redirect']) !== false) ||
+     (isset($_POST['PEAR_USER']) && isset($_POST['PEAR_PW']))))
+{
+    auth_reject(PEAR_AUTH_REALM, 'Cookies must be enabled to log in.');
+}
+
+/*
+ * If they're already logged in, say so.
+ */
+if (isset($_COOKIE['PEAR_USER']) && isset($_COOKIE['PEAR_PW'])) {
+    if (auth_verify($_COOKIE['PEAR_USER'], $_COOKIE['PEAR_PW'])) {
+        response_header('Login');
+        echo '<div class="warnings">You are already logged in.</div>';
+        response_footer();
+        exit;
+    }
+}
+
 if (auth_verify(@$_POST['PEAR_USER'], @$_POST['PEAR_PW'])) {
     if (!empty($_POST['PEAR_PERSIST'])) {
         $expire = 2147483647;
@@ -27,26 +51,37 @@ if (auth_verify(@$_POST['PEAR_USER'], @$_POST['PEAR_PW'])) {
     setcookie('PEAR_USER', $_POST['PEAR_USER'], $expire, '/');
     setcookie('PEAR_PW', md5($_POST['PEAR_PW']), $expire, '/');
 
-	/**
-    * Update users password if it is held in the db
-	* crypt()ed.
-    */
-	if (strlen(@$auth_user->password) == 13) { // $auth_user comes from auth_verify() function
-		$dbh->query(sprintf("UPDATE users SET password = '%s' WHERE handle = '%s'", md5($_POST['PEAR_PW']), $_POST['PEAR_USER']));
-	}
-	
-	/**
-    * Determine URL
-    */
-    if (isset($_POST['PEAR_OLDURL'])) {
-        $gotourl = $_POST['PEAR_OLDURL'];
-    } else {
-        $gotourl = '/';
+    /*
+     * Update users password if it is held in the db
+     * crypt()ed.
+     */
+    if (strlen(@$auth_user->password) == 13) { // $auth_user comes from auth_verify() function
+        $query = 'UPDATE users SET password = ? WHERE handle = ?';
+        $dbh->query($query, array(md5($_POST['PEAR_PW']), $_POST['PEAR_USER']));
     }
 
-	localRedirect($gotourl);
+    /*
+     * Determine URL
+     */
+    if (isset($_POST['PEAR_OLDURL']) &&
+        basename($_POST['PEAR_OLDURL']) != 'login.php')
+    {
+        localRedirect($_POST['PEAR_OLDURL']);
+    } else {
+        response_header('Login');
+        report_success('Welcome.');
+        response_footer();
+        exit;
+    }
+
+    exit;
 }
 
-auth_reject();
+$msg = '';
+if (isset($_POST['PEAR_USER']) || isset($_POST['PEAR_PW'])) {
+    $msg = 'Invalid username or password.';
+}
+
+auth_reject(PEAR_AUTH_REALM, $msg);
 
 ?>

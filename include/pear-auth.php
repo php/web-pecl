@@ -28,43 +28,58 @@ function auth_reject($realm = null, $message = null)
         $message = "Please enter your username and password:";
     }
 
-    response_header($message);
+    response_header('Login');
     if ($format == 'xmlrpc') {
         Header("HTTP/1.0 401 Unauthorized");
         Header("WWW-authenticate: basic realm=\"$realm\"");
         report_error($message);
     } elseif ($format == 'html') {
         $GLOBALS['ONLOAD'] = "document.login.PEAR_USER.focus();";
-        report_error($message);
+        if ($message) {
+            report_error($message);
+        }
         print "<form name=\"login\" action=\"/login.php\" method=\"post\">\n";
-        print "<table>\n";
+        print '<table class="form-holder" cellspacing="1">' . "\n";
         print " <tr>\n";
-        print "  <td>Username:</td>\n";
-        print "  <td><input size=\"20\" name=\"PEAR_USER\" /></td>\n";
+        print '  <th class="form-label_left">';
+        print 'Use<span class="accesskey">r</span>name:</th>' . "\n";
+        print '  <td class="form-input">';
+        print '<input size="20" name="PEAR_USER" accesskey="r" /></td>' . "\n";
         print " </tr>\n";
         print " <tr>\n";
-        print "  <td>Password:</td>\n";
-        print "  <td><input size=\"20\" name=\"PEAR_PW\" type=\"password\" /></td>\n";
+        print '  <th class="form-label_left">Password:</th>' . "\n";
+        print '  <td class="form-input">';
+        print '<input size="20" name="PEAR_PW" type="password" /></td>' . "\n";
         print " </tr>\n";
         print " <tr>\n";
-        print "  <td>&nbsp;</td>\n";
-        print "  <td><input type=\"checkbox\" name=\"PEAR_PERSIST\" value=\"on\" id=\"pear_persist_chckbx\" /> <label for=\"pear_persist_chckbx\">Remember username and password.</label></td>\n";
+        print '  <th class="form-label_left">&nbsp;</th>' . "\n";
+        print '  <td class="form-input" style="white-space: nowrap">';
+        print '<input type="checkbox" name="PEAR_PERSIST" value="on" id="pear_persist_chckbx" /> ';
+        print '<label for="pear_persist_chckbx">Remember username and password.</label></td>' . "\n";
         print " </tr>\n";
         print " <tr>\n";
-        print "  <td>&nbsp;</td>\n";
-        print "  <td><input type=\"submit\" value=\"Log in!\" /></td>\n";
+        print '  <th class="form-label_left">&nbsp;</td>' . "\n";
+        print '  <td class="form-input"><input type="submit" value="Log in!" /></td>' . "\n";
         print " </tr>\n";
         print "</table>\n";
         print '<input type="hidden" name="PEAR_OLDURL" value="';
-        if (basename($_SERVER['PHP_SELF']) == 'login.php') {
-            print '/';
+        if (isset($_GET['redirect'])) {
+            print htmlspecialchars(urldecode($_GET['redirect']));
         } elseif (isset($_POST['PEAR_OLDURL'])) {
             print htmlspecialchars($_POST['PEAR_OLDURL']);
-        } else {
+        } elseif (isset($_SERVER['REQUEST_URI'])) {
             print htmlspecialchars($_SERVER['REQUEST_URI']);
+        } else {
+            print 'login.php';
         }
         print "\" />\n";
         print "</form>\n";
+        print hdelim();
+        print "<p><strong>Note:</strong> If you just want to browse the website, ";
+        print "you will not need to log in. For all tasks that require ";
+        print "authentication, you will be redirected to this form ";
+        print "automatically. You can sign up for an account ";
+        print "<a href=\"/account-request.php\">over here</a>.</p>";
     }
     response_footer();
     exit;
@@ -116,30 +131,67 @@ function auth_verify($user, $passwd)
     }
     if ($ok) {
         $auth_user->_readonly = true;
-        return true;
+        return auth_check("pear.user");
     }
     if ($error) {
-        error_log($error, 0);
+        error_log("$error\n", 3, PEAR_TMPDIR . DIRECTORY_SEPARATOR . 'pear-errors.log');
     }
     $auth_user = null;
     return false;
 }
 
+function auth_check($atom)
+{
+    global $dbh;
+    static $karma;
+
+    require_once "Damblan/Karma.php";
+    
+    global $auth_user;
+
+    // Check for backwards compatibility
+    if (is_bool($atom)) {
+        if ($atom == true) {
+            $atom = "pear.admin";
+        } else {
+            $atom = "pear.dev";
+        }
+    }
+
+    if (!isset($karma)) {
+        $karma = new Damblan_Karma($dbh);
+    }
+    return $karma->has($auth_user->handle, $atom);
+}
+
 function auth_require($admin = false)
 {
     global $auth_user;
+    $res = true;
 
     $user = @$_COOKIE['PEAR_USER'];
     $passwd = @$_COOKIE['PEAR_PW'];
     if (!auth_verify($user, $passwd)) {
         auth_reject(); // exits
     }
-    if ($admin && empty($auth_user->admin)) {
+
+    $num = func_num_args();
+    for ($i = 0; $i < $num; $i++) {
+        $arg = func_get_arg($i);
+        $res = auth_check($arg);
+
+        if ($res == true) {
+            return true;
+        }
+    }
+
+    if ($res == false) {
         response_header("Insufficient Privileges");
         report_error("Insufficient Privileges");
         response_footer();
         exit;
     }
+
     return true;
 }
 
@@ -155,6 +207,14 @@ function auth_logout()
     if (isset($_COOKIE['PEAR_PW'])) {
         setcookie('PEAR_PW', '', 0, '/');
         unset($_COOKIE['PEAR_PW']);
+    }
+
+    if ($_SERVER['QUERY_STRING'] == 'logout=1') {
+        localRedirect($_SERVER['PHP_SELF']);
+    } else {
+        localRedirect($_SERVER['PHP_SELF'] . '?' .
+                   preg_replace('/logout=1/',
+                                '', $_SERVER['QUERY_STRING']));
     }
 }
 

@@ -29,29 +29,36 @@
  * Requesting something like /~foobar will redirect to the account
  * information page of the user "foobar".
  */
-if ($_SERVER['REDIRECT_URL']{1} == '~') {
+if (strlen($_SERVER['REDIRECT_URL']) > 0 && $_SERVER['REDIRECT_URL']{1} == '~') {
     $user = substr($_SERVER['REDIRECT_URL'], 2);
     if (preg_match(PEAR_COMMON_USER_NAME_REGEX, $user) && user::exists($user)) {
-        localRedirect("/account-info.php?handle=" . urlencode($user));
+        localRedirect("/user/" . urlencode($user));
     }
 }
 
-$pkg = strtr($_SERVER['REDIRECT_URL'], "-","_");
-$pinfo_url = '/package-info.php?package=';
+$pkg = strtr($_SERVER['REDIRECT_URL'], '-','_');
+$pinfo_url = '/package/';
 
 // Check strictly
-$sql = "SELECT name
-            FROM packages
-            WHERE name = ?";
-$name = $dbh->getOne($sql, array(basename($pkg)));
+$name = package::info(basename($pkg), 'name');
 if (!DB::isError($name) && !empty($name)) {
-    localRedirect($pinfo_url . $name);
+    if (!empty($name)) {
+        localRedirect($pinfo_url . $name);
+    } else {
+        $name = package::info(basename($pkg), 'name', true);
+        if (!empty($name)) {
+            header('HTTP/1.0 301 Moved Permanently');
+            header('Location: http://pear.php.net/package/' . $name);
+            header('Connection: close');
+            exit();
+        }
+    }
 }
 
 // Check less strictly if nothing has been found previously
 $sql = "SELECT p.id, p.name, p.summary
             FROM packages p
-            WHERE name LIKE ?
+            WHERE package_type = 'pecl' AND approved = 1 AND name LIKE ?
             ORDER BY p.name";
 $term = "%" . basename($pkg) . "%";
 $packages = $dbh->getAll($sql, array($term), DB_FETCHMODE_ASSOC);
@@ -71,7 +78,7 @@ response_header("Error 404");
 <p>The requested document <i><?php echo $_SERVER['REQUEST_URI']; ?></i> was not
 found on this server.</p>
 
-<?php if(is_array($packages)) { ?>
+<?php if (is_array($packages) && count($packages) > 0) { ?>
 	Searching the current list of packages for
 	<i><?php echo basename($_SERVER['REQUEST_URI']); ?></i> included the
 	following results:
@@ -87,7 +94,7 @@ found on this server.</p>
 	
 	<?php if($show_search_link) { ?>
 		<p align="center">
-			<?php print_link(getURL('/package-search.php?pkg_name=' . basename($_SERVER['REQUEST_URI']) . '&bool=AND&submit=Search'), 'View full search results...'); ?>
+			<?php print_link(getURL('/package-search.php?pkg_name=' . basename($_SERVER['REQUEST_URI']) . '&amp;bool=AND&amp;submit=Search'), 'View full search results...'); ?>
 		</p>
 <?php
     }
@@ -96,6 +103,6 @@ found on this server.</p>
 
 <p>If you think that this error message is caused by an error in the
 configuration of the server, please contact
-<?php echo make_mailto_link("pear-webmaster@php.net"); ?>.
+<?php echo make_mailto_link("pecl-dev@lists.php.net"); ?>.
 
 <?php response_footer(); ?>

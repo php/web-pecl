@@ -19,9 +19,11 @@
 */
 
 /* Send charset */
-header("Content-Type: text/html; charset=iso-8859-1");
+header("Content-Type: text/html; charset=ISO-8859-1");
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
+
+$extra_styles = array();
 
 require_once 'layout.php';
 
@@ -56,13 +58,15 @@ $GLOBALS['_style'] = '';
 
 function response_header($title = 'The PHP Extension Community Library', $style = false)
 {
-    global $_style, $_header_done, $SIDEBAR_DATA;
+    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles;
     if ($_header_done) {
         return;
     }
+
     $_header_done = true;
-    $_style = $style;
-    $rts = rtrim($SIDEBAR_DATA);
+    $_style       = $style;
+    $rts          = rtrim($SIDEBAR_DATA);
+
     if (substr($rts, -1) == '-') {
         $SIDEBAR_DATA = substr($rts, 0, -1);
     } else {
@@ -82,13 +86,20 @@ function response_header($title = 'The PHP Extension Community Library', $style 
             }
         }
     }
+
+echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
  <title>PECL :: <?php echo $title; ?></title>
  <link rel="shortcut icon" href="/gifs/pecl-favicon.ico" />
- <link rel="stylesheet" href="/style.css" />
+ <link rel="stylesheet" href="/css/style.css" />
+<?php
+    foreach ($extra_styles as $style_file) {
+        echo ' <link rel="stylesheet" href="' . $style_file . "\" />\n";
+    }
+?>
  <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/feeds/latest.rss" />
 </head>
 
@@ -97,102 +108,91 @@ function response_header($title = 'The PHP Extension Community Library', $style 
         print "onload=\"" . $GLOBALS['ONLOAD']. "\"";
     }
 ?>
-        bgcolor="#ffffff"
-        text="#000000"
-        link="#000066"
-        alink="#cc00cc"
-        vlink="#000033"
-><a name="TOP" />
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr bgcolor="#330099">
-    <td align="left" rowspan="2" width="120" colspan="2" height="1">
-<?php print_link('/', make_image('peclsmall.gif', 'PECL', false, 'vspace="5" hspace="5"') ); ?><br />
-    </td>
-    <td align="right" valign="top" colspan="3" height="1">
-      <font color="#ffffff"><b>
-        <?php echo strftime("%A, %B %d, %Y"); ?>
-      </b>&nbsp;<br />
-     </font>
-    </td>
-  </tr>
+>
+<div>
+ <a id="TOP" />
+</div>
 
-  <tr bgcolor="#330099">
-    <td align="right" valign="bottom" colspan="3" height="1">
+<!-- START HEADER -->
+
+<table class="head" cellspacing="0" cellpadding="0" width="100%">
+ <tr>
+  <td class="head-logo">
+<?php print_link('/', make_image('peclsmall.gif', 'PECL :: The PHP Extension Community Library', false, false, false, false, 'margin: 5px;')); ?><br />
+  </td>
+
+  <td class="head-menu">
       <?php
 
     if (empty($_COOKIE['PEAR_USER'])) {
-        print_link('/login.php', 'Login', false, 'class="menuLink"');
+        print_link('/login.php', 'Login', false, 'class="menuBlack"');
     } else {
-        print '<span class="menuWhite"><small>logged in as ';
-        print strtoupper($_COOKIE['PEAR_USER']);
-        print '&nbsp;</small></span><br />';
-        print_link('/?logout=1', 'Logout', false, 'class="menuLink"');
+        print '<small class="menuWhite">';
+        print 'Logged in as ' . strtoupper($_COOKIE['PEAR_USER']) . ' (';
+        print '<a class="menuWhite" href="/user/' . $_COOKIE['PEAR_USER'] . '">Info</a> | ';
+        print '<a class="menuWhite" href="/account-edit.php?handle=' . $_COOKIE['PEAR_USER'] . '">Profile</a> | ';
+        print '<a class="menuWhite" href="/bugs/search.php?handle=' . $_COOKIE['PEAR_USER'] . '&amp;cmd=display">Bugs</a>';
+        print ")</small><br />\n";
+        print_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
     }
     echo delim();
-    print_link('/packages.php', 'Packages', false, 'class="menuLink"');
+    print_link('/packages.php', 'Packages', false, 'class="menuBlack"');
     echo delim();
-    print_link('/support.php','Support',false,'class="menuLink"');
+    print_link('/support.php', 'Support', false, 'class="menuBlack"');
     echo delim();
-    print_link('/bugs/','Bugs',false,'class="menuLink"');
+    print_link('/bugs/', 'Bugs', false, 'class="menuBlack"');
       ?>&nbsp;<br />
       <?php spacer(2,2); ?><br />
-    </td>
-  </tr>
-
-  <tr bgcolor="#000033"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
-
-  <tr bgcolor="#000066">
-    <td align="right" valign="top" colspan="5" height="1" class="menuWhite">
-    <form method="post" action="/search.php">
-    <small>Search for</small>
-    <input class="small" type="text" name="search_string" value="" size="20" />
-    <small>in the</small>
-    <select name="search_in" class="small">
-	<option value="packages">Packages</option>
-    <option value="pear-dev">Developer mailing list</option>
-    <option value="pear-general">General mailing list</option>
-    <option value="pear-cvs">CVS commits mailing list</option>
-    </select>
-    <input type="image" src="/gifs/small_submit_white.gif" alt="search" align="bottom" />&nbsp;<br /></form></td></tr>
-
-  <tr bgcolor="#000033"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
-
-  <!-- Middle section -->
-
- <tr valign="top">
-<?php if (isset($SIDEBAR_DATA)) { ?>
-  <td colspan="2" class="sidebar_left" bgcolor="#f0f0f0" width="149">
-   <table width="149" cellpadding="4" cellspacing="0">
-    <tr valign="top">
-     <td><?php echo $SIDEBAR_DATA?><br /></td>
-    </tr>
-   </table>
   </td>
-<?php } ?>
-  <td>
-   <table width="100%" cellpadding="10" cellspacing="0">
-    <tr>
-     <td valign="top">
-<?php
-}
+ </tr>
 
-function &draw_navigation($data, $menu_title='')
-{
-    $html = "<br />\n";
-    if (!empty($menu_title)) {
-        $html .= "<b>$menu_title</b>\n";
-        $html .= "<br />\n";
+ <tr>
+  <td class="head-search" colspan="2">
+   <form method="post" action="/search.php">
+    <p class="head-search"><span class="accesskey">S</span>earch for
+    <input class="small" type="text" name="search_string" value="" size="20" accesskey="s" />
+    in the
+    <select name="search_in" class="small">
+     <option value="packages">Packages</option>
+     <option value="site">This site (using Google)</option>
+     <option value="developers">Developers</option>
+     <option value="pear-dev">Developer mailing list</option>
+     <option value="pear-cvs">CVS commits mailing list</option>
+    </select>
+    <input type="image" src="/gifs/small_submit_white.gif" alt="search" style="vertical-align: middle;" />&nbsp;<br />
+    </p>
+   </form>
+  </td>
+ </tr>
+</table>
+
+<!-- END HEADER -->
+<!-- START MIDDLE -->
+
+<table class="middle" cellspacing="0" cellpadding="0">
+ <tr>
+
+    <?php
+
+    if (isset($SIDEBAR_DATA)) {
+        ?>
+
+<!-- START LEFT SIDEBAR -->
+  <td class="sidebar_left">
+   <?php echo $SIDEBAR_DATA ?>
+  </td>
+<!-- END LEFT SIDEBAR -->
+
+        <?php
     }
 
-    foreach ($data as $url => $tit) {
-        $tt = str_replace(" ", "&nbsp;", $tit);
-        if ($url == $_SERVER['PHP_SELF']) {
-            $html .= make_image("box-1.gif") . "<b>$tt</b><br />\n";
-        } else {
-            $html .= make_image("box-0.gif") . "<a href=\"$url\">$tt</a><br />\n";
-        }
-    }
-    return $html;
+    ?>
+
+<!-- START MAIN CONTENT -->
+
+  <td class="content">
+
+    <?php
 }
 
 function response_footer($style = false)
@@ -210,64 +210,88 @@ function response_footer($style = false)
 
 
 ?>
-     </td>
-    </tr>
-   </table>
+
   </td>
 
-<?php if (isset($RSIDEBAR_DATA)) { ?>
-  <td class="sidebar_right" width="149" bgcolor="#f0f0f0">
-    <table width="149" cellpadding="4" cellspacing="0">
-     <tr valign="top">
-      <td><?php echo $RSIDEBAR_DATA; ?><br />
-     </td>
-    </tr>
-   </table>
+<!-- END MAIN CONTENT -->
+
+    <?php
+
+    if (isset($RSIDEBAR_DATA)) {
+        ?>
+
+<!-- START RIGHT SIDEBAR -->
+  <td class="sidebar_right">
+   <?php echo $RSIDEBAR_DATA; ?>
   </td>
-<?php } ?>
+<!-- END RIGHT SIDEBAR -->
+
+        <?php
+    }
+
+    ?>
 
  </tr>
-
- <!-- Lower bar -->
-
-  <tr bgcolor="#000033"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
-  <tr bgcolor="#330099">
-      <td align="right" valign="bottom" colspan="5" height="1">
-<?php
-print_link('/about/privacy.php', 'PRIVACY POLICY', false, 'class="menuLink"');
-echo delim();
-print_link('/credits.php', 'CREDITS', false, 'class="menuLink"');
-?>
-      <br />
-      </td>
-  </tr>
-  <tr bgcolor="#000033"><td colspan="5" height="1"><?php spacer(1,1); ?><br /></td></tr>
-
-  <tr valign="top" bgcolor="#cccccc">
-    <td colspan="5" height="1">
-	  <table border="0" cellspacing="0" cellpadding="5" width="100%">
-	  	<tr>
-		 <td>
-		  <small>
-	      <?php print_link('/copyright.php', 'Copyright &copy; 2001-2004 The PHP Group'); ?><br />
-	      All rights reserved.<br />
-	      </small>
-		 </td>
-		 <td align="right" valign="top">
-		  <small>
-	      Last updated: <?php echo $LAST_UPDATED; ?><br />
-	      Bandwidth and hardware provided by: <?php print_link("http://www.pair.com/", "pair Networks"); ?>
-	      </small>
-		 </td>
-		</tr>
-      </table>
-    </td>
-  </tr>
 </table>
+
+<!-- END MIDDLE -->
+<!-- START FOOTER -->
+
+<table class="foot" cellspacing="0" cellpadding="0">
+ <tr>
+  <td class="foot-bar" colspan="2">
+<?php
+print_link('/about/privacy.php', 'PRIVACY POLICY', false, 'class="menuBlack"');
+echo delim();
+print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
+?>
+   <br />
+  </td>
+ </tr>
+
+ <tr>
+  <td class="foot-copy">
+   <small>
+	<?php print_link('/copyright.php', 'Copyright &copy; 2001-2004 The PHP Group'); ?><br />
+     All rights reserved.<br />
+   </small>
+  </td>
+  <td class="foot-source">
+   <small>
+    Last updated: <?php echo $LAST_UPDATED; ?><br />
+    Bandwidth and hardware provided by: <?php print_link("http://www.pair.com/", "pair Networks"); ?>
+   </small>
+  </td>
+ </tr>
+</table>
+
+<!-- END FOOTER -->
 
 </body>
 </html>
 <?php
+}
+
+function &draw_navigation($data, $menu_title = '')
+{
+    $html = "\n";
+    if (!empty($menu_title)) {
+        $html .= "<strong>$menu_title</strong>\n";
+    }
+
+    $html .= '<ul class="side_pages">' . "\n";
+    foreach ($data as $url => $tit) {
+        $html .= ' <li class="side_page">';
+        if ($url == $_SERVER['PHP_SELF']) {
+            $html .= '<strong>' . $tit . '</strong>';
+        } else {
+            $html .= '<a href="' . $url . '">' . $tit . '</a>';
+        }
+        $html .= "</li>\n";
+    }
+    $html .= "</ul>\n\n";
+
+    return $html;
 }
 
 function menu_link($text, $url) {
@@ -278,40 +302,105 @@ function menu_link($text, $url) {
     echo "</p>\n";
 }
 
-function report_error($error)
+/**
+ * Display errors or warnings as a <ul> inside a <div>
+ *
+ * Here's what happens depending on $in:
+ *   + string: value is printed
+ *   + array:  looped through and each value is printed.
+ *             If array is empty, nothing is displayed.
+ *             If a value contains a PEAR_Error object,
+ *   + PEAR_Error: prints the value of getMessage() and getUserInfo()
+ *                 if DEVBOX is true, otherwise prints data from getMessage().
+ *
+ * @param string|array|PEAR_Error $in  see long description
+ * @param string $class  name of the HTML class for the <div> tag.
+ *                        ("errors", "warnings")
+ * @param string $head   string to be put above the message
+ *
+ * @return bool  true if errors were submitted, false if not
+ */
+function report_error($in, $class = 'errors', $head = 'ERROR:')
 {
-    if (PEAR::isError($error)) {
-        $error = $error->getMessage();
-        $info = $error->getUserInfo();
-        if ($info) {
-            $error .= " : $info";
+    if (PEAR::isError($in)) {
+        if (DEVBOX == true) {
+            $in = array($in->getMessage() . '... ' . $in->getUserInfo());
+        } else {
+            $in = array($in->getMessage());
         }
+    } elseif (!is_array($in)) {
+        $in = array($in);
+    } elseif (!count($in)) {
+        return false;
     }
-    print "<font color=\"#990000\"><b>$error</b></font><br />\n";
+
+    echo '<div class="' . $class . '">' . $head . '<ul>';
+    foreach ($in as $msg) {
+        if (PEAR::isError($msg)) {
+            if (DEVBOX == true) {
+                $msg = $msg->getMessage() . '... ' . $msg->getUserInfo();
+            } else {
+                $msg = $msg->getMessage();
+            }
+        }
+        echo '<li>' . htmlspecialchars($msg) . "</li>\n";
+    }
+    echo "</ul></div>\n";
+    return true;
 }
 
-function error_handler($errobj, $title = "Error")
+/**
+ * Forwards warnings to report_error()
+ *
+ * For use with PEAR_ERROR_CALLBACK to get messages to be formatted
+ * as warnings rather than errors.
+ *
+ * @param string|array|PEAR_Error $in  see report_error() for more info
+ *
+ * @return bool  true if errors were submitted, false if not
+ *
+ * @see report_error()
+ */
+function report_warning($in)
 {
-    if (PEAR::isError($errobj)) {
-        $msg = $errobj->getMessage();
-        $info = $errobj->getUserInfo();
-    } else {
-        $msg = $errobj;
-        $info = '';
-    }
+    return report_error($in, 'warnings', 'WARNING:');
+}
+
+/**
+ * Generates a complete PEAR web page with an error message in it then
+ * calls exit
+ *
+ * For use with PEAR_ERROR_CALLBACK error handling mode to print fatal
+ * errors and die.
+ *
+ * @param string|array|PEAR_Error $in  see report_error() for more info
+ * @param string $title  string to be put above the message
+ *
+ * @return void
+ *
+ * @see report_error()
+ */
+function error_handler($errobj, $title = 'Error')
+{
     response_header($title);
-    $report = "Error: $msg";
-    if ($info) {
-        $report .= ": $info";
-    }
-    for ($i = 0; $i < 3; $i++) {
-        $report .= "</TD></TR></TABLE>";
-    }
-    print "<font color=\"#990000\"><b>$report</b></font><br />\n";
+    report_error($errobj);
     response_footer();
     exit;
 }
 
+/**
+ * Displays success messages inside a <div>
+ *
+ * @param string $in  the message to be displayed
+ *
+ * @return void
+ */
+function report_success($in)
+{
+    echo '<div class="success">';
+    echo htmlspecialchars($in);
+    echo "</div>\n";
+}
 
 class BorderBox {
     function BorderBox($title, $width = "90%", $indent = "", $cols = 1,
@@ -327,15 +416,15 @@ class BorderBox {
     function start() {
         $title = $this->title;
         if (is_array($title)) {
-            $title = implode("</th><th>", $title);
+            $title = implode('</th><th>', $title);
         }
         $i = $this->indent;
         print "<!-- border box starts -->\n";
-        print "$i<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"$this->width\">\n";
+        print "$i<table cellpadding=\"0\" cellspacing=\"1\" style=\"width: $this->width; border: 0px;\">\n";
         print "$i <tr>\n";
         print "$i  <td bgcolor=\"#000000\">\n";
-        print "$i   <table cellpadding=\"2\" cellspacing=\"1\" border=\"0\" width=\"100%\">\n";
-        print "$i    <tr bgcolor=\"#cccccc\">\n";
+        print "$i   <table cellpadding=\"2\" cellspacing=\"1\" style=\"width: 100%; border: 0px;\">\n";
+        print "$i    <tr style=\"background-color: #CCCCCC;\">\n";
         print "$i     <th";
         if ($this->cols > 1) {
             print " colspan=\"$this->cols\"";
@@ -465,7 +554,7 @@ function html_category_urhere($id, $link_lastest = false)
 */
 function getURL($url)
 {
-	include_once('Net/URL.php');
+	include_once 'Net/URL.php';
 	$obj = new Net_URL($url);
 	return $obj->getURL();
 }
@@ -495,30 +584,30 @@ function get_license_link($license = "")
 {
     switch ($license) {
 
-        case "PHP License" :
-        case "PHP 2.02" :
-            $link = "http://www.php.net/license/2_02.txt";
+        case 'PHP License':
+        case 'PHP 2.02':
+            $link = 'http://www.php.net/license/2_02.txt';
             break;
 
-        case "GPL" :
-        case "GNU General Public License" :
-            $link = "http://www.gnu.org/licenses/gpl.html";
+        case 'GPL':
+        case 'GNU General Public License':
+            $link = 'http://www.gnu.org/licenses/gpl.html';
             break;
 
-        case "LGPL" :
-        case "GNU Lesser General Public License" :
-            $link = "http://www.gnu.org/licenses/lgpl.html";
+        case 'LGPL':
+        case 'GNU Lesser General Public License':
+            $link = 'http://www.gnu.org/licenses/lgpl.html';
             break;
 
-        default :
-            $link = "";
+        default:
+            $link = '';
             break;
     }
 
-    return ($link != "" ? "<a href=\"" . $link . "\">" . $license . "</a>\n" : $license);
+    return ($link != '' ? '<a href="' . $link . '">' . $license . "</a>\n" : $license);
 }
 
-function display_user_notes($user, $width = "50%")
+function display_user_notes($user, $width = '50%')
 {
     global $dbh;
     $bb = new BorderBox("Notes for user $user", $width);
@@ -564,12 +653,115 @@ function user_link($handle, $compact = false)
         return false;
     }
 
-    return sprintf("<a href=\"/user/%s\">%s</a>%s\n",
+    return sprintf("<a href=\"/user/%s\">%s</a>&nbsp;%s\n",
                    $handle,
                    $row['name'],
-                   ($row['wishlist'] != "" && $compact == false ? " [<a href=\"" . htmlentities($row['wishlist']) . "\">Wishlist</a>]" : "")
+                   ($row['wishlist'] != "" && $compact == false ? '['.make_link('http://' . $_SERVER['HTTP_HOST'] . '/wishlist.php/' . $handle, 'Wishlist').']' : '')
                    );
 }
 
 // }}}
+
+/**
+ * Sets <var>$_SESSION['captcha']</var> and
+ * <var>$_SESSION['captcha_time']</var> then prints the XHTML that
+ * displays a CAPTCHA image and a form input element
+ *
+ * Only generate a new <var>$_SESSION['captcha']</var> if it doesn't exist
+ * yet.  This avoids the problem of the CAPTCHA value being changed but the
+ * old image remaining in the browser's cache.  This is necessary because
+ * caching can not be reliably disabled.
+ *
+ * Use upper case letters to reduce confusion with some of these fonts.
+ * Input is passed through strtoupper() before comparison.
+ *
+ * Don't use "I" or "O" to avoid confusion with numbers.  Don't use digits
+ * because some of the fonts don't handle them.
+ *
+ * @return string  the CAPTCHA image and form intut
+ *
+ * @see validate_captcha(), captcha-image.php
+ */
+function generate_captcha()
+{
+    if (!isset($_SESSION['captcha'])) {
+        $_SESSION['captcha'] = '';
+        $useable = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        for ($i = 0; $i < 4; $i++) {
+            $_SESSION['captcha'] .= substr($useable, mt_rand(0, 23), 1);
+        }
+        $_SESSION['captcha_time'] = time();
+    }
+    return 'Type <img src="/captcha-image.php?x=' . time()
+           . '" alt="If you are unable to'
+           . ' read this image, click the help link to the right of'
+           . ' the input box" align="top" /> into this box...'
+           . ' <input type="text" size="4" maxlength="4" name="captcha" />'
+           . ' (<a href="/captcha-help.php" target="_blank">help</a>)'
+           . ' <br />If this image is hard to read, reload the page.';
+
+}
+
+/**
+ * Check if the CAPTCHA value submitted by the user in
+ * <var>$_POST['captcha']</var> matches <var>$_SESSION['captcha']</var>
+ * and that the submission was made within the allowed time frame
+ * of the CAPTCHA being generated
+ *
+ * If the two values aen't the same or the length of time between CAPTCHA
+ * generation and form submission is too long, this function will unset()
+ * <var>$_SESSION['captcha']</var>.  Unsetting it will cause
+ * generate_captcha() to come up with a new CAPTCHA value and image.
+ * This prevents brute force attacks.
+ *
+ * Similarly, if the submission is correct <var>$_SESSION['captcha']</var>
+ * is unset() in order to keep robots from making multiple requests with
+ * a correctly guessed CAPTCHA value.
+ *
+ * @param int $max_age  the length of time in seconds since the CAPTCHA was
+ *                      generated during which a submission should be
+ *                      considered valid.  Default is 300 seconds
+ *                      (aka 5 minutes).
+ *
+ * @return bool  true if input matches captcha, false if not
+ *
+ * @see generate_captcha(), captcha-image.php
+ */
+function validate_captcha($max_age = 300)
+{
+    if (!isset($_POST['captcha']) ||
+        !isset($_SESSION['captcha']) ||
+        (time() - $_SESSION['captcha_time']) > $max_age ||
+        $_SESSION['captcha'] != strtoupper($_POST['captcha']))
+    {
+        unset($_SESSION['captcha']);
+        unset($_SESSION['captcha_time']);
+        return false;
+    } else {
+        unset($_SESSION['captcha']);
+        unset($_SESSION['captcha_time']);
+        return true;
+    }
+}
+
+/**
+ * Turns bug/feature request numbers into hyperlinks
+ *
+ * If the bug number is prefixed by the word "PHP," the link will
+ * go to bugs.php.net.  Otherwise, the bug is considered a PECL bug.
+ *
+ * @param string $text  the text to check for bug numbers
+ *
+ * @return string  the string with bug numbers hyperlinked
+ */
+function make_ticket_links($text)
+{
+    $text = preg_replace('/(?<=php)\s*(bug|request)\s+#?([0-9]+)/i',
+                         ' <a href="http://bugs.php.net/\\2">\\1 \\2</a>',
+                         $text);
+    $text = preg_replace('/(?<![>a-z])(bug|request)\s+#?([0-9]+)/i',
+                         '<a href="/bugs/\\2">\\0</a>', $text);
+    return $text;
+}
+
 ?>

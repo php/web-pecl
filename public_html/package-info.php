@@ -48,9 +48,19 @@ if (!empty($version)) {
 }
 
 if (empty($pacid) || !isset($pkg['name'])) {
-    response_header("Error");
-    PEAR::raiseError('No package selected');
-    response_footer();
+    // Let's see if $pacid is a PEAR package
+    if (!isset($pkg['name'])) {
+        $pkg_name = package::info($pacid, 'name', true);
+        if (!empty($pkg_name)) {
+            header('HTTP/1.0 301 Moved Permanently');
+            header('Location: http://pear.php.net/package/' . $pkg_name);
+            header('Connection: close');
+            exit();
+        }
+    }
+
+    $_SERVER['REDIRECT_URL'] = $_SERVER['REQUEST_URI'];
+    include 'error/404.php';
     exit();
 }
 

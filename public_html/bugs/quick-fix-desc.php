@@ -1,7 +1,7 @@
-<?php
+<?php /* vim: set noet ts=4 sw=4: : */
 
 /**
- * Performs the requires/includes needed for the entire bug system
+ * User interface for viewing and editing bug details
  *
  * This source file is subject to version 3.0 of the PHP license,
  * that is bundled with this package in the file LICENSE, and is
@@ -11,19 +11,32 @@
  * obtain it through the world-wide-web, please send a note to
  * license@php.net so we can mail you a copy immediately.
  *
- * @category  peclweb
+ * @category  pearweb
  * @package   Bugs
  * @copyright Copyright (c) 1997-2004 The PHP Group
  * @license   http://www.php.net/license/3_0.txt  PHP License
  * @version   $Id$
  */
-
+ 
 /**
- * Obtain the functions and variables used throughout the bug system
+ * Obtain common includes
  */
-require_once './include/functions.inc';
+require_once './include/prepend.inc';
 
-/**
- * Obtain the $RESOLVE_REASONS array
- */
-require './include/resolve.inc';
+response_header('Quick Fix Descriptions'); 
+?> 
+<table border="2" cellpadding="6">
+<?php
+foreach ($RESOLVE_REASONS as $reason) {
+    echo "
+        <tr>
+         <td>{$reason['desc']}</td>
+         <td>Status: {$reason['status']}</td>
+         <td><pre>{$reason['message']}</pre></td>
+        </tr>
+    ";
+} ?>
+</table>
+<?php
+response_footer();
+?>

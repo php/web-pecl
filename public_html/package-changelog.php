@@ -40,7 +40,7 @@ print '<p>' . make_link("/" . $name, 'Return') . '</p>';
 $bb = new Borderbox("Changelog for " . $name, "90%", "", 2, true);
 
 if (count($pkg['releases']) == 0) {
-    print "<center><p><i>No releases yet</i></p></center>";
+    $bb->fullRow('There are no releases for ' . $name . ' yet.');
 } else {
     $bb->headRow("Release", "What has changed?");
 

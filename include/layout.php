@@ -48,31 +48,34 @@ function resize_image($img, $width=1, $height=1) {
 
 
 
-// make_image()
-// return an IMG tag for a given file (relative to the images dir)
-//
-
-function make_image($file, $alt=false, $align=false, $extras=false, $dir=false, $border=0) {
+/**
+ * Returns an IMG tag for a given file (relative to the images dir)
+ */
+function make_image($file, $alt = '', $align = '', $extras = '', $dir = '',
+                    $border = 0, $styles = '')
+{
     if (!$dir) {
         $dir = '/gifs';
     }
     if ($size = @getimagesize($_SERVER['DOCUMENT_ROOT'].$dir.'/'.$file)) {
-        $image = sprintf('<img src="%s/%s" border="%d" %s alt="%s" %s%s />',
+        $image = sprintf('<img src="%s/%s" style="border: %d;%s%s" %s alt="%s" %s />',
             $dir,
             $file,
             $border,
+            ($styles ? ' '.$styles            : ''),
+            ($align  ? ' float: '.$align.';'  : ''),
             $size[3],
             ($alt    ? $alt : ''),
-            ($align  ? ' align="'.$align.'"'  : ''),
             ($extras ? ' '.$extras            : '')
         );
     } else {
-        $image = sprintf('<img src="%s/%s" border="%d" alt="%s" %s%s />',
+        $image = sprintf('<img src="%s/%s" style="border: %d;%s%s" alt="%s" %s />',
             $dir,
             $file,
             $border,
+            ($styles ? ' '.$styles            : ''),
+            ($align  ? ' float: '.$align.';'  : ''),
             ($alt    ? $alt : ''),
-            ($align  ? ' ALIGN="'.$align.'"'  : ''),
             ($extras ? ' '.$extras            : '')
         );
     }
@@ -81,23 +84,25 @@ function make_image($file, $alt=false, $align=false, $extras=false, $dir=false, 
 
 
 
-// print_image()
-// print an IMG tag for a given file
-//
-
-function print_image($file, $alt=false, $align=false, $extras=false, $dir=false, $border=0) {
+/**
+ * Prints an IMG tag for a given file
+ */
+function print_image($file, $alt = '', $align = '', $extras = '', $dir = '',
+                     $border = 0)
+{
     print make_image($file, $alt, $align, $extras, $dir);
 }
 
-// delim()
-// print a pipe delimiter
-//
 
-function delim($color=false) {
+/**
+ * Print a pipe delimiter
+ */
+function delim($color = false, $delimiter = '&nbsp;|&nbsp;')
+{
     if (!$color) {
-        return '&nbsp;|&nbsp;';
+        return $delimiter;
     }
-    return sprintf('<font color="%s">&nbsp;|&nbsp;</font>', $color );
+    return sprintf('<span style="color: %s;">%s</span>', $color, $delimiter);
 }
 
 
@@ -150,7 +155,7 @@ function make_bug_link($package, $type = 'list', $linktext = false) {
             if (!$linktext) {
                 $linktext = 'Package Bugs';
             }
-            return make_link('/bugs/search.php?cmd=display&status=Open&bug_type[]='.$package, $linktext);
+            return make_link('/bugs/search.php?cmd=display&status=Open&package_name[]='.$package, $linktext);
         case 'report':
             if (!$linktext) {
                 $linktext = 'Report a new bug';

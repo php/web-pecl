@@ -38,7 +38,7 @@ class Damblan_URL {
         }
 
         $path = preg_replace("=^" . preg_quote($_SERVER['SCRIPT_NAME']) . "=", "", $_SERVER['REQUEST_URI']);
-        if ($path{0} == "/") {
+        if (isset($path{0}) && $path{0} == "/") {
             $path = substr($path, 1);
 
             $elements = explode("/", $path);

@@ -33,9 +33,13 @@ switch ($HTTP_POST_VARS['search_in']) {
 		exit;
 		break;
 
-    case "pear-dev" :
-    case "pear-cvs" :
-    case "pear-general" :
+    case 'developers':
+        // XXX: Enable searching for names instead of handles
+        localRedirect('/user/' . urlencode($_POST['search_string']));
+        break;
+
+    case "pecl-dev" :
+    case "pecl-cvs" :
         /**
          * We forward the query to the mailing list archive
          * at marc.thaimsgroup.com
@@ -44,6 +48,11 @@ switch ($HTTP_POST_VARS['search_in']) {
         $query = "l=".$HTTP_POST_VARS['search_in']."&w=2&r=1&q=b&s=".urlencode($HTTP_POST_VARS['search_string']);
         header("Location: ".$location."?".$query);
         
+        break;
+
+    case 'site':
+        header('Location: http://google.com/search?as_sitesearch=pear.php.net'
+               . '&as_q=' . urlencode($_POST['search_string']));
         break;
 
     default :

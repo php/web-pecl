@@ -18,6 +18,7 @@
 #
 
 TABLE_FILES=\
+	cvs_acl.sql \
 	package_acl.sql \
 	maintains.sql \
 	categories.sql \
@@ -107,3 +108,4 @@ deps.res: packages.res
 users.res:
 notes.res: packages.res users.res
 categories.res:
+cvs_acl.res: users.res

@@ -13,4 +13,5 @@ CREATE TABLE users (
        userinfo      TEXT,
 
        PRIMARY KEY(handle)
+       INDEX(handle,registered)
 );

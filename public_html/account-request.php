@@ -120,7 +120,7 @@ do {
                "Password (MD5):   {$md5pw}\n\n".
                "Purpose:\n".
                "$purpose\n\n".
-               "To handle: http://{$SERVER_NAME}/admin.php?acreq={$handle}\n";
+               "To handle: http://{$SERVER_NAME}/admin/?acreq={$handle}\n";
 
         if ($moreinfo) {
             $msg .= "\nMore info:\n$moreinfo\n";

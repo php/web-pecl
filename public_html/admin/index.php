@@ -298,7 +298,7 @@ do {
 			}
         //-->
         </script>
-		<form action="admin.php" name="mass_reject_form" method="post">
+		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" name="mass_reject_form" method="post">
 		<input type="hidden" value="" name="cmd"/>
 		<?php
         $bb = new BorderBox("Account Requests", "100%", "", 6, true);

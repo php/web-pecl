@@ -75,7 +75,7 @@ if (!empty($_POST)) {
         } else {
             $_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
         }
-        localRedirect('category-manager.php');
+        localRedirect('/admin/category-manager.php');
         break;
 
     case 'update':
@@ -85,7 +85,7 @@ if (!empty($_POST)) {
         } else {
             $_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
         }
-        localRedirect('category-manager.php');
+        localRedirect('/admin/category-manager.php');
         break;
 
     case 'delete':
@@ -95,11 +95,11 @@ if (!empty($_POST)) {
         } else {
             $_SESSION['category_manager']['error_msg'] = 'Please select a category';
         }
-        localRedirect('category-manager.php');
+        localRedirect('/admin/category-manager.php');
         break;
 
     default:
-        localRedirect('category-manager.php');
+        localRedirect('/admin/category-manager.php');
     }
 }
 	

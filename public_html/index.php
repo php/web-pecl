@@ -51,7 +51,17 @@ href="/manual/">manual</a> for more information.
 -';
 
 response_header();
+?>
 
+<h3>ActiveState Active Award for Stig Bakken</h3>
+
+<p><a href="http://pear.php.net/account-info.php?handle=ssb">Stig Bakken</a>
+has received an ActiveState Active Award for founding and working on PEAR.
+(Read the <a href="http://www.activestate.com/Corporate/ActiveAwards/">full
+announcement</a>.) Congratulations!</p>
+
+<?php
+echo hdelim();
 menu_link("Documentation", "/manual/");
 menu_link("News", "/news/");
 menu_link("Frequently Asked Questions", "/manual/en/faq.php");

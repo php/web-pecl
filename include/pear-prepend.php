@@ -9,7 +9,7 @@ require_once "pear-manual.php";
 
 error_reporting(E_ALL);
 
-if ($HTTP_SERVER_VARS['SERVER_NAME'] != 'pear.php.net' || isset($HTTP_COOKIE_VARS['pear_dev'])) {
+if ($_SERVER['SERVER_NAME'] != 'pear.php.net' || isset($_COOKIE['pear_dev'])) {
     define('DEVBOX', true);
     include_once "pear-debug.php";
 } else {

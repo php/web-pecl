@@ -39,7 +39,7 @@ function reloadMe()
                       + document.forms[1].rid.value;
 
     document.location.href = newLocation;
-                             
+
 }
 //-->
 </script>
@@ -70,7 +70,7 @@ foreach (category::listAll() as $value) {
         echo "    <option value=\"" . $value['id'] . "\" selected>" . $value['name'] . "</option>\n";
     } else {
         echo "    <option value=\"" . $value['id'] . "\">" . $value['name'] . "</option>\n";
-    }    
+    }
 }
 
 echo "  </select>\n";
@@ -86,7 +86,7 @@ if (isset($_GET['cid']) && $_GET['cid'] != "") {
             echo "    <option value=\"" . $value . "\" selected>" . $name . "</option>\n";
         } else {
             echo "    <option value=\"" . $value . "\">" . $name . "</option>\n";
-        }    
+        }
     }
 
     echo "</select>\n";
@@ -97,7 +97,7 @@ if (isset($_GET['cid']) && $_GET['cid'] != "") {
 echo "  </td>\n";
 echo "  <td>\n";
 
-if (isset($_GET['pid']) && $_GET['pid'] != "") {
+if (isset($_GET['pid']) && (int)$_GET['pid']) {
     echo "  <select onchange=\"javascript:reloadMe();\" name=\"rid\" size=\"1\">\n";
     echo "  <option>Select release ...</option>\n";
     echo "  <option>All releases</option>\n";
@@ -107,7 +107,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
 
     foreach ($rows as $row) {
         if (isset($_GET['rid']) && $_GET['rid'] == $row['id']) {
-            echo "    <option value=\"" . $row['id'] . "\" selected>" . $row['version'] . "</option>\n";        
+            echo "    <option value=\"" . $row['id'] . "\" selected>" . $row['version'] . "</option>\n";
         } else {
             echo "    <option value=\"" . $row['id'] . "\">" . $row['version'] . "</option>\n";
         }
@@ -129,43 +129,43 @@ echo "</form>\n";
 
 $bb->end();
 
-if (isset($_GET['pid']) && $_GET['pid'] != "") {
+if (isset($_GET['pid']) && (int)$_GET['pid']) {
 
     $info = package::info($_GET['pid']);
-         
+
     echo "<h2>Statistics for package \"<a href=\"http://pear.php.net/package-info.php?pacid=".$_GET['pid']."\">" . $info['name'] . "</a>\"</h2>\n";
     $bb = new Borderbox("General statistics");
     echo "Number of releases: <b>" . count($info['releases']) . "</b><br />\n";
     echo "Total downloads: <b>" . number_format(statistics::package($_GET['pid']), 0, '.', ',') . "</b><br />\n";
     $bb->end();
-    
+
     if (count($info['releases']) > 0) {
         echo "<br />\n";
         $bb = new Borderbox("Release statistics");
-    
+
         $release_statistics = statistics::release($_GET['pid'], (isset($_GET['rid']) ? $_GET['rid'] : ""));
-    
+
         $i= 0;
         foreach ($release_statistics as $key => $value) {
             $bb2 = new Borderbox("Release: " . $value['version'], 400);
             echo "Number of downloads: <b>" . number_format($value['total'], 0, '.', ',') . "</b><br />\n";
-    
+
             if ($value['total'] > 1) {
                 echo "First download: <b>" . $value['first_download'] . "</b><br />\n";
                 echo "Last download: <b>" . $value['last_download'] . "</b><br />\n";
             }
-    
+
             $bb2->end();
             echo "<br />\n";
         }
-        
+
         $bb->end();
-    
+
         /**
         * Print the graph
         */
         printf('<br /><img src="package-stats-graph.php?pid=%s&releases=%s_339900" name="stats_graph" width="543" height="200" alt="">', $_GET['pid'], isset($_GET['rid']) ? (int)$_GET['rid'] : '');
-    
+
     /**
     * Print the graph control stuff
     */
@@ -197,7 +197,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
             alert('Please select a release and a colour!');
         }
     }
-    
+
     function removeGraphItem()
     {
         graphForm = document.forms['graph_control'];
@@ -207,7 +207,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
             graphList.options[graphList.selectedIndex] = null;
         }
     }
-    
+
     function updateGraph()
     {
         graphForm   = document.forms['graph_control'];
@@ -332,7 +332,7 @@ if (@!$_GET['pid']) {
 </table>
 	<?php
 	$bb->end();
-	
+
 	echo '<br />';
 
 	$bb = new BorderBox("Package statistics");
@@ -343,7 +343,7 @@ if (@!$_GET['pid']) {
 	if (DB::isError($sth)) {
 	    PEAR::raiseError("unable to generate stats");
 	}
-	
+
 	if ($rows > 12) {
 		echo '<div id="jabba" style="height: 300px; overflow: auto">';
 	}
@@ -356,7 +356,7 @@ if (@!$_GET['pid']) {
 	echo "</tr>\n";
 
 	$lastPackage = "";
-    
+
 	while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
 	    if ($row['package'] == $lastPackage) {
 	        $row['package'] = "";

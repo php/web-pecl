@@ -70,8 +70,10 @@ Please upgrade PHP to a newer version, and try again.  See you then.
 
 define('WINDOWS', (substr(PHP_OS, 0, 3) == 'WIN'));
 
-if (!($tty = @fopen("/dev/tty", "r"))) {
-    $tty = fopen("php://stdin", "r");
+$tty = WINDOWS ? @fopen('\con', 'r') : @fopen('/dev/tty', 'r');
+
+if (!$tty) {
+    $tty = fopen('php://stdin', 'r');
 }
 
 $installer_packages = array(

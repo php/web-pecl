@@ -358,13 +358,13 @@ class package
             $info['releases'] =
                  $dbh->getAssoc($rel_sql, false, array($info['packageid']),
                  DB_FETCHMODE_ASSOC);
-            $rels = sizeof($info['releases'])?array_keys($info['releases']):array('');
+            $rels = sizeof($info['releases']) ? array_keys($info['releases']) : array('');
             $info['stable'] = $rels[0];
             $info['notes'] =
-                 $dbh->getAssoc($notes_sql, false, array($info['packageid']),
+                 $dbh->getAssoc($notes_sql, false, array(@$info['packageid']),
                  DB_FETCHMODE_ASSOC);
             $deps =
-                 $dbh->getAll($deps_sql, array($info['packageid']),
+                 $dbh->getAll($deps_sql, array(@$info['packageid']),
                  DB_FETCHMODE_ASSOC);
             foreach($deps as $dep) {
                 $rel_version = null;

@@ -18,6 +18,8 @@
    $Id$
 */
 
+require_once "site.php";
+
 $NEXT = $PREV = $UP = $HOME = array(false, false);
 $TOC = array();
 

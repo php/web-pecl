@@ -43,7 +43,8 @@ function pear_xmlrpc_dispatcher($method_name, $params, $appdata)
     global $xmlrpc_method_index;
     if (empty($xmlrpc_method_index["index"][$method_name])) {
         error_log("pear xmlrpc: unknown method: $method_name");
-        return false; // XXX FAULT
+        report_error("unknown method: $method_name");
+        return false;
     }
     $type_key = "";
     for ($i = 0; $i < sizeof($params); $i++) {
@@ -59,35 +60,28 @@ function pear_xmlrpc_dispatcher($method_name, $params, $appdata)
     }
     if (!isset($xmlrpc_method_index["index"][$method_name][$type_key])) {
         error_log("pear xmlrpc: no signature found for $method_name($type_key)");
-        PEAR::raiseError("no signature found for $method_name($type_key)", -1,
-                         PEAR_ERROR_TRIGGER, E_USER_WARNING, $userinfo);
+        report_error("no signature found for $method_name($type_key)");
         return false;
     }
 	$auth = $xmlrpc_method_index["auth"][$method_name];
 	if ($auth != "all") {
 		auth_require($auth == "admin");
-	}
-    $function = $xmlrpc_method_index["index"][$method_name][$type_key];
-    error_log("pearweb xmlrpc: calling $function", 0);
-    if (strstr($function, "::")) {
-        list($class, $method) = explode("::", $function);
-        // XXX deprecated syntax
-        $ret = @call_user_method_array($method, $class, $params);
-    } else {
-        $ret = call_user_func_array($function, $params);
+        $user = $GLOBALS['auth_user']->handle;
+	} else {
+        $user = '(nobody)';
     }
+    $function = $xmlrpc_method_index["index"][$method_name][$type_key];
+    error_log("pearweb xmlrpc: $user calls $function($type_key)", 0);
+    if (strstr($function, "::")) {
+        $function = explode("::", $function);
+    }
+    $ret = call_user_func_array($function, $params);
     if (PEAR::isError($ret)) {
         $arr = (array)$ret;
         $arr['__PEAR_TYPE__'] = 'error';
         $arr['__PEAR_ERROR_CLASS__'] = get_class($ret);
         return $arr;
     }
-/*
-    ob_start();
-    var_dump($ret);
-    error_log("$method_name returned ".ob_get_contents());
-    ob_end_clean();
-*/
     return $ret;
 }
 
@@ -105,7 +99,7 @@ function pear_xmlrpc_introspection_callback($userdata)
         $ret .= "   <author/>\n";
         $ret .= "   <purpose/>\n";
         $ret .= "   <signatures>\n";
-	foreach ($sig["param_types"] as $params) {
+        foreach ($sig["param_types"] as $params) {
             $ret .= "    <signature>\n";
             $ret .= "     <params>\n";
             $paramlist = explode(",", $params);
@@ -117,7 +111,7 @@ function pear_xmlrpc_introspection_callback($userdata)
             $ret .= "      <value type='$sig[return_type]'/>\n";
             $ret .= "     </returns>\n";
             $ret .= "    </signature>\n";
-	}
+        }
         $ret .= "   </signatures>\n";
         $ret .= "   <see/>\n";
         $ret .= "   <examples/>\n";

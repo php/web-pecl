@@ -15,51 +15,51 @@ function displayError($msg)
 $jumpto = "handle";
 
 do {
-    if ($submit) {
-	$required = array("handle", "name", "email");
-	while (list($i, $field) = each($required)) {
-	    if (!$$field) {
-		displayError("Please enter $field");
-		$jumpto = $field;
-		break 2;
-	    }
-	}
+    if (isset($submit)) {
+        $required = array("handle", "name", "email");
+        while (list($i, $field) = each($required)) {
+            if (!$$field) {
+                displayError("Please enter $field");
+                $jumpto = $field;
+                break 2;
+            }
+        }
 
-	if (!preg_match("/^[a-z][a-z0-9]+$/i", $handle)) {
-	    displayError("Handle must start with a letter and contain ".
-			 "only letters and digits.");
-	    break;
-	}
+        if (!preg_match("/^[a-z][a-z0-9]+$/i", $handle)) {
+            displayError("Handle must start with a letter and contain ".
+                         "only letters and digits.");
+            break;
+        }
 
-	if ($password != $password2) {
-	    displayError("Passwords did not match");
-	    $password = $password2 = "";
-	    $jumpto = "password";
-	    break;
-	}
+        if ($password != $password2) {
+            displayError("Passwords did not match");
+            $password = $password2 = "";
+            $jumpto = "password";
+            break;
+        }
 
-	if (!$password) {
-	    displayError("Empty passwords not allowed");
-	    $jumpto = "password";
-	    break;
-	}
+        if (!$password) {
+            displayError("Empty passwords not allowed");
+            $jumpto = "password";
+            break;
+        }
 
-	$handle = strtoupper($handle);
-	$obj = new Author(&$dbh);
-	$err = $obj->insert($handle);
-	if (DB::isError($err)) {
-	    displayError("$handle: " . DB::errorMessage($err));
-	    $jumpto = "handle";
-	    break;
-	}
+        $handle = strtoupper($handle);
+        $obj = new Author(&$dbh);
+        $err = $obj->insert($handle);
+        if (DB::isError($err)) {
+            displayError("$handle: " . DB::errorMessage($err));
+            $jumpto = "handle";
+            break;
+        }
 
-	$display_form = false;
-	$obj->name = $name;
-	$obj->email = $email;
-	$obj->homepage = $homepage;
-	$obj->showemail = (bool)$showemail;
-	$obj->admin = (bool)$admin;
-	$obj->password = md5($password);
+        $display_form = false;
+        $obj->name = $name;
+        $obj->email = $email;
+        $obj->homepage = $homepage;
+        $obj->showemail = (bool)$showemail;
+        $obj->admin = (bool)$admin;
+        $obj->password = md5($password);
     }
 } while (0);
 
@@ -73,11 +73,11 @@ if ($display_form) {
 <TABLE>
 <?php
 
-     if ($errorMsg) {
-	 print " <TR>\n";
-	 print "  <TD>&nbsp;</TD>\n";
-	 print "  <TD><B>$errorMsg</B></TD>\n";
-	 print " </TR>\n";
+     if (isset($errorMsg)) {
+         print " <TR>\n";
+         print "  <TD>&nbsp;</TD>\n";
+         print "  <TD><B>$errorMsg</B></TD>\n";
+         print " </TR>\n";
      }
 
     $width = 60;
@@ -95,9 +95,9 @@ if ($display_form) {
     $form->display();
 
     if ($jumpto) {
-	print "<SCRIPT LANGUAGE=\"JavaScript\">\n<!--\n";
-	print "document.forms[0].$jumpto.focus();\n";
-	print "\n// -->\n</SCRIPT>\n";
+        print "<SCRIPT LANGUAGE=\"JavaScript\">\n<!--\n";
+        print "document.forms[0].$jumpto.focus();\n";
+        print "\n// -->\n</SCRIPT>\n";
     }
 }
 

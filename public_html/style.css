@@ -102,3 +102,8 @@ textarea.small {
 	font-family: "andale mono", "monotype.com", "courier new", monospace;
 	font-size: 75%;
 }
+
+form {
+    margin-bottom : 0;
+}
+    

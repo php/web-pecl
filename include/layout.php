@@ -205,6 +205,8 @@ function commonHeader($title) {
 	print_link('http://php.net/manual/en/pear.php', 'DOCS', false, 'class="menuBlack"');
 	echo delim();
 	print_link('/support.php','SUPPORT',false,'class="menuBlack"');
+	echo delim();
+	print_link('/faq.php','FAQ',false,'class="menuBlack"');
       ?>&nbsp;<br />
       <?php spacer(2,2); ?><br />
     </td>

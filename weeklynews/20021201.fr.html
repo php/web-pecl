@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+<p><i><small>by Alan Knowles (alan_k@php.net)<br>
+Traduit par Pierre-Alain Joye (pajoye@php.net)<br>
+</small></i></p>
+Le temps manquant, les weekly news sont actuellement
+&nbsp;bihebdomadaires. Ce f&ucirc;t &agrave; nouveau une semaine
+tr&egrave;s active, plus de 300 messages sur la mailing liste et 200
+commits sur le CVS. Des discussions int&eacute;ressantes sur les
+licences des packages PEAR, phpdocumentor, l'installeur web de PEAR,
+une nouvelle interface pour imagemagick, et 5 nouveaux packages, y
+compris beaucoup d'outils math&eacute;matiques avanc&eacute;s, un
+g&eacute;n&eacute;rateur de code barre et une nouveau module de gestion
+de socket.<br>
+<hr>
+<h2>Traffic sur PEAR-DEV</h2>
+<h3>Contribuer &agrave; PEAR et les implication des licences</h3>
+Ces deux derni&egrave;res semaines, beaucoup de discussions
+concernaient l'ajout de code sous licence GPL dans PEAR, tant que les
+d&eacute;velopeurs n'aiment pas l'id&eacute;e d'une interdiction pure,
+les implications d'avoir un module qui affecte leurs applications est
+significative, et le consensus g&eacute;n&eacute;ral f&ucirc;t de
+demander aux contributeurs si ils peuvent changer la licence vers la
+licence LGPL, licence plus permissive et mieux adapt&eacute; aux
+librairies. Concernant les modules PECL, il est par contre de toutes
+fa&ccedil;on impossible d'accepter des codes sous licence GPL, la
+licence PHP n'&eacute;tant pas compatible avec la GPL, la liaison
+&agrave; php violerait la licence GPL. Ceci est aussi valable pour des
+modules faisant appel &agrave; des librairies externes sous licence
+GPL.
+<h3>PHP Documentor disponible depuis PEAR</h3>
+Apr&egrave;s quelques efforts, Greg Beaver a finalement termin&eacute;
+la d&eacute;finition du package pour PHPDocumentor et l'a rendu
+disponible via l'installer PEAR.<br>
+<h3>Nouvelles versions de PEAR web installer<br>
+</h3>
+Christian Dickman a annonc&eacute; une nouvelle release de son
+interface web pour l'installeur PEAR. Id&eacute;al pour les
+utilisateurs d'h&eacute;bergements mutualis&eacute;s ou simplement trop
+"fatigu&eacute;" :) pour apprendre la syntaxe de la commande en ligne.
+Vous pouvez l'obtenir &agrave; l'adresse suivante:<br>
+<pre wrap=""><a class="moz-txt-link-freetext"
+ href="http://dickmann.homeunix.org/pear/go-pear.html">http://dickmann.homeunix.org/pear/go-pear.html</a></pre>
+<h3>Nouvelle interface en remplacement de PECL::imagick</h3>
+Michael Montero a annonc&eacute; une interface enti&egrave;rement
+r&eacute;&eacute;crite pour imagemagick, apr&egrave;s quelques
+discussions, il a &eacute;t&eacute; d&eacute;cid&eacute; qu'elle
+remplacera l'actuel PECL::imagick de Christian Stocker. Cette nouvelle
+interface offre un grand nombre de nouvelles fonctionnalit&eacute;es,
+et ne concervera pas la compatibilit&eacute; descendante. Il est
+&eacute;galement pr&eacute;vu d'y ajouter une interface object comme
+alternative aux classiques et fonctionnels fonctions php.<br>
+<h3> </h3>
+<h3>Bugs and Fixes</h3>
+Merci &agrave; ces personnes pour avoir signal&eacute; ou
+corrig&eacute; des bugs: Thomas Schulz, Jesus M. Castagnetto, Christian
+Dickmann and Derick Rethans. <br>
+<hr>
+<h2>Proposition et Nouveau Packages</h2>
+<h3>101 Maths avec Jesus M. Castagnetto - Math_Complex, Math_TrigOp and
+Math_Quaternion<br>
+</h3>
+Jesus M. Castagnetto a offert un grand nombres de classes
+orient&eacute;es math&eacute;matiques, les nombres complexes (racine
+carr&eacute; de -1), la trigonom&eacute;trie ou la Quaternation.<br>
+<h3>Marquez-le avec un code barre</h3>
+Marcelo Subtil Marcal publia le package Image_BarCode.
+<h3>Sockets - a new richer set of Socket tools<br>
+</h3>
+Stephan Seidt &nbsp;a annonc&eacute; un ensemble complet d'outils
+d&eacute;di&eacute;s aux sockets (une bonne alternative au module
+existant Net_Socket), lequel peut travailler non seulement avec les
+sockets TCP, mais aussi UDP et Unix Domain Sockets, &agrave;
+c&ocirc;t&eacute; de la possibilt&eacute; d'impl&eacute;mentr un
+serveur de sockets.<br>
+<hr>
+<h2>Development</h2>
+<p>Cette semaine, ont &eacute;t&eacute; actifs sur le cvs: Auth,
+Config, Date, DB_DataObject, Excel, File_HtAccess, HTML_Javascript,
+HTML_QuickForm, HTML_Select, HTML_Table, I18N,&nbsp; Image_GraphViz,
+Log, Math_Complex, Math_Quaternion, Math_TrigOp, Math)Vecotr, MDB,
+Message, Net_Dict, Net_Ident, PEAR_Frontend_Web, PECL::apd,
+PECL::imagic, PECL::mailparse,&nbsp; PECL::soap, PECL::spread,
+PECL::uuid, Perm_LiveUser, Validate, XML_sql2xml, XML_Transformer,
+XML_XSLT_Wrapper and the PEAR installer. <br>
+</p>
+</body>
+</html>

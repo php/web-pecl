@@ -46,8 +46,8 @@ function response_header($title = 'The PHP Extension and Application Repository'
 	global $main_menu, $PHP_SELF;
 	$SIDEBAR_DATA .= "<br /><br />\n";
 	$me = basename($PHP_SELF);
-	foreach ($main_menu as $url => $title) {
-	    $tt = str_replace(" ", "&nbsp;", $title);
+	foreach ($main_menu as $url => $tit) {
+	    $tt = str_replace(" ", "&nbsp;", $tit);
 	    if ($url == $me) {
 		$SIDEBAR_DATA .= "<b>&gt;&gt;$tt&lt;&lt;</b><br />\n";
 	    } else {
@@ -97,7 +97,7 @@ function report_error($error)
     print "<FONT COLOR=\"#990000\"><B>$error</B></FONT><BR>\n";
 }
 
-function error_handler($errobj)
+function error_handler($errobj, $title = "Error")
 {
     if (PEAR::isError($errobj)) {
         $msg = $errobj->getMessage();
@@ -106,7 +106,7 @@ function error_handler($errobj)
         $msg = $errobj;
         $info = '';
     }
-    response_header("Error");
+    response_header($title);
     $report = "Error: $msg";
     if ($info) {
         $report .= ": $info";
@@ -179,6 +179,14 @@ function border_box_end($indent = "")
     print "$indent  </td>\n";
     print "$indent </tr>\n";
     print "$indent</table>\n";
+}
+
+function html_table_border(&$tableobj, $width = "100%")
+{
+    $border = new HTML_Table('border="0" cellpadding="0" cellspacing="1" '.
+			     "width=\"{$width}\"");
+    $border->addRow(array($tableobj->toHtml()), 'bgcolor="#000000"');
+    print $border->toHtml(); 
 }
 
 ?>

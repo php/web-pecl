@@ -1,5 +1,7 @@
 <?php
 
+require_once "DB/storage.php";
+
 // {{{ validate()
 
 function validate($entity, $field, $value /* , $oldvalue, $object */) {
@@ -52,18 +54,28 @@ To get all leaf nodes:
  SELECT * FROM table WHERE right-1 = left;
 
  */
-function visit_node(&$tree, $node) {
+function visit_node(&$tree, $node, &$cnt, $debug) {
     static $visitno;
     if (empty($visitno) || empty($node)) {
         $visitno = 1;
     }
-    $tree[$node]['leftvisit'] = $visitno++;
+    $tree[$node]['leftvisit'] = $visitno;
+    $inc = 1;
+    if (isset($cnt[$node])) {
+	$inc += $cnt[$node] * 2;
+    }
+    if ($debug) {
+	var_dump($cnt[$node]);
+	print "inc=$inc<br />\n";
+    }
+    $visitno += $inc;
     if (isset($tree[$node]['children'])) {
         foreach ($tree[$node]['children'] as $cnode) {
-            visit_node($tree, $cnode);
+            visit_node($tree, $cnode, $cnt, $debug);
         }
     }
-    $tree[$node]['rightvisit'] = $visitno++;
+    $tree[$node]['rightvisit'] = $visitno;
+    $visitno += $inc;
 }
 
 // }}}
@@ -72,24 +84,41 @@ function visit_node(&$tree, $node) {
 function renumber_visitations($debug = false)
 {
     global $dbh;
+    $sth = $dbh->query("SELECT category FROM packages");
+    if (DB::isError($sth)) {
+	return $sth;
+    }
+    $pkg_count = array();
+    while ($sth->fetchInto($row, DB_FETCHMODE_ORDERED) === DB_OK) {
+	if (isset($pkg_count[$row[0]])) {
+	    $pkg_count[$row[0]]++;
+	} else {
+	    $pkg_count[$row[0]] = 1;
+	}
+    }
+    $sth->free();
     $sth = $dbh->query("SELECT * FROM categories ORDER BY name");
     if (DB::isError($sth)) {
         return $sth;
     }
-    $tree = array('' => array("children" => array()));
+    $tree = array(0 => array("children" => array()));
     $oldleft = array();
     $oldright = array();
+    $new_count = array();
     while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC) === DB_OK) {
         extract($row);
-        if ($name == '') {
-            continue;
-        }
-        $tree[$parent]["children"][] = $name;
-        $tree[$name]["parent"] = $parent;
-        $oldleft[$name] = (int)$leftvisit;
-        $oldright[$name] = (int)$rightvisit;
+	settype($parent, 'integer');
+        $tree[$parent]["children"][] = $id;
+        $tree[$id]["parent"] = $parent;
+        $oldleft[$id] = (int)$leftvisit;
+        $oldright[$id] = (int)$rightvisit;
+	if (!isset($pkg_count[$id])) {
+	    $new_count[$id] = 0;
+	} elseif ($npackages != $pkg_count[$id]) {
+	    $new_count[$id] = $pkg_count[$id];
+	}
     }
-    visit_node($tree, '');
+    visit_node($tree, 0, $pkg_count, $debug);
     foreach ($tree as $node => $data) {
         if (!isset($oldleft[$node])) {
             continue;
@@ -98,15 +127,18 @@ function renumber_visitations($debug = false)
         $r = $data["rightvisit"];
         if ($oldleft[$node] == $l && $oldright[$node] == $r) {
             if ($debug) {
-                print "keeping $node\n";
+                print "keeping $node<br />\n";
             }
             continue;
         }
         if ($debug) {
-            print "updating $node\n";
+            print "updating $node<br />\n";
         }
-        $query = "UPDATE categories SET leftvisit = $l, rightvisit = $r ".
-                 "WHERE name = '$node'";
+        $query = "UPDATE categories SET leftvisit = $l, rightvisit = $r";
+	if (isset($new_count[$node])) {
+	    $query .= ", npackages = {$new_count[$node]}";
+	}
+	$query .= " WHERE id = $node";
         $dbh->query($query);
     }
     return DB_OK;
@@ -146,37 +178,56 @@ function add_category($data)
 
 // {{{ add_package()
 
-/*function add_package($data)
+// add a package, return new package id or PEAR error
+function add_package($data)
 {
     global $dbh;
-    $defaults = array(
-        "virtual" => false,
-        "parent" => null,
-        "license" => "PHP License"
-    );
-    foreach ($defaults as $property => $default_value) {
-        if (!isset($data[$property])) {
-            $data[$property] = $default_value;
-        }
-    }
+    // name, category
+    // license, summary, description
     extract($data);
-
-    $query = "INSERT INTO packages (id,name,virtual,parent,license,summary,".
-             "description) VALUES(?,?,?,?,?,?,?)";
+    if (empty($license)) {
+	$license = "PEAR License";
+    }
+    if (empty($category)) {
+	return PEAR::raiseError("no `category' field");
+    }
+    if (empty($name)) {
+	return PEAR::raiseError("no `name' field");
+    }
+    $query = "INSERT INTO packages (id,name,category,license,summary,".
+             "description) VALUES(?,?,?,?,?,?)";
     $id = $dbh->nextId("packages");
     $sth = $dbh->prepare($query);
     if (DB::isError($sth)) {
         return $sth;
     }
-    $err = $dbh->execute($sth, array($id, $name, $virtual, $parent, $license,
-                                     $summary, $desc));
+    $err = $dbh->execute($sth, array($id, $name, $category, $license,
+                                     $summary, $description));
     if (DB::isError($err)) {
         return $err;
     }
-    return renumber_visitations();
-}*/
+    if (DB::isError($err = renumber_visitations())) {
+	return $err;
+    }
+    return $id;
+}
 
 // }}}
+
+function add_maintainer($package, $user, $role)
+{
+    global $dbh;
+    $query = "INSERT INTO maintains VALUES(?,?,?)";
+    $sth = $dbh->prepare($query);
+    if (DB::isError($sth)) {
+	return $sth;
+    }
+    $err = $dbh->execute($sth, array($user, $package, $role));
+    if (DB::isError($err)) {
+	return $err;
+    }
+    return DB_OK;
+}
 
 // {{{ get_recent_releases()
 

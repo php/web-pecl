@@ -1,5 +1,4 @@
 <?php
-
 /*
 * TODO
 *  - Use coxs pager class
@@ -11,52 +10,51 @@
 ** Header
 ***************************************/
 
-	response_header();
-	echo '<h1>Package search</h1>';
+response_header("Package search");
+echo '<h1>Package search</h1>';
 
 /***************************************
 ** Is form submitted? Do search and show
 ** results.
 ***************************************/
 
-	if(!empty($_GET)){
+if(!empty($_GET)) {
+    $dbh->setErrorHandling(PEAR_ERROR_DIE);
+    $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
+    $where = array();
+    $bool  = @$_GET['bool'] == 'AND' ? ' AND ' : ' OR ';
 
-		$dbh->setErrorHandling(PEAR_ERROR_DIE);
-		$dbh->setFetchmode(DB_FETCHMODE_ASSOC);
-		$where = array();
-		$bool  = @$_GET['bool'] == 'AND' ? ' AND ' : ' OR ';
+    // Build package name part of query
+    if(!empty($_GET['pkg_name'])) {
+        $searchwords = preg_split('/\s+/', $_GET['pkg_name']);
+        for($i=0; $i<count($searchwords); $i++) {
+            $searchwords[$i] = "name like '%".addslashes($searchwords[$i])."%'";
+        }
+        $where[] = '('.implode($bool, $searchwords).')';
+    }
 
-		// Build package name part of query
-		if(!empty($_GET['pkg_name'])){
-			$searchwords = preg_split('/\s+/', $_GET['pkg_name']);
-			for($i=0; $i<count($searchwords); $i++){
-				$searchwords[$i] = "name like '%".addslashes($searchwords[$i])."%'";
-			}
-			$where[] = '('.implode($bool, $searchwords).')';
-		}
+    // Build maintainer part of query
+    if(!empty($_GET['pkg_maintainer'])) {
+        $where[] = "handle like '%".addslashes($_GET['pkg_maintainer'])."%'";
+    }
 
-		// Build maintainer part of query
-		if(!empty($_GET['pkg_maintainer'])){
-			$where[] = "handle like '%".addslashes($_GET['pkg_maintainer'])."%'";
-		}
+    // Compose query and execute
+    $where  = !empty($where) ? ' AND '.implode(' AND ', $where) : '';
+    $sql    = "select p.id, p.name, p.category, p.summary, m.handle from packages p, maintains m where p.id = m.package " . $where . " order by p.name";
+    $result = $dbh->query($sql);
 
-		// Compose query and execute
-		$where  = !empty($where) ? ' AND '.implode(' AND ', $where) : '';
-		$sql    = "select p.id, p.name, p.category, p.summary, m.handle from packages p, maintains m where p.id = m.package " . $where . " order by p.name";
-		$result = $dbh->query($sql);
-
-		// Print any results
-		if($result->numRows() > 0){
-			echo '<p><strong>Results:</strong></p>';
-			while($result->fetchInto($row)){
-				echo ' <dt><a href="pkginfo.php?pacid='.$row['id'].'">'.$row['name'].'</a> (<a href="/account-info.php?handle='.$row['handle'].'">'.$row['handle'].'</a>)</dt>';
-				echo ' <dd>'.$row['summary'].'</dd>';
-				echo ' <br /><br />';
-			}
-		}else{
-			echo '<p><strong>No results found</strong></p>';
-		}
-	}
+    // Print any results
+    if($result->numRows() > 0) {
+        echo '<p><strong>Results:</strong></p>';
+        while($result->fetchInto($row)) {
+            echo ' <dt><a href="pkginfo.php?pacid='.$row['id'].'">'.$row['name'].'</a> (<a href="/account-info.php?handle='.$row['handle'].'">'.$row['handle'].'</a>)</dt>';
+            echo ' <dd>'.$row['summary'].'</dd>';
+            echo ' <br /><br />';
+        }
+    } else {
+        echo '<p><strong>No results found</strong></p>';
+    }
+}
 
 /***************************************
 ** Show the form

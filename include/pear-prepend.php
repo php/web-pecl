@@ -30,4 +30,5 @@ if (DEVBOX && empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }
 
+$LAST_UPDATED = date("D M d H:i:s Y T", filectime($SCRIPT_FILENAME));
 ?>

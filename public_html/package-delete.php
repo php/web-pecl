@@ -5,7 +5,7 @@
  * $Id$
  */
 
-auth_require(true);
+auth_require();
 
 require_once "HTML/Form.php";
 
@@ -14,6 +14,20 @@ echo "<h1>Delete package</h1>";
 
 if (!isset($_GET['id'])) {
     PEAR::raiseError("No package ID specified.");
+    response_footer();
+    exit();
+}
+
+/**
+ * The user has to be either a lead developer of the package or
+ * a PEAR administrator.
+ */
+$lead = in_array($PHP_AUTH_USER, maintainer::get($_GET['id'], true));
+$admin = user::isAdmin($PHP_AUTH_USER);
+
+if (!$lead && !$admin) {
+    PEAR::raiseError("Only the lead maintainer of the package or PEAR
+                      administrators can delete the package.");
     response_footer();
     exit();
 }
@@ -63,9 +77,9 @@ if (!isset($_POST['confirm'])) {
                         $value[0],
                         $value[1]);
 
-        
+
         if (@unlink($file)) {
-            echo "Deleting release archive \"" . $file . "\"\n";            
+            echo "Deleting release archive \"" . $file . "\"\n";
             $file_rm++;
         } else {
             echo "<font color=\"#ff0000\">Unable to delete file " . $file . "</font>\n";

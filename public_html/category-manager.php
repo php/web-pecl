@@ -21,6 +21,8 @@ if (empty($catid)) {
             'desc'   => $catdesc,
             'parent' => $catid);
         add_category($data);
+    } elseif (isset($remove)) {
+        // XXXX TODO: implement remove categories
     }
     // XXXX TODO extract the full category path with visitations
     $row = $dbh->getRow("SELECT name, parent FROM categories
@@ -30,8 +32,9 @@ if (empty($catid)) {
 ?>
 <table border="0" cellpadding="2" cellspacing="1" width="100%">
 <tr>
-    <td rowspan="3" width="30%"><?php print cat_selector();?></td>
-    <td><h3>You are browsing category: <?php print $name;?></h3></td>
+    <td rowspan="3" width="30%"><?php print get_categories_menu('tree');?></td>
+    <td><h3>You are browsing category:</h3><br><?php print get_categories_menu('urhere');?>
+    </td>
 </tr>
 </tr>
     <td><b>Insert a new sub-category in: <?php print $name; ?></b><br/><br/>
@@ -45,7 +48,9 @@ if (empty($catid)) {
     </td>
 </tr>
 </tr>
-    <td><b>Delete</b></td>
+    <td><b>Delete category: <?php print $name;?></b><br>
+    <font color="red">(warning it will delete all subcategories and all packages!)</font>
+    </td>
 </tr>
 </table>
 <?php

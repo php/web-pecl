@@ -41,6 +41,8 @@ PEAR is a framework and distribution system for reusable PHP
 components.
 
 <br />
+'.hdelim().'
+<br />
 <a href="weeklynews.php">PEAR Weekly News</a>
 
 <br /><br />

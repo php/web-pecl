@@ -20,9 +20,11 @@ if (empty($debug)) {
 $xs = xmlrpc_server_create();
 
 foreach ($pear_xmlrpc_methods as $method) {
-    $handler = "pear_xmlrpc_".preg_replace('/[^a-z0-9]/i', '.', $method);
+    $handler = "pear_xmlrpc_".strtr($method, '.', '_');
     xmlrpc_server_register_method($xs, $method, $handler);
 }
+
+xmlrpc_server_register_method($xs, "test", "pear_xmlrpc_test");
 
 $response = xmlrpc_server_call_method($xs, $request_body, null,
                                       array('output_type' => 'xml',
@@ -34,5 +36,9 @@ if (empty($debug)) {
 }
 header('Content-length: '.strlen($response));
 print $response;
+
+function pear_xmlrpc_test($m, $p, $a) {
+    return "test successful";
+}
 
 ?>

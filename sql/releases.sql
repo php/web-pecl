@@ -1,6 +1,6 @@
 CREATE TABLE releases (
        id	      INTEGER NOT NULL,
-       package        VARCHAR(80) NOT NULL REFERENCES packages(name),
+       package        INTEGER NOT NULL REFERENCES packages(id),
        version	      VARCHAR(20) NOT NULL,
        doneby	      VARCHAR(20) NOT NULL REFERENCES users(handle),
        license        VARCHAR(20),

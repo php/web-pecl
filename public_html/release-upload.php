@@ -35,8 +35,8 @@ do {
         $display_form = false;
         $display_verification = true;
 
-	}
-	if (isset($verify)) {
+	} elseif (isset($verify)) {
+
         $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
         if (!@is_file($distfile)) {
             display_error("No verified file found"); break;
@@ -56,7 +56,15 @@ do {
               make_link("package-info.php?pacid=$pacid", 'Visit package home') .
               '</center>';
 		$display_form = $display_verification = false;
-	}
+
+	} elseif (isset($cancel)) {
+
+        $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
+        if (@is_file($distfile)) {
+            @unlink($distfile);
+        }
+        header("Location: $PHP_SELF"); exit;
+    }
 } while (false);
 
 PEAR::popErrorHandling();
@@ -123,6 +131,7 @@ if ($display_verification) {
 	$form =& new HTML_Form($PHP_SELF, "POST");
     $form->addHidden('distfile', $tmpfile);
 	$form->addSubmit('verify', 'Verify Release');
+    $form->addSubmit('cancel', 'Cancel');
 	/* XXX Do we really need this? */
     foreach ($info as $name => $value) {
 		if (is_string($value)) {

@@ -37,6 +37,8 @@ User authentication, revision control, wysiwyg editing. - which currently this (
 - archived page - look at old stufff.
 
 */
+@dl('getText.so');
+
 if (!function_exists("getText")) {
     function getText($string) { return $string; }
     
@@ -48,7 +50,8 @@ function show_languages($visitlang = "") {
     $available_langs = array(
         'en' => 'English',
         'fr' => 'French',
-        'de' => 'German'
+        'de' => 'German',
+        'pt_BR' => 'Brazilian Portuguese'
     );
     echo getText("View In"). ' :: ';
     $page = "";
@@ -68,7 +71,7 @@ function show_languages($visitlang = "") {
 function show_news_menu() {
     response_header("PEAR Weekly News");
     $lang = "en";
-    if (preg_match("/^\/weeklynews.php\/([a-z]{2})\/.*$/", $_SERVER['REQUEST_URI'],$args)) {
+    if (preg_match("/^\/weeklynews.php\/([a-z_]{2,5})\/.*$/i", $_SERVER['REQUEST_URI'],$args)) {
         $lang = $args[1];
     }
     show_languages();
@@ -111,7 +114,7 @@ function get_default_news() {
 
     response_header(getText("PEAR Weekly News"));
     $lang = "en";
-    if (preg_match("/^\/weeklynews.php\/([a-z]{2})\/.*$/", $_SERVER['REQUEST_URI'],$args)) {
+    if (preg_match("/^\/weeklynews.php\/([a-z_]{2,5})\/.*$/i", $_SERVER['REQUEST_URI'],$args)) {
         $lang = $args[1];
     }
     show_languages();
@@ -184,12 +187,14 @@ $args = array();
 $show_archives = FALSE;
 $show_latest = TRUE;
 $show_lang = "en";
-if (preg_match("/^\/weeklynews.php\/([a-z]{2})/",$_SERVER['REQUEST_URI'],$args)) {
+if (preg_match("/^\/weeklynews.php\/([a-z_]{2,5})/i",$_SERVER['REQUEST_URI'],$args)) {
     // #TODO - can somebody fix this it just doesnt work on my test machine!
     $lang_maps = array( 
         "en" => "en_US",
         "de" => "de",
-        "fr" => "fr"
+        "fr" => "fr",
+        "pt_BR" => "pt_BR"
+    
     );
     $show_lang = $args[1];
     $locale = $lang_maps[$args[1]];
@@ -209,12 +214,12 @@ if (preg_match("/^\/weeklynews.php\/([a-z]{2})/",$_SERVER['REQUEST_URI'],$args))
 
 
 
-if (preg_match("/^\/weeklynews.php\/([a-z]{2})\/([0-9]+)\.html$/", $_SERVER['REQUEST_URI'],$args)) {
+if (preg_match("/^\/weeklynews.php\/([a-z_]{2,5})\/([0-9]+)\.html$/i", $_SERVER['REQUEST_URI'],$args)) {
     if (@file_exists(dirname(__FILE__) . "/../weeklynews/".$args[2] . "." .$args[1] .".html")) { 
         $show_latest = FALSE;
     }
 }
-if ($show_latest && preg_match("/^\/weeklynews.php\/([a-z]{2})\/archives\.html$/", $_SERVER['REQUEST_URI'],$args)) {
+if ($show_latest && preg_match("/^\/weeklynews.php\/([a-z_]{2,5})\/archives\.html$/i", $_SERVER['REQUEST_URI'],$args)) {
     $show_archives = TRUE;
      
 }

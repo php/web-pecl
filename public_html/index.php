@@ -1,12 +1,12 @@
 <?php
 
-ini_set("y2k_compliance", "on");
+ini_set('y2k_compliance', 'on');
 if ($HTTP_SERVER_VARS['QUERY_STRING'] == 'devme') {
     $duration = 86400 * 360;
-    setcookie("pear_dev", "on", time() + $duration, "/");
-    $HTTP_COOKIE_VARS['pear_dev'] = "on";
+    setcookie('pear_dev', 'on', time() + $duration, '/');
+    $HTTP_COOKIE_VARS['pear_dev'] = 'on';
 } elseif ($HTTP_SERVER_VARS['QUERY_STRING'] == 'undevme') {
-    setcookie("pear_dev");
+    setcookie('pear_dev');
     unset($HTTP_COOKIE_VARS['pear_dev']);
 }
 
@@ -37,17 +37,17 @@ if (DEVBOX) {
     menu_link("Upload Release", "release-upload.php");
     $recent = get_recent_releases();
     if (@sizeof($recent) > 0) {
-	print "<b>Recent Releases</b>\n";
-	print "<table>";
-	foreach ($recent as $release) {
-	    extract($release);
-	    print "<tr><td valign='top'><font size='-1'>";
-	    print "<a href=\"pkginfo.php?package=$name&release=$version\">";
-	    print "$name $version</a></font></td>";
-	    print "<td valign='top'><font size='-1'>";
-	    print "$doneby, $releasedate: $releasenotes</font></td></tr>\n";
-	}
-	print "</table>\n";
+        print "<b>Recent Releases</b>\n";
+        print "<table>";
+        foreach ($recent as $release) {
+            extract($release);
+            print "<tr><td valign='top'><font size='-1'>";
+            print "<a href=\"pkginfo.php?package=$name&release=$version\">";
+            print "$name $version</a></font></td>";
+            print "<td valign='top'><font size='-1'>";
+            print "$doneby, $releasedate: $releasenotes</font></td></tr>\n";
+        }
+        print "</table>\n";
     }
 }
 

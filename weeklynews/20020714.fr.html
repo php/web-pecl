@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title></title></head><body>
+<small><i>by Alan Knowles &lt;alan_k at php.net&gt; translated by Arnaud Limbourg &lt;arnaud.limbourg at cegetel.fr&gt;</i></small>
+<p>Une nouvelle semaine charg&eacute;e vient de s'&eacute;couler. Cette derni&egrave;re
+semaine a vu sortir 2 packages en version stable ainsi que 5 autres en version
+b&ecirc;ta. Divers sujets ont &eacute;t&eacute; abord&eacute;s : un analyseur
+syntaxique (parser) SQL, de constructeurs et la gestion des erreurs, les
+standards, PEAR dans la distribution Linux PLD. De nombreuses contributions
+ont &eacute;t&eacute; faites et trois nouveaux packages ont &eacute;t&eacute;
+propos&eacute;s pour int&eacute;gration dans PEAR.</p>
+
+<hr><h2>Nouvelles sorties</h2>
+<h3>Stable</h3>PHPUnit est un framework (ndt: je ne connais pas de traduction
+ad&eacute;quate) permettant d'effectuer des tests de r&eacute;gression, Net_SMTP
+fournit une interface simple au protocole SMTP (transfert de courrier &eacute;lectronique),
+<br>
+
+<p></p><h3>b&ecirc;ta</h3>Net_Dime qui supporte le standard du m&ecirc;me
+nom (Direct Internet Message Encapsulation), SOAP pour le support du protocole
+et packages SOAP, DBA qui fournit une interface aux base de donn&eacute;es
+de type DBM (procure une &eacute;mulation &agrave; base de fichiers), PEAR_Frontend_Web
+: une interface web pour l'installateur PEAR et DB_DataObjects compos&eacute;
+d'un constructeur SQL et d'une couche de mod&eacute;lisation de donn&eacute;es.
+<p>  
+
+</p>
+<hr>
+<h2>Trafic de la liste de diffusion PEAR-DEV</h2>
+
+
+<h3>DB::Sybase - Gestion des erreurs pour la couche d'abstraction de Base de Base de Donn&eacute;es</h3>Anotonio Carlos Venancio Junior s'est port&eacute; volontaire pour compl&eacute;ter les messages d'erreur du driver Sybase.
+
+<h3>DBA - Le wrapper et analyseur syntaxique de SQL </h3>Brent Cook finalise
+l'interface aux bases de type Berkley qui inclue de nombreux outils permettant
+de simuler le comportement d'une base de type SQL &agrave; partir de fichiers
+plats. L'un des composants est un analyseur syntaxique SQL qui pourrait &ecirc;tre
+utilis&eacute; dans d'autres cas ... (ce module se nommait DB_DBA auparavant)<br>
+
+<h3>Constructeurs SQL et nouvelles fonctionnalit&eacute;s dans PEAR::DB</h3>
+Plusieurs questions &agrave; propos de constructeurs SQL ou l'ajout de nouvelles
+fonctionnalit&eacute;s tel getMany, similaire &agrave; la couche d'abstraction
+de base de donn&eacute;es de Python, ont &eacute;t&eacute; discut&eacute;es.
+Il &agrave; &eacute;t&eacute; not&eacute; que PEAR::DB dispose d'une m&eacute;thode
+autoExecute permettant de construire une requ&ecirc;te &agrave; partir de
+tableaux. Une autre alternative &eacute;tant le module DB_DataObject pouvant
+&ecirc;tre utilis&eacute; pour traiter la construction de requ&ecirc;tes
+SQL. Des inqui&eacute;tudes sur la taille du noyau de PEAR::DB ont &eacute;t&eacute;
+soulev&eacute;es avec l'ajout de nouvelles m&eacute;thodes comme getMany,
+une classe 'PEAR::DB &eacute;tendue' pourrait &ecirc;tre cr&eacute;&eacute;e.<br>
+<br>
+
+<h3>Le Zend Engine 2 et les Erreurs </h3>Quelques points concernant le passage
+&agrave; PHP 5 et le Zend Engine 2 ont &eacute;t&eacute; abord&eacute;s :
+le nouveau m&eacute;canisme de gestion d'erreur "try and catch" et le mot
+cl&eacute; r&eacute;serv&eacute; delete. Stig (ndt: le "papa" de PEAR) &agrave;
+test&eacute; le Zend Engine 2 et a pu conclure que la m&eacute;thode raiseError
+pouvait &ecirc;tre consid&eacute;rablement simplifi&eacute;. Sebastian Bergmann
+s'est pench&eacute; sur l'ajout de assertSame() au module PHP_Unit_Assert
+qui supporte la comparaison d'objets sous le Zend Engine 2 uniquement. A
+propos du mot cl&eacute; r&eacute;serv&eacute; delete il &agrave; &eacute;t&eacute;
+not&eacute; que les packages DBA et DB_DataObject utilisent des m&eacute;thodes
+nomm&eacute;es ainsi ce qui ne fonctionne pas sous le Zend Engine 2. Brent
+a renomm&eacute; les m&eacute;thodes delete de DBA en remove pendant qu'Alan
+a commenc&eacute; une discussion avec Andi (ndt: Gutmans, le End de Zend)
+afin de permettre l'utilisation de delete comme nom de m&eacute;thode dans
+une classe. Il a re&ccedil;u une r&eacute;ponse favorable, en attente d'une
+d&eacute;cision finale lors du retour de vacances d'Andi.<br>
+
+<h3>Mes remerciements aux nombreux contributeurs pour la notification de bugs et l'envoi de rustines </h3>Dan Allen, James Flemmer, Paul Cooper, Marco Wittwer, Yavor Shahpsov<br>
+<br>
+<h3>Weekly News - Publication et traductions </h3>Alexander Merz traduit
+le weekly news en allemand, si vous &ecirc;tes int&eacute;ress&eacute; pour
+passer une heure par semaine pour traduire et/ou interpr&eacute;ter ce qui
+se passe dans la communaut&eacute; PEAR dans une autre langue merci d'envoyer
+un message sur la liste de diffusion pear-dev. Le planning pr&eacute;vu est
+la finalisation du weekly news le vendredi, dans l'id&eacute;al les traductions
+doivent &ecirc;tre pr&ecirc;tes le lundi ou mardi suivant... - des annonces
+seront post&eacute;es le lundi, toutes les suggestions pour savoir o&ugrave;
+poster ces annonces sont les bienvenues.<br>
+<br>
+<h3>La Distribution Linux PLD inclue PEAR </h3>
+La Distribution Linux PLD (<a href="www.pld.org.pl">www.pld.org.pl</a>)
+va distribuer les packages de PEAR sous forme de RPM. Stig &agrave; indiqu&eacute;
+que le gestionnaire des packages PEAR &agrave; &eacute;t&eacute; con&ccedil;u
+pour pouvoir &ecirc;tre int&eacute;gr&eacute; dans d'autres gestionnaires
+de packages. PHP sera ainsi distribu&eacute; avec 3 packages de base, les
+packages restant devant &ecirc;tre install&eacute; gr&acirc;ce &agrave; l'installateur
+PEAR.<br>&gt;
+<br>
+
+<h3>Chemins absolus contre chemins relatifs</h3>Lukas Smith &agrave; sugg&eacute;r&eacute;
+l'utilisation de la fonction dirname(__FILE__) . '/filename.php' plut&ocirc;t
+que l'actuelle forme 'package/filename.php' dans les require et include.
+Seulement un +1 (ndt: le syst&egrave;me de vote, +1 signifie que la personne
+est pour et -1 contre, la comptabilisation des +1 et -1 permet de conna&icirc;tre
+l'acceptation d'une proposition) &agrave; pu &ecirc;tre enregistr&eacute;.
+Cependant, Lukas &agrave; plus tard not&eacute; que l'installateur PEAR serait
+perdu dans la r&eacute;solution automatique des d&eacute;pendances. Il &agrave;
+&eacute;t&eacute; not&eacute; que de nombreuses personnes n'utilisent pas
+toujours les packages PEAR situ&eacute;s dans le r&eacute;pertoire d'installation
+de PEAR, mais parfois dans des sous-r&eacute;pertoires de leurs applications
+et modifie l'include_path en utilisant ini_set().<br>
+
+<h3>Licences et encodage </h3>Brent Cook &agrave; post&eacute; un article
+int&eacute;ressant concernant son choix de la licence LGPL au lieu de la
+PHP pour le package DBA. Si vous cherchez quelle licence choisir pour votre
+package, c'est une <a href="http://lists.php.net/article.php?group=php.pear.cvs&amp;article=4936">analyse &agrave; lire</a>
+(ndt: en anglais). Dans une discussion similaire une personne &agrave; demand&eacute;
+si PEAR pouvait &ecirc;tre distribu&eacute; en format 'encod&eacute;' (ex:
+gr&acirc;ce au Zend Encoder) ou &eacute;quivalent. Les licences actuelles
+l'autorisent, &agrave; la condition que ce soient les versions non-modifi&eacute;es
+de PEAR qui soient distribu&eacute;es.<br>
+
+<h3>Les couches de transports XML_RPC et SOAP </h3>James Flemmer &agrave;
+fournit une rustine pour XML_RPC afin d'autoriser les plugins pour la couche
+de transport - permettant ainsi l'utilisation de http, https, unix socket
+et carrier pidgeon... Shane Caraveo &agrave; propos&eacute; de coordonner
+les efforts sur le module SOAP afin de pouvoir partager les couches de transport.<br>
+<br>
+<h3>Standardiser la fermeture des connexions. </h3>Alexander Merz &agrave;
+sugg&eacute;r&eacute; de standardiser les noms des m&eacute;thodes de connexion
+et d&eacute;connexion afin d'&eacute;viter le m&eacute;lange existant de
+quit,close,open etc. - cette proposition &agrave; re&ccedil;ue un +1 (ndt:
+comme expliqu&eacute; plus haut sur le syst&egrave;me de vote, elle &agrave;
+&eacute;t&eacute; approuv&eacute;e)<br>
+<br>
+<br>
+
+<hr><h2>Propositions de Packages:</h2>
+<h3>Authentification et Gestion des permissions</h3>
+Markus wolff a propos&eacute; de pearifi&eacute; (ndt: mettre aux standards de PEAR) ses classes de <a href="http://projects.21st-hq.de/liveuser/">gestion des utilisateurs et des permissions</a>
+afin de les ajouter &agrave; PEAR, il est int&eacute;ress&eacute; par le
+feedback que d'autres utilisateurs peuvent lui fournir. <br>
+<h3>Template_Flexy &nbsp;- Une autre classe de Templates</h3>
+Alan (l'auteur de cette weekly news), &agrave; propos&eacute; l'addition de sa classe <a href="http://docs.akbkhome.com/Template_Flexy/">Template_Flexy</a>
+dans PEAR. Il &agrave; re&ccedil;u au moins un +1. Cette pr&eacute;sente
+une API tr&egrave;s simple, mix&eacute;e avec une classe dont l'accent porte
+sur la rapidit&eacute; d'une solution de templates, bas&eacute; sur la classe
+simpletemplate de Wolfram.<br>
+
+<h3>PECL - smbc - Un module C pour un acc&egrave;s client &agrave; Samba </h3>
+Jelmer Vernooij &agrave; annonc&eacute; la disponibilit&eacute; de son module
+C permettant &agrave; PHP d'effectuer des appels utilisant la librairie cliente
+Samba (Windows Networking) (ndt: je n'arrive pas &agrave; traduire Windows
+Networking)<br>
+<br>
+
+
+<hr>
+
+<h2>D&eacute;veloppement </h2>Ont &eacute;t&eacute; actif sur le cvs DBA, Net_Dime, SOAP,
+DB, PEAR, &nbsp;PECL::soap, Mail_Mime, HTML_QuickForm, File_Password, Date,
+MDB, XML_CSSML, PHP_Unit, Net_SMTP, PEAR_Frontend_Web, <br>
+<br>
+<h2>Documentation</h2>
+La documentation DB_DataObject  &agrave; &eacute;t&eacute; ajout&eacute;e au manuel<br>
+<br>
+</body></html>

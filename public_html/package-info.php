@@ -23,8 +23,7 @@
 $version = '';
 // expected url vars: pacid relid package release
 if (isset($_GET['package']) && empty($_GET['pacid'])) {
-    $pacid = $dbh->getOne("SELECT id FROM packages WHERE name = ?",
-                          array($_GET['package']));
+    $pacid = $_GET['package'];
 } else {
     $pacid = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
 }
@@ -48,27 +47,7 @@ if (empty($pacid) && empty($relid)) {
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 // Package data
-$pkg = $dbh->getRow("SELECT * FROM packages WHERE id = $pacid");
-if (PEAR::isError($pkg) || empty($pkg)) {
-    response_header('Invalid package');
-    PEAR::raiseError('Invalid package');
-    response_footer();
-    exit;
-}
-
-// Release data
-if ($relid) {
-    $rel = $dbh->getRow("SELECT * FROM releases WHERE id = $relid");
-    if (PEAR::isError($rel) || empty($rel)) {
-        response_header('Invalid release');
-        PEAR::raiseError('Invalid release');
-        response_footer();
-        exit;
-    }
-    $version = $rel['version'];
-} else {
-    $rel = array();
-}
+$pkg = package::info($pacid);
 
 $name        = $pkg['name'];
 $summary     = stripslashes($pkg['summary']);
@@ -76,6 +55,7 @@ $license     = $pkg['license'];
 $description = stripslashes($pkg['description']);
 $category    = $pkg['category'];
 $homepage    = $pkg['homepage'];
+$pacid       = $pkg['packageid'];
 
 // Accounts data
 $sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role".
@@ -99,9 +79,6 @@ while ($sth->fetchInto($row)) {
 if (!$relid) {
     $downloads = array();
 
-    $releases = $dbh->getAll(
-        "SELECT id, version, state, releasedate, releasenotes FROM releases".
-        " WHERE package = $pacid ORDER BY releasedate DESC");
     $sth = $dbh->query("SELECT f.id AS id, f.release AS release,".
                        " f.platform AS platform, f.format AS format,".
                        " f.md5sum AS md5sum, f.basename AS basename,".
@@ -122,7 +99,7 @@ if ($version) {
     response_header("Package :: $name");
 }
 
-html_category_urhere($category, true);
+html_category_urhere($pkg['categoryid'], true);
 
 print "<h2 align=\"center\">$name";
 if ($version) {
@@ -162,14 +139,21 @@ if (!empty($homepage)) {
     print "    <th class=\"pack\" width=\"20%\">Homepage</th>\n";
     print "     <td valign=\"top\">".make_link($homepage)."</td>\n";
     print "</tr>\n";
-
 }
 
 if ($relid) {
-    print "<tr>\n";
-    print "    <th class=\"pack\" width=\"20%\">Release Notes<br />Version $version</th>\n";
-    print "     <td valign=\"top\">".nl2br($rel['releasenotes'])."</td>\n";
-    print "</tr>\n";
+    // Find correct version for given release id
+    foreach ($pkg['releases'] as $release) {
+        if ($release['id'] != $relid) {
+            continue;
+        }
+
+        print "<tr>\n";
+        print "    <th class=\"pack\" width=\"20%\">Release Notes<br />Version $version</th>\n";
+        print "     <td valign=\"top\">".nl2br($release['releasenotes'])."</td>\n";
+        print "</tr>\n";
+        break;
+    }
 }
 
 ?>
@@ -213,15 +197,15 @@ $get_link = make_link("/get/$name", 'Download Latest');
 $changelog_link = make_link("package-changelog.php?pacid=$pacid",
                             'ChangeLog');
 
-// Category ID for stats link
-$cid = $dbh->getOne('SELECT category FROM packages WHERE id = ' . $pacid);
+// Package statistics
+$stats_link = "package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=" . $pkg['categoryid'];
 ?>
     <td width="50%" align="center">[ <?php print $get_link; ?> ]</td>
     <td width="50%" align="center">[ <?php print $changelog_link;?> ]</td>
 </tr>
 <tr>
     <td width="50%" align="center"><nobr><?php print $cvs_link;?></nobr></td>
-    <td width="50%" align="center"><nobr>[ <a href="package-stats.php?pid=<?=$pacid?>&rid=&cid=<?=$cid?>">View package statistics</a> ]</nobr></td>
+    <td width="50%" align="center"><nobr>[ <a href="<?php echo $stats_link; ?>">View package statistics</a> ]</nobr></td>
 </tr>
 </table>
 
@@ -234,7 +218,7 @@ $cid = $dbh->getOne('SELECT category FROM packages WHERE id = ' . $pacid);
 
 if (!$relid) {
     $bb = new BorderBox("Available Releases");
-    if (count($releases) == 0) {
+    if (count($pkg['releases']) == 0) {
         print "<i>No releases for this package.</i>";
     } else {
         ?>
@@ -247,24 +231,24 @@ if (!$relid) {
 
     <?php
 
-        foreach ($releases as $r) {
+        foreach ($pkg['releases'] as $version => $r) {
             print " <tr>\n";
             if (empty($r['state'])) {
                 $r['state'] = 'devel';
             }
             $r['releasedate'] = substr($r['releasedate'], 0, 10);
             $downloads_html = '';
-            foreach ($downloads[$r['version']] as $dl) {
+            foreach ($downloads[$version] as $dl) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
                                    "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")<br />";
             }
             
             $link_changelog = "[ " . make_link("/package-changelog.php?pacid=".
                               "$pacid&release=" .
-                              $r['version'], "Changelog")
+                              $version, "Changelog")
                               . " ]";
             $href_release = $_SERVER['PHP_SELF'] . "?pacid=$pacid&version=".
-                            urlencode($r['version']);
+                            urlencode($version);
 
             printf("  <td><a href=\"%s\">%s</a></td>" .
                    "  <td>%s</td>" .
@@ -272,7 +256,7 @@ if (!$relid) {
                    "  <td>%s</td>" .
                    "  <td valign=\"middle\">%s</td>\n",                    
                    $href_release,
-                   $r['version'],
+                   $version,
                    $r['state'],
                    $r['releasedate'],
                    $downloads_html,
@@ -297,18 +281,7 @@ if ($relid) {
 }
 $bb = new Borderbox($title);
 
-// Select all releases
-$query = "SELECT * FROM releases WHERE package = ?";
-$params = array($pacid);
-if ($relid) {
-    $query .= " AND id = ?";
-    $params[] = $relid;
-}
-$query .= " ORDER BY version DESC";
-    
-$rels = $dbh->getAll($query, $params);
-
-usort($rels, "version_sort");
+$rels =& $pkg['releases'];
 
 // Check if there are too much things to show
 $too_much = false;
@@ -348,21 +321,16 @@ if ($sth->numRows() == 0) {
         );
 
     // Loop per version 
-    foreach ($rels as $rel) {
-        $query = "SELECT * FROM deps WHERE package = ? AND release = ? ORDER BY type, name";
-        $params = array($pacid, $rel['id']);
-        $prh = $dbh->prepare($query);
-        $sth = $dbh->execute($prh, $params);
-
+    foreach ($rels as $version => $rel) {
         print "\n       <dl>\n";
 
-        if ($rel['version'] != $lastversion) {
+        if ($version != $lastversion) {
             print "\n";
             if ($lastversion) {
                 print "       </dd>\n";
             }
             if (!isset($_GET['version'])) {
-                print "       <dt>Dependencies for version {$rel['version']}:</dt>\n";
+                print "       <dt>Dependencies for version $version:</dt>\n";
             }
             print "       <dd>\n";
         } else {
@@ -370,10 +338,10 @@ if ($sth->numRows() == 0) {
         }
         print "        ";
 
-        if ($sth->numRows() != 0) {
+        $deps =& $pkg['releases'][$version]['deps'];
 
-
-            while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+        if (count($deps) > 0) {
+            foreach ($deps as $row) {
                 // Print link if it's a PEAR package and it's in the db
                 if ($row['type'] == 'pkg' AND $pid = $dbh->getOne(sprintf("SELECT id FROM packages WHERE name = '%s'", $row['name']))) {
                     $row['name'] = sprintf('<a href="package-info.php?pacid=%s">%s</a>', $pid, $row['name']);

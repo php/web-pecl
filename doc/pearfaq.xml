@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.32 2001-12-05 18:37:09 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.33 2001-12-05 18:40:50 mj Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-12-05 18:37:09 $</date>
-  <version>$Revision: 1.32 $</version>
+  <date>$Date: 2001-12-05 18:40:50 $</date>
+  <version>$Revision: 1.33 $</version>
  </artheader>
 
  <qandaset>
@@ -393,15 +393,17 @@
    </answer>
   </qandaentry>
 
+<!--
   <qandaentry>
    <question title="What is the difference between a package, a class and a file?" />
    <answer>
-    <author name=""/> <!-- will be Stig Sæther Bakken one time //-->
+    <author name=""/>
     <para>
      There is no answer yet.
     </para>
    </answer>
   </qandaentry>
+-->
 
   <qandaentry>
    <question title="I have a question about PEAR. Where should I ask?" />

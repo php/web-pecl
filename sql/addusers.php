@@ -38,14 +38,11 @@ foreach (explode("\n", $hardcoded_users) as $line) {
 }
 
 $fp = @fopen("cvsusers", "r");
-if (empty($fp)) {
-	$fp = @fopen("../../CVSROOT/cvsusers", "r");
-}
-
 if (is_resource($fp)) {
 	while ($line = fgets($fp, 1024)) {
 		if (!trim($line)) continue;
 		list($user,$name,$email) = explode(":", trim($line));
+		print "user=$user email=$email name=$name\n";
 		$name = preg_replace('/\s\s+/', ' ', $name);
 		$users[$user]['user'] = $user;
 		$users[$user]['name'] = $name;
@@ -54,7 +51,8 @@ if (is_resource($fp)) {
 	fclose($fp);
 }
 
-if (is_resource($fp = @fopen("passwd", "r"))) {
+$fp = @fopen("passwd", "r");
+if (is_resource($fp)) {
 	while ($line = fgets($fp, 1024)) {
 		if (!trim($line)) continue;
 		list($user,$pw,$groups) = explode(":", trim($line));

@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+  
+<p><i><small>by Alan Knowles(alan_k@php.net) traduit par Arnaud Limbourg
+(arnaud@limbourg.com)</small></i></p>
+  
+<p>Durant la semaine le 85&egrave;me package disponible &agrave; &eacute;t&eacute;
+atteint. Richard Stallman a reconnu la derni&egrave;re version de la licence
+php comme &eacute;tant plus en accord avec la FSF (Free Software Foundation),
+il sugg&egrave;re aussi quelques licences &agrave; utiliser pour les packages
+PEAR. PEAR continue de cro&icirc;tre avec PHP et offre ainsi une librairie
+de code de qualit&eacute;. Cette semaine &agrave; vu un flot continue de
+sorties avec 2 versions stables, 2 beta, 1 alpha et 1 en developpement. Une
+discussion sur les standards de codage, qui va vers la normalisation des
+m&eacute;thodes de nommage. APD (NdT: un debugger pou PHP) se concentre sur
+le chronometrage des scripts (NdT: profiling en anglais, cela permet de voir 
+comment se passe l'execution du code, pas uniquement le temps d'execution).
+MDB est en Release Candidate 3 (version public pour beta test). 5 packages
+ont en outre &eacute;t&eacute; propos&eacute;.</p>
+  
+<p>  </p>
+  
+<hr> 
+<h2>Nouvelles Releases</h2>
+  
+<h3>Stable</h3>
+  
+<ul>
+ <li><b>XML_Transformer</b>  - Une fa&ccedil;on simple de tranformer des
+balises XML en code PHP ou en texte (le principe est similaire &agrave; XLST)</li>
+ <li><b>Crypt Xtea</b>  - cryptage asym&eacute;trique des cha&icirc;nes binaires
+utilisant un petit algorithme</li>
+  
+</ul>
+  
+<h3>Beta</h3>
+  
+<ul>
+ <li><b>Console Table</b>  - pour afficher des donn&eacute;es sous forme
+de tableaux en mode console</li>
+ <li><b>HTML_Template_IT</b>  - une fusion de packages incluant HTML_Template_ITX, 
+qui fournit un moteur de templates compatible avec la PHPLib et une version
+ayant une API plus simple (IT) </li>
+ <li><b>HTML_Template_Flexy</b>  - une solution template vers code PHP, bas&eacute;e
+sur SmartTemplate, similaire &agrave; Smarty, mais l&eacute;g&egrave;re et
+rapide</li>
+ <li><b>DB_DataObject</b>  - un construcuteur de requ&ecirc;tes SQL et mod&eacute;lisation
+de donn&eacute;es</li>
+ <li><b>bcompiler</b>  - une extension PHP permettant de compiler et d&eacute;compiler
+le bytecode pour les classes</li>
+  
+</ul>
+  
+<h3>Alpha</h3>
+  
+<ul>
+ <li><b>imagick</b>  - une extension PHP pour manipuler les images en utilisant
+la librairie imagick -supporte un grand nombre de format d'images</li>
+ 
+</ul>
+   
+<h3>D&eacute;veloppement</h3>
+  
+<ul>
+ <li><b>MDB</b>  *  Release Candidate 3, Metabase Merger Database Abstraction
+Layer. </li>
+ 
+</ul>
+  
+<hr> 
+<h2>Trafic de la liste de diffusion PEAR-DEV</h2>
+  
+<h3>M&eacute;thodes de nommage communes</h3>
+ Apr&egrave;s la sortie de HTML_Template_IT, Marcus Wolff a sugg&eacute;r&eacute;
+l'&eacute;criture d'un document indiquant les consignes pour avoir des noms
+de m&eacute;thodes communes dans PEAR. Des exemples incluent l'utilisation
+de m&eacute;thodes comme getHTML(), toString(). Un &eacute;quilibre doit &ecirc;tre
+trouv&eacute; afin de ne pas briser la compatibilit&eacute; ascendante et
+am&eacute;liorer l'interface g&eacute;n&eacute;rale de PEAR afin d'en fa&ccedil;iliter
+l'utilisation.  
+<h3>APD se concentre sur l'&eacute;tude de l'execution d'un script</h3>
+ Apr&egrave;s avoir ajout&eacute; APD, Advanced PHP Debugger, George Schlossnagle
+s'est attach&eacute; &agrave; toutes les fonctions de profiling. Il en a
+profit&eacute; pour retirer les fonctions de trace, beaucoup moins efficaces
+que les nouvelles fonctions de profiling. Ce nouveau est disponible sur la
+branche 'execute_wrapper' du CVS.  
+<h3>MDB atteint la Release Candidate #3</h3>
+ Lukas Smith  a annon&ccedil;&eacute; une nouvelle sortie de MDB s'axant
+principalement sur le parser de sch&eacute;ma XML ainsi que le package MDB_Frontend
+(NdT: interfa&ccedil;e d'administration sur le principe de phpmyadmin). Une
+discussion anim&eacute;e &agrave; suivi cette annonce avec comme conclusion
+la n&eacute;cessit&eacute; d'ajouter plus de drivers &agrave; MDB. Si vous
+d&eacute;sirez &eacute;crire des drivers pour Oracle, MSSQL et tous les autres
+contactez Lukas sur la liste de diffusion.  
+<h3>Bugs et Corrections</h3>
+ Merci &agrave; ces personnes pour avoir identifi&eacute;s et corrig&eacute; 
+des bugs: Jan Wagner, Mike McCallister, Wolfram Kriesing, Brent Cook  
+<hr>  
+<h2>Propositions et nouveaux packages</h2>
+  
+<h3>Console_Table - pour afficher des donn&eacute;es sous forme de tableaux
+en mode console</h3>
+ Richard Heyes a propos&eacute; un nouveau package permettant d'afficher
+des tableaux en mode console et pr&eacute;voit d'ajouter la coloration syntaxique
+en bash.  
+<h3>Text_Password - pour g&eacute;n&eacute;rer des mots de passe pronon&ccedil;able</h3>
+ Martin Jansen a propos&eacute; un nouveau package pour g&eacute;n&eacute;rer
+des mots de passe pronon&ccedil;able. Apr&egrave;s quelques discussions est
+apparue la n&eacute;cessit&eacute; d'introduire une cat&eacute;gorie plus
+g&eacute;n&eacute;rale Text_Password , incluant ce package ainsi que la g&eacute;n&eacute;ration
+de mots de passe non-pronon&ccedil;able et tout ce qui concerne les mots
+de passe.  
+<h3>MDB_Frontend -  une interfa&ccedil;e similaire &agrave; a phpMyAdmin
+utilisant MDB</h3>
+ Christian Dickmann a propos&eacute; un nouveau package MDB_Frontend visant 
+&agrave; fournir une interfa&ccedil;e de type phpMyAdmin utlisant la couche
+d'abstraction de base de donn&eacute;es MDB. Cette proposition &agrave; &eacute;t&eacute;
+chaleureusement accueillie.  
+<h3>Net_Ident - pour obtenir des informations ident d'un socket (traduction
+?)</h3>
+ Ondrej Jombik a propos&eacute; une classe Net_Ident bas&eacute;e sur le
+travail de Gavin Brown  
+<h3>Crypt_Xtea -  un petit outil de cryptage</h3>
+ Jeroen Derks &agrave; t&eacute;l&eacute;charger une nouvelle classe Crypt_Xtea
+qui fournit un cryptage asym&eacute;trique de cha&icirc;nes binaires en utilisant
+un petit algorithme de cryptage (appel&eacute; Xtea)  
+<hr>  
+<h2>Development</h2>
+  Ont &eacute;t&eacute; actif cette semaine sur le CVS : Auth, Cache, Cache_Lite, 
+DB_DataObject, DBA, HTML_QuickForm, HTML_Template_IT, Image_Transform, Mail, 
+MDB, MDB_Frontend, Net_Curl, Net_URL, PEAR_Frontend_Web, PECL::apd, PECL::bcompiler, 
+PECL::imagick, PECL::mailparse, Perm_LiveUser, SOAP_Interop, Text_Password, 
+XML_Transformer  
+<h3>Mise &agrave; jour de la documentation</h3>
+ Les ajouts et modifications sur HTML_Template_IT et HTML_Template_ITX devraient
+&ecirc;tre disponible cette semaine. <br>
+ <br>
+ <br>
+</body>
+</html>

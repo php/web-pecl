@@ -1,0 +1,27 @@
+SHORT TERM:
+
+* "pear prepare"
+** client side: fetch package information from server, combine with
+   filelist.xml and generate package.xml
+** server side: using package.info method
+
+* "pear upload"
+** client side:
+
+* "pear configure" to make ~/.pearrc:
+** pear.php.net username/password
+** email address
+** xmlrpc server
+** any client-side parameters
+
+* installed packages registry
+** index file
+** detail files (copy of package.xml)
+
+* xmlrpc server functions
+
+MEDIUM TERM:
+
+* script to include PEAR stuff in PHP releases
+
+LONG TERM:

@@ -1,6 +1,6 @@
 <?php
 
-// $Id$
+// $Id$ 
 
 response_header("Frequently Asked Questions");
 
@@ -20,7 +20,7 @@ $tagmap = array(
     "faqlink"                => "a",
     "author"                 => "b",
     "break"                  => "br",
-    "filename"               => "tt",
+    "filename"               => "tt"
 );
 
 $ID = 1;
@@ -92,6 +92,11 @@ function startElement($parser, $elementName, $attribs)
             }
             return;
 	    }
+	    
+	    case "quote" : {
+	        $content .= "\"";
+	        return;
+	    }	    
     }
     
     if (isset($tagmap[$key2])) {
@@ -128,6 +133,11 @@ function endElement($parser, $elementName)
         case "answer" : {
             $content .= "<br /></td></tr>\n";
             return;
+	    }
+
+	    case "quote" : {
+	        $content .= "\"";
+	        return;
 	    }
     }
 

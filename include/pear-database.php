@@ -180,7 +180,7 @@ class category
     	'parent' => 'category parent id'
     	);
     */
-    function category::add($data)
+    function add($data)
     {
 		global $dbh;
 		$name = $data['name'];
@@ -189,7 +189,7 @@ class category
 		}
 		$desc   = (empty($data['desc'])) ? 'none' : $data['desc'];
 		$parent = (empty($data['parent'])) ? null : $data['parent'];
-		
+
 		$sql = 'INSERT INTO categories (id, name, description, parent)'.
 			 'VALUES (?, ?, ?, ?)';
 		$id  = $dbh->nextId('categories');
@@ -207,7 +207,7 @@ class category
 		}
 		return $id;
 	}
-	
+
     // }}}
 }
 
@@ -216,7 +216,7 @@ class package
     // {{{ package::add()
 
     // add a package, return new package id or PEAR error
-    function package::add($data)
+    function add($data)
     {
 		global $dbh;
 		// name, category
@@ -309,7 +309,7 @@ class maintainer
 
     // }}}
 }
-	
+
 class release
 {
 	// {{{ release::getRecent()
@@ -465,7 +465,7 @@ class user
     function activate($uid)
     {
 		global $PHP_AUTH_USER, $dbh;
-		
+
 		$user =& new PEAR_User($dbh, $uid);
 		if (@$user->registered) {
 			return false;

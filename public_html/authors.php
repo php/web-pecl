@@ -5,7 +5,7 @@ response_header("PEAR: Authors");
 print "<H1>Authors</H1>\n";
 
 $sth = $dbh->query('SELECT handle,name,email,homepage,showemail '.
-		   'FROM authors WHERE registered = 1');
+		   'FROM users WHERE registered = 1');
 if (DB::isError($sth)) {
     die("query failed: ".DB::errorMessage($dbh)."<BR>\n");
 }
@@ -14,32 +14,34 @@ print "<A HREF=\"add-author.php\">NEW</A> \n";
 
 print "<P>\n";
 
-print "<TABLE BORDER=0 CELLSPACING=1 CELLPADDING=3>\n";
-print " <TR BGCOLOR=\"$pear_green\">\n";
-print "  <TH><FONT COLOR=\"#ffffff\">Handle</FONT></TH>\n";
-print "  <TH><FONT COLOR=\"#ffffff\">Name</FONT></TH>\n";
-print "  <TH><FONT COLOR=\"#ffffff\">Email</FONT></TH>\n";
-print "  <TH><FONT COLOR=\"#ffffff\">Homepage</FONT></TH>\n";
-print "  <TH><FONT COLOR=\"#ffffff\">Commands</FONT></TH>\n";
+print "<TABLE BORDER=\"0\" CELLSPACING=\"1\" CELLPADDING=\"5\">\n";
+print " <TR bgcolor=\"#CCCCCC\">\n";
+print "  <TH>Handle</TH>\n";
+print "  <TH>Name</TH>\n";
+print "  <TH>Email</TH>\n";
+print "  <TH>Homepage</TH>\n";
+print "  <TH>Commands</TH>\n";
 print " </TR>\n";
 
 $rowno = 0;
 while (is_array($row = $sth->fetchRow(DB_GETMODE_ASSOC))) {
     extract($row);
     if (++$rowno % 2) {
-	print " <TR>\n";
+	print " <TR bgcolor=\"#e8e8e8\">\n";
     } else {
-	print " <TR BGCOLOR=\"#e8e8e8\">\n";
+	print " <TR BGCOLOR=\"#e0e0e0\">\n";
     }
     print "  <TD>$handle</TD>\n";
     print "  <TD>$name</TD>\n";
+    
     if ($showemail) {
-	print "  <TD><A HREF=\"mailto:$email\">$email</A></TD>\n";
+	    print "  <TD><A HREF=\"mailto:$email\">$email</A></TD>\n";
     } else {
-	print "  <TD>(not shown)</TD>\n";
+	    print "  <TD>(not shown)</TD>\n";
     }
+    
     print "  <TD><A HREF=\"$homepage\">$homepage</A></TD>\n";
-    print "  <TD><A HREF=\"edit-author.php\">[edit]</A></TD>\n";
+    print "  <TD><A HREF=\"edit-author.php?handle=".$row['handle']."\">[edit]</A></TD>\n";
     print " </TR>\n";
 }
 

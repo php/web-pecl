@@ -2,7 +2,7 @@
 require 'HTML/Menu.php';
 /*
 Transform the tree of categories in an assoc array
-valid for the Menu Class
+valid for the Ulf's Menu Class
 */
 function &tree_to_menu ($tnode, $mpid) {
     global $tree;
@@ -22,8 +22,8 @@ function &tree_to_menu ($tnode, $mpid) {
 /*
 Returns the html needed to print in the category selection page
 */
-function &cat_selector () {
-    global $dbh, $tree;
+function initialize_categories_menu () {
+    global $dbh, $tree, $menu;
     if (empty($dbh)) {
         include_once 'DB.php';
         PEAR::setErrorHandling(PEAR_ERROR_DIE);
@@ -43,7 +43,15 @@ function &cat_selector () {
 
     $menu[1] = tree_to_menu(0,'1');
     $menu[1]['url'] = $GLOBALS['PHP_SELF'];
-    $m = new HTML_Menu ($menu, 'tree', 'REQUEST_URI');
+}
+
+function &get_categories_menu($type = 'tree') {
+    global $menu;
+    if (empty($menu)) {
+        initialize_categories_menu();
+    }
+    $m = new HTML_Menu ($menu, $type, 'REQUEST_URI');
     return $m->get();
 }
+
 ?>

@@ -612,7 +612,8 @@ class release
     function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
         global $auth_user;
-        if (!user::maintains($auth_user->handle, $package, 'lead')) {
+        $role = user::maintains($auth_user->handle, $package);
+        if ($role != 'lead' && $role != 'developer' && !$auth_user->admin) {
             return PEAR::raiseError('release::upload: insufficient privileges');
         }
         $ref = release::validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum);
@@ -628,7 +629,8 @@ class release
     function validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
         global $dbh, $auth_user;
-        if (!user::maintains($auth_user->handle, $package, 'lead')) {
+        $role = user::maintains($auth_user->handle, $package);
+        if ($role != 'lead' && $role != 'developer' && !$auth_user->admin) {
             return PEAR::raiseError('release::validateUpload: insufficient privileges');
         }
         // (2) verify that package exists
@@ -703,7 +705,8 @@ class release
         extract($info);
         @unlink($upload_ref);
 
-        if (!user::maintains($auth_user->handle, $package_id, 'lead')) {
+        $role = user::maintains($auth_user->handle, $package);
+        if ($role != 'lead' && $role != 'developer' && !$auth_user->admin) {
             return PEAR::raiseError('release::confirmUpload: insufficient privileges');
         }
 

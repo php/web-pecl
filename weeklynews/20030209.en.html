@@ -27,9 +27,12 @@
 
 <h2>In the press</h2>
 <!-- SECTION --><a name="2"></a>
-<h3></h3>
+<h3>php|architect</h3>
 <p>
-
+ PEAR was shortly mentioned in February 2003 issue of 
+ <a href="http://www.phparch.com/">php|architect</a> in
+ <i>Data Fingerprinting with Hash Functions in PHP</i> written by Leon
+ Vismer.
 </p>
 
 <hr>
@@ -44,29 +47,58 @@ and they will be added to the weekly news.
 <h2>PEAR-DEV traffic</h2>
 
 <!-- SECTION --><a name="3"></a>
-<h3></h3>
+<h3>Oracle driver for MDB</h3>
 <p>
+ Lukas Smith announced he committed the first working Oracle 
+ <a href="http://pear.php.net/package-info.php?pacid=54">MDB</a>
+ driver to CVS. The driver passes all but the manager tests. 
 </p>
 <!-- SECTION --><a name="4"></a>
-<h3></h3>
+<h3>Javascript in PEAR</h3>
+<p>
+ There was some discussion on should PEAR have JavaScript packages.
+ Consensus was PEAR should not host standalone JavaScript applications.
+ Packages such as 
+ <a  href="http://pear.php.net/package-info.php?pacid=77">HTML_TreeMenu</a>
+ which has  optional features when JavaScript is enabled should have
+ the JavaScripts included in their own package. In addition, some
+ JavaScript features could be included in 
+ <a href="http://pear.php.net/package-info.php?pacid=93">HTML_JavaScript</a>.
+</p>
+<!-- SECTION --><a name="5"></a>
+<h3>Category for Java interfaces?</h3>
+ Stuart Herbert proposed a new Java category which would contain
+ interfaces between PHP and Java. He states it would be better
+ to contain all the interfaces in one explicit Java hierarchy than 
+ scatter them all around in PEAR hierarchy. Possible place would
+ be a Java subcategory under RPC top-level category. This hierarchy
+ would make it easier to add interfaces for other languages such as
+ Python or Ruby later.
 <p>
 </p>
 
-
+<!--
 <h3>Bugs and Fixes</h3>
 <p>
   Thanks to these people for spotting and fixing some bugs:
+  Pawel golaszewski, 
 </p>
 <hr>
+-->
 
 <h2>New and Proposed Packages</h2>
 <!-- SECTION --><a name="5"></a>
-<h3></h3>
+<h3>PECL::mono</h3>
 <p>
+ Sterling Hughes committed his Mono extension to PECL. This
+ extension allows PHP to access .NET assemblies via the
+ <a href="http://www.go-mono.com/">Mono library</a>.
 </p>
 <!-- SECTION --><a name="6"></a>
-<h3></h3>
+<h3>Auth_Container_SOAP</h3>
 <p>
+ Bruno Pedro proposed a new SOAP storage driver for the Auth package.
+ At the time of writing it can allready be found from CVS.
 </p>
 <!-- SECTION --><a name="7"></a>
 <h3></h3>
@@ -85,6 +117,11 @@ and they will be added to the weekly news.
 <h2>Development</h2>
 <p>
   Active on CVS this week have been:
+  Crypt_CHAP, Auth_RADIUS, Auth, Text_Statistics, HTML_Template_Flexy,
+  Auth_HTTP, HTML_Template_Xipe, MDB, HTML_QuickForm, Tree, Mail_Mime,
+  Search_MnogoSearch, SOAP, PECL::bcompiler, Net_Ping, DBA, Log, 
+  DB_DataObject, File_Passwd, HTML_TreeMenu, Net_Whois, DB, 
+  HTTP_Header, PECL::fribidi, PECL::mono
 </p>
 
 </body>

@@ -7,87 +7,120 @@
 <p>
  <i>
   <small>
-   by Alan Knowles (alan_k@php.net),
-      Pierre-Alain Joye (paj@pearfr.org),
-      Mika Tuupola (tuupola@appelsiini.net)
+   by 
+   Mika Tuupola (tuupola@appelsiini.net)
   </small>
  </i>
 </p>
 
-PEAR out of beta
-
-"Nope, that was a pacakging mistake. the pear installer was not included in
-the windows binary distribution. This is a mistake and will be corrected in
-4.3.1 hopefully."
-
+<p>
+  To celebrate the fact PEAR out of beta and as of PHP 4.3 PEAR installer 
+  is included by default, Weekly News is revived again. This weeks news
+  include details on voting for proposed packages, PEAR tutorial on Mac OS X,
+  new phpdoc templates and missing PEAR installer from Windows binary 
+  distribution. As a time of writing there has been eight new releases 
+  this week. 
+</p>
 
 <hr>
 <h2>PEAR-DEV traffic</h2>
-<h3>New tag for phpdoc</h3>
-http://news.php.net/article.php?group=php.pear.dev&article=12331
 
 <h3>Who can vote?</h3>
-http://news.php.net/article.php?group=php.pear.dev&article=12478
-http://news.php.net/article.php?group=php.pear.dev&article=12481
-http://news.php.net/article.php?group=php.pear.dev&article=12483
+<p>
+  Interesting question arised on the list whether you need 
+  a CVS account to vote for or against proposed packages or not.
+  <a href="/manual/en/developers.contributing.howto.php">Instructions</a> 
+  on how to contribute mentions a "developer". Since you can be a 
+  developer without having a CVS account, anyone on the list can
+  be qualified for voting.
+</p>
 
-<h3>OS X PEAR setup tutorial</h3>
-Pierre-Alain Joye spotted....
-http://www.somebodydial911.com/brainstem/osx_pear/
+<h3>PEAR on Mac OS X tutorial</h3>
+<p>
+  Pierre-Alain Joye spotted a nice 
+  <a href="http://www.somebodydial911.com/brainstem/osx_pear/">tutorial</a> on how to setup PEAR on Mac OS X.
+  The tutorial seems quite complete starting from laying the groundwork by 
+  installing php cli and setting up proper enviroment variables. 
+  You can also find instructions on how you can: install and use PEAR
+  package manager, generate developer documentation from phpdoc and 
+  last but not least how to use PEAR classes in you applications.
+</p>
+<p>
+  The tutorial could be used as a guide for installing PEAR on traditional
+  unices too the only difference being you would probably like to compile 
+  the php cli from sources yourself.
+</p>
+<p>
+ What we are still missing is a similar tutorial for Windows...
+</p>
+
+<h3>PEAR phpdoc template</h3>
+<p>
+  Christian Dickmann announced his <a href="http://dickmann.homeunix.org/pear/phpdoc/PEAR/">PEAR templates</a> 
+  for PHPDoc are almost finished and is looking for some feedback. 
+  The templates themselves look really nice. Some additional features such as
+  possibility to generate docs for every released PEAR package, browser or 
+  download the apidoc and upload a development release to see if looks
+  fine with the layout.
+</p>
+<p>
+  The templates are supposed to be used with 
+  <a href="http://www.phpdoc.org">phpDocumentor</a>.
+</p>
+
+<h3>Windows packaging mistake</h3>
+<p>
+  To add some more confusion for Windows users with problems installing PEAR,
+  the PEAR installer was not included in the Windows binary distribution. 
+  This was not intentional and was caused by a packaging mistake. 
+  This is a mistake and will hopefully be corrected in 4.3.1.
+</p>
+
 
 <h3>Bugs and Fixes</h3>
-Thanks to these people for spotting and fixing some bugs: 
-Lorenzo Alberton, Tobias Schlitt, Michele Manzato, Markus Wolff
-<br>
+<p>
+  Thanks to these people for spotting and fixing some bugs: 
+  Lorenzo Alberton, Tobias Schlitt, Michele Manzato, Markus Wolff
+</p>
 <hr>
 <h2>New and Proposed Packages</h2>
-<h3>
-HTTP_Header, HTTP_Header_Cache
-<br>
-</h3>
-Wolfram Kriesing suggested new packages which implement common
-header methods and methods for handling cache headers.
-<br>
+<h3>HTTP_Header, HTTP_Header_Cache</h3>
+<p>
+  Wolfram Kriesing suggested new packages which implement common
+  header methods and methods for handling cache headers.
+</p>
 
-<h3>
-DB_Abstract
-<br>
-</h3>
-Wolfram Kriesing also suggested a querybuilder and executer package
-which is based on DB. This package has some similarities with 
-DB_DataObject but is more focused on query building that dataobject
-building.
-<br>
+<h3>DB_Abstract</h3>
+<p>
+  Wolfram Kriesing also suggested a querybuilder and executer package
+  which is based on DB. This package has some similarities with 
+  DB_DataObject but is more focused on query building that dataobject
+  building.
+</p>
 
-<h3>
-Enterprise A&A
-<br>
-</h3>
-Tony Bibbs suggested a new Authentication & Authorization package. After
-further discussion raised the possibility of merging his package and
-LiveUser.
-<br>
+<h3>Enterprise A&A</h3>
+<p>
+  Tony Bibbs suggested a new Authentication & Authorization package. After
+  further discussion raised the possibility of merging his package and
+  LiveUser.
+</p>
 
-<h3>
-
-<br>
-</h3>
-
-<br>
-
-<h3>
-<br>
-</h3>
-
-<br>
+<h3>GTK_VarDump</h3>
+<p>
+  Alan Knowles proposed a class which does a VarDump to GTK window.
+</p>
 
 <hr>
 <h2>Development</h2>
-<p> Active on CVS this week has been: Net_SMTP, DBA_Relational,
-PECL::session_pgsql, PHPUnit, DB, MDB, XML_Transformer, HTML_QuickForm,
-PECL::soap, Net_SmartIRC, Cache_Lite, HTML_Template_Xipe, PECL::tclink,
-Net_SMTP, Mail, Perm_LiveUser, I18N
-<br>
+<p> 
+  Active on CVS this week has been: Net_SMTP, DBA_Relational,
+  PECL::session_pgsql, PHPUnit, DB, MDB, XML_Transformer, HTML_QuickForm,
+  PECL::soap, Net_SmartIRC, Cache_Lite, HTML_Template_Xipe, PECL::tclink,
+  Net_SMTP, Mail, Perm_LiveUser, I18N, Spreadsheet_Excel_Writer,
+  Pager_Sliding, XML_XPath, Net_UserAgent, Image_GIS, File_HtAccess, 
+  HTML_TreeMenu, DB_QueryTool, HTTP_Header
 </p>
+
+
 </body>
 </html>

@@ -45,11 +45,11 @@ while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
     $packages[$row['id']] = $row['name'];
 }
 
-echo "<div class=\"searchCage\">\n";
-$form->addSelect("pid", "Package", $packages, (isset($_GET['pid']) ? $_GET['pid'] : ""));
+$bb = new Borderbox("Select package");
+$form->addSelect("pid", "", $packages, (isset($_GET['pid']) ? $_GET['pid'] : ""));
 $form->addSubmit("submit", "Go");
 $form->display();
-echo "</div>\n";
+$bb->end();
 
 if (isset($_GET['pid'])) {
 

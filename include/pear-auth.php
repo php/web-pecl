@@ -10,9 +10,9 @@ function auth_reject($realm = null, $message = null, $refresh = false)
     }
     Header("HTTP/1.0 401 Unauthorized");
     Header("WWW-authenticate: basic realm=\"$realm\"");
-	if ($refresh) {
-		Header("Refresh: 3; url=/");
-	}
+    if ($refresh) {
+        Header("Refresh: 3; url=/");
+    }
     response_header($message);
     report_error($message);
     response_footer();
@@ -24,34 +24,34 @@ function auth_require($admin = false, $refresh = false)
     global $dbh, $auth_user;
 
     $user = @$_SERVER['PHP_AUTH_USER'];
-	$passwd = @$_SERVER['PHP_AUTH_PW'];
+    $passwd = @$_SERVER['PHP_AUTH_PW'];
     $auth_user = new PEAR_User($dbh, $user);
     $ok = false;
     switch (strlen(@$auth_user->password)) {
         // handle old-style DES-encrypted passwords
         case 13: {
             $seed = substr($auth_user->password, 0, 2);
-			$crypted = crypt($_SERVER['PHP_AUTH_PW'], $seed);
+            $crypted = crypt($_SERVER['PHP_AUTH_PW'], $seed);
             if ($crypted == @$auth_user->password) {
                 $ok = true;
             } else {
-				error_log("pear-auth: user `$user': invalid password (des)", 0);
-			}
+                error_log("pear-auth: user `$user': invalid password (des)", 0);
+            }
             break;
         }
         // handle new-style MD5-encrypted passwords
         case 32: {
-			$crypted = md5($_SERVER['PHP_AUTH_PW']);
+            $crypted = md5($_SERVER['PHP_AUTH_PW']);
             if ($crypted == @$auth_user->password) {
                 $ok = true;
             } else {
-				error_log("pear-auth: user `$user': invalid password (md5)", 0);
+                error_log("pear-auth: user `$user': invalid password (md5)", 0);
             }
             break;
         }
     }
     if (empty($auth_user->registered)) {
-		error_log("pear-auth: user `$user' not registered", 0);
+        error_log("pear-auth: user `$user' not registered", 0);
         $ok = false;
     }
     if (!$ok) {

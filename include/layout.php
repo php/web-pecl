@@ -337,7 +337,7 @@ if (0) { ?>
   <tr valign="top" bgcolor="#cccccc">
     <td><small>
       <?php print_link('http://www.php.net/', make_image('php-logo.gif', 'PHP', 'left') ); ?>
-      <?php print_link('/copyright.php', 'Copyright &copy; 2001 The PHP Group'); ?><br />
+      <?php print_link('/copyright.php', 'Copyright &copy; 2001, 2002 The PHP Group'); ?><br />
       All rights reserved.<br />
       </small>
     </td>

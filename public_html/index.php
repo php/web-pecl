@@ -9,17 +9,6 @@ if ($_SERVER['QUERY_STRING'] == 'devme') {
     setcookie('pear_dev', '', time() - 3600, '/');
     unset($_COOKIE['pear_dev']);
 }
-if (!empty($_GET['logout'])) {
-    if (isset($_COOKIE['PEAR_USER'])) {
-        setcookie('PEAR_USER', '', 0, '/');
-        unset($_COOKIE['PEAR_USER']);
-    }
-    if (isset($_COOKIE['PEAR_PW'])) {
-        setcookie('PEAR_PW', '', 0, '/');
-        unset($_COOKIE['PEAR_PW']);
-    }
-}
-
 
 $SIDEBAR_DATA='
 <h3>What is PEAR?</h3>

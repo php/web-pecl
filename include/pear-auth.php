@@ -23,7 +23,7 @@ function auth_require($admin = false)
     global $auth_user;
 
     $user = $PHP_AUTH_USER;
-    $auth_user =& new PEAR_User($dbh, $user);
+    $auth_user = new PEAR_User($dbh, $user);
     $ok = false;
     switch (strlen(@$auth_user->password)) {
         // handle old-style DES-encrypted passwords

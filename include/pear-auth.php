@@ -89,4 +89,36 @@ function cvs_verify_password($user, $pass)
     return false;
 }
 
+/*
+* setup the $auth_user object
+*/
+function init_auth_user()
+{
+    global $auth_user;
+    if (!empty($auth_user)) {
+        return true;
+    }
+    global $PHP_AUTH_USER, $PHP_AUTH_PW, $dbh;
+    $user = $PHP_AUTH_USER;
+    $auth_user = new PEAR_User($dbh, $user);
+    switch (strlen(@$auth_user->password)) {
+        // handle old-style DES-encrypted passwords
+        case 13: {
+            $seed = substr($auth_user->password, 0, 2);
+            if (crypt($PHP_AUTH_PW, $seed) == @$auth_user->password) {
+                return true;
+            }
+            break;
+        }
+        // handle new-style MD5-encrypted passwords
+        case 32: {
+            if (md5($PHP_AUTH_PW) == @$auth_user->password) {
+                return true;
+            }
+            break;
+        }
+    }
+    $auth_user = null;
+    return false;
+}
 ?>

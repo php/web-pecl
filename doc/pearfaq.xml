@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.22 2001-11-16 09:56:31 alexmerz Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.23 2001-11-16 14:57:16 alexmerz Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-11-16 09:56:31 $</date>
-  <version>$Revision: 1.22 $</version>
+  <date>$Date: 2001-11-16 14:57:16 $</date>
+  <version>$Revision: 1.23 $</version>
  </artheader>
 
  <qandaset>
@@ -176,6 +176,16 @@
     </para>
    </answer>
   </qandaentry>  
+  <qandaentry>
+   <question title="What's PECL?" />
+   <answer>
+    <author name="Martin Jansen"/>
+    <para>
+     This used to be the former name of PEAR: PHP Extension and Code Library 
+     (prounounced "picke").
+    </para>
+   </answer>
+  </qandaentry>    
   <qandaentry>
    <question title="Why is PEAR seperated into pear/ and php4/pear/?" />
    <answer>

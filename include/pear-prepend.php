@@ -22,9 +22,9 @@ function pageHeader($title = "PEAR: PHP Extension and Add-on Repository",
     print "<IMG SRC=\"/gifs/pearsmall.gif\" WIDTH=96 HEIGHT=48 ALT=\"\">";
     print "</TD><TD ALIGN=\"left\" VALIGN=\"top\">";
     print "<FONT COLOR=\"#ffffff\" SIZE=\"-1\">";
-    print "&nbsp;login<BR>";
-    print "&nbsp;foo<BR>";
-    print "&nbsp;bar<BR>";
+    print "&nbsp;links<BR>";
+    print "&nbsp;go<BR>";
+    print "&nbsp;here<BR>";
     print "</TD><TD ALIGN=\"center\" VALIGN=\"middle\" WIDTH=\"100%\">";
     print "<FONT COLOR=\"#ffffff\" SIZE=\"+1\"><B>";
     print $title;

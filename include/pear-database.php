@@ -98,7 +98,7 @@ function renumber_visitations($id, $parent)
 
 class category
 {
-    // {{{ API int category::add(struct)
+    // {{{ EXPORT int category::add(struct)
 
     /*
     $data = array(
@@ -140,7 +140,7 @@ class category
 
 class package
 {
-    // {{{ API int package::add(struct)
+    // {{{ EXPORT int package::add(struct)
 
     // add a package, return new package id or PEAR error
     function add($data)
@@ -184,7 +184,7 @@ class package
     }
 
     // }}}
-    // {{{ API struct package::info(string|int)
+    // {{{ EXPORT struct package::info(string|int)
 
     function info($pkg)
     {
@@ -215,7 +215,7 @@ class package
     }
 
     // }}}
-    // {{{ API struct package::listAll()
+    // {{{ EXPORT struct package::listAll()
 
     function listAll($name, $params, $appdata)
     {
@@ -236,7 +236,7 @@ class package
 
 class maintainer
 {
-    // {{{ API int maintainer::add(int, string, string)
+    // {{{ EXPORT int maintainer::add(int, string, string)
 
     function add($package, $user, $role)
     {
@@ -258,7 +258,7 @@ class maintainer
 
 class release
 {
-    // {{{ API array release::getRecent([int])
+    // {{{ EXPORT array release::getRecent([int])
 
     function getRecent($n = 5)
     {
@@ -282,7 +282,7 @@ class release
     }
 
     // }}}
-    // {{{ API bool release::upload(string, string, string, binary, string)
+    // {{{ EXPORT bool release::upload(string, string, string, binary, string)
 
     function upload($package, $version, $relnotes, &$tarball, $md5sum)
     {
@@ -340,7 +340,7 @@ class release
 
 class note
 {
-    // {{{ API bool note::add(string, int, string)
+    // {{{ EXPORT bool note::add(string, int, string)
 
     function add($key, $value, $note)
     {
@@ -358,7 +358,7 @@ class note
     }
 
     // }}}
-    // {{{ API bool note::delete(int)
+    // {{{ EXPORT bool note::delete(int)
 
     function delete($id)
     {
@@ -372,7 +372,7 @@ class note
     }
 
     // }}}
-    // {{{ API bool note::deleteAll(string, int)
+    // {{{ EXPORT bool note::deleteAll(string, int)
 
     function deleteAll($key, $value)
     {
@@ -389,7 +389,7 @@ class note
 
 class user
 {
-    // {{{ API bool user::delete(string)
+    // {{{ EXPORT bool user::delete(string)
 
     function delete($uid)
     {
@@ -400,7 +400,7 @@ class user
     }
 
     // }}}
-    // {{{ API bool user::rejectRequest(string, string)
+    // {{{ EXPORT bool user::rejectRequest(string, string)
 
     function rejectRequest($uid, $reason)
     {
@@ -416,7 +416,7 @@ class user
     }
 
     // }}}
-    // {{{ API bool user::activate(string)
+    // {{{ EXPORT bool user::activate(string)
 
     function activate($uid)
     {
@@ -447,7 +447,7 @@ class user
     // }}}
 }
 
-// {{{ API string echotest(string)
+// {{{ EXPORT string echotest(string)
 
 function echotest($str)
 {

@@ -1,6 +1,6 @@
 <?php
 
-function parse_signatures_from_file($file, $out_format = "signatures")
+function parse_signatures_from_file($file, &$signatures, $out_format = "signatures")
 {
 	$fp = fopen($file, "r");
 	if (!is_resource($fp)) {
@@ -11,7 +11,7 @@ function parse_signatures_from_file($file, $out_format = "signatures")
 		$contents .= fread($fp, 10240);
 	}
 	// format: array( array(returntype, methodname, paramlist), ... )
-	$signatures = array();
+	settype($signatures, "array");
 	if (preg_match_all('/API\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)/',
 					   $contents, $matches)) {
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
@@ -23,7 +23,7 @@ function parse_signatures_from_file($file, $out_format = "signatures")
 			$xmlrpc_method = str_replace("::", ".", $method_name);
 			$param_list = preg_split('/\s*,\s*/', $parameters);
 			$first_optional_param = -1;
-			error_log("found method $xmlrpc_method");
+//			error_log("found method $xmlrpc_method");
 			for ($j = 0; $j < sizeof($param_list); $j++) {
 				if ($first_optional_param == -1 && strstr($param_list[$j], "[")) {
 					$first_optional_param = $j;
@@ -88,7 +88,7 @@ function parse_signatures_from_file($file, $out_format = "signatures")
 			//print "<br>\n";
 		}
 	}
-	return $signatures;
+	return true;
 }
 
 function _signature_worker(&$storage, $params, &$varyat, &$param_variations, $j = 0)

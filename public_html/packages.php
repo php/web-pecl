@@ -60,7 +60,7 @@ $table = new HTML_Table('border="0" cellpadding="2" cellspacing="1" width="100%"
 if (!empty($catpid)) {
     $sth = $dbh->query("SELECT id, name, summary FROM packages WHERE category=$catpid");
 
-    while ($res->fetchInto($row)) {
+    while ($sth->fetchInto($row)) {
         extract($row);
         if ($nrow == 0) {
             $table->addRow(array("Name", "Summary"), 'bgcolor="#ffffff"', 'TH');

@@ -335,7 +335,7 @@ if (0) { ?>
       </small>
     </td>
     <td align="right"><small>
-      This mirror generously provided by:
+      Webspace generously provided by:
       <?php print_link($MIRRORS[$MYSITE][3], $MIRRORS[$MYSITE][1] ); ?><br />
       Last updated: <?php echo $LAST_UPDATED; ?><br />
       </small>

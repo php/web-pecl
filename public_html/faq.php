@@ -88,7 +88,7 @@ function startElement($parser, $elementName, $attribs)
         case "author" : {
 	        $content .= "<{$tagmap[$key1]}>";
             if (!empty($attribs['NAME'])) {
-                $content .= "Answer written by". $attribs['NAME'];
+                $content .= "Answer written by ". $attribs['NAME'];
             }
             return;
 	    }

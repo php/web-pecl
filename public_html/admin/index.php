@@ -19,7 +19,6 @@
 */
 
 auth_require(true);
-require_once "pear-admin.php";
 
 if (!empty($_GET['phpinfo'])) {
     phpinfo();
@@ -357,19 +356,7 @@ do {
 		</table>
 
 		</form>
-		<br /><br />
-		<?php
-        $bb = new BorderBox("System information", "50%");
-
-        echo "<ul>\n";
-        echo "<li>Uptime: " . uptime() . "</li>\n";
-        echo "<li>" . make_link($_SERVER['PHP_SELF'] . "?phpinfo=1", "Output of phpinfo()") . "</li>\n";
-        echo "<li>Server name: " . $_SERVER['SERVER_NAME'] . "</li>\n";
-        echo "<li>System date: " . date("Y-m-d H:i:s") . "</li>\n";
-        echo "</ul>\n";
-        $bb->end();
-
-        echo "<br /><br />\n";
+<?php
     }
 
     // }}}

@@ -12,12 +12,34 @@ $jumpto = false;
 
 do {
 	if (isset($upload)) {
-		$display_form = false;
-		$display_verification = true;
-		$tmpfile = $_FILES['distfile']['tmp_name'];
-		$tmpsize = $_FILES['distfile']['size'];
+        include_once 'HTTP/Upload.php';
+        PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
+        $upload_obj = new HTTP_Upload('en');
+        $file = $upload_obj->getFiles('distfile');
+        if (PEAR::isError($file)) {
+            display_error($file->getMessage()); break;
+        }
+        if ($file->isValid()) {
+            $file->setName('uniq', 'pear-');
+            $tmpfile = $file->moveTo(PEAR_UPLOAD_TMPDIR);
+            if (PEAR::isError($tmpfile)) {
+                    display_error($tmpfile->getMessage()); break;
+            }
+            $tmpsize = $file->getProp('size');
+        } elseif ($file->isMissing()) {
+            display_error("No file uploaded, please be serious :-)"); break;
+        } elseif ($file->isError()) {
+            display_error($file->errorMsg()); break;
+        }
+        $display_form = false;
+        $display_verification = true;
+
 	}
 	if (isset($verify)) {
+        $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
+        if (!@is_file($distfile)) {
+            display_error("No verified file found"); break;
+        }
 		$ok = release::upload($package, $version, $release_state,
 		                      $release_notes, $distfile, md5_file($distfile));
 		@unlink($distfile);
@@ -31,6 +53,10 @@ do {
 		$display_form = $display_verification = false;
 	}
 } while (false);
+
+if (isset($upload)) {
+    PEAR::popErrorHandling();
+}
 
 if ($display_form) {
     $title = "Upload New Release";
@@ -88,25 +114,19 @@ if ($display_verification) {
 	include_once "PEAR/Common.php";
 	response_header("Upload New Release: Verify");
 	$util =& new PEAR_Common;
-	$oldcwd = getcwd();
-	$tmpdir = System::tmpdir();
-	chdir($tmpdir);
-	$info = $util->infoFromTgzFile($tmpfile, false);
-	$util->addTempFile("$tmpdir/$info[package]-$info[version]");
-	chdir($oldcwd);
-	$newtmpfile = System::mktemp("-t $tmpdir pear");
-	// XXX this will leave files in /tmp if users don't complete the
+    // XXX this will leave files in PEAR_UPLOAD_TMPDIR if users don't complete the
 	// next screen.  Janitor cron job recommended!
-	copy($tmpfile, $newtmpfile);
+	$info = $util->infoFromTgzFile(PEAR_UPLOAD_TMPDIR . "/$tmpfile");
 	$form =& new HTML_Form($PHP_SELF, "POST");
-	$form->addHidden('distfile', $newtmpfile);
+    $form->addHidden('distfile', $tmpfile);
 	$form->addSubmit('verify', 'Verify Release');
-	foreach ($info as $name => $value) {
+	/* XXX Do we really need this? */
+    foreach ($info as $name => $value) {
 		if (is_string($value)) {
 			$form->addHidden($name, $value);
 		}
 	}
-//	print "<pre>\n"; var_dump($info); print "</pre>\n";
+    /* XXX end */
 	// XXX ADD MASSIVE SANITY CHECKS HERE
 	$bb = new BorderBox("Please verify that the following release ".
 						"information is correct:");
@@ -114,10 +134,10 @@ if ($display_verification) {
 	print "<tr><th align=\"right\">Package:</th><td>$info[package]</td></tr>\n";
 	print "<tr><th align=\"right\">Version:</th><td>$info[version]</td></tr>\n";
 	print "<tr><th align=\"right\">Summary:</th><td>$info[summary]</td></tr>\n";
-	print "<tr><th align=\"right\">Description:</th><td>$info[description]</td></tr>\n";
+	print "<tr><th align=\"right\">Description:</th><td>".nl2br($info['description'])."</td></tr>\n";
 	print "<tr><th align=\"right\">Release State:</th><td>$info[release_state]</td></tr>\n";
 	print "<tr><th align=\"right\">Release Date:</th><td>$info[release_date]</td></tr>\n";
-	print "<tr><th align=\"right\">Release Notes:</th><td>$info[release_notes]</td></tr>\n";
+	print "<tr><th align=\"right\">Release Notes:</th><td>".nl2br($info['release_notes'])."</td></tr>\n";
 	print "</table>\n";
 	$form->display();
 	$bb->end();

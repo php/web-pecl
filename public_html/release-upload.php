@@ -84,7 +84,9 @@ do {
 		  $tar = new Archive_Tar($distfile);
 		  $contains_C = false;
 		  foreach ($tar->listContent() as $file_in_tar) {
-				if (substr($file_in_tar['filename'], -2) == ".c") {
+			   $file_in_tar['filename'] = strtolower($file_in_tar['filename']);
+				if (substr($file_in_tar['filename'], -2) == ".c" ||
+						substr($file_in_tar['filename'], -4) == ".cpp") {
 					$contains_C = true;
 					break;
 				}

@@ -60,7 +60,7 @@ PEAR. The full announcement can be
 <?php echo make_link("http://marc.theaimsgroup.com/?l=pear-dev&m=106073080219083&w=2",
                      "found here"); ?>.</p>
 <p>More information about the Group, including a first administrative
-document, can be found at a <?php echo make_link("/group/", "dedicated place"); ?>
+document, can be found at a <?php echo make_link("/group/", "dedicated place"); ?> 
 on pear.php.net.</p>
 
 <?php

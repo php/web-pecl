@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.25 2001-11-18 18:04:07 jon Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.26 2001-11-19 15:54:34 alexmerz Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-11-18 18:04:07 $</date>
-  <version>$Revision: 1.25 $</version>
+  <date>$Date: 2001-11-19 15:54:34 $</date>
+  <version>$Revision: 1.26 $</version>
  </artheader>
 
  <qandaset>
@@ -133,6 +133,7 @@
     </para>
    </answer>
   </qandaentry>
+
   <qandaentry>
    <question title="How to contribute patches for Outlook Express users" />
    <answer>
@@ -148,6 +149,7 @@
     </para>
    </answer>
   </qandaentry>
+
   <qandaentry>
    <question title="I want to contribute, in what areas could I do it?" />
    <answer>
@@ -162,6 +164,7 @@
     </para>
    </answer>
   </qandaentry>
+
   <qandaentry>
    <question title="I have written a PHP module in C. What are the rules 
    of including those in PEAR?" />
@@ -175,7 +178,8 @@
      name is.
     </para>
    </answer>
-  </qandaentry>  
+  </qandaentry> 
+ 
   <qandaentry>
    <question title="What's PECL?" />
    <answer>
@@ -185,7 +189,8 @@
      (pronounced "pickle").
     </para>
    </answer>
-  </qandaentry>    
+  </qandaentry> 
+   
   <qandaentry>
    <question title="Why is PEAR seperated into pear/ and php4/pear/?" />
    <answer>
@@ -204,6 +209,7 @@
     </para>
    </answer>
   </qandaentry>
+
   <qandaentry>
    <question title="Why does the directory structure of pear/ and php4/pear/ differ?" />
    <answer>
@@ -220,6 +226,7 @@
     </para>
    </answer>
   </qandaentry>
+
   <qandaentry>
    <question title="Why a flat directory structure instead of a deep?" />
    <answer>
@@ -231,6 +238,7 @@
     </para>
    </answer>
   </qandaentry>
+
   <qandaentry>
    <question title="Can I commit experimental/unstable stuff?" />
     <answer>
@@ -293,6 +301,7 @@
     </para>
     </answer>
   </qandaentry>
+
   <qandaentry> 
    <question title="Am I expected to add examples and/or test files to my package and
    where to store them?" />
@@ -310,7 +319,8 @@
      (i.e. templates, graphics). Store them in sub directory called 'tests'.
     </para>
    </answer>  
-  </qandaentry>   
+  </qandaentry>
+   
   <qandaentry>
    <question title="Are different packages or classes with similar features 
    allowed?" />
@@ -348,6 +358,7 @@
     </para>         
    </answer>
   </qandaentry>
+
   <qandaentry>
    <question title="How should I write the documentation?" />
    <answer>
@@ -359,6 +370,7 @@
     </para>
    </answer>
   </qandaentry>
+
   <qandaentry>
    <question title="What is the difference between a package, a class and a file?" />
    <answer>
@@ -368,6 +380,7 @@
     </para>
    </answer>
   </qandaentry>
+
   <qandaentry>
    <question title="I have a question about PEAR. Where should I ask?" />
    <answer>
@@ -397,6 +410,19 @@
     </para>
    </answer>
   </qandaentry>
+
+  <qandaentry>
+   <question title="A required package includes a package, my package needs it too. 
+                    Should I include it again?" />
+   <answer>
+    <author name="Alexander Merz"/>
+    <para>
+     Yes. You should include every package, you need with <function>require_once</function> 
+     or <function>include_once</function>, also when it is included already by another package
+    </para>
+   </answer>
+  </qandaentry> 
+
   <qandaentry>
    <question title="Does PEAR work on windows?" />
    <answer>

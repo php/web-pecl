@@ -653,6 +653,25 @@ class package
     }
 
     // }}}
+    // {{{ getDependants()
+
+    /**
+     * Get packages that depend on the given package
+     *
+     * @param  string Name of the package
+     * @return array  List of package that depend on $package
+     */
+    function getDependants($package) {
+        global $dbh;
+
+        $query = "SELECT p.name AS p_name, d.* FROM deps d, packages p " .
+            "WHERE d.package = p.id AND d.type = 'pkg' " .
+            "      AND d.name = '" . $package . "' " .
+            "GROUP BY d.package";
+        return $dbh->getAll($query, null, DB_FETCHMODE_ASSOC);
+    }
+
+    // }}}
 }
 
 /**

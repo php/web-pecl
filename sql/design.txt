@@ -116,14 +116,13 @@ in a (binary) distribution file called "DB_foosql-1.1b2.tar.gz":
   </Notes>
  </Release>
  <FileList>
-  <DestDir>DB</DestDir>
-  <Dir>foosql</Dir>
-  <File>foosql.php</File>
-  <DestDir>DB/foosql</DestDir>
-  <File>regtest.php</File>
-  <DestDir>DB</DestDir>
-  <DocFile Format="text/xml">foosql.xml</DocFile>
-  <DocFile Format="text/html">foosql.html</DocFile>
+  <Dir>DB/foosql</Dir>
+  <File>DB/foosql.php</File>
+  <File Role="test">DB/foosql/001.phpt</File>
+  <File Role="test">DB/foosql/002.phpt</File>
+  <File Role="test">DB/foosql/003.phpt</File>
+  <File Role="doc" Format="text/xml">foosql-faq.xml</File>
+  <File Role="doc" Format="text/html">foosql-faq.html</File>
  </FileList>
 </Package>
 
@@ -160,3 +159,7 @@ the same release.
 When comparing V with V.N, V.N is considered newer if the version part
 of V.N is greather than or equal to the version part of V.  The same
 logic applies to V.N.P vs. V.N.
+
+Releases with lots of known bugs, potential API changes etc. are
+typically alpha releases.  Beta releases are when the risk of API
+changes is minimal and you believe most bugs are found.

@@ -27,7 +27,7 @@ echo "<?xml version=\"1.0\"?>\n";
 <channel>
   <title>PEAR</title>
   <link>http://pear.php.net/</link>
-  <description>This are the latest release in PEAR.</description>
+  <description>This are the latest releases from PEAR.</description>
   <image>
     <url>http://pear.php.net/gifs/pearsmall.gif</url>
     <title>PEAR</title>

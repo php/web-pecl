@@ -50,14 +50,14 @@
 echo
 echo "This script will install the PEAR Installer command 'pear' and"
 echo "all the files needed by it. The 'pear' command is the tool"
-echo "that can manage PEAR packages downloaded both from the PEAR web"
-echo "(http://pear.php.net) or from the 'pear/' CVS module of cvs.php.net"
+echo "that can manage PEAR packages downloaded both from the PEAR website"
+echo "(http://pear.php.net) or from the 'pear/' CVS module of cvs.php.net."
 echo
-echo "With this script you could also download and install, from CVS,"
-echo "the common PEAR files that comes with any PHP distribution (located"
-echo "at php4/pear in CVS). The common PEAR files means classes like PEAR DB,"
-echo "XML_Parser, IT template engine or Mail. Please read the"
-echo "FAQ at http://pear.php.net/faq.php for more information"
+echo "With this script you can also download and install"
+echo "the common PEAR files from CVS that also come with any PHP distribution"
+echo "(located at php4/pear in CVS). The common PEAR files means classes like"
+echo "PEAR DB, XML_Parser, IT template engine or Mail. Please read the"
+echo "FAQ at http://pear.php.net/faq.php for more information."
 echo
 echo "For an explanation on how to use the PEAR Installer or what PEAR"
 echo "packages are, visit:"
@@ -76,7 +76,7 @@ TARGET="${prefix}/bin/pear"
 # User configurable options
 ####
 
-echo "Which file name do you want for the 'pear' executable?"
+echo "Which filename do you want to use for the 'pear' executable?"
 echo -n "[$TARGET] : "
 read destpearin < /dev/tty
 if [ ! -z "$destpearin" ]; then
@@ -101,7 +101,7 @@ if [ ! -d $destdir ]; then
 	exit 1
 fi
 
-echo -n "Do you want to install also the common PEAR files? [Y/n] : "
+echo -n "Do you also want to install the common PEAR files? [Y/n] : "
 read installall < /dev/tty
 files="/"
 if [ `echo $installall | grep -i 'n'` ]; then
@@ -158,7 +158,7 @@ rm -rf $PTMP
 
 echo
 echo "The 'pear' command has been successfully installed under $TARGET"
-echo "try it typing '$TARGET' for help"
+echo "try it by typing '$TARGET' for help"
 echo
 
 exit

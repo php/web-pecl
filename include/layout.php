@@ -202,12 +202,12 @@ function commonHeader($title) {
         alink="#cccc00"
         vlink="#003300"
 ><a name="TOP" /></a>
-<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+<table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
   <tr bgcolor="#339900">
-    <td align="left" rowspan="2" width="120">
-<?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="2" hspace="5"') ); ?><br />
+    <td align="left" rowspan="2" width="120" colspan="2" height="1">
+<?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="5" hspace="5"') ); ?><br />
     </td>
-    <td align="right" valign="top">
+    <td align="right" valign="top" colspan="3" height="1">
       <font color="#ffffff"><b>
         <?php echo strftime("%A, %B %d, %Y"); ?>
       </b>&nbsp;<br />
@@ -220,7 +220,7 @@ function commonHeader($title) {
   </tr>
 
   <tr bgcolor="#339900">
-    <td align="right" valign="bottom">
+    <td align="right" valign="bottom" colspan="3" height="1">
       <?php
 
     if (empty($_COOKIE['PEAR_USER'])) {
@@ -242,10 +242,10 @@ function commonHeader($title) {
     </td>
   </tr>
 
-  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
+  <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
 
   <tr bgcolor="#006600">
-    <td align="right" valign="top" colspan="2">
+    <td align="right" valign="top" colspan="5" height="1">
     <form method="post" action="/search.php">
     <font color="#ffffff"><small>search for</small>
     <input class="small" type="text" name="search_string" value="" size="20" />
@@ -258,10 +258,10 @@ function commonHeader($title) {
     </select>
     <?php echo make_submit('small_submit_white.gif', 'search', 'bottom'); ?></font>&nbsp;<br /></form></td></tr>
 
-  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
-</table>
+  <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
 
-<table cellpadding="0" cellspacing="0" width="100%">
+  <!-- Middle section -->
+  
  <tr valign="top">
 <?php if (isset($SIDEBAR_DATA)) { ?>
   <td bgcolor="#f0f0f0" width="149">
@@ -302,12 +302,12 @@ function commonFooter() {
   </td>
 <?php } ?>
  </tr>
-</table>
 
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr bgcolor="#003300"><td><?php spacer(1,1);?><br /></td></tr>
+ <!-- Lower bar -->
+ 
+  <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
   <tr bgcolor="#339900">
-      <td align="right" valign="bottom">
+      <td align="right" valign="bottom" colspan="5" height="1">
 <?php
 print_link('/source.php?url='.$SCRIPT_NAME, 'SHOW SOURCE', false, 'class="menuBlack"');
 echo delim();
@@ -354,22 +354,28 @@ if (0) { ?>
 <?php } ?><br />
       </td>
   </tr>
-  <tr bgcolor="#003300"><td><?php spacer(1,1); ?><br /></td></tr>
-</table>
+  <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1); ?><br /></td></tr>
 
-<table border="0" cellspacing="0" cellpadding="6" width="100%">
   <tr valign="top" bgcolor="#cccccc">
-    <td><small>
-      <?php print_link('http://www.php.net/', make_image('php-logo.gif', 'PHP', 'left') ); ?>
-      <?php print_link('/copyright.php', 'Copyright &copy; 2001, 2002 The PHP Group'); ?><br />
-      All rights reserved.<br />
-      </small>
-    </td>
-    <td align="right"><small>
-      Webspace generously provided by:
-      <?php print_link($MIRRORS[$MYSITE][3], $MIRRORS[$MYSITE][1] ); ?><br />
-      Last updated: <?php echo $LAST_UPDATED; ?><br />
-      </small>
+    <td colspan="5" height="1">
+	  <table border="0" cellspacing="0" cellpadding="5" width="100%">
+	  	<tr>
+		 <td>
+		  <small>
+	      <?php print_link('http://www.php.net/', make_image('php-logo.gif', 'PHP', 'left') ); ?>
+	      <?php print_link('/copyright.php', 'Copyright &copy; 2001, 2002 The PHP Group'); ?><br />
+	      All rights reserved.<br />
+	      </small>
+		 </td>
+		 <td align="right">
+		  <small>
+	      Webspace generously provided by:
+	      <?php print_link($MIRRORS[$MYSITE][3], $MIRRORS[$MYSITE][1] ); ?><br />
+	      Last updated: <?php echo $LAST_UPDATED; ?><br />
+	      </small>
+		 </td>
+		</tr>
+      </table>
     </td>
   </tr>
 </table>

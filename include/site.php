@@ -18,6 +18,11 @@
    $Id$
 */
 
+/**
+ * XXX: This file is currently not used. If there will be mirrors
+ * one fine day, this is the place to manage them.
+ */
+
 /* Structure of MIRRORS array:
   0	"country code",
   1	"Mirror Name",

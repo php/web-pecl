@@ -490,7 +490,7 @@ class release
             return PEAR::raiseError("writing $infofile failed: $php_errormsg");
 		}
 		fwrite($fp, serialize($info));
-		fclose($info);
+		fclose($fp);
 		return $infofile;
     }
 
@@ -499,6 +499,7 @@ class release
 
     function confirmUpload($upload_ref)
     {
+        global $dbh, $PHP_AUTH_USER;
 		$fp = @fopen($upload_ref, "r");
 		if (!is_resource($fp)) {
             return PEAR::raiseError("invalid upload reference: $upload_ref");

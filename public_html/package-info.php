@@ -76,7 +76,11 @@ while ($sth->fetchInto($row)) {
     if ($row['showemail'] == 1) {
         $accounts .= " &lt;<a href=\"mailto:{$row['email']}\">{$row['email']}</a>&gt;";
     }
-    $accounts .= " ({$row['role']}) [<a href=\"account-info.php?handle={$row['handle']}\">details</a>]";
+    $accounts .= " ({$row['role']})";
+    if (!empty($row['wishlist'])) {
+        $accounts .= " [<a href=\"wishlist.php?handle={$row['handle']}\">wishlist</a>]";
+    }
+    $accounts .= " [<a href=\"account-info.php?handle={$row['handle']}\">details</a>]";
     $accounts .= "</td></tr>\n";
 }
 
@@ -119,11 +123,11 @@ $bb = new BorderBox("Package Information"); ?>
 
 <table border="0" cellspacing="2" cellpadding="2" height="48" width="100%">
 <tr>
-    <th class="pack" bgcolor="#009933" width="20%">Summary</th>
+    <th class="pack" width="20%">Summary</th>
     <td><?php print $summary;?></td>
 </tr>
 <tr>
-    <th class="pack" bgcolor="#009933" width="20%">Maintainers</th>
+    <th class="pack" width="20%">Maintainers</th>
     <td>
         <table border="0" cellspacing="1" cellpadding="1" width="100%">
         <?php print $accounts;?>
@@ -131,13 +135,23 @@ $bb = new BorderBox("Package Information"); ?>
     </td>
 </tr>
 <tr>
-    <th class="pack" bgcolor="#009933" width="20%">License</th>
+    <th class="pack" width="20%">License</th>
     <td><?php print get_license_link($license);?></td>
 </tr>
 <tr>
-    <th class="pack" bgcolor="#009933" width="20%">Description</th>
+    <th class="pack" width="20%">Description</th>
     <td><?php print nl2br($description);?>&nbsp;</td>
 </tr>
+<?php
+
+if ($relid) {
+    print "<tr>\n";
+    print "    <th class=\"pack\" width=\"20%\">Release Notes<br />Version $version</th>\n";
+    print "     <td valign=\"top\">".nl2br($rel['releasenotes'])."</td>\n";
+    print "</tr>\n";
+}
+
+?>
 <tr>
     <td colspan="2" align="right">
 <?php print_link("/package-edit.php?id=$pacid",

@@ -4,13 +4,6 @@ $SIDEBAR_DATA='
 <p>
 The manual section for PEAR can be found
 <a href="http://php.net/manual/en/pear.php">here</a>.</p>
-
-<h3>Tutorials</h3>
-<p>
-A list with PEAR-related tutorials can be found
-<a href="http://php.weblogs.com/php_pear_tutorials">
-here</a>.
-</p>
 ';
 
 response_header("Support");
@@ -137,6 +130,46 @@ Either send a message to pear-whatever-help@lists.php.net (as in,
 pear-general-help@lists.php.net) or you can view the commands for
 ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
 </p>
+
+<h2>PEAR Tutorials</h2>
+
+<h4>Tutorials about the PEAR DB class:</h4>
+
+<ul>
+    <li><a href="http://vulcanonet.com/soft/?pack=pear_tut">PEAR DB Tutorial</a> by Tomas V.V.Cox</li><br><br>
+
+    <li><a href="http://vulcanonet.com/soft/?pack=pager">Pear DB Pager Class Tutorial</a> by Tomas V.V.Cox.
+    This class handles all the stuff needed for displaying paginated results from a database query.</li><br><br>    
+
+    <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li>
+</ul>
+
+<h4>Tutorials about some PEAR classes in German:</h4>
+
+<ul>   
+    <li>IT[X] is a template class:<br>
+    <a href="http://www.ulf-wendel.de/projekte/itx/index.php">http://www.ulf-wendel.de/projekte/itx/index.php</a>
+    </li><br><br>
+    
+    <li><a href="http://www.ulf-wendel.de/projekte/menu/tutorial.php">Menu.php Tutorial</a> in German.
+    This class generates a HTML menu from a multidimensional hash.</li><br><br>    
+
+    <li><a href="http://www.ulf-wendel.de/projekte/cache/">Tutorial about the PEAR Cache class</a></li>
+</ul>
+
+<h4>Other tutorials:</h4>        
+
+<ul>
+    <li><a href="http://php.chregu.tv/sql2xml/">XML_sql2xml tutorial</a>. A PEAR class for converting SQL
+    query results or arrays to XML.</li><br><br>
+
+    <li><a href="http://www.mamasam.com/tutorials/en_html_table.html">Table.php</a> Tutorial. The table class
+    allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li><br><br>
+
+    <li><a href="http://conf.php.net/pres/index.php?p=slides%2Fpear&id=pear">A presentation</a> by Stig Bakken,
+    who is leading PEAR development, at ApacheCon 2001 on PEAR.</li>
+</ul>  
+
 
 <?php
 }

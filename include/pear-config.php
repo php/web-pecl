@@ -23,9 +23,9 @@ if (isset($_SERVER['PEAR_TMPDIR'])) {
     define('PEAR_CVS_TMPDIR', $_SERVER['PEAR_TMPDIR'].'/cvs');
     define('PEAR_UPLOAD_TMPDIR', $_SERVER['PEAR_TMPDIR'].'/uploads');
 } else {
-    define('PEAR_TMPDIR', '/var/tmp/pear');
-    define('PEAR_CVS_TMPDIR', '/var/tmp/pear/cvs');
-    define('PEAR_UPLOAD_TMPDIR', '/var/tmp/pear/uploads');
+    define('PEAR_TMPDIR', '/tmp/pear');
+    define('PEAR_CVS_TMPDIR', '/tmp/pear/cvs');
+    define('PEAR_UPLOAD_TMPDIR', '/tmp');
 }
 
 if (isset($_SERVER['PEAR_DATABASE_DSN'])) {

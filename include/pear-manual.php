@@ -16,52 +16,52 @@ function setupNavigation($data) {
 }
 
 function makeBorderTOC($this) {
-	global $NEXT, $PREV, $UP, $HOME, $TOC, $DOCUMENT_ROOT;
-	global $SIDEBAR_DATA, $LANG;
+    global $NEXT, $PREV, $UP, $HOME, $TOC, $DOCUMENT_ROOT;
+    global $SIDEBAR_DATA, $LANG;
 
-	$SIDEBAR_DATA = '<form method="get" action="/manual-lookup.php">' .
-	$SIDEBAR_DATA.= '<table border="0" cellpadding="4" cellspacing="0">';
+    $SIDEBAR_DATA = '<form method="get" action="/manual-lookup.php">' .
+    $SIDEBAR_DATA.= '<table border="0" cellpadding="4" cellspacing="0">';
 
     /** The manual lookup will be implemented at a later point.
-	$SIDEBAR_DATA.= '<tr valign="top"><td><small>' .
-		'<input type="hidden" name="lang" value="' . $LANG . '">' .
-		'lookup: <input type="text" class="small" name="function" size="10"> ' .
-		make_submit('small_submit_white.gif', 'lookup', 'bottom') .
-		'<br /></small></td></tr>';
+    $SIDEBAR_DATA.= '<tr valign="top"><td><small>' .
+        '<input type="hidden" name="lang" value="' . $LANG . '">' .
+        'lookup: <input type="text" class="small" name="function" size="10"> ' .
+        make_submit('small_submit_white.gif', 'lookup', 'bottom') .
+        '<br /></small></td></tr>';
 
-	$SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
+    $SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
     */
 
-	$SIDEBAR_DATA.= '<tr valign="top"><td>' . 
-		make_link('./', make_image('caret-t.gif', $HOME[1]) . $HOME[1] ) . 
-		'<br /></td></tr>';
+    $SIDEBAR_DATA.= '<tr valign="top"><td>' . 
+        make_link('./', make_image('caret-t.gif', $HOME[1]) . $HOME[1] ) . 
+        '<br /></td></tr>';
 
-	$SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
+    $SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
 
-	if (($HOME[1] != $UP[1]) && $UP[1]) {
-		$SIDEBAR_DATA.= '<tr valign="top"><td>' . 
-			make_link($UP[0], make_image('caret-u.gif', $UP[1]) . $UP[1] ) . 
-			'<br /></td></tr>';
-	}
+    if (($HOME[1] != $UP[1]) && $UP[1]) {
+        $SIDEBAR_DATA.= '<tr valign="top"><td>' . 
+            make_link($UP[0], make_image('caret-u.gif', $UP[1]) . $UP[1] ) . 
+            '<br /></td></tr>';
+    }
 
-	$SIDEBAR_DATA.= '<tr valign="top"><td><small>';
+    $SIDEBAR_DATA.= '<tr valign="top"><td><small>';
 
-	for ($i = 0; $i < count($TOC); $i++) {
-		list($url, $title) = $TOC[$i];
-		if (!$url || !$title) {
-			continue;
-		}
-		$img = 'box-0.gif';
-		if ($title == $this) {
-			$img = 'box-1.gif';
-		}
+    for ($i = 0; $i < count($TOC); $i++) {
+        list($url, $title) = $TOC[$i];
+        if (!$url || !$title) {
+            continue;
+        }
+        $img = 'box-0.gif';
+        if ($title == $this) {
+            $img = 'box-1.gif';
+        }
 
-		$SIDEBAR_DATA .= '&nbsp;' . 
-			make_link($url, make_image($img, $title) . $title ) . 
-			'<br />';
-	}
+        $SIDEBAR_DATA .= '&nbsp;' . 
+            make_link($url, make_image($img, $title) . $title ) . 
+            '<br />';
+    }
 
-	$SIDEBAR_DATA.= '</small></td></tr>';
+    $SIDEBAR_DATA.= '</small></td></tr>';
 
     if (count($TOC) > 1) {
         $SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
@@ -72,75 +72,75 @@ function makeBorderTOC($this) {
                      . make_link("/download-docs.php", "Download Documentation")
                      . '</small></td></tr>';
 
-	$SIDEBAR_DATA.= '</table></form>';
+    $SIDEBAR_DATA.= '</table></form>';
 
 }
 
 function navigationBar($title,$id,$loc) {
-	global $NEXT, $PREV, $tstamp;
+    global $NEXT, $PREV, $tstamp;
 
-	echo '<table border="0" width="620" bgcolor="#e0e0e0" cellpadding="0" cellspacing="4">';
+    echo '<table border="0" width="620" bgcolor="#e0e0e0" cellpadding="0" cellspacing="4">';
 
-	echo '<tr><td>';
-	if ($PREV[1]) {
-		print_link( $PREV[0] , make_image('caret-l.gif', 'previous') . $PREV[1] ) ;
-	}
-	echo '<br /></td>';
+    echo '<tr><td>';
+    if ($PREV[1]) {
+        print_link( $PREV[0] , make_image('caret-l.gif', 'previous') . $PREV[1] ) ;
+    }
+    echo '<br /></td>';
 
-	echo '<td align="right">';
-	if ($NEXT[1]) {
-		print_link( $NEXT[0] , $NEXT[1] . make_image('caret-r.gif', 'next') ) ;
-	}
-	echo '<br /></td>';
-	echo '</tr>';
+    echo '<td align="right">';
+    if ($NEXT[1]) {
+        print_link( $NEXT[0] , $NEXT[1] . make_image('caret-r.gif', 'next') ) ;
+    }
+    echo '<br /></td>';
+    echo '</tr>';
 
-	echo '<tr bgcolor="#cccccc"><td colspan="2">';
-	spacer(1,1);
-	echo '<br /></td></tr>';
+    echo '<tr bgcolor="#cccccc"><td colspan="2">';
+    spacer(1,1);
+    echo '<br /></td></tr>';
 
-	if ($loc != 'bottom') {
-		global $LANGUAGES;
-		$links = array();
-		foreach($LANGUAGES as $code => $name) {
-			if (file_exists("../$code/$id")) {
-				$links[] = make_link("../$code/$id", $name);
-			}
-		}
-		$file = substr($id,0,-4);
-		if (file_exists("html/$file.html")) {
-			$links[] = make_link("html/$file.html", 'Plain HTML');
-		}
-		echo '<tr>';
-		if (count($links)) {
-			echo '<td><small>View this page in ' . join (delim(), $links) . '</small></td>';
-		}
+    if ($loc != 'bottom') {
+        global $LANGUAGES;
+        $links = array();
+        foreach($LANGUAGES as $code => $name) {
+            if (file_exists("../$code/$id")) {
+                $links[] = make_link("../$code/$id", $name);
+            }
+        }
+        $file = substr($id,0,-4);
+        if (file_exists("html/$file.html")) {
+            $links[] = make_link("html/$file.html", 'Plain HTML');
+        }
+        echo '<tr>';
+        if (count($links)) {
+            echo '<td><small>View this page in ' . join (delim(), $links) . '</small></td>';
+        }
         echo '<td align="right"><small>Last updated: '.$tstamp.'</small></td></tr>';
-	} else {
-	    echo '<tr>';
-	    echo '<td valign="top" align="left"><small>'
-	         . make_link("/download-docs.php", "Download Documentation")
-	        . '</small</td>';
-	    echo '<td align="right"><small>Last updated: '.$tstamp.'<br />';
+    } else {
+        echo '<tr>';
+        echo '<td valign="top" align="left"><small>'
+             . make_link("/download-docs.php", "Download Documentation")
+            . '</small</td>';
+        echo '<td align="right"><small>Last updated: '.$tstamp.'<br />';
     }
 
-	echo '</small></td></tr>';
-	echo "</table>\n";
+    echo '</small></td></tr>';
+    echo "</table>\n";
 
 }
 
 function sendManualHeaders($charset,$lang) {
         global $LANG;
         $LANG = $lang;
-	Header("Cache-Control: public, max-age=600");
-	Header("Vary: Cookie");
-	Header("Content-type: text/html;charset=$charset");
-	Header("Content-language: $lang");
+    Header("Cache-Control: public, max-age=600");
+    Header("Vary: Cookie");
+    Header("Content-type: text/html;charset=$charset");
+    Header("Content-language: $lang");
 }
 
 function manualHeader($title,$id="") {
-	global $HTDIG, $LANGUAGES, $LANG, $SIDEBAR_DATA, $dbh;
+    global $HTDIG, $LANGUAGES, $LANG, $SIDEBAR_DATA, $dbh;
 
-	makeBorderTOC($title);
+    makeBorderTOC($title);
 
     /**
      * Show link to the package info file?
@@ -174,17 +174,17 @@ function manualHeader($title,$id="") {
         }
     }
 
-	commonHeader('Manual: '.$title);
+    commonHeader('Manual: '.$title);
         # create links to plain html and other languages
-	if (!$HTDIG) {
-		navigationBar($title, $id, "top");
-	}
+    if (!$HTDIG) {
+        navigationBar($title, $id, "top");
+    }
 }
 
 function manualFooter($title,$id="") {
-	global $HTDIG;
-	if (!$HTDIG) {
-		navigationBar($title, $id, "bottom");
+    global $HTDIG;
+    if (!$HTDIG) {
+        navigationBar($title, $id, "bottom");
     }
 
     commonFooter();

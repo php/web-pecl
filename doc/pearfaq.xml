@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.7 2001-09-01 10:25:55 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.8 2001-09-01 13:56:05 mj Exp $ -->
 <!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "./dbxml/docbookx.dtd">
 
@@ -8,25 +8,26 @@
 <article class="faq">
 <artheader>
     <title>PEAR-Developer FAQ</title>
-    <date>$Date: 2001-09-01 10:25:55 $</date>
+    <date>$Date: 2001-09-01 13:56:05 $</date>
+    <version>$Revision: 1.8 $</version>    
 </artheader>
 
 <qandaset>
     <qandaentry>
         <question>
             <para>
-                How to become a PEAR contributer and/or CVS access to PEAR?
+                How to become a PEAR contributer and/or how to get CVS access to PEAR?
             </para>
         </question>
         <answer>
             <author name="Alexander Merz"/>
             <para>
-                The rules are the same like getting a PHP CVS account. This means
-				you should do one of the following things to improve your
+                The rules are the same like the ones for getting a PHP CVS account.
+                This means you should do one of the following things to improve your
 				chances to get a CVS account.
 				<simplelist>
 					<member>
-						Send patches for existing PEAR classes.
+						Send <faqlink faq="2">patches</faqlink> for existing PEAR classes.
 					</member>
 					<member>
 						Create and <emphasis>maintain</emphasis> a new class 
@@ -68,13 +69,13 @@
 				PEAR developers list <ulink url="mailto:pear-dev@lists.php.net"
 				                            name="pear-dev@lists.php.net"/>. 
                 Make sure your patch is based on a current CVS snapshot. Don't send the 
-				complete file(s). Use diff or the diff command of cvs and 
+				complete file(s). Use diff or the diff command of CVS and 
 				attach the output of diff to the mail.
 	        </para>
 			<para>
 				Another possibility is to send the patches directly to the
 				author(s) of the class. But sometimes the author isn't the 
-				maintainer, in vacation or has no access to cvs at the 
+				maintainer, in vacation or has no access to CVS at the 
 				moment. So better use the mailinglist.
 			</para>
 			<para>
@@ -100,8 +101,8 @@
 						<command># cvs update</command>
 					</member>
 					<member>
-						Generate the patch against the latest version from cvs
-						<command># cvs diff -u Ping.php > ping_diff.txt							
+						Generate the patch against the latest version from CVS
+						<command># cvs diff -u Ping.php > ping_diff.txt				
 						</command>
 					</member>
 				</simplelist>
@@ -138,12 +139,12 @@
         <answer>
             <author name="Alexander Merz"/>
             <para>
-                The general directory for new PEAR-classes and moduls is 
-				pear/ in the CVS-repository. The name of the directory of the 
+                The general directory for new PEAR-classes and modules is 
+				pear/ in the CVS repository. The name of the directory of the 
 				new class is build from the class name and the package name. 
-				If you wrote a class called bar as a part of the package foo, 
-				the name of the directory is foo_bar. So the resulting path 
-				is 	pear/foo_bar.
+				If you wrote a class called Bar as a part of the package Foo, 
+				the name of the directory is Foo_Bar. So the resulting path 
+				is 	pear/Foo_Bar.
             </para>
         </answer>
     </qandaentry>    
@@ -231,7 +232,7 @@
 						enviroments.
 					</member>
 					<member>
-						<parameter>cvs</parameter> - a cvs snapshot from a 
+						<parameter>cvs</parameter> - a CVS snapshot from a 
 						certain date
 					</member>
 				</simplelist>

@@ -1,158 +1,130 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- $Id$ -->
 <html>
 <head>
+<!-- $Id$ -->
   <title>x</title>
 </head>
 <body>
-<p>
- <i>
-  <small>
-   by
-   <a href="http://www.appelsiini.net/~tuupola/">Mika Tuupola</a> (tuupola@appelsiini.net),
-   <a href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a> (paj@pearfr.org)
-  </small>
- </i>
-</p>
-<p>
-This week was quiet too, but we smelt nice activities. If any of you feel like a futur doc writer, you
-will certainly appreciate this little
-<a target="_blank" href="http://cvs.php.net/co.php/peardoc/peardoc2/en/authoring/readme.txt">
-PEARDoc2 references</a> wroten by Alexander Mertz.<br>
-We thank Frank M. Kromann for the publication of the PECL binaries for Windows, as well as php4/5 with near all extensions,
-all is available at <a target="_blank" href="http://kromann.info/pear.php">kromann.info</a>.
-Thank's to Urs Gehrig for the link  (<a href="http://www.circle.ch" target="_blank">www.circle.ch</a>).<br>
-The package of the week is the fresh Mono extension by Sterling Hughes.
-</p>
-
-<hr />
- <!-- SECTION --><a name="1"></a>
+<p> <i>  <small>   by    <a href="http://www.appelsiini.net/%7Etuupola/">Mika
+Tuupola</a> (tuupola@appelsiini.net),    <a
+ href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a>
+(paj@pearfr.org)   </small> </i></p>
+<p>This week was quiet too, but we smelt nice activities. If any of you feel
+like a future doc writer, you will certainly appreciate this little<a
+ target="_blank"
+ href="http://cvs.php.net/co.php/peardoc/peardoc2/en/authoring/readme.txt">
+PEARDoc2 references</a> wroten by Alexander Merz.<br>
+We thank Frank M. Kromann for the publication of the PECL binaries for Windows,
+as well as php4/5 with near all extensions, all is available at <a
+ target="_blank" href="http://kromann.info/pear.php">kromann.info</a>. Thank's
+to Urs Gehrig for the link  (<a href="http://www.circle.ch"
+ target="_blank">www.circle.ch</a>).<br>
+The package of the week is the fresh Mono extension by Sterling Hughes.</p>
+<hr> <!-- SECTION --><a name="1"></a>
 <h2>Package of the week</h2>
 <h3>Mono extension</h3>
 <h3>Who's Sterling Hughes</h3>
-<p>
-  Don't ask me, 
-  <a href="http://www.googlism.com/index.htm?ism=Sterling+Hughes&type=1">ask google!</a>
-</p>
+<p>  Don't ask me,    <a
+ href="http://www.googlism.com/index.htm?ism=Sterling+Hughes&amp;type=1">ask
+google!</a></p>
 <h3>What is the pros/cons of publishing your work under PEAR/PECL ?</h3>
-<p>
-  PEAR/PECL's advantages will be different for every situation; in
-  general, I see 2 big advantages:<br>
+<p>  PEAR/PECL's advantages will be different for every situation; in   general,
+I see 2 big advantages:<br>
+</p>
 <ol>
-  <li>You want an automated package distribution and management system. 
-  Installing the mono extension without the pear installer requires a
-  small amount of magic.  Using the pear package system, it takes me only
-  a few minutes to create new releases, and for users, its a simple:i<br><br>
-
-  $ pear install mono<br><br>
-
-  (Note: you may use PEAR's package system outside of the PEAR framework. 
-  External projects, for instance xdebug, do this.)<br><br>
+  <li>You want an automated package distribution and management system.  
+ Installing the mono extension without the pear installer requires a   small
+amount of magic.  Using the pear package system, it takes me only   a few
+minutes to create new releases, and for users, its a simple:i<br>
+    <br>
+  $ pear install mono<br>
+    <br>
+  (Note: you may use PEAR's package system outside of the PEAR framework.
+  External projects, for instance xdebug, do this.)<br>
+    <br>
   </li>
-  <li> You want to publicize your library.  You not only want other
-  developers to use your core, but you want reap the benefits of their
-  usage: testing and debugging.  There is no better place for announcing a
-  package then PEAR/PECL, which has the weight of the PHP project behind
-  it.</li>
-  </ol>
+  <li> You want to publicize your library.  You not only want other   developers
+to use your core, but you want reap the benefits of their   usage: testing
+and debugging.  There is no better place for announcing a   package then
+PEAR/PECL, which has the weight of the PHP project behind   it.</li>
+  
+</ol>
   As for cons - I don't see any.  Unless you want to be closed, but then,
   PEAR is not really the place for you.
-</p>
+<p></p>
 <h3>What do you hope for the future of PEAR/PECL ?</h3>
-<p>
-  Evangelism - making PEAR the de-facto resource.  Its current
-  framework/system is pretty robust; Stig and the team have done a great
-  job building it, now its time to let them come.
-</p>
+<p>  Evangelism - making PEAR the de-facto resource.  Its current   framework/system
+is pretty robust; Stig and the team have done a great   job building it,
+now its time to let them come.</p>
 <h3>Mono, can you describe this package and the Mono technology ?</h3>
-<p>
-  Mono is an open source implementation of various components in the .NET framework.  The Mono 
-  extension is concerned with the Common Language Runtime (CLR) portion of Mono.  CLR is a 
-  common bytecode to which all .NET languages are compiled.  Compilers are currently available
-  for C#, C++, C, VB.NET, and Java.<br><br>
-
-  CLR aims to commoditize the language syntax.  Use different languages for different 
-  purposes.  If you prefer to write web frontends in PHP, but all your backend 
-  code in C or C# - do so!  Previously interfacing with such code was inefficient, 
-  and required either a protocol bridge, such as COM or DCOM, or writing an extension, 
-  often very time consuming.  .NET is a functionality upgrade: everything is the 
-  under the same hood.<br><br>
-
-  The mono extension allows you to access .NET assemblies (called "hosting").  It 
-  works much like the Java extension, using Mono to do the dirty work.  For example, 
-  the quintessential Hello World, with a .NET twist:<br>
-<pre CLASS="php"><code>
+<p>  Mono is an open source implementation of various components in the .NET
+framework.  The Mono    extension is concerned with the Common Language Runtime
+(CLR) portion of Mono.  CLR is a    common bytecode to which all .NET languages
+are compiled.  Compilers are currently available   for C#, C++, C, VB.NET,
+and Java.<br>
+<br>
+  CLR aims to commoditize the language syntax.  Use different languages for
+different    purposes.  If you prefer to write web frontends in PHP, but
+all your backend    code in C or C# - do so!  Previously interfacing with
+such code was inefficient,    and required either a protocol bridge, such
+as COM or DCOM, or writing an extension,    often very time consuming.  .NET
+is a functionality upgrade: everything is the    under the same hood.<br>
+<br>
+  The mono extension allows you to access .NET assemblies (called "hosting").
+ It    works much like the Java extension, using Mono to do the dirty work.
+ For example,    the quintessential Hello World, with a .NET twist:<br>
+</p>
+<pre class="php"><code>
 &lt;?php
 $Console = new Mono('System.Console');
 $Console-&gt;WriteLine('Hello World');
 ?&gt;
 </code></pre>
-</p>
+<p></p>
 <h3>What do you actually need from the community ?</h3>
-<p>
-George and I need the same thing: a billion dollars.  I, however, will
-settle for lesser amounts, like a million or a couple hundred thousand.
-
-Just use the package!  If you find bugs, or have questions drop me an
-email, sterling@php.net.
+<p>George and I need the same thing: a billion dollars.  I, however, will
+settle for lesser amounts, like a million or a couple hundred thousand. Just
+use the package!  If you find bugs, or have questions drop me an email, sterling@php.net.
 </p>
-<p>
-Thank's to Sterling Hughes for this interview. A short introduction has been published
-<a href="http://www.php.net/~sterling/mono/">here</a>
-</p>
-<p >
+<p>Thank's to Sterling Hughes for this interview. A short introduction has
+been published<a href="http://www.php.net/%7Esterling/mono/">here</a></p>
+<p></p>
 <h2>In the press</h2>
 <!-- SECTION --><a name="2"></a>
 <h3>php|architect</h3>
-<p>
- PEAR was shortly mentioned in February 2003 issue of 
- <a href="http://www.phparch.com/">php|architect</a> in
- <i>Data Fingerprinting with Hash Functions in PHP</i> written by Leon
- Vismer.
-</p>
-
+<p> PEAR was shortly mentioned in February 2003 issue of   <a
+ href="http://www.phparch.com/">php|architect</a> in  <i>Data Fingerprinting
+with Hash Functions in PHP</i> written by Leon  Vismer.</p>
 <hr>
-<p>
-If you come accross PEAR related article article feel free to
-send (<a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>) us the references
-and they will be added to the weekly news.
-</p>
-
+<p>If you come accross PEAR related article article feel free to send (<a
+ href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>) us the
+references and they will be added to the weekly news.</p>
 <hr>
-
 <h2>PEAR-DEV traffic</h2>
-
 <!-- SECTION --><a name="3"></a>
 <h3>Oracle driver for MDB</h3>
-<p>
- Lukas Smith announced he committed the first working Oracle 
- <a href="http://pear.php.net/package-info.php?pacid=54">MDB</a>
- driver to CVS. The driver passes all but the manager tests. 
-</p>
+<p> Lukas Smith announced he committed the first working Oracle   <a
+ href="http://pear.php.net/package-info.php?pacid=54">MDB</a> driver to CVS.
+The driver passes all but the manager tests. </p>
 <!-- SECTION --><a name="4"></a>
 <h3>Javascript in PEAR</h3>
-<p>
- There was some discussion on should PEAR have JavaScript packages.
- Consensus was PEAR should not host standalone JavaScript applications.
- Packages such as 
- <a  href="http://pear.php.net/package-info.php?pacid=77">HTML_TreeMenu</a>
- which has  optional features when JavaScript is enabled should have
- the JavaScripts included in their own package. In addition, some
- JavaScript features could be included in 
- <a href="http://pear.php.net/package-info.php?pacid=93">HTML_JavaScript</a>.
+<p> There was some discussion on should PEAR have JavaScript packages.  Consensus
+was PEAR should not host standalone JavaScript applications.  Packages such
+as   <a href="http://pear.php.net/package-info.php?pacid=77">HTML_TreeMenu</a>
+ which has  optional features when JavaScript is enabled should have  the
+JavaScripts included in their own package. In addition, some  JavaScript
+features could be included in   <a
+ href="http://pear.php.net/package-info.php?pacid=93">HTML_JavaScript</a>.
 </p>
 <!-- SECTION --><a name="5"></a>
 <h3>Category for Java interfaces?</h3>
- Stuart Herbert proposed a new Java category which would contain
- interfaces between PHP and Java. He states it would be better
- to contain all the interfaces in one explicit Java hierarchy than 
- scatter them all around in PEAR hierarchy. Possible place would
- be a Java subcategory under RPC top-level category. This hierarchy
- would make it easier to add interfaces for other languages such as
- Python or Ruby later.
-<p>
-</p>
-
+ Stuart Herbert proposed a new Java category which would contain  interfaces
+between PHP and Java. He states it would be better  to contain all the interfaces
+in one explicit Java hierarchy than   scatter them all around in PEAR hierarchy.
+Possible place would  be a Java subcategory under RPC top-level category.
+This hierarchy  would make it easier to add interfaces for other languages
+such as  Python or Ruby later.
+<p></p>
 <!--
 <h3>Bugs and Fixes</h3>
 <p>
@@ -161,30 +133,22 @@ and they will be added to the weekly news.
 </p>
 <hr>
 -->
-
 <h2>New and Proposed Packages</h2>
 <!-- SECTION --><a name="5"></a>
 <h3>PECL::mono</h3>
-<p>
- Sterling Hughes committed his Mono extension to PECL. This
- extension allows PHP to access .NET assemblies via the
- <a href="http://www.go-mono.com/">Mono library</a>.
-</p>
+<p> Sterling Hughes committed his Mono extension to PECL. This  extension
+allows PHP to access .NET assemblies via the  <a
+ href="http://www.go-mono.com/">Mono library</a>.</p>
 <!-- SECTION --><a name="6"></a>
 <h3>Auth_Container_SOAP</h3>
-<p>
- Bruno Pedro proposed a new SOAP storage driver for the Auth package.
- At the time of writing it can allready be found from CVS.
-</p>
+<p> Bruno Pedro proposed a new SOAP storage driver for the Auth package. 
+At the time of writing it can allready be found from CVS.</p>
 <h2>Development</h2>
-<p>
-  Active on CVS this week have been:
-  Crypt_CHAP, Auth_RADIUS, Auth, Text_Statistics, HTML_Template_Flexy,
-  Auth_HTTP, HTML_Template_Xipe, MDB, HTML_QuickForm, Tree, Mail_Mime,
-  Search_MnogoSearch, SOAP, PECL::bcompiler, Net_Ping, DBA, Log, 
-  DB_DataObject, File_Passwd, HTML_TreeMenu, Net_Whois, DB, 
-  HTTP_Header, PECL::fribidi, PECL::mono
-</p>
-
+<p>  Active on CVS this week have been:   Crypt_CHAP, Auth_RADIUS, Auth,
+Text_Statistics, HTML_Template_Flexy,   Auth_HTTP, HTML_Template_Xipe, MDB,
+HTML_QuickForm, Tree, Mail_Mime,   Search_MnogoSearch, SOAP, PECL::bcompiler,
+Net_Ping, DBA, Log,    DB_DataObject, File_Passwd, HTML_TreeMenu, Net_Whois,
+DB,    HTTP_Header, PECL::fribidi, PECL::mono</p>
+<br>
 </body>
 </html>

@@ -665,18 +665,18 @@ class release
 				return PEAR::raiseError("release download:: no version information found");
 			}
 		}
-		if (isset($path)) {
-			header('Content-type: application/octet-stream');
-			header('Content-disposition: attachment; filename="'.$basename.'"');
-			readfile($path);
+        if (isset($path)) {
+            if (!isset($log_release)) {
+                $log_release = $release_id;
+            }
 
-			if (!isset($log_release)) {
-			    $log_release = $release_id;
-			}
+            release::logDownload($package_id, $log_release, $log_file);
 
-			release::logDownload($package_id, $log_release, $log_file);
+            header('Content-type: application/octet-stream');
+            header('Content-disposition: attachment; filename="'.$basename.'"');
+            readfile($path);
 
-			return true;
+            return true;
 		}
 		header('HTTP/1.0 404 Not Found');
 		print 'File not found';

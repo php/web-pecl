@@ -21,8 +21,7 @@ $GLOBALS['user_menu'] = array(
 
 $GLOBALS['admin_menu'] = array(
     '/admin.php'            => 'Account Requests',
-    '/category-manager.php' => 'Manage Categories',
-    '/accounts.php'         => 'Browse Accounts'
+    '/category-manager.php' => 'Categories'
 );
 
 $GLOBALS['_style'] = '';
@@ -67,9 +66,9 @@ function &draw_navigation($data, $menu_title='')
     foreach ($data as $url => $tit) {
         $tt = str_replace(" ", "&nbsp;", $tit);
         if ($url == $_SERVER['PHP_SELF']) {
-            $html .= "&nbsp;&nbsp;&nbsp;" . make_image("box-1.gif") . "<b>$tt</b><br />\n";
+            $html .= "" . make_image("box-1.gif") . "<b>$tt</b><br />\n";
         } else {
-            $html .= "&nbsp;&nbsp;&nbsp;" . make_image("box-0.gif") . "<a href=\"$url\">$tt</a><br />\n";
+            $html .= "" . make_image("box-0.gif") . "<a href=\"$url\">$tt</a><br />\n";
         }
     }
     return $html;

@@ -12,6 +12,7 @@ response_header('Credits');
   <LI>Stig S&aelig;ther Bakken</LI>
   <LI>Martin Jansen</LI>
   <LI>Colin Viebrock</LI>
+  <LI>Tomas V.V.Cox</LI>
 </UL>
 
 <?php

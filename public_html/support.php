@@ -255,7 +255,7 @@ $icons = Array(
 
 echo '<table cellpadding="5" cellspacing="1">';
 
-foreach ($icons as $file=>$desc) {
+foreach ($icons as $file => $desc) {
     echo '<tr bgcolor="e0e0e0">';
     echo '<td>' . make_image($file,$desc) . '<br></td>';
     echo '<td>' . $desc . '<br><small>';
@@ -273,6 +273,9 @@ foreach ($icons as $file=>$desc) {
 
 echo '</table>';
 
+echo '<p><b>Note:</b> Please do not just include these icons directly but
+        download them and save them locally in order to keep HTTP traffic
+        low.</p>';
 }
 response_footer();
 ?>

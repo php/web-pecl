@@ -44,6 +44,14 @@ function pageFooter($style = false)
     print "</BODY></HTML>\n";
 }
 
+function formMultipleInputRow($data) {
+    reset($data);
+    while (list($var, $title) = each($data)) {
+	global $$var;
+	formInputRow($title, $var, $$var);
+    }
+}
+
 function formInputCell($name, $default = '', $size = 20) {
     print "  <TD><INPUT NAME=\"$name\" VALUE=\"$default\" SIZE=\"$size\"></TD>\n";
 }
@@ -117,6 +125,15 @@ function invalidHomepage($homepage) {
     return 'invalid URL';
 }
 
+class Author {
+    var $handle, $password, $name, $email, $homepage, $created,
+	$homepage, $modified, $createdby, $showemail, $registered,
+	$credentials, $authorinfo;
+    function Author() {
+	
+    }
+}
+
 function add_author(&$dbh, $handle, $name, $email, $homepage, $createdby,
 		    $showemail, $credentials, $authorinfo)
 {
@@ -124,7 +141,11 @@ function add_author(&$dbh, $handle, $name, $email, $homepage, $createdby,
 	'created,modified,createdby,showemail,registered,credentials,'.
 	'authorinfo) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)';
     $stmt = $dbh->prepare($query);
-//    return $dbh->execute(
+    // XXX not finished
+    return $dbh->execute($stmt, array($handle, $passwd, $name, $email,
+				      $homepage, $created, $modified,
+				      $modifiedy, $showemail, $registered,
+				      $credentials, $authorinfo));
 }
 
 ?>

@@ -24,10 +24,12 @@ print "  <TH>Created</TH>\n";
 print "  <TH>Modified</TH>\n";
 print "  <TH>Created By</TH>\n";
 print "  <TH>Show Email?</TH>\n";
-print "  <TH>Registered?</TH>\n";
+print "  <TH>Reg'ed?</TH>\n";
+print "  <TH>Creds</TH>\n";
+print "  <TH>Info</TH>\n";
 print " </TR>\n";
 
-while ($row = $sth->fetchRow()) {
+while (is_array($row = $sth->fetchRow())) {
     print " <TR>\n";
     print "  <TD>";
     print implode("</TD>\n  <TD>", $row);

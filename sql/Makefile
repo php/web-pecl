@@ -17,7 +17,7 @@
 # +----------------------------------------------------------------------+
 #
 
-TABLE_FILES=authors.sql mytable.sql #packages.sql
+TABLE_FILES=authors.sql packages.sql aliases.sql
 SQL_TYPE=mysql
 SQL_USER=pear
 SQL_PASSWORD=

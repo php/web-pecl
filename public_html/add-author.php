@@ -12,7 +12,8 @@ formInputRow("Handle", "handle", '', 10);
 formInputRow("Name", "name", '', 40);
 formInputRow("Email", "email", '', 40);
 formInputRow("Homepage", "homepage", '', 40);
-formCheckboxRow("Show email?", "homepage", '', 40);
+
+formCheckboxRow("Show email?", "showemail", '', 40);
 
 print " <TR>\n";
 print "  <TH ALIGN=\"right\">Credentials</TH>\n";

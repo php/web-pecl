@@ -238,8 +238,8 @@ released.</p>
         print "</table>\n";
     }
 
-    $bb = new BorderBox("Request account", "90%", "", 2, true);
     print "<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\" name=\"request_form\">\n";
+    $bb = new BorderBox("Request account", "90%", "", 2, true);
     $bb->horizHeadRow("Username:", HTML_Form::returnText("handle", @$_POST['handle'], 12));
     $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", @$_POST['firstname']));
     $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", @$_POST['lastname']));
@@ -251,11 +251,11 @@ released.</p>
     $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes(@$_POST['moreinfo'])));
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" />&nbsp;<input type=\"reset\" />");
-    print "</form>";
     $bb->end();
+    print "</form>";
 
     if ($jumpto) {
-        print "<script language=\"JavaScript\">\n<!--\n";
+        print "<script language=\"JavaScript\" type=\"text/javascript\">\n<!--\n";
         print "if (!document.forms[1].$jumpto.disabled) document.forms[1].$jumpto.focus();\n";
         print "\n// -->\n</script>\n";
     }

@@ -32,12 +32,15 @@ $maturity = 'stable';
 $summary  = 'This is the Pear Ping Class';
 $authors  = '';
 // foreach ($maintainers as $key => $values) {
-$authors .= '<tr><td>$name &lt;<a href="mailto:$mail">$mail</a>> ($role)</td></tr>';
+$authors .= '<tr><td>$name &lt;<a href="mailto:$mail">$mail</a>> ($role)</td></tr>\n';
 // }
 $release_date  = '2000-01-34';
 $release_notes = 'Bug fix release';
 response_header("Package :: $name");
 ?>
+
+<!-- PKGINFO start -->
+
 <center><h2><?php echo "$name $release ($maturity)";?></h2></center>
 <table border="1" cellspacing="3" cellpadding="3" height="48" width="100%">
 <tr>
@@ -62,8 +65,7 @@ response_header("Package :: $name");
 </tr>
 </table>
 <br>
-<table border="0" cellspacing="3" cellpadding="3" height="48"
-width="100%" align="center">
+<table border="0" cellspacing="3" cellpadding="3" height="48" width="100%" align="center">
 <tr>
     <td width="33%" align="center">| View Source Code &amp;<br> Doc On-line |</td>
     <td width="33%" align="center">| View ChangeLog |</td>
@@ -71,7 +73,7 @@ width="100%" align="center">
 </tr>
 </table>
 <br>
-<!-- PAckage Dependencies -->
+<!-- Package Dependencies -->
 <table border="0" cellspacing="3" cellpadding="3" width="100%">
 <tr>
     <th class="others" colspan="3" bgcolor="#DDDDDD">Net_Ping dependencies:</th>
@@ -110,6 +112,9 @@ width="100%" align="center">
 </tr>
 </table>
 <br>
+
+<!-- PKGINFO end -->
+
 <?php
 response_footer();
 ?>

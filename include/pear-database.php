@@ -1654,9 +1654,17 @@ function logintest()
 function mail_pear_admins($subject = "PEAR Account Request", $msg, $xhdr = '')
 {
     global $dbh;
-    $admins = $dbh->getCol("SELECT email FROM users WHERE admin = 1");
-    if (is_array($admins)) {
-        $rcpt = implode(", ", $admins);
+    $admins = $dbh->getAll("SELECT name,email FROM users WHERE admin = 1",
+                           DB_FETCHMODE_ASSOC);
+    if (count($admins) > 0) {
+        foreach ($admins as $value) {
+            if ($value['name'] == "") {
+                $rcpt[] = "<" . $value['email'] . ">";
+            } else {
+                $rcpt[] = "\"" . $value['name'] . "\" <" . $value['email'] . ">";
+            }
+        }
+        $rcpt = implode(", ", $rcpt);
         return mail($rcpt, $subject, $msg, $xhdr);
     }
     return false;

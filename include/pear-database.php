@@ -604,7 +604,8 @@ class package
              "FROM packages p, releases r, files f ".
              "WHERE p.id = r.package ".
              "AND f.package = p.id ".
-             "AND f.release = r.id";
+             "AND f.release = r.id ".
+             "AND p.package_type = 'pecl'";
         if (release::isValidState($state)) {
             $better = release::betterStates($state);
             $query .= " AND (r.state = '$state'";

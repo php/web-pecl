@@ -180,6 +180,8 @@ if ($display_form) {
 
     $cs_link = make_link('http://cvs.php.net/co.php/php-src/CODING_STANDARDS', 'PHP Coding Standards');
     $lic_link = make_link('http://www.php.net/license/3_0.txt', 'PHP License 3.0');
+	$dochowto_link = make_link('http://php.net/manual/howto/index.html', 'Documentation HOWTO');
+    $opl_link = make_link('http://php.net/manual/en/opl.license.php', 'Open Publication License');
 
     print "<h1>Publishing in PECL</h1>
 
@@ -191,11 +193,17 @@ you need to apply for a PECL account.</p>
 use PECL packages.</p>
 
 <p>Before filling out this form, please make yourself known on the
-<i>pecl-dev@lists.php.net</i> mailing list.  We strongly encourage contributors
-to choose the $lic_link for their extensions to avoid trouble for the
-end-user of the extension.  We also encourage you to use the $cs_link for
-your code, as it will help the QA team help you to maintain your extension.
-</p>
+<i>pecl-dev@lists.php.net</i> mailing list. PECL extensions around GPL'ed
+libraries will not be accepted, and extensions around LGPL'ed libraries are
+strongly discouraged. LGPL'ed libraries as required by extensions may not be
+bundled into PECL either.  We strongly encourage contributors to choose the
+$lic_link for their extensions to avoid trouble for the end-user of the
+extension.  We also encourage you to use the $cs_link for your code, as it will
+help the QA team help you to maintain your extension. Although documentation
+for extensions is not required, it does make alot of sense if potential users
+know how to use your extension, see $dochowto_link for information on how to
+document your extension. Sumbitted documentation will always be under the
+$opl_link.</p>
 
 <p>Bogus, incomplete or incorrect requests will be summarily denied.</p>
 

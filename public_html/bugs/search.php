@@ -215,7 +215,7 @@ if (isset($cmd) && $cmd == "display") {
 </table>
 <?php
     }
-		commonFooter();
+		response_footer();
 		exit;
  }
 }

@@ -54,7 +54,7 @@ if ($in) {
 			if (mysql_num_rows($res) == 0) {
 				$ok_to_submit_report = 1;
 			} else {
-				commonHeader("Report - Confirm");
+				response_header("Report - Confirm");
                 # the lol
                 echo "<style>"; include('./style.css'); echo "</style>";
 
@@ -189,12 +189,12 @@ you can scroll down and click the submit button to really enter the details into
             exit;
         }
     } else {
-	    commonHeader("Report - Problems");
+	    response_header("Report - Problems");
 	}
 }
 
 if (!isset($in)) {
-    commonHeader("Report - New");
+    response_header("Report - New");
     show_bugs_menu($package);
 ?>
 
@@ -329,4 +329,4 @@ if ($errors) display_errors($errors);
 </form>
 </table>
 <?php
-commonFooter();
+response_footer();

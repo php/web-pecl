@@ -143,7 +143,9 @@ ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
 
     <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li><br><br>
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/11/29/peardb.html">PEAR::DB Primer</a> on O'Reilly Network</li>
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/11/29/peardb.html">PEAR::DB Primer</a> on O'Reilly Network</li><br><br>
+
+    <li><a href="http://www.nusphere.com/products/library/script_peardb.pdf">Writing Scripts with PHP's PEAR DB Class</a> - by Paul DuBois (PDF)</li>
 </ul>
 
 <h4>Tutorials about some PEAR classes in German:</h4>

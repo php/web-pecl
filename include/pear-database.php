@@ -15,6 +15,7 @@
    +----------------------------------------------------------------------+
    | Authors: Stig Sæther Bakken <ssb@fast.no>                            |
    |          Tomas V.V.Cox <cox@php.net>                                 |
+   |          Martin Jansen <mj@php.net>                                  |
    +----------------------------------------------------------------------+
  */
 
@@ -477,11 +478,13 @@ class release
         }
 
 		if ($file !== null) {
-			$path = $dbh->getOne("SELECT fullpath FROM files ".
-								 "WHERE basename = ?", $file);
+			$path = $dbh->getRow("SELECT fullpath, release, id FROM files ".
+								 "WHERE basename = '" . $file . "'");
 			if (PEAR::isError($path)) {
 				return $path;
 			}
+			$log_release = $path[1];
+			$log_file = $path[2];
 			$basename = $file;
 		} elseif ($version == null) {
 			// Get the most recent version
@@ -531,6 +534,12 @@ class release
 			header('Content-type: application/octet-stream');
 			header('Content-disposition: attachment; filename="'.$basename.'"');
 			readfile($path);
+
+			if (!isset($log_release)) {
+			    $log_release = $release_id;
+			}
+			release::logDownload($package_id, $log_release, $log_file);
+
 			return true;
 		}
 		header('HTTP/1.0 404 Not Found');
@@ -545,6 +554,34 @@ class release
 		static $states = array('devel', 'snapshot', 'alpha', 'beta', 'stable');
 		return in_array($state, $states);
 	}
+
+    // }}}
+    // {{{ *proto bool release::logDownload(integer, string, string)
+
+    function logDownload($package, $release_id, $file = null)
+    {
+        global $dbh;
+
+        $id = $dbh->nextId("downloads");
+
+        $query = sprintf("INSERT INTO downloads (id, file, package, release, dl_when, dl_who, dl_host) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                         $id,
+                         $file,
+                         $package,
+                         $release_id,
+                         date("Y-m-d H:i:s"),
+                         $_SERVER['REMOTE_ADDR'],
+                         gethostbyaddr($_SERVER['REMOTE_ADDR'])
+                         );
+
+        $sth = $dbh->query($query);
+
+        if (DB::isError($sth)) {
+            return false;
+        } else {
+            return true;
+        }        
+    }
 
     // }}}
 }

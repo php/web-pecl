@@ -33,7 +33,7 @@ function xmlrpc_release_upload($m)
     $md5sum   = $mmd5sum->scalarval();
 
     // (1) verify that user has access
-    auth_require(0);
+    auth_require();
     if (isset($_return_value)) return $_return_value;
     // XXX FIXME check acl table
 

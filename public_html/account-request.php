@@ -47,7 +47,7 @@ do {
 	}
 
 	$handle = strtolower($handle);
-	$obj = new PEAR_User(&$dbh, $handle);
+	$obj =& new PEAR_User($dbh, $handle);
 	if (isset($obj->created)) {
 	    display_error("Sorry, that username is already taken");
 	    $jumpto = "handle";
@@ -61,43 +61,64 @@ do {
 	}
 
 	$display_form = false;
-	$obj->name = $name;
-	$obj->email = $email;
-	$obj->homepage = $homepage;
-	$obj->showemail = (bool)@$showemail;
-	$obj->password = md5($password);
-	$obj->registered = false;
+        $md5pw = md5($password);
+        $showemail = @(bool)$showemail;
+        // hack to temporarily embed the "purpose" in
+        // the user's "userinfo" column
+        $userinfo = serialize(array($purpose, $moreinfo));
+        $set_vars = array('name' => $name,
+                          'email' => $email,
+                          'homepage' => $homepage,
+                          'showemail' => $showemail,
+                          'password' => $md5pw,
+                          'registered' => 0,
+                          'userinfo' => $userinfo);
+        $errors = 0;
+        foreach ($set_vars as $var => $value) {
+            $err = $obj->set($var, $value);
+            if (PEAR::isError($err)) {
+                print "Failed setting $var: ";
+                print $err->getMessage();
+                print "<BR>\n";
+                $errors++;
+            }
+        }
+        if ($errors > 0) {
+            break;
+        }
 
-	$admins = $dbh->getCol("SELECT email FROM users WHERE admin = 1");
-	$oks = 0;
-	$msg = "Username:         {$obj->handle}\n".
-	     "Email:            {$obj->email}".
-	     ($obj->showemail ? " (show address)" : " (hide address)") . "\n".
-	     "Password (MD5):   {$obj->password}\n\n".
+	$msg = "Username:         {$handle}\n".
+             "Real Name:        {$name}\n".
+	     "Email:            {$email}".
+	     (@$showemail ? " (show address)" : " (hide address)") . "\n".
+	     "Password (MD5):   {$md5pw}\n\n".
 	     "Purpose:\n".
 	     "$purpose\n\n".
-	     "More info:\n".
-	     "$moreinfo\n";
-	$xhdr = "From: PEAR Web Site <pear-dev@lists.php.net>";
-	foreach ($admins as $email) {
-	    $oks += mail($email, "PEAR Account Request", $msg, $xhdr);
-	}
+             "To handle: http://{$SERVER_NAME}/admin.php?acreq={$handle}\n";
+        if ($moreinfo) {
+            $msg .= "\nMore info:\n$moreinfo\n";
+        }
+	$xhdr = "From: $name <$email>";
+        $subject = "PEAR Account Request";
+        $ok = mail_pear_admins($subject, $msg, $xhdr);
 	response_header("Account Request Submitted");
-	if ($oks != sizeof($admins)) {
-	    print "<H2>Possible Problem!</H2>\n";
-	    print "Your account request has been submitted, but there ".
-		"was problems mailing one or more administrators.  ".
-		"If you don't hear anything about your account in a few ".
-		"days, drop a mail about it to the <i>pear-dev</i> mailing ".
-		"list.";
-	} else {
+        if ($ok) {
 	    print "<H2>Account Request Submitted</H2>\n";
 	    print "Your account request has been submitted, it will ".
-		"be reviewed by a human.  This may take from two minutes ".
-		"to several days, depending on how much time people have.  ".
+		"be reviewed by a human shortly.  This may take from two ".
+                "minutes to several days, depending on how much time people ".
+                "have.  ".
 		"You will get an email when your account is open, or if ".
 		"your request was rejected for some reason.";
+	} else {
+	    print "<H2>Possible Problem!</H2>\n";
+	    print "Your account request has been submitted, but there ".
+		"were problems mailing one or more administrators.  ".
+		"If you don't hear anything about your account in a few ".
+		"days, please drop a mail about it to the <i>pear-dev</i> ".
+                "mailing list.";
 	}
+        print "<br />Click the top-left PEAR logo to go back to the front page.\n";
     }
 } while (0);
 
@@ -123,7 +144,7 @@ you would like to release through PEAR.
     }
 
     $width = 60;
-    $form = new HTML_Form($PHP_SELF, "POST");
+    $form =& new HTML_Form($PHP_SELF, "POST");
     $form->addText("handle", "Username", null, 12);
     $form->addText("name", "Real Name", null, $width);
     $form->addPassword("password", "Password", null, 10);

@@ -1,6 +1,8 @@
 <?php
 
-function validate($entity, $field, $value) {
+// {{{ validate()
+
+function validate($entity, $field, $value /* , $oldvalue, $object */) {
     switch ("$entity/$field") {
 	case "users/handle":
 	    if (!preg_match('/^[a-z][a-z0-9]+$/i', $value)) {
@@ -20,6 +22,10 @@ function validate($entity, $field, $value) {
     }
     return true;
 }
+
+// }}}
+
+// {{{ visit_node()
 
 /*
 
@@ -41,6 +47,10 @@ To get all child nodes, including self:
  SELECT * FROM table WHERE left BETWEEN <self.left> AND <self.right>
  "ORDER BY left" gives tree view
 
+To get all leaf nodes:
+
+ SELECT * FROM table WHERE right-1 = left;
+
  */
 function visit_node(&$tree, $node) {
     static $visitno;
@@ -55,6 +65,9 @@ function visit_node(&$tree, $node) {
     }
     $tree[$node]['rightvisit'] = $visitno++;
 }
+
+// }}}
+// {{{ renumber_visitations()
 
 function renumber_visitations($debug = false)
 {
@@ -99,6 +112,10 @@ function renumber_visitations($debug = false)
     return true;
 }
 
+// }}}
+
+// {{{ get_recent_releases()
+
 function &get_recent_releases($n = 5) {
     global $dbh;
     $sth = $dbh->query("SELECT packages.name, packages.summary, ".
@@ -115,6 +132,8 @@ function &get_recent_releases($n = 5) {
     return $recent;
 }
 
+// }}}
+// {{{ release_upload()
 
 function release_upload($package, $version, $relnotes, &$tarball, $md5sum)
 {
@@ -172,41 +191,128 @@ function release_upload($package, $version, $relnotes, &$tarball, $md5sum)
     
 }
 
-function invalidHandle($handle) {
-    if (preg_match('/^[a-z]+-?[a-z]+$/i', $handle)) {
+// }}}
+
+// {{{ add_note()
+
+function add_note($key, $value, $note)
+{
+    global $dbh, $PHP_AUTH_USER;
+    $nby = $PHP_AUTH_USER;
+    $nid = $dbh->nextId("notes");
+    $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
+			  "VALUES(?,?,?,?,?)");
+    return $dbh->execute($stmt, array($nid, $value, $nby,
+                                      gmdate('Y-m-d H:i'), $note));
+}
+
+// }}}
+// {{{ delete_note()
+
+function delete_note($id)
+{
+    global $dbh;
+    $id = (int)$id;
+    return $dbh->query("DELETE FROM notes WHERE id = $id");
+}
+
+// }}}
+// {{{ delete_all_notes()
+
+function delete_all_notes($key, $value)
+{
+    global $dbh;
+    return $dbh->query("DELETE FROM notes WHERE $key = ".
+	               $dbh->quote($value));
+}
+
+// }}}
+
+// {{{ delete_account()
+
+function delete_account($uid)
+{
+    global $dbh;
+    delete_all_notes("uid", $uid);
+    $dbh->query('DELETE FROM users WHERE handle = '.
+		$dbh->quote($uid));
+    return ($dbh->affectedRows() > 0);
+}
+
+// }}}
+// {{{ reject_account_request()
+
+function reject_account_request($uid, $reason)
+{
+    global $PHP_AUTH_USER, $dbh;
+    list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
+				array($uid));
+    add_note("uid", $uid, "Account rejected: $reason");
+    $msg = "Your PEAR account request was rejected by $PHP_AUTH_USER:\n".
+	 "$reason\n";
+    $xhdr = "From: $PHP_AUTH_USER@php.net";
+    mail($email, "Your PEAR Account Request", $msg, $xhdr);
+    return true;
+}
+
+// }}}
+// {{{ open_account()
+
+function open_account($uid)
+{
+    global $PHP_AUTH_USER, $dbh;
+
+    $user =& new PEAR_User($dbh, $uid);
+    if (@$user->registered) {
 	return false;
     }
-    return 'handle must be all letters, optionally with one dash';
-}
-
-function invalidName($name) {
-    if (trim($name)) {
-	return $false;
+    @$arr = unserialize($user->userinfo);
+    delete_all_notes("uid", $uid);
+    $user->set('registered', 1);
+    if (is_array($arr)) {
+	$user->set('userinfo', $arr[1]);
     }
-    return 'name must not be empty';
+    $user->set('created', gmdate('Y-m-d H:i'));
+    $user->set('createdby', $PHP_AUTH_USER);
+    $user->store();
+    add_note("uid", $uid, "Account opened");
+    $msg = "Your PEAR account request has been opened.\n".
+	 "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
+	 "the top-right menu.\n";
+    $xhdr = "From: $PHP_AUTH_USER@php.net";
+    mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
+    return true;
 }
 
-function invalidEmail($email) {
-    if (preg_match('/[a-z0-9_\.\+%]@[a-z0-9\.]+\.[a-z]+$', $email)) {
-	return false;
+// }}}
+
+// {{{ mail_pear_admins()
+
+function mail_pear_admins($subject, $msg, $xhdr = '')
+{
+    global $dbh;
+    $admins = $dbh->getCol("SELECT email FROM users WHERE admin = 1");
+    if (is_array($admins)) {
+	$oks = 0;
+	foreach ($admins as $email) {
+	    $oks += mail($email, "PEAR Account Request", $msg, $xhdr);
+	}
+	if ($oks == sizeof($admins)) {
+	    return true;
+	}
     }
-    return 'invalid email address';
+    return false;
 }
 
-function invalidHomepage($homepage) {
-    if (preg_match('!http://.+!i', $homepage)) {
-	return false;
-    }
-    return 'invalid URL';
-}
+// }}}
 
-
+// {{{ class PEAR_User
 
 class PEAR_User extends DB_storage
 {
     function PEAR_User(&$dbh, $user)
     {
-	$this->DB_storage("users", "handle", &$dbh);
+	$this->DB_storage("users", "handle", $dbh);
 	// XXX horrible hack until we get temporary error handlers
 	$oldmode = $this->_default_error_mode;
 	$this->_default_error_mode = PEAR_ERROR_RETURN;
@@ -219,11 +325,14 @@ class PEAR_User extends DB_storage
     }
 }
 
+// }}}
+// {{{ class PEAR_Package
+
 class PEAR_Package extends DB_storage
 {
     function PEAR_Package(&$dbh, $package)
     {
-        $this->DB_storage("packages", "id", &$dbh);
+        $this->DB_storage("packages", "id", $dbh);
 	// XXX horrible hack until we get temporary error handlers
 	$oldmode = $this->_default_error_mode;
 	$this->_default_error_mode = PEAR_ERROR_RETURN;
@@ -236,11 +345,14 @@ class PEAR_Package extends DB_storage
     }
 }
 
+// }}}
+// {{{ class PEAR_Release
+
 class PEAR_Release extends DB_storage
 {
     function PEAR_Release(&$dbh, $release)
     {
-        $this->DB_storage("releases", "id", &$dbh);
+        $this->DB_storage("releases", "id", $dbh);
 	// XXX horrible hack until we get temporary error handlers
 	$oldmode = $this->_default_error_mode;
 	$this->_default_error_mode = PEAR_ERROR_RETURN;
@@ -252,5 +364,7 @@ class PEAR_Release extends DB_storage
 	}
     }
 }
+
+// }}}
 
 ?>

@@ -104,6 +104,4 @@ if (!isset($MIRRORS[$MYSITE])) {
     $MIRRORS[$MYSITE] = array('xx', $MYSITE, 'none', $MYSITE, 2, 0, 'en');
 }
 
-echo "<!-- $MYSITE -->";
-
 ?>

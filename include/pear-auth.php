@@ -16,13 +16,14 @@ function auth_reject($realm = null, $message = null)
     exit;
 }
 
-function auth_require($level = 0, $doexit = true)
+function auth_require($admin = false)
 {
-    global $PHP_AUTH_USER, $PHP_AUTH_PW, $dbh, $auth_user;
+    global $PHP_AUTH_USER, $PHP_AUTH_PW, $dbh;
+    global $auth_user;
 
-    $user = strtolower($PHP_AUTH_USER);
-    $auth_user =& new PEAR_User(&$dbh, $user);
-    if (md5($PHP_AUTH_PW) != $auth_user->password || !$auth_user->registered) {
+    $user = $PHP_AUTH_USER;
+    $auth_user =& new PEAR_User($dbh, $user);
+    if (md5($PHP_AUTH_PW) != @$auth_user->password || !$auth_user->registered) {
 	if (cvs_verify_password($user, $PHP_AUTH_PW)) {
 	    $auth_user = (object)array('handle' => $user);
 	} else {
@@ -30,6 +31,12 @@ function auth_require($level = 0, $doexit = true)
 	}
     }
     $auth_user->_readonly = true;
+    if ($admin && empty($auth_user->admin)) {
+	response_header("Insufficient Privileges");
+	report_error("Insufficient Privileges");
+	response_footer();
+	exit;
+    }
 }
 
 $cvspasswd_file = "/repository/CVSROOT/passwd";
@@ -38,9 +45,8 @@ function cvs_find_password($user)
 {
     global $cvspasswd_file;
     $fp = fopen($cvspasswd_file,"r");
-    while (!feof($fp)) {
-	$line = fgets($fp, 120);
-	list($luser, $passwd, $junk) = explode(":", $line);
+    while ($line = fgets($fp, 120)) {
+	list($luser, $passwd, $groups) = explode(":", $line);
 	if ($user == $luser) {
 	    fclose($fp);
 	    return $passwd;

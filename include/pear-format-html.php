@@ -75,4 +75,27 @@ function error_handler($errobj)
     exit;
 }
 
+function border_box_start($title, $width = "90%", $indent = "")
+{
+    print "$indent<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"$width\">\n";
+    print "$indent <tr>\n";
+    print "$indent  <td bgcolor=\"#000000\">\n";
+    print "   <table cellpadding=\"2\" cellspacing=\"1\" border=\"0\" width=\"100%\">\n";
+    print "$indent    <tr bgcolor=\"#cccccc\">\n";
+    print "$indent     <th>$title</th>\n";
+    print "$indent    </tr>\n";
+    print "$indent    <tr bgcolor=\"#ffffff\">\n";
+    print "$indent     <td>\n";
+}
+
+function border_box_end($indent = "")
+{
+    print "$indent     </td>\n";
+    print "$indent    </tr>\n";
+    print "$indent   </table>\n";
+    print "$indent  </td>\n";
+    print "$indent </tr>\n";
+    print "$indent</table>\n";
+}
+
 ?>

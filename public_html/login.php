@@ -6,7 +6,7 @@
 
 <?php
 /**
-auth_require(0);
+auth_require();
 
 header("Location: ./");
 */

@@ -117,7 +117,7 @@ class Damblan_RSS_Common {
      */
     function __addItems($list) {
         foreach ($list as $item) {
-            $node = $this->newItem($item['name'], "http://pear.php.net/package/" . $item['name'], $item['releasenotes']);
+            $node = $this->newItem($item['name'] . " " . $item['version'], "http://pear.php.net/package/" . $item['name'], $item['releasenotes']);
             $this->addItem($node);
         }
     }

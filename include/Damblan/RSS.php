@@ -40,7 +40,7 @@ class Damblan_RSS {
     function getFeed($type) {
         if ($type != "latest") {
             $cache = $type;
-            $value = substr($type, 3);
+            $value = substr($type, 4);
             $type = substr($type, 0, 3);
         } else {
             $value = $cache = $type;

@@ -162,9 +162,12 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         $bb->end();
 
         /**
-        * Print the graph
-        */
-        printf('<br /><img src="package-stats-graph.php?pid=%s&releases=%s_339900" name="stats_graph" width="543" height="200" alt="">', $_GET['pid'], isset($_GET['rid']) ? (int)$_GET['rid'] : '');
+         * Print the graph
+         */
+        printf('<br /><img src="package-stats-graph.php?pid=%s&releases=%s_339900" name="stats_graph" width="543" height="200" alt="" />',
+               $_GET['pid'],
+               isset($_GET['rid']) ? (int)$_GET['rid'] : ''
+               );
 
     /**
     * Print the graph control stuff
@@ -288,7 +291,9 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 	$total_categories  = $dbh->getOne(sprintf("SELECT COUNT(*) FROM categories WHERE parent = %d", $_GET['cid']));
 
 	// Query to get package list from package_stats_table
-	$query = sprintf("SELECT dl_number, package, release, pid, rid, cid FROM package_stats WHERE cid = %s ORDER BY dl_number DESC", $_GET['cid']);
+	$query = sprintf("SELECT dl_number, package, release, pid, rid, cid FROM package_stats WHERE cid = %s ORDER BY dl_number DESC",
+                     $_GET['cid']
+                     );
 
 /**
 * Global stats
@@ -325,9 +330,9 @@ if (@!$_GET['pid']) {
 		<td width="25%" align="center" bgcolor="#cccccc"><?=$total_categories?></td>
 	</tr>
     <?php
-    if(empty($_GET['cid'])) {
-    echo "<tr>\n<td width=\"25%\">\nTotal Downloads:</td>\n<td width=\"25%\" align=\"center\" bgcolor=\"#cccccc\">$total_downloads</td>\n</tr>\n";
-   }
+     if(empty($_GET['cid'])) {
+         echo "<tr>\n<td width=\"25%\">\nTotal Downloads:</td>\n<td width=\"25%\" align=\"center\" bgcolor=\"#cccccc\">$total_downloads</td>\n</tr>\n";
+     }
    ?>
 </table>
 	<?php

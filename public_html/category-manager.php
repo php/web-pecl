@@ -13,69 +13,106 @@
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
-   | Authors:                                                             |
+   | Authors: Richard Heyes                                               |
    +----------------------------------------------------------------------+
    $Id$
 */
 
-// manage categories
+/**
+* TODO
+*
+* o Present options of what to do with orphaned packages when
+*   deleting categories.
+*/
 
-auth_require(true);
-response_header("PEAR :: Category Manager");
-include_once '../include/pear-category.php';
+	$template_dir = dirname(dirname(__FILE__)) . '/templates/';
+	
+/**
+* Function to recurse thru the tree adding nodes to treemenu
+*/
+	function parseTree(&$structure, $parent = null)
+	{
+		$parent = is_null($parent) ? 'IS NULL' : '= ' . $parent;
+		
+		// Get categories
+		$categories = $GLOBALS['dbh']->getAll(sprintf('SELECT id, parent, name, description, npackages FROM categories WHERE parent %s ORDER BY name, id', $parent), null, DB_FETCHMODE_ASSOC);
 
-// expected url vars: catid (category id)
-$catid = (isset($catid)) ? (int) $catid : null;
-// ** expected
+		if (count($categories)) {
+			foreach ($categories as $cat) {
+				$newNode = &$structure->addItem(new HTML_TreeNode(array('text' => htmlspecialchars($cat['name']),
+				                                                        'icon' => 'folder.gif'), array('onclick' => 'category_click(event, this, ' . $cat['id'] . ')')));
+				parseTree($newNode, $cat['id']);
+			}
+		}
+	}
 
-do {
-    // insert new category
-    if (!empty($newcatname) && !empty($newcatdesc)) {
-        $data = array(
-            'name'   => $newcatname,
-            'desc'   => $newcatdesc,
-            'parent' => $catid);
-        if (PEAR::isError(category::add($data))) {
-            $message = "Error while saving category";
-        } else {
-            $message = "Successfully saved new category.";
-        }
-    }
-    if (empty($catid)) {
-        $name   = 'Top Level';
-        $parent = 0;
-    } else {
-        $row = $dbh->getRow("SELECT name, parent FROM categories
-                             WHERE id = $catid", DB_FETCHMODE_ASSOC);
-        extract($row);
-    }
-} while (false);
+/**
+* Form submitted?
+*/
+	if (!empty($_POST)) {
 
-if (isset($message)) {
-    echo "<b><font color=\"#FF0000\">" . $message . "</font></b><br /><br />\n";
-}
-?>
-<form action="<?php echo $GLOBALS['PHP_SELF'] . "?catid=$catid"; ?>" method="post">
-<table border="0" cellpadding="2" cellspacing="1" width="100%">
-<tr>
-    <td rowspan="4" width="30%"><?php print get_categories_menu('tree');?></td>
-    <td valign="top"><h3>You are browsing category:</h3><?php print get_categories_menu('urhere');?>
-    </td>
-</tr>
-</tr>
-    <td valign="top">
-<?php
-$bb = new Borderbox("Insert new sub-category under: " . $name, "90%", "", 2, true);
+		include_once '../include/pear-category.php';
 
-$bb->plainRow("Name", "<input type=\"text\" name=\"newcatname\" size=\"15\" />");
-$bb->plainRow("Summary", "<input type=\"text\" name=\"newcatdesc\" size=\"40\" />");
-$bb->plainRow("<input type=\"submit\" name=\"action\" value=\"Insert\" />");
+		switch (@$_POST['action']) {
+			case 'add':
+				if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {
+					$result = category::add(array('name'   => $_POST['catName'],
+					                              'desc'   => $_POST['catDesc'],
+										          'parent' => !empty($_POST['cat_parent']) ? (int)$_POST['cat_parent'] : null));
+					$_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to insert category: ' . $result->message : 'Category added';
+				} else {
+					$_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
+				}
+				localRedirect('category-manager.php');
+				break;
 
-$bb->end();
-?>
-</tr>
-</table>
-</form>
-<?php
-response_footer();
+			case 'update':
+				if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {
+					$result = category::update((int)$_POST['cat_parent'], $_POST['catName'], $_POST['catDesc']);
+					$_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to insert category: ' . $result->message : 'Category updated';
+				} else {
+					$_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
+				}
+				localRedirect('category-manager.php');
+				break;
+
+			case 'delete':
+				if (!empty($_POST['cat_parent'])) {
+					$result = category::delete($_POST['cat_parent']);
+					$_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to delete category: ' . $result->message : 'Category deleted';
+				} else {
+					$_SESSION['category_manager']['error_msg'] = 'Please select a category';
+				}
+				localRedirect('category-manager.php');
+				break;
+
+			default:
+				localRedirect('category-manager.php');
+		}
+	}
+	
+/**
+* Create the menu, set the db to assoc mode
+*/
+	require_once('HTML/TreeMenu.php');
+	$treeMenu = new HTML_TreeMenu();
+	
+/**
+* Get the categories
+*/
+	parseTree($treeMenu);
+
+/**
+* Template
+*/
+	// Check for any error msg
+	if (!empty($_SESSION['category_manager']['error_msg'])) {
+		$message = $_SESSION['category_manager']['error_msg'];
+		unset($_SESSION['category_manager']['error_msg']);
+	}
+
+	$categories   = $dbh->getAll('SELECT id, name, description FROM categories ORDER BY id', null, DB_FETCHMODE_ASSOC);
+	$treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, array('images' => 'gifs/TreeMenu', 'defaultClass' => 'treeMenuOff'));
+
+	include($template_dir . 'category-manager.html');
 ?>

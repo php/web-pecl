@@ -128,3 +128,8 @@ textarea.small {
 form {
     margin-bottom : 0;
 }
+
+.error {
+	font-size: 80%;
+	color: red;
+}

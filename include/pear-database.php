@@ -137,6 +137,7 @@ function version_compare_firstelem($a, $b)
  * @author  Stig S. Bakken <ssb@fast.no>
  * @author  Tomas V.V. Cox <cox@php.net>
  * @author  Martin Jansen <mj@php.net>
+ * @author  Richard Heyes <richard@php.net>
  */
 class category
 {
@@ -178,6 +179,61 @@ class category
         return $id;
     }
 
+    /**
+    * Updates a categories details
+    *
+    * @param  integer $id   Category ID
+    * @param  string  $name Category name
+    * @param  string  $desc Category Description
+	* @return mixed         True on success, pear_error otherwise
+    */
+    function update($id, $name, $desc = '')
+    {
+        return $GLOBALS['dbh']->query(sprintf('UPDATE categories SET name = %s, description = %s WHERE id = %d',
+                                              $GLOBALS['dbh']->quote($name),
+                                              $GLOBALS['dbh']->quote($desc),
+                                              $id));
+    }
+
+	/**
+    * Deletes a category
+	*
+	* @param integer $id Cateogry ID
+    */
+	function delete($id)
+	{
+	/*
+		if ($GLOBALS['dbh']->query('SELECT COUNT(*) FROM categories WHERE parent = ' . (int)$id) > 0) {
+			return PEAR::raiseError('Cannot delete a category which has subcategories');
+		}
+
+		// Get parent ID if any
+		$parentID = $GLOBALS['dbh']->getOne('SELECT parent FROM categories WHERE id = ' . $id);
+		if (!$parentID) {
+			$nextID = $GLOBALS['dbh']->getOne('SELECT id FROM categories WHERE cat_left = ' . $GLOBALS['dbh']->getOne('SELECT cat_right + 1 FROM categories WHERE id = ' . $id));
+		} else {
+			$nextID = $parentID;
+		}
+*/
+		// Get parent ID if any
+		$parentID = $GLOBALS['dbh']->getOne('SELECT parent FROM categories WHERE id = ' . $id);
+		
+		// Delete it
+		$deleted_cat_left  = $GLOBALS['dbh']->getOne('SELECT cat_left FROM categories WHERE id = ' . $id);
+		$deleted_cat_right = $GLOBALS['dbh']->getOne('SELECT cat_right FROM categories WHERE id = ' . $id);
+
+		$GLOBALS['dbh']->query('DELETE FROM categories WHERE id = ' . $id);
+		
+		// Renumber
+		$GLOBALS['dbh']->query('UPDATE categories SET cat_left = cat_left - 1, cat_right = cat_right - 1 WHERE cat_left > ' . $deleted_cat_left . ' AND cat_right < ' . $deleted_cat_right);
+		$GLOBALS['dbh']->query('UPDATE categories SET cat_left = cat_left - 2, cat_right = cat_right - 2 WHERE cat_right > ' . $deleted_cat_right);
+		
+		// Update any child categories
+		$GLOBALS['dbh']->query(sprintf('UPDATE categories SET parent = %s WHERE parent = %d', ($parentID ? $parentID : 'NULL'), $id));
+
+		return true;
+	}
+	
     // }}}
     // {{{  proto array  category::listAll()
 

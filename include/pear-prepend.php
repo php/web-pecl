@@ -109,6 +109,11 @@ if (!function_exists('file_get_contents')) {
     }
 }
 
-$_browser = &new browser();
+session_start();
+
+/**
+* Browser detection
+*/
+	$_browser = &new browser();
 
 ?>

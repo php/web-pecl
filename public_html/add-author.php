@@ -54,12 +54,12 @@ do {
         }
 
         $display_form = false;
-        $obj->name = $name;
-        $obj->email = $email;
-        $obj->homepage = $homepage;
+        $obj->name      = $name;
+        $obj->email     = $email;
+        $obj->homepage  = $homepage;
         $obj->showemail = (bool)$showemail;
-        $obj->admin = (bool)$admin;
-        $obj->password = md5($password);
+        $obj->admin     = (bool)$admin;
+        $obj->password  = md5($password);
     }
 } while (0);
 
@@ -73,14 +73,17 @@ if ($display_form) {
 <TABLE>
 <?php
 
-     if (isset($errorMsg)) {
-         print " <TR>\n";
-         print "  <TD>&nbsp;</TD>\n";
-         print "  <TD><B>$errorMsg</B></TD>\n";
-         print " </TR>\n";
-     }
+    if (isset($errorMsg)) {
+        print " <TR>\n";
+        print "  <TD>&nbsp;</TD>\n";
+        print "  <TD><B>$errorMsg</B></TD>\n";
+        print " </TR>\n";
+    } else {
+        $handle = $name = $email = $homepage = $password = '';
+        $showemail = $admin = false;
+    }
 
-    $width = 60;
+    $width = 45;
     $form = new HTML_Form($PHP_SELF, "POST");
     $form->addText("handle", "Handle", $handle, 12);
     $form->addText("name", "Name", $name, $width);

@@ -1,3 +1,4 @@
+#!/usr/local/bin/php -Cq
 <?php // -*- C++ -*-
 /* vim: set expandtab tabstop=4 shiftwidth=4; */
 // +---------------------------------------------------------------------+
@@ -48,9 +49,9 @@ $PEAR_Dir = "/var/cvs/pear";
 
 $db = DB::Connect("mysql://pear:pear@localhost/pear");
 
-$fxml = fopen($TgzDir."/Packages.xml","w");
-fwrite($fxml,"<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n");
-fwrite($fxml,"<Packages>\n");
+
+$xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n";
+$xml .= "<Packages>\n";
 
 if ($dir = @opendir($PEAR_Dir)) {
     while(($file = readdir($dir)) ) {
@@ -61,14 +62,14 @@ if ($dir = @opendir($PEAR_Dir)) {
             if (file_exists("package.xml")) {
 
                 $packager =& new PEAR_Packager();
-                
+
                 if (PEAR::isError($packager->Package())) {
                     $packager->log(0,"Reading of package.xml failed!");
                 } else {
                     $packager->log(0,"package.xml read succesfully");
                 }
 
-                fwrite($fxml,"
+                $xml .= "
                 <Package>
                     <Name>".$packager->pkginfo["Package,Name"]."</Name>
                     <Summary>".$packager->pkginfo["Package,Summary"]."</Summary>
@@ -77,8 +78,8 @@ if ($dir = @opendir($PEAR_Dir)) {
                         <Date>".$packager->pkginfo["Release,Date"]."</Date>
                         <Notes>".$packager->pkginfo["Release,Notes"]."</Notes>
                     </Release>
-                </Package>\n");
-                               
+                </Package>\n";
+
                 /**
                  * Look if there is already an entry for the author
                  */                                
@@ -154,7 +155,19 @@ if ($dir = @opendir($PEAR_Dir)) {
         }
     }
     closedir($dir);
-    fwrite($fxml,"</Packages>\n");
+    $xml .= "</Packages>\n";
+    $fxml = fopen($TgzDir."/Packages.xml","w");
+
+    fwrite($fxml,"$xml\n");
     fclose($fxml);
+
+    if (function_exists("gzopen"))
+    {
+        $fxml = gzopen($TgzDir."/Packages.xml.gz","wb");
+        gzwrite($fxml,"$xml\n");
+        gzclose($fxml);
+    }
+
+
 }
 ?>

@@ -75,12 +75,12 @@ function confirmed_goto(url, message) {
 
 function confirmed_submit(button, action, required, errormsg) {
     if (required && required.value == '') {
-	alert(errormsg);
-	return;
+        alert(errormsg);
+        return;
     }
     if (confirm('Are you sure you want to ' + action + '?')) {
-	button.form.cmd.value = button.value;
-	button.form.submit();
+        button.form.cmd.value = button.value;
+        button.form.submit();
     }
 }
 
@@ -95,13 +95,13 @@ do {
     // {{{ "approve account request" form
 
     if (!empty($acreq)) {
-	$requser =& new PEAR_User($dbh, $acreq);
-	if (empty($requser->name)) {
-	    break;
-	}
+        $requser =& new PEAR_User($dbh, $acreq);
+        if (empty($requser->name)) {
+            break;
+        }
         list($purpose, $moreinfo) = @unserialize($requser->userinfo);
 
-	$bb = new BorderBox("Account request from $requser->name &lt;$requser->email&gt;");
+        $bb = new BorderBox("Account request from $requser->name &lt;$requser->email&gt;");
 ?>      <table cellpadding="2" cellspacing="0" border="0">
        <tr>
         <td>Requested User Name:</td>
@@ -129,52 +129,51 @@ do {
        </tr>
       </table>
 <?php
+    $bb->end();
+    print "<br />\n";
+    $bb = new BorderBox("Notes for user $requser->handle");
+    $notes = $dbh->getAssoc("SELECT id,nby,ntime,note FROM notes ".
+                "WHERE uid = ? ORDER BY ntime", true,
+                array($requser->handle));
+    $i = "      ";
+    if (is_array($notes) && sizeof($notes) > 0) {
+        print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
+        foreach ($notes as $nid => $data) {
+            list($nby, $ntime, $note) = $data;
+            print "$i <tr>\n";
+            print "$i  <td>\n";
+            print "$i   <b>$nby $ntime:</b>";
+            if ($nby == $PHP_AUTH_USER) {
+                $url = "$PHP_SELF?acreq=$acreq&cmd=Delete+note&id=$nid";
+                $msg = "Are you sure you want to delete this note?";
+                print "[<a href=\"javascript:confirmed_goto('$url', '$msg')\">delete your note</a>]";
+            }
+            print "<br />\n";
+            print "$i   ".htmlspecialchars($note)."\n";
+            print "$i  </td>\n";
+            print "$i </tr>\n";
+            print "$i <tr><td>&nbsp;</td></tr>\n";
+        }
+        print "$i</table>\n";
+    } else {
+        print "No notes.";
+    }
+    print "$i<form action=\"$PHP_SELF\" method=\"POST\">\n";
+    print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
+    print "$i <tr>\n";
+    print "$i  <td>\n";
+    print "$i   To add a note, enter it here:<br />\n";
+    print "$i    <textarea rows=\"3\" cols=\"55\" name=\"note\"></textarea><br />\n";
+    print "$i   <input type=\"submit\" value=\"Add note\" name=\"cmd\" />\n";
+    print "$i   <input type=\"hidden\" name=\"key\" value=\"uid\" />\n";
+    print "$i   <input type=\"hidden\" name=\"id\" value=\"$requser->handle\" />\n";
+    print "$i   <input type=\"hidden\" name=\"acreq\" value=\"$acreq\" />\n";
+    print "$i  </td>\n";
+    print "$i </tr>\n";
+    print "$i</table>\n";
+    print "$i</form>\n";
 
-	$bb->end();
-	print "<br />\n";
-	$bb = new BorderBox("Notes for user $requser->handle");
-	$notes = $dbh->getAssoc("SELECT id,nby,ntime,note FROM notes ".
-				"WHERE uid = ? ORDER BY ntime", true,
-				array($requser->handle));
-	$i = "      ";
-	if (is_array($notes) && sizeof($notes) > 0) {
-	    print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
-	    foreach ($notes as $nid => $data) {
-		list($nby, $ntime, $note) = $data;
-		print "$i <tr>\n";
-		print "$i  <td>\n";
-		print "$i   <b>$nby $ntime:</b>";
-		if ($nby == $PHP_AUTH_USER) {
-		    $url = "$PHP_SELF?acreq=$acreq&cmd=Delete+note&id=$nid";
-		    $msg = "Are you sure you want to delete this note?";
-		    print "[<a href=\"javascript:confirmed_goto('$url', '$msg')\">delete your note</a>]";
-		}
-		print "<br />\n";
-		print "$i   ".htmlspecialchars($note)."\n";
-		print "$i  </td>\n";
-		print "$i </tr>\n";
-		print "$i <tr><td>&nbsp;</td></tr>\n";
-	    }
-	    print "$i</table>\n";
-	} else {
-	    print "No notes.";
-	}
-	print "$i<form action=\"$PHP_SELF\" method=\"POST\">\n";
-	print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
-	print "$i <tr>\n";
-	print "$i  <td>\n";
-	print "$i   To add a note, enter it here:<br />\n";
-	print "$i    <textarea rows=\"3\" cols=\"55\" name=\"note\"></textarea><br />\n";
-	print "$i   <input type=\"submit\" value=\"Add note\" name=\"cmd\" />\n";
-	print "$i   <input type=\"hidden\" name=\"key\" value=\"uid\" />\n";
-	print "$i   <input type=\"hidden\" name=\"id\" value=\"$requser->handle\" />\n";
-	print "$i   <input type=\"hidden\" name=\"acreq\" value=\"$acreq\" />\n";
-	print "$i  </td>\n";
-	print "$i </tr>\n";
-	print "$i</table>\n";
-	print "$i</form>\n";
-
-	$bb->end();
+    $bb->end();
 ?>
 
 <form action="<?= $PHP_SELF ?>" method="POST">
@@ -200,18 +199,18 @@ do {
     // {{{ admin menu
     } else {
 
-	$bb = new BorderBox("Account Requests", "30%");
-	$requests = $dbh->getAssoc("SELECT handle,name,email FROM users ".
-				   "WHERE registered = 0");
-	if (is_array($requests) && sizeof($requests) > 0) {
-	    foreach ($requests as $handle => $data) {
-		list($name, $email) = $data;
-		print "<a href=\"$PHP_SELF?acreq=$handle\">$name ($handle)</a><br />\n";
-	    }
-	} else {
-	    print "No account requests.";
-	}
-	$bb->end();
+        $bb = new BorderBox("Account Requests", "30%");
+        $requests = $dbh->getAssoc("SELECT handle,name,email FROM users ".
+                                   "WHERE registered = 0");
+        if (is_array($requests) && sizeof($requests) > 0) {
+            foreach ($requests as $handle => $data) {
+                list($name, $email) = $data;
+                print "<a href=\"$PHP_SELF?acreq=$handle\">$name ($handle)</a><br />\n";
+            }
+        } else {
+            print "No account requests.";
+        }
+        $bb->end();
     }
 
     // }}}

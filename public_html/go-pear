@@ -22,19 +22,37 @@
 # Automatically download all the files needed to run the "pear" command
 # (the PEAR package installer).  Requires PHP 4.1.0 or newer.
 #
-# Usage: This script could be directly launched or can be passed
-# via lynx like this:
+# Installation: Linux
+#
+# This script can either be directly launched or passed via lynx like this.
 #
 #  $ lynx -source http://pear.php.net/go-pear | php
 #
-# On Windows go-pear uses stdin for user input, so you must download
+# The above assumes your php binary is named php and that it's
+# executable through your PATH:
+#
+# Installation: Windows
+#
+# On Windows, go-pear uses stdin for user input, so you must download
 # go-pear first and then run it:
 #
-#  > php-cli -r 'readfile("http://pear.php.net/go-pear");' > go-pear
-#  > php-cli go-pear
+# Note: In PHP 4.2.0-4.2.3, the PHP CLI binary is named php-cli.exe while since
+# PHP 4.3.0, it's simply named php.exe in the cli/ folder of your PHP directory.
+# The CGI is also named php.exe but it sits directly in your PHP directory.
 #
-# If using the CGI version of PHP, append the -q option to suppress
-# headers in the output.
+#  > cli/php -r 'readfile("http://pear.php.net/go-pear");' > go-pear
+#  > cli/php go-pear
+#
+# Installation: Notes
+#
+# - If using the CGI version of PHP, append the -q option to suppress
+#   headers in the output.
+# - Once the go-pear script is initiated, you will see instructions on
+#   how to continue installing PEAR.  The first thing you should see is:
+#
+#   Welcome to go-pear!
+#
+# Installation: Web browser
 #
 # You can now use go-pear via a webbrowser, thanks to Christian Dickmann. It is
 # still beta codes, but feel free to test it:
@@ -43,9 +61,12 @@
 #
 # 2.: Place the go-pear file somewhere under the document root of your webserver.
 # The easiest way is to create a new directory for pear and to put the file in there.
+# Be sure your web server is setup to recognize PHP, and that you use an appropriate 
+# extension.  For example, you might name this file gopear.php
 #
 # 3.: Access go-pear through your webserver and follow the instructions. Please
 # make sure that PHP has write access to the dir you want to install PEAR into.
+# For example: http://localhost/pear/gopear.php
 #
 # 4.: After running go-pear you get a link to the Web Frontend of the PEAR installer.
 # I suggest bookmarking this link.

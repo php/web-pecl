@@ -27,6 +27,7 @@ TABLE_FILES=\
 	maintains.sql \
 	categories.sql \
 	packages.sql \
+	package_stats.sql \
 	provides.sql \
 	releases.sql \
 	deps.sql \

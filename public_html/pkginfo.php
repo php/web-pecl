@@ -8,6 +8,8 @@ if (empty($pacid)) {
 }
 // ** expected
 
+define('PHP_CVS_REPO_DIR', '/repository/pear');
+
 if (DB::isError($dbh)) {
     die("DB::Factory failed: ".DB::errorMessage($dbh)."<BR>\n");
 }
@@ -23,6 +25,7 @@ $name        = $row['name'];
 $summary     = $row['summary'];
 $license     = $row['license'];
 $description = $row['description'];
+$category    = $row['category'];
 
 // Accounts data
 $sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, m.role
@@ -62,6 +65,7 @@ response_header("Package :: $name");
 ?>
 
 <!-- PKGINFO start -->
+<?php html_category_urhere($category, true); ?>
 
 <h2 align="center"><?php echo "$name";?></h2>
 
@@ -96,9 +100,20 @@ response_header("Package :: $name");
 <br>
 <table border="0" cellspacing="3" cellpadding="3" height="48" width="100%" align="center">
 <tr>
-    <td width="33%" align="center">| View Source Code &amp; Docs |</td>
+<?php
+    // CVS link
+    if (@is_dir(PHP_CVS_REPO_DIR . "/$name")) {
+        $cvs_link = make_link("http://cvs.php.net/cvs.php/pear/$name",
+                              '| View Source Code &amp; Docs |', 'top');
+    } else {
+        $cvs_link = '&nbsp;';
+    }
+    // Download link
+    $get_link = make_link("/get/$name", '| Download Lastest |');
+?>
+    <td width="33%" align="center"><?php echo $cvs_link;?></td>
     <td width="33%" align="center">| View ChangeLog |</td>
-    <td width="33%" align="center">| Download Now |</td>
+    <td width="33%" align="center"><?php echo $get_link; ?></td>
 </tr>
 </table>
 
@@ -165,7 +180,7 @@ foreach ($releases as $rel) {
 </tr>
 </table>
 -->
-<!-- Other releases download 
+<!-- Other releases download
 <br>
 <table border="0" cellspacing="3" cellpadding="3" width="100%">
 <tr>

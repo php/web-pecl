@@ -127,7 +127,7 @@ you can scroll down and click the submit button to really enter the details into
 			if (!empty($in['actres']) || $in['actres'] === '0') {
 				$fdesc .= "Actual result:\n--------------\n". $in['actres'] ."\n";
 			}
-            
+
 			$query = "INSERT INTO bugdb (bug_type,email,sdesc,ldesc,php_version,php_os,status,ts1,passwd) VALUES ('$in[bug_type]','$in[email]','$in[sdesc]','$fdesc','$in[php_version]','$in[php_os]','Open',NOW(),'$in[passwd]')";
 			if (!$ret = mysql_query($query)) {
                 die("could not insert ** $query **': " . mysql_error());
@@ -327,5 +327,6 @@ if ($errors) display_errors($errors);
  </tr>
 </table>
 </form>
+</table>
 <?php
 commonFooter();

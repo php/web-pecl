@@ -12,7 +12,7 @@ if ($search_for && !preg_match("/\\D/",trim($search_for))) {
 	exit;
 }
 
-commonHeader("Search");
+response_header("Search");
 
 # the lol
 echo "<style>"; include('./style.css'); echo "</style>";
@@ -294,7 +294,7 @@ if ($warnings) display_warnings($warnings);
 </form>
 
 <?php
-commonFooter();
+respose_footer();
 
 function show_prev_next($begin,$rows,$total_rows,$link,$limit) {
 	if($limit=='All') return;

@@ -179,7 +179,7 @@ if ($in && !$errors && $success) {
 	exit;
 }
 
-commonHeader("#$id: ".htmlspecialchars($bug['sdesc']));
+response_header("#$id: ".htmlspecialchars($bug['sdesc']));
 # the lol
 echo "<style>"; include('./style.css'); echo "</style>";
 
@@ -261,7 +261,7 @@ function control($num,$desc) {
        $desc, !$active ? "</a>" : "", "</span> ";
 }
 
-control(0,'View/Vote');
+control(0,'View');
 if ($edit != 2) {
 	control(3,'Add Comment');
 }
@@ -486,8 +486,8 @@ if ($res) {
 		output_note($row['id'], $row['added'], $row['email'], $row['comment']);
 	}
 }
-
-commonFooter();
+echo "</table>";
+response_footer();
 
 function output_note($com_id, $ts, $email, $comment)
 {

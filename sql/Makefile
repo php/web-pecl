@@ -20,6 +20,7 @@
 TABLE_FILES=\
 	package_acl.sql \
 	maintains.sql \
+	categories.sql \
 	packages.sql \
 	releases.sql \
 	deps.sql \

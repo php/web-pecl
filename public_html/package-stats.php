@@ -26,10 +26,22 @@ response_header("Package statistics");
 
 <h1>Package statistics</h1>
 
+<script language="JavaScript">
+<!--
+function reloadMe()
+{
+    var newLocation = '<?php echo $_SERVER['PHP_SELF']; ?>?pid='
+                      + document.forms[1].pid.value
+                      + '&rid='
+                      + document.forms[1].rid.value;
+
+    document.location.href = newLocation;
+                             
+}
+//-->
+</script>
+
 <?php
-
-$form = new HTML_Form($_SERVER['PHP_SELF']);
-
 /** Get packages for the user */
 if (User::isAdmin($_SERVER['PHP_AUTH_USER'])) {
     $query = "SELECT * FROM packages ORDER BY name";
@@ -46,9 +58,57 @@ while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
 }
 
 $bb = new Borderbox("Select package");
-$form->addSelect("pid", "", $packages, (isset($_GET['pid']) ? $_GET['pid'] : ""));
-$form->addSubmit("submit", "Go");
-$form->display();
+
+// Don't use HTML_Form here since we need to use some custom javascript here
+echo "<form action=\"package-stats.php\" method=\"get\">\n";
+echo "<table>\n";
+echo "<tr>\n";
+echo "  <td>\n";
+echo "  <select name=\"pid\" onchange=\"javascript:reloadMe();\">\n";
+echo "    <option>Select package ...</option>\n";
+
+foreach ($packages as $value => $name) {
+    if (isset($_GET['pid']) && $_GET['pid'] == $value) {
+        echo "    <option value=\"" . $value . "\" selected>" . $name . "</option>\n";
+    } else {
+        echo "    <option value=\"" . $value . "\">" . $name . "</option>\n";
+    }    
+}
+
+echo "</select>\n";
+echo "  </td>\n";
+
+if (isset($_GET['pid']) && $_GET['pid'] != "") {
+    echo "  <td>\n";
+    echo "  <select onchange=\"javascript:reloadMe();\" name=\"rid\" size=\"1\">\n";
+    echo "  <option>Select release ...</option>\n";
+    echo "  <option>All releases</option>\n";
+
+    $query = "SELECT id, version FROM releases WHERE package = '" . $_GET['pid'] . "'";
+    $rows = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
+
+    foreach ($rows as $row) {
+        if (isset($_GET['rid']) && $_GET['rid'] == $row['id']) {
+            echo "    <option value=\"" . $row['id'] . "\" selected>" . $row['version'] . "</option>\n";        
+        } else {
+            echo "    <option value=\"" . $row['id'] . "\">" . $row['version'] . "</option>\n";
+        }
+    }
+
+    echo "  </select>\n";
+    echo "  </td>\n";
+} else {
+    echo "<input type=\"hidden\" name=\"rid\" value=\"\">\n";
+}
+
+
+echo "</tr>\n";
+echo "<tr>\n";
+echo "  <td><input type=\"submit\" name=\"submit\" value=\"Go\"></td>\n";
+echo "</tr>\n";
+echo "</table>\n";
+echo "</form>\n";
+
 $bb->end();
 
 if (isset($_GET['pid'])) {
@@ -69,20 +129,19 @@ if (isset($_GET['pid'])) {
             echo "<br />\n";
             $bb = new Borderbox("Release statistics");
 
-            $release_statistics = statistics::release($_GET['pid']);
+            $release_statistics = statistics::release($_GET['pid'], (isset($_GET['rid']) ? $_GET['rid'] : ""));
 
             $i= 0;
-            foreach ($info['releases'] as $key => $value) {
-                $bb2 = new Borderbox("Release: <b>" . $key . "</b>", 400);                
-                echo "Number of downloads: <b>" . $release_statistics[$i]['total'] . "</b><br />\n";
+            foreach ($release_statistics as $key => $value) {
+                $bb2 = new Borderbox("Release: " . $value['version'], 400);
+                echo "Number of downloads: <b>" . $value['total'] . "</b><br />\n";
 
-                if ($release_statistics[$i]['total'] > 1) {
-                    echo "First download: <b>" . $release_statistics[$i]['first_download'] . "</b><br />\n";
-                    echo "Last download: <b>" . $release_statistics[$i]['last_download'] . "</b><br />\n";
+                if ($value['total'] > 1) {
+                    echo "First download: <b>" . $value['first_download'] . "</b><br />\n";
+                    echo "Last download: <b>" . $value['last_download'] . "</b><br />\n";
                 }
 
                 $bb2->end();
-                $i++;
                 echo "<br />\n";
             }
             

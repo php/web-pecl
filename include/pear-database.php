@@ -962,11 +962,18 @@ class statistics
     // }}}
     // {{{ release()
 
-    function release($id)
+    function release($id, $rid = "")
     {
         global $dbh;
 
-        $query = "SELECT release, COUNT(*) AS total, MAX(dl_when) AS last_download, MIN(dl_when) AS first_download FROM downloads WHERE package = '" . $id . "' GROUP BY release";
+        $query = "SELECT r.version, d.release, COUNT(d.id) AS total,"
+                 . " MAX(d.dl_when) AS last_download,"
+                 . " MIN(d.dl_when) AS first_download"
+                 . " FROM downloads d, releases r"
+                 . " WHERE d.package = '" . $id . "'"
+                 . " AND d.release = r.id"
+                 . ($rid != "" ? " AND d.release = '" . $rid . "'" : "")
+                 . " GROUP BY d.release";
 
         $rows = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
         

@@ -101,16 +101,6 @@ function navigationBar($title,$id,$loc) {
 	spacer(1,1);
 	echo '<br></td></tr>';
 
-	if ($loc == 'bottom') {
-	    echo '<tr>';
-	    echo '<td valign="top" align="left"><small>'
-	         . make_link("/download-docs.php", "Download Documentation")
-	        . '</small</td>';
-	    echo '<td align="right"><small>Last updated: '.$tstamp.'<br>';
-    } else {
-        echo '<tr><td colspan="2" align="right"><small>Last updated: '.$tstamp.'</td></tr>';
-    }
-
 	if ($loc != 'bottom') {
 		global $LANGUAGES;
 		$links = array();
@@ -124,10 +114,19 @@ function navigationBar($title,$id,$loc) {
 			$links[] = make_link("html/$file.html", 'Plain HTML');
 		}
 		if (count($links)) {
-			echo 'view this page in ' . join (delim(), $links);
+			echo '<tr><td><small>View this page in ' . join (delim(), $links) . "</small></td>\n";
 		}
-		echo '<br>';
 	}
+
+	if ($loc == 'bottom') {
+	    echo '<tr>';
+	    echo '<td valign="top" align="left"><small>'
+	         . make_link("/download-docs.php", "Download Documentation")
+	        . '</small</td>';
+	    echo '<td align="right"><small>Last updated: '.$tstamp.'<br>';
+    } else {
+        echo '<td align="right"><small>Last updated: '.$tstamp.'</td></tr>';
+    }
 
 	echo '</small></td></tr>';
 	echo "</table>\n";

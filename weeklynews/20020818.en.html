@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+ 
+<title>x</title>
+</head>
+<body>
+<p><i><small>by Alan Knowles(alan_k@php.net)</small></i></p>
+
+<p>..</p>
+
+<hr>
+
+<h2>New Releases</h2>
+
+<h3>Stable</h3>
+
+<ul>
+	<li>
+		<p><b>.. -</b> ..</p>
+	</li>
+</ul>
+
+
+
+<hr>
+
+<h2>PEAR-DEV traffic</h2>
+
+<h3>PHP doc tag standards</h3>
+
+<p>Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior asked about
+the standards for PHPDoc tags (the tags inside the PHP classes that
+help produce automated documentation), having reviewed the current
+range of uses in pear, Ant&ocirc;nio offered to write a clear quick
+reference for the PEAR site, at present you can find the list of
+standard tags and formats a</p>
+
+<pre>
+<a href=
+"http://www.phpdoc.de/kongress/tags.html">http://www.phpdoc.de/kongress/tags.html</a>
+</pre>
+
+<h3>ISO-8601 in Date</h3>
+
+<p>To integrate better with the SOAP module, Baba Buehler added ISO
+8601 to the format() method of the Date class. You can use it by
+with the following syntax.</p>
+
+<pre>
+%o - gives the raw timezone offset in &plusmn;hh:mm
+%O - gives the dst-corrected offset in &plusmn;hh:mm
+eg.
+Date::format("%Y-%m-%dT%H:%M:%S%O");
+</pre>
+
+<h3>OpenOffice to Docbook, and more progress on Automating the
+documentation</h3>
+
+<p>Pierre-Alain Joye has been busy making a Open office to Docbook
+converter, along with a method for converting Microsoft word 'save
+as HTML' output into Docbook. you can try out the current
+version at</p>
+
+<pre>
+<a href=
+"http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz">http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz</a>
+</pre>
+
+<p>There was continuing discussion of adding support to PHPDoc to
+generate Docbook from the comments, and Alan Knowles <a href=
+"http://marc.theaimsgroup.com/?l=pear-dev&m=102946826409440&w=2">
+posted</a> his first effort at doing this using his PHP_CodeDoc
+tool, Noting that the task is not as simple as it appears to
+be....</p>
+
+<h3>Bulk emailing</h3>
+
+<p>Radek Maciaszek mentioned he was working on a class to do mail
+queue management for sending large quantities of email, he was
+going to send it to Richard Heyes to review it after adding a few
+comments.</p>
+
+<h3>PHPUnit, being too acurate</h3>
+
+<p>Wolfram Kreising was testing PHPUnit and discovered that it was
+being far too strict for a loosely typed language, eg. failing when
+comparing "1" == 1 within arrays. He was still looking for ideas on
+how to solve this.</p>
+
+<h3>Permissions Managment</h3>
+
+<p>Always a topic of much interest to all developers is that of a
+coherent Authentication, Authorization, Permissions and Users
+mechanism. This got one step closer as there was considerable of
+discussion over the LiveUser Package that Marcus Wolff has been
+working on. This looks like it will provide a flexible standard
+API, that would enable back ends for a variety of applications to
+accessed using a single API. Enabling you to integrate bulletin
+board or forum packages within your applications without having to
+modifying code to suit each application.</P>
+
+<P>The only remaining matter was how to integrate this into the PEAR
+class naming structure, Suggestions that got better reviews where
+along the lines of Auth_LiveUser, Perm_LiveUser. The use of a top
+level category combined with a more distinct name 'LiveUser' was
+prefered over a more generic name like Auth_Simple or
+Auth_Complex.</P>
+
+<P>On a side issue to this, it may be worth researching some of the
+discussion on php-dev recently that has dealt with the security
+issues behind sessions, both trans-sid, cookees and HTTP in general
+(another topic of heated debate, but eventually ending with
+intelligent suggestions). Hopefully a full summary will be
+available in the php manual soon.</p>
+
+<h3>Net_Whois, a whole new feature set</h3>
+
+<p>Seamus Venasse had built a new Net_Whois, and wondered how to
+deal with competitive classes in PEAR, since his Whois package
+offered a richer set of features, than the current one. After some
+discussion it became clear that just merging the existing
+funcitonality and API into his and replacing the old Net_Whois
+would be a far better solution. The final decision on this did rest
+with Sebastian Nohn (the current maintainer of Net_Whois).</p>
+
+<h3>Bugs and Fixes</h3>
+
+<p>Thanks to these people for spotting
+and fixing some bugs, Radek Maciaszek, Arnaud Limbourg, Tim White
+and Roman Neuhauser</p>
+
+<hr>
+<h2>New and Proposed Packages</h2>
+
+<h3>Math_Distance, measuring distances between multiple
+locations</h3>
+
+<p>Alfredo offered a package to
+calculate distances, between multiple points, this can use multiple
+mathematical functions to do the calculations.<br>
+</p>
+
+<hr>
+<h2>Development</h2>
+
+<p>Active on CVS this week has been Auth, Benchmark, Cache_Lite,
+Date, DB, DB_DataObject, HTML_Javascript, HTML_TreeMenu, I18N, MDB,
+Net_DNS, Net_Ping, PECL::Soap, PHPDoc, Tree, XML_RSS, XML_XPath,
+System.</p>
+</body>
+</html>
+

@@ -18,14 +18,20 @@
    $Id$
 */
 
-auth_require(true);
-
 require_once "HTML/Form.php";
 
 response_header("PEAR Administration - Package maintainers");
 
+if (isset($_GET['pid'])) {
+    $id = (int)$_GET['pid'];
+} else {
+    $id = 0;
+}
+
 // Select package first
-if (empty($_GET['pid'])) {
+if (empty($id)) {
+    auth_require(true);
+
     $packages = package::listAll(false);
     $values   = array();
 
@@ -43,7 +49,14 @@ if (empty($_GET['pid'])) {
     $bb->end();
 
 } else if (!empty($_GET['update'])) {
-    $all = maintainer::get($_GET['pid']);
+    if (!isAllowed($id)) {
+        PEAR::raiseError("Only the lead maintainer of the package or PEAR
+                          administrators can edit the maintainers.");
+        response_footer();
+        exit();
+    }
+
+    $all = maintainer::get($id);
 
     // Transform
     $new_list = array();
@@ -75,28 +88,35 @@ if (empty($_GET['pid'])) {
             continue;
         }
         echo 'Deleting user <b>' . $handle . '</b> ...<br />';
-        $result = $dbh->execute($delete, array($handle, $_GET['pid']));
+        $result = $dbh->execute($delete, array($handle, $id));
     }
 
     // Update/Insert existing maintainers
     foreach ($new_list as $handle => $role) {
-        $result = $dbh->execute($check, array($handle, $_GET['pid']));
+        $result = $dbh->execute($check, array($handle, $id));
 
         $row = $result->fetchRow(DB_FETCHMODE_ASSOC);
         if (!is_array($row)) {
             // Insert new maintainer
             echo 'Adding user <b>' . $handle . '</b> ...<br />';
-            $result = $dbh->execute($insert, array($handle, $_GET['pid'], $role));
+            $result = $dbh->execute($insert, array($handle, $id, $role));
         } else if ($role != $row['role']) {
             // Update role
             echo 'Updating user <b>' . $handle . '</b> ...<br />';
-            $result = $dbh->execute($update, array($role, $handle, $_GET['pid']));
+            $result = $dbh->execute($update, array($role, $handle, $id));
         }
     }
 
     echo '<br /><b>Done</b><br />';
     echo '<a href="' . $_SERVER['PHP_SELF'] . '">Back</a>';
 } else {
+    if (!isAllowed($id)) {
+        PEAR::raiseError("Only the lead maintainer of the package or PEAR
+                          administrators can edit the maintainers.");
+        response_footer();
+        exit();
+    }
+
     echo '<script language="JavaScript" type="text/javascript">';
     echo 'function stripName(name) {';
     echo '    pos = name.indexOf("(");';
@@ -154,7 +174,7 @@ if (empty($_GET['pid'])) {
 
     echo '<form onSubmit="javascript:beforeSubmit()" name="form" method="get" action="' . $_SERVER['PHP_SELF'] . '">';
     echo '<input type="hidden" name="update" value="yes" />';
-    echo '<input type="hidden" name="pid" value="' . $_GET['pid'] . '" />';
+    echo '<input type="hidden" name="pid" value="' . $id . '" />';
     echo '<table border="0" cellpadding="0" cellspacing="4" border="0" width="100%">';
     echo '<tr>';
     echo '  <th>All users:</th>';
@@ -193,7 +213,7 @@ if (empty($_GET['pid'])) {
     echo '  <td>';
     echo '  <select multiple="yes" name="maintainers[]" onChange="javascript:activateRemove();" size="10">';
 
-    $maintainers = maintainer::get($_GET['pid']);
+    $maintainers = maintainer::get($id);
     foreach ($maintainers as $handle => $role) {
         $info = user::info($handle, "name");   // XXX: This sucks
         printf('<option value="%s||%s">%s (%s, %s)</option>',
@@ -222,4 +242,13 @@ if (empty($_GET['pid'])) {
     $bb->end();
 }
 
-response_footer(); ?>
+function isAllowed($package)
+{
+    $lead = in_array($_COOKIE['PEAR_USER'], array_keys(maintainer::get($package, true)));
+    $admin = user::isAdmin($_COOKIE['PEAR_USER']);
+
+    return ($lead || $admin);
+}
+
+response_footer();
+?>

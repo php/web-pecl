@@ -171,6 +171,10 @@ if ($relid) {
 &nbsp;
 <?php print_link("/package-delete.php?id=$pacid",
         make_image("delete.gif", "Delete package")); ?>
+&nbsp;
+[<?php print_link("/admin/package-maintainers.php?pid=$pacid",
+                 "Edit maintainers"); ?>]
+
     </td>
 </tr>
 </table>

@@ -36,6 +36,6 @@ if (!isset($PATH_INFO) || $PATH_INFO == '/') {
 $opts = explode('/', $PATH_INFO);
 $package = $opts[1];
 $version = (isset($opts[2])) ? $opts[2] : null;
-$file = (isset($opts[2])) ? $opts[2] : null;
-release::HTTPdownload($package, $version);
+$file = (isset($opts[3])) ? $opts[3] : null;
+release::HTTPdownload($package, $version, $file);
 ?>

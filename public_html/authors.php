@@ -38,9 +38,9 @@ while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
         print "  <TD>(not shown)</TD>\n";
     }
     if (!empty($homepage)) {
-        print "<TD><A HREF=\"$homepage\">$homepage</A><TD>";
+        print "<TD><A HREF=\"$homepage\">$homepage</A></TD>";
     } else {
-        print '<TD>&nbsp;<TD>';
+        print '<TD>&nbsp;</TD>';
     }
     print "\n  <TD><A HREF=\"edit-author.php?handle=".$row['handle']."\">[edit]</A>&nbsp;
                  <A HREF=\"detail-author.php?handle=".$row['handle']."\">[details]</A></TD>\n";

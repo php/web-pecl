@@ -101,9 +101,15 @@ are searchable.
     ),
 
     Array (
+      'pecl-cvs', 'PECL CVS list',
+      'All the commits of the cvs PECL code repository are posted to this list automatically',
+      false, false, false, "php.pecl.cvs"
+    ),
+
+    Array (
       'pear-doc', 'PEAR documentation list',
       'A list for discussing topics related to the PEAR documentation.',
-      false, false, false, ""
+      false, false, false, "php.pear.doc"
     )
 
   );

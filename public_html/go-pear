@@ -611,7 +611,7 @@ foreach ($installer_packages as $pkg) {
 
 print 'Bootstrapping: PEAR...................';
 $r = 'RELEASE_' . ereg_replace('[^A-Za-z0-9]', '_', substr(substr($tarball['PEAR'], 5), 0, -4));
-$url = "http://cvs.php.net/co.php/php4/pear/PEAR.php?p=1&r=$r";
+$url = "http://cvs.php.net/co.php/php-src/pear/PEAR.php?p=1&r=$r";
 if (in_array('Getopt.php', $local_dir)) {
 	copy(dirname(__FILE__).'/go-pear-bundle/PEAR.php', 'PEAR.php');
 	echo "(local) ";
@@ -639,7 +639,7 @@ print "ok\n";
 
 print 'Bootstrapping: Console_Getopt.........';
 $r = 'RELEASE_' . ereg_replace('[^A-Za-z0-9]', '_', substr(substr($tarball['Console_Getopt'], 15), 0, -4));
-$url = "http://cvs.php.net/co.php/php4/pear/Console/Getopt.php?p=1&r=$r";
+$url = "http://cvs.php.net/co.php/php-src/pear/Console/Getopt.php?p=1&r=$r";
 mkdir('Console', 0700);
 if (in_array('Getopt.php', $local_dir)) {
 	copy(dirname(__FILE__).'/go-pear-bundle/Getopt.php', 'Console/Getopt.php');

@@ -125,7 +125,7 @@ function version_compare_firstelem($a, $b)
 
 class category
 {
-    // {{{ *proto int category::add(struct)
+    // {{{ *proto int    category::add(struct)
 
     /*
     $data = array(
@@ -163,7 +163,7 @@ class category
     }
 
     // }}}
-    // {{{  proto array category::listAll()
+    // {{{  proto array  category::listAll()
 
     function listAll()
     {
@@ -177,7 +177,7 @@ class category
 
 class package
 {
-    // {{{ *proto int package::add(struct)
+    // {{{ *proto int    package::add(struct)
 
     // add a package, return new package id or PEAR error
     function add($data)
@@ -405,7 +405,7 @@ class package
 
 class maintainer
 {
-    // {{{ +proto int maintainer::add(int, string, string)
+    // {{{ +proto int    maintainer::add(int, string, string)
 
     function add($package, $user, $role)
     {
@@ -423,7 +423,7 @@ class maintainer
     }
 
     // }}}
-    // {{{  proto int maintainer::get(int, bool)
+    // {{{  proto int    maintainer::get(int, bool)
 
     function get($package, $lead = false)
     {
@@ -452,7 +452,7 @@ class maintainer
 
 class release
 {
-    // {{{  proto array release::getRecent([int])
+    // {{{  proto array  release::getRecent([int])
 
     function getRecent($n = 5)
     {
@@ -552,7 +552,7 @@ class release
     }
 
     // }}}
-    // {{{ +proto bool release::confirmUpload(string)
+    // {{{ +proto bool   release::confirmUpload(string)
 
     function confirmUpload($upload_ref)
     {
@@ -590,7 +590,7 @@ class release
     }
 
     // }}}
-    // {{{ +proto bool release::dismissUpload(string)
+    // {{{ +proto bool   release::dismissUpload(string)
 
     function dismissUpload($upload_ref)
     {
@@ -598,9 +598,9 @@ class release
     }
 
     // }}}
-    // {{{        void release::HTTPdownload(string, [string], [string])
+    // {{{ NOEXPORT      release::HTTPdownload(string, [string], [string])
 
-// not for xmlrpc export
+    // not for xmlrpc export
     function HTTPdownload($package, $version = null, $file = null)
     {
         global $dbh;
@@ -685,7 +685,7 @@ class release
     }
 
     // }}}
-    // {{{  proto bool release::isValidState(string)
+    // {{{  proto bool   release::isValidState(string)
 
     function isValidState($state)
     {
@@ -694,7 +694,7 @@ class release
     }
 
     // }}}
-    // {{{ NOEXPORT    release::logDownload(integer, string, string)
+    // {{{ NOEXPORT      release::logDownload(integer, string, string)
 
     function logDownload($package, $release_id, $file = null)
     {
@@ -774,7 +774,7 @@ END;
     }
 
     // }}}
-    // {{{ NOEXPORT    release::remove(int, int)
+    // {{{ NOEXPORT      release::remove(int, int)
 
     function remove($package, $release)
     {
@@ -821,7 +821,7 @@ END;
 
 class note
 {
-    // {{{ +proto bool note::add(string, int, string)
+    // {{{ +proto bool   note::add(string, int, string)
 
     function add($key, $value, $note)
     {
@@ -839,7 +839,7 @@ class note
     }
 
     // }}}
-    // {{{ +proto bool note::remove(int)
+    // {{{ +proto bool   note::remove(int)
 
     function remove($id)
     {
@@ -853,7 +853,7 @@ class note
     }
 
     // }}}
-    // {{{ +proto bool note::removeAll(string, int)
+    // {{{ +proto bool   note::removeAll(string, int)
 
     function removeAll($key, $value)
     {
@@ -870,7 +870,7 @@ class note
 
 class user
 {
-    // {{{ *proto bool user::remove(string)
+    // {{{ *proto bool   user::remove(string)
 
     function remove($uid)
     {
@@ -881,7 +881,7 @@ class user
     }
 
     // }}}
-    // {{{ *proto bool user::rejectRequest(string, string)
+    // {{{ *proto bool   user::rejectRequest(string, string)
 
     function rejectRequest($uid, $reason)
     {
@@ -897,7 +897,7 @@ class user
     }
 
     // }}}
-    // {{{ *proto bool user::activate(string)
+    // {{{ *proto bool   user::activate(string)
 
     function activate($uid)
     {
@@ -926,7 +926,7 @@ class user
     }
 
     // }}}
-    // {{{ +proto bool user::isAdmin(string)
+    // {{{ +proto bool   user::isAdmin(string)
 
     function isAdmin($handle)
     {

@@ -3,7 +3,7 @@
 	function toggleMoreInfo(packageName, rowNode)
 	{
 		if (!document.getElementById) {
-			location.href = '/' + packageName;
+			location.href = '/package/' + packageName;
 			return;
 		}
 
@@ -116,7 +116,7 @@
 					<?foreach($packages as $p):?>
 						<tr>
 							<td valign="top"><?=$first++?></td>
-							<td valign="top"><a href="/<?=$p['name']?>"><strong><?=$p['name']?></strong></td>
+							<td valign="top"><a href="/package/<?=$p['name']?>"><strong><?=$p['name']?></strong></td>
 							<td valign="top"><?=$p['summary']?></td>
 							<td valign="top">
 								<?if($_browser->is_ie5up):?>

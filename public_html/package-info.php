@@ -79,7 +79,7 @@ while ($row = $sth->fetchRow()) {
     if (!empty($row['wishlist'])) {
         $accounts .= " [<a href=\"/wishlist.php/{$row['handle']}\">wishlist</a>]";
     }
-    $accounts .= " [<a href=\"/account-info.php?handle={$row['handle']}\">details</a>]<br />";
+    $accounts .= " [<a href=\"/user/{$row['handle']}\">details</a>]<br />";
 }
 
 if (!$relid) {

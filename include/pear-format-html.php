@@ -406,7 +406,7 @@ function user_link($handle)
         return false;
     }
 
-    return sprintf("<a href=\"/~%s\">%s</a>%s\n",
+    return sprintf("<a href=\"/user/%s\">%s</a>%s\n",
                    $handle,
                    $row['name'],
                    ($row['wishlist'] != "" ? " [<a href=\"" . htmlentities($row['wishlist']) . "\">Wishlist</a>]" : "")

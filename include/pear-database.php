@@ -508,7 +508,7 @@ class maintainer
         $old = $dbh->getAssoc($sql, false, array($pkgid));
         $old_users = array_keys($old);
         $new_users = array_keys($users);
-        //printr($old); printr($users);
+        // printr($old); printr($users);
         foreach ($users as $user => $role) {
             if (!maintainer::isValidRole($role)) {
                 return PEAR::raiseError("invalid role '$role' for user '$user'");
@@ -564,11 +564,11 @@ class release
     }
 
     // }}}
-    // {{{ +proto string release::upload(string, string, string, string, binary, string)
+    // {{{ +proto string release::upload(string, string, string, string, binary, string, [bool])
 
-    function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
+    function upload($package, $version, $state, $relnotes, $tarball, $md5sum, $forceUpload = false)
     {
-        $ref = release::validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum);
+        $ref = release::validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum, $forceUpload);
         if (PEAR::isError($ref)) {
             return $ref;
         }
@@ -576,9 +576,9 @@ class release
     }
 
     // }}}
-    // {{{ +proto string release::validateUpload(string, string, string, string, binary, string)
+    // {{{ +proto string release::validateUpload(string, string, string, string, binary, string, [bool])
 
-    function validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum)
+    function validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum, $forceUpload = false)
     {
         global $dbh, $auth_user;
         // (2) verify that package exists
@@ -588,14 +588,16 @@ class release
         }
 
         // (3) verify that version does not exist
-        $test = $dbh->getOne("SELECT version FROM releases ".
-                             "WHERE package = ? AND version = ?",
-                             array($package_id, $version));
-        if (PEAR::isError($test)) {
-            return $test;
-        }
-        if ($test) {
-            return PEAR::raiseError("already exists: $package $version");
+        if (!$forceUpload) {
+            $test = $dbh->getOne("SELECT version FROM releases ".
+                                 "WHERE package = ? AND version = ?",
+                                 array($package_id, $version));
+            if (PEAR::isError($test)) {
+                return $test;
+            }
+            if ($test) {
+                return PEAR::raiseError("already exists: $package $version");
+            }
         }
 
         // (4) store tar ball to temp file

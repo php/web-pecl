@@ -18,7 +18,7 @@ $GLOBALS['author_menu'] = array(
 
 $GLOBALS['admin_menu'] = array(
     'admin.php'           => 'Account Requests',
-    'category-manage.php' => 'Manage Categories'
+    'category-manager.php' => 'Manage Categories'
 );
 
 $GLOBALS['_style'] = '';

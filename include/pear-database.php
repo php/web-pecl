@@ -331,7 +331,7 @@ class package
     {
         global $dbh;
 
-        if ($pkg === (string)((int)$pkg)) {
+        if (is_int($pkg)) {
             $what = "id";
         } else {
             $what = "name";
@@ -339,7 +339,7 @@ class package
         $pkg_sql = "SELECT p.id AS packageid, p.name AS name, ".
              "c.id AS categoryid, c.name AS category, ".
              "p.stablerelease AS stable, p.license AS license, ".
-             "p.summary AS summary, ".
+             "p.summary AS summary, p.homepage AS homepage, ".
              "p.description AS description".
              " FROM packages p, categories c ".
              "WHERE c.id = p.category AND p.{$what} = ?";

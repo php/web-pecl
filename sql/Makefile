@@ -68,6 +68,12 @@ destroy:
 # of foreign keys to other tables that still exist.
 	$(MAKE) -s drop
 
+setup:
+	mysqladmin -uroot create pear
+	mysql -uroot -e "INSERT INTO user VALUES('localhost','pear','','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y')" mysql
+	mysql -uroot -e "INSERT INTO db VALUES('localhost','pear','pear','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y')" mysql
+	mysqladmin -uroot reload
+
 drop: clean
 	cat $(SQL_FILES) | ./create2drop -$(SQL_TYPE) | $(SQL_PIPE_COMMAND) > drop.out
 

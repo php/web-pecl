@@ -34,7 +34,7 @@ while ($sth->fetchInto($row)) {
     } // XXXX change me with elseif (show table head only when there are values)
     if ($nrow == 0) {
         $table->addRow(array("Category", "#&nbsp;Packages",
-							 "#&nbsp;Sub-<br />categories", "Summary"),
+                             "#&nbsp;Sub-<br />categories", "Summary"),
                              'bgcolor="#ffffff"', 'TH');
     }
     settype($npackages, 'string');

@@ -55,15 +55,15 @@ To get all leaf nodes:
 
  */
 function visit_node(&$tree, $node, &$cnt, $debug) {
-	// XXX this stuff seriously needs to be reimplemented
-	static $pkg_visitno, $cat_visitno;
+    // XXX this stuff seriously needs to be reimplemented
+    static $pkg_visitno, $cat_visitno;
     if (empty($pkg_visitno) || empty($node)) {
         $pkg_visitno = 1;
     }
-	if (empty($cat_visitno) || empty($node)) {
-		$cat_visitno = 1;
-	}
-	$tree[$node]['cat_left'] = $cat_visitno++;
+    if (empty($cat_visitno) || empty($node)) {
+        $cat_visitno = 1;
+    }
+    $tree[$node]['cat_left'] = $cat_visitno++;
     $tree[$node]['pkg_left'] = $pkg_visitno;
     $inc = 1;
     if (isset($cnt[$node])) {
@@ -118,8 +118,8 @@ function renumber_visitations($debug = false)
         settype($parent, 'integer');
         $tree[$parent]["children"][] = $id;
         $tree[$id]["parent"] = $parent;
-		$cat_oldleft[$id] = (int)$cat_left;
-		$cat_oldright[$id] = (int)$cat_right;
+        $cat_oldleft[$id] = (int)$cat_left;
+        $cat_oldright[$id] = (int)$cat_right;
         $pkg_oldleft[$id] = (int)$pkg_left;
         $pkg_oldright[$id] = (int)$pkg_right;
         if (!isset($pkg_count[$id])) {
@@ -128,8 +128,8 @@ function renumber_visitations($debug = false)
             $new_count[$id] = $pkg_count[$id];
         }
     }
-	$pkg_visitno = 0;
-	$cat_visitno = 0;
+    $pkg_visitno = 0;
+    $cat_visitno = 0;
     visit_node($tree, 0, $pkg_count, $pkg_visitno, $debug);
     foreach ($tree as $node => $data) {
         if (!isset($pkg_oldleft[$node])) {
@@ -140,7 +140,7 @@ function renumber_visitations($debug = false)
         $cl = $data["cat_left"];
         $cr = $data["cat_right"];
         if ($pkg_oldleft[$node] == $pl && $pkg_oldright[$node] == $pr &&
-		    $cat_oldleft[$node] == $cl && $cat_oldright[$node] == $cr) {
+            $cat_oldleft[$node] == $cl && $cat_oldright[$node] == $cr) {
             if ($debug) {
                 print "keeping $node<br />\n";
             }
@@ -150,14 +150,14 @@ function renumber_visitations($debug = false)
             print "updating $node<br />\n";
         }
         $query = "UPDATE categories SET pkg_left=$pl, pkg_right=$pr";
-		$query .= ", cat_left=$cl, cat_right=$cr";
+        $query .= ", cat_left=$cl, cat_right=$cr";
         if (isset($new_count[$node])) {
             $query .= ", npackages={$new_count[$node]}";
         }
         $query .= " WHERE id=$node";
-		if ($debug) {
-			print "$query\n";
-		}
+        if ($debug) {
+            print "$query\n";
+        }
         $dbh->query($query);
     }
     return DB_OK;
@@ -195,11 +195,11 @@ function add_category($data)
     if (DB::isError($err)) {
         return $err;
     }
-	$err = renumber_visitations();
-	if (PEAR::isError($err)) {
-		return $err;
-	}
-	return $id;
+    $err = renumber_visitations();
+    if (PEAR::isError($err)) {
+        return $err;
+    }
+    return $id;
 }
 
 // }}}
@@ -211,18 +211,18 @@ function add_package($data)
     global $dbh;
     // name, category
     // license, summary, description
-	// lead
+    // lead
     extract($data);
     if (empty($license)) {
         $license = "PEAR License";
     }
-	if (!empty($category) && (int)$category == 0) {
-		$category = $dbh->getOne("SELECT id FROM categories WHERE name = ?",
-								 array($category));
-	}
+    if (!empty($category) && (int)$category == 0) {
+        $category = $dbh->getOne("SELECT id FROM categories WHERE name = ?",
+                                 array($category));
+    }
     if (empty($category)) {
         return PEAR::raiseError("add_package: invalid `category' field");
-	}
+    }
     if (empty($name)) {
         return PEAR::raiseError("add_package: invalid `name' field");
     }
@@ -236,7 +236,7 @@ function add_package($data)
         return $err;
     }
     if (isset($lead) && DB::isError($err = add_maintainer($id, $lead, 'lead'))) {
-	return $err;
+        return $err;
     }
     if (DB::isError($err = renumber_visitations())) {
         return $err;

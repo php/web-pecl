@@ -4,69 +4,88 @@
   <title>x</title>
 </head>
 <body>
-<small><i>by Alan Knowles alan_k@php.net</i></small>
-<p>...<br>
+<small><i>by Alan Knowles (alan_k@php.net)</i></small>
+<p>After Last weeks hectic activity, this week calmed down with only 2 Stable
+and 2 Beta Releases, along with continuing discussion on making documentation
+as easy as possible, New Package Statistics, Signed Binary releases, PHPDoc
+back to life and 2 New C extensions in PECL.<br>
 </p>
 <hr>
+
+
 <h2>New Releases</h2>
+
+<h3>Stable</h3>
+<b>Science_Chemistry</b> - Classes to represent &nbsp;Atoms, Molecules and Macromolecules, 
+<b>HTML_Javascript -</b> for working with Javascript
+
 <h3>Beta</h3>
-....
-<h3>Devel</h3>
-....
+<b>Math_Vector</b> - For doing 2D and 3d vector Maths, 
+<b>MDB</b> - the Metabase database Abstraction layer PEAR port.
 <hr>
+
+
 <h2>PEAR-DEV traffic </h2>
+
 <h3>Ready made binaries and Package Signing </h3>
-Following some discussion on IRC, &nbsp;Marko Karppinen Posted the plans
-for distributing binaires of PECL (php extensions). Following the recent
-OpenSSH incident where somebody put malicous code in a source distribution,
-there is obviously a heightend need for additional security and checks here.
+
+Following some discussion on IRC,  Marko Karppinen Posted the plans
+for distributing binaries of PECL (php extensions). Following the recent
+OpenSSH incident where somebody put malicious code in a source distribution,
+there is obviously a heightened need for additional security and checks here.
 For more details on the proposal please read the post <a
- href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102769689219883&amp;w=2">here</a>
+ href="http://marc.theaimsgroup.com/?l=pear-dev&m=102769689219883&w=2">here</a>
+
 <h3>Making Documentation easier</h3>
 Currently underway and under consideration are 3 projects to try and make
 writing documentation PEAR easier. <br>
 <ul>
   <li>HTML to Docbook, Martin Jansen proposed a very simple mapping of HTML
 type &lt;H1&gt; type tags to docbook - see the notes <a
- href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102770762000379&amp;w=2">here</a></li>
-  <li>Phpdoc to Docbook, Alexander and Alan both mentioned this - Alans approach
-was to extend the PHP_Codedoc tool that he had written to do this.</li>
+ href="http://marc.theaimsgroup.com/?l=pear-dev&m=102770762000379&w=2">here</a></li>
+  <li>Phpdoc to Docbook, Alexander and Alan both mentioned this - Alan's approach 
+     was to extend the PHP_Codedoc tool that he had written to do this.</li>
   <li>OpenOffice to Docbook,&nbsp; Wolfram Kriesing was considering writing
-a convertor for openoffice XML -&gt; docbook</li>
+      a converter for openoffice XML -&gt; docbook</li>
 </ul>
+
 <h3>Package Statistics Improved </h3>
 Tal Peer, added a <a href="http://pear.php.net/package-stats.php">full summary</a>
 for the package statistics, so you can see a list of how many times all the
-packages has been downloaded.&nbsp;
-<h3>High Speed file access. </h3>
-After a brief dicussion about performance and file reading, Thomas Cox posted
-a&nbsp; <a
- href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102819831726965&amp;w=2">quick
-benchmark</a> &nbsp;illustrating fread() being noticably faster than implode('',file())<br>
-<br>
-<h3>new PECL extenstion - PICOSQL </h3>
-Bindings for the <a href="http://www.picosoft.it/picosql/index.html">picosql</a>
-database have been added to PECL, picosql is a proprietary relational database
-that has 'brought out into the open', with a LGPL licence.<br>
-<h3>new PECL extenstion - python </h3>
-John Praise Added his python extension to PECL, enabling you to mix Python
-and PHP, and access Python variables from php.<br>
-<br>
+packages has been downloaded.
+
+<h3>High Speed file access.</h3>
+After a brief discussion about performance and file reading, Thomas Cox posted
+a <a  href="http://marc.theaimsgroup.com/?l=pear-dev&m=102819831726965&w=2">quick
+benchmark</a>  illustrating fread() being noticeably faster than implode('',file()).
+
 <h3>PHPDoc back to life </h3>
 The <a href="http://www.ActiveState.com/ActiveAwards2002">Award Winning</a>
 Derick Rethans has picked up the gauntlet of fixing up PHPdoc, and is looking
-for suggestions about what could be added to it.<br>
-<br>
+for suggestions about what could be added to it.
+
 <h3>Bugs and Fixes </h3>
 Thanks to these people for spotting and fixing some bugs, Pawe&#322; Go&#322;aszewski,
-Thomas Schulz, James Flemer, Peter Bowen<br>
-<br>
+Thomas Schulz, James Flemer, Peter Bowen
+
+<hr>
+<h2>New and Proposed Packages</h2>
+
+<h3>PICOSQL</h3>
+Bindings for the <a href="http://www.picosoft.it/picosql/index.html">picosql</a>
+database have been added to PECL, picosql is a proprietary relational database
+that has 'brought out into the open', with a LGPL license.
+
+<h3>Python</h3>
+John Praise Added his python extension to PECL, enabling you to mix Python
+and PHP, and access Python variables from php.
+
 <hr>
 <h2>Development </h2>
 Active on CVS this week has been PECL::picosql, PECL::python  Cache_Lite,
 DB, MDB, PHPDoc, Archive_Tar, Mail, Auth, HTML_TreeMenu, HTML_JavaScript,
 Net_Pop3, Net_Sieve, Net_URL, Pager, Mail_Mime, HTTP_Request, Tree, Math_Vector,
 Science_Chemistry.<br>
-<br>
+
 </body>
 </html>

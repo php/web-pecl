@@ -25,7 +25,7 @@ response_header("ActiveState Active Award for Stig Bakken");
 
 <div style="margin-left:2em;margin-right:2em">
 
-<p><a href="http://pear.php.net/account-info.php?handle=ssb">Stig Bakken</a>
+<p><?php echo user_link("ssb"); ?>
 has received an ActiveState Active Award for founding and working on PEAR.
 (Read the <a href="http://www.activestate.com/Corporate/ActiveAwards/">full
 announcement</a>.) Congratulations!</p>

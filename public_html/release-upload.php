@@ -133,7 +133,8 @@ if ($display_form) {
 
 Upload a new package distribution file built using `<code>pear
 package</code>' here.  The information from your package.xml file will
-be displayed on the next screen for verification.
+be displayed on the next screen for verification. The maximum file size
+is 16 MB.
 
 <p />
 
@@ -157,10 +158,12 @@ Uploading new releases is restricted to each package's lead developer(s).
         print "</table>\n";
     }
 
+    $bb = new BorderBox("Upload");
     $form =& new HTML_Form($_SERVER['PHP_SELF'], 'POST');
     $form->addFile("distfile", "Distribution file");
     $form->addSubmit("upload", "Upload!");
     $form->display();
+    $bb->end();
 
     if ($jumpto) {
         print "\n<script language=\"JavaScript\">\n<!--\n";

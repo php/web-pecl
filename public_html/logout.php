@@ -4,8 +4,10 @@ if (isset($showmsg)) {
     $delay = 3;
     Header("Refresh: $delay; url=\"$PHP_SELF\"");
     response_header("Logging Out...");
+//	$ua = $HTTP_USER_AGENT;
+	$logoutmsg = "Authorization failed. Retry?";
     report_error("Press 'Cancel' when presented a new login box or ".
-		 "one saying 'authorization failed, retry?'<br />");
+		 "one saying '$logoutmsg'<br />");
     response_footer();
 } else {
     Header("HTTP/1.0 401 Unauthorized");

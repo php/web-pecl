@@ -1,6 +1,6 @@
 <?php
 
-auth_require();
+auth_require(false);
 $url = "http://$HTTP_HOST";
 if ($SERVER_PORT != 80) {
     $url .= ":$SERVER_PORT";

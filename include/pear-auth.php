@@ -1,6 +1,6 @@
 <?php
 
-function auth_reject($realm = null, $message = null)
+function auth_reject($realm = null, $message = null, $refresh = false)
 {
     if ($realm === null) {
         $realm = PEAR_AUTH_REALM;
@@ -10,14 +10,16 @@ function auth_reject($realm = null, $message = null)
     }
     Header("HTTP/1.0 401 Unauthorized");
     Header("WWW-authenticate: basic realm=\"$realm\"");
-    Header("Refresh: 3; url=/");
+	if ($refresh) {
+		Header("Refresh: 3; url=/");
+	}
     response_header($message);
     report_error($message);
     response_footer();
     exit;
 }
 
-function auth_require($admin = false)
+function auth_require($admin = false, $refresh = false)
 {
     global $PHP_AUTH_USER, $PHP_AUTH_PW, $dbh;
     global $auth_user;
@@ -49,7 +51,7 @@ function auth_require($admin = false)
         if (cvs_verify_password($user, $PHP_AUTH_PW)) {
             $auth_user = (object)array('handle' => $user);
         } else {
-            auth_reject();
+            auth_reject(null, null, $refresh);
         }
     }
     $auth_user->_readonly = true;

@@ -10,7 +10,7 @@ CREATE TABLE packages (
        summary	      TEXT,
        description    TEXT,
        homepage       VARCHAR(255),
-
+       doc_link       VARCHAR(255),
        PRIMARY KEY(id),
        UNIQUE INDEX(name),
        INDEX(category)

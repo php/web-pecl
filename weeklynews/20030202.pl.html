@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- $Id$ -->
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+<p>
+ <i>
+  <small>
+   autorzy: 
+   <a href="http://www.appelsiini.net/~tuupola/">Mika Tuupola</a> (tuupola@appelsiini.net), 
+   <a href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a> (paj@pearfr.org), 
+   t³umaczenie: Robert Janeczek (rashid@php.net)
+  </small>
+ </i>
+</p>
+<p>
+<p>
+ Od tego tygodnia rusza nowa sekcja nowinek tygodniowych PEAR - "Pakiet tygodnia".
+ W tym tygodniu omawiamy APD autorstwa 
+ <a href="http://pear.php.net/account-info.php?handle=gschlossnagle">George Schlossnagle</a>,
+ profiler/debugger "pe³n± gêb±".
+</p>
+<p>
+ W tym tygodniu listy mailowe by³y dosyæ spokojne. Konsekwentnie wzrasta ruch
+ w CVS i ukazuje siê wiêcej wydañ ni¿ zwykle. Podczas pisania tego
+ podsumowania nowych wydañ w tym tygodniu by³o 14.
+</p>
+<p>
+ Omówimy szczegó³y <a href="#3">obs³ugi b³êdów</a> w konstruktorach,
+ nowych <a href="#4">cech phpDocumentora</a>, 
+ kolejny <a href="#2">tutorial dla Mac OS X</a> i
+ <a href="#5">siedem proponowanych pakietów</a>.
+</p>
+
+<hr>
+ <!-- SECTION --><a name="1"></a>
+<h2>Pakiet tygodnia</h2>
+<h3>APD George'a Schlossnagle, pe³nowarto¶ciowy profiler/debugger</h3>
+<h3>Kim jest George Schlossnagle ?</h3>
+<p>
+ George rozpocz±³ pracê na systemach UNIXowych 12 lat temu od pisania
+ procedur do analizy ró¿niczkowej w FORTRANIE. Z webem zacz±³ siê
+ bawiæ 8 lat temu, a od piêciu lat zajmuje siê tym zawodowo.
+ Aktualnie jest konsultantem w <a href="http://www.omniti.com/">OmniTI Computer 
+ Consulting</a>, firmie dzia³aj±cej w bran¿y konsultingu technologicznego,
+ specjalizuj±c± siê w budowie i zarz±dzaniu skalowalymi systemami
+ web i email.
+</p>
+<h3>Jakie s± zalety i wady publikowania twojego dzie³a w PEAR/PECL ?</h3>
+ <p>
+ Jedyn± rzecz±, której ¿a³ujê w zwi±zku z publikowaniem apd w PECL jest to, 
+ ¿e nie zrobi³em tego wcze¶niej. Z punktu widzenia zarz±dzania
+ kodem i wersjami praca w PECL nie ró¿ni siê od pracy nad lokalnie 
+ zarz±dzanymi projektami. Narzêdzia do publikowania PEAR czyni±
+ publikowanie kolejnych wersji bardzo prostymi. Oprócz tego obserwujê
+ zwiêkszone zainteresowanie projektem ze strony spo³eczno¶ci PHP.
+ Dowiedzenie siê, ¿e apd zosta³o ³atwo zainstalowane pod 4.3 za pomoc±
+ instalatora PEAR (bez wysi³ku z mojej strony) jest naprawde bardzo
+ przyjemne.
+ </p>
+<h3>Jakie s± twoje nadzieje na przysz³o¶æ PEAR/PECL ?</h3>
+<p>
+ S±dzê, ¿e PEAR i PECL s± przysz³o¶ciowymi rozwi±zaniami w kwestii
+ rozszerzania PHP i zarz±dzania pakietami. Poprzez oddzielenie wersji
+ PHP od wersji rozszerzeñ mo¿emy zwiêkszyæ szybko¶æ, jako¶æ i czêsto¶æ
+ wydañ PHP. Osobi¶cie mam nadziejê na zwiêkszony nacisk na testy 
+ poszczególnych modu³ów i pakietów PEAR/PECL (moje w³asne pakiety
+ bardzo tego potrzebuj±). Dodanie testów powinno u³atwiæ przerabianie
+ i zmniejszyæ ryzyko potrzeby zmian w innych pakietach, które 
+ s± od nich zale¿ne. Jako, ¿e testowanie modu³ów w procesie buildowania
+ php staje siê coraz dojrzalsze i coraz wiêcej rozszerzeñ jest przenoszonych
+ do PECL, mam nadziejê zauwa¿yæ poprawê kompatybilno¶ci miêdzyplatformowej
+ wielu sPECLowanych rozszerzeñ.
+</p>
+<h3>APD, czy mo¿esz opisaæ ten pakiet ?</h3>
+<p>
+ apd jest zend_extension, które dodaje mo¿liwo¶ci profilowania i
+ debugowania do Zend Engine. apd mia³ skromne pocz±tki.  Mój kolega -
+ Dan Cowgill - by³ bardzo sfurstrowany brakiem pe³nych mo¿liwo¶ci
+ ¶ledzenia stosu wywo³añ (to by³o w czasach 4.1, d³ugo przed 
+ pojawieniem siê debug_backtrace()). Po dodaniu tej mo¿liwo¶ci, 
+ sta³o siê oczywiste, ¿e stworzony przez nas engine ma znakomity
+ interfejs do tworzenia informacji do profilowania skryptów.
+ </p>
+ <p>
+ Mo¿liwo¶æ profilowania okaza³a siê bardzo przydatna do pracy, któr±
+ w tym czasie siê zajmowa³em. Wymaga³± ona podniesienia wydajno¶ci
+ ¶rodowiska produkcyjnego dla kilku stron - kod mia³ kilka milionów
+ linii kodu. Bez mo¿liwo¶ci profilowania optymalizacja skryptów
+ by³a jak zgadywanka. Po uruchomieniu wersji pre-0.1 apd, 
+ potrafili¶my zwiêkszyæ na czê¶ci stron wydajno¶æ o 500%.
+ </p>
+ <p>
+ Tu¿ po wstêpnym wydaniu, Thies Arntzen zg³osi³ potrzebê zaimplementowania
+ udostêpniania informacji profiluj±cych nie w formacie przydatnym dla
+ cz³owieka, a czym¶ u¿ytecznym dla narzêdzia gprof. Trochê to zajê³o, 
+ ale wraz z wersj± 0.3 format 'pprof' zosta³ standardowym i w¶ród plików
+ umie¶cili¶my narzêdzie 'pprofp' do jego odczytu. To by³ znacz±cy
+ krok, poniewa¿ pozwala³ ³atwo przeprowadziæ przetwarzanie po ¶ledzeniu
+ (wy¶wietlanie grafów wywo³añ, wy¶wietlanie przy u¿yciu ró¿nych metryk 
+ czasowych itp.)
+ </p>
+ <p>
+ apd ma równie¿ inne ciekawe mo¿liwo¶ci. Najbardziej zauwa¿alne jest 
+ wsparcie dla w pe³ni interaktywnego debuggera, które zosta³o napisany
+ przez Alan'a Knowles. To pozwala ¶rodowisku programistycznemu
+ na wykonywanie skryptu krok po kroku a tak¿e ma mo¿liwo¶æ
+ wy¶wietlania i modyfikacji zmiennych w ka¿dym kroku. Jedynym
+ ¶rodowiskiem o którym wiem, ¿e wspiera to w pe³ni jest niesamowity
+ phpMole Alan'a, które to narzêdzie polecam wszystkim zainteresowanym
+ dobrym php ide.
+ </p>
+ <p>
+ Kilka mo¿liwo¶ci nie jest powszechnie u¿ywanych, nale¿± do nich 
+ funkcje rename_function() i override_function(), które pozwalaj±
+ na podmianê istniej±cej funkcji w tablicy symboli na jak±¶ inn±.
+ Mi³o by by³o zintegrowaæ funkcje podobne do tych z Zend Engine. Inne
+ w³a¶ciwo¶ci prawdopodnobnie siê przeterminuj± z czasem.  Polecenia
+ do ¶ledzenia stosu zosta³y dodane jako debug_backtrace i 
+ debug_print_backtrace, a funkcje do przegl±du tablicy 
+ symboli nie s± specjalnie u¿yteczne.
+</p>
+<h3> Czego aktualnie potrzebujesz od spo³eczno¶ci ?</h3>
+<p>
+Miliarda dolarów... mwahaha!<br />
+
+A tak na powa¿nie, to kiedy zacz±³em pisaæ oprogramowanie open
+source w 1999, mylnie s±dzi³em, ¿e stworze projekt i ludzie
+siê bêd± zabijaæ, ¿eby dodaæ funkcjonalno¶æ, której potrzebuje. To
+zdecydowanie nie tak dzia³a. W rzeczywisto¶ci, podobnie jak wiêkszo¶æ
+programistów open source, których znam, spêdza conajmniej tyle samo
+czasu dodaj±c funkcjonalno¶æ, której potrzebuj± inni ludzie, co
+dodaj±c to, czego siê potrzebuje samemu. Moim celem podczas
+pisania apd by³o przede wszystkim utworzenie narzêdzia, które
+pomo¿e mi w mojej pracy a na drugim miejscu pomagaæ innym w wykonywaniu
+podobnych zadañ. Je¶li apd pomaga ludziom pisaæ szybszy i lepszy kod, 
+to projekt jest sukcesem jak dla mnie.<br/><br/>
+
+Chcia³bym podziêkowaæ spo³eczno¶ci u¿ytkowników apd za:<br/><br/>
+
+
+<li />Sta³e podsy³anie dobrych raportów o b³êdach, któe u³atwiaj± ich poprawianie</li>
+<li />Wyrozumia³o¶æ, kiedy poprawianie zajmuje trochê</li><br/>
+
+
+A oto moja prywatna lista TODO dla apd, zawsze chêtnie przyjmê pomoc
+w realizacji tych punktów:<br/><br/>
+
+
+<li />Ulepszenie statystyk u¿ycia pamiêci. Nie jestem pewiem czy to jest
+mo¿liwe, ale jest taka potrzeba a mnie nie zadawala aktualna 
+implementacja.</li>
+<li />Pe³ny port na windows.  Markus Fischer zrobi³ to dla v0.1, ale
+zmiany profilowania zepsu³y jego pracê, a ja nie jestem
+programist± windows.</li>
+<li />Integrowanie informacji profiluj±cych z jakim¶ IDE.</li>
+<br />
+Na koniec, zawsze mi³o jest s³yszeæ o sukcesach innych ludzi. Na
+PHP-Con 2002 dowiedzia³em siê, ¿e Yahoo! wewnêtrznie korzysta z 
+apd do profilowania skryptów. ¦wiadomo¶æ, ¿e ludzie u¿ywaj± mojego
+oprogramowania i s± szczê¶liwi czyni to wszystko wartym wysi³ku.
+</p>
+<br />
+DZiêkujemy George'owi za ten wywiad
+<h2>W prasie</h2>
+<!-- SECTION --><a name="2"></a>
+<h3>PEAR na Mac OS X ponownie</h3>
+<p>
+ Tutorial opisuj±cy korzystanie z PEAR na Mac OS X wspomniany w poprzednim
+ wydaniu jest obecnie równie¿ opublikowany na
+ <a href="http://www.macdevcenter.com/pub/a/mac/2003/01/21/pear_macosx.html">MacDevCenter</a>. 
+ Poniewa¿ ta strona jest czê¶ci±  
+ <a href="http://www.oreillynet.com/">O'Reilly Network</a> o PEAR bêdzie
+ nieco g³o¶niej dziêki temu artyku³owi.
+</p>
+
+<hr>
+<p>
+Je¶li ktokolwiek z was wyczyta gdzie¶ artyku³y, czy newsy o PEAR
+- chêtnie umie¶cimy odno¶niki do nich w weekly news, wystarczy nam 
+je podes³aæ (<a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>).
+
+</p>
+
+<hr>
+
+<h2>Skrót z PEAR-DEV</h2>
+
+<!-- SECTION --><a name="3"></a>
+<h3>Obs³uga b³êdów w konstruktorach?</h3>
+<p>
+ Ostatnio mia³a miejsce krótka dyskusja na temat sugerowanego
+ sposobu obs³ugi b³êdów w konstruktorach. Odpowied¼ jest 
+ naprawdê prosta: mimo tego, ¿e jest mo¿liwe ustawienie
+ $this na instancjê PEAR_Error, to odradzamy u¿ycie tej
+ nieudokumentowanej mo¿liwo¶ci. Zachowanie to zmieni siê
+ w PHP5. Lepszym sposobem jest unikanie wszelkich zawodnych
+ operacji w konstruktorze i u¿ycie osobnych metod w miejscach
+ gdzie mo¿e byæ potrzeba zwrócenia b³êdu. Dobrym przyk³adem takiej
+ metody powinna byæ dowolna metoda wzorca factory. 
+</p>
+<!-- SECTION --><a name="4"></a>
+<h3>Nowe mo¿liwo¶ci phpDocumentor</h3>
+<p>
+ Grupa rozwijaj±ca <a href="http://phpdocu.sourceforge.net/">phpDocumentor</a> 
+ zaimplementowa³a nowe tagi w ich narzêdziu dokumentacyjnym. S± w¶ród nich
+ taki takie jak @source, @internal, @filesource, @example czy @internal. 
+ W poszukiwaniu wiêkszej ilo¶ci informacji przeczytaj 
+ <a href="http://phpdocu.sourceforge.net/Release-1.2.0beta2">release
+ notes</a>.
+</p>
+
+
+<h3>Bugi i poprawki</h3>
+<p>
+  Dziêki tym ludziom wykryto kilka nowych b³êdów: 
+  Ondrej Jombik, Andres Käver, Patrick O'Lone, Bruno Pedro and
+  Samuli Tuomola
+</p>
+<hr>
+
+<h2>Nowe i proponowane pakiety</h2>
+<!-- SECTION --><a name="5"></a>
+<h3>MDB_QueryTool</h3>
+<p>
+ Lorenzo Alberton przeniós³ DB_QueryTool Wolfram'a Kriesing
+ tak, aby wspó³pracowa³ z MDB.
+</p>
+<!-- SECTION --><a name="6"></a>
+<h3>Net_UserAgent_Mobile</h3>
+<p>
+ Kubo Atsuhiro zaproponowa³ Net_UserAgent_Mobile, który
+ mo¿e byæ u¿ywany do odczytu w³a¶ciwo¶ci wy¶wietlania 
+ telefonu komórkowego keitai. Wspierane systemu to 
+ i-mode NTT DoCoMo,  EZweb KDDI i  J-Sky J-PHONE.
+</p>
+<!-- SECTION --><a name="7"></a>
+<h3>Auth_Container_POP3</h3>
+<p>
+ Yavor Shahpasov zaproponowa³ nowy kontener dla Auth. 
+ Umo¿liwia on autentykacjê przy u¿yciu serwerów POP3.
+</p>
+
+<!-- SECTION --><a name="8"></a>
+<h3>Auth_RADIUS, Auth_Container_Radius, Crypt_CHAP</h3>
+<p>
+ Michael Bretterklieber, opiekun PECL::radius, zaproponowa³
+ kilka pakietów zwi±zanych z autentukacj±. Auth_RADIUS jest
+ nak³adk± na PECL::radius. Crypt_CHAP jest u¿ywane do generacji
+ pakietów CHAP dla ró¿nych wersji CHAP. Auth_Container_Radius 
+ jest nowym kontenerem dla pakietu Auth.
+</p>
+<!-- SECTION --><a name="9"></a>
+<h3>SearchEngine_Mnogosearch</h3>
+<p>
+ Bertrand Mansion zaproponowa³ pakiet SearchEngine_Mnogosearch,
+ który jest interfejsem PHP do popularnej wyszukiwarki
+ <a href="http://www.mnogosearch.org/">mnoGoSearch</a>.
+</p>
+
+<h2>Rozwój</h2>
+<p>
+   Ruch w CVS w tym tygodniu odbywa³ siê w nastêpuj±cych pakietach:
+  HTML_Template_Flexy, Cache_Lite, PECL::Radius, PEAR, DBA, 
+  DBA_Relational, HTTP_Header, MDB, Net_SMTP, Mail, Log, File,
+  I18N, SpreadSheet_Excel_Writer, MDB_QueryTool, Payment_Clieop,
+  PECL::bcompiler, Tree, DB_QueryTool, HTML_Template_Xipe, 
+  DB_DataObject, HTML_QuickForm, PECL::imagick, Auth,
+  SearchEngine_Mnogosearch, Net_URL, HTTP_Request i PECL::apd.
+   
+</p>
+
+</body>
+</html>

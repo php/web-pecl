@@ -23,7 +23,7 @@ $warnings = array();
 define('BOOLEAN_SEARCH', @intval($boolean));
 
 if (isset($cmd) && $cmd == "display") {
-	@mysql_pconnect("localhost","pear","pear")
+	@mysql_connect("localhost","pear","pear")
 		or die("Unable to connect to SQL server.");
 	@mysql_select_db("pear");
 

@@ -67,7 +67,7 @@ if (!($dir = opendir($PEAR_Dir))) {
     die ("Couldn't open Pear Dir: $PEAR_Dir");
 }
 
-$xml  = "< ?xml version=\"1.0\" encoding=\"ISO-8859-1\" ? >\n";
+$xml  = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n";
 $xml .= "<Packages>\n";
 
 while ($file = readdir($dir)) {
@@ -91,12 +91,12 @@ while ($file = readdir($dir)) {
 
         $xml .=
         "<Package>\n".
-        "    <Name>".$packager->pkginfo['Package,Name']."</Name>\n".
-        "    <Summary>".$packager->pkginfo['Package,Summary']."</Summary>\n".
+        "    <Name>".$packager->pkginfo['package']."</Name>\n".
+        "    <Summary>".$packager->pkginfo['summary']."</Summary>\n".
         "    <Release>\n".
-        "        <Version>".$packager->pkginfo['Release,Version']."</Version>\n".
-        "        <Date>".$packager->pkginfo['Release,Date']."</Date>\n".
-        "        <Notes>".$packager->pkginfo['Release,Notes']."</Notes>\n".
+        "        <Version>".$packager->pkginfo['version']."</Version>\n".
+        "        <Date>".$packager->pkginfo['release_date']."</Date>\n".
+        "        <Notes>".$packager->pkginfo['release_notes']."</Notes>\n".
         "    </Release>\n".
         "</Package>\n";
 
@@ -105,16 +105,16 @@ while ($file = readdir($dir)) {
          */
          $sth = $db->query("SELECT handle
                             FROM users
-                            WHERE handle = lcase('".$packager->pkginfo['Maintainer,Initials']."')");
+                            WHERE handle = lcase('".$packager->pkginfo['maintainer_handle']."')");
 
          if (!DB::isError($sth) && ($sth->numRows() == 0)) {
 
             $query = sprintf("INSERT INTO users
                               (handle,name,email,created,createdby)
                               VALUES ('%s','%s','%s','%s','%s')",
-                             strtolower($packager->pkginfo['Maintainer,Initials']),
-                             $packager->pkginfo['Maintainer,Name'],
-                             $packager->pkginfo['Maintainer,EMail'],
+                             strtolower($packager->pkginfo['maintainer_handle']),
+                             $packager->pkginfo['maintainer_name'],
+                             $packager->pkginfo['maintainer_email'],
                              date('Y-m-d H:i:s'),
                              'mj'   //who should be createby?
                              );
@@ -127,15 +127,15 @@ while ($file = readdir($dir)) {
          */
         $sth = $db->query("SELECT name
                            FROM packages
-                           WHERE name = '".$packager->pkginfo['Package,Name']."'");
+                           WHERE name = '".$packager->pkginfo['package']."'");
 
         if (!DB::isError($sth) && ($sth->numRows() == 0)) {
 
             $query = sprintf("INSERT INTO packages
                               (name,summary)
                               VALUES ('%s','%s')",
-                             $packager->pkginfo['Package,Name'],
-                             $packager->pkginfo['Package,Summary']
+                             $packager->pkginfo['package'],
+                             $packager->pkginfo['summary']
                              );
 
             $db->query($query);
@@ -143,8 +143,8 @@ while ($file = readdir($dir)) {
             $query = sprintf("INSERT INTO maintains
                               (handle,package)
                               VALUES ('%s','%s')",
-                             strtolower($packager->pkginfo['Maintainer,Initials']),
-                             $packager->pkginfo['Package,Name']
+                             strtolower($packager->pkginfo['maintainer_handle']),
+                             $packager->pkginfo['package']
                              );
 
             $db->query($query);
@@ -155,8 +155,8 @@ while ($file = readdir($dir)) {
          */
         $sth = $db->query("SELECT package
                            FROM  releases
-                           WHERE package = '".$packager->pkginfo['Package,Name']."'
-                           AND   version = '".$packager->pkginfo['Release,Version']."'"
+                           WHERE package = '".$packager->pkginfo['package']."'
+                           AND   version = '".$packager->pkginfo['version']."'"
                          );
 
         if (!DB::isError($sth) && ($sth->numRows() == 0)) {
@@ -164,10 +164,10 @@ while ($file = readdir($dir)) {
             $query = sprintf("INSERT INTO releases
                               (package,version,releasedate,releasenotes,doneby)
                               VALUES ('%s','%s','%s','%s','%s')",
-                             $packager->pkginfo['Package,Name'],
-                             $packager->pkginfo['Release,Version'],
-                             $packager->pkginfo['Release,Date'],
-                             $packager->pkginfo['Release,Notes'],
+                             $packager->pkginfo['package'],
+                             $packager->pkginfo['version'],
+                             $packager->pkginfo['release_date'],
+                             $packager->pkginfo['release_notes'],
                              'mj'  //who should be doneby?
                              );
 
@@ -176,9 +176,9 @@ while ($file = readdir($dir)) {
 
         /**
          * Move the tgz file to the new destination
-         */
-        rename($PEAR_Dir.'/'.$file.'/'.$packager->pkgver.'.tgz',
-               $TgzDir.'/'.$packager->pkgver.'.tgz');
+         */ 
+         rename ($PEAR_Dir.'/'.$file.'/'.$packager->pkginfo['package'].'-'.$packager->pkginfo['version'].'.tgz',
+               $TgzDir.'/'.$packager->pkginfo['package'].'-'.$packager->pkginfo['version'].'.tgz');
 
         chdir ('..');
     }

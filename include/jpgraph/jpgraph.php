@@ -16,13 +16,13 @@
 
 // The full absolute name of directory to be used as a cache. This directory MUST
 // be readable and writable for PHP. Must end with '/'
-DEFINE("CACHE_DIR", dirname(__FILE__) . "/cache/");
+DEFINE("CACHE_DIR", "/tmp/");
 
 // The URL relative name where the cache can be found, i.e
 // under what HTTP directory can the cache be found. Normally
 // you would probably assign an alias in apache configuration
 // for the cache directory. Must end with '/'
-DEFINE("APACHE_CACHE_DIR", dirname(__FILE__) . "/cache/");
+DEFINE("APACHE_CACHE_DIR", "/tmp/");
 
 // Directory for TTF fonts. Must end with '/'
 DEFINE("TTF_DIR", dirname(__FILE__) . "/ttf/");

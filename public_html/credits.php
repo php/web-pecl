@@ -1,7 +1,5 @@
 <?php
-
 response_header('Credits');
-
 ?>
 
 <h2>Credits</h2>
@@ -15,8 +13,16 @@ response_header('Credits');
   <li>Tomas V.V.Cox</li>
 </ul>
 
+<h3>PEAR documentation team</h3>
+
+<ul>
+  <li>Martin Jansen</li>
+  <li>Alexander Merz</li>
+  <li>Tomas V.V.Cox</li>
+</ul>
+
+<small>(All in alphabetic order)</small>
+
 <?php
-
 response_footer();
-
 ?>

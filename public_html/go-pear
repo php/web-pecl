@@ -139,7 +139,8 @@ $pfc_packages = array(
     'Net_Socket',
     'Net_SMTP',
     'Mail',
-    'XML_Parser'
+    'XML_Parser',
+    'phpUnit'
     );
 $config_desc = array(
     'prefix' => 'Installation prefix',
@@ -296,22 +297,22 @@ end($config_vars);
 $last = key($config_vars);
 
 if (WEBINSTALLER) {
-    if ( sizeof($www_errors)<1 ) {
+    if ( sizeof($www_errors) ) {
+        displayHTML('config');
+        exit();
+    } else {
         if (isset($_SESSION['go-pear']['DHTML']) && $_SESSION['go-pear']['DHTML'] == true && $_GET['step'] == 'install') {
             $_GET['step'] = 'preinstall';
-        };
+        }
         if ($_GET['step'] != 'install' && $_GET['step'] != 'install-progress') {
             displayHTML($_GET['step']);
             exit;
-        };
+        }
         if ($_GET['step'] == 'install-progress') {
             displayHTMLHeader();
             echo "Starting installation ...<br/>";
-        };
+        }
         ob_start();
-    } else {
-        displayHTML('config');
-        exit();
     }
 }
 
@@ -399,11 +400,6 @@ if (!$ok) {
 	};
 	$_ENV['TMPDIR'] = $_ENV['TEMP'] = $prefix.'/tmp';
 };
-
-
-
-
-
 
 while (!WEBINSTALLER) {
     print "
@@ -704,17 +700,11 @@ foreach ($tarball as $pkg => $src) {
     displayHTMLProgress($progress += round(29 / count($tarball)));
 }
 
-// Little cleanup, this will be fixed in PEAR later
-if ( WINDOWS ) {
-    @unlink($bin_dir.DIRECTORY_SEPARATOR.'.tmppear');
-}
-
 displayHTMLProgress($progress = 99);
 
 // Base installation finished
 
 ini_restore("include_path");
-
 
 if (!WEBINSTALLER) {
 	$sep = WINDOWS ? ';' : ':';
@@ -837,6 +827,11 @@ Thanks for using go-pear!
 
 ";
 
+}
+
+// Little cleanup, this will be fixed in PEAR later
+if ( WINDOWS ) {
+    @unlink($php_dir.DIRECTORY_SEPARATOR.'.tmppear');
 }
 
 if (WEBINSTALLER) {
@@ -2255,7 +2250,7 @@ function alterPhpIni($pathIni='')
     $includepath = 'include_path="'.implode($iniSep,$newPath).'"';
     $newInclude =   "$nl$nl;***** Added by go-pear$nl".
                     $includepath.
-                    $nl."*****".
+                    $nl.";*****".
                     $nl.$nl;
 
     $arrayIni[$foundAt[0]] =  $newInclude;

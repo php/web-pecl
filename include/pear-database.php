@@ -514,7 +514,7 @@ class maintainer
     function add($package, $user, $role)
     {
         global $dbh, $auth_user;
-        if (empty($auth_user->admin) && !user::maintains($auth_user->handle, $pkgid, 'lead')) {
+        if (empty($auth_user->admin) && !user::maintains($auth_user->handle, $package, 'lead')) {
             return PEAR::raiseError('maintainer::add: insufficient privileges');
         }
         if (!user::exists($user)) {

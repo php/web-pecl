@@ -19,12 +19,19 @@ ForceType application/x-httpd-php
 </Location>
 */
 
+// shut up or we risk getting corrupted tgz files
+error_reporting(0);
+
 function error_404($obj) {
     header('HTTP/1.0 404 Not Found');
-    echo $obj->getMessage();
-    if (DEVBOX) {
-        echo ' ' . $obj->getDebugInfo();
-    }
+	if (is_object($obj)) {
+		echo $obj->getMessage();
+		if (DEVBOX) {
+			echo ' ' . $obj->getDebugInfo();
+		}
+	} else {
+		print $obj;
+	}
     exit;
 }
 
@@ -34,8 +41,28 @@ if (!isset($PATH_INFO) || $PATH_INFO == '/') {
     PEAR::raiseError('no package selected');
 }
 $opts = explode('/', $PATH_INFO);
-$package = $opts[1];
-$version = (isset($opts[2])) ? $opts[2] : null;
-$file = (isset($opts[3])) ? $opts[3] : null;
-release::HTTPdownload($package, $version, $file);
+$ok = false;
+switch (sizeof($opts)) {
+	case 2: {
+		if (preg_match('/^([a-zA-Z0-9_]+)-(.*)\.tgz$/', $opts[1], $matches)) {
+			list(, $package, $version) = $matches;
+			$ok = release::HTTPdownload($package, $version, $opts[1]);
+		} else {
+			$ok = release::HTTPdownload($opts[1]);
+		}
+		break;
+	}
+	case 3: {
+		$ok = release::HTTPdownload($opts[1], $opts[2]);
+		break;
+	}
+	default: {
+		$ok = false;
+	}
+}
+
+if (!$ok) {
+	error_404("File Not Found");
+}
+
 ?>

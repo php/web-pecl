@@ -477,11 +477,19 @@ function incoming_details_are_valid ($in, $initial=0)
 
 function get_bugtype_mail($bug_type)
 {
+    switch ($bug_type) {
+        case 'Web Site':
+            return array('pear-webmaster@php.net', 'pear-webmaster@php.net');
+        case 'Bug System':
+            return array('pear-dev@lists.php.net', 'pear-dev@lists.php.net');
+        case 'Documentation':
+            return array('pear-doc@lists.php.net', 'pear-doc@lists.php.net');
+    }
     $maintainers = package::info($bug_type, 'authors');
     foreach ($maintainers as $data) {
         $to[] = $data['email'];
     }
-    return array($to, "pear-dev@lists.php.net");
+    return array(implode(', ', $to), "pear-dev@lists.php.net");
     /*
     print_r($maintainers);exit;
 	global $mail_bugs_to;

@@ -1,7 +1,7 @@
 <?php /* vim: set noet ts=4 sw=4: : */
-
 require_once './include/prepend.inc';
 require_once './include/cvs-auth.inc';
+
 error_reporting(E_ALL ^ E_NOTICE);
 
 /* When user submits a report, do a search and display the results before allowing
@@ -127,9 +127,11 @@ you can scroll down and click the submit button to really enter the details into
 			if (!empty($in['actres']) || $in['actres'] === '0') {
 				$fdesc .= "Actual result:\n--------------\n". $in['actres'] ."\n";
 			}
-
+            
 			$query = "INSERT INTO bugdb (bug_type,email,sdesc,ldesc,php_version,php_os,status,ts1,passwd) VALUES ('$in[bug_type]','$in[email]','$in[sdesc]','$fdesc','$in[php_version]','$in[php_os]','Open',NOW(),'$in[passwd]')";
-			$ret = mysql_query($query);
+			if (!$ret = mysql_query($query)) {
+                die("could not insert ** $query **': " . mysql_error());
+            }
 
 			$cid = mysql_insert_id();
 
@@ -147,7 +149,7 @@ you can scroll down and click the submit button to really enter the details into
 			$ascii_report.= "\n-- \nEdit bug report at http://pear.php.net/bugs/bug.php?id=$cid&edit=";
 
 			//list($mailto,$mailfrom) = get_bugtype_mail($in['bug_type']);
-            list($developers, $mailfrom) = get_bugtype_mail($in['bug_type']);
+            list($mailto, $mailfrom) = get_bugtype_mail($in['bug_type']);
 
 
 			$email = stripslashes($in['email']);
@@ -180,9 +182,7 @@ you can scroll down and click the submit button to really enter the details into
 			$extra_headers.= "Message-ID: <bug-$cid@bugs.php.net>";
 
             // mail to package developers
-            foreach ($developers as $mailto) {
-                mail($mailto, "#$cid [NEW]: $sdesc", $ascii_report."1\n-- \n$dev_extra", $extra_headers);
-            }
+            mail($mailto, "#$cid [NEW]: $sdesc", $ascii_report."1\n-- \n$dev_extra", $extra_headers);
             // mail to reporter
             mail($email, "Bug #$cid: $sdesc", $ascii_report."2\n", "From: PHP Bug Database <$mailfrom>\nX-PHP-Bug: $cid\nMessage-ID: <bug-$cid@bugs.php.net>");
             header("Location: bug.php?id=$cid&thanks=4");

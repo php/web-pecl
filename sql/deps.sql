@@ -5,5 +5,6 @@ CREATE TABLE deps (
   relation varchar(6) NOT NULL default '',
   version varchar(10) NOT NULL default '',
   name varchar(100) NOT NULL default '',
-  PRIMARY KEY  (package,release)
+  INDEX (release),
+  INDEX (package,version)
 );

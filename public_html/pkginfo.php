@@ -29,19 +29,19 @@ $release  = '1.3';
 $release_date  = '2000-01-34';
 $release_notes = 'Bug fix release';
 
-// Authors data
+// Accounts data
 $sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, m.role
                    FROM maintains m, users u
                    WHERE m.package = $pacid
                    AND m.handle = u.handle");
-$authors  = '';
+$accounts  = '';
 while ($sth->fetchInto($row)) {
-    $authors .= "<tr><td>{$row['name']}";
+    $accounts .= "<tr><td>{$row['name']}";
     if ($row['showemail'] == 1) {
-        $authors .= " &lt;<a href=\"mailto:{$row['email']}\">{$row['email']}</a>&gt;";
+        $accounts .= " &lt;<a href=\"mailto:{$row['email']}\">{$row['email']}</a>&gt;";
     }
-    $authors .= " ({$row['role']}) [<a href=\"detail-author.php?handle={$row['handle']}\">details</a>]";
-    $authors .= "</td></tr>\n";
+    $accounts .= " ({$row['role']}) [<a href=\"account-info.php?handle={$row['handle']}\">details</a>]";
+    $accounts .= "</td></tr>\n";
 }
 
 response_header("Package :: $name");
@@ -56,11 +56,11 @@ response_header("Package :: $name");
     <td><?php echo $summary;?></td>
 </tr>
 <tr>
-    <th class="pack" bgcolor="#009933" width="20%">Authors</th>
+    <th class="pack" bgcolor="#009933" width="20%">Accounts</th>
     <td>
-        <!-- Authors -->
+        <!-- Accounts -->
         <table border="0" cellspacing="1" cellpadding="1" width="100%">
-        <?php echo $authors;?>
+        <?php echo $accounts;?>
         </table>
     </td>
 </tr>

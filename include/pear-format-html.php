@@ -5,22 +5,22 @@ PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 require_once 'layout.php';
 
 $GLOBALS['main_menu'] = array(
-    'index.php'           => 'Home',
-    '/manual/index.php' => 'Documentation',
-    'faq.php'             => 'PEAR FAQ',
-    'packages.php'        => 'Browse Packages',
-    'authors.php'         => 'Browse Authors',
-    'account-request.php' => 'Request Account'
+    '/index.php'           => 'Home',
+    '/manual/index.php'    => 'Documentation',
+    '/faq.php'             => 'PEAR FAQ',
+    '/packages.php'        => 'Package Browser',
+    '/accounts.php'        => 'Account Browser',
+    '/account-request.php' => 'Request Account'
 );
 
-$GLOBALS['author_menu'] = array(
-    'package-new.php'     => 'New Package',
-    'release-upload.php'  => 'Upload Release'
+$GLOBALS['user_menu'] = array(
+    '/package-new.php'     => 'New Package',
+    '/release-upload.php'  => 'Upload Release'
 );
 
 $GLOBALS['admin_menu'] = array(
-    'admin.php'            => 'Account Requests',
-    'category-manager.php' => 'Manage Categories'
+    '/admin.php'            => 'Account Requests',
+    '/category-manager.php' => 'Manage Categories'
 );
 
 $GLOBALS['_style'] = '';
@@ -42,8 +42,8 @@ function response_header($title = 'The PHP Extension and Application Repository'
         init_auth_user();
         if (!empty($auth_user)) {
             if (!empty($auth_user->registered)) {
-                global $author_menu;
-                $SIDEBAR_DATA .= draw_navigation($author_menu, 'Author Actions:');
+                global $user_menu;
+                $SIDEBAR_DATA .= draw_navigation($user_menu, 'User Actions:');
             }
             if (!empty($auth_user->admin)) {
                 global $admin_menu;

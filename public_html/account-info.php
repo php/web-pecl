@@ -1,15 +1,15 @@
 <?php
 /**
- * Details about PEAR authors
+ * Details about PEAR accounts
  *
  * $Id$
  */
 
 /**
- * Redirect to the authors list if no ID was specified
+ * Redirect to the accounts list if no ID was specified
  */
 if (!isset($HTTP_GET_VARS['handle'])) {
-    localRedirect("/authors.php");
+    localRedirect("/accounts.php");
 } else {
     $handle = $HTTP_GET_VARS['handle'];
 }
@@ -22,13 +22,15 @@ $row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 AND handle = ?",
 					array($handle));
 
 if ($row === null) {
-    PEAR::raiseError("No author information found!");
+    PEAR::raiseError("No account information found!");
 }
 
 $access = $dbh->getCol("SELECT path FROM cvs_acl WHERE handle = ?", 0,
 					   array($handle));
 
-print "<h1>Information about author \"".$handle."\"</h1>\n";
+print "<h1>Information about account \"".$handle."\"</h1>\n";
+print "<a href=\"account-edit.php?handle=$handle\">[Edit]</a>";
+print "<br />\n";
 print "<br />\n";
 
 print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
@@ -94,7 +96,7 @@ if ($sth->numRows() > 0) {
     print "<br /><br />\n";
     print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
     print " <tr>\n";
-    print "  <th colspan=\"2\" bgcolor=\"#e8e8e8\">The author is maintaining the following packages:</td>";
+    print "  <th colspan=\"2\" bgcolor=\"#e8e8e8\">Maintaining the following packages:</td>";
     print " </tr>\n<tr><th bgcolor=\"#e8e8e8\">Package Name</th>";
     print "<th bgcolor=\"#e8e8e8\">Role</th></tr>\n";
 

@@ -1,10 +1,12 @@
 <?php
 
-response_header("Users");
+auth_require();
+
+response_header("Accounts");
 
 $page_size = 20;
 
-print "<H1>Users</H1>\n";
+print "<H1>Accounts</H1>\n";
 
 $all_firstletters = $dbh->getCol('SELECT SUBSTRING(handle,1,1) FROM users '.
 								 'WHERE registered = 1 ORDER BY handle');
@@ -30,8 +32,8 @@ if (empty($show)) {
 }
 settype($offset, "integer");
 
-$nauthors = $dbh->getOne("SELECT COUNT(handle) FROM users ".
-						 "WHERE registered = 1");
+$naccounts = $dbh->getOne("SELECT COUNT(handle) FROM users ".
+						  "WHERE registered = 1");
 
 $last_shown = $offset + $page_size - 1;
 
@@ -52,6 +54,7 @@ if ($offset > 0) {
 print "</th>\n";
 print "  <td colspan=\"3\">";
 
+print '<table border="0"><tr><td>';
 foreach ($firstletters as $fl) {
 	$o = $first_letter_offsets[$fl];
 	if ($o >= $offset && $o <= $last_shown) {
@@ -61,18 +64,28 @@ foreach ($firstletters as $fl) {
 			   $PHP_SELF, $fl, strtoupper($fl));
 	}		   
 }
-printf("<br />Displaying users %d - %d of %d<br />\n",
-	   $offset, min($offset+$show, $nauthors), $nauthors);
+print '</td><td rowspan="2">';
+print '<form><input type="button" onclick="';
+$gourl = "http://" . $HTTP_SERVER_VARS['SERVER_NAME'];
+if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80) {
+	$gourl .= ":".$HTTP_SERVER_VARS['SERVER_PORT'];
+}
+$gourl .= "/account-info.php";
+print "u=prompt('Go to account:','');if(u)location.href='$gourl?handle='+u;";
+print '" value="Go to account.."/></td></tr><tr><td>';
+printf("Displaying accounts %d - %d of %d<br />\n",
+	   $offset, min($offset+$show, $naccounts), $naccounts);
 $sth = $dbh->limitQuery('SELECT handle,name,email,homepage,showemail '.
 						'FROM users WHERE registered = 1 ORDER BY handle',
 						$offset, $show);
 if (DB::isError($sth)) {
-    die("query failed: ".DB::errorMessage($dbh)."<BR>\n");
+    die("query failed: ".DB::errorMessage($dbh)."<br />\n");
 }
+print "</td></tr></table>\n";
 print "</td>\n";
 print "  <th>";
-if ($offset + $page_size < $nauthors) {
-	$nn = min($page_size, $nauthors - $offset - $page_size);
+if ($offset + $page_size < $naccounts) {
+	$nn = min($page_size, $naccounts - $offset - $page_size);
 	print "<a href=\"$nextlink\">Next $nn &gt;&gt;</a>";
 } else {
 	print "&nbsp;";
@@ -109,8 +122,8 @@ while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
     } else {
         print '<td>&nbsp;</td>';
     }
-    print "\n  <td><a href=\"edit-author.php?handle=".$row['handle']."\">[E]</a>&nbsp;
-                 <a href=\"detail-author.php?handle=".$row['handle']."\">[I]</A></td>\n";
+    print "\n  <td><a href=\"account-edit.php?handle=".$row['handle']."\">[E]</a>&nbsp;
+                 <a href=\"account-info.php?handle=".$row['handle']."\">[I]</A></td>\n";
     print " </tr>\n";
 }
 

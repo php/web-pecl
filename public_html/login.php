@@ -1,6 +1,6 @@
 <?php response_header("Login"); ?>
 
-<H2>Credits</H2>
+<H2>Login</H2>
 
 <P>This function has not been implemented yet.</P>
 

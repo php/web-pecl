@@ -259,11 +259,11 @@ foreach ($icons as $file=>$desc) {
 	echo '<td>' . $desc . '<br><small>';
 	$size = @getimagesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
 	if ($size) {
-		echo $size[0] . ' x ' . $size[1] . ' pixels<br>'
+		echo $size[0] . ' x ' . $size[1] . ' pixels<br>';
 	}
 	$size = @filesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
 	if ($size) {
-		echo $size . ' bytes<br>'
+		echo $size . ' bytes<br>';
 	}
 	echo '</small>';
 	echo '</td></tr>';

@@ -54,9 +54,4 @@ if (empty($dbh)) {
 }
 
 $LAST_UPDATED = date("D M d H:i:s Y T", filectime($SCRIPT_FILENAME));
-
-// Short names
-$HVV = $HTTP_SERVER_VARS;
-$HPV = $HTTP_POST_VARS;
-$HGV = $HTTP_GET_VARS;
 ?>

@@ -238,16 +238,18 @@ if (!extension_loaded('zlib')) {
         @dl('zlib.sl');
     } elseif (PHP_OS == 'AIX') {
         @dl('zlib.a');
+    } elseif (PHP_OS == 'OSX') {
+        @dl('zlib.bundle');
     } else {
         @dl('zlib.so');
     }
 }
 if (!extension_loaded('zlib')) {
     $urltemplate = 'http://pear.php.net/get/%s?uncompress=yes';
-    $have_gzip = false;
+    $have_zlib = false;
 } else {
     $urltemplate = 'http://pear.php.net/get/%s';
-    $have_gzip = true;
+    $have_zlib = true;
 }
 
 if ($install_pfc) {
@@ -302,7 +304,7 @@ $pkg = substr($tarball['PEAR'], 0, $dot);
 $ext = substr($tarball['PEAR'], $dot+1);
 
 include_once 'Archive/Tar.php';
-$tar = &new Archive_Tar($tarball['PEAR'], $have_gzip);
+$tar = &new Archive_Tar($tarball['PEAR'], $have_zlib);
 if (!$tar->extractModify($ptmp, $pkg)) {
     bail("failed!\n");
 }
@@ -395,9 +397,8 @@ Press Enter to continue: ";
             }
             fclose($fp);
             fclose($wp);
-            $perms = fileperms($pear_cmd);
+            chmod($tmpfile, fileperms($pear_cmd));
             rename($tmpfile, $pear_cmd);
-            chmod($pear_cmd, $perms);
             print "ok\n";
         } else {
             print "failed\n";
@@ -408,7 +409,7 @@ Press Enter to continue: ";
 
 $pear_cmd = $bin_dir . DIRECTORY_SEPARATOR . 'pear';
 
-// check that the installed pear and the one in tha path are the same (if any)
+// check whether the installed pear and the one in the path are the same
 $pear_old = which('pear', $bin_dir);
 if ($pear_old && $pear_old != $pear_cmd) {
     // check if it is a link or symlink

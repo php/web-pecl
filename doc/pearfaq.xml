@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.17 2001-10-14 02:50:00 alexmerz Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.18 2001-10-14 02:50:50 alexmerz Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-10-14 02:50:00 $</date>
-  <version>$Revision: 1.17 $</version>
+  <date>$Date: 2001-10-14 02:50:50 $</date>
+  <version>$Revision: 1.18 $</version>
  </artheader>
 
  <qandaset>
@@ -268,8 +268,7 @@
     <para>
         Committing an competitive class have to be announced on the <ulink
         url="http://pear.php.net/support.php">PEAR-Dev-Mailinglist!</ulink>
-    </para>     
-    </para>
+    </para>         
    </answer>
   </qandaentry>
   <qandaentry>

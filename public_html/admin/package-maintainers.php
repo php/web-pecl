@@ -244,6 +244,7 @@ if (empty($id)) {
 
 function isAllowed($package)
 {
+    auth_require();
     $lead = in_array($_COOKIE['PEAR_USER'], array_keys(maintainer::get($package, true)));
     $admin = user::isAdmin($_COOKIE['PEAR_USER']);
 

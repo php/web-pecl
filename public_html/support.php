@@ -174,7 +174,9 @@ ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
     who is leading PEAR development, at ApacheCon 2001 on PEAR.</li><br><br>
 
     <li><a href="http://conf.php.net/pear2">An updated presentation</a> by Jon Parise,
-    a PEAR contributor, from the O'Reilly Open Source Convention 2001.</li>
+    a PEAR contributor, from the O'Reilly Open Source Convention 2001.</li><br><br>
+
+    <li><a href="http://pear.sourceforge.net/manual/">Russian PEAR Manual</a>.</li>
 </ul>  
 
 

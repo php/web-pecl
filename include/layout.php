@@ -175,8 +175,8 @@ function commonHeader($title) {
         background="/gifs/beta_bg.gif"
         bgcolor="#ffffff"
         text="#000000"
-        link="#003300"
-        alink="#00ff99"
+        link="#006600"
+        alink="#cccc00"
         vlink="#003300"
 ><a name="TOP" />
 <table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">

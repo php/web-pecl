@@ -82,6 +82,7 @@ $summary     = stripslashes($pkg['summary']);
 $license     = $pkg['license'];
 $description = stripslashes($pkg['description']);
 $category    = $pkg['category'];
+$homepage    = $pkg['homepage'];
 
 // Accounts data
 $sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role".
@@ -161,6 +162,13 @@ $bb = new BorderBox("Package Information"); ?>
     <td><?php print nl2br($description);?>&nbsp;</td>
 </tr>
 <?php
+if (!empty($homepage)) {
+    print "<tr>\n";
+    print "    <th class=\"pack\" width=\"20%\">Homepage</th>\n";
+    print "     <td valign=\"top\">".make_link($homepage)."</td>\n";
+    print "</tr>\n";
+
+}
 
 if ($relid) {
     print "<tr>\n";

@@ -77,13 +77,15 @@ if (isset($_POST['submit'])) {
     }
 
     $query = sprintf("UPDATE packages SET name = '%s', license = '%s',
-                      summary = '%s', description = '%s', category = '%s'
+                      summary = '%s', description = '%s', category = '%s',
+                      homepage = '%s'
                       WHERE id = '%s'",
                       $_POST['name'],
                       $_POST['license'],
                       $_POST['summary'],
                       $_POST['description'],
                       $_POST['category'],
+                      $_POST['homepage'],
                       $_GET['id']
                     );
 
@@ -165,6 +167,12 @@ while ($cat_row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
 
 $form->displaySelect("category", $rows, $row['category']);
 ?>
+    </td>
+</tr>
+<tr>
+    <td>Homepage:</td>
+    <td valign="middle">
+    <?php $form->displayText("homepage", $row['homepage'], 30); ?>
     </td>
 </tr>
 <tr>

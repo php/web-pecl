@@ -7,6 +7,7 @@ CREATE TABLE packages (
        license        VARCHAR(20),
        summary	      TEXT,
        description    TEXT,
+       homepage       VARCHAR(255),
 
        PRIMARY KEY(id),
        UNIQUE INDEX(name),

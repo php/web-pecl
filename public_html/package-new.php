@@ -61,7 +61,8 @@ do {
                                   'license'     => $license,
                                   'summary'     => $summary,
                                   'description' => $desc,
-                                  'lead'        => $auth_user->handle,
+                                  'homepage'    => $homepage,
+                                  'lead'        => $auth_user->handle
                                   ));
         $dbh->popExpect();
         if (DB::isError($pkg) && $pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
@@ -73,6 +74,7 @@ do {
         response_header("Package Registered");
         print "The package `$name' has been registered in PEAR.<br />\n";
         print "You have been assigned as lead developer.<br />\n";
+>>>>>>> 1.13
     }
 } while (false);
 
@@ -119,6 +121,7 @@ minimum.
                      '--Select Category--');
     $form->addText("summary", "One-liner description", null, $width);
     $form->addTextarea("desc", "Full description", null, $width, 3);
+    $form->addText("homepage", "Additional project homepage", null, 20);
     $form->addSubmit("submit", "Submit Request");
 
     $form->display();

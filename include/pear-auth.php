@@ -58,6 +58,7 @@ function auth_verify($user, $passwd)
     if (empty($auth_user)) {
         $auth_user = new PEAR_User($dbh, $user);
     }
+    $error = '';
     $ok = false;
     switch (strlen(@$auth_user->password)) {
         // handle old-style DES-encrypted passwords
@@ -67,7 +68,7 @@ function auth_verify($user, $passwd)
             if ($crypted == @$auth_user->password) {
                 $ok = true;
             } else {
-                error_log("pear-auth: user `$user': invalid password (des)", 0);
+                $error = "pear-auth: user `$user': invalid password (des)";
             }
             break;
         }
@@ -77,13 +78,15 @@ function auth_verify($user, $passwd)
             if ($crypted == @$auth_user->password) {
                 $ok = true;
             } else {
-                error_log("pear-auth: user `$user': invalid password (md5)", 0);
+                $error = "pear-auth: user `$user': invalid password (md5)";
             }
             break;
         }
     }
     if (empty($auth_user->registered)) {
-        error_log("pear-auth: user `$user' not registered", 0);
+        if ($user) {
+            $error = "pear-auth: user `$user' not registered";
+        }
         $ok = false;
     }
     if (!$ok) {
@@ -93,8 +96,15 @@ function auth_verify($user, $passwd)
             $ok = true;
         }
     }
-    $auth_user->_readonly = true;
-    return $ok;
+    if ($ok) {
+        $auth_user->_readonly = true;
+        return true;
+    }
+    if ($error) {
+        error_log($error, 0);
+    }
+    $auth_user = null;
+    return false;
 }
 
 function auth_require($admin = false, $refresh = false)

@@ -62,7 +62,7 @@ $bool_or_checked  = @$_GET['bool'] == "OR" ? 'checked="checked"' : '';
 /**
 * Code to fetch the current category list
 */
-$category_rows = $dbh->getAll('SELECT id, name FROM categories ORDER BY name', DB_FETCHMODE_ASSOC);
+$category_rows = category::listAll();
 if (!empty($_GET['pkg_category'])) {
     for ($i=0; $i<count($category_rows); $i++) {
         if ($_GET['pkg_category'] == $category_rows[$i]['id']) {

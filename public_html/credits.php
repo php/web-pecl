@@ -1,6 +1,6 @@
 <?php
 
-response_header();
+response_header('Credits');
 
 print "<H2>Credits</H2>\n";
 

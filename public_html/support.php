@@ -1,6 +1,4 @@
 <?php
-// require_once 'prepend.inc';
-
 $SIDEBAR_DATA='
 <h3>Documentation</h3>
 <p>
@@ -16,7 +14,6 @@ here</a>.
 ';
 
 response_header("Support");
-// commonHeader("Support");
 ?>
 
 <h2>Support</h2>

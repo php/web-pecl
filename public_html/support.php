@@ -167,7 +167,7 @@ ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
     allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li><br><br>
 
     <li><a href="http://conf.php.net/pres/index.php?p=slides%2Fpear&id=pear">A presentation</a> by Stig Bakken,
-    who is leading PEAR development, at ApacheCon 2001 on PEAR.</li>
+    who is leading PEAR development, at ApacheCon 2001 on PEAR.</li><br><br>
 
     <li><a href="http://conf.php.net/pear2">An updated presentation</a> by Jon Parise,
     a PEAR contributor, from the O'Reilly Open Source Convention 2001.</li>

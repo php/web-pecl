@@ -39,6 +39,12 @@ function pear_xmlrpc_dispatcher($method_name, $params, $appdata)
     } else {
         $ret = call_user_func_array($function, $params);
     }
+    if (PEAR::isError($ret)) {
+        $arr = (array)$ret;
+        $arr['__PEAR_TYPE__'] = 'error';
+        $arr['__PEAR_ERROR_CLASS__'] = get_class($ret);
+        return $arr;
+    }
 /*
     ob_start();
     var_dump($ret);

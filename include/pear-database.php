@@ -460,6 +460,15 @@ class user
     // }}}
 }
 
+// {{{ proto array testerror()
+
+function testerror()
+{
+	return new PEAR_Error("this is a test error", -42);
+}
+
+// }}}
+
 // {{{ mail_pear_admins()
 
 function mail_pear_admins($subject, $msg, $xhdr = '')

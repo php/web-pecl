@@ -10,7 +10,7 @@
 
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-The intented audience for this document if for the people who
+The intented audience for this document is for the people who
 wants to test the system. This is not the final doc and it may
 contain errors or parts that will be changed in the future
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -30,7 +30,7 @@ the PEAR base installation.
 
 Presently the PEAR Package Manager can install packages, create them,
 manage a registry of installed packages, check dependencies, interact
-with a xml-rpc service and a bounch of other things.
+with a xml-rpc service and a bunch of other things.
 
 Since at the time of writing most parts of PEAR are still in
 development stage we will extensively cover the installation of the

@@ -37,17 +37,27 @@ User authentication, revision control, wysiwyg editing. - which currently this (
 - archived page - look at old stufff.
 
 */
+
+
  
-function show_languages() {
+function show_languages($visitlang = "") {
     $available_langs = array(
         'en' => 'English',
-        'fr' => 'French',
-	'de' => 'German'
+   //     'fr' => 'French',
+        'de' => 'German'
     );
-    echo 'View In :: ';
-    foreach ($available_langs  as $lang => $string) {
-        echo "<a href=\"/weeklynews.php/{$lang}/\">{$string}</a> :: ";
+    echo getText("View In"). ' :: ';
+    $page = "";
+    if (!$visitlang) { // then you are looking at the archive page
+        $page = "archives.html";    
     }
+    foreach ($available_langs  as $lang => $string) {
+        echo "<a href=\"/weeklynews.php/{$lang}/{$page}\">{$string}</a> :: ";
+    }
+    if ($visitlang) {
+        echo "&nbsp;&nbsp;&nbsp;<a href=\"/weeklynews.php/{$visitlang}/archives.html\">". getText("Archives") . "</a>";
+    }
+    
 }
 
 
@@ -68,16 +78,62 @@ function show_news_menu() {
         if (!@file_exists(dirname(__FILE__) . "/../weeklynews/".date("Ymd",$utime). ".{$lang}.html")) {
             continue;
         }
-        menu_link("Weekly Summary for " . date("d M Y",$utime), "/weeklynews.php/$lang/".date("Ymd",$utime). ".html");
+        menu_link(getText("Weekly Summary for") . " " . date("d M Y",$utime), "/weeklynews.php/$lang/".date("Ymd",$utime). ".html");
     }
 }
+
+function show_latest($lang) {
+    $dow =  date ("w"); 
+    $start =  mktime (0,0,0,date("m")  ,date("d")-$dow,date("Y"));
+    
+    for ($i=0;$i <8;$i++ ) {
+        $week = mktime (0,0,0,date("m",$start)  ,date("d",$start)-($i*7),date("Y",$start));
+        //echo "LOOL FOR $lang" . date("Ymd",$week);
+        if (@file_exists(dirname(__FILE__) . "/../weeklynews/".date("Ymd",$week). ".{$lang}.html")) {
+            show_news($lang,date("Ymd",$week));
+            return;
+        }
+    }
+   
+    
+
+}
+
+
+function get_default_news() {
+
+
+    
+
+    response_header(getText("PEAR Weekly News"));
+    $lang = "en";
+    if (preg_match("/^\/weeklynews.php\/([a-z]{2})\/.*$/", $_SERVER['REQUEST_URI'],$args)) {
+        $lang = $args[1];
+    }
+    show_languages();
+    $dow =  date ("w"); 
+    $start =  mktime (0,0,0,date("m")  ,date("d")-$dow,date("Y"));
+    $uweeks = array($start);
+    for ($i=1;$i <8;$i++ ) {
+        $uweeks[] = mktime (0,0,0,date("m",$start)  ,date("d",$start)-($i*7),date("Y",$start));
+    }
+    foreach($uweeks as $utime) {
+        if (!@file_exists(dirname(__FILE__) . "/../weeklynews/".date("Ymd",$utime). ".{$lang}.html")) {
+            continue;
+        }
+        menu_link(getText("Weekly Summary for ") . date("d M Y",$utime), "/weeklynews.php/$lang/".date("Ymd",$utime). ".html");
+    }
+}
+
+
 
 function show_news($lang,$date) {
     $end =  mktime (0,0,0,substr($date,4,2)  ,substr($date,6,2),substr($date,0,4));
     $start =  mktime(0,0,0,date("m",$end)  ,date("d",$end)-7,date("Y",$end));
     
-    response_header("PEAR Weekly News - ". date("d M Y", $end) );
-    echo "<H1>PEAR Weekly News for week ending " . date("d M Y", $end) . "</H1>";
+    response_header(getText("PEAR Weekly News") . " - ". date("d M Y", $end) );
+    show_languages($lang);
+    echo "<H1>". getText("PEAR Weekly News for week ending"). " " . date("d M Y", $end) . "</H1>";
     
     
     $summary = implode('',file(dirname(__FILE__) . "/../weeklynews/$date.{$lang}.html"));
@@ -87,7 +143,7 @@ function show_news($lang,$date) {
     $summary = preg_replace("/<\/body>.*/si", "",$summary);
     echo $summary;
     echo "<HR>";
-    echo "<H1>Packages Released This Week</H1>";
+    echo "<H1>". getText("Packages Released This Week"). "</H1>";
     
       
     $recent = release::getDateRange($start,$end);
@@ -105,7 +161,7 @@ function show_news($lang,$date) {
             $out .= "<tr><td valign='top' class='compact'>";
             $out .= "<h3><a href=\"/package-info.php?pacid=$id&release=$version\">";
             $out .= "$name</a></H3> ". nl2br($description);
-            $out .= "<P><B>Release $version - $state</B> <i>$releasedate:</i><BR>". nl2br($releasenotes);
+            $out .= "<P><B>".getText("Release")." $version - $state</B> <i>$releasedate:</i><BR>". nl2br($releasenotes);
             $out .= "</td></tr>";
         }
         $out .= "</table>\n";
@@ -118,17 +174,48 @@ function show_news($lang,$date) {
 }                  
   
 /**
-* Main part of script
+* Main part of script -- this really needs tidying up..
 */ 
 $args = array();
-$show_menu = TRUE;
+$show_archives = FALSE;
+$show_latest = TRUE;
+$show_lang = "en";
+if (preg_match("/^\/weeklynews.php\/([a-z]{2})/",$_SERVER['REQUEST_URI'],$args)) {
+    // #TODO - can somebody fix this it just doesnt work on my test machine!
+    $lang_maps = array( 
+        "en" => "en_US",
+        "de" => "de"
+    );
+    $show_lang = $args[1];
+    $locale = $lang_maps[$args[1]];
+     setlocale(LC_ALL, $locale);
+    /*
+    if (!setlocale(LC_ALL, $locale)) {
+        echo "NOT SUPPORTED? LC_MESSAGES, $locale ";
+    }
+    */
+    bindtextdomain("weeklynews", "../weeklynews/locale");
+    textdomain("weeklynews");
+    //echo getText("test");
+}
+
+
+
+
 if (preg_match("/^\/weeklynews.php\/([a-z]{2})\/([0-9]+)\.html$/", $_SERVER['REQUEST_URI'],$args)) {
     if (@file_exists(dirname(__FILE__) . "/../weeklynews/".$args[2] . "." .$args[1] .".html")) { 
-        $show_menu = FALSE;
+        $show_latest = FALSE;
     }
 }
-if ($show_menu) {
+if ($show_latest && preg_match("/^\/weeklynews.php\/([a-z]{2})\/archives\.html$/", $_SERVER['REQUEST_URI'],$args)) {
+    $show_archives = TRUE;
+     
+}
+
+if ($show_archives) {
     show_news_menu();
+} elseif ($show_latest) {
+    show_latest($show_lang);
 } else {
     show_news($args[1],$args[2]);
 }

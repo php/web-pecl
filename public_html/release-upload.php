@@ -51,7 +51,7 @@ do {
         if (PEAR::isError($pacid)) {
             display_error($pacid->getMessage()); break;
         }
-        if (!checkUser($_SERVER['PHP_AUTH_USER'], $pacid)) {
+        if (!checkUser($_COOKIE['PEAR_USER'], $pacid)) {
             display_error("You don't have permissions to upload this release."); break;
         }
 

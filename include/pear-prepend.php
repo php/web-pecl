@@ -54,4 +54,11 @@ if (empty($dbh)) {
 }
 
 $LAST_UPDATED = date("D M d H:i:s Y T", filectime($_SERVER['SCRIPT_FILENAME']));
+
+if (isset($_COOKIE['PEAR_USER']) && !auth_verify($_COOKIE['PEAR_USER'], $_COOKIE['PEAR_PW'])) {
+    unset($_COOKIE['PEAR_USER']);
+    unset($_COOKIE['PEAR_PW']);
+    auth_reject(null, "Invalid username or password");
+}
+
 ?>

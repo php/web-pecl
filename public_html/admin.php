@@ -143,7 +143,7 @@ do {
             print "$i <tr>\n";
             print "$i  <td>\n";
             print "$i   <b>$nby $ntime:</b>";
-            if ($nby == $_SERVER['PHP_AUTH_USER']) {
+            if ($nby == $_COOKIE['PEAR_USER']) {
                 $url = $_SERVER['PHP_SELF'] . "?acreq=$acreq&cmd=Delete+note&id=$nid";
                 $msg = "Are you sure you want to delete this note?";
                 print "[<a href=\"javascript:confirmed_goto('$url', '$msg')\">delete your note</a>]";

@@ -677,7 +677,7 @@ class release
         $sth = $dbh->prepare($query);
         $release_id = $dbh->nextId("releases");
         $dbh->execute($sth, array($release_id, $package_id, $version, $state,
-                                  $_SERVER['PHP_AUTH_USER'], gmdate('Y-m-d H:i'),
+                                  $_COOKIE['PEAR_USER'], gmdate('Y-m-d H:i'),
                                   $relnotes));
         // Update files table
         $query = "INSERT INTO files ".
@@ -946,7 +946,7 @@ class note
         $nid = $dbh->nextId("notes");
         $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
                               "VALUES(?,?,?,?,?)");
-        $res = $dbh->execute($stmt, array($nid, $value, $_SERVER['PHP_AUTH_USER'],
+        $res = $dbh->execute($stmt, array($nid, $value, $_COOKIE['PEAR_USER'],
                              gmdate('Y-m-d H:i'), $note));
         if (DB::isError($res)) {
             return $res;
@@ -1005,9 +1005,9 @@ class user
         list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
                                     array($uid));
         note::add("uid", $uid, "Account rejected: $reason");
-        $msg = "Your PEAR account request was rejected by " . $_SERVER['PHP_AUTH_USER'] . ":\n".
+        $msg = "Your PEAR account request was rejected by " . $_COOKIE['PEAR_USER'] . ":\n".
              "$reason\n";
-        $xhdr = "From: " . $_SERVER['PHP_AUTH_USER'] . "@php.net";
+        $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
         mail($email, "Your PEAR Account Request", $msg, $xhdr);
         return true;
     }
@@ -1030,13 +1030,13 @@ class user
             $user->set('userinfo', $arr[1]);
         }
         $user->set('created', gmdate('Y-m-d H:i'));
-        $user->set('createdby', $_SERVER['PHP_AUTH_USER']);
+        $user->set('createdby', $_COOKIE['PEAR_USER']);
         $user->store();
         note::add("uid", $uid, "Account opened");
         $msg = "Your PEAR account request has been opened.\n".
              "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";
-        $xhdr = "From: " . $_SERVER['PHP_AUTH_USER'] . "@php.net";
+        $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
         mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
         return true;
     }

@@ -46,13 +46,13 @@ function reloadMe()
 
 <?php
 /** Get packages for the user */
-if (User::isAdmin($_SERVER['PHP_AUTH_USER'])) {
+if (User::isAdmin($_COOKIE['PEAR_USER'])) {
     $query = "SELECT * FROM packages"
              . ((isset($_GET['cid']) && $_GET['cid'] != "") ? " WHERE category = '" . $_GET['cid'] . "'" : "")
              . " ORDER BY name";
 } else {
     $query = "SELECT p.* FROM packages p, mantains m WHERE p.id = m.package"
-             . " AND m.handle = '" . $_SERVER['PHP_AUTH_USER'] . "'"
+             . " AND m.handle = '" . $_COOKIE['PEAR_USER'] . "'"
              . ((isset($_GET['cid']) && $_GET['cid'] != "") ? " AND category = '" . $_GET['cid'] . "'" : "")
              . " ORDER BY p.name";
 }
@@ -139,8 +139,8 @@ $bb->end();
 
 if (isset($_GET['pid']) && $_GET['pid'] != "") {
 
-    if (User::isAdmin($_SERVER['PHP_AUTH_USER']) || 
-        maintainer::get($_GET['pid']) == $_SERVER['PHP_AUTH_USER'])
+    if (User::isAdmin($_COOKIE['PEAR_USER']) || 
+        maintainer::get($_GET['pid']) == $_COOKIE['PEAR_USER'])
     {
         $info = package::info($_GET['pid']);
         

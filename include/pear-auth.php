@@ -55,7 +55,9 @@ function auth_verify($user, $passwd)
 {
     global $dbh, $auth_user;
 
-    $auth_user = new PEAR_User($dbh, $user);
+    if (empty($auth_user)) {
+        $auth_user = new PEAR_User($dbh, $user);
+    }
     $ok = false;
     switch (strlen(@$auth_user->password)) {
         // handle old-style DES-encrypted passwords

@@ -14,8 +14,8 @@ if (isset($HTTP_GET_VARS['handle'])) {
 
 response_header("Edit Account: $handle");
 
-$admin = user::isAdmin($_SERVER['PHP_AUTH_USER']);
-$user = ($_SERVER['PHP_AUTH_USER'] === $handle);
+$admin = user::isAdmin($_COOKIE['PEAR_USER']);
+$user = ($_COOKIE['PEAR_USER'] === $handle);
 
 if (!$admin && !$user) {
     PEAR::raiseError("Only the user himself or PEAR administrators can edit the account information.");

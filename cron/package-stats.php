@@ -34,8 +34,11 @@
 
 /**
 * Query the packages info and insert the results into
-* the package_stats page
+* the package_stats page. First deletes the current
+* data.
 */
+	$db->query('DELETE FROM package_stats');
+
 	$sql = 'INSERT INTO package_stats SELECT COUNT(d.id) AS dl_number, p.name AS package, r.version AS release, p.id AS pid, r.id AS rid, p.category AS cid
 	            FROM downloads d, packages p, releases r
 	            WHERE d.package = p.id AND d.release = r.id

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv=content-type content="text/html; charset=iso-8859-2">
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>autor: Alan Knowles alan_k@php.net (tłumaczenie: Robert Janeczek rashid@php.net)</small></i></p>
+    
+<p>Kolejny spokojny tydzień, jako że większość programistów pracujących 
+nad biblioteką przygotowuje konferencję PHP we Frankfurcie (przyjedźcie
+zobaczyć te ciepłe ciała, które stają za całym kodem). Dyskusja nad sprawą
+dirname(__FILE__) nadal trwa, przyłączył się jeden z Architektów z wyjaśnieniem
+co z tało za tą decyzją projektową. Trzy nowe pakiety zaproponowano w tym 
+tygodniu, a PEAR wciąż przyciąga najwyższej jakości kod PHP i rozszerzeń. Do 
+tego stały przepływn wydań: 4 stabilne, 4 bety.</p>
+
+
+    
+<hr>   
+<h2>Nowe wydania</h2>
+    
+<h3>Stabilne</h3>
+    
+<ul>
+    <li><b>HTML_Select</b>  - udostępnia pola wyboru dla państw, hrabstw Wielkiej Brytanii
+	i stanów USA</li>
+  <li><b>Log</b>  - środowisko udostępniające uogólnione logowanie.</li>
+  <li><b>HTML_QuickForm</b>  - pakiet udostępniający metody do tworzenia, 
+  sprawdzania i przetwarzania formularzy HTML</li>
+  <li><b>HTML_Table</b>  - udostępnia metody do prostego i wydajnego tworzenia
+  tabel HTML</li>
+</ul>
+<h3>Beta</h3>
+  
+<ul>
+  <li><b>PEAR_Frontend_Web</b>   - interfejs webowy instalatora PEAR</li>
+  <li><b>SOAP_Interop</b>   - testowe wydanie usług SOAP</li>
+  <li><b>Net_DIME</b>   - pakiet do obsługi interfejsu do DIME (protokół przesyłania
+  wiadomości)</li>
+  <li><b>SOAP</b>   - podzbiór biblioteki pozwalającej PHP na bycie serwerem i 
+  klientem SOAP.</li>
+</ul>
+         
+<hr>   
+
+
+
+
+<h2>Skrót z PEAR-DEV</h2>
+    
+<h3>Ścieżki PEAR w require_once a korzystanie z dirname(__FILE__) - dyskusji
+ciąg dalszy</h3>
+W ostatniotygodniowej dyskusji o korzystaniu z dirname(__FILE__) w ścieżkach
+Stig Bakken zwrócił uwagę na kilka poważnych problemów używania tej metody
+w połączeniu z wielokrotnymi instalacjami PEAR (np. globalna + użytkownika).
+Problem w tym, że require_once może mieć poważny problem i załadować
+2 klasy z tą samą nazwą z dwóch różnych plików, co spowoduje konflikt.
+Obecna metoda pozostawienia wszystkiego ścieżce include`ów jest obecnie
+jedynym sensownym rozwiązaniem.
+
+
+
+<h3>Nowe kontenery MDB dla PEAR cache i mail queue</h3>
+<p>Lorenzo Alberton ogłosił, że napisał kontenery MDB dla PEAR cache
+i mail queue. </p>
+
+
+<h3>Sugestie użytkowników na temat dokumentacji PEAR</h3>
+Jon Wood zasugerował, żeby dodać jedną z najpopularniejszych cech (notatki
+użytkowników) manuala PHP do manuala PEAR. Nie było wielu odpowiedzi, ale
+prawdopodobnie tak się stanie, kiedy ożyje peardoc2 - będzie to jedna z
+kluczowych właściwoścido dodania.
+
+
+<h3>Bugi i poprawki</h3>
+Dzięki tym ludziom wykryto kilka nowych błędów: David Viner, Daniel
+C, Lorenzo Alberton, Sebastian R&ouml;bke, Mika Tuupola, Alan Richmond, Robin
+Ericsson, 
+<p></p>
+
+
+
+
+<hr>   
+<h2>Nowe i proponowane pakiety</h2>
+    
+<h3>APC  - zaawansowany cache PHP już w PECL</h3>
+<p>George Schlossnagle zgłosił chęć dodania APC, dostępnego za darmo
+cache`a PHP do PECL.<br>
+</p>
+
+
+<h3>ezSQL - uproszczone API baz danych</h3>
+<p>Justin Vincent zaproponował dodanie swojego uproszczonego API bazodanowego
+do PEAR. Krótko zastanawiano się gdzie powinno to zostać umieszczone,
+zgodzono się, że taki rodzaj nakładki na rozszerzenie DB czy MDB może
+być użyteczny dla niektórych. Mimo tego puryści wśród programistów
+zgłosili zastrzeżenia co do ukrywania szczegółów połączenia z bazą danych.
+<br>
+</p>
+
+
+<h3>Net_Cyrus - interfejs do poleceń zarządzających serwerem IMAP Cyrus.</h3>
+Richard Heyes zgłosił pakiet udostępniający interfejs do serwera pocztowego 
+Cyrus IMAP, pozwoli on na dodawanie użytkowników i zmienianie praw 
+dostępu.
+ 
+
+
+
+<hr>     
+<h2>Rozwój</h2>
+<p>  Ruch w CVS w tym tygodniu odbywał się w następujących pakietach: Benchmark, Cache, DBA_Relational, File_Find,
+HTML_QuickFrom, HTML_Table, Image_Transform, Inline_C, Log, Mail_Queue, MDB,
+PECL::bcompiler, PECL::python, Perm_LiveUser, Scince_Chemistry, SOAP, SQL_Parser, do
+tego uaktualnienia do peardoc2, w tym plik i FAQ.</p>
+</body>
+</html>

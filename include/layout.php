@@ -219,7 +219,7 @@ function commonHeader($title) {
     </td>
   </tr>
 
-  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?></td></tr>
+  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 
   <tr bgcolor="#006633">
     <td align="right" valign="top" colspan="2">
@@ -235,7 +235,7 @@ function commonHeader($title) {
     </select>
     <?php echo make_submit('small_submit_white.gif', 'search', 'bottom'); ?></font>&nbsp;<br /></form></td></tr>
 
-  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?></td></tr>
+  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 </table>
 
 <table cellpadding="0" cellspacing="0" width="100%">
@@ -244,11 +244,11 @@ function commonHeader($title) {
   <td bgcolor="#f0f0f0" width="149">
    <table width="149" cellpadding="4" cellspacing="0">
     <tr valign="top">
-     <td style="font-size: 90%"><?php echo $SIDEBAR_DATA?></td>
+     <td style="font-size: 90%"><?php echo $SIDEBAR_DATA?><br /></td>
     </tr>
    </table>
   </td>
-  <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?></td>
+  <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
 <?php } ?>
   <td width="625">
    <table width="100%" cellpadding="10" cellspacing="0">
@@ -273,16 +273,16 @@ function commonFooter() {
   </td>
 
 <?php if (isset($RSIDEBAR_DATA)) { ?>
-  <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?></td>
+  <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
   <td width="149" bgcolor="#f0f0f0">
-    <table width="100%" cellpadding="4" cellspacing="0"><tr valign="top"><td class="sidebar"><?php echo $RSIDEBAR_DATA; ?></td></tr></table>
+    <table width="100%" cellpadding="4" cellspacing="0"><tr valign="top"><td class="sidebar"><?php echo $RSIDEBAR_DATA; ?><br /></td></tr></table>
   </td>
 <?php } ?>
  </tr>
 </table>
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr bgcolor="#003300"><td><?php spacer(1,1);?></td></tr>
+  <tr bgcolor="#003300"><td><?php spacer(1,1);?><br /></td></tr>
   <tr bgcolor="#009933">
       <td align="right" valign="bottom">
 <?php
@@ -328,10 +328,10 @@ if (0) { ?>
     echo make_submit('small_submit_black.gif', 'go', 'bottom' );
     ?>&nbsp;<br />
       </form>
-<?php } ?>
+<?php } ?><br />
       </td>
   </tr>
-  <tr bgcolor="#003300"><td><?php spacer(1,1); ?></td></tr>
+  <tr bgcolor="#003300"><td><?php spacer(1,1); ?><br /></td></tr>
 </table>
 
 <table border="0" cellspacing="0" cellpadding="6" width="100%">

@@ -50,7 +50,7 @@ $PEAR_Dir = "/var/cvs/pear";
 /**
 * DSN for pear packages database
 */
-$dsn = "pgsql://pear:pear@localhost/pear";
+$dsn = "mysql://pear:pear@localhost/pear";
 
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'pear_error');

@@ -19,7 +19,7 @@
    $Id$
  */
 
-zrequire_once "HTML/Form.php";
+require_once "HTML/Form.php";
 
 response_header("Package statistics");
 ?>

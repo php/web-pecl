@@ -939,6 +939,44 @@ class user
     // }}}
 }
 
+class statistics
+{
+    // {{{ package()
+
+    /**
+     * Get general package statistics
+     *
+     * @param  integer ID of the package
+     * @return array
+     */
+    function package($id)
+    {
+        global $dbh;
+        $query = "SELECT COUNT(*) AS total FROM downloads WHERE package = '" . $id . "'";
+        return $dbh->getOne($query, DB_FETCHMODE_ASSOC);
+    }
+
+    // }}}
+    // {{{ release()
+
+    function release($id)
+    {
+        global $dbh;
+
+        $query = "SELECT release, COUNT(*) AS total, MAX(dl_when) AS last_download, MIN(dl_when) AS first_download FROM downloads WHERE package = '" . $id . "' GROUP BY release";
+
+        $rows = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
+        
+        if (DB::isError($rows)) {
+            return PEAR::raiseError($rows->getMessage());
+        } else {
+            return $rows;
+        }
+    }
+
+    // }}}
+}
+
 // {{{ +proto string logintest()
 
 function logintest()

@@ -50,7 +50,7 @@ do {
             }
         }
 
-        if (!preg_match("/^[a-z][a-z0-9]+$/i", $handle)) {
+        if (!preg_match(PEAR_COMMON_USER_NAME_REG, $handle)) {
             display_error("Username must start with a letter and contain only letters and digits.");
             break;
         }

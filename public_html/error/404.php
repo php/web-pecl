@@ -31,7 +31,9 @@
  */
 if ($_SERVER['REDIRECT_URL']{1} == '~') {
     $user = substr($_SERVER['REDIRECT_URL'], 2);
-    localRedirect("/account-info.php?handle=" . urlencode($user));
+    if (preg_match(PEAR_COMMON_USER_NAME_REG, $user) && user::exists($user)) {
+        localRedirect("/account-info.php?handle=" . urlencode($user));
+    }
 }
 
 $pkg = strtr($_SERVER['REDIRECT_URL'], "-","_");

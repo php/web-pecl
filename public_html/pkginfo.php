@@ -22,9 +22,9 @@ if (!$row) {
     die ('No package selected (db)');
 }
 $name        = $row['name'];
-$summary     = $row['summary'];
+$summary     = stripslashes($row['summary']);
 $license     = $row['license'];
-$description = $row['description'];
+$description = stripslashes($row['description']);
 $category    = $row['category'];
 
 // Accounts data

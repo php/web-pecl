@@ -38,21 +38,38 @@ class Damblan_RSS {
      * @return object Instance of Damblan_RSS_* or PEAR_Error
      */
     function getFeed($type) {
+        if ($type != "latest") {
+            $cache = $type;
+            $value = substr($type, 3);
+            $type = substr($type, 0, 3);
+        } else {
+            $value = $cache = $type;
+        }
+
+        require_once "Damblan/RSS/Cache.php";
+        if (Damblan_RSS_Cache::isCached($cache) == true) {
+            return Damblan_RSS_Cache::get($cache);
+        }
+
         $site = &Damblan_Site::factory();
         PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, array(&$site, "error404"));
 
         if ($type == "latest") {
             require_once "Damblan/RSS/Latest.php";
             $rss_obj = new Damblan_RSS_Latest();
-        } else if (substr($type, 0, 4) == "cat_") {
+        } else if ($type == "cat") {
             require_once "Damblan/RSS/Category.php";
-            $rss_obj = new Damblan_RSS_Category(substr($type, 4));
-        } else if (substr($type, 0, 4) == "pkg_") {
+            $rss_obj = new Damblan_RSS_Category($value);
+        } else if ($type == "pkg") {
             require_once "Damblan/RSS/Package.php";
-            $rss_obj = new Damblan_RSS_Package(substr($type, 4));
+            $rss_obj = new Damblan_RSS_Package($value);
         }
 
         if (isset($rss_obj)) {
+            if (!PEAR::isError($rss_obj)) {
+                Damblan_RSS_Cache::write($cache, $rss_obj->toString());
+            }
+
             return $rss_obj;
         } else {
             PEAR::raiseError("The requested URL " . $_SERVER['REQUEST_URI'] . " was not found on this server.");
@@ -74,7 +91,12 @@ class Damblan_RSS {
         } else {
             header("Content-Type: text/xml");
             print "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n";
-            print $ret->toString();
+            
+            if (is_object($ret)) {
+                print $ret->toString();
+            } else {
+                print $ret;
+            }
         }
     }
 }

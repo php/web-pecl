@@ -174,7 +174,7 @@ function auth_require($admin = false)
     if (!auth_verify($user, $passwd)) {
         auth_reject(); // exits
     }
-
+/*
     $num = func_num_args();
     for ($i = 0; $i < $num; $i++) {
         $arg = func_get_arg($i);
@@ -184,7 +184,7 @@ function auth_require($admin = false)
             return true;
         }
     }
-
+*/
     if ($res == false) {
         response_header("Insufficient Privileges");
         report_error("Insufficient Privileges");

@@ -1486,7 +1486,7 @@ class release
         $upload = basename($upload);
         $release = "{$pkginfo['package']}-{$pkginfo['version']} ({$pkginfo['release_state']})";
         $txtanounce =<<<END
-The new PEAR package $release has been released at http://pecl.php.net/.
+The new PECL package $release has been released at http://pecl.php.net/.
 
 Release notes
 -------------

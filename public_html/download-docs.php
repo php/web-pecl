@@ -18,8 +18,6 @@ $languages = array("en" => "English", "de" => "German", "it" => "Italian", "ru" 
 
 $bb = new Borderbox("Download documentation");
 
-echo "<font color=\"#ff0000\"><b>Warning: Most of the links don't work at the moment.</b></font>\n";
-
 echo "<ul>\n";
 
 foreach ($languages as $domain => $name) {

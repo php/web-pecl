@@ -18,19 +18,20 @@
 #
 
 TABLE_FILES=\
-	acl.sql \
-	aliases.sql \
-	users.sql \
+	domain_acl.sql \
 	domains.sql \
 	maintains.sql \
+	package_acl.sql \
 	packages.sql \
-	releases.sql
+	releases.sql \
+	users.sql
 SQL_TYPE=mysql
-SQL_USER=root
-#SQL_PASSWORD=-ppassword
-SQL_DB=mysql
+SQL_USER=pear
+SQL_PASSWORD=-ppear
+SQL_DB=pear
 SQL_COMMAND=mysql -u '$(SQL_USER)' $(SQL_PASSWORD) '$(SQL_DB)' < $< > $@ 2>&1
 SQL_PIPE_COMMAND=mysql -u '$(SQL_USER)' $(SQL_PASSWORD) '$(SQL_DB)'
+SQL_ADMIN_COMMAND=mysql -u root mysql
 SQL_GRANT_FILE=
 
 ECHO    = echo
@@ -66,12 +67,12 @@ create: createdb $(SQL_TARGETS) prime
 prime: data.res
 
 createdb:
-	@$(SQL_PIPE_COMMAND) < createdb.sql
+	@$(SQL_ADMIN_COMMAND) < createdb.sql
 
 dropdb:
-	@$(SQL_PIPE_COMMAND) < dropdb.sql
+	@$(SQL_ADMIN_COMMAND) < dropdb.sql
 
-destroy: dropdb
+destroy: dropdb clean
 # Do "make drop" enough times to "solve" those who won't go away because
 # of foreign keys to other tables that still exist.
 #	$(MAKE) -s drop
@@ -95,11 +96,9 @@ test:
 # if the table "foo" has foreign keys to the table "bar", add
 # "foo.res: bar.res".
 
-aliases.res: packages.res
 packages.res: users.res domains.res
 releases.res: packages.res
 package_acl.res: packages.res users.res
 domain_acl.res: domains.res users.res
 maintains.res: packages.res users.res
 data.res: users.res packages.res domains.res
-

@@ -1,4 +1,5 @@
 INSERT INTO users VALUES('SSB', '8c38dfa80e2bf8b2076a30848f111300', 'Stig Bakken', 'ssb@fast.no', 'http://www.pvv.org/~ssb/', 944079834, 944079834, 'SSB', 1, 1, 1, NULL);
+INSERT INTO maintains VALUES('SSB','DB','lead');
 
 INSERT INTO domains (name,parent) VALUES('Benchmark',NULL);
 INSERT INTO domains (name,parent) VALUES('CMD',NULL);
@@ -22,7 +23,7 @@ INSERT INTO domains (name,parent) VALUES('Payment',NULL);
 INSERT INTO domains (name,parent) VALUES('Schedule',NULL);
 INSERT INTO domains (name,parent) VALUES('XML',NULL);
 
-INSERT INTO packages (name) VALUES('DB');
+INSERT INTO packages (name,summary,copyright) VALUES('DB','PEAR database abstraction layer','PHP License');
 INSERT INTO packages (name) VALUES('Benchmark');
 INSERT INTO packages (name) VALUES('CMD');
 INSERT INTO packages (name) VALUES('Cache');

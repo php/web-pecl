@@ -42,7 +42,7 @@ function spacer($width=1, $height=1, $align=false, $extras=false) {
 function resize_image($img, $width=1, $height=1) {
     $str = preg_replace('/width=\"([0-9]+?)\"/i', '', $img );
     $str = preg_replace('/height=\"([0-9]+?)\"/i', '', $str );
-    $str = substr($str,0,-1) . sprintf(' height="%s" width="%s">', $height, $width );
+    $str = substr($str,0,-1) . sprintf(' height="%s" width="%s" />', $height, $width );
     return $str;
 }
 
@@ -103,7 +103,7 @@ function make_submit($file, $alt=false, $align=false, $extras=false, $dir=false,
     if ($return != "<img />") {
         $return = '<input type="image"'.substr($return,4);
     } else {
-        $return = '<input type="submit">';
+        $return = '<input type="submit" />';
     }
     return $return;
 }
@@ -127,11 +127,8 @@ function delim($color=false) {
 // print a horizontal delimiter (just a wide line);
 //
 
-function hdelim($color="#000000") {
-    if (!$color) {
-        return '<hr noshade size="1" />';
-    }
-    return sprintf('<hr noshade size="1" color="%s" />', $color );
+function hdelim() {
+    return '<hr noshade="yes" size="1" />';
 }
 
 
@@ -188,14 +185,13 @@ function commonHeader($title) {
     if (!empty($GLOBALS['ONLOAD'])) {
         print "onload=\"" . $GLOBALS['ONLOAD']. "\"";
     }
-?>	topmargin="0" leftmargin="0"
-	marginheight="0" marginwidth="0"
+?>
         bgcolor="#ffffff"
         text="#000000"
         link="#006600"
         alink="#cccc00"
         vlink="#003300"
-><a name="TOP" /></a>
+><a name="TOP" />
 <table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
   <tr bgcolor="#339900">
     <td align="left" rowspan="2" width="120" colspan="2" height="1">

@@ -47,7 +47,7 @@ being a subset of PEAR, is the complement for C extensions for PHP.
 See the <a href="/manual/en/faq.php">FAQ</a> and <a
 href="/manual/">manual</a> for more information.
 
-<br />
+<br /></p>
 -';
 
 response_header();
@@ -74,6 +74,7 @@ if (@sizeof($recent) > 0) {
         if (strlen($releasenotes) > 40) {
             $desc .= '...';
         }
+        $desc = htmlentities($desc);
         $RSIDEBAR_DATA .= "<tr><td valign='top' class='compact'>";
         $RSIDEBAR_DATA .= "<a href=\"/" . $name . "\">";
         $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i> $desc</td></tr>";

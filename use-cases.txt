@@ -52,7 +52,7 @@ Now to the use-cases:
        * download file from web site and run "pear install Money_Fast-1.2.tgz"
 
 5. User wants to report a bug in Money_Fast 1.2:
-    1. user fills in a form at http://pear.php.net/bugs.php
+    1. user fills in a form at http://pear.php.net/bugs/
 
 6. User wants a date conversion function, but is not sure whether any
    PEAR packages provide it

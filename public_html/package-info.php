@@ -14,6 +14,7 @@
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
    | Authors: Martin Jansen <mj@php.net>                                  |
+   |          Tomas V.V.Cox <cox@idecnet.com>                             |
    +----------------------------------------------------------------------+
    $Id$
 */
@@ -196,7 +197,7 @@ if (!empty($cvs_link)) {
     print '[ ' . make_link($cvs_link, 'CVS Web', 'top') . ' ]';
 }
 print '&nbsp;</td>';
-print '<td align="center">[ ' . make_link('/bugs/search.php?cmd=display&status=Open&bug_type[]='.$pkg['name'], 'Package Bugs') . ' ]</td>';
+print '<td align="center">[ ' . make_bug_link($pkg['name']) . ' ]</td>';
 if (!empty($doc_link)) {
     print '<td align="center">[ ' . make_link($doc_link, "View documentation") . ' ]</td>';
 } else {

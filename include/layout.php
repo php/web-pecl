@@ -142,7 +142,24 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
     echo make_link($url, $linktext, $target, $extras);
 }
 
+// make_bug_link()
+// creates a link for the bug system
 
+function make_bug_link($package, $type = 'list', $linktext = false) {
+    switch ($type) {
+        case 'list':
+            if (!$linktext) {
+                $linktext = 'Package Bugs';
+            }
+            return make_link('/bugs/search.php?cmd=display&status=Open&bug_type[]='.$package, $linktext);
+        case 'report':
+            if (!$linktext) {
+                $linktext = 'Report a new bug';
+            }
+            return make_link("/bugs/report.php?package=$package", $linktext);
+    }
+
+}
 
 // commonheader()
 //
@@ -203,6 +220,8 @@ function commonHeader($title) {
     print_link('/packages.php', 'Packages', false, 'class="menuBlack"');
     echo delim();
     print_link('/support.php','Support',false,'class="menuBlack"');
+    echo delim();
+    print_link('/bugs/','Bugs',false,'class="menuBlack"');
       ?>&nbsp;<br />
       <?php spacer(2,2); ?><br />
     </td>

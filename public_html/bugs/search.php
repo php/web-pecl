@@ -170,7 +170,9 @@ if (isset($cmd) && $cmd == "display") {
 				"&amp;boolean="    . BOOLEAN_SEARCH .
 				"&amp;author_email=". urlencode(stripslashes($author_email)) .
 				"&amp;bug_age=$bug_age&amp;by=$by&amp;order_by=$order_by&amp;direction=$direction&amp;phpver=$phpver&amp;limit=$limit&amp;assign=$assign";
-        show_bugs_menu($bug_type[0]);
+        if (isset($bug_type) && count($bug_type) == 1) {
+            show_bugs_menu($bug_type[0]);
+        }
 ?>
 <table align="center" border="0" cellspacing="2" width="95%">
  <?php show_prev_next($begin,$rows,$total_rows,$link,$limit);?>

@@ -591,6 +591,9 @@ function format_search_string($search)
 // PEAR Related only
 function show_bugs_menu($pkgname)
 {
+    if (in_array($pkgname, array('Web Site', 'Documentation', 'Bug System'))) {
+        return;
+    }
     echo '<table width="100%" align="center" border="0"><tr><td>';
     echo make_link("/package-info.php?package=$pkgname", "Package home");
     echo "&nbsp;|&nbsp;";

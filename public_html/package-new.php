@@ -78,20 +78,20 @@ minimum.
 ";
 
     if (isset($errorMsg)) {
-	print "<table>\n";
-	print " <tr>\n";
-	print "  <td>&nbsp;</td>\n";
-	print "  <td><b>$errorMsg</b></td>\n";
-	print " </tr>\n";
-	print "</table>\n";
+        print "<table>\n";
+        print " <tr>\n";
+        print "  <td>&nbsp;</td>\n";
+        print "  <td><b>$errorMsg</b></td>\n";
+        print " </tr>\n";
+        print "</table>\n";
     }
 
-    $categories = $dbh->getAssoc("SELECT id,name FROM categories");
+    $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");
     $form =& new HTML_Form($PHP_SELF, "POST");
     $form->addText("name", "Package Name", null, 20);
     $form->addText("license", "License", null, 20);
     $form->addSelect("category", "Category", $categories, '', 1,
-		     '--Select Category--');
+                     '--Select Category--');
     $form->addText("summary", "One-liner description", null, $width);
     $form->addTextarea("desc", "Full description", null, $width, 3);
     $form->addSubmit("submit", "Submit Request");
@@ -99,9 +99,9 @@ minimum.
     $form->display();
 
     if ($jumpto) {
-	print "\n<script language=\"JavaScript\">\n<!--\n";
-	print "document.forms[1].$jumpto.focus();\n";
-	print "// -->\n</script>\n";
+        print "\n<script language=\"JavaScript\">\n<!--\n";
+        print "document.forms[1].$jumpto.focus();\n";
+        print "// -->\n</script>\n";
     }
 }
 

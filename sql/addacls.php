@@ -7,6 +7,9 @@ $fp = @fopen("avail", "r");
 if (empty($fp)) {
 	$fp = @fopen("../../CVSROOT/avail", "r");
 }
+if (empty($fp)) {
+	$fp = @fopen("/repository/CVSROOT/avail", "r");
+}
 
 if (is_resource($fp)) {
 	while ($line = fgets($fp, 10240)) {

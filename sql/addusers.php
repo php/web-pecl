@@ -38,6 +38,9 @@ foreach (explode("\n", $hardcoded_users) as $line) {
 }
 
 $fp = @fopen("cvsusers", "r");
+if (empty($fp)) {
+	$fp = @fopen("/repository/CVSROOT/cvsusers", "r");
+}
 if (is_resource($fp)) {
 	while ($line = fgets($fp, 1024)) {
 		if (!trim($line)) continue;
@@ -51,6 +54,9 @@ if (is_resource($fp)) {
 }
 
 $fp = @fopen("passwd", "r");
+if (empty($fp)) {
+	$fp = @fopen("/repository/CVSROOT/passwd", "r");
+}
 if (is_resource($fp)) {
 	while ($line = fgets($fp, 1024)) {
 		if (!trim($line)) continue;

@@ -30,6 +30,7 @@ response_header('Credits');
   <li><?php echo user_link("cox"); ?></li>
   <li><?php echo user_link("mj"); ?></li>
   <li><?php echo user_link("cmv"); ?></li>
+  <li><?php echo user_link("richard");?></li>
 </ul>
 
 <h3>PEAR documentation team</h3>

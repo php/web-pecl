@@ -90,7 +90,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
 <html>
 <head>
  <title>PECL :: <?php echo $title; ?></title>
- <link rel="shortcut icon" href="/gifs/favicon.ico" />
+ <link rel="shortcut icon" href="/gifs/pecl-favicon.ico" />
  <link rel="stylesheet" href="/style.css" />
  <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/feeds/latest.rss" />
 </head>

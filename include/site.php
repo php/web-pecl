@@ -10,7 +10,7 @@
 */
 
 $MIRRORS = array(
-  'http://pear.php.net/'		=> array('us', 'VA Linux', 0, 'http://www.valinux.com/', 1, 0, 'en' ),
+  'http://pear.php.net/'		=> array('us', 'check.com', 0, 'http://www.check.com/', 1, 0, 'en' ),
   'http://pear.php.easydns.ca/'		=> array('ca', 'easyDNS Technologies', 0, 'http://www.easydns.com/', 1, 0, 'en' )
 );
 

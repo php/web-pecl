@@ -31,7 +31,7 @@ if (substr($_SERVER['PHP_SELF'], 0, 7) == '/manual') {
 
 error_reporting(E_ALL);
 
-if ($_SERVER['SERVER_NAME'] != 'pear.php.net') {
+if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
     define('DEVBOX', true);
 } else {
     define('DEVBOX', false);

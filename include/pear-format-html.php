@@ -57,7 +57,7 @@ $GLOBALS['admin_menu'] = array(
 
 $GLOBALS['_style'] = '';
 
-function response_header($title = 'The PHP Extension and Application Repository', $style = false)
+function response_header($title = 'The PHP Extension Community Library', $style = false)
 {
     global $_style, $_header_done, $SIDEBAR_DATA;
     if ($_header_done) {
@@ -109,7 +109,7 @@ function response_header($title = 'The PHP Extension and Application Repository'
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="#339900">
     <td align="left" rowspan="2" width="120" colspan="2" height="1">
-<?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="5" hspace="5"') ); ?><br />
+<?php print_link('/', make_image('peclsmall.gif', 'PEAR', false, 'vspace="5" hspace="5"') ); ?><br />
     </td>
     <td align="right" valign="top" colspan="3" height="1">
       <font color="#ffffff"><b>
@@ -277,7 +277,7 @@ print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
 
 function menu_link($text, $url) {
     echo "<p>\n";
-    print_link($url, make_image('pear_item.gif', $text) );
+    print_link($url, make_image('pecl_item.gif', $text) );
     echo '&nbsp;';
     print_link($url, '<b>' . $text . '</b>' );
     echo "</p>\n";

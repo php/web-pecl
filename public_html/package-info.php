@@ -310,6 +310,7 @@ if ($sth->numRows() == 0) {
                 } else {
                     $dep_text .= sprintf("%s: %s", $dep_type_desc[$row['type']], $row['name']);
                 }
+                $dep_text .= "<br />";
             }
             $bb->horizHeadRow($title, $dep_text);
 

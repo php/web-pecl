@@ -403,9 +403,10 @@ function display_user_notes($user, $width = "50%")
  * Create link to the account information page and to the user's wishlist
  *
  * @param string User's handle
+ * @param bool   Should the wishlist link be skipped?
  * @return mixed False on error, otherwise string
  */
-function user_link($handle)
+function user_link($handle, $compact = false)
 {
     global $dbh;
 
@@ -419,7 +420,7 @@ function user_link($handle)
     return sprintf("<a href=\"/user/%s\">%s</a>%s\n",
                    $handle,
                    $row['name'],
-                   ($row['wishlist'] != "" ? " [<a href=\"" . htmlentities($row['wishlist']) . "\">Wishlist</a>]" : "")
+                   ($row['wishlist'] != "" && $compact == false ? " [<a href=\"" . htmlentities($row['wishlist']) . "\">Wishlist</a>]" : "")
                    );
 }
 

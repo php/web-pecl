@@ -6,24 +6,20 @@ require_once "pear-config.php";
 require_once "pear-auth.php";
 require_once "pear-database.php";
 
-if (empty($format) && basename($PHP_SELF) == "xmlrpc.php") {
-    $format = "xmlrpc";
-}
+error_reporting(E_ALL);
 
-switch ($format) {
-    case "xmlrpc":
-        break;
-    case "html":
-        break;
-    default:
-        $format = "html";
-        break;
+if (empty($format)) {
+    if (basename($PHP_SELF) == "xmlrpc.php") {
+	$format = "xmlrpc";
+    } else {
+	$format = "html";
+    }
 }
 
 include_once "pear-format-$format.php";
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
-if ($SERVER_NAME != 'pear.php.net' && !is_object($dbh)) {
+if ($SERVER_NAME != 'pear.php.net' && empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }
 

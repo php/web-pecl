@@ -151,7 +151,7 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
 #
 
 function commonHeader($title) {
-	global $SIDEBAR_DATA;
+	global $SIDEBAR_DATA, $HTTP_SERVER_VARS;
 
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
@@ -186,7 +186,7 @@ function commonHeader($title) {
     <td align="right" valign="bottom">
       <?php
 
-	if ($HTTP_SERVER_VARS['PHP_AUTH_USER']) {
+	if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER'])) {
 		print_link('/logout.php', 'logout', false, 'class="menuBlack"');
 	} else {
 		print_link('/login.php', 'login', false, 'class="menuBlack"');

@@ -23,6 +23,9 @@ if (count($packages) == 1) {
 } elseif (count($packages) > 3) {
 	$packages = array($packages[0], $packages[1], $packages[2]);
 	$show_search_link = true;
+
+} else {
+	$show_search_link = false;
 }
 
 response_header("Error 404");

@@ -59,7 +59,12 @@ if (empty($catpid)) {
 
 $category_title = "Package Browser :: " . htmlspecialchars($catname);
 
-$showempty_link = '<a href="'.$_SERVER['PHP_SELF'].getQueryString($catpid, $catname, !$showempty).'">'.($showempty ? 'Hide empty' : 'Show empty').'</a>';
+// the user is already at the top level
+if (empty($catpid)) {
+    $showempty_link = 'Top Level';
+} else {
+    $showempty_link = '<a href="'.$_SERVER['PHP_SELF'].getQueryString($catpid, $catname, !$showempty).'">'.($showempty ? 'Hide empty' : 'Show empty').'</a>';
+}
 
 /**
 * Main part of script

@@ -42,7 +42,6 @@ if (is_resource($fp)) {
 	while ($line = fgets($fp, 1024)) {
 		if (!trim($line)) continue;
 		list($user,$name,$email) = explode(":", trim($line));
-		print "user=$user email=$email name=$name\n";
 		$name = preg_replace('/\s\s+/', ' ', $name);
 		$users[$user]['user'] = $user;
 		$users[$user]['name'] = $name;

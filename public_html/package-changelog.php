@@ -37,29 +37,24 @@ if (empty($pkg['name'])) {
 $name = $pkg['name'];
 response_header("$name Changelog");
 print '<p>' . make_link("/" . $name, 'Return') . '</p>';
-$bb = new Borderbox("$name Changelog");
+$bb = new Borderbox("Changelog for " . $name, "90%", "", 2, true);
 
 if (count($pkg['releases']) == 0) {
     print "<center><p><i>No releases yet</i></p></center>";
 } else {
-    print "<table width=\"100%\" border=\"0\">\n";
+    $bb->headRow("Release", "What has changed?");
 
     foreach ($pkg['releases'] as $version => $release) {
-        extract($release);
-
-        if (isset($_GET['release']) && $_GET['release'] == $version) {
-            $bgcolor1 = "#dddddd";
-            $bgcolor2 = "#eeeeee";
+        if (!empty($_GET['release']) && $version == $_GET['release']) {
+            $bb->horizHeadRow($version,
+                          nl2br($release['releasenotes'])
+                          );
         } else {
-            $bgcolor1 = "#FFFFFF";
-            $bgcolor2 = "#FFFFFF";
+            $bb->plainRow($version,
+                          nl2br($release['releasenotes'])
+                          );
         }
-
-        print "<tr bgcolor=\"" . $bgcolor1 . "\"><td><p><b>Version: $version-$state ($releasedate)".
-              "</b></p></td></tr>\n".
-              "<tr bgcolor=\"" . $bgcolor2 . "\"><td>" . nl2br($releasenotes) ."<br /></td></tr>\n";
     }
-    print "</table>\n";
 }
 $bb->end();
 print '<p>' . make_link("/" . $name, 'Return') . '</p>';

@@ -206,9 +206,9 @@ class BorderBox {
     function horizHeadRow($heading /* ... */) {
         $i = $this->indent;
         print "$i    <tr>\n";
-        print "$i     <th bgcolor=\"#cccccc\">$heading</th>\n";
+        print "$i     <th valign=\"top\" bgcolor=\"#cccccc\">$heading</th>\n";
         for ($j = 0; $j < $this->cols-1; $j++) {
-            print "$i     <td bgcolor=\"#e8e8e8\">";
+            print "$i     <td valign=\"top\" bgcolor=\"#e8e8e8\">";
             $data = @func_get_arg($j + 1);
             if (empty($data)) {
                 print "&nbsp;";
@@ -225,7 +225,7 @@ class BorderBox {
         $i = $this->indent;
         print "$i    <tr>\n";
         for ($j = 0; $j < $this->cols; $j++) {
-            print "$i     <th bgcolor=\"#ffffff\">";
+            print "$i     <th valign=\"top\" bgcolor=\"#ffffff\">";
             $data = @func_get_arg($j);
             if (empty($data)) {
                 print "&nbsp;";
@@ -241,7 +241,7 @@ class BorderBox {
         $i = $this->indent;
         print "$i    <tr>\n";
         for ($j = 0; $j < $this->cols; $j++) {
-            print "$i     <td bgcolor=\"#ffffff\">";
+            print "$i     <td valign=\"top\" bgcolor=\"#ffffff\">";
             $data = @func_get_arg($j);
             if (empty($data)) {
                 print "&nbsp;";
@@ -334,11 +334,6 @@ function localRedirect($url)
 	exit;
 }
 
-function displayed_user_email($user)
-{
-    return "<a href=\"mailto:$user@php.net\">$user@php.net</a>";
-}
-
 /**
  * Get URL to license text
  *
@@ -422,7 +417,7 @@ function user_link($handle)
     return sprintf("<a href=\"/~%s\">%s</a>%s\n",
                    $handle,
                    $row['name'],
-                   ($row['wishlist'] != "" ? " [<a href=\"" . $row['wishlist'] . "\">Wishlist</a>]" : "")
+                   ($row['wishlist'] != "" ? " [<a href=\"" . htmlentities($row['wishlist']) . "\">Wishlist</a>]" : "")
                    );
 }
 

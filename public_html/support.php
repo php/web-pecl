@@ -175,21 +175,23 @@ Of course don't forget to visit the <i>#pear</i> IRC channel at the <a href="htt
 Eris Free Net</a>.
 </p>
 
+<div class="listing">
+
 <a name="tutorials" /><h3>PEAR Tutorials</h3>
 
 <h4>Tutorials about the PEAR DB class:</h4>
 
 <ul>
     <li><a href="http://vulcanonet.com/soft/?pack=pager">Pear DB Pager Class Tutorial</a> by Tomas V.V.Cox.
-    This class handles all the stuff needed for displaying paginated results from a database query.</li><br /><br />
+    This class handles all the stuff needed for displaying paginated results from a database query.</li>
 
-    <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li><br /><br />
+    <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li>
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/11/29/peardb.html">PEAR::DB Primer</a> on O'Reilly Network</li><br /><br />
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/11/29/peardb.html">PEAR::DB Primer</a> on O'Reilly Network</li>
 
-    <li><a href="http://www.nusphere.com/products/library/script_peardb.pdf">Writing Scripts with PHP's PEAR DB Class</a> - by Paul DuBois (PDF) in nusphere.com</li><br /><br />
+    <li><a href="http://www.nusphere.com/products/library/script_peardb.pdf">Writing Scripts with PHP's PEAR DB Class</a> - by Paul DuBois (PDF) in nusphere.com</li>
 
-    <li><a href="http://evolt.org/article/Abstract_PHP_s_database_code_with_PEAR_DB/17/21927/index.html">Abstract PHP's database code with PEAR::DB</a> on evolt.org</li><br /><br />
+    <li><a href="http://evolt.org/article/Abstract_PHP_s_database_code_with_PEAR_DB/17/21927/index.html">Abstract PHP's database code with PEAR::DB</a> on evolt.org</li>
 
     <li><a href="http://www.devshed.com/Server_Side/PHP/DBAbstraction">Database Abstraction With PHP</a> on devshed.com</li>
 </ul>
@@ -199,14 +201,14 @@ Eris Free Net</a>.
 <ul>
     <li>Tutorial about a lot of PEAR-classes
     <a href="http://www.tu-chemnitz.de/~meal/php/peardoc/index.html">http://www.tu-chemnitz.de/~meal/php/peardoc/index.html</a>
-    </li><br /><br />
+    </li>
 
     <li>IT[X] is a template class:<br />
     <a href="http://www.ulf-wendel.de/projekte/itx/index.php">http://www.ulf-wendel.de/projekte/itx/index.php</a>
-    </li><br /><br />
+    </li>
 
     <li><a href="http://www.ulf-wendel.de/projekte/menu/tutorial.php">Menu.php Tutorial</a> in German.
-    This class generates a HTML menu from a multidimensional hash.</li><br /><br />
+    This class generates a HTML menu from a multidimensional hash.</li>
 
     <li><a href="http://www.ulf-wendel.de/projekte/cache/">Tutorial about the PEAR Cache class</a></li>
 </ul>
@@ -215,12 +217,12 @@ Eris Free Net</a>.
 
 <ul>
     <li><a href="http://php.chregu.tv/sql2xml/">XML_sql2xml tutorial</a>. A PEAR class for converting SQL
-    query results or arrays to XML.</li><br /><br />
+    query results or arrays to XML.</li>
 
     <li><a href="http://www.mamasam.com/tutorials/en_html_table.html">Table.php</a> Tutorial. The table class
-    allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li><br /><br />
+    allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li>
 
-   <li><a href="http://www.zend.com/zend/art/art-heyes.php">PEAR::Mail</a> in zend.com</li><br /><br />
+   <li><a href="http://www.zend.com/zend/art/art-heyes.php">PEAR::Mail</a> in zend.com</li>
 
 </ul>
 
@@ -229,30 +231,32 @@ Eris Free Net</a>.
 <ul>
     <li><a href="http://conf2.php.net/show/powerpear">2002-11-03 Frankfurt - 
     International PHP Conference - Teach Yourself PEAR in 6 Hours</a>
-    by Stig S. Bakken.</li><br /><br />
+    by Stig S. Bakken.</li>
 
     <li><a href="http://conf.php.net/pres/slides/pres/index.php?p=slides%2Fpear%2Flt2002&id=pearlt2002">
-    2002-06-08 Karlsruhe - LinuxTag - The State of (the) PEAR </a> by Stig S. Bakken.</li><br /><br />
+    2002-06-08 Karlsruhe - LinuxTag - The State of (the) PEAR </a> by Stig S. Bakken.</li>
 
 
     <li><a href="http://conf.php.net/pres/index.php?p=slides%2Fpear&id=pear">A presentation</a> by Stig Bakken,
-    who is leading PEAR development, at ApacheCon 2001 on PEAR.</li><br /><br />
+    who is leading PEAR development, at ApacheCon 2001 on PEAR.</li>
 
     <li><a href="http://conf.php.net/pear2">An updated presentation</a> by Jon Parise,
-    a PEAR contributor, from the O'Reilly Open Source Convention 2001.</li><br /><br />
+    a PEAR contributor, from the O'Reilly Open Source Convention 2001.</li>
 
-    <li><a href="http://pear.sourceforge.net/manual/">Russian PEAR Manual</a>.</li><br /><br />
+    <li><a href="http://pear.sourceforge.net/manual/">Russian PEAR Manual</a>.</li>
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/10/11/pearcache.html">Caching PHP Programs with PEAR</a> on O'Reilly Network</li><br /><br />
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/10/11/pearcache.html">Caching PHP Programs with PEAR</a> on O'Reilly Network</li>
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/07/19/pear.html">A Detailed Look at PEAR</a> on O'Reilly Network</li><br /><br />
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/07/19/pear.html">A Detailed Look at PEAR</a> on O'Reilly Network</li>
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/05/24/pear.html">An Introduction to PEAR</a> on O'Reilly Network</li><br /><br />
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/05/24/pear.html">An Introduction to PEAR</a> on O'Reilly Network</li>
 
-    <li><a href="http://www.phpconcept.net/articles/article.en.php?id=1">Configure WinCVS for PEAR</a> by Vincent Blavet</li><br /><br />
+    <li><a href="http://www.phpconcept.net/articles/article.en.php?id=1">Configure WinCVS for PEAR</a> by Vincent Blavet</li>
 
     <li><a href="http://www.macdevcenter.com/pub/a/mac/2003/01/21/pear_macosx.html">O'Reilly Network: PHP's PEAR on Mac OS X</a></li>
 </ul>
+
+</div>
 
 <a name="icons" /><h3>Powered By PEAR/PECL</h3>
 

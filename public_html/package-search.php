@@ -100,16 +100,20 @@ if(!empty($_GET)) {
     $result = $dbh->query($sql);
 
     // Print any results
-    if($result->numRows() > 0) {
-        echo '<p><strong>Results:</strong></p>';
+    if($result->numRows() > 0) {        
+        echo "<br /><br />\n";
+        $bb = new Borderbox("Search results (" . $result->numRows() . ")");
+
         while($result->fetchInto($row)) {
             echo ' <dt><a href="pkginfo.php?pacid='.$row['id'].'">'.$row['name'].'</a> (<a href="/account-info.php?handle='.$row['handle'].'">'.$row['handle'].'</a>)</dt>';
             echo ' <dd>'.$row['summary'].'</dd>';
             echo ' <br /><br />';
         }
+
+        $bb->end();
     } else {
         echo '<p><strong>No results found</strong></p>';
-    }
+    }    
 }
 
 response_footer();

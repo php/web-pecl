@@ -527,12 +527,11 @@ function display_user_notes($user, $width = "50%")
     if (!empty($notes)) {
         print "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
         foreach ($notes as $nid => $data) {
-        list($nby, $ntime, $note) = $data;
         print " <tr>\n";
         print "  <td>\n";
-        print "   <b>$nby $ntime:</b>";
+        print "   <b>{$data['nby']} {$data['ntime']}:</b>";
         print "<br />\n";
-        print "   ".htmlspecialchars($note)."\n";
+        print "   ".htmlspecialchars($data['note'])."\n";
         print "  </td>\n";
         print " </tr>\n";
         print " <tr><td>&nbsp;</td></tr>\n";

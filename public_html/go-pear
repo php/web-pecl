@@ -135,7 +135,7 @@ $config_desc = array(
     'php_dir' => 'PHP code directory',
     'doc_dir' => 'Documentation base directory',
     'data_dir' => 'Data base directory',
-    'tests_dir' => 'Tests base directory',
+    'test_dir' => 'Tests base directory',
 );
 $config_vars = array_keys($config_desc);
 // make indices run from 1...
@@ -466,6 +466,8 @@ function download_url($url, $destfile = null, $proxy = null)
         $fp = fsockopen($tmp['host'], $tmp['port'], $errno, $errstr);
         //print "\nconnecting to $tmp[host]:$tmp[port]\n";
     } else {
+        $proxy = eregi_replace('^http://', '', $proxy);
+        $proxy = ereg_replace('/.*', '', $proxy);
         list($phost, $pport) = explode(":", $proxy);
         $fp = fsockopen($phost, $pport, $errno, $errstr);
         //print "\nconnecting to $phost:$pport\n";
@@ -499,7 +501,7 @@ function download_url($url, $destfile = null, $proxy = null)
             }
         }
     }
-    $wp = fopen($destfile, "w");
+    $wp = fopen($destfile, "wb");
     if (!$wp) {
         bail("could not open $destfile for writing\n");
     }
@@ -659,7 +661,7 @@ function my_env($var)
 // {{{ detect_install_dirs()
 
 function detect_install_dirs($_prefix = null) {
-    global $prefix, $bin_dir, $php_dir, $doc_dir, $data_dir, $tests_dir;
+    global $prefix, $bin_dir, $php_dir, $doc_dir, $data_dir, $test_dir;
     if (WINDOWS) {
         if ($_prefix === null) {
             $prefix = PHP_BINDIR;
@@ -677,7 +679,7 @@ function detect_install_dirs($_prefix = null) {
         $php_dir   = '$prefix\pear';
         $doc_dir   = '$php_dir\docs';
         $data_dir  = '$php_dir\data';
-        $tests_dir = '$php_dir\tests';
+        $test_dir = '$php_dir\tests';
     } else {
         if ($_prefix === null) {
             $prefix    = dirname(PHP_BINDIR);
@@ -688,7 +690,7 @@ function detect_install_dirs($_prefix = null) {
         $php_dir   = '$prefix/share/pear';
         $doc_dir   = '$php_dir/docs';
         $data_dir  = '$php_dir/data';
-        $tests_dir = '$php_dir/tests';
+        $test_dir = '$php_dir/tests';
         // check if the user has installed PHP with PHP or GNU layout
         if (@is_dir("$prefix/lib/php/.registry")) {
             $php_dir = '$prefix/lib/php';
@@ -696,7 +698,7 @@ function detect_install_dirs($_prefix = null) {
             $php_dir = '$prefix/share/pear/lib';
             $doc_dir   = '$prefix/share/pear/docs';
             $data_dir  = '$prefix/share/pear/data';
-            $tests_dir = '$prefix/share/pear/tests';
+            $test_dir = '$prefix/share/pear/tests';
         } elseif (@is_dir("$prefix/share/php/.registry")) {
             $php_dir = '$prefix/share/php';
         }

@@ -52,7 +52,6 @@ menu_link("Weekly News", "/weeklynews.php");
 if (DEVBOX) {
     menu_link("Browse Packages", "packages.php");
     menu_link("Search Packages", "package-search.php");
-    menu_link("View Statistics", "package-stats.php");
     menu_link("Request PEAR Account", "account-request.php");
     echo hdelim();
     echo "<h3>Available when logged in:</h3>";

@@ -44,3 +44,18 @@ Now to the use-cases:
     2. package is now published and will appear on the "recently
        published" list on  pear.php.net, a notice goes to the
        pear-announce mailing list, freshmeat.net etc.
+
+4. User wants to install the latest version of "Money_Fast" (1.2):
+    1. user runs "pear install-latest Money_Fast", which downloads
+       Money_Fast-1.2.tgz and installs it.  alternative approaches:
+       * "pear shell", "install-latest Money_Fast"
+       * download file from web site and run "pear install Money_Fast-1.2.tgz"
+
+5. User wants to report a bug in Money_Fast 1.2:
+    1. user fills in a form at http://pear.php.net/bugs.php
+
+6. User wants a date conversion function, but is not sure whether any
+   PEAR packages provide it
+    1. user does a free-text search for "date conversion" and gets a link
+       to the Date_Calc package in the results
+    2. proceed with use-case 4 for Date_Calc

@@ -1,5 +1,10 @@
 SHORT TERM:
 
+* web site:
+** release-info page
+** move dependencies from package-info to release-info
+** fix release-upload bug
+
 * "pear configure" to make ~/.pearrc:
 ** email address
 ** any client-side parameters

@@ -33,7 +33,7 @@ switch ($HTTP_POST_VARS['command']) {
                          $HTTP_POST_VARS['userinfo'],
                          isset($HTTP_POST_VARS['showemail']) ? 1 : 0,
                          isset($HTTP_POST_VARS['admin']) ? 1 : 0);
-        $query .= " WHERE username = '" . $HTTP_POST_VARS['handle'] . "'";
+        $query .= " WHERE handle = '" . $HTTP_POST_VARS['handle'] . "'";
         $sth = $dbh->query($query);
 
         $old_acl = $dbh->getCol("SELECT path FROM cvs_acl ".
@@ -74,7 +74,7 @@ switch ($HTTP_POST_VARS['command']) {
 
     default : {
         $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
-        $row = $dbh->getRow("SELECT * FROM users WHERE username = ?",
+        $row = $dbh->getRow("SELECT * FROM users WHERE handle = ?",
                             array($handle));
         $cvs_acl_arr = $dbh->getCol("SELECT path FROM cvs_acl ".
                                     "WHERE username = ? AND access = 1", 0,

@@ -19,7 +19,7 @@ response_header("Author information");
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 $row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 ".
-                    "AND username = ?", array($handle));
+                    "AND handle = ?", array($handle));
 
 if ($row === null) {
     PEAR::raiseError("No account information found!");

@@ -48,9 +48,9 @@ $res = mysql_query($query);
 
 if ($res) $bug = mysql_fetch_array($res,MYSQL_ASSOC);
 if (!$res || !$bug) {
-  commonHeader("No such bug.");
+  response_header("No such bug.");
   echo "<h1 class=\"error\">No such bug #$id!</h1>";
-  commonFooter();
+  response_header();
   exit;
 }
 

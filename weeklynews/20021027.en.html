@@ -7,110 +7,95 @@
     
 <p><i><small>by Alan Knowles (alan_k@php.net)</small></i></p>
     
-<p>Another Quiet week, as a number of the PEAR developers are preparing for
+<p>Another quiet week, as a number of the PEAR developers are preparing for
 the forthcomming PHP conference in Frankfurt (come and see the warm bodies
 behind all that code). Discussion on the dirname(__FILE__) issue continued,
 with the original Architect explaining the reasoning behind the design decision.
-Three New Packages where proposed this week, as PEAR continues to attract
-the best Quality PHP code and extensions, Along with a continuing flow of
+Three new packages where proposed this week, as PEAR continues to attract
+the best quality PHP code and extensions, along with a continuing flow of
 new releases 4 stable, and 4 beta.</p>
 
+<hr>
 
-    
-<hr>   
 <h2>New Releases</h2>
     
 <h3>Stable</h3>
-    
+
 <ul>
-    <li><b>HTML_Select</b>  - provides selection boxes for Countries,
-UK counties and US States</li>
-  <li><b>Log</b>  -a framework for providing abstracted logging.</li>
-  <li><b>HTML_QuickForm</b>  - a package that provides methods for creating,
-validating and Processing HTML Forms</li>
-  <li><b>HTML_Table</b>  - provides  methods for easy and effecient
+  <li><b>HTML_Select</b> - provides selection boxes for countries,
+UK countries and US States</li>
+  <li><b>Log</b> - a framework for providing abstracted logging</li>
+  <li><b>HTML_QuickForm</b> - a package that provides methods for creating,
+validating and processing HTML Forms</li>
+  <li><b>HTML_Table</b> - provides  methods for easy and effecient
 design of HTML tables</li>
 </ul>
+
 <h3>Beta</h3>
   
 <ul>
-  <li><b>PEAR_Frontend_Web</b>   - The web interface to the PEAR installer</li>
-  <li><b>SOAP_Interop</b>   - A test suite for SOAP services</li>
-  <li><b>Net_DIME</b>   - A package that provides an interface to the
-DIME (Instant messaging protocol)</li>
-  <li><b>SOAP</b>   - A set of library to allow PHP to be a SOAP server
-and client.</li>
+  <li><b>PEAR_Frontend_Web</b> - the web interface to the PEAR installer</li>
+  <li><b>SOAP_Interop</b> - a test suite for SOAP services</li>
+  <li><b>Net_DIME</b> - a package that provides an interface to the
+DIME (instant messaging protocol)</li>
+  <li><b>SOAP</b> - a set of library to allow PHP to be a SOAP server
+and client</li>
 </ul>
          
-<hr>   
-
-
-
+<hr>  
 
 <h2>PEAR-DEV traffic</h2>
     
 <h3>PEAR paths in require_once, and using dirname(__FILE__) continued</h3>
-Following last weeks discussion on using dirname(__FILE__) for paths, Stig
+<p>Following last weeks discussion on using dirname(__FILE__) for paths, Stig
 Bakken pointed out the serious problems of using this in conjunction with
 multiple PEAR installations (eg. a global + user one). The problem being that
 require_once, would become seriously confused and may end up loading 2 classes
 with the same name from 2 different files, hence causing a conflict. The
 current method of letting the include path sort this out is the only currently
-viable solution.
+viable solution.</p>
 
-
-
-<h3>new MDB Containers for PEAR cache and mail queue</h3>
+<h3>New MDB containers for PEAR cache and mail queue</h3>
 <p>Lorenzo Alberton announced he had written MDB containers for PEAR cache
-and mail queue. </p>
-
+and mail queue.</p>
 
 <h3>User notes for the PEAR manual</h3>
-It was suggested by Jon Wood, that one of the most popular feature of the
-PHP manual be added to the PEAR manual, although there weren't many responses,
-It is likely that when peardoc2 goes live, this will be a key feature that
-will be added.
-
+<p>It was suggested by Jon Wood, that one of the most popular feature of the
+PHP manual be added to the PEAR manual, although there weren't many responses.
+It is likely that when PEARDoc2 goes live, this will be a key feature that
+will be added.</p>
 
 <h3>Bugs and Fixes</h3>
-Thanks to these people for spotting and fixing some bugs, David Viner, Daniel
-C, Lorenzo Alberton, Sebastian R&ouml;bke, Mika Tuupola, Alan Richmond, Robin
-Ericsson, 
-<p></p>
+<p>Thanks to these people for spotting and fixing some bugs: David Viner, Daniel
+C, Lorenzo Alberton, Sebastian R&ouml;bke, Mika Tuupola, Alan Richmond and Robin
+Ericsson</p>
 
+<hr>
 
-
-
-<hr>   
 <h2>New and Proposed Packages</h2>
     
-<h3>APC  - Advanced PHP cache now in PECL</h3>
+<h3>APC (Advanced PHP Cache) now in PECL</h3>
 <p>George Schlossnagle announced his intention to add APC, a freely available
-PHP cache to PECL.<br>
-</p>
-
+PHP cache to PECL.</p>
 
 <h3>ezSQL - a simplified Database API</h3>
-<p>Justin Vncent Proposed his simplified Database API for PEAR, after some
-confusion about how it would fit into PEAR, a general consensus that this
+<p>Justin Vncent proposed his simplified Database API for PEAR, after some
+confusion about how it would fit into PEAR. A general consensus that this
 kind of wrapper as an extension to DB or MDB may be of some use to some users.
 Although the purists amount the pear developers where not that keen on the
-over-hiding of the database connection details. <br>
-</p>
+over-hiding of the database connection details.</p>
 
-
-<h3>Net_Cyrus - an interface to the Cyrus IMAP server managment commands.</h3>
-Richard Heyes Proposed a Package to provide an interface to the Cyrus IMAP
-mail server, enabling the adding users, and changing  their Access rights.
+<h3>Net_Cyrus - an interface to the Cyrus IMAP server managment commands</h3>
+<p>Richard Heyes proposed a package to provide an interface to the Cyrus IMAP
+mail server, enabling the adding users, and changing their access rights.</p>
  
+<hr>
 
-
-
-<hr>     
 <h2>Development</h2>
-<p>  Active on CVS this week has been Benchmark, Cache, DBA_Relational, File_Find,
+
+<p>Active on CVS this week has been Benchmark, Cache, DBA_Relational, File_Find,
 HTML_QuickFrom, HTML_Table, Image_Transform, Inline_C, Log, Mail_Queue, MDB,
 PECL::bcompiler, PECL::python, Perm_LiveUser, Scince_Chemistry, SOAP, SQL_Parser,along
-with updates to peardoc2, including file and the faq.</p>
+with updates to PEARDocc2, including file and the FAQ.</p>
 </body>
 </html>

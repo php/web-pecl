@@ -1628,10 +1628,15 @@ class user
     function listAll()
     {
         global $dbh;
-        return $dbh->getAll("SELECT * FROM users ORDER BY handle",
-                            null, DB_FETCHMODE_ASSOC);
+        $query = "SELECT * FROM users";
+        if ($registered_only === true) {
+            $query .= " WHERE registered = 1";
+        }
+        $query .= " ORDER BY handle";
+        return $dbh->getAll($query, null, DB_FETCHMODE_ASSOC);
     }
 
+    // }}}
 }
 
 class statistics

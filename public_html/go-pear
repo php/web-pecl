@@ -15,6 +15,8 @@
 # | Authors: Tomas V.V.Cox <cox@idecnet.com>                             |
 # +----------------------------------------------------------------------+
 #
+# $Id$
+#
 # Automatically download all the files needed to run the "pear" command
 # (the PEAR package installer)
 #
@@ -24,6 +26,8 @@
 #
 # TODO:
 #	-rewrite in PHP
+#
+# From Rev5 please see the pearweb CVS module at cvs.php.net
 #
 # Rev4 2002-04-27:
 #
@@ -149,7 +153,7 @@ echo "done!"
 ####
 
 prefix=`echo $prefix | perl -pe 's#\/#\x5c\/#g;'`
-cat $pearin | perl -pe "s#\@bindir@#$prefix\/bin#" > $TARGET
+cat $pearin | perl -pe "s#\@prefix@#$prefix\/bin#" > $TARGET
 
 cd $origpwd
 chmod +x $TARGET

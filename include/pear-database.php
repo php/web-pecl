@@ -263,7 +263,8 @@ class release
     function getRecent($n = 5)
     {
         global $dbh;
-        $sth = $dbh->query("SELECT packages.name AS name, ".
+        $sth = $dbh->query("SELECT packages.id AS id, ".
+                           "packages.name AS name, ".
                            "packages.summary AS summary, ".
                            "releases.version AS version, ".
                            "releases.releasedate AS releasedate, ".

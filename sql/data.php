@@ -10,6 +10,7 @@ $dbh = DB::connect("$type://$user:$pass@localhost/$db");
 include "./addusers.php";
 include "./addcategories.php";
 include "./addpackages.php";
+include "./addacls.php";
 
 function error_handler($obj) {
 	print "Error when adding users: ";

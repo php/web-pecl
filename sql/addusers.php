@@ -37,7 +37,12 @@ foreach (explode("\n", $hardcoded_users) as $line) {
 	$users[$tmp[0]]['admin'] = $tmp[4];
 }
 
-if (is_resource($fp = @fopen("cvsusers", "r"))) {
+$fp = @fopen("cvsusers", "r");
+if (empty($fp)) {
+	$fp = @fopen("../../CVSROOT/cvsusers", "r");
+}
+
+if (is_resource($fp)) {
 	while ($line = fgets($fp, 1024)) {
 		if (!trim($line)) continue;
 		list($user,$name,$email) = explode(":", trim($line));

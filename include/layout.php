@@ -171,7 +171,7 @@ function commonHeader($title) {
         link="#003300"
         alink="#00ff99"
         vlink="#003300"
-><a name="TOP"></a>
+><a name="TOP" />
 <table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
   <tr bgcolor="#009933">
     <td align="left" rowspan="2" width="120">

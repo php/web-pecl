@@ -30,7 +30,10 @@
 <!-- SECTION --><a name="2"></a>
 <h3></h3>
 <p>
- There has been no press coverage this week.
+German magazine "Internet World" 
+(<a href="http://www.internetworld.de/">http://www.internetworld.de/</a>)
+reported in issue 3/2003 about new version of PHP 4.3.0 and it's PEAR
+support.
 </p>
 
 <hr>
@@ -45,8 +48,14 @@ and they will be added to the weekly news.
 <h2>PEAR-DEV traffic</h2>
 
 <!-- SECTION --><a name="3"></a>
-<h3></h3>
+<h3>Peardoc2 converter now functional</h3>
 <p>
+ Greg Beaver announced that phpDocumentor peardoc2 converter is now functional
+ and committed to CVS with working category support. Testing is still needed.
+ Best way for people to help out is to get phpDocumentor from anonymous
+ CVS (instructions at <a href="http://www.phpdoc.org/">http://www.phpdoc.org/</a>),
+ try it out and post any possible bugs to the sourceforge page. Hopefully
+ this will increase the amount of written documentation soon.
 </p>
 <!-- SECTION --><a name="4"></a>
 <h3></h3>
@@ -67,22 +76,36 @@ and they will be added to the weekly news.
 
 <h2>New and Proposed Packages</h2>
 <!-- SECTION --><a name="5"></a>
-<h3></h3>
+<h3>HTML_FormPersister, HTML_SemiParser</h3>
 <p>
+ Dmitry Koteroff proposed two of his classes HTML_FormPersister
+ and HTML_SemiParser which could be used to make html forms remember
+ their values. This comes handy when evaluating user submitted data
+ and some of the data was invalid and the form needs to be redisplayed
+ to the client.
 </p>
 <!-- SECTION --><a name="6"></a>
-<h3></h3>
+<h3>PECL::isis</h3>
 <p>
+ Braulio José Solano Rojas proposed his extension uses the library for 
+ reading Isis databases (<a href="http://www.openisis.org/">http://www.openisis.org/</a>).
+ There are a lot of people in latin-america and europe using Isis so
+ this will be a nice addition.
 </p>
 <!-- SECTION --><a name="7"></a>
-<h3></h3>
+<h3>LDAP_DataObject</h3>
 <p>
+ Alan Knowles proposed his new LDAP_DataObject which is similar to
+ DB_DataObject but as the name implies uses LDAP as storage backend.
 </p>
 
 <!-- SECTION --><a name="8"></a>
-<h3></h3>
+<h3>Time</h3>
 <p>
-
+ Leandro Lucarella proposed package Time which can be used for time 
+ (but not date) related calculations. At the time of writing the discussion 
+ whether it should be included in Date_Calc or be an independent package
+ is still going on.
 </p>
 
 <h2>Development</h2>
@@ -93,7 +116,8 @@ and they will be added to the weekly news.
   HTML_QuickForm, DB, MDB, Config, HTML_Select_Common,
   Spreadsheet_Excel_Writer, Cache, File_HtAccess, 
   HTML_Template_Flexy, Net_UserAgent_Mobile, HTML_TreeMenu,
-  PECL::python, XML_Transformer and HTML_QuickForm
+  PECL::python, XML_Transformer, HTML_QuickForm and
+  Net_SmartIRC
 </p>
 
 </body>

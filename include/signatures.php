@@ -36,8 +36,6 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
     // format: array( array(returntype, methodname, paramlist), ... )
     settype($signatures, "array");
     $matches = array();
-    // get rid of block comments
-    $contents = preg_replace('|/\*.*\*/|Us', '', $contents);
     if (preg_match_all('/([ \*\+])?proto\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)\s*?\n(\s*?\/\/\s+?(.*?)\s*?\n)?/s',
                        $contents, $matches)) {
         for ($i = 0; $i < sizeof($matches[0]); $i++) {

@@ -92,7 +92,7 @@ if (isset($_COOKIE['PEAR_USER'])) {
     }
 }
 // XXX Hide for the moment?
-//menu_link("Request PEAR Account", "account-request.php");
+menu_link("Request PEAR Account", "account-request.php");
 
 echo hdelim();
 $recent = release::getRecent();

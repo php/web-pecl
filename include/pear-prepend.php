@@ -13,6 +13,8 @@ switch ($format) {
     case "xmlrpc":
         break;
 */
+    case "xml":
+        break;
     case "html":
         break;
     default:

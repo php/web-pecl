@@ -57,6 +57,10 @@ function report_error($error)
 {
     if (PEAR::isError($error)) {
         $error = $error->getMessage();
+        $info = $error->getUserInfo();
+        if ($info) {
+            $error .= " : $info";
+        }
     }
     print "<FONT COLOR=\"#990000\"><B>$error</B></FONT><BR>\n";
 }

@@ -49,7 +49,7 @@ function uptime()
     return $uptime;
 }
 
-if (DEVBOX && empty($dbh)) {
+if (empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }
 

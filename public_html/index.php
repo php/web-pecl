@@ -1,4 +1,12 @@
 <?php
+$SIDEBAR_DATA='
+<H3>What is PEAR?</H3>
+<P>
+PEAR is a code repository for PHP extensions
+and PHP library code inspired by TeX\'s CTAN
+and Perl\'s CPAN.
+</P>
+';
 
 response_header();
 

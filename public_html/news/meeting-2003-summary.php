@@ -269,10 +269,10 @@ veto by the PEAR Group.
 <p>
 More and more magazines are publishing articles about PEAR, they even
 approach us for writing for them.<br />
-The PHP Magazine (http://www.php-mag.net) will release articles if
-they are older than a few issues and we are working on ways to make
-them updateable. Also the PHP Magazin will distribute PEAR on the
-magazin CD.<br />
+The International PHP Magazine (http://www.php-mag.net) will release articles
+if they are older than a few issues and we are working on ways to make them
+updateable. Also the Intl' PHP Magazine will distribute PEAR on the magazine
+CD.<br />
 Horde and Midgard are having closer looks at PEAR.<br />
 The PEAR Weekly News are part of the promotion effort and should be
 published again as soon as possible.

@@ -25,7 +25,7 @@
  * "limit".
  */
 
-if (!isset($_GET['limit']) || $_GET['limit'] == "") {
+if (empty($limit)) {
     $limit = 10;
 } else {
     $limit = (int)$_GET['limit'];

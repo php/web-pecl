@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.14 2001-09-24 00:17:18 cox Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.15 2001-09-24 07:23:17 mj Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-09-24 00:17:18 $</date>
-  <version>$Revision: 1.14 $</version>
+  <date>$Date: 2001-09-24 07:23:17 $</date>
+  <version>$Revision: 1.15 $</version>
  </artheader>
 
  <qandaset>
@@ -248,7 +248,7 @@
    <answer>
     <author name="Tomas V.V.Cox"/>
     <para>
-     The selected standar to write the API documentation is <ulink url="http://phpdoc.de/">
+     The selected standard to write the API documentation is <ulink url="http://phpdoc.de/">
      PHPDoc</ulink>. For the rest of the documentation like the manual or usage examples, the
      recommended formats are plain text, HTML or <ulink url="http://docbook.org/">DocBook</ulink>.
     </para>

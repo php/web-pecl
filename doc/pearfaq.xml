@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.1 2001-08-14 08:42:03 ssb Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.2 2001-08-16 01:18:21 alexmerz Exp $ -->
 <!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "./dbxml/docbookx.dtd">
 
@@ -8,7 +8,7 @@
 <article class="faq">
 <artheader>
     <title>PEAR-Developer FAQ</title>
-    <date>$Date: 2001-08-14 08:42:03 $</date>
+    <date>$Date: 2001-08-16 01:18:21 $</date>
 </artheader>
 
 <qandaset>
@@ -67,10 +67,15 @@
         </question>
         <answer>
             <para>
-                ( by Author )
+                ( by Alexander Merz )
             </para>        
             <para>
-                the ANSWER is 42
+                The general directory for new PEAR-classes and moduls is 
+				pear/ in the CVS-repository. The name of the directory of the 
+				new class is build from the class name and the package name. 
+				If you wrote a class called bar as a part of the package foo, 
+				the name of the directory is foo_bar. So the resulting path 
+				is 	pear/foo_bar.
             </para>
         </answer>
     </qandaentry>    
@@ -131,7 +136,36 @@
             </para>        
             <para>
                 Yes. But make sure, that you mark up the experimental/ unstable
-                status of the project in the documention.
+                status of the project in the documention. The best place to do 
+				this is in the package.xml in the &lt;status&gt;-tag. 
+				The values for this tag are 
+				<simplelist>
+					<member>
+						<parameter>alpha</parameter> - first stages of 
+						development, all things could change ( API, behavoir) 
+						without advice, a lot of bugs are normal
+					</member>
+					<member>
+						<parameter>beta</parameter> - stable API, usable 
+						software, bugs are possible
+					</member>
+					<member>
+						<parameter>devel</parameter> - a release intented for 
+						developers from outside the core developers of the 
+						class who want from other developers to test, give 
+						feedback.
+					</member>
+					<member>
+						<parameter>stable</parameter> - the software was tested,
+						the API fixed, the documention wrote and is the 
+						recommended release for users and production 
+						enviroments.
+					</member>
+					<member>
+						<parameter>cvs</parameter> - a cvs snapshot from a 
+						certain date
+				</simplelist>
+				( list by Tomas V.V. Cox )
             </para>
         </answer>
     </qandaentry>

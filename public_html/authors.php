@@ -5,7 +5,7 @@ response_header("PEAR: Authors");
 print "<H1>Authors</H1>\n";
 
 $sth = $dbh->query('SELECT handle,name,email,homepage,showemail '.
-		   'FROM users WHERE registered = 1');
+                   'FROM users WHERE registered = 1');
 if (DB::isError($sth)) {
     die("query failed: ".DB::errorMessage($dbh)."<BR>\n");
 }
@@ -22,24 +22,27 @@ print "  <TH>Commands</TH>\n";
 print " </TR>\n";
 
 $rowno = 0;
-while (is_array($row = $sth->fetchRow(DB_GETMODE_ASSOC))) {
+while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
     extract($row);
     if (++$rowno % 2) {
-	print " <TR bgcolor=\"#e8e8e8\">\n";
+        print " <TR bgcolor=\"#e8e8e8\">\n";
     } else {
-	print " <TR BGCOLOR=\"#e0e0e0\">\n";
+        print " <TR BGCOLOR=\"#e0e0e0\">\n";
     }
     print "  <TD>$handle</TD>\n";
     print "  <TD>$name</TD>\n";
-    
+
     if ($showemail) {
-	    print "  <TD><A HREF=\"mailto:$email\">$email</A></TD>\n";
+        print "  <TD><A HREF=\"mailto:$email\">$email</A></TD>\n";
     } else {
-	    print "  <TD>(not shown)</TD>\n";
+        print "  <TD>(not shown)</TD>\n";
     }
-    
-    print "  <TD><A HREF=\"$homepage\">$homepage</A></TD>\n";
-    print "  <TD><A HREF=\"edit-author.php?handle=".$row['handle']."\">[edit]</A>&nbsp;
+    if (!empty($homepage)) {
+        print "<TD><A HREF=\"$homepage\">$homepage</A><TD>";
+    } else {
+        print '<TD>&nbsp;<TD>';
+    }
+    print "\n  <TD><A HREF=\"edit-author.php?handle=".$row['handle']."\">[edit]</A>&nbsp;
                  <A HREF=\"detail-author.php?handle=".$row['handle']."\">[details]</A></TD>\n";
     print " </TR>\n";
 }

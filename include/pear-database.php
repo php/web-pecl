@@ -637,6 +637,9 @@ class release
 
     function logDownload($package, $release_id, $file = null)
     {
+        return false; // XXX Fixme when table downloads becomes stable.
+                      //     Now logDownload doesn't work
+
         global $dbh;
 
         $id = $dbh->nextId("downloads");
@@ -647,7 +650,7 @@ class release
         if (DB::isError($sth)) {
             return false;
         }
-
+        // XXX Returns:  [nativecode=Column count doesn't match value count at row 1]
         $err = $dbh->execute($sth, array($id, $file, $package,
                                          $release_id, date("Y-m-d H:i:s"),
                                          $_SERVER['REMOTE_ADDR'],

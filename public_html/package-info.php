@@ -166,7 +166,7 @@ $bb->end();
 // CVS link
 if (@is_dir(PHP_CVS_REPO_DIR . "/$name")) {
     $cvs_link = "[ " . make_link("http://cvs.php.net/cvs.php/pear/$name",
-                                 'View Source Code &amp; Docs', 'top')
+                                 'View Source Code in CVS', 'top')
     . " ] ";
     // XXX if "version" is set, add a release tag to the cvs link
 } else {
@@ -222,11 +222,22 @@ if (!$relid) {
                               "$pacid&release=" .
                               $r['version'], "Changelog")
                               . " ]";
-            $href_release = "$_SERVER[PHP_SELF]?pacid=$pacid&version=".
+            $href_release = $_SERVER['PHP_SELF'] . "?pacid=$pacid&version=".
                             urlencode($r['version']);
-            printf("  <td><a href=\"$href_release\">%s</a></td><td>%s</td><td>%s</td><td>%s</td><td valign=\"middle\">%s</td>\n",
-                    $r['version'], $r['state'], $r['releasedate'],
-                    $downloads_html, "<small>" . $link_changelog . "</small>\n");
+
+            printf("  <td><a href=\"%s\">%s</a></td>" .
+                   "  <td>%s</td>" .
+                   "  <td>%s</td>" .
+                   "  <td>%s</td>" .
+                   "  <td valign=\"middle\">%s</td>\n",                    
+                   $href_release,
+                   $r['version'],
+                   $r['state'],
+                   $r['releasedate'],
+                   $downloads_html,
+                   "<small>" . $link_changelog . "</small>\n"
+                  );
+
             print " </tr>\n";
         }
     }

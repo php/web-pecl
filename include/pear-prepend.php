@@ -7,7 +7,7 @@ $pear_green = "#00b03b";
 
 $DSN = "mysql://pear@localhost/pear";
 
-function pageHeader($title = "PEAR: PHP Extension and Add-on Repository",
+function pageHeader($title = "PEAR: PHP Extension and Application Repository",
 		    $style = false)
 {
     global $_style, $pear_green;

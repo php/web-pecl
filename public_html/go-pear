@@ -669,10 +669,10 @@ function detect_install_dirs($_prefix = null) {
             $prefix = $_prefix;
         }
         if (!@is_dir($prefix)) {
-            if (@is_dir('c:\php4')) {
-                $prefix = 'c:\php4';
-            } elseif (@is_dir('c:\php')) {
+            if (@is_dir('c:\php')) {
                 $prefix = 'c:\php';
+            } elseif (@is_dir('c:\php4')) {
+                $prefix = 'c:\php4';
             }
         }
         $bin_dir   = '$prefix';

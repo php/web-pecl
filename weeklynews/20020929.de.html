@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>by Alan Knowles(alan_k@php.net) (&uuml;bersetzt von Alexander Merz alexmerz(at)php.net)</small></i></p>
+ 
+<p>
+<b>Kurz und b&uuml;ndig:</b>
+Wolframs Kriesing lobt und dankt dem PEAR-Team f&uuml;r ihre Arbeit - 
+PEAR half ihm sein Projekt schnell und einfach durch zu ziehen. Der Grund: Die hohe 
+Qualit&auml;t des PEAR-Codes. Hier wird PEARs St&auml;rke deutlich; eine durchg&auml;ngig
+gute Qualit&auml;t und eine gezielte Vorauswahl. Das Entwicklerleben wird mit PEAR einfacher,
+darauf aufbauende Projekte sind einfacher zu betreuen und zu verwalten.<br>
+Diese Woche drehten sich Diskussionen um virtuelle Dateisysteme; Pl&auml;ne f&uuml;r pear.php.net 
+hinsichtlich dem offiziellen PEAR-Release mit PHP 4.3. Das DBA-Package wurde aufgesplittet. 
+Insgesamt gab es diese Woche 4 'stable'- und 3 'beta'-Releases, und zwei Package-Vorschl&aumlge.
+</p>   
+    
+<hr>  
+<h2>Neue Releases</h2>
+    
+<h3>Stable</h3>
+<p>
+	<ul>
+  		<li>
+			<b>Image_GraphViz</b> - 
+			eine Bibliothek zum Arbeiten mit
+			AT&amp;Ts GraphViz 						
+		</li>
+	  	<li>
+			<b>Benchmark</b> - 
+			ein Framework um die Laufzeit von PHP-Skriptenermitteln
+		</li>
+	  	<li>
+			<b>PHPUnit</b> - 
+			ein Framework zum regelm&auml;igen Testen von eigenen Funktionen
+		</li>
+		<li>
+			<b>XML_Transformer</b> - 
+			Transformator für XML-Tags zu PHP-Code oder Text. Vergleichbar mit XSLT.			
+		</li>
+	</ul>
+</p>    
+
+<h3>Beta</h3>
+<p>
+	<ul>
+		<li>
+			<b>DBA</b> - 
+			Bereitstellung einer dateibasierenden Datenbanken über die PHP-DBA-Funktionen oder per Emulation, einschließlich einer einfachen SQL-Implementierung
+		</li>
+	  	<li>
+			<b>Net_Dict</b> - 
+			eine Bibliothek um auf &ouml;ffentliche &Uuml;bersetzungserver zu zugreifen
+		</li>
+	  	<li>
+			<b>Mail_Queue</b> - 
+			Bibliothek zum Versenden von Massen-EMails 
+		</li>
+	</ul>
+</p>    
+         
+<hr>  
+<h2>PEAR-DEV Meldungen</h2>
+    
+<h3>Virtual-File-System</h3>
+<p>
+Jon Wood k&uuml;ndigte die Entwicklung eines Virtual-File-System-Package (VFS) an.
+Das f&uuml;hrte zu einer Diskussion, ob man auf die Horde-VFS-Implementierung aufsetzen 
+sollte. Als Ergebniss erstellte Chuck Hagenbuch vom Horde-Projekt ein 
+<a href="http://pear.horde.org" target="_blank">PEAR-kompatibles Package</a>
+ihrer Implementierung. Unabh&auml;ngig davon bleibt die Idee eines PEAR-eigenen
+API f&uuml;r ein VFS. Wie/Ob die Umsetzung erfolgt und wie Horde-Code genutzt werden
+kann, wird noch diskutiert.
+</p>
+
+<h3>Last Weeks Weekly News</h3>
+<p>
+Gro&szlig;en Dank an Pierre-Alain Joye. Er schrieb die "PEAR Weekly News" letzte Woche,
+nach dem ich [Alan Knowles] keine Zeit daf&uuml;r hatte. Es war sch&ouml;n, eine andere
+Perspektive auf die Ereignisse zu haben. F&uuml;r die Zukunft k&ouml;nnten noch mehr Autoren
+f&uuml;r andere Blickwinkel sorgen.
+</p>
+
+<h3>Pl&auml;ne f&uuml;r pear.php.net</h3>
+<p>
+Martin Jansen beschrieb seine Pl&auml;ne f&uuml;r <a href="http://pear.php.net">pear.php.net</a>.
+Er entwarf ein besseres Package-Vorschlag-System, um zu verhindern, dass Vorschl&auml;ge 
+im t&auml;glichen Verkehr untergehen und den Abstimmungsprzess transparenter zu gestalten.
+Weiterhin sollen die Entwickler-bezogenen Seiten der Packages ausf&uuml;hrlicher werden:
+offene Bug-Meldungen, Funktionsvorschl&auml;ge etc.
+</p>
+<p>
+Auf den Entwurf folgte eine lebhafte Diskusssion, u.a. zu Themen wie
+eine Liste der "Top Ten"-Bugfixer. So eine Liste wurde abgelehnt, die Motivation
+sollte nicht aus "sportlichen Gr&uuml;nden", sondern aus der pers&ouml;nlichen Erfahrung kommen.
+</p>
+
+<h3>PEAR::Error Summary</h3>
+<p>
+Sebastian Bergmann fragte wie man die PEAR-Fehlerbehandlung einsetzt.
+Brent Cook schrieb eine <a
+ href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=9462">
+Zusammenfassung</a> &uuml;ber die Benutzung von PEAR_Error. Er merkte an, da&szlig; 
+die Funktionen mit PHP 5 wahrscheinlich &uuml;berarbeitet werden - unter Nutzung
+des neuen throw/catch-Mechanismus.
+</p>
+
+<h3>DBA aufgeteilt: - SQL_Parser, DBA_Relational und 'classic'-DBA</h3>
+<p>
+Brent Cook teilte DBA in drei Packages auf
+<ul>
+	<li>SQL_Parser - zum Parsen und Lesen von SQL-Befehlen</li>
+	<li>DBA_Relational - f&uuml;r den Einsatz von
+	SQL bei Datei-basierten Datenbanken</li>
+	<li>DBA - eine abstrakte API f&uuml;r DB2, GDBM und dateibasierten
+	'Datenbanken' (Schl&uuml;ssel,Wert)</li>
+</ul>
+</p>
+<h3>PHPUnit - neuer CVS-Branch f&uuml;r Zend Engine 2 (PHP5)</h3>
+<p>
+Sebastian Bergmann erzeugt einen neuen Zweig im CVS f&uuml;r PHPUnit.
+Dieser enth&auml;lt Funktionen zum Testen von Namensr&auml;umen, privater Variablen
+und dem neuen pass-by-reference-Mechanismus.
+</p>
+
+<h3>Bananen in PEAR?</h3>
+<p>
+Sebastian hat anscheinend zuviel Zeit: Er fragte, ob Packages f&uuml;r
+<a href="http://www.vl-srm.net">SRM</a> (ein PHP Application Server) in PEAR
+aufgenommen werden k&ouml;nnen. SRM-spezifische Klassen hei&szlig;en 'Bananas' -
+Nach kurzer Diskussion wurde entschieden, da&szlig; diese zuk&uuml;nftig unter der Kategorie
+"Bananas" aufgenommen werden.
+</p>
+
+<h3>Bugs und Fixes</h3>
+Dank an Pawe&#322; Go&#322;aszewski,
+Michael Kefeder, Michael Fork, phpsurf, Francisco Benza.  
+f&uuml;r Bug-Meldungen und Korrekturen.   
+<hr>
+   
+<h2>Neue und vorgeschlagene Packages</h2>
+    
+<h3>Net_Dict, f&uuml;r die Abfrage von Dictonary Servern</h3>
+<p>
+Chandrashekar Bhosle's Package greift &uuml;ber das DICT-Protokoll auf 
+&Uuml;bersetzungsserver zu. Es basiert auf Arbeiten von Jesus Castagnetto.
+</p>
+
+<h3>XSLT, ein Aufsatz f&uuml;r die PHP-XML-Stylesheet-Werkzeug</h3>
+<p>
+Pierre-Alain Joye's Package bietet einen Befehlssatz um auf die verschiedenen
+XSLT-Implementierungen in PHP (domxls, libxslt und mxxml4) zu zugreifen.
+</p>
+
+<hr>    
+<h2>Development</h2>
+CVS-Aktivit&auml;ten fanden letzte Woche bei
+ Auth, Benchmark, Cache_Lite, DB, DB_DataObject,
+DBA, DBA_Relational, HTML_Common, HTML_Quickform, Image_GraphViz, Image_Transform,
+Inline_C, Log, Mail_Queue, MDB, Net_Dict, Net_DNS, PECL:apd, PECL:bcompiler,
+PECL:mailparse, PECL:smbd, PECL:spread, Perm_LiveUser, PHPUnit, SQL_Parser und
+XML_Transformer statt.
+
+<h3>Neue und aktualisierte Dokumenation</h3>
+PEARDoc2 wird diese Woche in ein neues Verzeichniss auf dem CVS hochgeladen, um die
+Porteriung zu beschleunigen.
+</body>
+</html>

@@ -90,6 +90,7 @@ function auth_verify($user, $passwd)
         }
         $ok = false;
     }
+/*
     if (!$ok) {
         if (cvs_verify_password($user, $passwd)) {
             // (cox) Why is that here?
@@ -97,6 +98,7 @@ function auth_verify($user, $passwd)
             $ok = true;
         }
     }
+*/
     if ($ok) {
         $auth_user->_readonly = true;
         return true;

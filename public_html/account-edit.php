@@ -35,11 +35,12 @@ switch ($HTTP_POST_VARS['command']) {
 
     case "update" : {
 
-        $query = sprintf("UPDATE users SET name = '%s', email = '%s', homepage = '%s', userinfo = '%s', showemail = '%s', admin = '%s'",
+        $query = sprintf("UPDATE users SET name = '%s', email = '%s', homepage = '%s', userinfo = '%s', wishlist = '%s', showemail = '%s', admin = '%s'",
                          $HTTP_POST_VARS['name'],
                          $HTTP_POST_VARS['email'],
                          $HTTP_POST_VARS['homepage'],
                          $HTTP_POST_VARS['userinfo'],
+                         $HTTP_POST_VARS['wishlist'],
                          isset($HTTP_POST_VARS['showemail']) ? 1 : 0,
                          isset($HTTP_POST_VARS['admin']) ? 1 : 0);
         $query .= " WHERE handle = '" . $HTTP_POST_VARS['handle'] . "'";
@@ -138,6 +139,13 @@ switch ($HTTP_POST_VARS['command']) {
         print "  <th bgcolor=\"#CCCCCC\">CVS Access:</th>\n";
         print "  <td bgcolor=\"#e8e8e8\">";
         HTML_Form::displayTextarea("cvs_acl", $cvs_acl);
+        print "   </td>\n";
+        print " </tr>\n";
+
+        print " <tr>\n";
+        print "  <th bgcolor=\"#CCCCCC\">URL to wishlist:</th>\n";
+        print "  <td bgcolor=\"#e8e8e8\">";
+        HTML_Form::displayText("wishlist", $row['wishlist']);
         print "   </td>\n";
         print " </tr>\n";
 

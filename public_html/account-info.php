@@ -52,6 +52,10 @@ $bb->horizHeadRow("Registered since:", $row['created']);
 $bb->horizHeadRow("Additional information:", empty($row['userinfo'])?"&nbsp;":$row['userinfo']);
 $bb->horizHeadRow("CVS Access:", implode("<br />", $access));
 
+if ($row['wishlist'] != "") {
+    $bb->horizHeadRow("Wishlist:", make_link($row['wishlist']));
+}
+
 if ($row['admin'] == 1) {
 	$bb->fullRow("$row[name] is a PEAR administrator.");
 }

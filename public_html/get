@@ -21,16 +21,16 @@
 /**
  * PEAR package downloader
  *
- * Usage:
- *
- * // to get the lastest version of the HTTP_Upload package
- * pear install http://pear.php.net/get/HTTP_Upload
- * // to get the version 1.2 of the HTTP_Upload package
- * pear install http://pear.php.net/get/HTTP_Upload/1.2
- *
- * cmd structure:
- * /PEAR_package
- * /PEAR_package/version
+ * Valid calls recognized:
+ * /get/DB         -> Latest version
+ * /get/DB-1.2     -> Specific 1.2 version
+ * /get/DB-1.2.tar -> Specific file
+ * /get/DB-stable  -> Latest stable version
+ * /get/DB/1.2     -> Other way for 1.2 version
+ * /get/DB/stable  -> Other way for latest stable
+
+ * To all this calls the GET param "?uncompress=yes" would force
+ * to download the file without gzip compression
  *
  * other things like: "/PEAR_package/info" could be easily implemented
  *
@@ -76,9 +76,12 @@ if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], array('1', 'yes'
 }
 switch (sizeof($opts)) {
     case 2: {
-        if (preg_match('/^([a-zA-Z0-9_]+)-(.*)\.(tar|tgz)$/', $opts[1], $matches)) {
+        if (preg_match('/^([a-zA-Z0-9_]+)-(.+)\.(tar|tgz)$/', $opts[1], $matches)) {
             list(, $package, $version) = $matches;
             $ok = release::HTTPdownload($package, $version, $opts[1], $uncompress);
+        } elseif (preg_match('/^([a-zA-Z0-9_]+)-(.+)$/', $opts[1], $matches)) {
+            list(, $package, $version) = $matches;
+            $ok = release::HTTPdownload($package, $version, null, $uncompress);
         } else {
             $ok = release::HTTPdownload($opts[1], null, null, $uncompress);
         }

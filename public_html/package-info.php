@@ -258,7 +258,7 @@ if (!$relid) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
                                    "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")<br />";
             }
-            
+
             $link_changelog = "[ " . make_link("/package-changelog.php?package=" .
                               $pkg['name'] . "&release=" .
                               $version, "Changelog")
@@ -270,7 +270,7 @@ if (!$relid) {
                    "  <td>%s</td>" .
                    "  <td>%s</td>" .
                    "  <td>%s</td>" .
-                   "  <td valign=\"middle\">%s</td>\n",                    
+                   "  <td valign=\"middle\">%s</td>\n",
                    $href_release,
                    $version,
                    $r['state'],
@@ -336,7 +336,7 @@ if ($sth->numRows() == 0) {
         'sapi'   => 'SAPI Backend',
         );
 
-    // Loop per version 
+    // Loop per version
     foreach ($rels as $version => $rel) {
         print "\n       <dl>\n";
 

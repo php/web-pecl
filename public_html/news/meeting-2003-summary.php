@@ -139,8 +139,8 @@ will be used with the following changes:
 Platform support:
 <ul>
   <li>
-    If someone can provide  us an access to a machine running OS X, we can improve OS X support;
-    it will then probably work as nicely as on *NIX.
+    If someone can provide us an access to a test machine running
+    OS X, we can include it in our supported platform list.
   </li>
   <li>
     Solaris is a widely used platform
@@ -180,7 +180,7 @@ The initial members are appointed by Stig. The Group will then regulate
 itself. The Group can apply a veto on a package proposal and can make
 decisions in the case the community needs direction or resolving of
 conflicts. For example the latest discussion on pear-dev about
-IT[X] vs. Sigma could have resulted in actions being taken by the
+IT[X] vs. Sigma could have resulted in a actions being taken by the
 PEAR Group.
 </p>
 

@@ -18,17 +18,17 @@ response_header("Author information");
 
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
-$row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 AND handle = ?",
-					array($handle));
+$row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 ".
+					"AND username = ?", array($handle));
 
 if ($row === null) {
     PEAR::raiseError("No account information found!");
 }
 
-$access = $dbh->getCol("SELECT path FROM cvs_acl WHERE handle = ?", 0,
+$access = $dbh->getCol("SELECT path FROM cvs_acl WHERE username = ?", 0,
 					   array($handle));
 
-print "<h1>Information about account \"".$handle."\"</h1>\n";
+print "<h1>Information about account \"$handle\"</h1>\n";
 print "<a href=\"account-edit.php?handle=$handle\">[Edit]</a>";
 print "<br />\n";
 print "<br />\n";
@@ -36,7 +36,7 @@ print "<br />\n";
 print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
 print " <tr>\n";
 print "  <th bgcolor=\"#CCCCCC\">Handle:</th>\n";
-print "  <td bgcolor=\"#e8e8e8\">".$handle."</td>\n";
+print "  <td bgcolor=\"#e8e8e8\">$handle</td>\n";
 print " </tr>\n";
 
 print " <tr>\n";

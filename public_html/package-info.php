@@ -91,7 +91,7 @@ if (!$relid) {
                        " FROM files f, releases r".
                        " WHERE f.package = $pacid AND f.release = r.id");
     while ($sth->fetchInto($row)) {
-	$downloads[$row['version']][] = $row;
+        $downloads[$row['version']][] = $row;
     }
 }
 
@@ -207,26 +207,26 @@ if (!$relid) {
     <?php
 
         foreach ($releases as $r) {
-	    print " <tr>\n";
-	    if (empty($r['state'])) {
+            print " <tr>\n";
+            if (empty($r['state'])) {
                 $r['state'] = 'devel';
-	    }
-	    $r['releasedate'] = substr($r['releasedate'], 0, 10);
-	    $downloads_html = '';
-	    foreach ($downloads[$r['version']] as $dl) {
-    		$downloads_html .= "<a href=\"/get/$dl[basename]\">".
-                     "$dl[basename]</a><br />";
-	    }
+            }
+            $r['releasedate'] = substr($r['releasedate'], 0, 10);
+            $downloads_html = '';
+            foreach ($downloads[$r['version']] as $dl) {
+                $downloads_html .= "<a href=\"/get/$dl[basename]\">".
+                                   "$dl[basename]</a><br />";
+            }
             
-	    $link_changelog = "[ " . make_link("/package-changelog.php?pacid=".
-                                               "$pacid&release=" .
-                                               $r['version'], "Changelog")
+            $link_changelog = "[ " . make_link("/package-changelog.php?pacid=".
+                              "$pacid&release=" .
+                              $r['version'], "Changelog")
                               . " ]";
             $href_release = "$_SERVER[PHP_SELF]?pacid=$pacid&version=".
                             urlencode($r['version']);
-	    printf("  <td><a href=\"$href_release\">%s</a></td><td>%s</td><td>%s</td><td>%s</td><td valign=\"middle\">%s</td>\n",
-                   $r['version'], $r['state'], $r['releasedate'],
-                   $downloads_html, "<small>" . $link_changelog . "</small>\n");
+            printf("  <td><a href=\"$href_release\">%s</a></td><td>%s</td><td>%s</td><td>%s</td><td valign=\"middle\">%s</td>\n",
+                    $r['version'], $r['state'], $r['releasedate'],
+                    $downloads_html, "<small>" . $link_changelog . "</small>\n");
             print " </tr>\n";
         }
     }
@@ -241,15 +241,15 @@ if (!$relid) {
 
 $title = "Dependencies";
 if ($relid) {
-	$title .= " for version $version";
+    $title .= " for version $version";
 }
 $bb = new Borderbox($title);
 
 $query = "SELECT * FROM deps WHERE package = ?";
 $params = array($pacid);
 if ($relid) {
-	$query .= " AND release = ?";
-	$params[] = $relid;
+    $query .= " AND release = ?";
+    $params[] = $relid;
 }
 $prh = $dbh->prepare($query);
 $sth = $dbh->execute($prh, array($pacid, $relid));

@@ -23,8 +23,11 @@ require_once "DB/storage.php";
 require_once "pear-config.php";
 require_once "pear-auth.php";
 require_once "pear-database.php";
-require_once "pear-manual.php";
 require_once "browser.php";
+
+if (substr($_SERVER['PHP_SELF'], 0, 7) == '/manual') {
+    require_once "pear-manual.php";
+}
 
 error_reporting(E_ALL);
 

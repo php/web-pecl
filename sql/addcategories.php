@@ -1,31 +1,37 @@
 <?php
+
 // Drops all categories and adds sample categories
+
 error_reporting(E_ALL);
 require_once 'DB.php';
 require_once 'DB/storage.php';
 require_once '../include/pear-database.php';
-PEAR::setErrorHandling(PEAR_ERROR_DIE);
-$dbh = DB::connect('mysql://pear:pear@localhost/pear');
+
+if (empty($dbh)) {
+    $dbh = DB::connect('mysql://pear:pear@localhost/pear');
+    $dbh->setErrorHandling(PEAR_ERROR_DIE);
+}
+
 $dbh->query('DELETE FROM categories');
 $categories = array(
-    'Benchmark' => '',
-    'Cache'     => '',
-    'Console'   => '',
-    'Crypt'     => '',
-    'DB'        => '',
-    'Date'      => '',
-    'File'      => '',
-    'HTML'      => '',
-    'HTTP'      => '',
-    'Image'     => '',
-    'Log'       => '',
-    'Mail'      => '',
-    'Math'      => '',
-    'Net'       => '',
-    'Numbers'   => '',
-    'Payment'   => '',
-    'Schedule'  => '',
-    'XML'       => ''
+    'Benchmarking'  => '',
+    'Caching'       => '',
+    'Console'       => '',
+    'Encryption'    => '',
+    'Database'      => '',
+    'Date and Time' => '',
+    'File System'   => '',
+    'HTML'          => '',
+    'HTTP'          => '',
+    'Images'        => '',
+    'Logging'       => '',
+    'Mail'          => '',
+    'Math'          => '',
+    'Networking'    => '',
+    'Numbers'       => '',
+    'Payment'       => '',
+    'Scheduling'    => '',
+    'XML'           => ''
 );
 
 foreach($categories as $name => $desc) {

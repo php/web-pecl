@@ -200,13 +200,13 @@ if (!empty($_GET)) {
 			/**
             * If name was searched on, highlight the search string
             */
+			$row['raw_name'] = $row['name'];
 			if (!empty($_GET['pkg_name']) || !empty($_GET['pkg_maintainer'])) {
 				if (!empty($_GET['pkg_name'])) {
 				    $words = preg_replace('/\s+/', '|', preg_quote($_GET['pkg_name']));
 				} else {
 				    $words = "";
 				}
-				$row['raw_name'] = $row['name'];
 				$row['name'] = preg_replace('/(' . $words . ')/i', '<span style="background-color: #d5ffc1">\1</span>', $row['name']);
 			}
 

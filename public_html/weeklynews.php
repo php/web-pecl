@@ -49,7 +49,8 @@ function show_languages($visitlang = "") {
         'en'    => 'English',
         'fr'    => 'French',
         'de'    => 'German',
-        'pt_BR' => 'Brazilian Portuguese'
+        'pt_BR' => 'Brazilian Portuguese',
+	'pl'	=> 'Polish'
     );
     echo getText("View In"). ' :: ';
     $page = "";

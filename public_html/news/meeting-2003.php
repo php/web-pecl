@@ -65,11 +65,16 @@ listed above will be contacted by me.
 Please note that while we want this meeting to be as open as possible,
 we may have to limit participation if the interest becomes too great. The
 meeting room can hold up to 15 people. We may also have to moderate the IRC
-channel if things become too confusing to follow. When necessary newer
-members of the PEAR community may therefore be unable to directly
-communicate with the meeting. I would therefore suggest to newer
-members to write down their ideas as a well thought out RfC and post
-it to the <a href="mailto:pear-dev@lists.php.net">mailinglist</a>
+channel if things become too confusing to follow.<br />
+IRC Channels:<br />
+Freenode
+#pear for general discussion between users listening/watching *about* the meeting 
+#pear.meeting the channel for the meeting +m (moderated)
+<br />
+When necessary newer members of the PEAR community may therefore
+be unable to directly communicate with the meeting. I would therefore 
+suggest to newer members to write down their ideas as a well thought 
+out RfC and post it to the <a href="mailto:pear-dev@lists.php.net">mailinglist</a>
 or send it to <a href="mailto:lsmith@php.net">me</a> directly.
 That way we can more easily incorporate their ideas into the meeting.
 <br /><br />

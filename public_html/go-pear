@@ -169,7 +169,7 @@ $PEAR -D php_dir=$destdir -S
 $PEAR install -r php4/pear/package-Archive_Tar.xml
 $PEAR install -r php4/pear/package-Console_Getopt.xml
 $PEAR install -r php4/pear/package-PEAR.xml
-$PEAR install -s php4/pear/packages/XML_RPC-1.0.2.tar
+$PEAR install -s php4/pear/packages/XML_RPC-1.0.3.tar
 if [ "$installall" != "n" ]; then
 	for i in "php4/pear/packages/*"; do
 		$PEAR install -s $i

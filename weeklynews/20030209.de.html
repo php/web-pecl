@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<!-- $Id$ -->
+  <title>x</title>
+</head>
+<body>
+<p> <i>  <small>   by    <a href="http://www.appelsiini.net/%7Etuupola/">Mika
+Tuupola</a> (tuupola@appelsiini.net),    <a
+ href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a>
+(paj@pearfr.org), &uuml;bersetzt &nbsp;von Alexander Merz (alexmerz[at]php.net)
+  </small> </i></p>
+<p>Ruhige Woche, aber einige nette Sachen haben wird doch aufgesp&uuml;rt.
+Wenn sie sich wie ein zuk&uuml;nftiger Autor f&uuml;hlen, dann werfen Sie
+doch einen Blick auf die&nbsp;<a target="_blank"
+ href="http://cvs.php.net/co.php/peardoc/peardoc2/en/authoring/readme.txt">
+PEARDoc2-Referenz</a> von Alexander Merz.<br>
+Gro&szlig;en Dank an Frank M. Kromann f&uuml;r die Bereitstellung f&uuml;r
+PECL-Binaries f&uuml;r Windows, neben fast allen Erweiterungen f&uuml;r PHP4/5
+unter <a target="_blank" href="http://kromann.info/pear.php">kromann.info</a>.
+Ein Danke geht an Urs gehrig f&uuml;r diesen Hinweis&nbsp;(<a
+ href="http://www.circle.ch" target="_blank">www.circle.ch</a>).</p>
+<p>Das Package der Woche ist die neue Mono-Erweiterung von Sterling Hughes.</p>
+<hr> <!-- SECTION --><a name="1"></a>
+<h2>Package der Woche</h2>
+<h3>Mono-Erweiterung</h3>
+<h3>Wer ist Sterling Hughes?</h3>
+<p>  Fragt nicht mich, <a
+ href="http://www.googlism.com/index.htm?ism=Sterling+Hughes&amp;type=1">fragt
+Google!</a></p>
+<h3>Was sind die Vor-/Nachteile bei der Ver&ouml;ffentlichung in PEAR/PECL?</h3>
+<p>Die Vorteile von PEAR/PECL sind situationsabh&auml;ngig; generell sehe
+ich zwei gro&szlig;e Vorteile:</p>
+<ol>
+  <li>Das automatisiert Package-Verteilungs- und Verwaltungssystem    Die
+Installation der Mono-Erweiterung ohne den PEAR-Installer erfordert einigen
+Aufwand.  Mit dem PEAR-Package-System dauert es nur wenige Minuten ein neues
+Release zu erzeugen, und der Benutzer muss einfach nur diese Zeile tippen:<br>
+    <br>
+  $ pear install mono<br>
+    <br>
+  (Anmerkungen: Man kann das PEAR-Package-System auch ausserhalb des PEAR-Frameworks
+nutzen. Externe Projekte wie xdebug tun das bereits)<br>
+    <br>
+  </li>
+  <li>Sie wollen Code der &Ouml;ffentlichkeit zug&auml;nglich machen.  Das
+bedeutet nicht nur ihn anderen zur Nutzung zu &uuml;berlassen, sondern von
+Hilfe beim Testen und Debuggen zu profitieren. Es gibt keinen besseren Ort
+als PEAR/PECL daf&uuml;r, dass die Gewicht des PHP-Projektes hintersich wei&szlig;.</li>
+  
+</ol>
+Und was Nachteile angeht: Ich sehe keine. Es sei denn sie wollen ihren Code
+nicht &ouml;ffnen, aber dann ist PEAR auch nicht der richtige Ort.
+<p></p>
+<h3>Was hohhst du f&uuml;r die Zukunft von PEAR/PECL?</h3>
+<p>'Evangelism' - PEAR soll zur de-fakto Resource werden.  Das aktuelle Framework/System
+ist &auml;usserts robust; Stig und sein Team haben gro&szlig;artige Arbeit
+geleistet, jetzt ist es an der Zeit, da&szlig; deutlich zu machen.</p>
+<h3>Mono - kannst du das Package und die Technik beschreiben?</h3>
+<p>  Mono ist eine OpenSource-Umsetzung verschiedener Teile des .NET-Frameworks.
+Die Mono-Erweiterung bindet sich an den 'Common Language Runtime'-Teil (CLR)
+vpn Mono. CLR ist ein allgemeiner Bytecode, zu dem alle .NET-Sprachen kompliliert
+werden. Derzeit existieren Kompiler f&uuml;r C#, C++, C, VB.NET und Java.<br>
+<br>
+  CLR versucht&nbsp; die Syntax einer Sprache zum Gebrachsgegenstand zu machen.
+ Man nutzt eine Sprache abh&auml;ngigvom Zweck &nbsp;Wenn man lieber ein
+Web-Frontend in PHP schreibt, den Back-End-Code aber in C oder C# - kein
+Problem! Fr&uuml;her war die Zusammenarbeit verschiedener Sprachen ineffizient
+und ben&ouml;tigte entweder eine Br&uuml;cke wie COM oder DCOM, oder man
+mu&szlig;te eine Erweiterung schreiben - alles recht zeitintensiv..NET ist
+eine funktionale Verbesserung: alles befindet sich unter der gleichen Haube.<br>
+<br>
+Die Mono-Erweiterung erlaubt den Zugriff auf .NET Assemblies (genannt "hosting").
+Es funtioniert &auml;hnlich wie die Java-Erweiterung, wobei Mono die eigentliche
+Arbeit vollbringt. Das &uuml;bliche "Hello World"-Beispiel:<br>
+</p>
+<pre class="php"><code>
+&lt;?php
+$Console = new Mono('System.Console');
+$Console-&gt;WriteLine('Hello World');
+?&gt;
+</code></pre>
+<p></p>
+<h3>Welche Unterst&uuml;tzung ben&ouml;tigst von der Community?</h3>
+<p>George und Ich brachen das selbe: eine Milliarde Dollar. Doch ich begn&uuml;ge
+mich auch mit geringeren Betr&auml;gen wie einer Million oder ein paar Hundertausend.
+Benutzt das Package einfach! Wenn ihr Fehler findet oder Fragen habt, schickt
+eine EMail an sterling@php.net.have questions drop me an email, sterling@php.net.
+</p>
+<p>Danke an Sterlinh Hugher f&uuml;r das Interview. Eine kurze Einf&uuml;hrung
+findet sich <a href="http://www.php.net/%7Esterling/mono/">hier.</a></p>
+<p></p>
+<h2>In der Presse</h2>
+<!-- SECTION --><a name="2"></a>
+<h3>php|architect</h3>
+<p> PEAR wurde kurz in der Februar-Ausgabe erw&auml;hnt: im &nbsp;Artikel
+<i>Data Fingerprinting with Hash Functions in PHP</i> von Leon  Vismer.</p>
+<hr>
+<p>Wenn Sie einen PEAR-bezogenen Artikel finden, senden Sie uns bitte eine
+Referenz an <a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a></p>
+<hr>
+<h2>PEAR-DEV-Meldungen</h2>
+<!-- SECTION --><a name="3"></a>
+<h3>Oracle-Treiber f&uuml;r MDB</h3>
+<p> Lukas Smith &uuml;bertrug den ersten funktionierenden Oracle   <a
+ href="http://pear.php.net/package-info.php?pacid=54">MDB</a>-Treiber ins
+CVS. Der Treiber bestand alle Tests. </p>
+<!-- SECTION --><a name="4"></a>
+<h3>JavaScript in PEAR</h3>
+<p> Es wurde dar&uuml;ber diskutiert , ob PEAR &uuml;ber ein JavaScript-Package
+verf&uuml;gen soll.  Es herrschte &Uuml;bereinstimmung dabei, keine eigenst&auml;ndigen
+JavaSkript-Programme aufzunehmen.Packages wie   <a
+ href="http://pear.php.net/package-info.php?pacid=77">HTML_TreeMenu</a> mit
+optionalen Funktionen, wenn JavaSkript verf&uuml;gbar ist, sollen die erforderlichen
+JavaScript-Bestandteile selbst mitbringen.</p>
+<!-- SECTION --><a name="5"></a>
+<h3>Kategorie for Java-Schnittstellen?</h3>
+ Stuart Herbert schlug eine Java-Kategorie f&uuml;r Schnittstellen zwischen
+PHP und Java vor. Er legte dar, dass es besser ist, alle Schnittstellen in
+einer ausdr&uuml;cklichen Java-Kategorie zu halten, als sie quer in PEAR
+zu verstreuen. Ein denkbarer Ort w&auml;re eine Unterkategorie in der RPC-Kategorie.
+Diese Katgorie w&uuml;rde es einfacher machen Schnittstellen f&uuml;r ander
+Sprachen wie Python oder Ruby sp&auml;ter zu erg&auml;nzen.
+<p></p>
+<!--
+<h3>Bugs and Fixes</h3>
+<p>
+  Thanks to these people for spotting and fixing some bugs:
+  Pawel golaszewski, 
+</p>
+<hr>
+-->
+<h2>Neue und vorgeschlagene Packages</h2>
+<!-- SECTION --><a name="5"></a>
+<h3>PECL::mono</h3>
+<p> Sterling Hughes &uuml;bertrug seine Mono-Erweiterung in PECL. Sie erlaubt
+es mit PHP auf .NET Assemblies &uuml;ber die  <a
+ href="http://www.go-mono.com/">Mono library</a> zu zugreifen.&nbsp;</p>
+<!-- SECTION --><a name="6"></a>
+<h3>Auth_Container_SOAP</h3>
+<p> Bruno Pedro's Package ist ein SOAP-Container f&uuml;r das Auth-Package.&nbsp;</p>
+<h2>Entwicklung<br>
+</h2>
+<p>Aktivit&auml;ten im CVS gab es diese Woche bei:   Crypt_CHAP, Auth_RADIUS,
+Auth, Text_Statistics, HTML_Template_Flexy,   Auth_HTTP, HTML_Template_Xipe,
+MDB, HTML_QuickForm, Tree, Mail_Mime,   Search_MnogoSearch, SOAP, PECL::bcompiler,
+Net_Ping, DBA, Log,    DB_DataObject, File_Passwd, HTML_TreeMenu, Net_Whois,
+DB,    HTTP_Header, PECL::fribidi und PECL::mono</p>
+<br>
+<br>
+</body>
+</html>

@@ -1,11 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><title>x</title></head>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head>
 <body>
 <small><i>by Alan Knowles alan_k@php.net</i></small>
 <p>
 Considering the summer holidays, PEAR has had another extremely busy week
-with 2 stable releases, 3 beta releases, and discussions ranging from PEAR in Gentoo, new categories,
+with 10 stable releases, 4 beta releases, and discussions ranging from PEAR in Gentoo, new categories,
 a new Manual, and a powered by PEAR icon.
  
 
@@ -14,13 +12,21 @@ a new Manual, and a powered by PEAR icon.
 <h2>New Releases</h2>
 
 <h3>Stable</h3>
-Log - A framework for Logging to files, syslog,SQL and more, HTML_Table - A Package to build HTML tables
+<b>Log</b> A framework for Logging to files, syslog,SQL and more, 
+<b>HTML_Table</b>  for building HTML tables,
+<b>HTML_TreeMenu</b>  for creating HTML Trees for navigation, 
+<b>Net_POP3</b> for accessing POP3 mailboxes,
+<b> Net_Sieve</b> to talk to timsieved servers, 
+<b>Net_URL</b> for parsing URLS, Pager for doing tabbed pages, 
+<b>Mail_Mime </b>for manipulating Mime messages, 
+<b>HTTP_Request</b> for posting and getting data from web servers, 
+<b>File_SearchReplace</b> for finding and replacing data within files, and Mail the class to send emails.
 
-<h3>Beta</h3>
-bcompiler - a php bytecode compiler (at present only for classes), PEAR_Frontend_Gtk - the desktop interface to pear's installer
-(started by using pear -G, requires <a href="http://gtk.php.net">PHP-Gtk</a>), HTML_Javascript - tools for working with Javascript
-
-
+<h3>Beta</h3><b>
+bcompiler</b> - a php bytecode compiler (at present only for classes), 
+<b>PEAR_Frontend_Gtk</b> - the desktop interface to pear's installer (started by using pear -G, requires <a href="http://gtk.php.net">PHP-Gtk</a>), 
+<b>HTML_Javascript</b> - tools for working with Javascript, 
+<b>PHPDoc</b> - the php comments to javadoc documentation tool, 
 
 <hr>
 
@@ -31,6 +37,7 @@ bcompiler - a php bytecode compiler (at present only for classes), PEAR_Frontend
 Gentoo have added some PEAR packages to their portage tree (their package
 installation system). The list of available packages can be read at :<a href="http://www.gentoo.org/packages/dev-php/index.html">Gentoo dev-php</a>.
  
+
 
 <h3>New Categories PHP, Template</h3>
 <p>Following the introduction of bcompiler,
@@ -71,8 +78,7 @@ soon).
 <p>The question was raised about how to switch databases when using pear's Database 
 abstraction layer, after some discussion the current suggestion is to use
 
-<pre>$db-&gt;disconnect();
-$db = DB::connect($new_dsn);</pre>
+<pre>$db-&gt;disconnect();<br>$db = DB::connect($new_dsn);</pre>
 <p>This is the recommended way, as not all database back ends (at the php level),
 can support switching databases, however anyone who wants to implement a solution
 that provides switching (for databases that support it), and disconnecting
@@ -164,4 +170,5 @@ PEAR_FrontEnd_Gtk, XML_RPC, Net_NNTP.
 
 
 
+<br>
 </body></html>

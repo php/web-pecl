@@ -242,7 +242,8 @@ Eris Free Net</a>.
 	your site tick?
 </p>
 
-<?
+<?php
+
 $icons = Array(
 	'pear-power.gif'	=> 'Powered by PEAR, GIF format',
 	'pear-power.png'	=> 'Powered by PEAR, PNG format',

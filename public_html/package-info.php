@@ -45,13 +45,6 @@ if (empty($pacid) && empty($relid)) {
 }
 // ** expected
 
-if (DB::isError($dbh)) {
-    response_header("Error");
-    PEAR::raiseError("DB::Factory failed: ".DB::errorMessage($dbh));
-    response_footer();
-    exit();
-}
-
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 // Package data

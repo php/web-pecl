@@ -132,30 +132,115 @@ function error_handler($errobj, $title = "Error")
 }
 
 
-function border_box_start($title, $width = "90%", $indent = "")
-{
-    if (is_array($title)) {
-        $title = implode("</th><th>", $title);
-    }
-    print "$indent<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"$width\">\n";
-    print "$indent <tr>\n";
-    print "$indent  <td bgcolor=\"#000000\">\n";
-    print "   <table cellpadding=\"2\" cellspacing=\"1\" border=\"0\" width=\"100%\">\n";
-    print "$indent    <tr bgcolor=\"#cccccc\">\n";
-    print "$indent     <th>$title</th>\n";
-    print "$indent    </tr>\n";
-    print "$indent    <tr bgcolor=\"#ffffff\">\n";
-    print "$indent     <td>\n";
-}
+class BorderBox {
+	function BorderBox($title, $width = "90%", $indent = "", $cols = 1,
+	                   $open = false) {
+		$this->title = $title;
+		$this->width = $width;
+		$this->indent = $indent;
+		$this->cols = $cols;
+		$this->open = $open;
+		$this->start();
+	}
 
-function border_box_end($indent = "")
-{
-    print "$indent     </td>\n";
-    print "$indent    </tr>\n";
-    print "$indent   </table>\n";
-    print "$indent  </td>\n";
-    print "$indent </tr>\n";
-    print "$indent</table>\n";
+	function start() {
+		$title = $this->title;
+		if (is_array($title)) {
+			$title = implode("</th><th>", $title);
+		}
+		$i = $this->indent;
+		print "<!-- border box starts -->\n";
+		print "$i<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"$this->width\">\n";
+		print "$i <tr>\n";
+		print "$i  <td bgcolor=\"#000000\">\n";
+		print "   <table cellpadding=\"2\" cellspacing=\"1\" border=\"0\" width=\"100%\">\n";
+		print "$i    <tr bgcolor=\"#cccccc\">\n";
+		print "$i     <th";
+		if ($this->cols > 1) {
+			print " colspan=\"$this->cols\"";
+		}
+		print ">$title</th>\n";
+		print "$i    </tr>\n";
+		if (!$this->open) {
+			print "$i    <tr bgcolor=\"#ffffff\">\n";
+			print "$i     <td>\n";
+		}
+	}
+
+	function end() {
+		$i = $this->indent;
+		if (!$this->open) {
+			print "$i     </td>\n";
+			print "$i    </tr>\n";
+		}
+		print "$i   </table>\n";
+		print "$i  </td>\n";
+		print "$i </tr>\n";
+		print "$i</table>\n";
+		print "<!-- border box ends -->\n";
+	}
+
+	function horizHeadRow($heading /* ... */) {
+		$i = $this->indent;
+		print "$i    <tr>\n";
+		print "$i     <th bgcolor=\"#cccccc\">$heading</th>\n";
+		for ($j = 0; $j < $this->cols-1; $j++) {
+			print "$i     <td bgcolor=\"#e8e8e8\">";
+			$data = @func_get_arg($j + 1);
+			if (empty($data)) {
+				print "&nbsp;";
+			} else {
+				print $data;
+			}
+			print "</td>\n";
+		}
+		print "$i    </tr>\n";
+		
+	}
+
+	function headRow() {
+		$i = $this->indent;
+		print "$i    <tr>\n";
+		for ($j = 0; $j < $this->cols; $j++) {
+			print "$i     <th bgcolor=\"#ffffff\">";
+			$data = @func_get_arg($j);
+			if (empty($data)) {
+				print "&nbsp;";
+			} else {
+				print $data;
+			}
+			print "</th>\n";
+		}
+		print "$i    </tr>\n";
+	}
+
+	function plainRow(/* ... */) {
+		$i = $this->indent;
+		print "$i    <tr>\n";
+		for ($j = 0; $j < $this->cols; $j++) {
+			print "$i     <td bgcolor=\"#ffffff\">";
+			$data = @func_get_arg($j);
+			if (empty($data)) {
+				print "&nbsp;";
+			} else {
+				print $data;
+			}
+			print "</td>\n";
+		}
+		print "$i    </tr>\n";
+	}
+
+	function fullRow($text) {
+		$i = $this->indent;
+		print "$i    <tr>\n";
+		print "$i     <td bgcolor=\"#e8e8e8\"";
+		if ($this->cols > 1) {
+			print " colspan=\"$this->cols\"";
+		}
+		print ">$text</td>\n";
+		print "$i    </tr>\n";
+		
+	}
 }
 
 function html_table_border(&$tableobj, $width = "100%")
@@ -194,4 +279,37 @@ function localRedirect($file)
     $location = "http://" . $GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST'] . "/" . $file;
     header("Location: " . $location);
 }
+
+function displayed_user_email($user)
+{
+	return "<a href=\"mailto:$user@php.net\">$user@php.net</a>";
+}
+
+function display_user_notes($user, $width = "50%")
+{
+	global $dbh, $PHP_AUTH_USER;
+	$bb = new BorderBox("Notes for user $user", $width);
+	$notes = $dbh->getAssoc("SELECT id,nby,ntime,note FROM notes ".
+				"WHERE uid = ? ORDER BY ntime", true, array($user));
+	if (!empty($notes)) {
+	    print "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
+	    foreach ($notes as $nid => $data) {
+		list($nby, $ntime, $note) = $data;
+		print " <tr>\n";
+		print "  <td>\n";
+		print "   <b>$nby $ntime:</b>";
+		print "<br />\n";
+		print "   ".htmlspecialchars($note)."\n";
+		print "  </td>\n";
+		print " </tr>\n";
+		print " <tr><td>&nbsp;</td></tr>\n";
+	    }
+	    print "</table>\n";
+	} else {
+	    print "No notes.";
+	}
+	$bb->end();
+	return sizeof($notes);
+}
+
 ?>

@@ -21,15 +21,19 @@ require_once 'HTML/Form.php';
 
 function printForm($data = array()) 
 {
+    // The first field that's empty
+    $focus = '';
+
     foreach (array('name', 'email', 'subject', 'text') as $key) {
         if (!isset($data[$key])) {
             $data[$key] = '';
+            ($focus == '') ? $focus = $key : '';
         }
     }
 
-    $bb = new Borderbox('Send email');
+    $bb = new BorderBox('Send email');
+    $form = new HTML_Form($_SERVER['PHP_SELF'] . '?handle=' . $_GET['handle'], 'post', 'contact');
 
-    $form = new HTML_Form($_SERVER['PHP_SELF'] . '?handle=' . $_GET['handle'], 'post');
     $form->addText('name', 'Your name:', $data['name'], 30);
     $form->addText('email', 'EMail address:', $data['email'], 30);
     $form->addText('subject', 'Subject:', $data['subject'], 30);
@@ -38,6 +42,12 @@ function printForm($data = array())
     $form->display();
 
     $bb->end();
+
+    echo "<script language=\"JavaScript\">\n";
+    echo "<!--\n";
+    echo "document.forms.contact." . $focus . ".focus();\n";
+    echo "-->\n";
+    echo "</script>";
 }
 
 // }}}

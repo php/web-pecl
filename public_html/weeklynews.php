@@ -191,7 +191,7 @@ if (preg_match("/^\/weeklynews.php\/([a-z_]{2,5})/i",$_SERVER['REQUEST_URI'],$ar
         "fr"        => "iso-8859-1",
         "pt_BR"     => "iso-8859-1",
         "pl"        => "iso-8859-2",
-        "es"        => "iso-8859-2"
+        "es"        => "iso-8859-1"
     );
 
     $show_lang = $args[1];

@@ -310,6 +310,16 @@ function get_license_link($license = "")
             $link = "http://www.php.net/license/2_02.txt";
             break;
 
+        case "GPL" :
+        case "GNU General Public License" :
+            $link = "http://www.gnu.org/licenses/gpl.html";
+            break;
+
+        case "LGPL" :
+        case "GNU Lesser General Public License" :
+            $link = "http://www.gnu.org/licenses/lgpl.html";
+            break;
+
         default :
             $link = "";
             break;

@@ -19,7 +19,12 @@
 */
 
 /**
- * Generates a RSS feed for the latest releases in a given category
+ * Basic RSS feed caching
+ *
+ * The class looks for a file, whose name is determined by the given
+ * parameter $file and in the directory DAMBLAN_RSS_CACHE_DIR. If that
+ * file exists and it isn't older than DAMBLAN_RSS_CACHE_TIME (default
+ * is 1800 seconds), it is used instead of performing the database queries.
  *
  * @author Martin Jansen <mj@php.net>
  * @package Damblan

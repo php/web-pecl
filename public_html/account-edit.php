@@ -147,13 +147,15 @@ switch ($HTTP_POST_VARS['command']) {
         HTML_Form::displayCheckbox("showemail", $row['showemail']);
         print "   </td>\n";
         print " </tr>\n";
-
-        print " <tr>\n";
-        print "  <th bgcolor=\"#CCCCCC\">Administrator:</th>\n";
-        print "  <td bgcolor=\"#e8e8e8\">";
-        HTML_Form::displayCheckbox("admin", $row['admin']);
-        print "   </td>\n";
-        print " </tr>\n";
+        
+        if ($admin)  { /* show the admin checkbox only when the visitor is admin */
+          print " <tr>\n";
+          print "  <th bgcolor=\"#CCCCCC\">Administrator:</th>\n";
+          print "  <td bgcolor=\"#e8e8e8\">";
+          HTML_Form::displayCheckbox("admin", $row['admin']);
+          print "   </td>\n";
+          print " </tr>\n";
+        }  
 
         print " <tr>\n";
         print "  <th bgcolor=\"#CCCCCC\">&nbsp;</th>\n";

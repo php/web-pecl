@@ -250,6 +250,41 @@ class category
     }
 
     // }}}
+    // {{{ getRecent
+
+    /**
+     * Get list of recent releases for the given category
+     *
+     * @param  int Number of releases to return
+     * @param  string Name of the category
+     * @return array
+     */
+    function getRecent($n, $category)
+    {
+        global $dbh;
+        $recent = array();
+
+        $query = "SELECT p.id AS id, " .
+            "p.name AS name, " .
+            "p.summary AS summary, " .
+            "r.version AS version, " .
+            "r.releasedate AS releasedate, " .
+            "r.releasenotes AS releasenotes, " .
+            "r.doneby AS doneby, " .
+            "r.state AS state " .
+            "FROM packages p, releases r, categories c " .
+            "WHERE p.id = r.package " .
+            "AND p.category = c.id AND c.name = '" . $category . "'" .
+            "ORDER BY r.releasedate DESC";
+
+        $sth = $dbh->limitQuery($query, 0, $n);
+        while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
+            $recent[] = $row;
+        }
+        return $recent;
+    }
+
+    // }}}
 }
 
 /**
@@ -669,6 +704,41 @@ class package
             "      AND d.name = '" . $package . "' " .
             "GROUP BY d.package";
         return $dbh->getAll($query, null, DB_FETCHMODE_ASSOC);
+    }
+
+    // }}}
+    // {{{ getRecent
+
+    /**
+     * Get list of recent releases for the given package
+     *
+     * @param  int Number of releases to return
+     * @param  string Name of the package
+     * @return array
+     */
+    function getRecent($n, $package)
+    {
+        global $dbh;
+        $recent = array();
+
+        $query = "SELECT p.id AS id, " .
+            "p.name AS name, " .
+            "p.summary AS summary, " .
+            "r.version AS version, " .
+            "r.releasedate AS releasedate, " .
+            "r.releasenotes AS releasenotes, " .
+            "r.doneby AS doneby, " .
+            "r.state AS state " .
+            "FROM packages p, releases r " .
+            "WHERE p.id = r.package " .
+            "AND p.name = '" . $package . "'" .
+            "ORDER BY r.releasedate DESC";
+
+        $sth = $dbh->limitQuery($query, 0, $n);
+        while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
+            $recent[] = $row;
+        }
+        return $recent;
     }
 
     // }}}

@@ -2,30 +2,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2002-07-21 11:15-0300\n"
-"Last-Translator: Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior <floripa@organiKa.com.br>\n"
+"PO-Revision-Date: 2001-11-14 17:11+0100\n"
+"Last-Translator: Alan Knowles <alan@akbkhome.com>\n"
 "Language-Team:  <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "View In"
-msgstr "Veja Em"
+msgstr "View In"
 
 msgid "Archives"
-msgstr "Arquivos"
+msgstr "Archives"
 
 msgid "Weekly Summary for"
-msgstr "Sum&aacute;rio Semanal para"
+msgstr "Weekly Summary for"
 
 msgid "PEAR Weekly News"
-msgstr "Not&iacute;cias Semanais do PEAR"
+msgstr "PEAR Weekly News"
 
 msgid "PEAR Weekly News for week ending"
-msgstr "Not&iacute;cias Semanais do PEAR para a semana terminando"
+msgstr "PEAR Weekly News for week ending"
+
+
 
 msgid "Packages Released This Week"
-msgstr "Pacotes Lan&ccedil;ados Nesta Semana"
+msgstr "Packages Released This Week"
 
 msgid "Release"
-msgstr "Lan&ccedil;amento"
+msgstr "Release"

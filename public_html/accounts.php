@@ -86,8 +86,8 @@ $gourl = "http://" . $HTTP_SERVER_VARS['SERVER_NAME'];
 if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80) {
 	$gourl .= ":".$HTTP_SERVER_VARS['SERVER_PORT'];
 }
-$gourl .= "/account-info.php";
-print "u=prompt('Go to account:','');if(u)location.href='$gourl?handle='+u;";
+$gourl .= "/user/";
+print "u=prompt('Go to account:','');if(u)location.href='$gourl'+u;";
 print '" value="Go to account.." /></td></tr><tr><td>';
 printf("Displaying accounts %d - %d of %d<br />\n",
 	   $offset, min($offset+$show, $naccounts), $naccounts);
@@ -125,7 +125,7 @@ while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
     } else {
         print " <tr bgcolor=\"#e0e0e0\">\n";
     }
-    print "  <td>$handle</td>\n";
+    print "  <td>" . make_link("/user/" . $handle, $handle) . "</td>\n";
     print "  <td>$name</td>\n";
 
     if ($showemail) {
@@ -138,8 +138,7 @@ while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
     } else {
         print '<td>&nbsp;</td>';
     }
-    print "\n  <td><a href=\"account-edit.php?handle=".$row['handle']."\">[Edit]</a>&nbsp;
-                 <a href=\"account-info.php?handle=".$row['handle']."\">[Info]</A></td>\n";
+    print "\n  <td><a href=\"account-edit.php?handle=".$row['handle']."\">[Edit]</a></td>\n";
     print " </tr>\n";
 }
 

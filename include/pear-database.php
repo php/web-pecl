@@ -245,7 +245,7 @@ class category
     function listAll()
     {
         global $dbh;
-        return $dbh->getAll("SELECT * FROM categories ORDER BY id",
+        return $dbh->getAll("SELECT * FROM categories ORDER BY name",
                             null, DB_FETCHMODE_ASSOC);
     }
 

@@ -1,7 +1,12 @@
 <?php
-/*
-Expected GET vars: pacid
-*/
+// expected url vars: pacid package
+if (isset($_GET['package']) && empty($_GET['pacid'])) {
+    $pacid = $dbh->getOne("SELECT id FROM packages WHERE name = ?",
+                          array($_GET['package']));
+} else {
+    $pacid = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
+}
+
 if ($pacid != (string)(int)$pacid) {
     die('Invalid package id');
 }

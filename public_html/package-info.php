@@ -36,9 +36,9 @@ if (isset($_GET['version']) && empty($_GET['relid'])) {
     $relid = (isset($_GET['relid'])) ? (int) $_GET['relid'] : null;
 }
 
-if (empty($pacid) && empty($relid)) {
+if (empty($pacid)) {
     response_header("Error");
-    PEAR::raiseError('No package or release selected');
+    PEAR::raiseError('No package selected');
     response_footer();
     exit();
 }

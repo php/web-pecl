@@ -345,7 +345,8 @@ class package
         if (empty($name)) {
             return PEAR::raiseError("package::add: invalid `name' field");
         }
-        $query = "INSERT INTO packages (id,name,package_type,category,license,summary,description,homepage,cvs_link) VALUES(?,?,?,?,?,?,?,?,?)";
+# NOTE WELL! PECL packages are always approved
+        $query = "INSERT INTO packages (id,name,package_type,category,license,summary,description,homepage,cvs_link,approved) VALUES(?,?,?,?,?,?,?,?,?,1)";
         $id = $dbh->nextId("packages");
         $err = $dbh->query($query, array($id, $name, $type, $category, $license, $summary, $description, $homepage, $cvs_link));
         if (DB::isError($err)) {

@@ -2,18 +2,16 @@
 
 require_once "DB.php";
 require_once "DB/storage.php";
+require_once "pear-config.php";
+require_once "pear-auth.php";
+require_once "pear-database.php";
 
-require "pear-auth.php";
-require "pear-database.php";
+if (empty($format) && basename($PHP_SELF) == "xmlrpc.php") {
+    $format = "xmlrpc";
+}
 
 switch ($format) {
-/*
-    case "nativephp":
-        break;
     case "xmlrpc":
-        break;
-*/
-    case "xml":
         break;
     case "html":
         break;
@@ -22,19 +20,12 @@ switch ($format) {
         break;
 }
 
-include "pear-format-$format.php";
-
-$DSN = "mysql://pear:pear@localhost/pear";
-
+include_once "pear-format-$format.php";
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
 if (!is_object($dbh)) {
-    $dbh = DB::connect($DSN, array("debug" => 2));
+    $dbh = DB::connect(PEAR_DATABASE_DSN,
+                       array('persistent' => true));
 }
-
-if (DB::isError($dbh)) {
-    error_handler($dbh);
-}
-$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
 ?>

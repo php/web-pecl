@@ -1,0 +1,46 @@
+Some use cases for the PEAR web site.  These describe a typical
+scenario and its work flow.
+
+PEAR glossary:
+
+Package: A software project released through PEAR.  A package has one
+or more maintainers, its own release history and so on.  Packages
+are named by topic, using underscores to separate each level, for
+example "XML_RPC" or "HTML_Form".
+
+Package Hierarchy: (also "PEAR tree") The name structure that is
+reflected in PEAR's install directory.
+
+Virtual Package: An "empty" package that exists only to make room for
+sub-packages.  A virtual package has one or more maintainers who are
+responsible for that branch of the package hierarchy.
+
+Namespaces: Think of namespaces as "directories" for symbol names.
+They are typically used to avoid name clashes.  Namespaces don't exist
+in PHP today, so PEAR uses a naming scheme to avoid clashes.  This
+naming scheme becomes very verbose at times, so PEAR will start using
+namespaces once they appear in PHP 5.0.  [note: the "namespace syntax"
+used below is based on the current proposals on the Zend Engine 2.0
+mailing list]
+
+Now to the use-cases:
+
+1. Programmer who is new to PEAR wants to register himself and publish his
+   brand new "Money_Fast" package:
+    1. applies for PEAR account
+    2. gets email when account is open
+    3. proceed to use-case 2
+
+2. Programmer wants to register his new "Money_Fast" package:
+    1. registers his project with the name space "Money:Fast"[1].  It
+       is the programmer's responsibility to put the package in the
+       right place
+    2. proceed to use-case 3
+
+3. Programmer wants to publish a new version of "Money_Fast":
+    1. uploads a tgz file built with "pear package" along with a
+       version number, maturity level (beta, stable etc.),
+       release notes and dependencies
+    2. package is now published and will appear on the "recently
+       published" list on  pear.php.net, a notice goes to the
+       pear-announce mailing list, freshmeat.net etc.

@@ -172,7 +172,7 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
 //
 
 function commonHeader($title) {
-    global $SIDEBAR_DATA, $HTTP_SERVER_VARS, $ONLOAD, $auth_user;
+    global $SIDEBAR_DATA, $HTTP_SERVER_VARS, $ONLOAD, $auth_user, $RSIDEBAR_DATA;
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">

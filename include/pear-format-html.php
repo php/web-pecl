@@ -44,7 +44,9 @@ $GLOBALS['user_menu'] = array(
 
 $GLOBALS['admin_menu'] = array(
     '/admin.php'            => 'Account Requests',
-    '/category-manager.php' => 'Categories'
+    '/category-manager.php' => 'Categories',
+	'/phpSysInfo/index.php?template=pear' => 'System Information',
+	'/admin.phpinfo.php   ' => 'PHPInfo Output'
 );
 
 $GLOBALS['_style'] = '';

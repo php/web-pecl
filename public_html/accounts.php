@@ -127,6 +127,30 @@ while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
     print " </tr>\n";
 }
 
+print " <tr bgcolor=\"#cccccc\">\n";
+print "  <th>";
+if ($offset > 0) {
+	print "<a href=\"$lastlink\">&lt;&lt; Last $page_size</a>";
+} else {
+	print "&nbsp;";
+}
+print "</th>\n";
+print "  <td colspan=\"3\">";
+
+print '<table border="0"><tr><td>';
+print '</td><td rowspan="2">&nbsp;';
+print "</td></tr></table>\n";
+print "</td>\n";
+print "  <th>";
+if ($offset + $page_size < $naccounts) {
+	$nn = min($page_size, $naccounts - $offset - $page_size);
+	print "<a href=\"$nextlink\">Next $nn &gt;&gt;</a>";
+} else {
+	print "&nbsp;";
+}
+print "</th>\n";
+print " </tr>\n";
+
 print "</table>\n";
 
 response_footer();

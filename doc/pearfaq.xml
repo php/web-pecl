@@ -1,42 +1,40 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.33 2001-12-05 18:40:50 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.34 2001-12-15 17:38:59 mj Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
- <artheader>
-  <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-12-05 18:40:50 $</date>
-  <version>$Revision: 1.33 $</version>
- </artheader>
-
  <qandaset>
   <qandaentry>
    <question title="What exactly is PEAR?" />
     <answer>
-     <author name="Tomas V.V. Cox"/>
+     <author name="Tomas V.V. Cox and Martin Jansen"/>
       <para>
-        The PEAR concept it self is only a Repository, a unique web repository
-        and the works done in this area (pear web and pear installer/packager)
-        are in this direction. Also it's not a common repository, is a
-        repository with software that:
+       PEAR is a repository for high quality PHP code and for PHP extensions
+       written in C, that are distributed via an easy to use interface
+       system. 
+      </para>
+      <para>
+        Code in PEAR is compliant to the following points:
         <simplelist>
          <member>
-          has been approved to be in by the Pear developers and has the general
-          concensus of the Pear community (Pear users)
+          has been approved to be part of PEAR by the PEAR developers and has
+          the general concensus of the PEAR community
          </member>
          <member>
-          follows a unique coding standard (avaible to read, already standarized
-          and used in all PEAR)
+          follows a unique <ulink url="/manual/standards.php">coding standard</ulink>
+          (already standarized and used all over PEAR)
          </member>
          <member>
-          uses a common error handling mechanism
+          uses a common <ulink url="/manual/class.pear-error.php">error
+          handling mechanism</ulink>
          </member>
          <member>
           tries to have a similar way of use
          </member>
          <member>
-          has documentation about its API in the PHPDoc format
+          has documentation about its API in the <ulink url="http://www.phpdoc.de/">
+          PHPDoc</ulink> format
          </member>
          <member>
           has documentation/examples/tests (to be marked as stable)

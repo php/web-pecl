@@ -30,7 +30,7 @@ response_header("Support");
 
 <h2>Support</h2>
 
-<b>Table of Conents</b>
+<b>Table of Contents</b>
 <ul>
   <li><a href="#lists">Mailing Lists</a></li>
   <li><a href="#tutorials">Tutorials</a></li>
@@ -183,11 +183,22 @@ Eris Free Net</a>.
 <div class="listing">
 
 <a name="tutorials" /><h3>PEAR Tutorials</h3>
+<h4>PEAR Tutorials sites</h4>
+<ul>
+ <li>Tutorials about PEAR, available in many langages
+ <a href="http://www.pearfr.org">www.pearfr.org</a>.
+ </li>
+</ul>
 
 <h4>Tutorials about the PEAR DB package:</h4>
 
 <ul>
-    <li><a href="http://vulcanonet.com/soft/?pack=pager">Pear DB_Pager package Tutorial</a> by Tomas V.V.Cox.
+    <li>Tutorial and conferences papers about a lot of PEAR packages
+        <a href="http://www.pearfr.org/~amerz/">http://www.pearfr.org/~amerz/</a>
+    </li>
+	    
+    <li><a href="http://www.pearfr.org/index.php/en/article/db_pager">Pear DB_Pager package Tutorial</a> by Tomas V.V.Cox,
+    Arnaud Limbourg.
     This package handles all the stuff needed for displaying paginated results from a database query.</li>
 
     <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li>

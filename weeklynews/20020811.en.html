@@ -1,27 +1,31 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head>
-
-<body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head><body>
 <small><i>by Alan Knowles (alan_k@php.net)</i></small>
-<p>Always a busy week in PEAR world, with .. new releases, and 2 new packages
+<p>Always a busy week in PEAR world, with 5 new releases, and 2 new packages
 added, along with discussion on the status of the pear web site, Forum coming
 back to life, and an MDB release candidate.
 
 
-<hr>
+</p><hr>
 
 <h2>New Releases</h2>
 
 <h3>Stable</h3>
 <ul>
-<li><b>.. -</b> ...</li>
-<li><b>..</b>&nbsp; - ...</li>
+<li><b>Var_Dump -</b> A graphical version of the var_dump function in php</li>
+<li><b>Cache</b> - A full featured Caching system for caching all kinds of data.</li>
+<li><b>Date</b>- A class based representation of Dates which handles dates outside of the standard unix date (1970-2038)</li>
 </ul>
 
 <h3>Beta</h3>
 <ul>
-<li><b>..</b>&nbsp; - ...</li>
-<li><b>..</b>&nbsp; - ...</li>
+<li><b>Cache_Lite</b> - A fast and safe package to cache the output from your php scripts.</li>
 </ul>
+
+<h3>Development</h3>
+<ul>
+  <li><b>MDB</b> - a merge of the PEAR DB and the Metabase Database Abstraction Layer.</li>
+</ul>
+<br>
 
 <hr>
 
@@ -32,7 +36,7 @@ There was a small discussion about displaying the link for the <a href="http://p
 on the front page of the pear website. This issue is tied up with the fact
 that for current PHP releases, the only way to use the pear installer is
 to use 
-<pre>&nbsp;lynx -source http://pear.php.net/go-pear | PHP</pre>
+<pre>lynx -source http://pear.php.net/go-pear | PHP</pre>
 Whereas, when PHP4.3 is released, this will no longer be required (the installer
 will come with the PHP distribution), so using and accessing PEAR packages
 will become considerably easier. Also as the site is still undergoing slight
@@ -56,17 +60,16 @@ for any gaps that need to be filled before declaring a 1.0 release.
 
 <h3>PHP Category starts to get filled</h3>
 After a bit of discussion, Frederic
-Poeydomenge's &nbsp;Var_Dump Got uploaded into the new PHP Category, along with
+Poeydomenge's Var_Dump Got uploaded into the new PHP Category, along with
 PHPDoc, PHPUnit and bcompiler moved out of the PEAR category. Var_dump however still needs
 renaming to fit in with the PEAR naming standards, eg. PHP_VarDump or PHP_Var_Dump.
 
-<h3>More Zend Engine 2 issues</h3>
-Brad Bulger spotted that using the new Zend Engine, has some interesting side
-effects, that are probably worth keeping an eye out for. The issue he found was tha the mkdir method
-in the System Package, has the same name as a standard PHP function, since you don't need
-to use $this-&gt;mkdir() anymore to call a local method in ZE2, the Engine was confusing mkdir (the system call) for mkdir the method call...
-
-<h3>Forum comes back to life</h3>
+<h3>More Zend Engine 2 issues</h3>Brad Bulger spotted that using the new
+Zend Engine, has some interesting side effects, that are probably worth keeping
+an eye out for. The issue he found was tha the mkdir method in the System
+Package, has the same name as a standard PHP function, since you don't need
+to use $this-&gt;mkdir() anymore to call a local method in ZE2, the Engine
+was confusing mkdir (the system call) for mkdir the method call... <h3>Forum comes back to life</h3>
 &#1050;&#1074;&#1086;&#1090;&#1080;&#1088;&#1086;&#1085;&#1080;&#1077; Wodzu asked if he could take over some of the development of the
 Forum package, converting it more to PEAR standards and adding a few features.
 As usual this was met with much fanfare and encouragement. 
@@ -87,20 +90,19 @@ Wim Vinckier
 <h3>Var_Dump</h3>
 Var_dump is a more detailed and elegant var_dump to output variables at the moment it is focused on HTML output.
 
-<h3>PECL::Threads</h3>
-After finally working out the technical issues behind
-adding Threading support to PHP, Alan Knowles and Shane Caraveo have now
-a roughly working prototype in PECL, this is a cross platform extension that
+<h3>PECL::Threads</h3>After finally working out the technical issues behind
+adding Threading support to PHP, Alan Knowles and Shane Caraveo have now a
+roughly working prototype in PECL, this is a cross platform extension that
 at the moment allows you to start another thread in php using the include
 type syntax, and pass variables between both threads. Extremely useful for
-developing TCP type servers or GTK applications.. A more standard thread_create('function_name'), type interface is also underway.
-
-<hr>
+developing TCP type servers or GTK applications.. A more standard thread_create('function_name'),
+type interface is also underway. <hr>
 
 <h2>Development</h2>
-Active on CVS this week has been &nbsp;MDB, HTML_Javascript,
+Active on CVS this week has been MDB, HTML_Javascript,
 HTML_Post, DB_DataObject, PECL::Threads, I18N, Console_Getopt, Cache_Lite,
 Auth, DB, Date, HTML_QuickForm, DB_ldap, HTTP_Upload, Math_Numbers and Net_Ping.
 
 
+<br>
 </body></html>

@@ -206,7 +206,7 @@ you would like to release through PEAR.
     print "</TR>\n";
 
     print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">More relevant informatio about you (optional)</TH>\n";
+    print "  <TH bgcolor=\"#cccccc\">More relevant information about you (optional)</TH>\n";
     print "  <TD bgcolor=\"#e8e8e8\">";
     HTML_Form::displayTextarea("moreinfo", stripslashes(@$HTTP_POST_VARS['moreinfo']));
     print "  </TD>\n";

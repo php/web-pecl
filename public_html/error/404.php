@@ -19,14 +19,25 @@
 */
 
 /**
-* On 404 error this will search for a package with the same
-* name as the requested document. Thus enabling urls such as:
-*
-* http://pear.php.net/Mail_Mime
-*/
+ * On 404 error this will search for a package with the same
+ * name as the requested document. Thus enabling urls such as:
+ *
+ * http://pear.php.net/Mail_Mime
+ */
 
 $pkg = strtr($_SERVER['REDIRECT_URL'], "-","_");
 $pinfo_url = '/package-info.php?package=';
+
+// Check strictly
+$sql = "SELECT name
+            FROM packages
+            WHERE name = ?";
+$name = $dbh->getOne($sql, array(basename($pkg)));
+if (!DB::isError($name) && !empty($name)) {
+    localRedirect($pinfo_url . $name);
+}
+
+// Check less strictly if nothing has been found previously
 $sql = "SELECT p.id, p.name, p.summary
             FROM packages p
             WHERE name LIKE ?

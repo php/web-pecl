@@ -23,7 +23,8 @@ require_once "PEAR.php";
 /**
  * PEAR Patch Tracker
  *
- * @author Martin Jansen <mj@php.net>
+ * @author  Martin Jansen <mj@php.net>
+ * @version $Revision$
  */
 class patches {
 
@@ -117,6 +118,19 @@ class patches {
     }
 
     /**
+     * Get all patches at once
+     *
+     * @access public
+     * @return array Array containing the patches
+     */
+    function getAll() {
+        $query = "SELECT p.*, pa.name AS package FROM patches p, packages pa" .
+            " WHERE p.fk_package = pa.id" .
+            " ORDER BY ADDED asc";
+        return $this->dbh->getAll($query, null, DB_FETCHMODE_ASSOC);
+    }
+
+    /**
      * Get patches for specific author
      *
      * @access public
@@ -152,6 +166,23 @@ class patches {
         }
 
         return $this->dbh->getAll($query, null, DB_FETCHMODE_ASSOC);
+    }
+
+    /**
+     * Get content of given patch file
+     *
+     * @access public
+     * @param  string Name of the patch file
+     * @return mixed  PEAR_Error or string
+     */
+    function getPatch($filename) {
+        $content = @file_get_contents(PEAR_PATCHES . $filename);
+
+        if ($content === false || empty($filename)) {
+            return new PEAR_Error("Patch file not found!");
+        } else {
+            return $content;
+        }
     }
 
     /**

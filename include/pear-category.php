@@ -61,7 +61,7 @@ function initialize_categories_menu () {
         }
         $tree[$id]['name']   = $name;
     }
-    $tree[0]['name'] = 'Categories';
+    $tree[0]['name'] = 'Top Level';
 
     $menu[1] = tree_to_menu(0,'1');
     $menu[1]['url'] = $GLOBALS['PHP_SELF'];

@@ -364,7 +364,7 @@ class maintainer
 
         return $rows;
     }
-        
+
     // }}}
 }
 
@@ -383,7 +383,7 @@ class release
                            "releases.releasenotes AS releasenotes, ".
                            "releases.doneby AS doneby ".
                            "FROM packages, releases ".
-                           "WHERE packages.id = releases.id ".
+                           "WHERE packages.id = releases.package ".
                            "ORDER BY releases.releasedate DESC", 0, $n);
         $recent = array();
         // XXX Fixme when DB gets limited getAll()
@@ -581,7 +581,7 @@ class release
             return false;
         } else {
             return true;
-        }        
+        }
     }
 
     // }}}
@@ -707,7 +707,7 @@ class user
             return true;
         } else {
             return false;
-        }        
+        }
     }
 
     // }}}

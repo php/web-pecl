@@ -219,12 +219,8 @@ class package
         global $dbh;
         // verify that package exists
         if (preg_match('/^\d+$/', $package)) {
-            $package_id = $package;
-            $error = $dbh->getOne("SELECT name FROM packages ".
+            $package_id = $dbh->getOne("SELECT id FROM packages ".
                                     "WHERE id = ?", array($package));
-            if (PEAR::isError($error)) {
-                return $error;
-            }
         } else {
             $package_id = $dbh->getOne("SELECT id FROM packages ".
                                        "WHERE name = ?", array($package));

@@ -46,6 +46,13 @@ $bool_or_checked  = @$_GET['bool'] == "OR" ? 'checked="checked"' : '';
  * Code to fetch the current category list
  */
 $category_rows = $dbh->getAll('SELECT id, name FROM categories ORDER BY name', DB_FETCHMODE_ASSOC);
+if (!empty($_GET['pkg_category'])) {
+    for ($i=0; $i<count($category_rows); $i++) {
+        if ($_GET['pkg_category'] == $category_rows[$i]['id']) {
+            $category_rows[$i]['selected'] = 'selected="selected"';
+        }
+    }
+}
 
 /**
  * Fetch list of users/maintainers
@@ -88,7 +95,10 @@ if (!empty($_GET)) {
     /**
      * Any release date checking?
      */
-    $release_join = '';
+    $release_join        = '';
+    $set_released_on     = false;
+    $set_released_before = false;
+    $set_released_since  = false;
     // RELEASED_ON
     if (!empty($_GET['released_on_year']) AND !empty($_GET['released_on_month']) AND !empty($_GET['released_on_day'])) {
         $release_join = ', releases r';
@@ -97,6 +107,8 @@ if (!empty($_GET)) {
                            (int)$_GET['released_on_year'],
                            (int)$_GET['released_on_month'],
                            (int)$_GET['released_on_day']);
+        $set_released_on = true;
+
     } else {
         // RELEASED_BEFORE
         if (!empty($_GET['released_before_year']) AND !empty($_GET['released_before_month']) AND !empty($_GET['released_before_day'])) {
@@ -106,6 +118,7 @@ if (!empty($_GET)) {
                                (int)$_GET['released_before_year'],
                                (int)$_GET['released_before_month'],
                                (int)$_GET['released_before_day']);
+            $set_released_before = true;
         }
             
         // RELEASED_SINCE
@@ -116,6 +129,7 @@ if (!empty($_GET)) {
                                (int)$_GET['released_since_year'],
                                (int)$_GET['released_since_month'],
                                (int)$_GET['released_since_day']);
+            $set_released_since = true;
         }
     }
         

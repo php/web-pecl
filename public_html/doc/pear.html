@@ -63,8 +63,7 @@ COLSPAN="3"
 ><P
 >&#13;  This document is incomplete.  For now it only contains a brief
   description of PEAR and "Coding Rules and Guidelines".  The rules
-  and guidelines are initial suggestions, and this part is still open
-  to discussion.
+  and guidelines are initial suggestions, and are open for discussion.
  </P
 ><DIV
 CLASS="section"
@@ -203,6 +202,33 @@ NAME="pear-classnames"
      "DB_mysql".
     </P
 ></DIV
+></DIV
+><DIV
+CLASS="section"
+><HR><H2
+CLASS="section"
+><A
+NAME="pear-errors"
+>Returning Errors</A
+></H2
+><P
+>&#13;    Your code should <I
+CLASS="emphasis"
+>never</I
+> use
+    <TT
+CLASS="function"
+>exit</TT
+> or <TT
+CLASS="function"
+>die</TT
+> if it
+    encounters an error.  This would make developers using your code
+    unable to catch these errors, handle them or even display their
+    own error message.  As far as possible, use some way of giving
+    errors back to the caller, even if it is just a boolean return
+    value.
+   </P
 ></DIV
 ><DIV
 CLASS="section"

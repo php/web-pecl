@@ -79,9 +79,10 @@ Proposed notation for package.xml:
 	<..>...</..>
 	<deps>
 		<!-- type: one of the types mentioned in point 3.
-		     rel : any version_compare() valid comparison
-			       operator
-		     version: a PHP valid version scheme -->
+		     rel : "has", or any version_compare() valid comparison
+			   operator
+		     version: a version number according to the PHP
+		              versioning scheme -->
 		<dep type="xxx" rel="xx" version="x.x.x">name</dep>
 	</deps>
 </release>
@@ -117,7 +118,7 @@ Usage example:
 		##      SAPI.
 		<dep type="sapi">cgi</dep>
 		
-		<!-- The program "grep" is present in the PATH ->
+		<!-- The program "grep" is present in the PATH -->
 		<dep type="prog">grep</dep>
 
 	</deps>

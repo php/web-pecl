@@ -1,5 +1,7 @@
 SHORT TERM:
 
+* xmlrpc authentication
+
 * "pear configure" to make ~/.pearrc:
 ** pear.php.net username/password
 ** email address
@@ -17,18 +19,23 @@ SHORT TERM:
 * xmlrpc server methods
 ** package.alter
 ** package.annotate
+** package.newestRelease(package, [state])
 ** release.list
 ** release.get
 ** release.annotate
 ** release.notes
 
 * "pear" script:
-** windows support: System class and Tar.php test under win
-
-* add bug reporting system
+** windows support:
+*** System class and Tar.php test under win
+*** xmlrpc extension compile fix
 
 MEDIUM TERM:
 
 * script to include PEAR stuff in PHP releases
 
+* integrate some bug reporting system
+
 LONG TERM:
+
+* prepare for ZendEngine2 / PHP 5

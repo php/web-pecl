@@ -213,27 +213,7 @@ class package
     }
 
     // }}}
-    // {{{ +proto int package::_getID(string|int)
-
-    function _getID($package)
-    {
-        global $dbh;
-        // verify that package exists
-        if (preg_match('/^\d+$/', $package)) {
-            $package_id = $dbh->getOne("SELECT id FROM packages ".
-                                    "WHERE id = ?", array($package));
-        } else {
-            $package_id = $dbh->getOne("SELECT id FROM packages ".
-                                       "WHERE name = ?", array($package));
-        }
-        if (empty($package_id)) {
-            return PEAR::raiseError("no such package: $package");
-        }
-        return $package_id;
-    }
-
-    // }}}
-    // {{{ *proto struct package::info(string|int)
+    // {{{ *proto struct package::info(string|int, [string])
 
     function info($pkg, $field = null)
     {
@@ -299,24 +279,70 @@ class package
     }
 
     // }}}
-    // {{{ -proto struct package::listAll()
+    // {{{ -proto struct package::listAll([bool])
 
-    function listAll()
+    function listAll($released_only = true)
     {
         global $dbh;
-        return $dbh->getAll("SELECT p.id AS packageid, p.name AS name, ".
-                            "c.id AS categoryid, c.name AS category, ".
-                            "p.stablerelease AS stable, ".
-                            "p.license AS license, ".
-                            "p.summary AS summary, ".
-                            "p.description AS description, ".
-                            "m.handle AS lead ".
-                            " FROM packages p, categories c, maintains m ".
-                            "WHERE c.id = p.category ".
-                            "  AND p.id = m.package ".
-                            "  AND m.role = 'lead' ".
-                            "ORDER BY p.name", null, DB_FETCHMODE_ASSOC);
+        $packageinfo = $dbh->getAssoc(
+			"SELECT p.name, p.id AS packageid, ".
+			"c.id AS categoryid, c.name AS category, ".
+			"p.license AS license, ".
+			"p.summary AS summary, ".
+			"p.description AS description, ".
+			"m.handle AS lead ".
+			" FROM packages p, categories c, maintains m ".
+			"WHERE c.id = p.category ".
+			"  AND p.id = m.package ".
+			"  AND m.role = 'lead' ".
+			"ORDER BY p.name", false, null, DB_FETCHMODE_ASSOC);
+		$stablereleases = $dbh->getAssoc(
+			"SELECT p.name, r.version AS stable ".
+			"FROM packages p, releases r ".
+			"WHERE p.id = r.package AND r.state = 'stable'");
+		foreach ($stablereleases as $pkg => $stable) {
+			$packageinfo[$pkg]['stable'] = $stable;
+		}
+		if ($released_only) {
+			foreach ($packageinfo as $pkg => $info) {
+				if (!isset($stablereleases[$pkg])) {
+					unset($packageinfo[$pkg]);
+				}
+			}
+		}
+		return $packageinfo;
     }
+
+    // }}}
+	// {{{ -proto struct package::listUpgrades(struct)
+
+	function listUpgrades($currently_installed)
+    {
+		global $dbh;
+		if (sizeof($currently_installed) == 0) {
+			return array();
+		}
+		$query = "SELECT ".
+			 "p.name AS package, ".
+			 "r.id AS releaseid, ".
+			 "r.package AS packageid, ".
+			 "r.version AS version, ".
+			 "r.state AS state, ".
+			 "r.doneby AS doneby, ".
+			 "r.license AS license, ".
+			 "r.summary AS summary, ".
+			 "r.description AS description, ".
+			 "r.releasedate AS releasedate, ".
+			 "r.releasenotes AS releasenotes ".
+			 "FROM releases r, packages p WHERE r.package = p.id AND (";
+		$conditions = array();
+		foreach ($currently_installed as $package => $info) {
+			extract($info); // state, version
+			$conditions[] = "(package = '$package' AND state = '$state')";
+		}
+		$query .= implode(" OR ", $conditions) . ")";
+		return $dbh->getAssoc($query, false, null, DB_FETCHMODE_ASSOC);
+	}
 
     // }}}
 }
@@ -394,15 +420,27 @@ class release
     }
 
     // }}}
-    // {{{ +proto bool release::upload(string, string, string, string, binary, string)
+    // {{{ +proto string release::upload(string, string, string, string, binary, string)
 
     function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
+		$ref = release::validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum);
+		if (PEAR::isError($ref)) {
+			return $ref;
+		}
+		return release::confirmUpload($ref);
+    }
+
+    // }}}
+    // {{{ +proto string release::validateUpload(string, string, string, string, binary, string)
+
+    function validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum)
+    {
         global $dbh, $auth_user, $PHP_AUTH_USER;
         // (2) verify that package exists
-        $package_id = package::_getID($package);
+        $package_id = package::info($package, 'id');
         if (PEAR::isError($package_id)) {
-            return PEAR::raiseError("You have to register first package: $package");
+            return PEAR::raiseError("package `$package' must be registered first");
         }
 
         // (3) verify that version does not exist
@@ -421,7 +459,7 @@ class release
                             PEAR_TARBALL_DIR, ".new.", $package, $version);
         $file = sprintf("%s/%s-%s.tgz", PEAR_TARBALL_DIR, $package, $version);
         if (!@copy($tarball, $tempfile)) {
-            return PEAR::raiseError("fopen($tempfile) failed: $php_errormsg");
+            return PEAR::raiseError("writing $tempfile failed: $php_errormsg");
         }
         // later: do lots of integrity checks on the tarball
         if (!@rename($tempfile, $file)) {
@@ -438,6 +476,36 @@ class release
             $bytes = strlen($data);
             return PEAR::raiseError("bad md5 checksum (checksum=$testsum ($bytes bytes: $data), specified=$md5sum)");
         }
+
+		$info = array("package_id" => $package_id,
+					  "version" => $version,
+					  "state" => $state,
+					  "relnotes" => $relnotes,
+					  "md5sum" => $md5sum,
+		              "file" => $file);
+        $infofile = sprintf("%s/%s%s-%s",
+                            PEAR_TARBALL_DIR, ".info.", $package, $version);
+		$fp = @fopen($infofile, "w");
+		if (!is_resource($fp)) {
+            return PEAR::raiseError("writing $infofile failed: $php_errormsg");
+		}
+		fwrite($fp, serialize($info));
+		fclose($info);
+		return $infofile;
+    }
+
+    // }}}
+    // {{{ +proto bool release::confirmUpload(string)
+
+    function confirmUpload($upload_ref)
+    {
+		$fp = @fopen($upload_ref, "r");
+		if (!is_resource($fp)) {
+            return PEAR::raiseError("invalid upload reference: $upload_ref");
+		}
+		$info = unserialize(fread($fp, filesize($upload_ref)));
+		extract($info);
+		@unlink($upload_ref);
 
         // Update releases table
         $query = "INSERT INTO releases (id,package,version,state,doneby,".
@@ -460,6 +528,14 @@ class release
             @unlink($file);
         }
         return true;
+    }
+
+    // }}}
+    // {{{ +proto bool release::dismissUpload(string)
+
+    function dismissUpload($upload_ref)
+    {
+		return (bool)@unlink($upload_ref);
     }
 
     // }}}

@@ -332,7 +332,7 @@ $dependants = package::getDependants($name);
 if (count($dependants) > 0) {
 
     echo "<br /><br />";
-    $bb = new BorderBox("Packages the depend on " . $name);
+    $bb = new BorderBox("Packages that depend on " . $name);
 
     foreach ($dependants as $dep) {
         $bb->plainRow(make_link("/package/" . $dep['p_name'], $dep['p_name']));

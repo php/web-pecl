@@ -133,6 +133,9 @@
     // Setup X-axis labels
     $graph->xaxis->SetTickLabels($x_axis);
 
+    // Add a spacing between the bars and the top of the graph
+    $graph->yaxis->setGrace(15);
+
 	// Add the grouped or single bar chartplot
 	if (count($bplots) > 1) {
 		$gbplot = new GroupBarPlot($bplots);

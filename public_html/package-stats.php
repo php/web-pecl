@@ -344,7 +344,7 @@ if (@!$_GET['pid']) {
 	echo "<table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"2\">\n";
 	echo "<tr align=\"left\" bgcolor=\"#cccccc\">\n";
 	echo "<th>Package name</th>\n";
-	echo "<th>Release</th>\n";
+	echo "<th>Releases<th>\n";
 	echo "<th><u># of downloads</u></th>\n";
 	echo "<th>&nbsp;</th>\n";
 	echo "</tr>\n";
@@ -371,9 +371,9 @@ if (@!$_GET['pid']) {
         $total_dl += $row['dl_number'];
 	}
     echo "<tr bgcolor=\"#eeeeee\">\n";
-    echo "<td>\nTotal</td>\n";
+    echo "<td>\n<b>Total</b></td>\n";
     echo "<td>&nbsp;</td>\n";
-    echo "<td>\n" . number_format($total_dl, 0, '.', ',') . "</td>\n";
+    echo "<td>\n<b>" . number_format($total_dl, 0, '.', ',') . "</b></td>\n";
     echo "<td>&nbsp</td>\n";
     echo "</tr>\n";
 

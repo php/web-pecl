@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+  
+<p><i><small>by Alan Knowles(alan_k@php.net)</small></i></p>
+  
+<p>Si l'activit&eacute; sur la liste peardev f&ucirc;t des plus tranquilles
+cette semaine, c'est que chacun &eacute;tait tr&egrave;s occup&eacute; &agrave;
+'packager' et sortir de nouvelles releases, pour notre plus grand plaisir.
+Cette semaine a vu six versions stables, deux betas et une version de d&eacute;velopement.
+Des discussions sur l'utilisation de PEAR sur des serveurs mutualis&eacute;
+ainsi qu'un nouveau package prometteur propos&eacute; par Christian Stocker,
+Webdav Server Class.<br>
+</p>
+<hr> 
+<h2>Nouvelles sorties</h2>
+  
+<h3>Stable</h3>
+  
+<ul>
+ <li><b>Console_Getopt</b> - Une impl&eacute;mentation PHP de getopt (lecture
+des options sur la commande en ligne)</li>
+ <li><b>HTML_Crypt</b> - Fournit des m&eacute;thodes pour crypter des cha&icirc;nes
+qui seront d&eacute;crypter ult&eacute;rieument par le client via des fonctions
+javascript.</li>
+ <li><b>HTML_Template_IT</b> - Un package incluant une API de template, simple
+d'utilisation, IT ainsi qu'une API compatible PHPlib ITX. </li>
+ <li><b>Pager</b> - Package permettant de paginer des donn&eacute;es de mani&egrave;re
+similaire &agrave; Google.</li>
+ <li><b>MDB</b>  -  Premi&egrave;re version stable de PEAR MDB, Metabase
+Merger Database Abstraction Layer.</li>
+ <li><b>XML_Transformer</b> - Un moyen simple de transformer des donn&eacute;es
+XML en code PHP ou en texte.</li>
+ 
+</ul>
+  
+<h3>Beta</h3>
+  
+<ul>
+ <li><b>Image_Transform</b>  - Fournit une api uniformis&eacute;e pour manipuler
+des images,&nbsp; utilisant, au choix, GD, ImageMagick, imagick ou NetPBM.</li>
+ <li><b>DB_DataObject</b> - Un constructeur de requ&ecirc;tes et un mod&eacute;liseur
+de donn&eacute;es.</li>
+</ul>
+   
+<h3>Development</h3>
+  
+<ul>
+ <li><b>DBA</b> - un wrapper for les fonctions DBA de php (ainsi qu'une &eacute;mulation
+bas&eacute; sur des fichiers), et une impl&eacute;tentation d'un driver SQL
+pour les bases de donn&eacute;es DBA. </li>
+  
+</ul>
+  
+<hr> 
+<h2>PEAR-DEV traffic</h2>
+  
+<h3>PEAR Licence FAQ</h3>
+Rasmus Lerdor annonc&acirc;t qu'il allait fournir une liste plus compr&eacute;hensive
+et exaustive des licences pour les packages PEAR, bas&eacute;e sur une requ&ecirc;te
+de Richard Stallman. Celles-ci regroupent les licences approuv&eacute;es
+par l'OSI (Open Source Institute) et la FSF (Free Software Foundation). Elle
+devrait appara&icirc;tre prochainement dans le manuel.<br>
+<h3>PEAR Config, nouveau parser.</h3>
+Bertrand Mansion a &nbsp;refondu la classe Config, ajoutant de nouveaux types
+de parsers et changeant ceux existant. &nbsp;Ces travaux cassent la compatibilit&eacute;
+descendantes, &nbsp;donc si vous avez besoin de l'ancienne version, il est
+n&eacute;cessaire de pr&eacute;ciser la version d&eacute;sir&eacute;e lors
+de l'installation via la commande pear, ou t&eacute;l&eacute;charger la version
+ant&eacute;rieur depuis le site.<br>
+<h3>MDB manager abstract</h3>
+Lukas a publi&eacute; un <a
+ href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=8951">r&eacute;sum&eacute;</a>
+des couches de MDB manager, ce qui explique diff&eacute;rences et avantages
+de migrer vers MDB, le projet de fusion Metabase/PEAR. Il a aussi travaill&eacute;
+sur quelques documentations tr&egrave;s utiles pour les personnes d&eacute;sireuses
+de travailler sur de nouveaux drivers.
+<h3>Tomas V. Cox, absent</h3>
+ Tomas V. Cox, &nbsp;une des d&eacute;velopeurs principaux derri&egrave;re
+PEAR, annonce qu'il va &ecirc;tre un peu occup&eacute; (ndt: ce qui est un
+doux oeuph&eacute;misme :) ) les prochaines semaines. Quelques plaisanteries
+suivirent cette annonce sur le fait de casser quelques petites choses dans
+pear (ndt: version le chat n'est pas l&agrave; ... :) ).<br>
+   
+<h3>Phpdoc2peardoc</h3>
+ Alexander Merz a <a
+ href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=9004">annonc&eacute;</a>
+la premi&egrave;re version d'un outils de conversion de commentaire phpdoc
+en peardoc (le format du manuel de pear), ceci implique quelques changements
+&agrave; phpdoc, cependant ceci est un grand pas en avant pour am&eacute;liorer
+la facilit&eacute; d'utilisation des packages PEAR.<br>
+  
+<h3>Faire fonctionner PEAR en dehors de l'installation par d&eacute;faut</h3>
+ Peter Schoenster, durant ses essais d'installation de DB_DataObjects, nous
+interroge&acirc;t sur les moyens d'installer pear en dehors de l'installation
+par d&eacute;faut, t&acirc;che on ne peut plus normale lorsque l'on se trouve
+en environnement mutualis&eacute;. Plusieurs possibilit&eacute;s sont offertes
+:<br>
+  
+<pre>pear config-set php_dir /chemin/vers/pear/</pre>
+changera le dossier d'installation pour l'utilisateur actuel.<br>
+<br>
+Ou vous pouvez simplement t&eacute;l&eacute;charger le package n&eacute;cessaire
+et le d&eacute;compresser dans un dossier se trouvant dans votre include_path.
+<br>
+Utiliser ini_set('include_path','/chemin/vers/pear/'); dans un auto_prepend
+ou dans un fichier que vous devez inclure dans chaque page (config.inc.php
+par exemple).<br>
+Utiliser un .htaccess <code>et y ins&eacute;rer la directive php_value include_path</code>
+'/chemin/vers/pear/'<code></code>   
+<h3>Bugs and Fixes</h3>
+Merci &agrave; ces personnes pour avoir signal&eacute; des bugs et/ou fournit
+des patches: Pawe&#322; Go&#322;aszewski, Michael Dransfield, Jeremy Pointer, Alexy
+Borzov.
+<hr>  
+<h2>Nouveau package ou propositions</h2>
+  
+<h3>DB_DOM, ou DB_XML&nbsp;</h3>
+ Sandro Zic a annonc&eacute; la cr&eacute;ation d'une classe qui vous permet
+de de stocker des donn&eacute;es dans un document au format DOM-XML dans
+une base de donn&eacute;es en utilisant PEAR::DB, cette API est similaire
+&agrave; l'extension DOMXML et devrait permettre un acc&egrave;s plus rapide
+aux documents XML.<br>
+   
+<h3>HTTP_Webdav_Server </h3>
+Christian Stocker a annonc&eacute; la sortie de son package Webdav Serve.
+Ce package permet a php 4.3 (version cvs en cours) de fonctionner en tant
+que serveur Webdav. Il inclut &nbsp;des exemples de scripts utilisant Webdav
+Server.<br>
+    
+<h3>Tree_Manager</h3>
+ Bj&ouml;rn Schotte signal&acirc;t son intention de 'PEARifier' &nbsp;tree_manager,des
+discussions ont e&ucirc;t lieu sur le fait qu'il serait plus opportun de
+l'int&eacute;grer dans le package existant PEAR::Tree.
+<hr>  
+<h2>D&eacute;velopement</h2>
+Actifs cette semaine sur le CVS: &nbsp;Cache_Lite, DB_DataObject, DB_ldap,
+DBA, HTML_QuickForm, HTML_Template_Flexy, HTML_Template_IT, Image_Transform, 
+Log, Mail_Mime, MDB, Pager, PECL::bcompiler, PECL::mailpars, PECL::threads, 
+PECL::vpopmail, Perm_LiveUserTree, XML_Transformer and&nbsp; PEAR core packages 
+ 
+<h3>Nouvelle documentation et mises &agrave; jour</h3>
+Changements et ajouts pour xml_transformer, la faq devrait &ecirc;tre visible
+cette semaine.<br>
+</body>
+</html>

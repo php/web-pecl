@@ -580,7 +580,7 @@ class release
 
     function validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
-        global $dbh, $auth_user, $PHP_AUTH_USER;
+        global $dbh, $auth_user;
         // (2) verify that package exists
         $package_id = package::info($package, 'id');
         if (PEAR::isError($package_id) || empty($package_id)) {
@@ -644,7 +644,7 @@ class release
 
     function confirmUpload($upload_ref)
     {
-        global $dbh, $PHP_AUTH_USER;
+        global $dbh;
         $fp = @fopen($upload_ref, "r");
         if (!is_resource($fp)) {
             return PEAR::raiseError("invalid upload reference: $upload_ref");
@@ -659,7 +659,7 @@ class release
         $sth = $dbh->prepare($query);
         $release_id = $dbh->nextId("releases");
         $dbh->execute($sth, array($release_id, $package_id, $version, $state,
-                                  $PHP_AUTH_USER, gmdate('Y-m-d H:i'),
+                                  $_SERVER['PHP_AUTH_USER'], gmdate('Y-m-d H:i'),
                                   $relnotes));
         // Update files table
         $query = "INSERT INTO files ".
@@ -924,12 +924,11 @@ class note
 
     function add($key, $value, $note)
     {
-        global $dbh, $PHP_AUTH_USER;
-        $nby = $PHP_AUTH_USER;
+        global $dbh;
         $nid = $dbh->nextId("notes");
         $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
                               "VALUES(?,?,?,?,?)");
-        $res = $dbh->execute($stmt, array($nid, $value, $nby,
+        $res = $dbh->execute($stmt, array($nid, $value, $_SERVER['PHP_AUTH_USER'],
                              gmdate('Y-m-d H:i'), $note));
         if (DB::isError($res)) {
             return $res;
@@ -984,13 +983,13 @@ class user
 
     function rejectRequest($uid, $reason)
     {
-        global $PHP_AUTH_USER, $dbh;
+        global $dbh;
         list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
                                     array($uid));
         note::add("uid", $uid, "Account rejected: $reason");
-        $msg = "Your PEAR account request was rejected by $PHP_AUTH_USER:\n".
+        $msg = "Your PEAR account request was rejected by " . $_SERVER['PHP_AUTH_USER'] . ":\n".
              "$reason\n";
-        $xhdr = "From: $PHP_AUTH_USER@php.net";
+        $xhdr = "From: " . $_SERVER['PHP_AUTH_USER'] . "@php.net";
         mail($email, "Your PEAR Account Request", $msg, $xhdr);
         return true;
     }
@@ -1000,7 +999,7 @@ class user
 
     function activate($uid)
     {
-        global $PHP_AUTH_USER, $dbh;
+        global $dbh;
 
         $user =& new PEAR_User($dbh, $uid);
         if (@$user->registered) {
@@ -1013,13 +1012,13 @@ class user
             $user->set('userinfo', $arr[1]);
         }
         $user->set('created', gmdate('Y-m-d H:i'));
-        $user->set('createdby', $PHP_AUTH_USER);
+        $user->set('createdby', $_SERVER['PHP_AUTH_USER']);
         $user->store();
         note::add("uid", $uid, "Account opened");
         $msg = "Your PEAR account request has been opened.\n".
              "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";
-        $xhdr = "From: $PHP_AUTH_USER@php.net";
+        $xhdr = "From: " . $_SERVER['PHP_AUTH_USER'] . "@php.net";
         mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
         return true;
     }

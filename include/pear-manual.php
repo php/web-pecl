@@ -16,7 +16,7 @@ function setupNavigation($data) {
 }
 
 function makeBorderTOC($this) {
-	global $NEXT, $PREV, $UP, $HOME, $TOC, $PHP_SELF, $DOCUMENT_ROOT;
+	global $NEXT, $PREV, $UP, $HOME, $TOC, $DOCUMENT_ROOT;
 	global $SIDEBAR_DATA, $LANG;
 
 	
@@ -80,7 +80,7 @@ function makeBorderTOC($this) {
 }
 
 function navigationBar($title,$id,$loc) {
-	global $NEXT, $PREV, $tstamp, $SERVER_NAME,$SERVER_PORT,$PHP_SELF;
+	global $NEXT, $PREV, $tstamp;
 
 	echo '<table border="0" width="620" bgcolor="#e0e0e0" cellpadding="0" cellspacing="4">';
 
@@ -212,8 +212,8 @@ function manualGetUserNotes($title, $id) {
 }
 
 function manualUserNotes($title, $id) {
-	global $PHP_SELF, $SERVER_NAME, $SERVER_PORT, $LANG, $MYSITE;
-	$cur = substr(dirname($PHP_SELF),-2);
+	global $LANG, $MYSITE;
+	$cur = substr(dirname($_SERVER['PHP_SELF']),-2);
 	if($cur=='al') $cur='en';
 
 	# don't want .php at the end of the id.
@@ -223,9 +223,9 @@ function manualUserNotes($title, $id) {
 
 	$notes = manualGetUserNotes($title, $id);
 
-	$back_url = 'http://' . $SERVER_NAME . 
-		(($SERVER_PORT==80) ? '' : ':'.$SERVER_PORT ) . 
-		$PHP_SELF;
+	$back_url = 'http://' . $_SERVER['SERVER_NAME'] . 
+		(($_SERVER['SERVER_PORT'] == 80) ? '' : ':'.$_SERVER['SERVER_PORT'] ) . 
+		$_SERVER['PHP_SELF'];
 
 	echo "<tr bgcolor=\"#d0d0d0\" valign=\"top\">\n";
 	echo "<td><small>User Contributed Notes<br></small><b>$title</b><br></td>\n";

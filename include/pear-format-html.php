@@ -56,7 +56,6 @@ function response_header($title = 'The PHP Extension and Application Repository'
 
 function &draw_navigation($data, $menu_title='')
 {
-    global $PHP_SELF;
     $html = "<br />\n";
     if (!empty($menu_title)) {
         $html .= "<b>$menu_title</b>\n";
@@ -65,7 +64,7 @@ function &draw_navigation($data, $menu_title='')
 
     foreach ($data as $url => $tit) {
         $tt = str_replace(" ", "&nbsp;", $tit);
-        if ($url == $PHP_SELF) {
+        if ($url == $_SERVER['PHP_SELF']) {
             $html .= "&nbsp;&nbsp;&nbsp;" . make_image("box-1.gif") . "<b>$tt</b><br />\n";
         } else {
             $html .= "&nbsp;&nbsp;&nbsp;" . make_image("box-0.gif") . "<a href=\"$url\">$tt</a><br />\n";
@@ -258,7 +257,6 @@ function html_table_border(&$tableobj, $width = "100%")
 */
 function html_category_urhere($id, $link_lastest = false)
 {
-    global $PHP_SELF;
     $html = "<a href=\"packages.php\">Top Level</a>";
     if ($id !== null) {
         global $dbh;
@@ -298,7 +296,7 @@ function displayed_user_email($user)
 
 function display_user_notes($user, $width = "50%")
 {
-	global $dbh, $PHP_AUTH_USER;
+	global $dbh;
 	$bb = new BorderBox("Notes for user $user", $width);
 	$notes = $dbh->getAssoc("SELECT id,nby,ntime,note FROM notes ".
 				"WHERE uid = ? ORDER BY ntime", true, array($user));

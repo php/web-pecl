@@ -8,7 +8,7 @@ header("Content-type: text/plain");
 
 if ($what == "avail") {
 	print "unavail\n";
-	$sth = $dbh->query("SELECT handle,path FROM cvs_acl");
+	$sth = $dbh->query("SELECT username,path FROM cvs_acl");
 	while ($sth->fetchInto($row, DB_FETCHMODE_ORDERED) === DB_OK) {
 		$acl_paths[$row[1]][$row[0]] = true;
 	}
@@ -27,7 +27,7 @@ if ($what == "avail") {
 		print implode(":", $row) . ":cvs\n";
 	}
 } elseif ($what == "writers") {
-	$sth = $dbh->query("SELECT DISTINCT handle FROM cvs_acl WHERE access = 1");
+	$sth = $dbh->query("SELECT DISTINCT username FROM cvs_acl WHERE access = 1");
 	while ($sth->fetchInto($row, DB_FETCHMODE_ORDERED)) {
 		print "{$row[0]}\n";
 	}

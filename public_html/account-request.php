@@ -19,6 +19,7 @@
 */
 
 require_once "HTML/Form.php";
+include 'posttohost.php';
 
 function display_error($msg)
 {
@@ -33,7 +34,7 @@ $errorMsg = "";
 $jumpto = "handle";
 
 do {
-    if (isset($submit)) {
+    if (isset($_POST['submit'])) {
         $required = array("handle"    => "your desired username",
                           "firstname" => "your first name",
 						  "lastname"  => "your last name",
@@ -68,6 +69,8 @@ do {
             break;
         }
 
+	PEAR::setErrorHandling(PEAR_ERROR_RETURN);
+
         $handle = strtolower($handle);
         $obj =& new PEAR_User($dbh, $handle);
 
@@ -88,6 +91,7 @@ do {
         $display_form = false;
         $md5pw = md5($password);
         $showemail = @(bool)$showemail;
+	$needcvs = @(bool)$needcvs;
         // hack to temporarily embed the "purpose" in
         // the user's "userinfo" column
         $userinfo = serialize(array($purpose, $moreinfo));
@@ -117,7 +121,7 @@ do {
                "Real Name:        {$name}\n".
                "Email:            {$email}".
                (@$showemail ? " (show address)" : " (hide address)") . "\n".
-               "Password (MD5):   {$md5pw}\n\n".
+               "Need CVS Account: " . (@$needcvs ? "yes" : "no") . "\n".
                "Purpose:\n".
                "$purpose\n\n".
                "To handle: http://{$SERVER_NAME}/admin/?acreq={$handle}\n";
@@ -128,7 +132,7 @@ do {
 
         $xhdr = "From: $name <$email>";
         $subject = "PECL Account Request: {$handle}";
-        $ok = mail("pear-group@php.net", $subject, $msg, $xhdr, "-f pear-sys@php.net");
+        $ok = mail("pecl-dev@lists.php.net", $subject, $msg, $xhdr, "-f pear-sys@php.net");
         response_header("Account Request Submitted");
 
         if ($ok) {
@@ -147,6 +151,24 @@ do {
                   "days, please drop a mail about it to the <i>pecl-dev</i> ".
                   "mailing list.";
         }
+
+	/* Now do the CVS stuff */
+	if ($needcvs) {
+		$error = posttohost(
+			'http://master.php.net/entry/cvs-account.php',
+			array(
+				"username" => $handle,
+				"name"     => $name,
+				"email"    => $email,
+				"passwd"   => $password,
+				"note"     => $purpose
+			)
+		);
+		if ($error) {
+			print "<h2>Problem submitting CVS account request</h2>\n";
+			print "<p class=\"error\">$error</p>\n";
+		}
+	}
 
         print "<br />Click the top-left PECL logo to go back to the front page.\n";
     }
@@ -250,6 +272,8 @@ your code, as it will help the QA team help you to maintain your extension.
     $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", @$_POST['firstname']));
     $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", @$_POST['lastname']));
     $bb->horizHeadRow("Password:", HTML_Form::returnPassword("password", null, 10) . "   Again: " . HTML_Form::returnPassword("password2", null, 10));
+    $bb->horizHeadRow("Need a CVS account?", HTML_Form::returnCheckbox("needcvs", @$_POST['needcvs']));
+
     $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", @$_POST['email']));
     $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", @$_POST['showemail']));
     $bb->horizHeadRow("Homepage", HTML_Form::returnText("homepage", @$_POST['homepage']));

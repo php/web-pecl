@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv=content-type content="text/html; charset=iso-8859-2">
+  <title>x</title>
+</head>
+  <body>
+            
+<p><i><small>autor: Pierre-Alain Joye paj@pearfr.org (tłumaczenie: Robert Janeczek rashid@php.net)</small></i></p>
+            
+<p>Lista mailowa była bardzo aktywna w ciągu minionego tygodnia, to 
+znak powrotu czasu uaktualnień, nowości i poprawek w PEAR. Tematy bardzo
+różne - od klasycznego problemu 'Nazewnictwo i standardy kodowania'
+do systemu automatycznej translacji i peardoc. Sebastian Bergmann i Kristian
+K&ouml;hntopp pracowali intensywnie nad XML_Transformer, co nas bardzo cieszy 
+- w końcu powstało bardzo dobre wydanie stabilne.<br>
+W tym tygodniu pojawiły się cztery wydania stabilne, co samo w sobie jest 
+dobrą informacją, a do tego jedna beta.
+</p>
+         
+<hr>      
+<h2>Nowe wydania</h2>
+            
+<h3>Stabilne</h3>
+            
+<ul>
+      <li><b>HTTP_Request</b>&nbsp; -&nbsp; prosty sposób wykonywania poleceń
+	  HTTP, obsługuje GET/POST/HEAD/TRACE/PUT/DELETE, autentykację typu Basic,
+	  Proxy z autentykacją itp.</li>
+      <li><b>Log</b>&nbsp; -&nbsp;klasa Log udostępnia abstrakcyjny system
+	  logowania. Wspiera logowanie do konsoli, pliku, syslogu, bazy SQL, poczty
+	  i pojemników mcal. Dodatkowo umożliwia wykorzystanie mechanizmu
+	  obserwatorów (subject-observer)</li>
+    <li><b>Net_DNS</b> - biblioteka do komunikacji z serwerem DNS<br>
+    </li>
+     <li><b>Var_Dump</b>&nbsp; - umożliwia prosty sposób 
+	 wyświetlania zawartości zmiennych w przyjemniejszy sposób niż
+	 klasyczne var_dump()</li>
+      <li>  <b>XML_Transformer</b>&nbsp; -&nbsp;korzystając z XML_Transformer
+	  można łatwo dołączyć funkcjonalność PHP do tagów XML, a przez to 
+	  przetwarzać wejściowe drzewo XML w wyjściowe bez konieczności
+	  używania XSLT.</li>
+                 
+</ul>
+     
+<h3>Beta</h3>
+     
+<ul>
+     <li><b>Mail_Queue</b> - Klasa umieszczająca pocztę w kolejce i wysyłająca ją
+	 potem w tle<br>
+    </li>
+     
+</ul>
+            
+<h3></h3>
+     
+<ul>
+            
+</ul>
+            
+<hr>      
+<h2>Nagłówki z PEAR-DEV</h2>
+     
+<h3>Strona PEAR i menedżery pakietów</h3>
+Grupa pearweb pracuje obecnie intensywnie nad dopracowaniem ostatnich
+detali i rozwiązaniem problemów witryny PEAR. Potrzebują pomocy, aby 
+narzędzie które stworzą było maksymalnie przydatne i stabilne - dlatego 
+przyda się odzew od odwiedzających i programistów PEAR. Jeśli korzystasz 
+ze strony PEAR albo z jednego z dostępnych menedżerów pakietów, mocno polecamy
+poinformowanie ich o problemach, które napotkasz albo pomysłach ulepszeń, co
+można zrobić na dobrze znanych listach <a
+ href="http://pear.php.net/support.php">znanych listach</a> albo na <a
+ href="http://bugs.php.net/">stronie bugów php</a>. Z góry dzięki za 
+ informacje.<br>
+   <br>
+  PS: Aby dostać się na wersję beta strony trzeba uaktywnić cookie 'devme',
+ wejdź pod ten link aby to zrobić: 
+ <a href="http://pear.php.net/?devme">http://pear.php.net/?devme</a><br>
+     
+<h3>MDB - opisy, odzew użytkowników i współtworzenie</h3>
+  W tym tygodniu zauważyłem, że wiele osób nie wie albo ma błędne pojęcie
+  o celach i funckcjonalności MDB. Dlatego poprosiłem autora, aby
+  krótko wyjaśnił 'co&amp;jak' pakietu MDB:<br>
+  <br>
+  ** Różnice między <a
+ href="http://pear.php.net/package-info.php?package=DB">PEAR DB</a> a <a
+ href="http://pear.php.net/package-info.php?pacid=54">PEAR MDB</a><br>
+   Oba pakiety mają bardzo podobne wspólne API do wszystkich 
+   wspieranych RDBMS (więc użytkownicy PEAR DB będą się czuli jak w domu).
+   PEAR MDB idzie znacznie dalej jeśli chodzi o abstrakcję RDBMS. Poza 
+   emulacją sekwencji jest również ahstrakcja typów danych (np. nie wszystkie
+   RDBMS obsługują timestamp w ten sam sposób), tworzenie, zmienianie i 
+   usuwanie indeksów, tabel i baz danych. Ma też niezależne od typu
+   bazy danych zarządzanie schematami. Oznacza to, że nei trzeba tworzyć
+   osobnych schematów SQL dla każdego typu wspieranej bazy danych. MDB
+   możne nawet zmienić bazę danych jeśli plik schematu został zmieniony.
+   PEAR MDB korzysta z <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=100793507904834&amp;w=2">
+   doświadczeń</a> zdobytych przy pracach nad PEAR DB i z tego powodu jest 
+   conajmniej tak szybki jak <a href="http://freshmeat.net/screenshots/30313/">PEAR DB</a>.<br>
+   <br>
+   ** Wyjaśnienei<br>
+   Obecnie PEAR MDB nie obsługuje tylu sterowników co PEAR DB. Z tego powodu, 
+   a także dlatego, że PEAR MDB jest nowszy, nie powinno się uważać go za 
+   stabilny w takim stopniu, jak PEAR DB. zajżyj do  <a
+ href="http://cvs.php.net/co.php/pear/MDB/Readme.txt?r=1.27">Readme.txt</a> 
+po dalsze szczegóły.<br>
+   <br>
+   Przy okazji - Lukasowi brakuje informacji o eksperymentach i odzewu, które
+   są niezbędne do szybkiego stworzenia stabilnego i przydatnego narzędzia. 
+   Lukas poszukuje osób, które chciałyby współtworzyć MDB tworząc nowe 
+   sterowniki, obecnie priorytetowe są MS SQLServer i Oracle. Możesz się 
+   skontaktować z Lukasem przez listę <a
+ href="http://pear.php.net/support.php">peardev</a> albo ze strony  
+<a href="http://pear.php.net/package-info.php?pacid=54">MDB</a>.<br>
+     
+<h3>Dokumentacja PEAR, japońskie tłumaczenie</h3>
+ Yasuo Ohgaki&nbsp; rozpoczął w tym tygodniu proces tłumaczenia dokumentacji PEAR na 
+ japoński. Z radością przywitaliśmy tą inicjatywę.<br>
+ 
+<h3>Pear Weekly News umieszczone w newsletterze Nexen</h3>
+ Dzięki Damien'owi Seguy, który dodał PEAR weelky do newslettera nexen. Tą
+ drogą możecie (zostawiając notkę o prawach autorskich) rozsyłać te 
+ wiadomości do swoich list i stron. W przypadku problemów czy pytań
+ możecie się skontaktować z nami na liście mailowej peardev<br>
+     
+<h2>Skrót z PEAR-DEVc</h2>
+            
+<h3>FAQ licencyjny PEAR dostępny</h3>
+ Lista zalecanych licencji dla PEAR jest już dostępna w <a
+ href="http://pear.php.net/manual/en/faq.licenses.php">PEAR FAQ</a>.<br>
+         
+<h3>Upiększacz kodu PHP</h3>
+ Jens Bierkandt zaproponował dodanie swojego modułu upiększającego kod
+ źródłowy do PEAR. Któż z nas nie stracił kiedyś godzin na przeformatowanie kodu?
+ Ten moduł powinien rozwiązać ten problem, a oto jego główne cechy:<br>
+ 
+<ul>
+   <li>automatyczne wcinanie kodu PHP o określoną liczbę spacji</li>
+   <li>nowe linie automatycznie dodawane w razie potrzeby</li>
+   <li>dołączenie opcji ustawiających styl kodowania odpowiedni dla C lub PEAR</li>
+ 
+</ul>
+ Pakiet powinien być wkrótce dostępny w CVS PEAR. 
+<h3>Inline::C w php ?</h3>
+ George Schlossnagle zasugerował dodanie właściwości dobrze znanej ze świata perl: Inline:: C. 
+ Oczywiście nie chce wynajdować koła po raz kolejny. Celem jest umożliwienie
+ wykorzystania narzędzia w taki sposób:<br>
+     
+<pre>&lt;?pseudocode<br>$function_def = &lt;&lt;&lt;EOF<br>php_function(times){<br>&nbsp;&nbsp;&nbsp; int i,j;<br>&nbsp;&nbsp;&nbsp; return if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &amp;i,&amp;j) = FAILURE)<br>	RETURN_LONG(i*j);<br>}<br>EOF<br>Inline_C($function_def);<br>times(2,2);<br>?&gt;</pre>
+ Inline_C brałby blok kodu w C, dodawałby wymagane do stworzenia modułu informacje, 
+ a po kompilacji  do kodu binarnego umieszczałby w cache i ładował przez dl().<br>
+    
+<h3>Nazewnictwo i RFC<br>
+   </h3>
+ &nbsp;Mika Tuupola zasugerował dodanie kilku rekomendacji na temat użycia
+ nazw konstruktorów i fabryk klas ( <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=103246883300565&amp;w=2">ten 
+ wątek</a>).            
+<h3>I18N i system do tłumaczeń</h3>
+ Wojciech Zieli&ntilde;ski&nbsp; przypomniał o swojej propozycji pakietu
+ do maszynowego tłumaczenia. Obecnie Wolgang Kriesing pracuje nad takim pakietem
+ (I18N), który jest na razie dostępny tylko w CVS. Jeśli tłumaczenia maszynowe
+ albo internacjonalizacja jest ci potrzebna przy projektach albo chcesz im
+ pomóc, możesz się z nimi skontaktować przez peardev.<br>
+ <br>
+ Z tej samej serii, James E. Flemer zasugerował moduł będący interfejsem
+ webowym dla tłumaczy umożliwiający tworzenie i utrzymanie katalogów
+ gettext (<a href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=103186684103620&amp;w=2">ogłoszenie</a>).
+           
+<h3>Bugi i poprawki</h3>
+    Dzięki za znajdywanie błędów i pare poprawek otrzymują:  Nigel Armstrong, 
+Adam Morton, Rob, Richard Heyes.   
+<hr>       
+<h2>Nowe i proponowane pakiety</h2>
+            
+<h3>Mail_Queue</h3>
+  Często działania na stronach internetowych powodują akcje rozciągnięte w czasie
+  takie jak wysyłanie wielu maili. Korzystając z tej klasy możesz zapomnieć
+  o denerwującym czekaniu aż te wszystkie maile zostaną wysłane przez smtp czy qmail.<br>
+  Mail_Queue zajmuje się pięcioma rzeczami:<br>
+ 
+<ul>
+   <li>Umieszcza maile w tymczasowym kontenerze czekając na możliwość umieszczenia
+   w MTA, put( $from, $recipient, $hdrs, $body ); gdzie $hdrs i $body są w formacie mime.</li>
+   <li>Pozwala określić po ilu sekundach Mail_Queue ma wysyłać pocztę.</li>
+   <li>Może zachować lub usuwać pocztę po wysłaniu.</li>
+   <li>Sprawdza poprawność dostarczenia poczty, próbuje wysłać je w następnej sesji
+   aż do skutku lub przekroczenia danego limitu prób. W przypadku porażki robi backup
+   każdego maila.</li>
+   <li>Pozwala łatwo wysyłać pocztę w tle przy użyciu crontaba lub inaczej<br>
+   </li>
+ 
+</ul>
+   
+<h3>DB_Grid</h3>
+   Yavor Shahpasov <a
+ href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=9202">zasugerował</a> 
+moduł udostępniający dynamiczne połączenie między bazą danyche (tablica lub sql) i
+i tabelą (html lub czysty tekst).<br>
+ 
+<h3>File_Repository </h3>
+ Mike McCallister zaproponował moduł przechowujący pliki własnego autorstwa, bardzo
+ ważny przy znacznych ilościach plików. Rzeczywiście, zauważyliśmy szybki
+ spadek wydajności systemów operacyjnych z tradycyjnymi plikami kiedy tylko
+ ilość plików w katalogu staje się poważna. Ten moduł ma być użyteczną alternatywą
+ Bardzo ciekawe właściwości, możesz się z nimi zapoznać w <a
+ href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=9226">ogłoszeniu.</a><br>
+              
+<h3>Spread API</h3>
+   George Schlossnagle zaproponował dodanie interfejsu spread do PECL. Spread jest
+   narzędziem udostępniającym rozsyłanie wiadomości o wysokiej wydajności i 
+   odporności na błędy przy przesyłaniu przez zewnętrzne i wewnętrzne sieci,
+   więcej informacji dosepnych jest na stronie <a href="http://www.spread.org"> 
+Spread</a>. Interfejs PHP jest aktualnie dostępny tu: <a
+ href="http://www.omniti.com/%7Egeorge/php_spread/php_spread-1.1.tar.gz">http://www.omniti.com/~george/php_spread/php_spread-1.1.tar.gz</a>.<br>
+   <br>
+     
+<h3>Rozszerzenie dźwiękowe</h3>
+ Tony leake <a
+ href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=9300">zasugerował</a> 
+dodanie własnego rozszerzenia dźwiękowego do PECL. To pozwoli używać php do pisania
+zaawansowanych aplikacji zapisujących i przetwarzających dźwięk - takich jak
+nagrywarki wielościeżkowe. W przyszłości zostanie dopisane więcej funkcji 
+wysokiego poziomu, żeby uczynić składnię ecasound prostszą. Więcej informacji dostępne tu:&nbsp; <a
+ href="http://www.webwise-data.co.uk/php_audio/php_audio_extension.html">http://www.webwise-data.co.uk/php_audio/php_audio_extension.html</a>.<br>
+   <br>
+     
+<hr>       
+<h2>Rozwój</h2>
+     Ruch w CVS w tym tygodniu odbywał się w następujących pakietach: &nbsp;Log, LiveUser, Python, XML_Transformer, 
+ HTTP_Request, Documentation japonaise, DB_DataObject, DBA, HTML_QuickForm, 
+ Net_Ping, Tree, Net_DNS, Net_Whois, Crypt_RC4, HTTP_WebDav, MDB, peardoc/FAQ, 
+ Mail_Queue.        
+<h3>Nowa i uaktualniona dokumentacja</h3>
+ Nic nie zmieniono ostatnio.<br>
+     <br>
+    <br>
+   <br>
+  <br>
+ <br>
+</body>
+</html>

@@ -128,7 +128,7 @@ do {
 
         $xhdr = "From: $name <$email>";
         $subject = "PEAR Account Request: {$handle}";
-        $ok = mail_pear_admins($subject, $msg, $xhdr);
+        $ok = mail("pear-group@php.net", $subject, $msg, $xhdr, "-f pear-sys@php.net");
         response_header("Account Request Submitted");
 
         if ($ok) {

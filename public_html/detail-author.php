@@ -25,50 +25,58 @@ if ($row === null) {
     PEAR::raiseError("No author information found!");
 }
 
-print "<H1>Information about author \"".$handle."\"</H1>\n";
-print "<P>\n";
+$access = $dbh->getCol("SELECT path FROM cvs_acl WHERE handle = ?", 0,
+					   array($handle));
 
-print "<TABLE BORDER=\"0\" CELLSPACING=\"1\" CELLPADDING=\"5\">\n";
-print " <TR>\n";
-print "  <TH BGCOLOR=\"#CCCCCC\">Handle:</TH>\n";
-print "  <TD BGCOLOR=\"#e8e8e8\">".$handle."</TD>\n";
-print " </TR>\n";
+print "<h1>Information about author \"".$handle."\"</h1>\n";
+print "<br />\n";
 
-print " <TR>\n";
-print "  <TH BGCOLOR=\"#CCCCCC\">Name:</TH>\n";
-print "  <TD BGCOLOR=\"#e8e8e8\">".$row['name']."</TD>\n";
-print " </TR>\n";
+print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
+print " <tr>\n";
+print "  <th bgcolor=\"#CCCCCC\">Handle:</th>\n";
+print "  <td bgcolor=\"#e8e8e8\">".$handle."</td>\n";
+print " </tr>\n";
+
+print " <tr>\n";
+print "  <th bgcolor=\"#CCCCCC\">Name:</th>\n";
+print "  <td bgcolor=\"#e8e8e8\">".$row['name']."</td>\n";
+print " </tr>\n";
 
 if ($row['showemail'] != 0) {
-    print " <TR>\n";
-    print "  <TH BGCOLOR=\"#CCCCCC\">EMail:</TH>\n";
-    print "  <TD BGCOLOR=\"#e8e8e8\"><A HREF=\"mailto:".$row['email']."\">".$row['email']."</A></TD>\n";
-    print " </TR>\n";
+    print " <tr>\n";
+    print "  <th bgcolor=\"#CCCCCC\">EMail:</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\"><a href=\"mailto:".$row['email']."\">".$row['email']."</a></td>\n";
+    print " </tr>\n";
 }
 
 if ($row['homepage'] != "") {
-    print " <TR>\n";
-    print "  <TH BGCOLOR=\"#CCCCCC\">Homepage:</TH>\n";
-    print "  <TD BGCOLOR=\"#e8e8e8\"><A HREF=\"".$row['homepage']."\" TARGET=\"_blank\">".$row['homepage']."</A></TD>\n";
-    print " </TR>\n";
+    print " <tr>\n";
+    print "  <th bgcolor=\"#CCCCCC\">Homepage:</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\"><a href=\"".$row['homepage']."\" target=\"_blank\">".$row['homepage']."</a></td>\n";
+    print " </tr>\n";
 }
 
-print " <TR>\n";
-print "  <TH BGCOLOR=\"#CCCCCC\">Registered since:</TH>\n";
-print "  <TD BGCOLOR=\"#e8e8e8\">".$row['created']."</TD>\n";
-print " </TR>\n";
+print " <tr>\n";
+print "  <th bgcolor=\"#CCCCCC\">Registered since:</th>\n";
+print "  <td bgcolor=\"#e8e8e8\">".$row['created']."</td>\n";
+print " </tr>\n";
 
-print " <TR>\n";
-print "  <TH BGCOLOR=\"#CCCCCC\">Additional information:</TH>\n";
-print "  <TD BGCOLOR=\"#e8e8e8\">".$row['userinfo']."&nbsp;</TD>\n";
-print " </TR>\n";
+print " <tr>\n";
+print "  <th bgcolor=\"#CCCCCC\">Additional information:</th>\n";
+print "  <td bgcolor=\"#e8e8e8\">".$row['userinfo']."&nbsp;</td>\n";
+print " </tr>\n";
+
+print " <tr>\n";
+print "  <th valign=\"top\" bgcolor=\"#cccccc\">CVS Access:</th>\n";
+print "  <td bgcolor=\"#e8e8e8\">".implode("<br />", $access)."</td>\n";
+print " </tr>\n";
 
 if ($row['admin'] == 1) {
-    print " <TR>\n";
-    print "  <TD COLSPAN=\"2\" BGCOLOR=\"#e8e8e8\">".$row['name']." is a PEAR administrator.</TD>\n";
-    print " </TR>\n";
+    print " <tr>\n";
+    print "  <td colspan=\"2\" bgcolor=\"#e8e8e8\">".$row['name']." is a PEAR administrator.</td>\n";
+    print " </tr>\n";
 }
-print "</TABLE>\n";
+print "</table>\n";
 
 $query = "SELECT p.id, p.name, m.role
           FROM packages p, maintains m
@@ -83,24 +91,24 @@ if (DB::IsError($sth)) {
 }
 
 if ($sth->numRows() > 0) {
-    print "<BR><BR>\n";
-    print "<TABLE BORDER=\"0\" CELLSPACING=\"1\" CELLPADDING=\"5\">\n";
-    print " <TR>\n";
-    print "  <TH colspan=\"2\" BGCOLOR=\"#e8e8e8\">The author is maintaining the following packages:</TD>";
-    print " </TR>\n<TR><TH BGCOLOR=\"#e8e8e8\">Package Name</TH>";
-    print "<TH BGCOLOR=\"#e8e8e8\">Role</TH></TR>\n";
+    print "<br /><br />\n";
+    print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
+    print " <tr>\n";
+    print "  <th colspan=\"2\" bgcolor=\"#e8e8e8\">The author is maintaining the following packages:</td>";
+    print " </tr>\n<tr><th bgcolor=\"#e8e8e8\">Package Name</th>";
+    print "<th bgcolor=\"#e8e8e8\">Role</th></tr>\n";
 
     while (is_array($row = $sth->fetchRow())) {
-        print " <TR>\n";
-        print "  <TD BGCOLOR=\"#e8e8e8\">";
+        print " <tr>\n";
+        print "  <td bgcolor=\"#e8e8e8\">";
         print "  <a href=\"pkginfo.php?pacid={$row['id']}\">{$row['name']}</a>";
-        print "  </TD>\n";
-        print "  <TD BGCOLOR=\"#e8e8e8\" align=\"center\">{$row['role']}";
-        print "  </TD>\n";
-        print " </TR>\n";
+        print "  </td>\n";
+        print "  <td bgcolor=\"#e8e8e8\" align=\"center\">{$row['role']}";
+        print "  </td>\n";
+        print " </tr>\n";
     }
 
-    print "</TABLE>";
+    print "</table>";
 }
 response_footer();
 

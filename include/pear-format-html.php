@@ -9,7 +9,7 @@ $GLOBALS['main_menu'] = array(
     '/manual/index.php'    => 'Documentation',
     '/faq.php'             => 'PEAR FAQ',
     '/packages.php'        => 'Package Browser',
-	'/package-search.php'  => 'Package Search',
+    '/package-search.php'  => 'Package Search',
     '/account-request.php' => 'Request Account'
 );
 

@@ -20,11 +20,45 @@ function auth_require($level = 0, $doexit = true)
 {
     global $PHP_AUTH_USER, $PHP_AUTH_PW, $dbh, $auth_user;
 
-    $auth_user =& new PEAR_User(&$dbh, strtolower($PHP_AUTH_USER));
-    $auth_user->_readonly = true;
-    if (DB::isError($auth_user) || md5($PHP_AUTH_PW) != $auth_user->password) {
-        auth_reject();
+    $user = strtolower($PHP_AUTH_USER);
+    $auth_user =& new PEAR_User(&$dbh, $user);
+    if (md5($PHP_AUTH_PW) != $auth_user->password || !$auth_user->registered) {
+	if (cvs_verify_password($user, $PHP_AUTH_PW)) {
+	    $auth_user = (object)array('handle' => $user);
+	} else {
+	    auth_reject();
+	}
     }
+    $auth_user->_readonly = true;
+}
+
+$cvspasswd_file = "/repository/CVSROOT/passwd";
+
+function cvs_find_password($user)
+{
+    global $cvspasswd_file;
+    $fp = fopen($cvspasswd_file,"r");
+    while (!feof($fp)) {
+	$line = fgets($fp, 120);
+	list($luser, $passwd, $junk) = explode(":", $line);
+	if ($user == $luser) {
+	    fclose($fp);
+	    return $passwd;
+	}
+    }
+    fclose($fp);
+    return false;
+}
+
+function cvs_verify_password($user, $pass)
+{
+    $psw = cvs_find_password($user);
+    if (strlen($psw) > 0) {
+	if (crypt($pass,substr($psw,0,2)) == $psw) {
+	    return true;
+	}
+    }
+    return false;
 }
 
 ?>

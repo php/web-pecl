@@ -84,8 +84,7 @@ function xu_query_http_post($request,
         $content_len = strlen($request);
         
         $fsockopen = $secure ? "fsockopen_ssl" : "fsockopen";
-        
-//        dbg1("opening socket to host: $host, port: $port, uri: $uri", $debug);
+
         $query_fd = $fsockopen($host, $port, $errno, $errstr, 10);
         if ($query_fd) {
             
@@ -104,20 +103,15 @@ function xu_query_http_post($request,
                 "Content-Length: $content_len\r\n" . 
                 "\r\n" .
                 $request;
-            
-//            dbg1("sending http request:</h3> <xmp>\n$http_request\n</xmp>", $debug);
-            
+
             fputs($query_fd, $http_request, strlen($http_request));
-            
-//            dbg1("receiving response...", $debug);
-            
+
             while (!feof($query_fd)) {
                 $line = fgets($query_fd, 4096);
                 if (!$header_parsed) {
                     if ($line === "\r\n" || $line === "\n") {
                         $header_parsed = 1;
                     }
-//                    dbg2("got header - $line", $debug);
                 }
                 else {
                     $response_buf .= $line;
@@ -126,16 +120,8 @@ function xu_query_http_post($request,
             
             fclose($query_fd);
         }
-        else {
-//            dbg1("socket open failed", $debug);
-        }
     }
-    else {
-//        dbg1("missing param(s)", $debug);
-    }
-    
-//    dbg1("got response:</h3>. <xmp>\n$response_buf\n</xmp>\n", $debug);
-    
+
     return $response_buf;
 }
 

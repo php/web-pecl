@@ -431,11 +431,19 @@ class package
              "FROM packages p, releases r, files f ".
              "WHERE p.id = r.package ".
              "AND f.package = p.id ".
-             "AND f.release = r.id ";
+             "AND f.release = r.id";
         if (release::isValidState($state)) {
-            $query .= "AND r.state = '$state' ";
+            $better = release::betterStates($state);
+            $query .= " AND (r.state = '$state'";
+            $i = 0;
+            if (is_array($better)) {
+                foreach ($better as $b) {
+                    $query .= " OR r.state = '$b'";
+                }
+            }
+            $query .= ")";
         }
-        $query .= "ORDER BY p.name";
+        $query .= " ORDER BY p.name";
         $sortfunc = "version_compare_firstelem";
         $res = $dbh->getAssoc($query, false, null, DB_FETCHMODE_ASSOC, true);
         foreach ($res as $pkg => $ver) {
@@ -982,6 +990,19 @@ class release
     {
         static $states = array('devel', 'snapshot', 'alpha', 'beta', 'stable');
         return in_array($state, $states);
+    }
+
+    // }}}
+    // {{{  proto array  release::betterStates(string)
+
+    function betterStates($state)
+    {
+        static $states = array('devel', 'snapshot', 'alpha', 'beta', 'stable');
+        $i = array_search($state, $states);
+        if ($i === false) {
+            return false;
+        }
+        return array_slice($states, $i + 1);
     }
 
     // }}}

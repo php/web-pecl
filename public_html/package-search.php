@@ -42,7 +42,7 @@
 
 		// Compose query and execute
 		$where  = !empty($where) ? ' AND '.implode(' AND ', $where) : '';
-		$sql    = "select p.id, p.name, p.category, p.summary, m.handle from packages p, maintains m where p.id = m.package" . $where;
+		$sql    = "select p.id, p.name, p.category, p.summary, m.handle from packages p, maintains m where p.id = m.package " . $where . " order by p.name";
 		$result = $dbh->query($sql);
 
 		// Print any results

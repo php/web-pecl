@@ -307,8 +307,15 @@ $rels = $dbh->getAll($query, $params);
 
 usort($rels, "version_sort");
 
+// Check if there are too much things to show
+$too_much = false;
+if (count ($rels) > 3) {
+	$too_much = true;
+	$rels = array_slice($rels, 0, 3);
+}
+
 if ($sth->numRows() == 0) {
-    print "<i>No dependencies registered.</i>\n";
+    print "<i>No releases yet.</i>\n";
 } else {
     $lastversion = '';
     $rel_trans = array(
@@ -339,7 +346,7 @@ if ($sth->numRows() == 0) {
 
     // Loop per version 
     foreach ($rels as $rel) {
-        $query = "SELECT * FROM deps WHERE package = ? AND release = ?";
+        $query = "SELECT * FROM deps WHERE package = ? AND release = ? ORDER BY type, name";
         $params = array($pacid, $rel['id']);
         $prh = $dbh->prepare($query);
         $sth = $dbh->execute($prh, $params);
@@ -386,6 +393,9 @@ if ($sth->numRows() == 0) {
             print "<i>No dependencies registered.</i>\n";
         }
         print "\n       </dl>\n";
+    }
+    if ($too_much) {
+        print "<dl><dd><i>Dependencies for older releases can be found on the release overview page.</i></dd></dl>";
     }
 }
 $bb->end();

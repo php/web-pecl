@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.36 2002-01-09 13:13:55 jan Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.37 2002-01-09 13:29:03 jan Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
@@ -460,14 +460,25 @@
   </qandaentry>
 
   <qandaentry>
-   <question title="What licenses are allowed in PEAR?" />
+   <question title="What licenses are allowed in PEAR/PECL?" />
    <answer>
-    <author name="Jan Lehnardt"/>
-    
+    <author name="Jan Lehnardt and Tomas V.V. Cox"/>
+
     <para>To make it short: Any Open Source License. See the 
-	<ulink url="http://www.opensource.org/licenses/index.html">
-	OSI Approved Licenses</ulink> for a summary of Open Source licenses.
-	</para>
+    <ulink url="http://www.opensource.org/licenses/index.html">
+    OSI Approved Licenses</ulink> for a summary of Open Source 
+    licenses.</para>
+	
+    <para>The recomended licenses are 
+	<ulink url="http://de.php.net/license/2_02.txt">PHP</ulink>, 
+	<ulink url="http://www.fsf.org/licenses/lgpl.txt">LGPL</ulink>
+	and <ulink url="http://www.opensource.org/licenses/bsd-license.html">BSD</ulink>
+	style.</para>
+
+    <para>To set the license of you PEAR/PECL package, put it in the 
+    head of all source code files of your package and also the type
+    of it inside the &lt;license&gt; tag of your package description 
+	file (package.xml).</para>
    </answer>	
   </qandaentry>
 

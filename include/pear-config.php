@@ -59,5 +59,5 @@ if (isset($_SERVER['PHP_CVS_REPO_DIR'])) {
     define('PHP_CVS_REPO_DIR', '/repository/pear'); 
 }
 
-define('PEAR_COMMON_USER_NAME_REG', '/^[a-z][a-z0-9]+$/i');
+define('PEAR_COMMON_USER_NAME_REGEX', '/^[a-z][a-z0-9]+$/i');
 ?>

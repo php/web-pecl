@@ -41,7 +41,8 @@ while (is_array($row = $sth->fetchRow(DB_GETMODE_ASSOC))) {
     }
     
     print "  <TD><A HREF=\"$homepage\">$homepage</A></TD>\n";
-    print "  <TD><A HREF=\"edit-author.php?handle=".$row['handle']."\">[edit]</A></TD>\n";
+    print "  <TD><A HREF=\"edit-author.php?handle=".$row['handle']."\">[edit]</A>&nbsp;
+                 <A HREF=\"detail-author.php?handle=".$row['handle']."\">[details]</A></TD>\n";
     print " </TR>\n";
 }
 

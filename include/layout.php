@@ -153,7 +153,8 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
 function commonHeader($title) {
 	global $SIDEBAR_DATA;
 
-?><html>
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
 <head>
  <title>PEAR: <?php echo $title; ?></title>
  <link rel="stylesheet" href="/style.css">

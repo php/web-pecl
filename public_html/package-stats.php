@@ -45,9 +45,10 @@ function reloadMe()
 </script>
 
 <?php
-$_GET['cid'] = (int)$_GET['cid'];
-$_GET['pid'] = (int)$_GET['pid'];
-$_GET['rid'] = (int)$_GET['rid'];
+
+$_GET['cid'] = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
+$_GET['pid'] = isset($_GET['pid']) ? (int) $_GET['pid'] : 0;
+$_GET['rid'] = isset($_GET['rid']) ? (int) $_GET['rid'] : 0;
 
 $query = "SELECT * FROM packages"
          . (!empty($_GET['cid']) ? " WHERE category = '" . $_GET['cid'] . "' AND " : " WHERE ")

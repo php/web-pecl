@@ -45,6 +45,7 @@ contact with the members, you can write to
 <h2>Administrative Documents</h2>
 
 <ul>
+  <li>04th September 2003: <?php echo make_link("docs/20030904-pph.php", "Handling Package Proposals"); ?></li>
   <li>20th August 2003: <?php echo make_link("docs/20030820-vm.php", "Handling Votings and Membership"); ?></li>
 </ul>
 

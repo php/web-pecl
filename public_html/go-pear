@@ -29,8 +29,8 @@
 # On Windows go-pear uses stdin for user input, so you must download
 # go-pear first and then run it:
 #
-#  > php-cli -r 'readfile("http://pear.php.net/go-pear");' > go-pear
-#  > php-cli go-pear
+#  > php -r "readfile('http://pear.php.net/go-pear');" > go-pear
+#  > php go-pear
 #
 # If using the CGI version of PHP, append the -q option to suppress
 # headers in the output.

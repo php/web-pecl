@@ -340,6 +340,31 @@ class maintainer
     }
 
     // }}}
+    // {{{ *proto int maintainer::get(int, bool)
+
+    function get($package, $lead = false)
+    {
+        global $dbh;
+        $query = "SELECT handle FROM maintains WHERE package = '" . $package . "'";
+
+        if ($lead) {
+            $query .= " AND role = 'lead'";
+        }
+
+        $sth = $dbh->query($query);
+
+        if (DB::isError($sth)) {
+            return sth;
+        }
+
+        while ($row = $sth->fetchRow()) {
+            $rows[] = $row[0];
+        }
+
+        return $rows;
+    }
+        
+    // }}}
 }
 
 class release
@@ -628,6 +653,23 @@ class user
         $xhdr = "From: $PHP_AUTH_USER@php.net";
         mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
         return true;
+    }
+
+    // }}}
+    // {{{ *proto bool user::isAdmin(string)
+
+    function isAdmin($handle)
+    {
+        global $dbh;
+
+        $query = "SELECT handle FROM users WHERE handle = '" . $handle . "' AND admin = 1";
+        $sth = $dbh->query($query);
+
+        if ($sth->numRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }        
     }
 
     // }}}

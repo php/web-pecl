@@ -133,9 +133,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
 
     $info = package::info($_GET['pid']);
          
-    echo "<h2>Statistics for package \"" . $info['name'] . "\"</h2>\n";
-    echo "<a href=\"http://pear.php.net/package-info.php?pacid=".$_GET['pid']."\">More information about the ".$info['name']. " package</a><br>\n";
-    
+    echo "<h2>Statistics for package \"<a href=\"http://pear.php.net/package-info.php?pacid=".$_GET['pid']."\">" . $info['name'] . "</a>\"</h2>\n";
     $bb = new Borderbox("General statistics");
     echo "Number of releases: <b>" . count($info['releases']) . "</b><br />\n";
     echo "Total downloads: <b>" . number_format(statistics::package($_GET['pid']), 0, '.', ',') . "</b><br />\n";

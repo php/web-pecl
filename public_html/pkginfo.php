@@ -95,8 +95,11 @@ response_header("Package :: $name");
 </tr>
 <tr>
     <td colspan="2" align="right">
-    <?php print_link("/package-edit.php?id=" . @$_GET['pacid'], 
-            make_image("edit.gif", "Edit package information (Administrators only)")); ?>
+<?php print_link("/package-edit.php?id=" . @$_GET['pacid'],
+        make_image("edit.gif", "Edit package information (Administrators only)")); ?>
+&nbsp;
+<?php print_link("/package-delete.php?id=" . @$_GET['pacid'],
+        make_image("delete.gif", "Delete package (Administrators only)")); ?>
     </td>
 </tr>
 </table>

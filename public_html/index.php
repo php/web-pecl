@@ -35,18 +35,20 @@ if (DEVBOX) {
     menu_link("Browse Packages", "packages.php");
     menu_link("Want to contribute?", "signup.php");
     menu_link("Upload Release", "release-upload.php");
-    print "<B>Recent Releases</B>\n";
     $recent = get_recent_releases();
-    print "<TABLE>";
-    foreach ($recent as $release) {
-        extract($release);
-        print "<TR><TD VALIGN='top'><FONT SIZE='-1'>";
-        print "<A HREF=\"pkginfo.php?package=$name&release=$version\">";
-        print "$name $version</A></FONT></TD>";
-        print "<TD VALIGN='top'><FONT SIZE='-1'>";
-        print "$doneby, $releasedate: $releasenotes</FONT></TD></TR>\n";
+    if (@sizeof($recent) > 0) {
+	print "<b>Recent Releases</b>\n";
+	print "<table>";
+	foreach ($recent as $release) {
+	    extract($release);
+	    print "<tr><td valign='top'><font size='-1'>";
+	    print "<a href=\"pkginfo.php?package=$name&release=$version\">";
+	    print "$name $version</a></font></td>";
+	    print "<td valign='top'><font size='-1'>";
+	    print "$doneby, $releasedate: $releasenotes</font></td></tr>\n";
+	}
+	print "</table>\n";
     }
-    print "</TABLE>\n";
 }
 
 response_footer();

@@ -78,11 +78,11 @@ function response_footer($style = false)
 }
 
 function menu_link($text, $url) {
-    echo "<P>\n";
+    echo "<p>\n";
     print_link($url, make_image('pear_item.gif', $text) );
     echo '&nbsp;';
-    print_link($url, '<B>' . $text . '</B>' );
-    echo "</P>\n";
+    print_link($url, '<b>' . $text . '</b>' );
+    echo "</p>\n";
 }
 
 function report_error($error)
@@ -94,7 +94,7 @@ function report_error($error)
             $error .= " : $info";
         }
     }
-    print "<FONT COLOR=\"#990000\"><B>$error</B></FONT><BR>\n";
+    print "<font color=\"#990000\"><b>$error</b></font><br />\n";
 }
 
 function error_handler($errobj, $title = "Error")
@@ -114,7 +114,7 @@ function error_handler($errobj, $title = "Error")
     for ($i = 0; $i < 3; $i++) {
         $report .= "</TD></TR></TABLE>";
     }
-    print "<FONT COLOR=\"#990000\"><B>$report</B></FONT><BR>\n";
+    print "<font color=\"#990000\"><b>$report</b></font><br />\n";
     response_footer();
     exit;
 }

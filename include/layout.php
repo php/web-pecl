@@ -11,7 +11,7 @@ if (empty($prevsearch)) $prevsearch = '';
 //
 
 function spacer($width=1, $height=1, $align=false, $extras=false) {
-	printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt="" %s%s>',
+	printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt="" %s%s />',
 		$width,
 		$height,
 		($align ? 'align="'.$align.'" ' : ''),
@@ -44,7 +44,7 @@ function make_image($file, $alt=false, $align=false, $extras=false, $dir=false, 
 		$dir = '/gifs';
 	}
 	if ($size = @getimagesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].$dir.'/'.$file)) {
-		$image = sprintf('<img src="%s/%s" border="%d" %s ALT="%s" %s%s>',
+		$image = sprintf('<img src="%s/%s" border="%d" %s alt="%s" %s%s />',
 			$dir,
 			$file,
 			$border,
@@ -54,7 +54,7 @@ function make_image($file, $alt=false, $align=false, $extras=false, $dir=false, 
 			($extras ? ' '.$extras            : '')
 		);
 	} else {
-		$image = sprintf('<img src="%s/%s" border="%d" ALT="%s" %s%s>',
+		$image = sprintf('<img src="%s/%s" border="%d" alt="%s" %s%s />',
 			$dir,
 			$file,
 			$border,
@@ -86,7 +86,7 @@ function make_submit($file, $alt=false, $align=false, $extras=false, $dir=false,
 		$dir = '/gifs';
 	}
 	$return = make_image($file, $alt, $align, $extras, $dir, $border);
-	if ($return != "<img>") {
+	if ($return != "<img />") {
 		$return = '<input type="image"'.substr($return,4);
 	} else {
 		$return = '<input type="submit">';
@@ -115,9 +115,9 @@ function delim($color=false) {
 
 function hdelim($color="#000000") {
 	if (!$color) {
-		return '<hr noshade size="1">';
+		return '<hr noshade size="1" />';
 	}
-	return sprintf('<hr noshade size="1" color="%s">', $color );
+	return sprintf('<hr noshade size="1" color="%s" />', $color );
 }
 
 
@@ -154,11 +154,13 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
 function commonHeader($title) {
 	global $SIDEBAR_DATA, $HTTP_SERVER_VARS;
 
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+?><!DOCTYPE html 
+  PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN'
+  'http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
  <title>PEAR: <?php echo $title; ?></title>
- <link rel="stylesheet" href="/style.css">
+ <link rel="stylesheet" href="/style.css" />
 </head>
 
 <body
@@ -173,15 +175,15 @@ function commonHeader($title) {
 <table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
   <tr bgcolor="#009933">
     <td align="left" rowspan="2" width="120">
-<?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="2" hspace="2"') ); ?><br>
+<?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="2" hspace="2"') ); ?><br />
     </td>
     <td align="right" valign="top">
       <font color="#ffffff"><b>
         <?php echo strftime("%A, %B %d, %Y"); ?>
-      </b>&nbsp;<br>
+      </b>&nbsp;<br />
 <?php
     if (isset($GLOBALS['HTTP_COOKIE_VARS']['pear_dev'])) {
-	print "pear_dev cookie set&nbsp;<br>";
+	print "pear_dev cookie set&nbsp;<br />";
     }
 ?>      </font>
     </td>
@@ -203,12 +205,12 @@ function commonHeader($title) {
 	print_link('http://php.net/manual/en/pear.php', 'DOCS', false, 'class="menuBlack"');
 	echo delim();
 	print_link('/support.php','SUPPORT',false,'class="menuBlack"');
-      ?>&nbsp;<br>
-      <?php spacer(2,2); ?><br>
+      ?>&nbsp;<br />
+      <?php spacer(2,2); ?><br />
     </td>
   </tr>
 
-  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br></td></tr>
+  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 
   <tr bgcolor="#006633">
       <td align="right" valign="top" colspan="2">&nbsp;
@@ -216,25 +218,25 @@ function commonHeader($title) {
         <form method="POST" action="/search.php">
         <font color="#ffffff">
         <small>search for</small>
-<INPUT CLASS="small" TYPE="text" NAME="pattern" VALUE="<? echo htmlspecialchars($GLOBALS['prevsearch']) ?>" SIZE="30">
+<input class="small" type="text" name="pattern" value="<? echo htmlspecialchars($GLOBALS['prevsearch']) ?>" size="30" />
 <small>in the</small>
-<SELECT NAME="show" CLASS="small">
-<OPTION VALUE="packages" SELECTED>packages
-<OPTION VALUE="nosource">whole site
-<OPTION VALUE="manual">online documentation
-<OPTION VALUE="bugdb">bug database
-<OPTION VALUE="maillist">general mailing list
-<OPTION VALUE="devlist">developer mailing list
-<OPTION VALUE="source">website source code    
-</SELECT>
+<select name="show" class="small">
+<option value="packages" selected>packages</option>
+<option value="nosource">whole site</option>
+<option value="manual">online documentation</option>
+<option value="bugdb">bug database</option>
+<option value="maillist">general mailing list</option>
+<option value="devlist">developer mailing list</option>
+<option value="source">website source code    </option>
+</select>
 <?	echo make_submit('small_submit_white.gif', 'search', 'bottom');
-      ?>&nbsp;<br>
+      ?>&nbsp;<br />
      </font></form>
 */ ?>
      </td>
   </tr>
 
-  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br></td></tr>
+  <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 </table>
 
 
@@ -248,7 +250,7 @@ function commonHeader($title) {
     </tr>
    </table>
   </td>
-  <td bgcolor="#cccccc" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br></td>
+  <td bgcolor="#cccccc" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
 <?php endif; ?>
   <td>
    <table width="625" cellpadding="10" cellspacing="0">
@@ -267,7 +269,7 @@ function commonHeader($title) {
 function commonFooter() {
 	global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES,$SCRIPT_NAME;
 ?>
-      <br>
+      <br />
      </td>
     </tr>
    </table>
@@ -276,7 +278,7 @@ function commonFooter() {
 </table>
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr bgcolor="#003300"><td><?php spacer(1,1);?><br></td></tr>
+  <tr bgcolor="#003300"><td><?php spacer(1,1);?><br /></td></tr>
   <tr bgcolor="#009933">    
       <td align="right" valign="bottom">
       <script language="javascript" type="text/javascript">
@@ -290,7 +292,7 @@ function commonFooter() {
         }
       //-->
       </script>
-      <form method="GET" action="/mirrors.php" onsubmit="return gotomirror(this);">
+      <form method="get" action="/mirrors.php" onsubmit="return gotomirror(this);">
       <input type="hidden" name="REDIRECT" value="1">
       <?php
 	# TODO: should send current url above, so we can redirect to
@@ -315,25 +317,25 @@ function commonFooter() {
 	}
 	echo "</select> ";
 	echo make_submit('small_submit_black.gif', 'go', 'bottom' );
-      ?>&nbsp;<br>
+      ?>&nbsp;<br />
       </form>
       </td>    
   </tr>
-  <tr bgcolor="#003300"><td><?php spacer(1,1); ?><br></td></tr>
+  <tr bgcolor="#003300"><td><?php spacer(1,1); ?><br /></td></tr>
 </table>
 
 <table border="0" cellspacing="0" cellpadding="6" width="100%">
   <tr valign="top" bgcolor="#cccccc">
     <td><small>
       <?php print_link('http://www.php.net/', make_image('php-logo.gif', 'PHP', 'left') ); ?>
-      <?php print_link('/copyright.php', 'Copyright &copy; 2001 The PHP Group'); ?><BR>
-      All rights reserved.<BR>
+      <?php print_link('/copyright.php', 'Copyright &copy; 2001 The PHP Group'); ?><br />
+      All rights reserved.<br />
       </small>
     </td>
     <td align="right"><small>
       This mirror generously provided by:
-      <?php print_link($MIRRORS[$MYSITE][3], $MIRRORS[$MYSITE][1] ); ?><BR>
-      Last updated: <?php echo strftime("%c %Z", $LAST_UPDATED); ?><BR>
+      <?php print_link($MIRRORS[$MYSITE][3], $MIRRORS[$MYSITE][1] ); ?><br />
+      Last updated: <?php echo strftime("%c %Z", $LAST_UPDATED); ?><br />
       </small>
     </td>
   </tr>

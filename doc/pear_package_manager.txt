@@ -4,7 +4,7 @@
        |  Authors | Tomas V.V.Cox <cox@idecnet.com>         |
        |          | Michael Haertl <mhaertl@pressline.de>   |
        +----------+-----------------------------------------+
-       | Revision | $Revision$                              |
+       | Revision | $Revision$                        |
        +----------+-----------------------------------------+
 
 

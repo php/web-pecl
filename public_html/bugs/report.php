@@ -16,7 +16,7 @@ if (isset($MAGIC_COOKIE) && !isset($user) && !isset($pw)) {
 
 /* See bugs.sql for the table layout. */
 
-$mail_bugs_to = "php-bugs@lists.php.net";
+$mail_bugs_to = "pecl-dev@lists.php.net";
 
 /*
 @mysql_connect("localhost","nobody","")
@@ -146,7 +146,7 @@ you can scroll down and click the submit button to really enter the details into
 			$sdesc = stripslashes($in['sdesc']);
 
 			$ascii_report = "$report$sdesc\n\n".wordwrap($fdesc);
-			$ascii_report.= "\n-- \nEdit bug report at http://pear.php.net/bugs/bug.php?id=$cid&edit=";
+			$ascii_report.= "\n-- \nEdit bug report at http://pecl.php.net/bugs/bug.php?id=$cid&edit=";
 
 			//list($mailto,$mailfrom) = get_bugtype_mail($in['bug_type']);
             list($mailto, $mailfrom) = get_bugtype_mail($in['bug_type']);
@@ -179,12 +179,12 @@ you can scroll down and click the submit button to really enter the details into
 			$extra_headers.= "X-PHP-Category: " . stripslashes($in['bug_type'])    . "\n";
 			$extra_headers.= "X-PHP-OS: "       . stripslashes($in['php_os'])      . "\n";
 			$extra_headers.= "X-PHP-Status: Open\n";
-			$extra_headers.= "Message-ID: <bug-$cid@bugs.php.net>";
+			$extra_headers.= "Message-ID: <bug-$cid@pecl.php.net>";
 
             // mail to package developers
             mail($mailto, "#$cid [NEW]: $sdesc", $ascii_report."1\n-- \n$dev_extra", $extra_headers);
             // mail to reporter
-            mail($email, "Bug #$cid: $sdesc", $ascii_report."2\n", "From: PHP Bug Database <$mailfrom>\nX-PHP-Bug: $cid\nMessage-ID: <bug-$cid@bugs.php.net>");
+            mail($email, "Bug #$cid: $sdesc", $ascii_report."2\n", "From: PECL Bug Database <$mailfrom>\nX-PHP-Bug: $cid\nMessage-ID: <bug-$cid@pecl.php.net>");
             header("Location: bug.php?id=$cid&thanks=4");
             exit;
         }

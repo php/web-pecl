@@ -74,7 +74,7 @@ do {
         }
         $display_form = false;
         response_header("Package Registered");
-        print "The package `" . $_POST['name'] . "' has been registered in PEAR.<br />\n";
+        print "The package `" . $_POST['name'] . "' has been registered in PECL.<br />\n";
         print "You have been assigned as lead developer.<br />\n";
     }
 } while (false);
@@ -124,9 +124,9 @@ minimum.
     $cats = $form->returnSelect("category", $categories, get("category"), 1,
                                 "--Select Category--");
     $bb->horizHeadRow("Category", $cats);
-    $types = $form->returnSelect("type", array("pear" => "PEAR", "pecl" => "PECL"), get("type"), 1,
+    $types = $form->returnSelect("type", array("pecl" => "PECL"), get("type"), 1,
                                  "--Select Type--");
-    $bb->horizHeadRow("Type", $types . "<small>(Unless you really know what you are doing, you should select PEAR here)</small>");
+    $bb->horizHeadRow("Type", $types . "<small>(Unless you really know what you are doing, you should select PECL here)</small>");
     $bb->horizHeadRow("Summary", $form->returnText("summary", get("summary"), $width));
     $bb->horizHeadRow("Full description", $form->returnTextarea("desc", get("desc"), $width, 3));
     $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 40));

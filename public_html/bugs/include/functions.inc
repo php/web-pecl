@@ -305,7 +305,7 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit=1)
 	/* user text with attention, headers and previous messages */
     $user_text  = "ATTENTION! Do NOT reply to this email!\n" .
                   "To reply, use the web interface found at\n" .
-                  "http://pear.php.net/bugs/bug.php?id=$bug[id]&edit=2\n\n\n" .
+                  "http://pecl.php.net/bugs/bug.php?id=$bug[id]&edit=2\n\n\n" .
                   $header_text .
                   $wrapped_text;
 
@@ -313,7 +313,7 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit=1)
 	$dev_text = $header_text .
                 $wrapped_text .
                 "\n-- \nEdit this bug report at " .
-                "http://pear.php.net/bugs/bug.php?id=$bug[id]&edit=1\n";
+                "http://pecl.php.net/bugs/bug.php?id=$bug[id]&edit=1\n";
 
 	/* send mail if status was changed or there is a comment */
 	if ($in[status] != $bug[status] || $ncomment != "") {
@@ -334,9 +334,9 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit=1)
 		@mail($bug[email],
 		      "Bug " . rinse($subj) . txfield('sdesc'),
 		      $user_text,
-		      "From: PHP Bug Database <$mailfrom>\n".
+		      "From: PECL Bug Database <$mailfrom>\n".
 		      "X-PHP-Bug: $bug[id]\n".
-		      "In-Reply-To: <bug-$bug[id]@bugs.php.net>",
+		      "In-Reply-To: <bug-$bug[id]@pecl.php.net>",
 		      "-fbounces-ignored@php.net");
 		# but we go ahead and let the default sender get used for the list
 		@mail($mailto,
@@ -349,7 +349,7 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit=1)
 		      "X-PHP-OS: "         . stripslashes((($edit != 3) ? $in['php_os']      : $bug['php_os']))      . "\n" .
 		      "X-PHP-Status: "     . stripslashes($new_status) . "\n" .
 		      "X-PHP-Old-Status: " . stripslashes($old_status) . "\n" .
-		      "In-Reply-To: <bug-$bug[id]@bugs.php.net>");
+		      "In-Reply-To: <bug-$bug[id]@pecl.php.net>");
 	}
 
 	/* if a developer assigns someone else, let that other person know about it */
@@ -364,7 +364,7 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit=1)
 			  $dev_text,
 		      "From: $from\n".
 		      "X-PHP-Bug: $bug[id]\n".
-		      "In-Reply-To: <bug-$bug[id]@bugs.php.net>");
+		      "In-Reply-To: <bug-$bug[id]@pecl.php.net>");
 	}
 
 }
@@ -421,7 +421,7 @@ function get_old_comments ($bug_id, $all = 0)
 		return ("\n\nPrevious Comments:\n$divider\n\n" . $output . "[$row[0]] ". spam_protect($row[1]) ."\n\n$row[2]\n\n$divider\n\n");
     }
     else {
-		return ("\n\nPrevious Comments:\n$divider\n\n" . $output . "The remainder of the comments for this report are too long. To view\nthe rest of the comments, please view the bug report online at\n    http://bugs.php.net/$bug_id\n");
+		return ("\n\nPrevious Comments:\n$divider\n\n" . $output . "The remainder of the comments for this report are too long. To view\nthe rest of the comments, please view the bug report online at\n    http://pecl.php.net/$bug_id\n");
     }
 
     return "";
@@ -479,17 +479,17 @@ function get_bugtype_mail($bug_type)
 {
     switch ($bug_type) {
         case 'Web Site':
-            return array('pear-webmaster@php.net', 'pear-webmaster@php.net');
+            return array('pear-core@php.net', 'pear-core@php.net');
         case 'Bug System':
-            return array('pear-dev@lists.php.net', 'pear-dev@lists.php.net');
+            return array('pear-core@lists.php.net', 'pear-core@lists.php.net');
         case 'Documentation':
-            return array('pear-doc@lists.php.net', 'pear-doc@lists.php.net');
+            return array('phpdoc@lists.php.net', 'peardoc@lists.php.net');
     }
     $maintainers = package::info($bug_type, 'authors');
     foreach ($maintainers as $data) {
         $to[] = $data['email'];
     }
-    return array(implode(', ', $to), "pear-dev@lists.php.net");
+    return array(implode(', ', $to), "pecl-dev@lists.php.net");
     /*
     print_r($maintainers);exit;
 	global $mail_bugs_to;

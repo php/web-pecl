@@ -133,35 +133,17 @@ if ($display_verification) {
 	print "<tr><th align=\"right\">Package:</th><td>$info[package]</td></tr>\n";
 	print "<tr><th align=\"right\">Version:</th><td>$info[version]</td></tr>\n";
 
-    if (isset($info['summary'])) {
-	    print "<tr><th align=\"right\">Summary:</th><td>$info[summary]</td></tr>\n";
-	} else {
-	    print "<tr><th align=\"right\">Summary:</th><td>n/a</td></tr>\n";
-	}
-
-    if (isset($info['description'])) {
-        print "<tr><th align=\"right\">Description:</th><td>".nl2br($info['description'])."</td></tr>\n";
-    } else {
-        print "<tr><th align=\"right\">Description:</th><td>n/a</td></tr>\n";
+    foreach (array('summary', 'description', 'release_state', 'release_date', 'releases_notes') as $key) {
+        if (!isset($info[$key])) {
+            $info[$key] = "n/a";
+        }
     }
 
-    if (isset($info['release_state'])) {
-        print "<tr><th align=\"right\">Release State:</th><td>$info[release_state]</td></tr>\n";
-    } else {
-        print "<tr><th align=\"right\">Release State:</th><td>n/a</td></tr>\n";
-    }
-
-    if (isset($info['release_state'])) {
-        print "<tr><th align=\"right\">Release Date:</th><td>$info[release_date]</td></tr>\n";
-    } else {
-        print "<tr><th align=\"right\">Release Date:</th><td>n/a</td></tr>\n";
-    }
-
-	if (isset($info['release_notes'])) {
-	    print "<tr><th align=\"right\">Release Notes:</th><td>".nl2br($info['release_notes'])."</td></tr>\n";
-	} else {
-	    print "<tr><th align=\"right\">Release Notes:</th><td>n/a</td></tr>\n";
-	}
+    print "<tr><th align=\"right\">Summary:</th><td>" . $info['summary'] . "</td></tr>\n";
+    print "<tr><th align=\"right\">Description:</th><td>" . nl2br($info['description']) . "</td></tr>\n";
+    print "<tr><th align=\"right\">Release State:</th><td>" . $info['release_state'] . "</td></tr>\n";
+    print "<tr><th align=\"right\">Release Date:</th><td>" . $info['release_date'] . "</td></tr>\n";
+    print "<tr><th align=\"right\">Release Notes:</th><td>" . nl2br($info['release_notes']) . "</td></tr>\n";
 
 	print "</table>\n";
 	$form->display();

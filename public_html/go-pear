@@ -292,7 +292,7 @@ If you wish to abort, press Control-C now, or press Enter to continue: ";
 
 	print "\n";
 
-	print "HTTP proxy (host:port), or Enter for none";
+        print "HTTP proxy (http://user:password@proxy.myhost.com:port), or Enter for none:";
 
 	if (!empty($http_proxy)) {
 	    print " [$http_proxy]";

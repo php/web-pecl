@@ -60,22 +60,41 @@ PEAR. The full announcement can be
 <?php echo make_link("http://marc.theaimsgroup.com/?l=pear-dev&m=106073080219083&w=2",
                      "found here"); ?>.</p>
 <p>More information about the Group, including a first administrative
-document, can be found at a <?php echo make_link("/group/", "dedicated place"); ?> 
+document, can be found at a <?php echo make_link("/group/", "dedicated place"); ?>
 on pear.php.net.</p>
 
 <?php
 echo hdelim();
-menu_link("Documentation", "/manual/");
-menu_link("News", "/news/");
-menu_link("Frequently Asked Questions", "/manual/en/faq.php");
-menu_link("Browse Packages", "packages.php");
-menu_link("Search Packages", "package-search.php");
-menu_link("Request PEAR Account", "account-request.php");
+
+echo '<h2>'; echo make_link('/news/', 'News'); echo '</h2>';
+echo '<h2>Documentation</h2><dl>';
+echo '<dd>'; menu_link("About PEAR", "/manual/en/about-pear.php"); echo '</dd>';
+echo '<dd>'; menu_link("Manual", "/manual/"); echo '</dd>';
+echo '<dd>'; menu_link("Frequently Asked Questions", "/manual/en/faq.php"); echo '</dd>';
+echo '<dd>'; menu_link("Mailing Lists & Support Resources", "/support.php"); echo '</dd>';
+echo '</dl>';
+echo '<h2>Downloads</h2><dl>';
+echo '<dd>'; menu_link("Browse All Packages", "packages.php"); echo '</dd>';
+echo '<dd>'; menu_link("Search Packages", "package-search.php"); echo '<dd>';
+echo '<dd>'; menu_link("Download Statistics", "package-stats.php"); echo '</dd>';
+echo '</dl>';
+if (isset($_COOKIE['PEAR_USER'])) {
+    echo '<h2>Developers</h2><dl>';
+    echo '<dd>'; menu_link("Upload Release", "release-upload.php"); echo '</dd>';
+    echo '<dd>'; menu_link("New Package", "package-new.php"); echo '</dd>';
+    echo '</dl>';
+    if (user::isAdmin($_COOKIE['PEAR_USER'])) {
+        echo '<h2>Administrators</h2><dl>';
+        echo '<dd>'; menu_link("Overview", "/admin/"); echo '</dd>';
+        echo '<dd>'; menu_link("Maintainers", "/admin/package-maintainers.php"); echo '</dd>';
+        echo '<dd>'; menu_link("Categories", "/admin/category-manager.php"); echo '</dd>';
+        echo '</dl>';
+    }
+}
+// XXX Hide for the moment?
+//menu_link("Request PEAR Account", "account-request.php");
+
 echo hdelim();
-echo "<h3>Available when logged in:</h3>";
-menu_link("New Package", "package-new.php");
-menu_link("Upload Release", "release-upload.php");
-menu_link("Administrators", "/admin/");
 $recent = release::getRecent();
 if (@sizeof($recent) > 0) {
     $RSIDEBAR_DATA = "<h3>Recent Releases</h3>\n";

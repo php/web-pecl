@@ -27,24 +27,32 @@ require_once 'layout.php';
 
 $GLOBALS['main_menu'] = array(
     '/index.php'           => 'Home',
-    '/manual/index.php'    => 'Documentation',
-    '/manual/en/faq.php'   => 'PEAR FAQ',
-    '/packages.php'        => 'Package Browser',
-    '/package-search.php'  => 'Package Search',
-	'/package-stats.php'   => 'Package Statistics',
-    '/account-request.php' => 'Request Account'
+    '/news/'               => 'News'
 );
 
-$GLOBALS['user_menu'] = array(
+$GLOBALS['docu_menu'] = array(
+    '/manual/en/about-pear.php' => 'About PEAR',
+    '/manual/index.php'    => 'Manual',
+    '/manual/en/faq.php'   => 'FAQ',
+    '/support.php'         => 'Support'
+);
+
+$GLOBALS['downloads_menu'] = array(
+    '/packages.php'        => 'Browse Packages',
+    '/package-search.php'  => 'Search Packages',
+    '/package-stats.php'   => 'Download Statistics'
+);
+
+$GLOBALS['developer_menu'] = array(
     '/accounts.php'        => 'Account Browser',
-    '/package-new.php'     => 'New Package',
-    '/release-upload.php'  => 'Upload Release'
+    '/release-upload.php'  => 'Upload Release',
+    '/package-new.php'     => 'New Package'
 );
 
 $GLOBALS['admin_menu'] = array(
     '/admin/'                     => 'Overview',
-    '/admin/category-manager.php' => 'Categories',
-    '/admin/package-maintainers.php' => 'Maintainers'
+    '/admin/package-maintainers.php' => 'Maintainers',
+    '/admin/category-manager.php' => 'Categories'
 );
 
 $GLOBALS['_style'] = '';
@@ -61,13 +69,15 @@ function response_header($title = 'The PHP Extension and Application Repository'
     if (substr($rts, -1) == '-') {
         $SIDEBAR_DATA = substr($rts, 0, -1);
     } else {
-        global $main_menu, $auth_user;
+        global $main_menu, $docu_menu, $downloads_menu, $auth_user;
         $SIDEBAR_DATA .= draw_navigation($main_menu);
+        $SIDEBAR_DATA .= draw_navigation($docu_menu, 'Documentation:');
+        $SIDEBAR_DATA .= draw_navigation($downloads_menu, 'Downloads:');
         init_auth_user();
         if (!empty($auth_user)) {
             if (!empty($auth_user->registered)) {
-                global $user_menu;
-                $SIDEBAR_DATA .= draw_navigation($user_menu, 'Developers:');
+                global $developer_menu;
+                $SIDEBAR_DATA .= draw_navigation($developer_menu, 'Developers:');
             }
             if (!empty($auth_user->admin)) {
                 global $admin_menu;

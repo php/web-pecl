@@ -112,6 +112,13 @@ function renumber_visitations($id, $parent)
 
 // }}}
 
+function version_compare_firstelem($a, $b)
+{
+	reset($a);
+	$elem = key($a);
+	return version_compare($a[$elem], $b[$elem]);
+}
+
 // These classes correspond to tables and methods define operations on
 // each.  They are packaged into classes for easier xmlrpc
 // integration.
@@ -327,6 +334,36 @@ class package
 			}
 		}
 		return $packageinfo;
+    }
+
+    // }}}
+    // {{{  proto struct package::listLatestReleases([string])
+
+    function listLatestReleases($state = '')
+    {
+        global $dbh;
+		$query =
+			 "SELECT p.name AS package, r.version AS version, ".
+			 "r.state AS state, f.fullpath AS fullpath ".
+			 "FROM packages p, releases r, files f ".
+			 "WHERE p.id = r.package ".
+			 "AND f.package = p.id ".
+			 "AND f.release = r.id ";
+		if (release::isValidState($state)) {
+			$query .= "AND r.state = '$state' ";
+		}
+		$query .= "ORDER BY p.name";
+		$sortfunc = "version_compare_firstelem";
+		$res = $dbh->getAssoc($query, false, null, DB_FETCHMODE_ASSOC, true);
+		foreach ($res as $pkg => $ver) {
+			if (sizeof($ver) > 1) {
+				usort($ver, $sortfunc);
+			}
+			$res[$pkg] = array_pop($ver);
+			$res[$pkg]['filesize'] = (int)@filesize($res['fullpath']);
+			unset($res[$pkg]['fullpath']);
+		}
+		return $res;
     }
 
     // }}}
@@ -652,7 +689,7 @@ class release
 	}
 
     // }}}
-    // {{{ *proto bool release::logDownload(integer, string, string)
+    // {{{ NOEXPORT    release::logDownload(integer, string, string)
 
     function logDownload($package, $release_id, $file = null)
     {
@@ -734,6 +771,7 @@ END;
         }
     }
 
+    // }}}
     // {{{ remove
 
     function remove($package, $release)
@@ -886,7 +924,7 @@ class user
     }
 
     // }}}
-    // {{{ *proto bool user::isAdmin(string)
+    // {{{ +proto bool user::isAdmin(string)
 
     function isAdmin($handle)
     {
@@ -895,11 +933,7 @@ class user
         $query = "SELECT handle FROM users WHERE handle = '" . $handle . "' AND admin = 1";
         $sth = $dbh->query($query);
 
-        if ($sth->numRows() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($sth->numRows() > 0);
     }
 
     // }}}
@@ -907,9 +941,9 @@ class user
 
 // {{{ +proto string logintest()
 
-function testerror()
+function logintest()
 {
-    return "ok";
+    return true;
 }
 
 // }}}

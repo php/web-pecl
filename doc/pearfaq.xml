@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.3 2001-08-19 02:34:50 alexmerz Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.4 2001-08-24 00:37:10 alexmerz Exp $ -->
 <!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "./dbxml/docbookx.dtd">
 
@@ -8,7 +8,7 @@
 <article class="faq">
 <artheader>
     <title>PEAR-Developer FAQ</title>
-    <date>$Date: 2001-08-19 02:34:50 $</date>
+    <date>$Date: 2001-08-24 00:37:10 $</date>
 </artheader>
 
 <qandaset>
@@ -50,7 +50,7 @@
 				You should announce your intention of commiting new stuff to 
 				the PEAR-Dev Mailinglist. It's strongly recommended to 
 				subscribe to the list. See the
-				<ulink url="http://www.php.net/support.php">support page
+				<ulink url="http://pear.php.net/support.php">support page
 				</ulink> for subscribing.
 			</para>
         </answer>
@@ -64,7 +64,7 @@
         </question>
         <answer>
             <para>
-                ( by Alexander Merz )
+                ( by Alexander Merz, Tomas V.V. Cox )
             </para>        
             <para>
                 The best possibility to contribute patches is to send them to 
@@ -77,7 +77,36 @@
 				Another possibility is to send the patches directly to the
 				author(s) of the class. But sometimes the author isn't the 
 				maintainer, in vacation or have not access to cvs at the 
-				moment. So better use the mailinglist
+				moment. So better use the mailinglist.
+			</para>
+			<para>
+				Recomended way for patch generation:
+				<simplelist>
+					<member>
+						<command># cd /cvs/php.net/pear/NET_Ping</command>
+					</member>
+					<member>
+						Retrieve the last version						
+						<command># cvs update</command>
+					</member>
+					<member>
+						Make the modifications you want
+						<command># editor Ping.php</command>
+					</member>
+					<member>
+						Check if there no modifications while you was modifing
+						the file. If there were, re-adapt your patch to this 
+						last release.
+					</member>
+					<member>
+						<command># cvs update</command>
+					</member>
+					<member>
+						Generate the patch against the last CVS version
+						<command># cvs diff -u Ping.php > ping_diff.txt							
+						</command>
+					</member>
+				</simplelist>
 			</para>
         </answer>
     </qandaentry>    
@@ -99,7 +128,7 @@
 				diff output, if stored in a file, the file has an ending, 
 				which is assigned to a program like Notepad 
 				( plain-text editors ). So better copy&amp;paste the diff 
-				output into the mail isnstead of attaching them, or use another
+				output into the mail instead of attaching them, or use another
 				email client.
             </para>
         </answer>
@@ -209,6 +238,7 @@
 					<member>
 						<parameter>cvs</parameter> - a cvs snapshot from a 
 						certain date
+					</member>
 				</simplelist>
 				( list by Tomas V.V. Cox )
             </para>

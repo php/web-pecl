@@ -192,9 +192,12 @@ Eris Free Net</a>.
 <a name="tutorials" /><h3>PEAR Tutorials</h3>
 <h4>PEAR Tutorials sites</h4>
 <ul>
- <li>Tutorials about PEAR, available in many langages
- <a href="http://www.pearfr.org">www.pearfr.org</a>.
- </li>
+    <li>Tutorials about PEAR, available in many langages
+         <a href="http://www.pearfr.org">www.pearfr.org</a>.
+    </li>
+    <li>Links to PEAR tutorials <a href="http://www.phpkitchen.com/staticpages/index.php?page=2003041204203962">
+       www.phpkitchen.com</a>
+    </li>
 </ul>
 
 <h4>Tutorials about the PEAR DB package:</h4>

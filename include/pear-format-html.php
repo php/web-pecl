@@ -273,7 +273,7 @@ class BorderBox {
 */
 function html_category_urhere($id, $link_lastest = false)
 {
-    $html = "<a href=\"packages.php\">Top Level</a>";
+    $html = "<a href=\"/packages.php\">Top Level</a>";
     if ($id !== null) {
         global $dbh;
         $res = $dbh->query("SELECT c.id, c.name

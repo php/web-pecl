@@ -19,100 +19,110 @@
 */
 
 /**
-* TODO
-*
-* o Present options of what to do with orphaned packages when
-*   deleting categories.
-*/
+ * TODO
+ *
+ * o Present options of what to do with orphaned packages when
+ *   deleting categories.
+ */
 
-	$template_dir = dirname(dirname(__FILE__)) . '/templates/';
+$template_dir = dirname(dirname(__FILE__)) . '/templates/';
 	
 /**
-* Function to recurse thru the tree adding nodes to treemenu
-*/
-	function parseTree(&$structure, $parent = null)
-	{
-		$parent = is_null($parent) ? 'IS NULL' : '= ' . $parent;
+ * Function to recurse thru the tree adding nodes to treemenu
+ */
+function parseTree(&$structure, $parent = null)
+{
+    global $dbh;
+
+    $parent = is_null($parent) ? 'IS NULL' : '= ' . $parent;
 		
-		// Get categories
-		$categories = $GLOBALS['dbh']->getAll(sprintf('SELECT id, parent, name, description, npackages FROM categories WHERE parent %s ORDER BY name, id', $parent), null, DB_FETCHMODE_ASSOC);
+    // Get categories
+    $categories = $dbh->getAll(sprintf('SELECT id, parent, name, description, npackages '
+                                       . 'FROM categories WHERE parent %s ORDER BY name, id', 
+                                       $parent
+                                       ), 
+                               null, 
+                               DB_FETCHMODE_ASSOC
+                               );
 
-		if (count($categories)) {
-			foreach ($categories as $cat) {
-				$newNode = &$structure->addItem(new HTML_TreeNode(array('text' => htmlspecialchars($cat['name']),
-				                                                        'icon' => 'folder.gif'), array('onclick' => 'category_click(event, this, ' . $cat['id'] . ')')));
-				parseTree($newNode, $cat['id']);
-			}
-		}
-	}
+    if (count($categories)) {
+        foreach ($categories as $cat) {
+            $newNode = &$structure->addItem(new HTML_TreeNode(array('text' => htmlspecialchars($cat['name']),
+                                                                    'icon' => 'folder.gif'), 
+                                                              array('onclick' => 'category_click(event, this, ' . $cat['id'] . ')')
+                                                              )
+                                            );
+            parseTree($newNode, $cat['id']);
+        }
+    }
+}
 
 /**
-* Form submitted?
-*/
-	if (!empty($_POST)) {
+ * Form submitted?
+ */
+if (!empty($_POST)) {
+    include_once '../include/pear-category.php';
 
-		include_once '../include/pear-category.php';
+    switch (@$_POST['action']) {
+    case 'add':
+        if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {
+            $result = category::add(array('name'   => $_POST['catName'],
+                                          'desc'   => $_POST['catDesc'],
+                                          'parent' => !empty($_POST['cat_parent']) ? (int)$_POST['cat_parent'] : null));
+            $_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to insert category: ' . $result->message : 'Category added';
+        } else {
+            $_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
+        }
+        localRedirect('category-manager.php');
+        break;
 
-		switch (@$_POST['action']) {
-			case 'add':
-				if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {
-					$result = category::add(array('name'   => $_POST['catName'],
-					                              'desc'   => $_POST['catDesc'],
-										          'parent' => !empty($_POST['cat_parent']) ? (int)$_POST['cat_parent'] : null));
-					$_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to insert category: ' . $result->message : 'Category added';
-				} else {
-					$_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
-				}
-				localRedirect('category-manager.php');
-				break;
+    case 'update':
+        if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {
+            $result = category::update((int)$_POST['cat_parent'], $_POST['catName'], $_POST['catDesc']);
+            $_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to insert category: ' . $result->message : 'Category updated';
+        } else {
+            $_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
+        }
+        localRedirect('category-manager.php');
+        break;
 
-			case 'update':
-				if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {
-					$result = category::update((int)$_POST['cat_parent'], $_POST['catName'], $_POST['catDesc']);
-					$_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to insert category: ' . $result->message : 'Category updated';
-				} else {
-					$_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
-				}
-				localRedirect('category-manager.php');
-				break;
+    case 'delete':
+        if (!empty($_POST['cat_parent'])) {
+            $result = category::delete($_POST['cat_parent']);
+            $_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to delete category: ' . $result->message : 'Category deleted';
+        } else {
+            $_SESSION['category_manager']['error_msg'] = 'Please select a category';
+        }
+        localRedirect('category-manager.php');
+        break;
 
-			case 'delete':
-				if (!empty($_POST['cat_parent'])) {
-					$result = category::delete($_POST['cat_parent']);
-					$_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to delete category: ' . $result->message : 'Category deleted';
-				} else {
-					$_SESSION['category_manager']['error_msg'] = 'Please select a category';
-				}
-				localRedirect('category-manager.php');
-				break;
-
-			default:
-				localRedirect('category-manager.php');
-		}
-	}
+    default:
+        localRedirect('category-manager.php');
+    }
+}
 	
 /**
-* Create the menu, set the db to assoc mode
-*/
-	require_once('HTML/TreeMenu.php');
-	$treeMenu = new HTML_TreeMenu();
+ * Create the menu, set the db to assoc mode
+ */
+require_once('HTML/TreeMenu.php');
+$treeMenu = new HTML_TreeMenu();
 	
 /**
-* Get the categories
-*/
-	parseTree($treeMenu);
+ * Get the categories
+ */
+parseTree($treeMenu);
 
 /**
-* Template
-*/
-	// Check for any error msg
-	if (!empty($_SESSION['category_manager']['error_msg'])) {
-		$message = $_SESSION['category_manager']['error_msg'];
-		unset($_SESSION['category_manager']['error_msg']);
-	}
+ * Template
+ */
+// Check for any error msg
+if (!empty($_SESSION['category_manager']['error_msg'])) {
+    $message = $_SESSION['category_manager']['error_msg'];
+    unset($_SESSION['category_manager']['error_msg']);
+}
 
-	$categories   = $dbh->getAll('SELECT id, name, description FROM categories ORDER BY id', null, DB_FETCHMODE_ASSOC);
-	$treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, array('images' => 'gifs/TreeMenu', 'defaultClass' => 'treeMenuOff'));
+$categories   = $dbh->getAll('SELECT id, name, description FROM categories ORDER BY id', null, DB_FETCHMODE_ASSOC);
+$treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, array('images' => 'gifs/TreeMenu', 'defaultClass' => 'treeMenuOff'));
 
-	include($template_dir . 'category-manager.html');
+include($template_dir . 'category-manager.html');
 ?>

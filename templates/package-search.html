@@ -105,14 +105,14 @@
     function setReleaseDropdowns()
     {
         if (<?=(int)$set_released_on?>) {
-            setDateFromCalendar_released_on('<?=$_GET['released_on_day']?>', '<?=$_GET['released_on_month']?>', '<?=$_GET['released_on_year']?>');
+            setDateFromCalendar_released_on('<?php echo (int)$_GET['released_on_day']?>', '<?php echo (int)$_GET['released_on_month']; ?>', '<?php echo (int)$_GET['released_on_year']; ?>');
         } else {
             if (<?=(int)$set_released_before?>) {
-                setDateFromCalendar_released_before('<?=$_GET['released_before_day']?>', '<?=$_GET['released_before_month']?>', '<?=$_GET['released_before_year']?>');
+                setDateFromCalendar_released_before('<?php echo (int)$_GET['released_before_day']; ?>', '<?php echo (int)$_GET['released_before_month']; ?>', '<?php echo (int)$_GET['released_before_year']; ?>');
             }
     
             if (<?=(int)$set_released_since?>) {
-                setDateFromCalendar_released_since('<?=$_GET['released_since_day']?>', '<?=$_GET['released_since_month']?>', '<?=$_GET['released_since_year']?>');
+                setDateFromCalendar_released_since('<?php echo (int)$_GET['released_since_day']; ?>', '<?php echo (int)$_GET['released_since_month']; ?>', '<?php echo (int)$_GET['released_since_year']; ?>');
             }
         }
     }
@@ -181,9 +181,9 @@
             disableDateOptions(prefix);
         }
 
-        yearElement  = searchForm.elements[prefix + '_year'].value = year;
-        monthElement = searchForm.elements[prefix + '_month'].value = month;
-        dayElement   = searchForm.elements[prefix + '_day'].value = date;
+        yearElement  = searchForm.elements[prefix + '_year'].value = (year == '0' ? '' : year);
+        monthElement = searchForm.elements[prefix + '_month'].value = (month == '0' ? '' : month);
+        dayElement   = searchForm.elements[prefix + '_day'].value = (date == '0' ? '' : date);
     }
 
     function validate_form()
@@ -227,7 +227,7 @@
     <tr>
         <td>Package name:</td>
         <td valign="middle">
-               <?php $form->displayText("pkg_name", @$_GET['pkg_name']); ?>
+               <?php $form->displayText('pkg_name', htmlspecialchars(@$_GET['pkg_name']), 0, 0, 'accesskey="c"'); ?>
         </td>
         <td>
             Match:
@@ -241,7 +241,7 @@
     <tr>
         <td>Maintainer:</td>
         <td colspan="2">
-            <input name="pkg_maintainer" type="text" value="<?=$_GET['pkg_maintainer']?>" />
+            <input name="pkg_maintainer" type="text" value="<?php echo htmlspecialcars($_GET['pkg_maintainer']); ?>" />
             <select onchange="document.forms['search_form'].pkg_maintainer.value = this.options[this.selectedIndex].value; this.selectedIndex = 0">
                 <option value="">Select user...</option>
                 <?foreach($users as $u):?>

@@ -118,7 +118,9 @@ $form->displaySelect("category", $rows, $row['category']);
 </tr>
 <tr>
     <td>&nbsp;</td>
-    <td><input type="submit" name="submit" value="Save changes"></td>
+    <td><input type="submit" name="submit" value="Save changes">&nbsp;
+    <input type="reset" name="cancel" value="Cancel" onClick="javascript:window.location.href='/pkginfo.php?pacid=<?php echo $_GET['id']; ?>'; return false">
+    </td>
 </tr>
 </table>
 </form>

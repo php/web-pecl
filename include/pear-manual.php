@@ -263,8 +263,42 @@ function sendManualHeaders($charset,$lang) {
 }
 
 function manualHeader($title,$id="") {
-	global $HTDIG, $LANGUAGES, $LANG, $SIDEBAR_DATA;
+	global $HTDIG, $LANGUAGES, $LANG, $SIDEBAR_DATA, $dbh;
+
 	makeBorderTOC($title);
+
+    /**
+     * Show link to the package info file?
+     */
+    if (strstr(basename($_SERVER['PHP_SELF']), "packages.")
+        && substr_count($_SERVER['PHP_SELF'], ".") > 2) {
+
+        $package = substr(basename($_SERVER['PHP_SELF']), 0, (strlen(basename($_SERVER['PHP_SELF'])) - 4));
+        $package = preg_replace("/(.*)\./", "", $package);
+
+        $query = "SELECT id FROM packages WHERE LCASE(name) = LCASE('" . $package . "')";
+        $sth = $dbh->query($query);
+        $row = $sth->fetchRow();
+
+        if (is_array($row)) {           
+            ob_start();
+
+            echo "<div align=\"center\"><br /><br />\n";
+
+            $bb = new Borderbox("Information");
+        
+            echo "<div align=\"left\">\n";
+            print_link("/pkginfo.php?pacid=" . $row[0], make_image("box-0.gif") . " Package info");
+            echo "</div>\n";
+            $bb->end();
+
+            echo "</div>\n";
+        
+            $SIDEBAR_DATA .= ob_get_contents();
+            ob_end_clean();
+        }
+    }
+
 	commonHeader('Manual: '.$title);
         # create links to plain html and other languages
 	if (!$HTDIG) {

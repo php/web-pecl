@@ -28,33 +28,34 @@ include_once '../include/pear-category.php';
 $catid = (isset($catid)) ? (int) $catid : null;
 // ** expected
 
-if (empty($catid)) {
-    $name   = 'Top Level';
-    $parent = 0;
-} else {
-    if (isset($insert)) {
+do {
+    // insert new category
+    if (!empty($newcatname) && !empty($newcatdesc)) {
         $data = array(
-            'name'   => $catname,
-            'desc'   => $catdesc,
+            'name'   => $newcatname,
+            'desc'   => $newcatdesc,
             'parent' => $catid);
         if (PEAR::isError(category::add($data))) {
             $message = "Error while saving category";
         } else {
             $message = "Successfully saved new category.";
         }
-    } elseif (isset($remove)) {
-        // XXXX TODO: implement remove categories
     }
-    $row = $dbh->getRow("SELECT name, parent FROM categories
-                         WHERE id = $catid", DB_FETCHMODE_ASSOC);
-    extract($row);
-}
+    if (empty($catid)) {
+        $name   = 'Top Level';
+        $parent = 0;
+    } else {
+        $row = $dbh->getRow("SELECT name, parent FROM categories
+                             WHERE id = $catid", DB_FETCHMODE_ASSOC);
+        extract($row);
+    }
+} while (false);
 
 if (isset($message)) {
     echo "<b><font color=\"#FF0000\">" . $message . "</font></b><br /><br />\n";
 }
 ?>
-<form action="<?php echo $GLOBALS['PHP_SELF'] . "?catid=$catid&insert=1"; ?>" method="post">
+<form action="<?php echo $GLOBALS['PHP_SELF'] . "?catid=$catid"; ?>" method="post">
 <table border="0" cellpadding="2" cellspacing="1" width="100%">
 <tr>
     <td rowspan="4" width="30%"><?php print get_categories_menu('tree');?></td>
@@ -66,19 +67,12 @@ if (isset($message)) {
 <?php
 $bb = new Borderbox("Insert new sub-category under: " . $name, "90%", "", 2, true);
 
-$bb->plainRow("Name", "<input type=\"text\" name=\"catname\" size=\"15\" />");
-$bb->plainRow("Summary", "<input type=\"text\" name=\"catdesc\" size=\"40\" />");
+$bb->plainRow("Name", "<input type=\"text\" name=\"newcatname\" size=\"15\" />");
+$bb->plainRow("Summary", "<input type=\"text\" name=\"newcatdesc\" size=\"40\" />");
 $bb->plainRow("<input type=\"submit\" name=\"action\" value=\"Insert\" />");
 
 $bb->end();
-
-if (isset($catid)) {
-    echo "<br /><br />\n";
-    echo make_link($_SERVER['PHP_SELF'] . "?remove=" . $name, "Delete") . " category " . $name . "<br />\n";
-    echo "<font color=\"red\">(Warning: This will delete <b>all</b> subcategories and <b>all</b> packages!)</font><br /><br />\n";
-    print_link("/packages.php?catpid=" . $catid . "&catname=" . $name, "List");
-    echo ' all packages from this category.</b>';
-} ?>
+?>
 </tr>
 </table>
 </form>

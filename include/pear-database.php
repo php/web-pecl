@@ -1648,10 +1648,10 @@ class user
         list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
                                     array($uid));
         note::add("uid", $uid, "Account rejected: $reason");
-        $msg = "Your PEAR account request was rejected by " . $_COOKIE['PEAR_USER'] . ":\n".
+        $msg = "Your PECL account request was rejected by " . $_COOKIE['PEAR_USER'] . ":\n".
              "$reason\n";
         $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
-        mail($email, "Your PEAR Account Request", $msg, $xhdr, "-f pear-sys@php.net");
+        mail($email, "Your PECL Account Request", $msg, $xhdr, "-f pear-sys@php.net");
         return true;
     }
 
@@ -1677,11 +1677,11 @@ class user
         $user->set('createdby', $_COOKIE['PEAR_USER']);
         $user->store();
         note::add("uid", $uid, "Account opened");
-        $msg = "Your PEAR account request has been opened.\n".
-             "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
+        $msg = "Your PECL/PEAR account request has been opened.\n".
+             "To log in, go to http://pecl.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";
         $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
-        mail($user->email, "Your PEAR Account Request", $msg, $xhdr, "-f pear-sys@php.net");
+        mail($user->email, "Your PECL Account Request", $msg, $xhdr, "-f pear-sys@php.net");
         return true;
     }
 

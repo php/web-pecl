@@ -67,8 +67,4 @@ switch (sizeof($opts)) {
 	}
 }
 
-if (!$ok) {
-	error_404("File Not Found");
-}
-
 ?>

@@ -444,9 +444,13 @@ class release
     {
         global $dbh;
         $package_id = package::info($package, 'packageid');
-        if (PEAR::isError($package_id)) {
+
+        if (!$package_id) {
+            return PEAR::raiseError("release download:: package '$package' does not exist");
+        } elseif (PEAR::isError($package_id)) {
             return $package_id;
         }
+
 		if ($file !== null) {
 			$path = $dbh->getOne("SELECT fullpath FROM files ".
 								 "WHERE basename = ?", $file);

@@ -20,10 +20,10 @@
 TABLE_FILES=authors.sql packages.sql aliases.sql
 SQL_TYPE=mysql
 SQL_USER=pear
-SQL_PASSWORD=
+SQL_PASSWORD=pear
 SQL_SERVER=pear
-SQL_COMMAND=mysql -u '$(SQL_USER)' '$(SQL_SERVER)' < $< > $@ 2>&1
-SQL_PIPE_COMMAND=mysql -u '$(SQL_USER)' '$(SQL_SERVER)'
+SQL_COMMAND=mysql -u '$(SQL_USER)' -p'$(SQL_PASSWORD)' '$(SQL_SERVER)' < $< > $@ 2>&1
+SQL_PIPE_COMMAND=mysql -u '$(SQL_USER)' -p'$(SQL_PASSWORD)' '$(SQL_SERVER)'
 SQL_GRANT_FILE=
 
 ECHO    = echo
@@ -81,3 +81,5 @@ test:
 # as dependencies between their respective .res files here.  For example,
 # if the table "foo" has foreign keys to the table "bar", add
 # "foo.res: bar.res".
+
+aliases.res: packages.res

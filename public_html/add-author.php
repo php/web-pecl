@@ -65,7 +65,7 @@ do {
 
 if ($display_form) {
 
-    pageHeader("PEAR: Add an author");
+    response_header("PEAR: Add an author");
 
 ?>
 <H1>Add an author</H1>
@@ -99,7 +99,8 @@ if ($display_form) {
 	print "document.forms[0].$jumpto.focus();\n";
 	print "\n// -->\n</SCRIPT>\n";
     }
-    pageFooter();
 }
+
+response_footer();
 
 ?>

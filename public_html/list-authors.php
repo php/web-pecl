@@ -1,6 +1,6 @@
 <?php
 
-pageHeader("PEAR: List packages");
+response_header("PEAR: List packages");
 
 $dbh = DB::Connect("mysql://pear@localhost/pear");
 if (DB::isError($dbh)) {
@@ -37,6 +37,6 @@ while (is_array($row = $sth->fetchRow())) {
 
 print "</TABLE>\n";
 
-//pageFooter();
+response_footer();
 
 ?>

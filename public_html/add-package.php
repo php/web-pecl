@@ -2,7 +2,7 @@
 
 require_once "HTML/Form.php";
 
-pageHeader("PEAR: Add a package");
+response_header("PEAR: Add a package");
 
 $domains = $dbh->getAssoc("SELECT domain,domain FROM domains");
 $domains[""] = "[root]";
@@ -15,6 +15,6 @@ $form->addSelect("domain", "Domain", &$domains, '', 1, 'Select Domain');
 $form->addSubmit();
 $form->display();
 
-pageFooter();
+response_footer();
 
 ?>

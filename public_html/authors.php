@@ -1,6 +1,6 @@
 <?php
 
-pageHeader("PEAR: Authors");
+response_header("PEAR: Authors");
 
 print "<H1>Authors</H1>\n";
 
@@ -45,6 +45,6 @@ while (is_array($row = $sth->fetchRow(DB_GETMODE_ASSOC))) {
 
 print "</TABLE>\n";
 
-pageFooter();
+response_footer();
 
 ?>

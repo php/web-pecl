@@ -23,9 +23,8 @@ switch ($format) {
 include_once "pear-format-$format.php";
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
-if (!is_object($dbh)) {
-    $dbh = DB::connect(PEAR_DATABASE_DSN,
-                       array('persistent' => true));
+if ($SERVER_NAME != 'pear.php.net' && !is_object($dbh))
+    $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }
 
 ?>

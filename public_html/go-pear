@@ -783,6 +783,7 @@ Currently used php.ini (guess) : $php_ini
     }
 
     $pear_cmd = $bin_dir . DIRECTORY_SEPARATOR . 'pear';
+    $pear_cmd .= WINDOWS?'.bat':'';
 
     // check that the installed pear and the one in tha path are the same (if any)
     $pear_old = which('pear', $bin_dir);

@@ -1,4 +1,4 @@
-<!-- $Id$ //-->
+<!-- $Id$ -->
 <?php
 response_header("FAQ");
 
@@ -96,6 +96,10 @@ function startElement($parser, $elementName, $elementAttributes)
         case "break" :
             $content .= "<br/>";
             break;
+        
+        case "filename" :
+            $content .= "<code>";
+            break;
     }
     
     $GLOBALS['content'] .= $content;
@@ -156,6 +160,11 @@ function endElement($parser, $elementName)
         case "author" :
             $content .= "</b>";
             break;
+
+        case "filename" :
+            $content .= "</code>";
+            break;
+
     }
     
     $GLOBALS['content'] .= $content;
@@ -167,11 +176,7 @@ function characterData($parser, $data)
     $GLOBALS['content'] .= htmlspecialchars($data);
 }
 
-if (getenv("SERVER_NAME") != "pear.php.net") {
-    $filename = "../doc/pearfaq.xml";
-} else {
-    $filename = "/usr/local/www/pearweb/doc/pearfaq.xml";
-}
+$filename = "../doc/pearfaq.xml";
 
 $fp = fopen($filename, "r") or die("error opening pearfaq.xml");
 

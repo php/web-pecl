@@ -2,6 +2,10 @@
 
 require_once "HTML/Form.php";
 
+if (!defined('PEAR_COMMON_PACKAGE_NAME_PREG')) {
+    define('PEAR_COMMON_PACKAGE_NAME_PREG', '/^([A-Z][a-zA-Z0-9_]+|[a-z][a-z0-9_]+)$/');
+}
+
 auth_require();
 
 $display_form = true;
@@ -24,10 +28,11 @@ do {
 	    }
 	}
 
-	if (!preg_match('/^[A-Z][a-zA-Z0-9_]+$/', $name)) {
-	    display_error("Invalid package name, must start with a ".
-			  "capital letter and contain only letters, ".
-			  "digits and underscores.");
+	if (!preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $name)) {
+	    display_error("Invalid package name.  PEAR package names must start ".
+                      "with a capital letter and contain only letters, ".
+                      "digits and underscores.  PECL package names must be ".
+                      "all-lowercase, starting with a letter.");
 	    break;
 	}
 

@@ -119,7 +119,7 @@ in a (binary) distribution file called "DB_foosql-1.1b2.tar.gz":
   <DestDir>DB</DestDir>
   <Dir>foosql</Dir>
   <File>foosql.php</File>
-  <Dest>DB/foosql</Dest>
+  <DestDir>DB/foosql</DestDir>
   <File>regtest.php</File>
   <DestDir>DB</DestDir>
   <DocFile Format="text/xml">foosql.xml</DocFile>

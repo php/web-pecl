@@ -11,7 +11,10 @@ CREATE TABLE users (
        registered    BOOL,
        admin         BOOL,
        userinfo      TEXT,
+       pgpkeyid	     VARCHAR(20),
+       pgpkey	     TEXT,
 
        PRIMARY KEY(handle),
        INDEX(handle,registered)
+       INDEX(pgpkeyid)
 );

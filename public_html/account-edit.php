@@ -150,7 +150,7 @@ switch ($HTTP_POST_VARS['command']) {
         print " </tr>\n";
 
         print " <tr>\n";
-        print "  <th bgcolor=\"#CCCCCC\">Show Email adress:</th>\n";
+        print "  <th bgcolor=\"#CCCCCC\">Show Email address:</th>\n";
         print "  <td bgcolor=\"#e8e8e8\">";
         HTML_Form::displayCheckbox("showemail", $row['showemail']);
         print "   </td>\n";

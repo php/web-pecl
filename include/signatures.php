@@ -22,6 +22,11 @@
 
 function parse_signatures_from_file($file, &$signatures, $out_format = "signatures")
 {
+    $cache_file = PEAR_TMPDIR . '/' . basename($file) . '.' . $out_format;
+    if (@filemtime($cache_file) > @filemtime($file)) {
+        $signatures = unserialize(file_get_contents($cache_file));
+        return true;
+    }
 	$fp = fopen($file, "r");
 	if (!is_resource($fp)) {
 		return false;
@@ -118,6 +123,10 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 			}
 		}
 	}
+    if ($wp = @fopen($cache_file, "w")) {
+        fwrite($wp, serialize($signatures));
+        fclose($wp);
+    }
 	return true;
 }
 

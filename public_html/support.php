@@ -161,7 +161,7 @@ Eris Free Net</a>.
 
 <div class="listing">
 
-<a name="tutorials" /><h3>PEAR Tutorials</h3>
+<a name="tutorials" /><h3>PECL Tutorials</h3>
 <h4>PECL Tutorials sites</h4>
 <ul>
     <li><a href="http://www.devnewz.com/2002/0909.html">

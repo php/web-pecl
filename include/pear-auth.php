@@ -10,6 +10,7 @@ function auth_reject($realm = null, $message = null)
     }
     Header("HTTP/1.0 401 Unauthorized");
     Header("WWW-authenticate: basic realm=\"$realm\"");
+    Header("Refresh: 3; url=/");
     response_header($message);
     report_error($message);
     response_footer();

@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head><body>
-<small><i>by Alan Knowles alan_k@php.net</i></small>
-<p>This week includes 3 new releases both beta and development versions, ready to be tested, Along with news on the PEAR Package Installer, Smarty and Developers Birthdays.<br>
+<small><i>by Alan Knowles alan_k@php.net&nbsp; translated by Pierre-Alain Joye &lt;paj@pearfr.org&gt</i></small>
+<p>Trois nouvelles sorties, deux en phase b&eacute;ta et une en phase de d&eacute;velopement, pr&ecirc;tes &agrave; &ecirc;tre test&eacute;es.
+Nous parlerons aussi des nouveaut&eacute;s sur l'installeur des packages PEAR, de Smarty et des anniversaires des d&eacute;veloppeurs.<br>
 
 </p>
 <hr><h2>Nouvelle sorties<br>
@@ -24,7 +25,7 @@ DBA, un wrapper pour les fonctions DBA de php et une implémentation du gestionna
 
 
 <h3>MDB, retour par r&eacute;f&eacute;rence</h3>
-Une br&egrave;ve discissop,sur la manière dont MetaBase pourrait g&eacute;r&eacute;
+Une br&egrave;ve discussion, sur la manière dont MetaBase pourrait g&eacute;r&eacute;
 le retour de valeurs, il appara&icirc;t que MetaBase (sur lequel MDB est bas&eacute;)
 retournerait les valeurs par r&eacute;f&eacute;rence, par exemple :
 <br>
@@ -32,12 +33,12 @@ retournerait les valeurs par r&eacute;f&eacute;rence, par exemple :
 
 Cette m&eacute;thode f&ucirc;t consid&eacute;r&eacute;e, de mani&egrave;re g&eacute;n&eacute;rale,
 comme inhabituelle dans pear. Le standart actuel disposant de plusieurs retours, la pr&eacute;f&eacute;rence 
-pour le retour d'argument a encore &eacute;t&eacute; donn&eacute;e &agrave; PEAR_Error our le r&eacute;sultat.
+pour le retour d'argument a encore &eacute;t&eacute; donn&eacute;e &agrave; PEAR_Error pour le r&eacute;sultat.
 Durant cette p&eacute;riode, Paul Cooper aida Lukas Smith sur le gestionnaire PostgreSQL pour MDB.<br>
 
 
 <h3>Zend Engine 2</h3>
-Stig continue l'exp&eacute;rimentation des m&eacute;thodes "try catch" du Zend Engine 2, et le futur des retours
+Stig continue l'exp&eacute;rimentation des m&eacute;thodes "try catch" du Zend Engine 2, le futur 
 des retours d'erreurs PEAR_Errors (seulement pour les packages ZE2) va &ecirc;tre d&eacute;cid&eacute;e ult&eacute;rieument.<br>
 
 <h3>PEAR Installer va de l'avant</h3>
@@ -47,7 +48,7 @@ par les probl&egrave;mes. L'installation actuellement recommand&eacute;e sur win
 <br>
 <pre wrap="">c&gt; lynx -source <a class="moz-txt-link-freetext" href="http://pear.php.net/go-pear">http://pear.php.net/go-pear</a> &gt; go-pear<br>c&gt; php -d output_bufering=0 -q go-pear<br><br></pre>
 <h3>Package.xml - validation</h3>
-Durant une discussion sur la cr&eacute; du package HTML_OOH_Forms, Martin Jansen nous a signal&eacute;
+Durant une discussion sur la cr&eacute;ation du package HTML_OOH_Forms, Martin Jansen nous a signal&eacute;
 la possibilit&eacute; d'utiliser le gestionnaire de packages pear pour valider le document package.xml 
 (ndt: document d&eacute;crivant un package), en utilisant la commande comme suit (ndt: en se positionnat dans le
 dossier racine du package):<br>
@@ -57,9 +58,9 @@ des fichiers, cet attribut doit obligatoirement &ecirc;tre d'un des types suivan
 Exemple: &lt;file role="???"&gt;filename.x&lt;/file&gt;<br>
 <pre wrap="">??? => php ext test doc data src script</pre>
 <h3>Pear et Smarty </h3>
-Il a &eacute;t&eacute; pourquoi Smarty <a href="http://smarty.php.net">http://smarty.php.net</a>
+Il a &eacute;t&eacute; demand&eacute; pourquoi Smarty (<a href="http://smarty.php.net">http://smarty.php.net</a>)
 n'est pas devenu un module de pear. La principale raison &eacute;tait d&ucirc;t au fait que personne
-n'a r&eacute;ellement, et volont&eacute;rement, pris le temps de "pearifier" Smarty (ainsi que de fournir une
+n'a r&eacute;ellement, et volontairement, pris le temps de "pearifier" Smarty (ainsi que de fournir une
 couche assurant la BC (backward compatibility, compatibilité descendante).<br>
 <br>
 <h3>DB::Sybase </h3>
@@ -67,10 +68,10 @@ Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior,  a fait quelques travaux sur 
 DB:Sybase de la couche d'abstraction DB et demanda si une personne serait disponible afin 
 de l'aider pour les tests. Il a aussi particip&eacute; par l'ajout de commentaires dans phpdoc.<br>
 <br>
-<h3>Manuel PEAR and anniversaires</h3>
+<h3>Manuel PEAR et anniversaires</h3>
 <a href="http://pear.php.net/wishlist.php/alexmerz">
 Alexander</a> promis d'essayer de terminer de rendre le nouveau manuel de pear fonctionnelle pour son anniversaire
-le 25 juillet  - Si PEAR vous aide, jetez un oeuil &agrave; leur "listes de cadeaux";).<br>
+le 25 juillet  - Si PEAR vous aide, jetez un oeuil &agrave; leur "listes de cadeaux".<br>
 
 Le r&eacute;sultat des modifications sur le manuel permettra de r&eacute;diger une documentation plus pr&eacute;cise
 pour chaque package, tout en am&eacute;liorant significativement la navigation.
@@ -81,8 +82,8 @@ pour chaque package, tout en am&eacute;liorant significativement la navigation.
 <hr>
 
 <h2>Package propos&eacute;:</h2>
-Sebasti&atilde;o Rocha a propos&eacute; d'ajouter une classe de g&eacute;n&eacute;rateur de rapports 
-certaines des id&eacute;es sont bas&eacute;es sur <a href="http://www.i-node.com.br/report">http://www.i-node.com.br/report</a><br>
+Sebasti&atilde;o Rocha a propos&eacute; d'ajouter une classe de g&eacute;n&eacute;rateur de rapports. 
+Certaines des id&eacute;es sont bas&eacute;es sur <a href="http://www.i-node.com.br/report">http://www.i-node.com.br/report</a><br>
 <br>
 
 

@@ -183,7 +183,11 @@ if (!empty($catpid)) {
 
 echo $nrow != 0 ? $table->toHtml() : '';
 $sth->free();
-echo "Total number of packages: " . $totalpackages;
+
+//Print total numberof packages
+if(!$catpid) {
+    echo "<br /><br />\nTotal number of packages: " . $totalpackages;
+}
 
 response_footer();
 ?>

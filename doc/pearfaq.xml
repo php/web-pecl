@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.5 2001-08-31 21:58:38 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.6 2001-08-31 22:14:19 mj Exp $ -->
 <!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "./dbxml/docbookx.dtd">
 
@@ -8,7 +8,7 @@
 <article class="faq">
 <artheader>
     <title>PEAR-Developer FAQ</title>
-    <date>$Date: 2001-08-31 21:58:38 $</date>
+    <date>$Date: 2001-08-31 22:14:19 $</date>
 </artheader>
 
 <qandaset>
@@ -21,7 +21,7 @@
         <answer>
             <author name="Alexander Merz"/>
             <para>
-                The rules are the same like getting a PHP CVS account. This mean
+                The rules are the same like getting a PHP CVS account. This means
 				you should do one of the following things to improve your
 				chances to get a CVS account.
 				<simplelist>
@@ -34,22 +34,23 @@
 					</member>
 					<member>
 						Rewrite and <emphasis>maintain</emphasis> an existing 
-						class to match the PEAR Coding Standards.
+						class to match the <ulink url="http://php.net/manual/pear.standards.php">
+						PEAR Coding Standards</ulink>.
 					</member>
 				</simplelist>
 				Requesting an account without having existing source code or 
-				public pre-work make no much sense.
+				public pre-work does not make much sense.
             </para>
 			<para>
-				See also <ulink url="http://wwww.php.net/cvs-php.html">Using 
+				See also <ulink url="http://wwww.php.net/cvs-php.php">Using 
 				CVS for PHP Development</ulink>.
 			</para>
 			<para>
 				You should announce your intention of commiting new stuff to 
-				the PEAR-Dev Mailinglist. It's strongly recommended to 
+				the PEAR developers list. It's strongly recommended to 
 				subscribe to the list. See the
-				<ulink url="http://pear.php.net/support.php">support page
-				</ulink> for subscribing.
+				<ulink url="http://pear.php.net/support.php">support page</ulink>
+				for information about subscribing.
 			</para>
         </answer>
     </qandaentry>
@@ -63,26 +64,27 @@
         <answer>
             <author name="Alexander Merz, Tomas V.V. Cox"/>
             <para>
-                The best possibility to contribute patches is to send them to 
-				PEAR-Dev mailinglist pear-dev@lists.php.net. Make sure your 
-				patch is based on a current CVS snapshot. Don't send the 
+                The best possibility to contribute patches is to send them to the
+				PEAR developers list <ulink url="mailto:pear-dev@lists.php.net"
+				                            name="pear-dev@lists.php.net"/>. 
+                Make sure your patch is based on a current CVS snapshot. Don't send the 
 				complete file(s). Use diff or the diff command of cvs and 
-				put or attach the output of diff to the mail.
+				attach the output of diff to the mail.
 	        </para>
 			<para>
 				Another possibility is to send the patches directly to the
 				author(s) of the class. But sometimes the author isn't the 
-				maintainer, in vacation or have not access to cvs at the 
+				maintainer, in vacation or has no access to cvs at the 
 				moment. So better use the mailinglist.
 			</para>
 			<para>
-				Recomended way for patch generation:
+				Recommend way for generating patches:
 				<simplelist>
 					<member>
 						<command># cd /cvs/php.net/pear/NET_Ping</command>
 					</member>
 					<member>
-						Retrieve the last version						
+						Retrieve the latest version						
 						<command># cvs update</command>
 					</member>
 					<member>
@@ -90,7 +92,7 @@
 						<command># editor Ping.php</command>
 					</member>
 					<member>
-						Check if there no modifications while you was modifing
+						Check if there have been no modifications while you was modifing
 						the file. If there were, re-adapt your patch to this 
 						last release.
 					</member>
@@ -98,7 +100,7 @@
 						<command># cvs update</command>
 					</member>
 					<member>
-						Generate the patch against the last CVS version
+						Generate the patch against the latest version from cvs
 						<command># cvs diff -u Ping.php > ping_diff.txt							
 						</command>
 					</member>
@@ -261,7 +263,7 @@
             </para>
         </question>
         <answer>
-            <author name="Stig Sæther Bakken"/>
+            <author name=""/> <!-- will be Stig Sæther Bakken one time //-->
             <para>
                 There is no answer yet.
             </para>

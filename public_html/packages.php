@@ -9,6 +9,7 @@ $catpid = (isset($catpid)) ? (int) $catpid : null;
 if (empty($catpid)) {
     $category_where = "categories.parent IS NULL";
     $category_title = "Package Browser: Top Level Categories";
+    $catname = "Top Level";
 } else {
     $category_where = "categories.parent = " . $catpid;
     $category_title = "Package Browser: " . urldecode($catname);
@@ -19,6 +20,7 @@ $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 // 1) Show categories of this level
 
+html_category_urhere($catpid, $catname); // print "urhere" menu bar
 $sth = $dbh->query("SELECT * from categories WHERE $category_where");
 
 $table = new HTML_Table('border="0" cellpadding="2" cellspacing="1" width="100%"');

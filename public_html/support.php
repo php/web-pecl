@@ -237,7 +237,7 @@ Eris Free Net</a>.
 <h2>Powered By PEAR/PECL</h2>
 
 <p>
-	What programming tool would be complete without a set of 
+	What programming tool would be complete without a set of
 	icons to put on your webpage, telling the world what makes
 	your site tick?
 </p>

@@ -606,6 +606,10 @@ class release
 
     function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
+        global $auth_user;
+        if (!user::maintains($auth_user->handle, $package, 'lead')) {
+            return PEAR::raiseError('Insufficient privileges');
+        }
         $ref = release::validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum);
         if (PEAR::isError($ref)) {
             return $ref;
@@ -619,6 +623,9 @@ class release
     function validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
         global $dbh, $auth_user;
+        if (!user::maintains($auth_user->handle, $package, 'lead')) {
+            return PEAR::raiseError('Insufficient privileges');
+        }
         // (2) verify that package exists
         $package_id = package::info($package, 'id');
         if (PEAR::isError($package_id) || empty($package_id)) {
@@ -682,7 +689,10 @@ class release
 
     function confirmUpload($upload_ref)
     {
-        global $dbh;
+        global $dbh, $auth_user;
+        if (!user::maintains($auth_user->handle, $package, 'lead')) {
+            return PEAR::raiseError('Insufficient privileges');
+        }
         $fp = @fopen($upload_ref, "r");
         if (!is_resource($fp)) {
             return PEAR::raiseError("invalid upload reference: $upload_ref");
@@ -918,7 +928,10 @@ END;
     {
         // XXX: Also delete logged downloads.
 
-        global $dbh;
+        global $dbh, $auth_user;
+        if (!user::maintains($auth_user->handle, $package, 'lead')) {
+            return PEAR::raiseError('Insufficient privileges');
+        }
 
         $success = true;
 

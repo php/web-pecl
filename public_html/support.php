@@ -192,10 +192,10 @@ Eris Free Net</a>.
 <a name="tutorials" /><h3>PEAR Tutorials</h3>
 <h4>PEAR Tutorials sites</h4>
 <ul>
-    <li>Tutorials about PEAR, available in many langages
-         <a href="http://www.pearfr.org">www.pearfr.org</a>.
+    <li>Tutorials about PEAR, available in many languages: 
+    <a href="http://www.pearfr.org">www.pearfr.org</a>.
     </li>
-    <li>Links to PEAR tutorials <a href="http://www.phpkitchen.com/staticpages/index.php?page=2003041204203962">
+    <li>Links to PEAR tutorials: <a href="http://www.phpkitchen.com/staticpages/index.php?page=2003041204203962">
        www.phpkitchen.com</a>
     </li>
 </ul>
@@ -263,8 +263,9 @@ Eris Free Net</a>.
     <li><a href="http://conf.php.net/pres/index.php?p=slides%2Fpear&id=pear">A presentation</a> by Stig Bakken,
     who is leading PEAR development, at ApacheCon 2001 on PEAR.</li>
 
-    <li><a href="http://talks.php.net/show/sdphp_using_tools">An introduction to pear</a> by Jesus M. Castagnetto,
-    a short talk in their local PHP usergroup about setup, phpdocumentor and PEAR usage</li>
+    <li><a href="http://talks.php.net/show/sdphp_using_tools"><q>Making your (coding) life simpler</q></a>
+    by Jesus M. Castagnetto (Presentation about PEAR and phpDocumentor 
+    at a local PHP user group)</li>
 
     <li><a href="http://conf.php.net/pear2">An updated presentation</a> by Jon Parise,
     a PEAR contributor, from the O'Reilly Open Source Convention 2001.</li>

@@ -89,8 +89,9 @@ if (@sizeof($recent) > 0) {
         $RSIDEBAR_DATA .= "<a href=\"/" . $name . "\">";
         $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i> $desc</td></tr>";
     }
-    $image = make_link("/rss.php", make_image("xml.gif", "RSS feed"));
-    $RSIDEBAR_DATA .= "<tr><td width=\"100%\" align=\"right\">" . $image . "</td></tr>\n";
+    $feed_link = make_link("/feeds/", "Syndicate this");
+    $RSIDEBAR_DATA .= "<tr><td>&nbsp;</td></tr>\n";
+    $RSIDEBAR_DATA .= "<tr><td width=\"100%\" align=\"right\">" . $feed_link . "</td></tr>\n";
     $RSIDEBAR_DATA .= "</table>\n";
 }
 

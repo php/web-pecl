@@ -98,7 +98,7 @@ function renumber_visitations($id, $parent)
 
 class category
 {
-    // {{{ EXPORT int category::add(struct)
+    // {{{ proto int category::add(struct)
 
     /*
     $data = array(
@@ -140,7 +140,7 @@ class category
 
 class package
 {
-    // {{{ EXPORT int package::add(struct)
+    // {{{ proto int package::add(struct)
 
     // add a package, return new package id or PEAR error
     function add($data)
@@ -184,7 +184,7 @@ class package
     }
 
     // }}}
-    // {{{ EXPORT struct package::info(string|int)
+    // {{{ proto struct package::info(string|int)
 
     function info($pkg)
     {
@@ -215,7 +215,7 @@ class package
     }
 
     // }}}
-    // {{{ EXPORT struct package::listAll()
+    // {{{ proto struct package::listAll()
 
     function listAll($name, $params, $appdata)
     {
@@ -236,7 +236,7 @@ class package
 
 class maintainer
 {
-    // {{{ EXPORT int maintainer::add(int, string, string)
+    // {{{ proto int maintainer::add(int, string, string)
 
     function add($package, $user, $role)
     {
@@ -258,7 +258,7 @@ class maintainer
 
 class release
 {
-    // {{{ EXPORT array release::getRecent([int])
+    // {{{ proto array release::getRecent([int])
 
     function getRecent($n = 5)
     {
@@ -282,7 +282,7 @@ class release
     }
 
     // }}}
-    // {{{ EXPORT bool release::upload(string, string, string, binary, string)
+    // {{{ proto bool release::upload(string, string, string, binary, string)
 
     function upload($package, $version, $relnotes, &$tarball, $md5sum)
     {
@@ -340,7 +340,7 @@ class release
 
 class note
 {
-    // {{{ EXPORT bool note::add(string, int, string)
+    // {{{ proto bool note::add(string, int, string)
 
     function add($key, $value, $note)
     {
@@ -358,7 +358,7 @@ class note
     }
 
     // }}}
-    // {{{ EXPORT bool note::delete(int)
+    // {{{ proto bool note::delete(int)
 
     function delete($id)
     {
@@ -372,7 +372,7 @@ class note
     }
 
     // }}}
-    // {{{ EXPORT bool note::deleteAll(string, int)
+    // {{{ proto bool note::deleteAll(string, int)
 
     function deleteAll($key, $value)
     {
@@ -389,7 +389,7 @@ class note
 
 class user
 {
-    // {{{ EXPORT bool user::delete(string)
+    // {{{ proto bool user::delete(string)
 
     function delete($uid)
     {
@@ -400,7 +400,7 @@ class user
     }
 
     // }}}
-    // {{{ EXPORT bool user::rejectRequest(string, string)
+    // {{{ proto bool user::rejectRequest(string, string)
 
     function rejectRequest($uid, $reason)
     {
@@ -416,7 +416,7 @@ class user
     }
 
     // }}}
-    // {{{ EXPORT bool user::activate(string)
+    // {{{ proto bool user::activate(string)
 
     function activate($uid)
     {
@@ -446,15 +446,6 @@ class user
 
     // }}}
 }
-
-// {{{ EXPORT string echotest(string)
-
-function echotest($str)
-{
-    return "Echo: $str";
-}
-
-// }}}
 
 // {{{ mail_pear_admins()
 

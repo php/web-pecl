@@ -12,12 +12,14 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 	}
 	// format: array( array(returntype, methodname, paramlist), ... )
 	settype($signatures, "array");
-	if (preg_match_all('/API\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)/',
+	$matches = array();
+	if (preg_match_all('/proto\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)\s*?\n(\s*?\/\/\s*?(.*?)\s*?\n)?/s',
 					   $contents, $matches)) {
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
 			$return_type = $matches[1][$i];
 			$method_name = $matches[2][$i];
 			$parameters  = $matches[3][$i];
+			$docstrings  = $matches[5][$i]; // XXX unfinished
 			//print "signature: $return_type <b>$method_name</b>($parameters)<br />\n";
 			$return_type_permutations = explode("|", $return_type);
 			$xmlrpc_method = str_replace("::", ".", $method_name);

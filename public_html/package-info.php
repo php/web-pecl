@@ -193,6 +193,7 @@ if ($cvs_link) {
     print '
     <tr>
         <td align="center">[ ' . make_link($cvs_link, 'CVS Web', 'top') . ' ]</td>
+        <td align="center">[ ' . make_link('/bugs/search.php?cmd=display&status=Open&bug_type[]='.$pkg['name'], 'Package Bugs') . ' ]</td>
     </tr>
     ';
 }

@@ -1,6 +1,6 @@
 <?php
 if (isset($country)) {
-  header("Location: http://$country.php.net/");
+  header("Location: http://$country.pear.php.net/");
 }
 response_header("Mirrors Page");
 ?>

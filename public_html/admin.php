@@ -143,8 +143,8 @@ do {
             print "$i <tr>\n";
             print "$i  <td>\n";
             print "$i   <b>$nby $ntime:</b>";
-            if ($nby == $PHP_AUTH_USER) {
-                $url = "$PHP_SELF?acreq=$acreq&cmd=Delete+note&id=$nid";
+            if ($nby == $_SERVER['PHP_AUTH_USER']) {
+                $url = $_SERVER['PHP_SELF'] . "?acreq=$acreq&cmd=Delete+note&id=$nid";
                 $msg = "Are you sure you want to delete this note?";
                 print "[<a href=\"javascript:confirmed_goto('$url', '$msg')\">delete your note</a>]";
             }
@@ -158,7 +158,7 @@ do {
     } else {
         print "No notes.";
     }
-    print "$i<form action=\"$PHP_SELF\" method=\"POST\">\n";
+    print "$i<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"POST\">\n";
     print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
     print "$i <tr>\n";
     print "$i  <td>\n";
@@ -176,7 +176,7 @@ do {
     $bb->end();
 ?>
 
-<form action="<?= $PHP_SELF ?>" method="POST">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
 <input type="hidden" name="cmd" value="" />
 <input type="hidden" name="uid" value="<?= $requser->handle ?>" />
 <table cellpadding="3" cellspacing="0" border="0" width="90%">
@@ -205,7 +205,7 @@ do {
         if (is_array($requests) && sizeof($requests) > 0) {
             foreach ($requests as $handle => $data) {
                 list($name, $email) = $data;
-                print "<a href=\"$PHP_SELF?acreq=$handle\">$name ($handle)</a><br />\n";
+                print "<a href=\"" . $_SERVER['PHP_SELF'] . "?acreq=$handle\">$name ($handle)</a><br />\n";
             }
         } else {
             print "No account requests.";

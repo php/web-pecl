@@ -87,7 +87,7 @@ minimum.
     }
 
     $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");
-    $form =& new HTML_Form($PHP_SELF, "POST");
+    $form =& new HTML_Form($_SERVER['PHP_SELF'], "POST");
     $form->addText("name", "Package Name", null, 20);
     $form->addText("license", "License", null, 20);
     $form->addSelect("category", "Category", $categories, '', 1,

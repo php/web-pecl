@@ -2,7 +2,7 @@
 
 if (isset($showmsg)) {
     $delay = 3;
-    Header("Refresh: $delay; url=\"$PHP_SELF\"");
+    Header("Refresh: $delay; url=\"" . $_SERVER['PHP_SELF'] . "\"");
     response_header("Logging Out...");
 //	$ua = $HTTP_USER_AGENT;
 	$logoutmsg = "Authorization failed. Retry?";

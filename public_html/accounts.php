@@ -40,9 +40,9 @@ $last_shown = $offset + $page_size - 1;
 $firstletters = array_unique($all_firstletters);
 
 $last = $offset - $page_size;
-$lastlink = "$PHP_SELF?offset=$last";
+$lastlink = $_SERVER['PHP_SELF'] . "?offset=$last";
 $next = $offset + $page_size;
-$nextlink = "$PHP_SELF?offset=$next";
+$nextlink = $_SERVER['PHP_SELF'] . "?offset=$next";
 print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
 print " <tr bgcolor=\"#cccccc\">\n";
 print "  <th>";
@@ -61,7 +61,7 @@ foreach ($firstletters as $fl) {
 		printf('<b>%s</b> ', strtoupper($fl));
 	} else {
 		printf('<a href="%s?letter=%s">%s</a> ',
-			   $PHP_SELF, $fl, strtoupper($fl));
+			   $_SERVER['PHP_SELF'], $fl, strtoupper($fl));
 	}		   
 }
 print '</td><td rowspan="2">';

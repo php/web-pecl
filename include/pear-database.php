@@ -376,7 +376,7 @@ class release
         // (2) verify that package exists
         $package_id = package::_getID($package);
         if (PEAR::isError($package_id)) {
-            return $package_id;
+            return PEAR::raiseError("You have to register first package: $package");
         }
 
         // (3) verify that version does not exist

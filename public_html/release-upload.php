@@ -10,10 +10,10 @@ $display_form = true;
 $display_verification = false;
 $jumpto = false;
 
+PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
 do {
 	if (isset($upload)) {
         include_once 'HTTP/Upload.php';
-        PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
         $upload_obj = new HTTP_Upload('en');
         $file = $upload_obj->getFiles('distfile');
         if (PEAR::isError($file)) {
@@ -54,9 +54,7 @@ do {
 	}
 } while (false);
 
-if (isset($upload)) {
-    PEAR::popErrorHandling();
-}
+PEAR::popErrorHandling();
 
 if ($display_form) {
     $title = "Upload New Release";

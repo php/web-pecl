@@ -1,250 +1,287 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.10 2001-09-03 10:46:12 ssb Exp $ -->
-<!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
-          "./dbxml/docbookx.dtd">
-
-<book>
+<!-- $Id: pearfaq.xml,v 1.11 2001-09-03 11:57:57 ssb Exp $ -->
+<!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
+          "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
-<artheader>
-    <title>PEAR-Developer FAQ</title>
-    <date>$Date: 2001-09-03 10:46:12 $</date>
-    <version>$Revision: 1.10 $</version>    
-</artheader>
+ <artheader>
+  <title>PEAR-Developer FAQ</title>
+  <date>$Date: 2001-09-03 11:57:57 $</date>
+  <version>$Revision: 1.11 $</version>    
+ </artheader>
 
-<qandaset>
-    <qandaentry>
-        <question title="How to become a PEAR contributer and/or how to get CVS access to PEAR?" />
-        <answer>
-            <author name="Alexander Merz"/>
-            <para>
-                The rules are the same like the ones for getting a PHP CVS account.
-                This means you should do one of the following things to improve your
-				chances to get a CVS account.
-				<simplelist>
-					<member>
-						Send <faqlink faq="2">patches</faqlink> for existing PEAR classes.
-					</member>
-					<member>
-						Create and <emphasis>maintain</emphasis> a new class 
-						for PEAR.
-					</member>
-					<member>
-						Rewrite and <emphasis>maintain</emphasis> an existing 
-						class to match the <ulink url="http://php.net/manual/pear.standards.php">
-						PEAR Coding Standards</ulink>.
-					</member>
-				</simplelist>
-				Requesting an account without having existing source code or 
-				public pre-work does not make much sense.
-            </para>
-			<para>
-				See also <ulink url="http://wwww.php.net/cvs-php.php">Using 
-				CVS for PHP Development</ulink>.
-			</para>
-			<para>
-				You should announce your intention of commiting new stuff to 
-				the PEAR developers list. It's strongly recommended to 
-				subscribe to the list. See the
-				<ulink url="http://pear.php.net/support.php">support page</ulink>
-				for information about subscribing.
-			</para>
-        </answer>
-    </qandaentry>
-    
-    <qandaentry>
-        <question title="How to contribute patches?" />
-        <answer>
-            <author name="Alexander Merz, Tomas V.V. Cox"/>
-            <para>
-                The best possibility to contribute patches is to send them to the
-				PEAR developers list <ulink url="mailto:pear-dev@lists.php.net"
-				                            name="pear-dev@lists.php.net"/>. 
-                Make sure your patch is based on a current CVS snapshot. Don't send the 
-				complete file(s). Use diff or the diff command of CVS and 
-				attach the output of diff to the mail.
-	        </para>
-			<para>
-				Another possibility is to send the patches directly to the
-				author(s) of the class. But sometimes the author isn't the 
-				maintainer, in vacation or has no access to CVS at the 
-				moment. So better use the mailinglist.
-			</para>
-			<para>
-				Recommend way for generating patches:
-				<simplelist>
-					<member>
-						<command># cd /cvs/php.net/pear/NET_Ping</command>
-					</member>
-					<member>
-						Retrieve the latest version						
-						<command># cvs update</command>
-					</member>
-					<member>
-						Make the modifications you want
-						<command># editor Ping.php</command>
-					</member>
-					<member>
-						Check if there have been no modifications while you was modifing
-						the file. If there were, re-adapt your patch to this 
-						last release.
-					</member>
-					<member>
-						<command># cvs update</command>
-					</member>
-					<member>
-						Generate the patch against the latest version from CVS
-						<command># cvs diff -u Ping.php > ping_diff.txt				
-						</command>
-					</member>
-				</simplelist>
-			</para>
-        </answer>
-    </qandaentry>    
-    <qandaentry>
-        <question title="How to contribute patches for Outlook Express users" />
-        <answer>
-            <author name="Alexander Merz"/>
-            <para>
-                The mailing list software accepts only attachments of the 
-				content type "text/plain". OE creates the content type of a 
-				attachment by checking the file ending. So make sure that the 
-				diff output, if stored in a file, the file has an ending, 
-				which is assigned to a program like Notepad 
-				( plain-text editors ). So better copy&amp;paste the diff 
-				output into the mail instead of attaching them, or use another
-				email client.
-            </para>
-        </answer>
-    </qandaentry>
-    <qandaentry>
-        <question title="I want to contribute, in what areas could I do it?" />
-        <answer>
-            <author name="Alexander Merz"/>
-            <para>
-                The general directory for new PEAR-classes and modules is 
-				pear/ in the CVS repository. The name of the directory of the 
-				new class is build from the class name and the package name. 
-				If you wrote a class called Bar as a part of the package Foo, 
-				the name of the directory is Foo_Bar. So the resulting path 
-				is 	pear/Foo_Bar.
-            </para>
-        </answer>
-    </qandaentry>    
-    <qandaentry>
-        <question title="Why is PEAR seperated into pear/ and php4/pear/?" />
-        <answer>
-            <author name="Martin Jansen"/>
-            <para>
-                The first elements of PEAR were stored in the directory php4/pear
-                and so they were bundled with each new PHP release.<break/>
-                For future releases of PEAR this isn't workable because PEAR will
-                become to big to be bundled with every release of PHP. So there was
-                a decision to commit all new elements to an own top level directory
-                pear. The other elements which are currently remaining in php4/pear
-                will be moved to the new top level directory soon. Only the PEAR
-                base classes which are needed by most PEAR elements and the installer
-                system will remain in php4/pear and will be bundled with every new
-                release automatically.
-            </para>
-        </answer>
-    </qandaentry>    
-    <qandaentry>
-        <question title="Why differs the directory structure of pear/ and php4/pear/?" />
-        <answer>
-  	  <author name="Stig Bakken"/>
-  	  <para>
- 	    The directory structure of <filename>php4/pear/</filename>
- 	    matches that of the install tree (by default
- 	    <filename>/usr/local/lib/php</filename>), and are organized as a
- 	    simple hierarchy.  However, the directory structure of
- 	    <filename>pear/</filename> is based on what package the files
- 	    belong to.  Where files are located in each package directory is
- 	    completely independent from where they end up being installed,
- 	    this is all determined by the package description file.
-  	  </para>
-        </answer>
-    </qandaentry>    
-    <qandaentry>
-        <question title="Why a flat directory structure instead of a deep?" />
-        <answer>
-           <author name="Stig Bakken"/>
-           <para>
-             A deep directory structure does not go well with the idea of
-             having separately managed packages with their own release
-             cycles, CVS access control and so on.
-           </para>
-        </answer>
-    </qandaentry>    
-    <qandaentry>
-        <question title="Can I commit experimental/unstable stuff?" />
-        <answer>
-            <author name="Alexander Merz"/>
-            <para>
-                Yes. But make sure, that you mark up the experimental/unstable
-                status of the project in the documention. The best place to do 
-				this is in the package.xml in the &lt;status&gt;-tag. 
-				The values for this tag are 
-				<simplelist>
-					<member>
-						<parameter>alpha</parameter> - first stages of 
-						development, all things could change ( API, behavoir) 
-						without advice, a lot of bugs are normal
-					</member>
-					<member>
-						<parameter>beta</parameter> - stable API, usable 
-						software, bugs are possible
-					</member>
-					<member>
-						<parameter>devel</parameter> - a release intented for 
-						developers from outside the core developers of the 
-						class who want from other developers to test, give 
-						feedback.
-					</member>
-					<member>
-						<parameter>stable</parameter> - the software was tested,
-						the API fixed, the documention wrote and is the 
-						recommended release for users and production 
-						enviroments.
-					</member>
-					<member>
-						<parameter>cvs</parameter> - a CVS snapshot from a 
-						certain date
-					</member>
-				</simplelist>
-				( list by Tomas V.V. Cox )
-            </para>
-        </answer>
-    </qandaentry>
-    <qandaentry>
-        <question title="Are different packages with similar features allowed?" />
-        <answer>
-            <author name=""/>
-            <para>
-                There is no answer yet.
-            </para>
-        </answer>
-    </qandaentry>    
-    <qandaentry>
-        <question title="How should I write the documentation?" />
-        <answer>
-            <author name=""/>
-            <para>
-                There is no answer yet.
-            </para>
-        </answer>
-    </qandaentry>
-    <qandaentry>
-        <question title="What is the difference between a package, a class and a file?" />
-        <answer>
-            <author name=""/> <!-- will be Stig Sæther Bakken one time //-->
-            <para>
-                There is no answer yet.
-            </para>
-        </answer>
-    </qandaentry>        
-</qandaset>
+ <qandaset>
+  <qandaentry>
+   <question title="How to become a PEAR contributer and/or how to get CVS access to PEAR?" />
+    <answer>
+     <author name="Alexander Merz"/>
+      <para>
+       The rules are the same like the ones for getting a PHP CVS account.
+       This means you should do one of the following things to improve your
+       chances to get a CVS account.
+       <simplelist>
+	 <member>
+         Send <faqlink faq="2">patches</faqlink> for existing PEAR classes.
+        </member>
+	 <member>
+         Create and <emphasis>maintain</emphasis> a new class for PEAR.
+        </member>
+	 <member>
+         Rewrite and <emphasis>maintain</emphasis> an existing class to
+         match the <ulink
+         url="http://php.net/manual/pear.standards.php">PEAR Coding
+         Standards</ulink>.
+        </member>
+	</simplelist>
+       Requesting an account without having existing source code or 
+       public pre-work does not make much sense.
+      </para>
+      <para>
+       See also <ulink url="http://wwww.php.net/cvs-php.php">Using 
+       CVS for PHP Development</ulink>.
+      </para>
+      <para>
+       You should announce your intention of commiting new stuff to 
+       the PEAR developers list. It's strongly recommended to 
+       subscribe to the list. See the <ulink
+       url="http://pear.php.net/support.php">support page</ulink>
+       for information about subscribing.
+      </para>
+    </answer>
+  </qandaentry>
+  
+  <qandaentry>
+   <question title="How to contribute patches?" />
+   <answer>
+    <author name="Alexander Merz, Tomas V.V. Cox"/>
+    <para>
+     The best possibility to contribute patches is to send them to the
+     PEAR developers list <ulink url="mailto:pear-dev@lists.php.net"
+     name="pear-dev@lists.php.net"/>. 
+    </para>
+    <para>
+     Make sure your patch is based on a current CVS snapshot. Don't send
+     the complete file(s). Use diff or the diff command of CVS and 
+     attach the output of diff to the mail.
+    </para>
+    <para>
+     Another possibility is to send the patches directly to the
+     author(s) of the class. But sometimes the author isn't the 
+     maintainer, in vacation or has no access to CVS at the 
+     moment. So better use the mailinglist.
+    </para>
+    <para>
+     Recommend way for generating patches:
+     <simplelist>
+      <member>
+       <command># cd /cvs/php.net/pear/NET_Ping</command>
+      </member>
+      <member>
+       Retrieve the latest version
+       <command># cvs update</command>
+      </member>
+      <member>
+       Make the modifications you want
+       <command># editor Ping.php</command>
+      </member>
+      <member>
+       Check if there have been no modifications while you was modifing
+       the file. If there were, re-adapt your patch to this 
+       last release.
+      </member>
+      <member>
+       <command># cvs update</command>
+      </member>
+      <member>
+       Generate the patch against the latest version from CVS
+       <command># cvs diff -u Ping.php > ping_diff.txt</command>
+      </member>
+     </simplelist>
+    </para>
+   </answer>
+  </qandaentry>    
+  <qandaentry>
+   <question title="How to contribute patches for Outlook Express users" />
+   <answer>
+    <author name="Alexander Merz"/>
+    <para>
+     The mailing list software accepts only attachments of the 
+     content type "text/plain". OE creates the content type of a 
+     attachment by checking the file ending. So make sure that the 
+     diff output, if stored in a file, the file has an ending, 
+     which is assigned to a program like Notepad 
+     (plain-text editors). So better copy&amp;paste the diff 
+     output into the mail instead of attaching them, or use another
+     email client.
+    </para>
+   </answer>
+  </qandaentry>
+  <qandaentry>
+   <question title="I want to contribute, in what areas could I do it?" />
+   <answer>
+    <author name="Alexander Merz"/>
+    <para>
+     The general directory for new PEAR-classes and modules is 
+     pear/ in the CVS repository. The name of the directory of the 
+     new class is build from the class name and the package name. 
+     If you wrote a class called Bar as a part of the package Foo, 
+     the name of the directory is Foo_Bar. So the resulting path 
+     is <filename>pear/Foo_Bar</filename>.
+    </para>
+   </answer>
+  </qandaentry>    
+  <qandaentry>
+   <question title="Why is PEAR seperated into pear/ and php4/pear/?" />
+   <answer>
+    <author name="Martin Jansen"/>
+    <para>
+     The first elements of PEAR were stored in the directory php4/pear
+     and so they were bundled with each new PHP release.<break/>
+     For future releases of PEAR this isn't workable because PEAR will
+     become to big to be bundled with every release of PHP. So there was
+     a decision to commit all new elements to an own top level directory
+     pear. The other elements which are currently remaining in php4/pear
+     will be moved to the new top level directory soon. Only the PEAR
+     base classes which are needed by most PEAR elements and the installer
+     system will remain in php4/pear and will be bundled with every new
+     release automatically.
+    </para>
+   </answer>
+  </qandaentry>    
+  <qandaentry>
+   <question title="Why does the directory structure of pear/ and php4/pear/ differ?" />
+   <answer>
+    <author name="Stig Bakken"/>
+    <para>
+     The directory structure of <filename>php4/pear/</filename>
+     matches that of the install tree (by default
+     <filename>/usr/local/lib/php</filename>), and are organized as a
+     simple hierarchy.  However, the directory structure of
+     <filename>pear/</filename> is based on what package the files
+     belong to.  Where files are located in each package directory is
+     completely independent from where they end up being installed,
+     this is all determined by the package description file.
+    </para>
+   </answer>
+  </qandaentry>    
+  <qandaentry>
+   <question title="Why a flat directory structure instead of a deep?" />
+   <answer>
+    <author name="Stig Bakken"/>
+    <para>
+     A deep directory structure does not go well with the idea of
+     having separately managed packages with their own release
+     cycles, CVS access control and so on.
+    </para>
+   </answer>
+  </qandaentry>    
+  <qandaentry>
+   <question title="Can I commit experimental/unstable stuff?" />
+    <answer>
+     <author name="Alexander Merz"/>
+     <para>
+      Yes. But make sure, that you mark up the experimental/unstable
+      status of the project in the documention. The best place to do 
+      this is in the package.xml in the &lt;status&gt;-tag. 
+      The values for this tag are 
+     <variablelist>
+      <varlistentry>
+	<term>alpha</term>
+	<listitem>
+	 <simpara>
+         early stages of development, all things could change (API,
+         behavoir) without notice, expect lots of bugs
+        </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>beta</term>
+	<listitem>
+	 <simpara>
+         API should normally not change, usable software, expect bugs
+        </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>devel</term>
+	<listitem>
+	 <simpara>
+         a release for other developers who want early access to test
+	  and give feedback, code quality may vary from pre-alpha to
+	  stable
+        </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>stable</term>
+	<listitem>
+	 <simpara>
+         the software was tested, the API fixed, the documention
+         wrote and is the recommended release for users and
+         production enviroments
+        </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>cvs</term>
+	<listitem>
+	 <simpara>
+         a CVS snapshot from a certain date
+        </simpara>
+	</listitem>
+      </varlistentry>
+     </variablelist>
+      <simplelist>
+     </simplelist>
+     ( list by Tomas V.V. Cox )
+    </para>
+    </answer>
+  </qandaentry>
+  <qandaentry>
+   <question title="Are different packages with similar features allowed?" />
+   <answer>
+    <author name=""/>
+    <para>
+     There is no answer yet.
+    </para>
+   </answer>
+  </qandaentry>    
+  <qandaentry>
+   <question title="How should I write the documentation?" />
+   <answer>
+    <author name=""/>
+    <para>
+     There is no answer yet.
+    </para>
+   </answer>
+  </qandaentry>
+  <qandaentry>
+   <question title="What is the difference between a package, a class and a file?" />
+   <answer>
+    <author name=""/> <!-- will be Stig Sæther Bakken one time //-->
+    <para>
+     There is no answer yet.
+    </para>
+   </answer>
+  </qandaentry>        
+ </qandaset>
 
 </article>
 
-</book>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-namecase-general:t
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:1
+sgml-indent-data:nil
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

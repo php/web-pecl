@@ -41,6 +41,14 @@ pre {
 	font-size: 90%;
 }
 
+pre.php {
+  border-color:       black;
+  border-style:       dashed;
+  border-width:       1px;
+  background-color:   #eeeeee;
+  padding:            5px;
+}
+
 h1 {
 	font-family: arial,helvetica,sans-serif;
 	font-size: 140%;
@@ -83,7 +91,6 @@ a.small {
 	font-size: 85%;
 	color: #FFFFFF;
 }
-
 
 input {
 	font-family: arial,helvetica,sans-serif;

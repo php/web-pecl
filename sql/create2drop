@@ -1,0 +1,22 @@
+#!/usr/bin/perl -s
+
+if ($mysql) {
+    $dbtype = "mysql";
+    $transactions = 0;
+} elsif ($solid) {
+    $dbtype = "solid";
+    $transactions = 1;
+} else {
+    die "unknown db type";
+}
+
+while (<>) {
+    if (/^\"?CREATE\s+(TABLE|SEQUENCE|INDEX|UNIQUE\s+INDEX|PROCEDURE|VIEW|EVENT|ROLE|USER)\s+([a-z0-9_]+)/i) {
+        ($type, $name) = ($1, $2);
+        $type =~ s/UNIQUE\s+//;
+        print "DROP $type $name;\n";
+        if ($transactions) {
+            print "COMMIT WORK;\n";
+        }
+    }
+}

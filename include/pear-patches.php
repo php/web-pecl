@@ -23,6 +23,9 @@ require_once "PEAR.php";
 /**
  * PEAR Patch Tracker
  *
+ * The class is relatively un-optimized in a lot places and probably
+ * needs some cleanup.
+ *
  * @author  Martin Jansen <mj@php.net>
  * @version $Revision$
  */
@@ -76,15 +79,15 @@ class patches {
      * Add a new patch
      *
      * @access public
-     * @param  array Information about the patch
      * @return mixed PEAR_Error instance or true
      */
-    function add($filename, $package, $release, $email, $title, $description) {
+    function add($filename, $package, $release, $email, $handle, $title, $description) {
         $id = $this->dbh->nextId("patches");
-        $query = "INSERT INTO patches VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+        $query = "INSERT INTO patches VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
         $result = $this->dbh->query($query, array($id, $package, $release,
-                                                  $email, $filename, 
-                                                  $title, $description
+                                                  $email, $handle,
+                                                  $filename, $title, 
+                                                  $description
                                                   )
                                     );
         if (PEAR::isError($result)) {
@@ -92,27 +95,55 @@ class patches {
             return PEAR::raiseError("Unable to save patch.");
         }
 
-        return true;
+        return $this->announce($id, $filename, $package, $release, $email, $handle, $title, $description);
+    }
+
+    /**
+     * Announce a new patch
+     *
+     * @param int ID of the patch
+     * @param string Filename of the patch file
+     * @param int    ID of the package
+     * @param string Release version
+     * @param string email address
+     * @param string Title of the patch
+     * @param string Description of the patch
+     * @return boolean
+     */
+    function announce($id, $filename, $package, $release, $email, $handle, $title, $description) {
+        $name = package::info($package, "name");
+
+        $receivers = array("martin@localhost");
+
+        // Find maintainers of the package
+        $maintainers = package::info($package, "authors");
+        foreach ($maintainers as $user) {
+            // $receivers[] = $user['email'];
+        }
+
+        $text = "New patch: http://pear.php.local/patches/details/" . $id . "\n";
+
+        return mail(implode(",", $receivers), "New patch for " . $name, $text);
     }
 
     /**
      * Create a unified diff against CVS
      *
      * @access public
-     * @param  string Name of the file in CVS ("/pear/DB/DB.php")
+     * @param  string Name of the file in CVS ("pear/DB/DB.php")
      * @param  string Name of the new file
      * @return string Returns the unified diff
      */
     function diff($cvs_file, $patch_file) {
         $id = uniqid(time());
+        $tmpname = PEAR_TMPDIR . "/" . $id . ".diff";
 
-        $path = PEAR_CVS . "/" . dirname($cvs_file);
+        $path = PEAR_CVS . dirname($cvs_file);
         $file = basename($cvs_file);
 
-        @copy($patch_file, $path . "/" . $patch_file . ".new");
-        exec("cd $path; cvs upd -dAP $file; diff -u $file $patch_file.new > /tmp/$id.diff; rm $patch_file.new");
-        $diff = file_get_contents("/tmp/$id.diff");
-        @unlink("/tmp/$id.diff");
+        @exec("cd $path; cvs upd -dAP $file; diff -u $file $patch_file > $tmpname");
+        $diff = file_get_contents($tmpname);
+        @unlink($tmpname);
 
         return $diff;
     }
@@ -166,6 +197,19 @@ class patches {
         }
 
         return $this->dbh->getAll($query, null, DB_FETCHMODE_ASSOC);
+    }
+
+    /**
+     * Get patch by ID
+     *
+     * @access public
+     * @param  int ID of the patch
+     * @return array Information about the patch
+     */
+    function getByID($id) {
+        $query = "SELECT p.*, pa.name AS package FROM patches p, packages pa " .
+            "WHERE pa.id = p.fk_package AND p.id = '" . $id . "'";
+        return $this->dbh->getRow($query, null, DB_FETCHMODE_ASSOC);
     }
 
     /**

@@ -74,6 +74,7 @@ $subpkgs = $dbh->getAssoc("SELECT p.category, p.id AS id, p.name AS name, p.summ
                           false, null, DB_FETCHMODE_ASSOC, true);
 
 $max_sub_links = 4;
+$totalpackages = 0;
 while ($sth->fetchInto($row)) {
 
     extract($row);
@@ -120,6 +121,8 @@ while ($sth->fetchInto($row)) {
     $data  = '<font size="+1"><b><a href="'.$_SERVER['PHP_SELF'].'?catpid='.$id.'&catname='.urlencode($name).'">'.$name.'</a></b></font> ('.$npackages.')<br />';//$name; //array($name, $npackages, $ncategories, $summary);
     $data .= $sub_links.'<br />';
     $catdata[] = $data;
+
+    $totalpackages += $npackages;
 
     if($nrow++ % 2 == 1) {
         $table->addRow(array($catdata[0], $catdata[1]));
@@ -180,6 +183,7 @@ if (!empty($catpid)) {
 
 echo $nrow != 0 ? $table->toHtml() : '';
 $sth->free();
+echo "Total number of packages: " . $totalpackages;
 
 response_footer();
 ?>

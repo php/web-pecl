@@ -131,7 +131,13 @@ function characterData($parser, $data)
     echo $data;
 }
 
-$fp = fopen("/var/www/pearweb/doc/pearfaq.xml", "r") or die("error opening pearfaq.xml");
+if (getenv("SERVER_NAME") != "pear.php.net") {
+    $filename = "/var/www/pearweb/doc/pearfaq.xml";
+} else {
+    $filename = "/usr/local/www/pearweb/doc/pearfaq.xml";
+}
+
+$fp = fopen($filename, "r") or die("error opening pearfaq.xml");
 
 $parser = xml_parser_create();
 

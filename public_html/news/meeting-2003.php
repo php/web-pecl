@@ -24,7 +24,9 @@ response_header();
 <h1>PEAR Meeting in Amsterdam</h1>
 
 <div style="margin-left:2em;margin-right:2em">
-We will hold the first PEAR Meeting in Amsterdam on May 9th at 17:30.
+We will hold the first PEAR Meeting (following the
+<a href="http://www.phpconference.com/">Int. PHP Conference</a>) in
+Amsterdam on May 9th at 17:30.
 <br /><br />
 The <a href="http://www.terena.nl/about/secretariat/location.html">location</a>
 has been graciously sponsored by Jeroen Houben. We will provide a live

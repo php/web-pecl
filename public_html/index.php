@@ -1,11 +1,15 @@
 <?php
+
 $SIDEBAR_DATA='
-<H3>What is PEAR?</H3>
-<P>
-PEAR is a code repository for PHP extensions
-and PHP library code inspired by TeX\'s CTAN
-and Perl\'s CPAN.
-</P>
+<h3>What is PEAR?</h3>
+<p>
+
+PEAR is a framework and distribution system for reusable PHP
+components.
+
+<br />
+
+</p>
 ';
 
 response_header();
@@ -16,6 +20,7 @@ menu_link("Documentation", "http://php.net/manual/en/pear.php");
 
 if ($SERVER_NAME != "pear.php.net") {
     menu_link("Request PEAR Account", "account-request.php");
+    menu_link("New Package", "package-new.php");
     menu_link("Administrators", "admin.php");
     menu_link("Browse Packages", "packages.php");
     menu_link("Want to contribute?", "signup.php");

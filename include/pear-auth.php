@@ -23,7 +23,28 @@ function auth_require($admin = false)
 
     $user = $PHP_AUTH_USER;
     $auth_user =& new PEAR_User($dbh, $user);
-    if (md5($PHP_AUTH_PW) != @$auth_user->password || !$auth_user->registered) {
+    $ok = false;
+    switch (strlen(@$auth_user->password)) {
+	// handle old-style DES-encrypted passwords
+	case 13: {
+	    $seed = substr($auth_user->password, 0, 2);
+	    if (crypt($PHP_AUTH_PW, $seed) == @$auth_user->password) {
+		$ok = true;
+	    }
+	    break;
+	}
+	// handle new-style MD5-encrypted passwords
+	case 32: {
+	    if (md5($PHP_AUTH_PW) == @$auth_user->password) {
+		$ok = true;
+	    }
+	    break;
+	}
+    }
+    if (empty($auth_user->registered)) {
+	$ok = false;
+    }
+    if (!$ok) {
 	if (cvs_verify_password($user, $PHP_AUTH_PW)) {
 	    $auth_user = (object)array('handle' => $user);
 	} else {

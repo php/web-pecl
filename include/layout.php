@@ -188,7 +188,10 @@ function commonHeader($title) {
       <?php
 
 	if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER'])) {
-		print_link('/logout.php', 'LOGOUT', false, 'class="menuBlack"');
+		print '<span class="menuWhite">logged in as ';
+		print strtoupper($HTTP_SERVER_VARS['PHP_AUTH_USER']);
+		print '&nbsp;</span><br />';
+		print_link('/logout.php?showmsg=1', 'LOGOUT', false, 'class="menuBlack"');
 	} else {
 		print_link('/login.php', 'LOGIN', false, 'class="menuBlack"');
 	}
@@ -288,11 +291,11 @@ function commonFooter() {
       <?php
 	# TODO: should send current url above, so we can redirect to
 	# the same page on the mirror, and do the same in our javascript.
-	print_link('/source.php?url='.$SCRIPT_NAME, 'show source', false, 'class="menuBlack"');
+	print_link('/source.php?url='.$SCRIPT_NAME, 'SHOW SOURCE', false, 'class="menuBlack"');
 	echo delim();
-	print_link('/credits.php', 'credits', false, 'class="menuBlack"');
+	print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
 	echo delim();
-	print_link('/mirrors.php', 'mirror sites:', false, 'class="menuBlack"');
+	print_link('/mirrors.php', 'MIRRORS:', false, 'class="menuBlack"');
 	echo "&nbsp;<select class=\"small\" name=\"country\" onchange=\"gotomirror(this.form)\">\n";
 
 	foreach($MIRRORS as $url=>$mirror) {

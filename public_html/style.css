@@ -14,12 +14,12 @@ em {
 	color: #66cc66;
 }
 
-A.menuWhite {
-	font-family: arial,helvetica,sans-serif;
+.menuWhite {
+	font-family: fixed,arial,helvetica,sans-serif;
 	font-size: 75%;
 	color: #ffffff;
 }
-A.menuBlack {
+.menuBlack {
 	font-family: fixed,arial,helvetica,sans-serif;
 	text-decoration: none;
 	font-size: 75%;

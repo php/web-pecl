@@ -2,8 +2,6 @@
 
 require_once "HTML/Form.php";
 
-$display_form = true;
-
 function display_error($msg)
 {
     global $errorMsg;
@@ -11,6 +9,9 @@ function display_error($msg)
     $errorMsg .= "<FONT COLOR=\"#CC0000\" SIZE=\"+1\">$msg</FONT><BR>\n";
 }
 
+$display_form = true;
+$width = 60;
+$errorMsg = "";
 $jumpto = "handle";
 
 do {
@@ -20,7 +21,7 @@ do {
 			  "email" => "your email address",
 			  "purpose" => "the purpose of your PEAR account");
 	foreach ($required as $field => $desc) {
-	    if (!$$field) {
+	    if (empty($$field)) {
 		display_error("Please enter $desc!");
 		$jumpto = $field;
 		break 2;
@@ -143,7 +144,6 @@ you would like to release through PEAR.
 	print "</TABLE>\n";
     }
 
-    $width = 60;
     $form =& new HTML_Form($PHP_SELF, "POST");
     $form->addText("handle", "Username", null, 12);
     $form->addText("name", "Real Name", null, $width);

@@ -109,7 +109,40 @@ function renumber_visitations($debug = false)
             "WHERE name = '$node'";
         $dbh->query($query);
     }
-    return true;
+    return DB_OK;
+}
+
+// }}}
+// {{{ add_package()
+
+function add_package($data)
+{
+    global $dbh;
+    $defaults = array(
+	"virtual" => false,
+	"parent" => null,
+	"license" => "PHP License"
+    );
+    foreach ($defaults as $property => $default_value) {
+	if (!isset($data[$property])) {
+	    $data[$property] = $default_value;
+	}
+    }
+    extract($data);
+
+    $query = "INSERT INTO packages (id,name,virtual,parent,license,summary,".
+	 "description) VALUES(?,?,?,?,?,?,?)";
+    $id = $dbh->nextId("packages");
+    $sth = $dbh->prepare($query);
+    if (DB::isError($sth)) {
+	return $sth;
+    }
+    $err = $dbh->execute($sth, array($id, $name, $virtual, $parent, $license,
+                                     $summary, $desc));
+    if (DB::isError($err)) {
+	return $err;
+    }
+    return renumber_visitations();
 }
 
 // }}}
@@ -330,9 +363,9 @@ class PEAR_User extends DB_storage
 
 class PEAR_Package extends DB_storage
 {
-    function PEAR_Package(&$dbh, $package)
+    function PEAR_Package(&$dbh, $package, $keycol = "id")
     {
-        $this->DB_storage("packages", "id", $dbh);
+        $this->DB_storage("packages", $keycol, $dbh);
 	// XXX horrible hack until we get temporary error handlers
 	$oldmode = $this->_default_error_mode;
 	$this->_default_error_mode = PEAR_ERROR_RETURN;

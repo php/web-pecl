@@ -47,8 +47,10 @@ do {
         $util =& new PEAR_Common;
         $info = $util->infoFromTgzFile($distfile);
 
-        PEAR::pushErrorHandling(PEAR_ERROR_PRINT, '<b>Warning: %s</b>');
         $pacid = package::info($info['package'], 'id');
+        if (PEAR::isError($pacid)) {
+            display_error($pacid->getMessage()); break;
+        }
         if (!checkUser($_SERVER['PHP_AUTH_USER'], $pacid)) {
             display_error("You don't have permissions to upload this release."); break;
         }
@@ -59,7 +61,7 @@ do {
                                             'license'     => $info['release_license']
                                               ));
         if (PEAR::isError($e)) {
-            display_error("Could not update release information."); break;
+            display_error($e->getMessage()); break;
         }
         $users = array();
         foreach ($info['maintainers'] as $user) {
@@ -67,9 +69,8 @@ do {
         }
         $e = maintainer::updateAll($pacid, $users);
         if (PEAR::isError($e)) {
-            display_error("Could not update maintainer information."); break;
+            display_error($e->getMessage()); break;
         }
-        PEAR::popErrorHandling();
         $file = release::upload($info['package'], $info['version'], $info['release_state'],
                                 $info['release_notes'], $distfile, md5_file($distfile));
         if (PEAR::isError($file)) {

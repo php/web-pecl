@@ -12,6 +12,7 @@ $GLOBALS['main_menu'] = array(
     '/faq.php'             => 'PEAR FAQ',
     '/packages.php'        => 'Package Browser',
     '/package-search.php'  => 'Package Search',
+    '/package-stats.php'   => 'Package Statistics',
     '/account-request.php' => 'Request Account'
 );
 

@@ -2016,7 +2016,6 @@ End If
 ';
     if( !$wshSaved){
         $cscript = $ptmp.DIRECTORY_SEPARATOR."bf.vbs";
-        echo "CSCRIPT: ".$cscript."\n\n\n\n";
         $fh = fopen($cscript,"wb+");
         fwrite($fh,$wsh_browserfolder,strlen($wsh_browserfolder));
         fclose($fh);
@@ -2083,7 +2082,6 @@ function win32DetectPHPSAPI()
     if($php_bin!=''){
         exec($php_bin.' -v', $res);
         if(is_array($res)) {
-            echo $res[0]."\n\n\n\n";
             if( strpos($res[0],"(cli)") ) {
                 return 'cli';
             }

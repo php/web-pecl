@@ -27,6 +27,7 @@
 require_once "PEAR.php";
 require_once "VFS.php";
 require_once "VFS/file.php";
+require_once "HTTP/Request.php";
 
 require_once "DB.php";
 
@@ -74,8 +75,23 @@ function readFolder($folder) {
                 preg_match("/<sect1 id\=\"(.*)\">/", $content, $matches2);
 
                 $url = "/manual/en/" . $matches2[1] . ".php";
+
+                $a = &new HTTP_Request("http://pear.php.net" . $url);
+                $a->sendRequest();
+
+                if ($a->getResponseCode() == 404) {
+                    $new_url = preg_replace("=\.([^\.]+)\.php$=", ".php", $url);
+
+                    $a->reset("http://pear.php.net/" . $new_url);
+
+                    if ($a->getResponseCode() != 404) {
+                        $url = $new_url;
+                    } else {
+                        $url = "";
+                    }
+                }
+
                 $res = $dbh->execute($update, array($url, $matches1[1]));
-                echo $matches1[1] . ": " . $url . "\n";
             }
         }
     }

@@ -195,7 +195,7 @@ class BorderBox {
 			print "</td>\n";
 		}
 		print "$i    </tr>\n";
-		
+
 	}
 
 	function headRow() {
@@ -239,7 +239,7 @@ class BorderBox {
 		}
 		print ">$text</td>\n";
 		print "$i    </tr>\n";
-		
+
 	}
 }
 
@@ -251,27 +251,38 @@ function html_table_border(&$tableobj, $width = "100%")
     print $border->toHtml();
 }
 
-// prints "urhere" menu bar
-function html_category_urhere($id, $name=null)
+/**
+* prints "urhere" menu bar
+* Top Level :: XML :: XML_RPC
+* @param bool $link_lastest If the last category should or not be a link
+*/
+function html_category_urhere($id, $link_lastest = false)
 {
     global $PHP_SELF;
-    $html = "<a href=\"$PHP_SELF\">Top Level</a>";
+    $html = "<a href=\"packages.php\">Top Level</a>";
     if ($id !== null) {
         global $dbh;
         $res = $dbh->query("SELECT c.id, c.name
                             FROM categories c, categories cat
                             WHERE cat.id = $id
-                            AND c.cat_left < cat.cat_left
-                            AND c.cat_right > cat.cat_right");
-
+                            AND c.cat_left <= cat.cat_left
+                            AND c.cat_right >= cat.cat_right");
+        $nrows = $res->numRows();
+        $i = 0;
         while ($res->fetchInto($row, DB_FETCHMODE_ASSOC)) {
+            if (!$link_lastest && $i >= $nrows -1) {
+                break;
+            }
             $html .= "  :: ".
-                     "<a href=\"$PHP_SELF?catpid={$row['id']}&catname={$row['name']}\">".
+                     "<a href=\"/packages.php?catpid={$row['id']}&catname={$row['name']}\">".
                      "{$row['name']}</a>";
+            $i++;
         }
-        $html .= "  :: <b>".htmlspecialchars($name)."</b>";
+        if (!$link_lastest) {
+            $html .= "  :: <b>".$row['name']."</b>";
+        }
     }
-    print "$html";
+    print $html;
 }
 
 function localRedirect($file)

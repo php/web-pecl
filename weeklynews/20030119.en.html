@@ -8,20 +8,121 @@
  <i>
   <small>
    by 
-   Mika Tuupola (tuupola@appelsiini.net)
+   Mika Tuupola (tuupola@appelsiini.net), Pierre-Alain Joye (paj@pearfr.org)
   </small>
  </i>
 </p>
 
 <p>
   To celebrate the fact PEAR out of beta and as of PHP 4.3 PEAR installer 
-  is included by default, Weekly News is revived again. This weeks news
-  include details on voting for proposed packages, PEAR tutorial on Mac OS X,
-  new phpdoc templates and missing PEAR installer from Windows binary 
-  distribution. As a time of writing there has been eight new releases 
-  this week. 
+  is included by default, Weekly News is revived again. As a preface to
+  this first weekly news, please find an interwiew of Stig S. Backen,
+   the founder of the PEAR project.<br \><br \>
+  This week news include details on voting for proposed packages,
+  PEAR tutorial on Mac OS X,  new phpdoc templates and missing PEAR
+  installer from Windows binary  distribution. As a time of writing there
+  has been eight new releases this week. 
 </p>
+<hr>
+<h2>AN INTERVIEW OF STIG BAKKEN</h2>
+<small>
+ by Pierre-Alain Joye (paj@pearfr.org)
+</small>
+<h3>Who's Stig Bakken ?</h3>
+  Stig (30) has been working with Unix and web stuff for the last 10
+  years.  Since 1999 he has worked as a senior software engineer at Fast
+  Search & Transfer (FAST) in Trondheim, Norway.  FAST is Google's main
+  competitor in the OEM search market, and Stig is the technical lead for
+  FAST's multimedia search product.  See http://www.alltheweb.com/
+  (written in PHP of course) for a demonstration.
+<br\>
 
+<h3>What's PEAR ?</h3>
+  PEAR is a PHP spin-off project that aims to provide several things:</li>
+  <li \>* a library of high-quality, reusable PHP code and extensions</li>
+  <li \>* coding guidelines that help create components with consistent APIs</li>
+  <li >* a packaging, distribution and installation framework for these components
+  The acronym stands for "PHP Extension and Application Repository".
+  We made up the acronym before the meaning of course.</li>
+
+<h3>What's PECL</h3>
+  PECL (the PHP Extension Code Library) is a subset of PEAR for
+  traditional PHP extensions written in C or C++.
+<br \>
+
+<h3>
+  What is the relation between PHP and PEAR/PECL, we have seen a lot
+  of extensions moving from PHP to PECL (and it seems more will move
+  in the futur) ?
+</h3>
+
+More and more extensions move to PECL, and by the time PHP 5 is out,
+most extensions will have been pickled ("PECL'ed").  This is first of
+all a project management change for PHP.  Future versions of PHP will
+still bundle lots of extensions, they will be imported from PECL during
+the PHP release process and included in the release tarball.
+<br \><br \>
+The reason we do this is to make PHP's release process manageable. 
+Today a PHP release takes several months.  By importing stable releases
+of extensions in PECL, we will have fewer unknowns that need to be
+tested during PHP's QA process, because the extensions from PECL have
+already been through their own QA.  Hopefully this will reduce the PHP
+release process to weeks rather than months, and increase the general
+quality of all extensions bundled with PHP.
+<br \><br \>
+Also, if extensions are built shared (not compiled directly into PHP,
+but as dynamically loadable libraries), it will be possible to upgrade
+individual extensions without upgrading PHP.
+<br \>
+
+<h3>
+  What are the differences between the core PEAR (package manager, core
+  modules) and the rest of PEAR ?
+</h3>
+The "core" packages bundled with PHP are of two types: those required
+for the installer, and a set of packages that are of high quality and
+considered of common interest.  The latter set of packages is the start
+of what hopefully will become the "PHP Foundation Classes" (PFC).
+<br \>
+
+<h3>May the package manager and the package definition may be used by
+   any PHP developper for their project, private or commercial ?
+</h3>
+  Anyone can set up their own copy of the pear.php.net web site and use it
+  for distributing in-house PHP components.  There are several projects
+  already that are starting to use the PEAR tools for their own purposes.
+<br \>
+
+<h3>
+  What are the next main achievements for PEAR ? 
+</h3>
+  First of all, the Windows installer support has to be solid.  Due to
+  xmas vacation and some bad timing, the 4.3.0 Windows installer was
+  shipped without PEAR.  4.3.1 will fix this.
+
+  We need to get win32 binary releases of PECL packages out.
+
+  Then we need to get a portable package signature infrastructure up and
+  running, so people can feel comfortable with installing binary
+  releases.  This is way harder for PEAR than it is for say RPM, because
+  the PEAR installer runs on a myriad of platforms and PHP configurations.
+
+  And there is lots of work ahead in making a PHP 5 migration plan.
+<br \>
+
+<h3>
+  More and more people are involved in the PEAR community, by adding
+  new functionnalities or alternative competitive packages, how do you
+  manage it ?
+</h3>
+We have a voting process on the pear-dev mailing list, where people
+actually collect votes for a specific package name.  Usually, packages
+are not rejected, even if they overlap with some other package.  But
+since we have a single mailing list for PEAR developers, authors of
+"competing" packages find eachother quickly and find a good solution by
+their own initiative.  My own role is just to nudge the community in the
+right direction from time to time.
+<br \>
 <hr>
 <h2>PEAR-DEV traffic</h2>
 
@@ -44,6 +145,7 @@
   You can also find instructions on how you can: install and use PEAR
   package manager, generate developer documentation from phpdoc and 
   last but not least how to use PEAR classes in you applications.
+  Additionnal link:&nbsp;<a href="http://www.phpmac.com/">PHP and Mac</a>
 </p>
 <p>
   The tutorial could be used as a guide for installing PEAR on traditional

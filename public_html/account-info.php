@@ -95,7 +95,7 @@ $bb = new BorderBox("Maintaining These Packages:", "100%", "", 2, true);
 if ($sth->numRows() > 0) {
 	$bb->headRow("Package Name", "Role");
     while (is_array($row = $sth->fetchRow())) {
-		$bb->plainRow("<a href=\"package-info.php?pacid=$row[id]\">$row[name]</a>",
+		$bb->plainRow("<a href=\"/" . $row['name'] . "\">" . $row['name'] . "</a>",
 					  $row['role']);
     }
 }

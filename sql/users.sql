@@ -13,6 +13,7 @@ CREATE TABLE users (
        userinfo      TEXT,
        pgpkeyid	     VARCHAR(20),
        pgpkey	     TEXT,
+       wishlist	     VARCHAR(255),
 
        PRIMARY KEY(handle),
        INDEX(handle,registered),

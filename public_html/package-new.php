@@ -100,7 +100,7 @@ minimum.
 
     if ($jumpto) {
 	print "\n<SCRIPT LANGUAGE=\"JavaScript\">\n<!--\n";
-	print "document.forms[0].$jumpto.focus();\n";
+	print "document.forms[1].$jumpto.focus();\n";
 	print "// -->\n</SCRIPT>\n";
     }
 }

@@ -3,8 +3,7 @@
 
 auth_require(true);
 response_header("PEAR :: Packages");
-include_once 'pear-category.php';
-include_once 'pear-database.php';
+include_once '../include/pear-category.php';
 
 // expected url vars: catid (category id)
 $catid = (isset($catid)) ? (int) $catid : null;

@@ -244,6 +244,17 @@ is 16 MB.
 </p>
 
 <p>
+<strong>IMPORTANT:</strong> If you have not created a package.xml version 2.0 using
+the PEAR 1.4.0a2 command &quot;pear convert&quot; and packaged with &quot;pear
+package package.xml package2.xml&quot; your release will not properly upload at pecl.php.net.
+</p>
+
+<p>However, you can still upload this release through pear.php.net's upload release box if you do
+not wish to try out the new package.xml format right now.  Note that 100% BC is maintained if you follow
+these instructions.
+</p>
+
+<p>
 Uploading new releases is restricted to each package's lead developer(s).
 </p>
 MSG;

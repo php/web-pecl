@@ -38,7 +38,7 @@ For the record it should be noted that some people were attending this
 meeting in person while many others were participating via IRC and
 listening/watching video and audio streams. We would like to thank
 Jeroen Houben from <?php print_link("http://www.terena.nl/", "Terena"); ?> 
-for prodiving the facilities.
+for providing the facilities.
 </p>
 
 <p>
@@ -227,14 +227,14 @@ veto by the PEAR Group.
   </li>
   <li>PECL installer does not work on Windows</li>
   <li>
-    PECL installer does not detect in an extension is loaded while
+    PECL installer does not detect if an extension is loaded while
     upgrading it that creates a possible crash.
   </li>
   <li>
-    Need of a check in the packager to verify if the version name is
+    Need to check in the packager to verify if the version name is
     correct (that will be registered as an upgrade)
   </li>
-  <li>Need of binaries handling for different platforms</li>
+  <li>Need binaries handling for different platforms</li>
   <li>
     updating stables  should not be updated with lower "level"
     (beta, alpha) releases
@@ -244,7 +244,7 @@ veto by the PEAR Group.
     upgrade-all)
   </li>
   <li>
-    Installation if older versions should not require the complete
+    Installation of older versions should not require the complete
     URL but only by adding the version number
   </li>
   <li>
@@ -268,7 +268,7 @@ veto by the PEAR Group.
 
 <p>
 More and more magazines are publishing articles about PEAR, they even
-approach us for writing for them.<br />
+approach us to ask us to write for them.<br />
 The International PHP Magazine (http://www.php-mag.net) will release articles
 if they are older than a few issues and we are working on ways to make them
 updateable. Also the Intl' PHP Magazine will distribute PEAR on the magazine

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head>
+
+<body>
+<small><i>by Alan Knowles (alan_k@php.net)</i></small>
+<p>Always a busy week in PEAR world, with .. new releases, and 2 new packages
+added, along with discussion on the status of the pear web site, Forum coming
+back to life, and an MDB release candidate.
+
+
+<hr>
+
+<h2>New Releases</h2>
+
+<h3>Stable</h3>
+<ul>
+<li><b>.. -</b> ...</li>
+<li><b>..</b>&nbsp; - ...</li>
+</ul>
+
+<h3>Beta</h3>
+<ul>
+<li><b>..</b>&nbsp; - ...</li>
+<li><b>..</b>&nbsp; - ...</li>
+</ul>
+
+<hr>
+
+<h2>PEAR-DEV traffic</h2>
+
+<h3>Finding the Package list</h3>
+There was a small discussion about displaying the link for the <a href="http://pear.php.net/packages.php">package list</a>
+on the front page of the pear website. This issue is tied up with the fact
+that for current PHP releases, the only way to use the pear installer is
+to use 
+<pre>&nbsp;lynx -source http://pear.php.net/go-pear | PHP</pre>
+Whereas, when PHP4.3 is released, this will no longer be required (the installer
+will come with the PHP distribution), so using and accessing PEAR packages
+will become considerably easier. Also as the site is still undergoing slight
+changes it would be better to present a fully working distribution system, rather
+than oversell the PEAR packager while it is still has a few minor
+problems. So in the meanwhile, to see the pear website in it's full glory
+you should use this address, and then refresh the page.
+<pre><a href="http://pear.php.net/?devme">http://pear.php.net/?devme</a></pre>
+One of the more annoying of these problems was fixed this week by Tomas Cox,
+thanks to some diligent bug fixing, the process of creating a new package,
+and uploading the first release is now considerably smoother.
+<h3>Yet more languages for the weekly news.</h3>
+Jesus M. Castagnetto, (co
+author of Professional PHP Programming and a few PEAR packages), has started
+the Spanish translations of the weekly news.
+
+<h3>MDB Release Candidate 1</h3>
+Lukas Smith announced that he considers
+MDB, the Metabase/PEAR DB merger ready for beta testing, and was looking
+for any gaps that need to be filled before declaring a 1.0 release.
+
+<h3>PHP Category starts to get filled</h3>
+After a bit of discussion, Frederic
+Poeydomenge's &nbsp;Var_Dump Got uploaded into the new PHP Category, along with
+PHPDoc, PHPUnit and bcompiler moved out of the PEAR category. Var_dump however still needs
+renaming to fit in with the PEAR naming standards, eg. PHP_VarDump or PHP_Var_Dump.
+
+<h3>More Zend Engine 2 issues</h3>
+Brad Bulger spotted that using the new Zend Engine, has some interesting side
+effects, that are probably worth keeping an eye out for. The issue he found was tha the mkdir method
+in the System Package, has the same name as a standard PHP function, since you don't need
+to use $this-&gt;mkdir() anymore to call a local method in ZE2, the Engine was confusing mkdir (the system call) for mkdir the method call...
+
+<h3>Forum comes back to life</h3>
+&#1050;&#1074;&#1086;&#1090;&#1080;&#1088;&#1086;&#1085;&#1080;&#1077; Wodzu asked if he could take over some of the development of the
+Forum package, converting it more to PEAR standards and adding a few features.
+As usual this was met with much fanfare and encouragement. 
+
+<h3>Docbook made easy - OpenOffice XLST</h3>
+Sandro Zic popped up to mention that there are already OpenOffice to Docbook XLST converters available at <a href="http://www.chez.com/ebellot/ooo2sdbk/">http://www.chez.com/ebellot/ooo2sdbk/</a>, if anybody wants to try it, the PEAR community would be very keen to see the results.
+
+<h3>Bugs and Fixes</h3>
+Thanks to these people for spotting and fixing some bugs, James Flemer, Mike
+Tuupola, Matt Allen, Pierre-Alain Joye, Arnaud Limbourg,Troels Arvin and
+Wim Vinckier
+
+
+<hr>
+
+<h2>New and Proposed Packages</h2>
+
+<h3>Var_Dump</h3>
+Var_dump is a more detailed and elegant var_dump to output variables at the moment it is focused on HTML output.
+
+<h3>PECL::Threads</h3>
+After finally working out the technical issues behind
+adding Threading support to PHP, Alan Knowles and Shane Caraveo have now
+a roughly working prototype in PECL, this is a cross platform extension that
+at the moment allows you to start another thread in php using the include
+type syntax, and pass variables between both threads. Extremely useful for
+developing TCP type servers or GTK applications.. A more standard thread_create('function_name'), type interface is also underway.
+
+<hr>
+
+<h2>Development</h2>
+Active on CVS this week has been &nbsp;MDB, HTML_Javascript,
+HTML_Post, DB_DataObject, PECL::Threads, I18N, Console_Getopt, Cache_Lite,
+Auth, DB, Date, HTML_QuickForm, DB_ldap, HTTP_Upload, Math_Numbers and Net_Ping.
+
+
+</body></html>

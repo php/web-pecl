@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- $Id$ -->
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+<p>
+ <i>
+  <small>
+   autorzy: 
+   <a href="http://www.appelsiini.net/~tuupola/">Mika Tuupola</a> (tuupola@appelsiini.net),
+   <a href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a> (paj@pearfr.org)
+   t³umaczenie: Robert Janeczek (rashid@php.net)
+  </small>
+ </i>
+</p>
+<div align="center">
+<h2>
+  PEAR ma roczek!<br>
+  <a href="http://www.php-mag.net/itr/ausgaben/psecom,id,133,nodeid,112.html">
+    <img src="/gifs/phpmag02cover.gif" border ="0" align="center">
+  </a>
+</h2>
+</div>
+<h2>PEAR na platformie Windows staje siê rzeczywisto¶ci±</h2>
+<p>
+ Po miesi±cach oczekiwañ, narzêdzia do instalacji i zarz±dzania pakietami PEAR s± teraz dostêpne
+ i w pe³ni funkcjonalne na plaformê Windows. Skrypt instalacyjny go-pear zosta³ ca³kowicie
+ przejrzany i ostro przetestowany przy wykorzystaniu ró¿nych wersji Windows.<br>
+ Aby otrzymaæ wszystkie poprawki i nowinki, mocno zalecamy u¿ywanie wersji dostêpnej 
+ w¶ród 
+ <a href="http://snaps.php.net">PHP4 Stable snapshots</a> (szczegó³y w nastêpnym akapicie).
+</p>
+<p>
+ Ja (wasz skromny s³uga, pierre ;) ) chcia³bym przede wszytkim podziêkowaæ poni¿ej wymienionym osobom,
+ których praca umo¿liwi³a storzenie tego ma³ego cudu. Dodawali oni nowe funkcje, testowali i przysy³ali
+ poprawki:
+ <ul>
+ <li>Christian Dickmann, autor PEAR_Frontend_Web i webowego go-pear.</li>
+ <li>Urs Gehrig, intensywne testy Win32, poprawki</li>
+ <li>Stig S. Bakken, ostatnie poprawki/dodatki dla unixów, cenne rady.</li>
+ <li>Edin Kadribasic, integracja skryptów buduj±cych snapshoty PEAR  z systemem snapshotów PHP,
+ testy i wsparcie</li>
+ </ul>
+</p>
+<h2>PEAR, PHP 4.3.2 i snapshoty</h2>
+<p>
+ W celu umo¿liwienia u¿ytkownikom Windows dostêpu do tych samych narzêdzi, z których mog± korzystaæ
+ u¿ytkownicy systemów Unix, PEAR ponownie zostanie w³±czony do dystrybucji PHP i to ju¿ od wersji 4.3.2.
+ Skrypt go-pear i wszystkie wymagane do instalacji pakiety bêd± siê znajdowaæ w katalogu PEAR wewn±trz 
+ dystrybucji; go-pear.bat uruchamia instalacjê.
+ <br>
+ Nastêpuj±ce pakiety s± obecnie w³±czone do PHP:
+ <ul>
+ <li>PEAR</li>
+ <li>phpUnit</li>
+ <li>XML_Parser</li>
+ <li>XML_RPC</li>
+ <li>Archive_Tar</li>
+ <li>Console_Getop</li>
+ <li>DB-1.4b1</li>
+ <li>Mail</li>
+ <li>Net_SMTP</li>
+ <li>Net_Socket</li>
+ <li>Net_UserAgent_Detect</li>
+ <li>PEAR_Frontend_Web</li>
+ <li>HTML_Template_IT</li>
+ <li>Pager</li>
+ </ul>
+
+ <br>
+ Dla niecierpliwych - snapshoty <a href="http://snaps.php.net">PHP 4 Stable</a> ju¿ zawieraj± PEAR.
+ <br>
+</p>
+<h2>Go-pear, webowy interfejs instalacyjny</h2>
+<p>
+ Chocia¿ wci±¿ w stadium alpha, instalacja PEAR z poziomu przegl±darki przy u¿yciu interfejsu webowego równie¿ jest 
+ do³±czona do PHP.
+ Znaczna liczba osób nie ma dostêpu do konsoli w swoidch ¶rodowiskach, albo nie ma zielonego pojêcia o jej
+ u¿ywaniu. Dla nich w³a¶nie udostêpniamy u¿yteczne GUI, dziêki któremu ju¿ mog± instalowaæ PEAR poprzez
+ swoje ulubione przegl±darki.<br> B³êdy i pro¶by o dodatkow± funkcjonalno¶æ s± mile widziane, przysy³ajcie
+ je na zwyk³y <a href="http://bugs.php.net">bugs.php.net</a> lub listy mailowe PEAR.<br>
+<br>
+ Korzystanie z webowego go-pear:
+ <ul>
+ <li>
+¦ci±gnij skrypt go-pear wybieraj±c "Save target as ..." po wej¶ciu na 
+<a href="http://go-pear.org">go-pear.org</a>.</li>
+<li>Umie¶æ plik go-pear gdzie¶ wewn±trz katalogu dostêpnego poprzez serwer web.
+Najprostszym sposobem jest stworzenie nowego katalogu specjalnie dla pear
+i tam umie¶ciæ plik.</li>
+<li>Przejd¼ do go-pear przegl±dark± i postêpuj zgodnie z instrukcjami. Upewnij siê, 
+¿e PHP ma uprawnienia do zapisu w katalogu, w którym zamierzasz zainstalowaæ
+PEAR. </li>
+<li>Po uruchominieniu go-pear otrzymasz link do interfejsu webowego instalatora PEAR.
+Doradzam do³±czenie tego linku do ulubionych.</li>
+<li>Zabezpiecz katalog interfejsu webowego i skrypt go-pear za pomoc± has³a.
+Mo¿esz na przyk³ad u¿yæ plików .htaccess w serwerze Apache.</li>
+</ul>
+</p>
+<hr />
+<h2>PEAR ma roczek</h2>
+<p>
+ Z dum± obserwujemy postêpy w rozwoju naszego projektu opisane w aktualnym 
+ <a href="http://www.php-mag.net">PHP Magazine</a>, w artykule reklamowanym na ok³adce.<br>
+ Obiecuj±cy tytu³ jest prawdziw± nagrod± dla osób rozwijaj±cych PEAR, które ciê¿ko
+ pracuj± nad ewolucj± i promocj± biblioteki. Dodaj± oni pakiety znakomitej jako¶ci, a liczni
+ u¿ytkownicy stale przysy³aj± raporty o blêdach i pro¶by o rozwiniêcie pakietów.s<br>
+ Dziêkujemy wydawcy <a href="http://www.php-mag.net">PHP Magazine</a>, Software&amp;Support Verlag GmbH a szczególnie
+ autorom:<br>
+ <ul>
+ <li>Derick'owi Rethans</li>
+ <li>Jan'owi Lehnardt</li>
+ </ul>
+ W tym specjalnym wydaniu, po¶wiêconym PEAR, mo¿ecie przeczytaæ ciekawe artyku³y opisuj±ce
+ znaczn± liczbê pakietów a tak¿e co nieco o celach jakie stoj± przed bibliotek± napisane
+ przez szanowanych cz³onków spo³eczno¶ci PEAR i PHP:
+ <ul>
+  <li>
+  Introduction to PEAR, Stig S. Bakken<br>
+  Stig opisuje podstawy PEAR, wykorzystanie instalatora a tak¿e kilka podstawowych modu³ów PEAR.<br>
+  </li>
+  <li>
+  PEAR based deployment, Alexander Merz<br>
+  Alexander pomo¿e w stworzeniu infrastruktury do tworzenia aplikacji przy u¿yciu
+  API managera pakietów PEAR a tak¿e zestawu narzêdzi webowych pear
+  (wykorzystanych na pear.php.net).
+  </li>
+  <li>
+   PEAR-Error in detail, Alexander Merz<br>
+   Opanowywanie zaawansowanych mo¿liwo¶ci PEAR-Error oraz dog³êbne wyja¶nienie
+   mo¿liwo¶ci obs³ugiwania b³êdów w PEAR, lektura obowi±zkowa!
+   (<a href="http://www.php-mag.net/itr/online_artikel/psecom,id,330,nodeid,114.html">Artyku³ na stronie</a>)
+  </li>
+  <li>
+  PEAR::Tree, Sterling Hugues<br>
+  Wykorzystanie PEAR::Tree
+  </li>
+  <li>
+  PHPDocumentor, fantastic Documentation, by Greg Beaver<br>
+  Greg, autor PHPDocumentor'a, wyja¶nia arkana u¿ywania swojej wspania³ej aplikacji, jak mo¿na jej u¿yæ
+  do przekszta³cania dobrej dokumentacji w fantastyczn± dokumentacjê. Zapoznajcie siê z wszystkimi
+  jego sekretami w tym artykule.
+  </li>
+  <li>
+  XML Transformer, Kristian K&ouml;hntopp<br>
+  XML Transformer, alternatywa dla XSLT napisana w czystym PHP, jest dobrze opisana w tym artykule. Naucz
+  siê podstaw i zobacz, dok±d pod±¿aæ dalej z tym potê¿nym pakietem.
+  </li>
+  <li>
+  Python in PHP, Jon Parise<br>
+  Jon Parise, autor rozszerzenia Python (PECL), wyja¶nia jak otrzymaæ pe³ny dostêp do ¶rodowiska Pythona
+  z poziomu PHP, koñczy artyku³ ma³± map± i kilkoma przydatnymi radami.
+  </li>
+  <li>
+  Using the Streams API in PHP 4.3 (Part I), Wez Furlong<br>
+  Chocia¿ ten artyku³ nie jest bezpo¶rednio zwi±zany z PEAR, to powinien zainteresowaæ autorów PECL, którzy
+  bêd± potrzebowaæ funcji strumieniowych w swoich rozszerzeniach. Wez 
+  opisa³ strumienie z PHP 4.3, dziêki czemu ¿ycie ka¿dego korzystaj±cego ze strumieni sta³o siê
+  prostsze.
+  </li>
+ </ul>
+  To wydanie jest na rynku od ponad tygodnia i jest dostêpne w ka¿dym dobrym sklepie z czasopismami.<br>
+  Subskrybcja artyku³u jest mo¿liwa tutaj:
+  <a href="https://www.entwickler.com/ssl/pme_abo.php?check=1"><img src="/gifs/phpmagazine.gif" border="0" align="center"></a>.
+</p>
+<!-- SECTION --><a name="1"></a>
+<h2>W prasie</h2>
+<p>
+ <a href="http://www.phppatterns.com">::phpPatterns</a> opublikowa³o krótkie wprowadzenie do
+ PEAR::Soap, <a href="">PEAR::SOAP Client Fast Start</a> (po francusku)
+</p>
+
+</body>
+</html>

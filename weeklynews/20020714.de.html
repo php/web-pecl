@@ -1,50 +1,144 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title></title></head><body>
 <small><i>by Alan Knowles alan_k@php.net (&uuml;bersetzt von Alexander Merz alexmerz(at)php.net)</i></small>
-<p>Diese Woch in den PWN ..........<br>
+<p>Mal wieder rege Tätigkeit in PEAR, 2 Stable- und 5 Beta-Releases. Eine interessante Diskussion über einen SQL-Parser, -Erzeugung, -Fehler und -Standards. PEAR-RPMs in der polnischen Linux-Distribution PLD. Und jede Menge neuer Code-Beiträge und drei Package-Vorschläge<br>
 
 </p>
+<hr>
 <h2>New Releases </h2>
 <h3>Stable</h3>
-<p></p><h3>Beta</h3>
+<p>
+PHPUnit - eine Code-Testumgebung<br> Net_SMTP - eine API für einen einfachen Umgang mit dem STMP-Protokoll zum Versenden von E-Mails
+</p>
+<h3>Beta</h3>
 <p>  
+Net_Dime - eine API für "Direct Internet Message Encapsulation"<br>
+verbesserter Support für das SOAP-Protokoll und -Packages<br>
+DBA - eine API für DBM-ähnliche Datenbanken, kann auch DBM-Datenbank mit Hilfe von Datein emulieren<br>
+PEAR_Frontend_Web - ein Web-Interface für den PEAR-Installer<br>
+DB_DataObject - eine API für die Erzeugung von SQL-Statments und fungiert als
+"Data Modeling Layer".
 
 </p>
+<hr>
 <h2>PEAR-DEV Meldungen </h2>
 
-<h3>DB::Sybase - Sybase-Treiber f&uuml;r PEAR::DB </h3>
-Anotonio Carlos Venancio Junior schreibt an einem PEAR::DB-Backend f&uuml;r Sybase.
-<br>
-
-<h3>DB_DBA - Ein Berkley DB-Wrapper </h3>
-Brent Cook steht vor dem Abschlu&szlig; von DBA (Berkley DB Abstraction). Die API
-erlaubt einen SQL-&auml;hnlichen Zugriff auf Dateibasierten Datenbanken.
-<br>
+<h3>DB::Sybase - Sybase Fehlermeldungen für die DB-Abstraktionsschicht</h3>
+<p>
+Anotonio Carlos Venancio Junior sucht noch Freiwillige, die ihn bei der Erarbeitungung von Fehlermeldungen für den Sybase-Treiber helfen
+</p>
+<h3>DBA - Berkley DB Wrapper und SQL Parser </h3>
+<p>
+Brent Cook hat das DBA (Berkley DB) Interface fast fertig. 
+Das schliesst einen SQL-Parser für dateibasierte Datenbanken ein, um mit Hilfe von SQL auf diese zuzugreifen. Der Parser wird weiterentwickelt und wird zukünftig auch für andere Projekte genutzt. (Dieses Projekt hieß früher übrigens DB_DBA)
+</p>
 
 <h3>Zend Engine 2 und Errors </h3>
 PHP5 und die Zend Engine 2 werfen in Form des Catch-Throw-Mechanismus und dem
 neuem reserviertem Schl&uuml;sselwort 'delete' ihre Schatten auch auf PEAR.
-Stig testet die ZE2 und entwarf daraufhin eine vereinfachte Version von raiseError()
+Stig testet die ZE2 und entwarf daraufhin eine vereinfachte Version von raiseError(). Sebastian Bergmann implementiert für PHP_Assert_Unit mit assertSame() derzeit eine Funktion zum Vergleich von Variablen. Der Vergleich von Objekten ist nur unter der ZE2 möglich. 
 Hinsichtlich 'delete' gibt es hier Probleme bei DB_DBA und DB_DataObject, sie benutzen 
 'delete' bereits als Methodename. Brent &auml;ndert die Bezeichnung in DB_DBA zu 'remove'.
 Alan begann dazu eine Diskussion mit Andi auf der Zend-Engine2-Mailingliste, schliesslich
-k&ouml;nnte 'delete' als Name f&uuml;r Methoden erlaubt sein.
+k&ouml;nnte 'delete' als Name f&uuml;r Methoden erlaubt sein. Eine endgültige Entscheidung ist erst nach Ende von Andis Urlaub zu erwarten.
 <br>
 
-<h3>Diverse Fixes </h3>
-Die Mail_Mime-Lizenzangabe in der Packagedatei wurde korregiert,
-Dan Allen warf einen kleinen Bug in File_CSV heraus.<br>
+<h3>Danke an die folgenden Entwickler für Fixes und Bug-Meldungen</h3>
+<p>
+Dan Allen, James Flemmer, Paul Cooper, Marco Wittwer, Yavor Shahpsov
+</p>
 
-<h3>Lizenzen </h3>
+<h3>Weekly News - Herausgabe and Übersetzungen</h3>
+<p>
+Alexander Merz übersetzt derzeit die "Weekly News" ins Deutsche. 
+Wenn Sie ebenfalls bereit sind, eine Stunde pro Woche für eine Übersetzung in ihre
+Sprache zu investieren oder Übersetzer/Schreiber bei ihrer Arbeit helfen möchten, dann
+schicken sie einfach eine Nachricht an die PEAR-Dev Mailingliste. 
+Der Zeitplan für die Herausgabe sieht eine Ausgabe der endgültigen englischsprachigen
+"Weekly News" für Freitag vor. Übersetzungen sollten sollten möglichst bis Montag/Dienstag der 
+darauffolgenden Woche vorliegen. Die Ankündigung einer neuen "Weekly News" erfolgt jeweils 
+Montags. Wer Vorschläge zur Veröffentlichung der "Weekly News" auf anderen Webseiten hat, kann diese
+an die PEAR-Dev-Mailingliste schreiben.
+</p>
+
+<h3>PLD Linux Distribution includes PEAR </h3>
+<p>
+PLD Linux Distribution (www.pld.org.pl) stellt PEAR-Packages als RPMs bereit.
+Stig sagte, dass dies im Sinne des PEAR-Installers ist. Schliesslich wurde der PEAR-Package-Manager auch 
+in Hinblick auf die Einbettung in ander Package-Systeme entwickelt. Er wies darauf hin, dass zukünftig lediglich die 3 PEAR-Core-Packages mit PHP selbst ausgeliefert werden, die übrigen müssen nachträglich installiert werden
+</p>
+
+<h3>Absolute vs. Relative Pfade</h3>
+<p>
+Lukas Smith brachte die Idee "dirname(__FILE__) . '/filename.php'"
+anstatt "'package/filename.php'" für include- und require-Befehle zu nutzen.
+Es gab dafür nur geringe Zustimmung. Lukas stellte fest, das es u.U. zu Problemen 
+mit dem PEAR-Installer hinsichtlich der automatischen Auflösung von Package-Abhängigkeiten
+kommen kann.
+</p>
+<p>
+Es wurde angemerkt, dass viele Entwickler nicht unbedingt die PEAR-Packages unmittelbar aus dem
+Standard-PEAR-Verzeichniss nutzen, sondern aus applikationsspezifischen Verzeichnissen und daher 
+mithilfe von ini_set() ihren Include-Path verbiegen.
+</p>
+
+<h3>Lizenzen und kompiliertes PHP</h3>
+<p>
 Brent Cook schrieb einen interessanten  <a href="http://lists.php.net/article.php?group=php.pear.cvs&amp;article=4936">Artikel</a>, warum er f&uuml;r DB_DBA die LGPL statt der PHP License
 w&auml;hlte.<br>
-<br>
-<br>
+In einer ähnlichen Diskussion wurde gefragt,  ob PEAR bzw. einzelne Komponenten 
+in compilierter bzw. binärer Form vertrieben werden dürfen (z.B. durch den Zend Bytecode Compiler erzeugt).
+Alle derzeit in PEAR eingesetzen Lizenzen erlauben diese Form des Vertriebs (zumindest wenn der Quellcode nicht 
+modifiziert wurden).
+</p>
+
+<h3>XML_RPC and SOAP pluggable transport layers </h3>
+<p>
+James Flemmer schrieb einen Patch für XML_RPC der eine zusätzliche "plug-in transport layers" erlaubt.
+So können Request über HTTP, HTTPS, Unix Sockets, Brieftauben, etc ... abgesendet werden.
+Shane Caraveo schlug vor die betreffende Arbeiten an der Plug-In-Schnittstelle für den Nachrichtentransport
+mit dem SOAP-Package zu koordinieren, damit doppelte Arbeit vermieden wird.
+</p>
+
+<h3>Standardbezeichnung für "Verbindung trennen". </h3>
+<p>
+Alexander Merz schlug vor die Methodennamen für jegliche Arten von Verbindungsaufbau und -abbau zu standarisieren.
+Damit soll der Wildwuchs von "quit", "close", "open", "connect" etc. beendet werden. Der Vorschlag wurde einhellig angenommen.
+</p>
+<hr>
+
+<h2>Package-Vorschläge:</h2>
+<h3>Managment-Package für Benutzer-Authentifizierung und Zugriffs-Kontroll</h3>
+<p>
+Markus Wolff schlug vor seine <a href="http://projects.21st-hq.de/liveuser/">User and ACL management classes</a> an PEAR anzupassen und sie hinzuzufügen. Er bat um entsprechendes Feedback.
+</p>
+<h3>Template_Flexy - Yet Another Templating class</h3>
+<p>
+Alan Knowles, schlug seine <a href="http://docs.akbkhome.com/Template_Flexy/">Template_Flexy</a>-
+Klasse für PEAR vor. Er bekam einen gewissen Zuspruch. Die Klasse bietet eine einfache API 
+kombiniert mit einer schnellen Templating-Engine basieren auf Wolframs Kriesings
+"simpletemplate"-Klasse.
+</p>
+<h3>
+</h3>
+<h3>PECL-SMBC-C Modul für Samba client access</h3>
+<p>
+Jelmer Vernooij kündigte eine PHP-Extension für den Samba Client an. Damit ist die Samba-Client-API auch in PHP nutzbar.
+</p>
 
 <hr>
 
-<h2>Development </h2>
+<h2>Entwicklung</h2>
+<p>
+CVS-Aktivitäten fanden letzte Woche bei DBA, Net_Dime, SOAP,
+DB, PEAR, PECL::soap, Mail_Mime, HTML_QuickForm, File_Password, Date,
+MDB, XML_CSSML, PHP_Unit, Net_SMTP und PEAR_Frontend_Web statt.
+</p>
+<hr>
+<h2>Dokumentation</h2>
+<p>
+DB_DataObject wurde in die Dokumentation aufgenommen.
+</p>
+<br>
 
-CVS-Aktivit&auml;ten fanden letze Woche bei DB_DBA, Net_Dime, SOAP, DB, PEAR und PECL::soap statt<br>
-<br>
-<br>
+
 </body></html>

@@ -19,7 +19,7 @@
    $Id$
  */
 
-require_once "HTML/Form.php";
+zrequire_once "HTML/Form.php";
 
 response_header("Package statistics");
 ?>
@@ -296,10 +296,10 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
 */
 } else {
 
-	$total_packages    = $dbh->getOne("SELECT COUNT(DISTINCT pid) FROM package_stats");
-	$total_maintainers = $dbh->getOne("SELECT COUNT(DISTINCT handle) FROM maintains");
-	$total_releases    = $dbh->getOne("SELECT COUNT(*) FROM package_stats");
-	$total_categories  = $dbh->getOne("SELECT COUNT(*) FROM categories");
+	$total_packages    = number_format($dbh->getOne("SELECT COUNT(DISTINCT pid) FROM package_stats"), 0, '.', ',');
+	$total_maintainers = number_format($dbh->getOne("SELECT COUNT(DISTINCT handle) FROM maintains"), 0, '.', ',');
+	$total_releases    = number_format($dbh->getOne("SELECT COUNT(*) FROM package_stats"), 0, '.', ',');
+	$total_categories  = number_format($dbh->getOne("SELECT COUNT(*) FROM categories"), 0, '.', ',');
 	$query             = "SELECT dl_number, package, release, pid, rid, cid FROM package_stats ORDER BY dl_number DESC";
 
 }
@@ -361,7 +361,7 @@ if (@!$_GET['pid']) {
 	    echo "<tr bgcolor=\"#eeeeee\">\n";
 	    echo "<td>\n" . $row['package'] .  "</td>\n";
 	    echo "<td>" . $row['release'] . "</td>\n";
-	    echo "<td>" . $row['dl_number'] . "</td>\n";
+	    echo "<td>" . number_format($row['dl_number'], 0, '.', ',') . "</td>\n";
 	    echo "<td>[". make_link("/package-stats.php?cid=" . $row['cid'] . "&pid=" . $row['pid'] . "&rid=" . $row['rid'], "Details") . "]</td>\n";
 	    echo "</tr>\n";
 	}

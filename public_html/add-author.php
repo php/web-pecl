@@ -80,8 +80,9 @@ if ($display_form) {
         print " </TR>\n";
     } else {
         $handle = $name = $email = $homepage = $password = '';
-        $showemail = $admin = false;
     }
+    $showemail = (isset($showemail)) ? true : false;
+    $admin     = (isset($admin)) ? true : false;
 
     $width = 45;
     $form = new HTML_Form($PHP_SELF, "POST");
@@ -89,9 +90,9 @@ if ($display_form) {
     $form->addText("name", "Name", $name, $width);
     $form->addText("email", "Email", $email, $width);
     $form->addText("homepage", "Homepage", $homepage, $width);
-    $form->addCheckbox("showemail", "Show Email Address?", (bool)$showemail);
-    $form->addCheckbox("admin", "Administrator?", (bool)$admin);
-    $form->addPassword("password", "Password", $password);
+    $form->addCheckbox("showemail", "Show Email Address?", $showemail);
+    $form->addCheckbox("admin", "Administrator?", $admin);
+    $form->addPassword("password", "Password", $password, 10);
     $form->addTextarea("info", "More info", '', $width, 5);
     $form->addSubmit("submit", "Add Author");
 

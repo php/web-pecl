@@ -147,9 +147,9 @@ function response_header($title = 'The PHP Extension and Application Repository'
   <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
 
   <tr bgcolor="#006600">
-    <td align="right" valign="top" colspan="5" height="1">
+    <td align="right" valign="top" colspan="5" height="1" class="menuWhite">
     <form method="post" action="/search.php">
-    <font color="#ffffff"><small>Search for</small>
+    <small>Search for</small>
     <input class="small" type="text" name="search_string" value="" size="20" />
     <small>in the</small>
     <select name="search_in" class="small">
@@ -158,7 +158,7 @@ function response_header($title = 'The PHP Extension and Application Repository'
     <option value="pear-general">General mailing list</option>
     <option value="pear-cvs">CVS commits mailing list</option>
     </select>
-    <input type="image" src="/gifs/small_submit_white.gif" alt="search" align="bottom" /></font>&nbsp;<br /></form></td></tr>
+    <input type="image" src="/gifs/small_submit_white.gif" alt="search" align="bottom" />&nbsp;<br /></form></td></tr>
 
   <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
 

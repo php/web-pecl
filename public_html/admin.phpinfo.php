@@ -20,12 +20,5 @@
 
 auth_require(true);
 
-if (empty($_GET['phpinfo'])) {
-	response_header();
-	echo '<iframe src="admin.phpinfo.php?phpinfo=1" width="820" height="380" frameborder="0">No IFRAME support!</iframe>';
-	response_footer();
-} else {
-	phpinfo();
-}
-
+phpinfo();
 ?>

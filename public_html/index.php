@@ -71,7 +71,7 @@ if (isset($_COOKIE['PEAR_USER'])) {
     }
 }
 // XXX Hide for the moment?
-menu_link("Request PECL Account", "account-request.php");
+menu_link("I want to publish my PHP Extension in PECL", "account-request.php");
 
 $recent = release::getRecent();
 if (@sizeof($recent) > 0) {

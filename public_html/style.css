@@ -15,12 +15,12 @@ p {
 
 th.pack {
     color: #FFFFFF;
-    background: #009933;
+    background: #330099;
     text-align: right;
 }
 
 th.others {
-    color: #006600;
+    color: #000066;
     text-align: left;
 }
 
@@ -98,21 +98,21 @@ h1 {
     font-family: verdana,arial,helvetica,sans-serif;
     font-size: 140%;
     font-weight: bold;
-    color: #006600;
+    color: #000066;
 }
 
 h2 {
     font-family: verdana,arial,helvetica,sans-serif;
     font-size: 125%;
     font-weight: bold;
-    color: #006600;
+    color: #000066;
 }
 
 h3 {
     font-family: verdana,arial,helvetica,sans-serif;
     font-size: 110%;
     font-weight: bold;
-    color: #006600;
+    color: #000066;
 }
 
 small {

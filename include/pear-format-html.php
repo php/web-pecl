@@ -102,9 +102,9 @@ function response_header($title = 'The PHP Extension Community Library', $style 
 ?>
         bgcolor="#ffffff"
         text="#000000"
-        link="#006600"
-        alink="#cccc00"
-        vlink="#003300"
+        link="#000066"
+        alink="#cc00cc"
+        vlink="#000033"
 ><a name="TOP" />
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="#330099">

@@ -17,7 +17,7 @@ $GLOBALS['author_menu'] = array(
 );
 
 $GLOBALS['admin_menu'] = array(
-    'admin.php'           => 'Account Requests',
+    'admin.php'            => 'Account Requests',
     'category-manager.php' => 'Manage Categories'
 );
 
@@ -54,8 +54,9 @@ function response_header($title = 'The PHP Extension and Application Repository'
     } elseif (DEVBOX) {  // For now only show bar on dev boxes
         global $main_menu, $auth_user;
         $SIDEBAR_DATA .= draw_navigation($main_menu);
+        init_auth_user();
         if (!empty($auth_user)) {
-            if (!empty($auth_user->registered)) {
+            if (empty($auth_user->registered)) { // XXXX registered = only visitor?
                 global $author_menu;
                 $SIDEBAR_DATA .= draw_navigation($author_menu, 'Author Actions:');
             }

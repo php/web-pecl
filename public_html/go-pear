@@ -39,6 +39,7 @@
 set_time_limit(0);
 ob_implicit_flush(true);
 ini_set('track_errors', true);
+ini_set('output_buffering', false);
 ini_set('implicit_flush', true);
 ini_set('html_errors', false);
 ini_set('magic_quotes_runtime', false);

@@ -20,6 +20,11 @@
 
 auth_require(true);
 
+if (!empty($_GET['phpinfo'])) {
+    phpinfo();
+    exit();
+}
+
 $SIDEBAR_DATA='
 This is the PEAR administration page.<br />
 <noscript><p>
@@ -348,12 +353,11 @@ do {
 		</form>
 		<br /><br />
 		<?php
-/*
         $bb = new BorderBox("System information", "50%");
 
         echo "<ul>\n";
         echo "<li>Uptime: " . uptime() . "</li>\n";
-        echo "<li>Disk space: " . round((disk_total_space("/")/(1000*1000*1000)),2) . " GB (available: " . round((diskfreespace("/")/(1000*1000*1000)),2) . " GB)</li>\n";
+        // echo "<li>Disk space: " . round((disk_total_space("/")/(1000*1000*1000)),2) . " GB (available: " . round((diskfreespace("/")/(1000*1000*1000)),2) . " GB)</li>\n";
         echo "<li>" . make_link($_SERVER['PHP_SELF'] . "?phpinfo=1", "Output of phpinfo()") . "</li>\n";
         echo "<li>Server name: " . $_SERVER['SERVER_NAME'] . "</li>\n";
         echo "<li>System date: " . date("Y-m-d H:i:s") . "</li>\n";
@@ -361,7 +365,6 @@ do {
         $bb->end();
 
         echo "<br /><br />\n";
-*/
     }
 
     // }}}

@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001 The PHP Group                                     |
+   | Copyright (c) 2001-2003 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -44,8 +44,7 @@ $GLOBALS['user_menu'] = array(
 
 $GLOBALS['admin_menu'] = array(
     '/admin.php'            => 'Account Requests',
-    '/category-manager.php' => 'Categories',
-	'/admin.phpinfo.php'    => 'PHPInfo Output'
+    '/category-manager.php' => 'Categories'
 );
 
 $GLOBALS['_style'] = '';

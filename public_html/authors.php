@@ -10,8 +10,6 @@ if (DB::isError($sth)) {
     die("query failed: ".DB::errorMessage($dbh)."<BR>\n");
 }
 
-print "<A HREF=\"add-author.php\">NEW</A> \n";
-
 print "<P>\n";
 
 print "<TABLE BORDER=\"0\" CELLSPACING=\"1\" CELLPADDING=\"5\">\n";

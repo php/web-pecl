@@ -271,7 +271,7 @@ while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
     echo "<td>\n" . $row['package'] .  "</td>\n";
     echo "<td>" . $row['release'] . "</td>\n";
     echo "<td>" . $row['dl_number'] . "</td>\n";
-    echo "<td>[". make_link("/log.php?pid=" . $row['pid'] . "&rid=" . $row['rid'], "Details") . "]</td>\n";
+    echo "<td>[". make_link("/package-stats.php?pid=" . $row['pid'] . "&rid=" . $row['rid'], "Details") . "]</td>\n";
     echo "</tr>\n";
 }
 

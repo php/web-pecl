@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>by Alan Knowles (alan_k@php.net), traduit par Damien Seguy
+(damien.seguy@nexen.net)</small></i></p>
+    
+<p>Cette semaine a &eacute;t&eacute; bien calme sur la liste de d&eacute;veloppement, et l'actualit&eacute;
+de cette semaine sera courte et agr&eacute;able. La plupart des discussions se sont
+focalis&eacute;es sur le changement de dirname(__FILE__) comme m&eacute;thode d'inclusion
+des fichiers. Cette semaine, 3 nouvelles publications, 1 stable, et 2 betas.
+</p>
+    
+<hr>  
+<h2>Nouvelles publications</h2>
+    
+<h3>Stable</h3>
+    
+<ul>
+    <li><b>Date</b> - Un package qui permet les manipulations de date et leur
+    affichage.</li>
+</ul>
+
+
+<h3>Beta</h3>
+  
+<ul>
+  <li><b>spread</b>  - Une extension PHP qui fournit une interface compl&egrave;te 
+  avec le protocole de communication <a href="http://www.spread.org">spread</a>.</li>
+  <li><b>APD</b>  - Une extension PHP qui fournit un profileur et un 
+  d&eacute;bogeur complet.</li>
+</ul>
+         
+<hr> 
+
+ 
+<hr>  
+<h2>Trafic de la liste de diffusion PEAR-DEV</h2>
+    
+<h3>HTML_Select, un jeu standard de bo&icirc;tes Select</h3>
+<p>
+Il y a des discussions r&eacute;manentes &agrave; propos de HTML_Select, un jeu de
+menus d&eacute;roulants classiques, comme les pays, les comt&eacute;s, etc.. et comment
+les faire fonctionner dans le package HTML.</p>
+
+
+<h3>le chemin PEAR dans require_once, et l'utilisation de dirname(__FILE__)</h3>
+Lukas Smith a soulev&eacute; le probl&egrave;me du require_once de PEAR, pour qu'il
+utilise dirname(__FILE__), plut&ocirc;t que de s'appuyer sur l'include path. Cela
+semble &ecirc;tre un probl&egrave;me commun lorsqu'on travaille avec des environnements
+h&eacute;berg&eacute;s, et il a &eacute;t&eacute; not&eacute; que cela peut &ecirc;tre un gain de vitesse mineur, 
+car PHP n'aurait pas &agrave; chercher tous les dossiers de l'include path avant
+d'inclure le fichier. Les d&eacute;bats se poursuivent.<br>
+
+
+<h3>Structure des fichiers MDB</h3>
+<p>Lukas a mentionn&eacute; qu'il allait s'attaquer &agrave; une autre fonctionnalit&eacute;
+de son projet MDB, en d&eacute;pla&ccedil;ant les fichier MDB dans la structure 
+PEAR standard.<br>
+</p>
+
+
+
+<hr>   
+<h2>Nouvelles propositions de packages</h2>
+    
+<h3>Apache_LogParser name. Il inclut une liste de noms localis&eacute;s.</h3>
+<p>Sagi Bashari a annonc&eacute; un package pour analyser les fichiers d'historique
+d'Apache, et construire des statistiques bas&eacute;es sur les informations qu'ils
+contiennent. Ce packages pourra &ecirc;tre utilis&eacute; pour traiter les fichiers
+d'historiques d'autres applicatins, qui utilisent des formats d'historiques
+similaires, commes le serveur proxy Squid.</p>
+ 
+<hr>    
+<h2>D&eacute;velopments</h2>
+<p>
+  Les packages actifs sur CVS cette semaine &eacute;taient : 
+Date, DBA, DB_Relational, MDB, PECL::apd,
+PECL::bcompiler, PECL:python, PECL::spread, XML_XSLT_Wrapper. Et un bon
+nombre de commit dans le nouveau manuel PEAR, peardoc2.</p>
+</body>
+</html>

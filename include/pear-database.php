@@ -250,8 +250,8 @@ class package
              "WHERE package = ?".
              "ORDER BY releasedate DESC";
         $notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
-        $deps_sql = "SELECT type, relation, version, name 
-                     FROM deps 
+        $deps_sql = "SELECT type, relation, version, name
+                     FROM deps
                      WHERE package = ?";
         if ($field === null) {
             $info =
@@ -347,8 +347,8 @@ class package
         foreach(array_keys($packageinfo) as $pkg) {
             $_deps = array();
             foreach($deps as $dep) {
-                if ($dep['package'] == $packageinfo[$pkg]['packageid'] 
-                    && $dep['release'] == $stablereleases[$pkg]['rid']) 
+                if ($dep['package'] == $packageinfo[$pkg]['packageid']
+                    && $dep['release'] == $stablereleases[$pkg]['rid'])
                 {
                     unset($dep['rid']);
                     unset($dep['release']);
@@ -357,7 +357,7 @@ class package
             };
             $packageinfo[$pkg]['deps'] = $_deps;
         };
-        
+
         if ($released_only) {
             foreach ($packageinfo as $pkg => $info) {
                 if (!isset($stablereleases[$pkg])) {
@@ -1211,7 +1211,7 @@ class user
         }
         return $dbh->getRow('SELECT ! FROM users WHERE handle = ?',
                             array($field, $user), DB_FETCHMODE_ASSOC);
-        
+
     }
 
     // }}}

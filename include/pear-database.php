@@ -62,11 +62,11 @@ function visit_node(&$tree, $node, &$cnt, $debug) {
     $tree[$node]['leftvisit'] = $visitno;
     $inc = 1;
     if (isset($cnt[$node])) {
-	$inc += $cnt[$node] * 2;
+        $inc += $cnt[$node] * 2;
     }
     if ($debug) {
-	var_dump($cnt[$node]);
-	print "inc=$inc<br />\n";
+        var_dump($cnt[$node]);
+        print "inc=$inc<br />\n";
     }
     $visitno += $inc;
     if (isset($tree[$node]['children'])) {
@@ -86,15 +86,15 @@ function renumber_visitations($debug = false)
     global $dbh;
     $sth = $dbh->query("SELECT category FROM packages");
     if (DB::isError($sth)) {
-	return $sth;
+        return $sth;
     }
     $pkg_count = array();
     while ($sth->fetchInto($row, DB_FETCHMODE_ORDERED) === DB_OK) {
-	if (isset($pkg_count[$row[0]])) {
-	    $pkg_count[$row[0]]++;
-	} else {
-	    $pkg_count[$row[0]] = 1;
-	}
+        if (isset($pkg_count[$row[0]])) {
+            $pkg_count[$row[0]]++;
+        } else {
+            $pkg_count[$row[0]] = 1;
+        }
     }
     $sth->free();
     $sth = $dbh->query("SELECT * FROM categories ORDER BY name");
@@ -107,16 +107,16 @@ function renumber_visitations($debug = false)
     $new_count = array();
     while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC) === DB_OK) {
         extract($row);
-	settype($parent, 'integer');
+        settype($parent, 'integer');
         $tree[$parent]["children"][] = $id;
         $tree[$id]["parent"] = $parent;
         $oldleft[$id] = (int)$leftvisit;
         $oldright[$id] = (int)$rightvisit;
-	if (!isset($pkg_count[$id])) {
-	    $new_count[$id] = 0;
-	} elseif ($npackages != $pkg_count[$id]) {
-	    $new_count[$id] = $pkg_count[$id];
-	}
+        if (!isset($pkg_count[$id])) {
+            $new_count[$id] = 0;
+        } elseif ($npackages != $pkg_count[$id]) {
+            $new_count[$id] = $pkg_count[$id];
+        }
     }
     visit_node($tree, 0, $pkg_count, $debug);
     foreach ($tree as $node => $data) {
@@ -135,10 +135,10 @@ function renumber_visitations($debug = false)
             print "updating $node<br />\n";
         }
         $query = "UPDATE categories SET leftvisit = $l, rightvisit = $r";
-	if (isset($new_count[$node])) {
-	    $query .= ", npackages = {$new_count[$node]}";
-	}
-	$query .= " WHERE id = $node";
+        if (isset($new_count[$node])) {
+            $query .= ", npackages = {$new_count[$node]}";
+        }
+        $query .= " WHERE id = $node";
         $dbh->query($query);
     }
     return DB_OK;
@@ -186,13 +186,13 @@ function add_package($data)
     // license, summary, description
     extract($data);
     if (empty($license)) {
-	$license = "PEAR License";
+        $license = "PEAR License";
     }
     if (empty($category)) {
-	return PEAR::raiseError("no `category' field");
+        return PEAR::raiseError("no `category' field");
     }
     if (empty($name)) {
-	return PEAR::raiseError("no `name' field");
+        return PEAR::raiseError("no `name' field");
     }
     $query = "INSERT INTO packages (id,name,category,license,summary,".
              "description) VALUES(?,?,?,?,?,?)";
@@ -207,7 +207,7 @@ function add_package($data)
         return $err;
     }
     if (DB::isError($err = renumber_visitations())) {
-	return $err;
+        return $err;
     }
     return $id;
 }
@@ -220,11 +220,11 @@ function add_maintainer($package, $user, $role)
     $query = "INSERT INTO maintains VALUES(?,?,?)";
     $sth = $dbh->prepare($query);
     if (DB::isError($sth)) {
-	return $sth;
+        return $sth;
     }
     $err = $dbh->execute($sth, array($user, $package, $role));
     if (DB::isError($err)) {
-	return $err;
+        return $err;
     }
     return DB_OK;
 }
@@ -406,8 +406,8 @@ function mail_pear_admins($subject, $msg, $xhdr = '')
     global $dbh;
     $admins = $dbh->getCol("SELECT email FROM users WHERE admin = 1");
     if (is_array($admins)) {
-	$rcpt = implode(", ", $admins);
-	return mail($rcpt, "PEAR Account Request", $msg, $xhdr);
+        $rcpt = implode(", ", $admins);
+        return mail($rcpt, "PEAR Account Request", $msg, $xhdr);
     }
     return false;
 }

@@ -41,7 +41,8 @@ User authentication, revision control, wysiwyg editing. - which currently this (
 function show_languages() {
     $available_langs = array(
         'en' => 'English',
-        'fr' => 'French'
+        'fr' => 'French',
+	'de' => 'German'
     );
     echo 'View In :: ';
     foreach ($available_langs  as $lang => $string) {

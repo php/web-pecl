@@ -35,8 +35,8 @@ For information on the PHP License (i.e. using the PHP language),
 
 <p>
 The code, text, PHP logo, and graphical elements on this website 
-and the mirror websites (the "Site") are Copyright &copy; 2001, 2002 
-The PHP Group.  All rights reserved.
+and the mirror websites (the "Site") are Copyright &copy; 2001, 2002, 
+2003 The PHP Group.  All rights reserved.
 </p>
 
 <p>
@@ -63,11 +63,6 @@ You can contact the webmaster at <?php print_link('mailto:pear-webmaster@php.net
 <p>
 For more information on the PHP Group and the PHP project, please see 
 <?php print_link('http://www.php.net/'); ?>.
-</p>
-
-<p>
-For more information on the PHP-PEAR project, please see 
-<?php print_link('http://pear.php.net/'); ?>.
 </p>
 
 <?php

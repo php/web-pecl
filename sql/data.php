@@ -10,4 +10,6 @@ $dbh->query("INSERT INTO users VALUES('ssb', '738aa8d3bc02eb8712acd0eb2cf6dfd5',
 $dbh->query("INSERT INTO users VALUES('mj', '4f5c2e35084da4469fb82cc494eeb847', 'Martin Jansen', 'mj@php.net', 'http://martin-jansen.de/', '2001-05-24', 'mj', NULL, 1, 1, 1, NULL)");
 $dbh->query("INSERT INTO users VALUES('cox', '124854bf5ca680411fca8676e6014819', 'Tomas V.V.Cox', 'cox@php.net', 'http://vulcanonet.com', '2001-08-31', 'cox', NULL, 1, 1, 1, NULL)");
 
+include "./addcategories.php";
+
 ?>

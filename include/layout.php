@@ -11,12 +11,12 @@ if (empty($prevsearch)) $prevsearch = '';
 //
 
 function spacer($width=1, $height=1, $align=false, $extras=false) {
-	printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt="" %s%s />',
-		$width,
-		$height,
-		($align ? 'align="'.$align.'" ' : ''),
-		($extras ? $extras : '')
-	);
+    printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt="" %s%s />',
+        $width,
+        $height,
+        ($align ? 'align="'.$align.'" ' : ''),
+        ($extras ? $extras : '')
+    );
 }
 
 
@@ -26,10 +26,10 @@ function spacer($width=1, $height=1, $align=false, $extras=false) {
 //
 
 function resize_image($img, $width=1, $height=1) {
-	$str = preg_replace('/width=\"([0-9]+?)\"/i', '', $img );
-	$str = preg_replace('/height=\"([0-9]+?)\"/i', '', $str );
-	$str = substr($str,0,-1) . sprintf(' height="%s" width="%s">', $height, $width );
-	return $str;
+    $str = preg_replace('/width=\"([0-9]+?)\"/i', '', $img );
+    $str = preg_replace('/height=\"([0-9]+?)\"/i', '', $str );
+    $str = substr($str,0,-1) . sprintf(' height="%s" width="%s">', $height, $width );
+    return $str;
 }
 
 
@@ -39,31 +39,31 @@ function resize_image($img, $width=1, $height=1) {
 //
 
 function make_image($file, $alt=false, $align=false, $extras=false, $dir=false, $border=0) {
-	global $HTTP_SERVER_VARS;
-	if (!$dir) {
-		$dir = '/gifs';
-	}
-	if ($size = @getimagesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].$dir.'/'.$file)) {
-		$image = sprintf('<img src="%s/%s" border="%d" %s alt="%s" %s%s />',
-			$dir,
-			$file,
-			$border,
-			$size[3],
-			($alt    ? $alt : ''),
-			($align  ? ' align="'.$align.'"'  : ''),
-			($extras ? ' '.$extras            : '')
-		);
-	} else {
-		$image = sprintf('<img src="%s/%s" border="%d" alt="%s" %s%s />',
-			$dir,
-			$file,
-			$border,
-			($alt    ? $alt : ''),
-			($align  ? ' ALIGN="'.$align.'"'  : ''),
-			($extras ? ' '.$extras            : '')
-		);
-	}
-	return $image;
+    global $HTTP_SERVER_VARS;
+    if (!$dir) {
+        $dir = '/gifs';
+    }
+    if ($size = @getimagesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].$dir.'/'.$file)) {
+        $image = sprintf('<img src="%s/%s" border="%d" %s alt="%s" %s%s />',
+            $dir,
+            $file,
+            $border,
+            $size[3],
+            ($alt    ? $alt : ''),
+            ($align  ? ' align="'.$align.'"'  : ''),
+            ($extras ? ' '.$extras            : '')
+        );
+    } else {
+        $image = sprintf('<img src="%s/%s" border="%d" alt="%s" %s%s />',
+            $dir,
+            $file,
+            $border,
+            ($alt    ? $alt : ''),
+            ($align  ? ' ALIGN="'.$align.'"'  : ''),
+            ($extras ? ' '.$extras            : '')
+        );
+    }
+    return $image;
 }
 
 
@@ -73,7 +73,7 @@ function make_image($file, $alt=false, $align=false, $extras=false, $dir=false, 
 //
 
 function print_image($file, $alt=false, $align=false, $extras=false, $dir=false, $border=0) {
-	print make_image($file, $alt, $align, $extras, $dir);
+    print make_image($file, $alt, $align, $extras, $dir);
 }
 
 
@@ -82,16 +82,16 @@ function print_image($file, $alt=false, $align=false, $extras=false, $dir=false,
 //  - make a submit button image
 //
 function make_submit($file, $alt=false, $align=false, $extras=false, $dir=false, $border=0) {
-	if (!$dir) {
-		$dir = '/gifs';
-	}
-	$return = make_image($file, $alt, $align, $extras, $dir, $border);
-	if ($return != "<img />") {
-		$return = '<input type="image"'.substr($return,4);
-	} else {
-		$return = '<input type="submit">';
-	}
-	return $return;
+    if (!$dir) {
+        $dir = '/gifs';
+    }
+    $return = make_image($file, $alt, $align, $extras, $dir, $border);
+    if ($return != "<img />") {
+        $return = '<input type="image"'.substr($return,4);
+    } else {
+        $return = '<input type="submit">';
+    }
+    return $return;
 }
 
 
@@ -101,10 +101,10 @@ function make_submit($file, $alt=false, $align=false, $extras=false, $dir=false,
 //
 
 function delim($color=false) {
-	if (!$color) {
-		return '&nbsp;|&nbsp;';
-	}
-	return sprintf('<font color="%s">&nbsp;|&nbsp;</font>', $color );
+    if (!$color) {
+        return '&nbsp;|&nbsp;';
+    }
+    return sprintf('<font color="%s">&nbsp;|&nbsp;</font>', $color );
 }
 
 
@@ -114,10 +114,10 @@ function delim($color=false) {
 //
 
 function hdelim($color="#000000") {
-	if (!$color) {
-		return '<hr noshade size="1" />';
-	}
-	return sprintf('<hr noshade size="1" color="%s" />', $color );
+    if (!$color) {
+        return '<hr noshade size="1" />';
+    }
+    return sprintf('<hr noshade size="1" color="%s" />', $color );
 }
 
 
@@ -127,12 +127,12 @@ function hdelim($color="#000000") {
 //
 
 function make_link ($url, $linktext=false, $target=false, $extras=false) {
-	return sprintf("<a href=\"%s\"%s%s>%s</a>",
-		$url,
-		($target ? ' target="'.$target.'"' : ''),
-		($extras ? ' '.$extras : ''),
-		($linktext ? $linktext : $url)
-	);
+    return sprintf("<a href=\"%s\"%s%s>%s</a>",
+        $url,
+        ($target ? ' target="'.$target.'"' : ''),
+        ($extras ? ' '.$extras : ''),
+        ($linktext ? $linktext : $url)
+    );
 }
 
 // make_mailto_link()
@@ -148,7 +148,7 @@ function make_mailto_link ($url, $linktext=false, $extras=false) {
 //
 
 function print_link($url, $linktext=false, $target=false, $extras=false) {
-	echo make_link($url, $linktext, $target, $extras);
+    echo make_link($url, $linktext, $target, $extras);
 }
 
 
@@ -158,9 +158,9 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
 //
 
 function commonHeader($title) {
-	global $SIDEBAR_DATA, $HTTP_SERVER_VARS;
+    global $SIDEBAR_DATA, $HTTP_SERVER_VARS;
 
-?><!DOCTYPE html 
+?><!DOCTYPE html
   PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN'
   'http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
@@ -170,8 +170,8 @@ function commonHeader($title) {
 </head>
 
 <body
-	topmargin="0" leftmargin="0"
-	marginheight="0" marginwidth="0"
+    topmargin="0" leftmargin="0"
+    marginheight="0" marginwidth="0"
         bgcolor="#ffffff"
         text="#000000"
         link="#003300"
@@ -189,7 +189,7 @@ function commonHeader($title) {
       </b>&nbsp;<br />
 <?php
     if (isset($GLOBALS['HTTP_COOKIE_VARS']['pear_dev'])) {
-	print "pear_dev cookie set&nbsp;<br />";
+    print "pear_dev cookie set&nbsp;<br />";
     }
 ?>      </font>
     </td>
@@ -199,20 +199,20 @@ function commonHeader($title) {
     <td align="right" valign="bottom">
       <?php
 
-	if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER'])) {
-		print '<span class="menuWhite">logged in as ';
-		print strtoupper($HTTP_SERVER_VARS['PHP_AUTH_USER']);
-		print '&nbsp;</span><br />';
-		print_link('/logout.php?showmsg=1', 'LOGOUT', false, 'class="menuBlack"');
-	} else {
-		print_link('/login.php', 'LOGIN', false, 'class="menuBlack"');
-	}
-	echo delim();
-	print_link('/manual/', 'DOCS', false, 'class="menuBlack"');
-	echo delim();
-	print_link('/support.php','SUPPORT',false,'class="menuBlack"');
-	echo delim();
-	print_link('/faq.php','FAQ',false,'class="menuBlack"');
+    if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER'])) {
+        print '<span class="menuWhite">logged in as ';
+        print strtoupper($HTTP_SERVER_VARS['PHP_AUTH_USER']);
+        print '&nbsp;</span><br />';
+        print_link('/logout.php?showmsg=1', 'LOGOUT', false, 'class="menuBlack"');
+    } else {
+        print_link('/login.php', 'LOGIN', false, 'class="menuBlack"');
+    }
+    echo delim();
+    print_link('/manual/', 'DOCS', false, 'class="menuBlack"');
+    echo delim();
+    print_link('/support.php','SUPPORT',false,'class="menuBlack"');
+    echo delim();
+    print_link('/faq.php','FAQ',false,'class="menuBlack"');
       ?>&nbsp;<br />
       <?php spacer(2,2); ?><br />
     </td>
@@ -263,7 +263,7 @@ function commonHeader($title) {
 //
 
 function commonFooter() {
-	global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES,$SCRIPT_NAME, $RSIDEBAR_DATA;
+    global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES,$SCRIPT_NAME, $RSIDEBAR_DATA;
 ?>
      </td>
     </tr>
@@ -281,7 +281,7 @@ function commonFooter() {
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="#003300"><td><?php spacer(1,1);?></td></tr>
-  <tr bgcolor="#009933">    
+  <tr bgcolor="#009933">
       <td align="right" valign="bottom">
 <?php
 print_link('/source.php?url='.$SCRIPT_NAME, 'SHOW SOURCE', false, 'class="menuBlack"');
@@ -300,34 +300,34 @@ if (0) { ?>
           if (url != '<? echo $MYSITE; ?>') {
             window.location.href = url;
           }
-	  return false;
+      return false;
         }
       //-->
       </script>
       <form method="get" action="/mirrors.php" onsubmit="return gotomirror(this);">
       <input type="hidden" name="REDIRECT" value="1">
       <?php
-	echo delim();
-	print_link('/mirrors.php', 'MIRRORS:', false, 'class="menuBlack"');
-	echo "&nbsp;<select class=\"small\" name=\"country\" onchange=\"gotomirror(this.form)\">\n";
+    echo delim();
+    print_link('/mirrors.php', 'MIRRORS:', false, 'class="menuBlack"');
+    echo "&nbsp;<select class=\"small\" name=\"country\" onchange=\"gotomirror(this.form)\">\n";
 
-	foreach($MIRRORS as $url=>$mirror) {
-          if ($mirror[4] == 1) { /* only list full mirrors here */
-	    if ($url==$MYSITE) {
-              echo '<option value="' . $url . '" SELECTED>' . $COUNTRIES[$mirror[0]] . 
-		' (' . $mirror[1] . ") *\n";
-	    } else {
-              echo '<option value="' . $url . '">' . $COUNTRIES[$mirror[0]] . 
-		' (' . $mirror[1] . ")\n";
-	    }
-          }
-	}
-	echo "</select> ";
-	echo make_submit('small_submit_black.gif', 'go', 'bottom' );
-      ?>&nbsp;<br />
+    foreach($MIRRORS as $url=>$mirror) {
+        if ($mirror[4] == 1) { /* only list full mirrors here */
+            if ($url==$MYSITE) {
+                echo '<option value="' . $url . '" SELECTED>' . $COUNTRIES[$mirror[0]] .
+                     ' (' . $mirror[1] . ") *\n";
+            } else {
+                echo '<option value="' . $url . '">' . $COUNTRIES[$mirror[0]] .
+                     ' (' . $mirror[1] . ")\n";
+            }
+        }
+    }
+    echo "</select> ";
+    echo make_submit('small_submit_black.gif', 'go', 'bottom' );
+    ?>&nbsp;<br />
       </form>
 <?php } ?>
-      </td>    
+      </td>
   </tr>
   <tr bgcolor="#003300"><td><?php spacer(1,1); ?></td></tr>
 </table>

@@ -33,46 +33,46 @@ $jumpto = "name";
 
 do {
     if (isset($submit)) {
-	$required = array("name" => "enter the package name",
-			  "summary" => "enter the one-liner description",
-			  "desc" => "enter the full description",
-			  "license" => "choose a license type",
-			  "category" => "choose a category");
-	foreach ($required as $field => $_desc) {
-	    if (empty($_POST[$field])) {
-		display_error("Please $_desc!");
-		$jumpto = $field;
-		break 2;
-	    }
-	}
+        $required = array("name" => "enter the package name",
+                          "summary" => "enter the one-liner description",
+                          "desc" => "enter the full description",
+                          "license" => "choose a license type",
+                          "category" => "choose a category");
+        foreach ($required as $field => $_desc) {
+            if (empty($_POST[$field])) {
+                display_error("Please $_desc!");
+                $jumpto = $field;
+                break 2;
+            }
+        }
 
-	if (!preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $name)) {
-	    display_error("Invalid package name.  PEAR package names must start ".
-                      "with a capital letter and contain only letters, ".
-                      "digits and underscores.  PECL package names must be ".
-                      "all-lowercase, starting with a letter.");
-	    break;
-	}
+        if (!preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $name)) {
+            display_error("Invalid package name.  PEAR package names must start ".
+                          "with a capital letter and contain only letters, ".
+                          "digits and underscores.  PECL package names must be ".
+                          "all-lowercase, starting with a letter.");
+            break;
+        }
 
-	$dbh->expectError(DB_ERROR_ALREADY_EXISTS);
-	$pkg = package::add(array(
-	    'name'        => $name,
-	    'category'    => $category,
-	    'license'     => $license,
-	    'summary'     => $summary,
-	    'description' => $desc,
-	    'lead'        => $auth_user->handle,
-	));
-	$dbh->popExpect();
-	if (DB::isError($pkg) && $pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
-	    error_handler("The `$name' package already exists!",
-			  "Package already exists");
-	    exit;
-	}
-	$display_form = false;
-	response_header("Package Registered");
-	print "The package `$name' has been registered in PEAR.<br />\n";
-	print "You have been assigned as lead developer.<br />\n";
+        $dbh->expectError(DB_ERROR_ALREADY_EXISTS);
+        $pkg = package::add(array(
+                                  'name'        => $name,
+                                  'category'    => $category,
+                                  'license'     => $license,
+                                  'summary'     => $summary,
+                                  'description' => $desc,
+                                  'lead'        => $auth_user->handle,
+                                  ));
+        $dbh->popExpect();
+        if (DB::isError($pkg) && $pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
+            error_handler("The `$name' package already exists!",
+                          "Package already exists");
+            exit;
+        }
+        $display_form = false;
+        response_header("Package Registered");
+        print "The package `$name' has been registered in PEAR.<br />\n";
+        print "You have been assigned as lead developer.<br />\n";
     }
 } while (false);
 

@@ -51,7 +51,20 @@ href="/manual/">manual</a> for more information.
 -';
 
 response_header();
+?>
+<h3>Announcing the PEAR Group</h3>
 
+<p>On 12th August 2003 Stig S. Bakken, the founder of PEAR, announced
+the forming of the PEAR Group, which will be the governing body of
+PEAR. The full announcement can be
+<?php echo make_link("http://marc.theaimsgroup.com/?l=pear-dev&m=106073080219083&w=2",
+                     "found here"); ?>.</p>
+<p>More information about the Group, including a first administrative
+document, can be found at a <?php echo make_link("/group/", "dedicated place"); ?> 
+on pear.php.net.</p>
+
+<?php
+echo hdelim();
 menu_link("Documentation", "/manual/");
 menu_link("News", "/news/");
 menu_link("Frequently Asked Questions", "/manual/en/faq.php");

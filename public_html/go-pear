@@ -820,24 +820,6 @@ if (WEBINSTALLER) {
             'example.php',
             $webfrontend_file
         );
-   	//$fp = fopen($webfrontend_file, 'w');
-    if(false)
-   	if (!$fp) {
-   		print "failed\n";
-   	} else {
-   		$php_file = '<'."?php
-   			ini_set('include_path', '".$php_dir."');
-   			require_once('PEAR.php');
-   			\$pear_user_config = '".$prefix."/pear.conf';
-    		\$useDHTML         = true;
-   			require_once('PEAR/WebInstaller.php');
-   			?".'>';
-		fwrite($fp, $php_file);
-		fclose($fp);
-		print "ok\n";
-   	};
-    //copy($config->get('doc_dir').'/PEAR_Frontend_Web/docs/example.php', $webfrontend_file);
-
     if ($_GET['step'] == 'install-progress') {
         displayHTMLProgress($progress = 100);
         ob_end_clean();

@@ -46,10 +46,17 @@ do {
             }
         }
 
+		  $_POST['license'] = trim($_POST['license']);
+
+		  if (!strcasecmp($_POST['license'], "GPL") ||
+			  	!strcasecmp($_POST['license'], "LGPL")) {
+			  display_error("Illegal license type.  PECL packages CANNOT be GPL/LGPL licensed and thus MUST NOT be linked to GPL code.  Talk to pecl-dev@lists.php.net for more information.");
+			  $jumpto = 'license';
+			  break;
+		  }
+
         if (!preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $_POST['name'])) {
-            display_error("Invalid package name.  PEAR package names must start ".
-                          "with a capital letter and contain only letters, ".
-                          "digits and underscores.  PECL package names must be ".
+            display_error("Invalid package name.  PECL package names must be ".
                           "all-lowercase, starting with a letter.");
             break;
         }
@@ -85,21 +92,16 @@ if ($display_form) {
 
     print "<h1>$title</h1>
 
-Use this form to register a new package.
+<p>Use this form to register a new package.</p>
 
-<p />
 
+<p>
 <b>Before proceeding</b>, make sure you pick the right name for your
 package.  This is usually done through \"community consensus\", which
-means posting a suggestion to the pear-dev mailing list and have
+means posting a suggestion to the pecl-dev mailing list and have
 people agree with you.
+</p>
 
-<p />
-
-Note that if you don't follow this simple rule and break
-established naming conventions, your package will be taken hostage.
-So please play nice, that way we can keep the bureaucracy at a
-minimum.
 
 ";
 
@@ -131,7 +133,7 @@ minimum.
     $bb->horizHeadRow("Full description", $form->returnTextarea("desc", get("desc"), $width, 3));
     $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 40));
     $bb->horizHeadRow("CVS Web Url", $form->returnText("cvs_link", get("cvs_link"), 40) .
-                                     '<br /><small>For example: http://cvs.php.net/cvs.php/pear/XML_Parser</small>');
+                                     '<br /><small>For example: http://cvs.php.net/cvs.php/pecl/PDO</small>');
     $bb->fullRow($form->returnSubmit("Submit Request", "submit"));
     $bb->end();
 

@@ -1542,7 +1542,7 @@ function displayHTML($page = 'Welcome', $data = array())
 			<a href="<?php echo basename(__FILE__); ?>?step=config" class="green">Next &gt;&gt;</a>
 <?php
 	} elseif ($page == 'config') {
-		if (!empty($GLOBAL['http_proxy'])) {
+		if (!empty($GLOBALS['http_proxy'])) {
 			list($proxy_host, $proxy_port) = explode(':', $GLOBALS['http_proxy']);
 		} else {
 			$proxy_host = $proxy_port = '';

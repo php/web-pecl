@@ -1,0 +1,19 @@
+<?php
+/**
+ * $Id$
+ */
+if (!isset($PATH_INFO) || $PATH_INFO == '/') {
+    header("Location: /");
+}
+
+$opts = explode("/", $PATH_INFO);
+
+$query = "SELECT id FROM packages WHERE LCASE(name) = LCASE('" . $opts[1] . "')";
+$row = $dbh->getRow($query);
+
+if (!is_array($row)) {
+    header("Location: /");
+} else {
+    header("Location: /package-info.php?pacid=" . $row[0]);
+}
+?>

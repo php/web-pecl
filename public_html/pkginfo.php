@@ -96,6 +96,7 @@ width="100%" align="center">
 </tr>
 <tr>
     <td>_Home Page_</td>
+    <td>Description</td>
 </tr>
 </table>
 <br>
@@ -110,5 +111,5 @@ width="100%" align="center">
 </table>
 <br>
 <?php
-//response_footer();
+response_footer();
 ?>

@@ -9,5 +9,7 @@ CREATE TABLE downloads (
        dl_who	      VARCHAR(20),
        dl_host	      VARCHAR(100),
 
-       PRIMARY KEY(id)
+       PRIMARY KEY(id),
+       KEY package (package),
+       KEY release (release)
 );

@@ -29,6 +29,7 @@
 <!-- SECTION --><a name="2"></a>
 <h3></h3>
 <p>
+ There has been no press coverage this week.
 </p>
 
 <hr>
@@ -43,12 +44,36 @@ and they will be added to the weekly news.
 <h2>PEAR-DEV traffic</h2>
 
 <!-- SECTION --><a name="3"></a>
-<h3></h3>
+<h3>PEAR DB and MDB development</h3>
 <p>
+ Lukas Smith raised his concern on uncertainty about how feature
+ additions to PEAR DB should be handled in MDB. If MDB was to become 
+ the standard abstaction layer in PEAR it has to maintain full
+ backwards compatibility with DB. If not, there would be more
+ freedom in developing MDB. There is still no clear answer on
+ what will be the final relation between DB and MDB 
+ and should MDB replace DB at some point or should their development
+ continue on separate paths.
 </p>
 <!-- SECTION --><a name="4"></a>
-<h3></h3>
+<h3>Maintaining high quality</h3>
 <p>
+ On another mail Lukas also pointed out that it is currently
+ very hard to follow what packages are being proposed, accepted 
+ and for what reasons. In addition to that it seems we have been
+ lowering our expectations and not all packages are such high
+ quality.
+</p>
+<p>
+ As a solution to package proposal and approval problem the old idea
+ of having a "New Package Proposal" section in PEAR website was
+ brouht up again. New packages would be proposed and voted via this
+ section. The current system works now, but there might be problems
+ in the future when more developers join in.
+</p>
+<p>
+ About the quality issue it is up to PEAR developers to decide
+ whether we prefer quality over quantity or vice versa.
 </p>
 <!-- SECTION --><a name="5"></a>
 <h3></h3>
@@ -65,30 +90,48 @@ and they will be added to the weekly news.
 
 <h2>New and Proposed Packages</h2>
 <!-- SECTION --><a name="5"></a>
-<h3></h3>
+<h3>HTML_PageHandler</h3>
 <p>
+ Wolfram Kriesing proposed his HTML_PageHandler class which
+ handles common tasks that occur when handling forms. The class
+ wraps underlying class such as DB_QueryTool and calls its methods
+ when an event such as saving, removing or editing data occurs.
 </p>
 <!-- SECTION --><a name="6"></a>
-<h3></h3>
+<h3>HTTP_Session</h3>
 <p>
+ Alexander Radivanovich proposed his HTTP_Session class which is
+ an wrapper around native PHP session handling mechanisms also 
+ providing an object oriented API and database storage of sessions
+ via PEAR DB. At the time of writing first release has allready
+ been made.
 </p>
 <!-- SECTION --><a name="7"></a>
-<h3></h3>
+<h3>Net_IMAP</h3>
 <p>
+ Damian Alejandro Fernandez Sosa is developing an userland
+ implementation of IMAP protocol which provides IMAP access
+ to people that dont have IMAP support compiled.
 </p>
 
 <!-- SECTION --><a name="8"></a>
-<h3></h3>
+<h3>Crypt_DES</h3>
 <p>
-</p>
-<!-- SECTION --><a name="9"></a>
-<h3></h3>
-<p>
+ Tim Thorpe proposed a packages which implements DES, both as a
+ native processor or as a wrapper for libmcrypt if support for it 
+ has been compiled in. 
 </p>
 
 <h2>Development</h2>
 <p>
   Active on CVS this week have been:
+  HTML_Form, HTML_Template_Xipe, Config, DB_QueryTool, 
+  HTTP_WebDAV_Server, Image_GraphViz, PEC::uuid, Auth_SAP,
+  PEAR, PECL::ntuser, PECL::radius, Net_Ping, Tree, 
+  HTML_QuickForm, Config, HTML_Template_Flexy, 
+  HTML_Template_PHPLIB, Auth_SASL, Perm_LiveUser, PECL::cybercash,
+  DB_DataObject, Net_Ident, Spreadsheet_Excel_Writer, 
+  Image_GIS, DB, HTML_Form, File_HtAccess, Date, PECL::namazu
 </p>
 
 </body>

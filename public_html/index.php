@@ -51,44 +51,34 @@ href="/manual/">manual</a> for more information.
 -';
 
 response_header();
-?>
-<h3>Announcing the PEAR Group</h3>
-
-<p>On 12th August 2003 Stig S. Bakken, the founder of PEAR, announced
-the forming of the PEAR Group, which will be the governing body of
-PEAR. The full announcement can be
-<?php echo make_link("http://marc.theaimsgroup.com/?l=pear-dev&m=106073080219083&w=2",
-                     "found here"); ?>.</p>
-<p>More information about the Group, including a first administrative
-document, can be found at a <?php echo make_link("/group/", "dedicated place"); ?> 
-on pear.php.net.</p>
-
-<?php
-echo hdelim();
 
 echo '<h2>'; echo make_link('/news/', 'News'); echo '</h2>';
-echo '<h2>Documentation</h2><dl>';
-echo '<dd>'; menu_link("About PEAR", "/manual/en/about-pear.php"); echo '</dd>';
-echo '<dd>'; menu_link("Manual", "/manual/"); echo '</dd>';
-echo '<dd>'; menu_link("Frequently Asked Questions", "/manual/en/faq.php"); echo '</dd>';
-echo '<dd>'; menu_link("Mailing Lists & Support Resources", "/support.php"); echo '</dd>';
-echo '</dl>';
-echo '<h2>Downloads</h2><dl>';
-echo '<dd>'; menu_link("Browse All Packages", "packages.php"); echo '</dd>';
-echo '<dd>'; menu_link("Search Packages", "package-search.php"); echo '<dd>';
-echo '<dd>'; menu_link("Download Statistics", "package-stats.php"); echo '</dd>';
-echo '</dl>';
+echo '<h2>Documentation</h2>';
+echo '<div class="indent">';
+echo menu_link("About PEAR", "/manual/en/about-pear.php");
+echo menu_link("Manual", "/manual/");
+echo menu_link("Frequently Asked Questions", "/manual/en/faq.php");
+echo menu_link("Mailing Lists & Support Resources", "/support.php");
+echo '</div>';
+echo '<h2>Downloads</h2>';
+echo '<div class="indent">';
+echo menu_link("Browse All Packages", "packages.php");
+echo menu_link("Search Packages", "package-search.php");
+echo menu_link("Download Statistics", "package-stats.php");
+echo '</div>';
 if (isset($_COOKIE['PEAR_USER'])) {
-    echo '<h2>Developers</h2><dl>';
-    echo '<dd>'; menu_link("Upload Release", "release-upload.php"); echo '</dd>';
-    echo '<dd>'; menu_link("New Package", "package-new.php"); echo '</dd>';
-    echo '</dl>';
+    echo '<h2>Developers</h2>';
+    echo '<div class="indent">';
+    echo menu_link("Upload Release", "release-upload.php");
+    echo menu_link("New Package", "package-new.php");
+    echo '</div>';
     if (user::isAdmin($_COOKIE['PEAR_USER'])) {
-        echo '<h2>Administrators</h2><dl>';
-        echo '<dd>'; menu_link("Overview", "/admin/"); echo '</dd>';
-        echo '<dd>'; menu_link("Maintainers", "/admin/package-maintainers.php"); echo '</dd>';
-        echo '<dd>'; menu_link("Categories", "/admin/category-manager.php"); echo '</dd>';
-        echo '</dl>';
+        echo '<h2>Administrators</h2>';
+        echo '<div class="indent">';
+        echo menu_link("Overview", "/admin/");
+        echo menu_link("Maintainers", "/admin/package-maintainers.php");
+        echo menu_link("Categories", "/admin/category-manager.php");
+        echo '</div>';
     }
 }
 // XXX Hide for the moment?

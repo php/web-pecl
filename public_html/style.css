@@ -169,3 +169,7 @@ form {
 .listing li {
     line-height: 200%;
 }
+
+.indent {
+    margin-left: 20px;
+}

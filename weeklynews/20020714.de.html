@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title></title></head><body>
+<small><i>by Alan Knowles alan_k@php.net (&uuml;bersetzt von Alexander Merz alexmerz(at)php.net)</i></small>
+<p>Diese Woch in den PWN ..........<br>
+
+</p>
+<h2>New Releases </h2>
+<h3>Stable</h3>
+<p></p><h3>Beta</h3>
+<p>  
+
+</p>
+<h2>PEAR-DEV Meldungen </h2>
+
+<h3>DB::Sybase - Sybase-Treiber f&uuml;r PEAR::DB </h3>
+Anotonio Carlos Venancio Junior schreibt an einem PEAR::DB-Backend f&uuml;r Sybase.
+<br>
+
+<h3>DB_DBA - Ein Berkley DB-Wrapper </h3>
+Brent Cook steht vor dem Abschlu&szlig; von DBA (Berkley DB Abstraction). Die API
+erlaubt einen SQL-&auml;hnlichen Zugriff auf Dateibasierten Datenbanken.
+<br>
+
+<h3>Zend Engine 2 und Errors </h3>
+PHP5 und die Zend Engine 2 werfen in Form des Catch-Throw-Mechanismus und dem
+neuem reserviertem Schl&uuml;sselwort 'delete' ihre Schatten auch auf PEAR.
+Stig testet die ZE2 und entwarf daraufhin eine vereinfachte Version von raiseError()
+Hinsichtlich 'delete' gibt es hier Probleme bei DB_DBA und DB_DataObject, sie benutzen 
+'delete' bereits als Methodename. Brent &auml;ndert die Bezeichnung in DB_DBA zu 'remove'.
+Alan begann dazu eine Diskussion mit Andi auf der Zend-Engine2-Mailingliste, schliesslich
+k&ouml;nnte 'delete' als Name f&uuml;r Methoden erlaubt sein.
+<br>
+
+<h3>Diverse Fixes </h3>
+Die Mail_Mime-Lizenzangabe in der Packagedatei wurde korregiert,
+Dan Allen warf einen kleinen Bug in File_CSV heraus.<br>
+
+<h3>Lizenzen </h3>
+Brent Cook schrieb einen interessanten  <a href="http://lists.php.net/article.php?group=php.pear.cvs&amp;article=4936">Artikel</a>, warum er f&uuml;r DB_DBA die LGPL statt der PHP License
+w&auml;hlte.<br>
+<br>
+<br>
+
+<hr>
+
+<h2>Development </h2>
+
+CVS-Aktivit&auml;ten fanden letze Woche bei DB_DBA, Net_Dime, SOAP, DB, PEAR und PECL::soap statt<br>
+<br>
+<br>
+</body></html>

@@ -300,7 +300,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 	$total_releases    = number_format($dbh->getOne("SELECT COUNT(*) FROM package_stats"), 0, '.', ',');
 	$total_categories  = number_format($dbh->getOne("SELECT COUNT(*) FROM categories"), 0, '.', ',');
     $total_downloads   = number_format($dbh->getOne("SELECT COUNT(*) FROM downloads"), 0, '.', ',');
-	$query             = "SELECT dl_number, package, release, pid, rid, cid FROM package_stats ORDER BY dl_number DESC";
+	$query             = "SELECT sum(dl_number) as dl_number, package, max(release) as release, pid, rid, cid FROM package_stats GROUP BY pid ORDER BY dl_number DESC";
 
 }
 
@@ -350,7 +350,7 @@ if (@!$_GET['pid']) {
 	echo "<table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"2\">\n";
 	echo "<tr align=\"left\" bgcolor=\"#cccccc\">\n";
 	echo "<th>Package name</th>\n";
-	echo "<th>Releases</th>\n";
+	echo "<th>Last release</th>\n";
 	echo "<th><u># of downloads</u></th>\n";
 	echo "<th>&nbsp;</th>\n";
 	echo "</tr>\n";
@@ -371,7 +371,7 @@ if (@!$_GET['pid']) {
 	    echo "<td>\n" . $row['package'] .  "</td>\n";
 	    echo "<td>" . $row['release'] . "</td>\n";
 	    echo "<td>" . number_format($row['dl_number'], 0, '.', ',') . "</td>\n";
-	    echo "<td>[". make_link("/package-stats.php?cid=" . $row['cid'] . "&pid=" . $row['pid'] . "&rid=" . $row['rid'], "Details") . "]</td>\n";
+	    echo "<td>[". make_link("/package-stats.php?cid=" . $row['cid'] . "&pid=" . $row['pid'] , "Details") . "]</td>\n";
 	    echo "</tr>\n";
 	}
 	echo "</table>\n";

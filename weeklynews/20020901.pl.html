@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
+<META http-equiv=content-type content="text/html; charset=iso-8859-2">
+<title>x</title></head>
+
+<body>
+<p><i><small>autor: Alan Knowles alan_k@php.net (tłumaczenie: Robert Janeczek rashid@php.net)</small></i></p>
+
+<p>W tym tygodniu zalew propozycji nowych pakietów - PEAR wciąż rozwija się w stronę wysokiej jakości
+biblioteki kodu PHP i rozszerzeń. W tym tygodniu 1 nowe wydanie oraz 6 propozycji pakietów, do tego 
+informacje o peardoc2, problemy z zmiennymi środowiskowymi w System i stały ruch w CVS.
+ </p>
+
+<hr>
+<h2>Nowe wydania</h2>
+
+<h3>Stabilne</h3>
+
+<ul>
+<li><b>DB_ado</b> - Interface do Microsoftowej warstwy abstrakcji bazy danych - ADODB.</li>
+</ul>
+ 
+<hr>
+<h2>Skrót z PEAR-DEV</h2>
+
+<h3>PEAR doc2</h3>
+Wciąż są planowane zmiany w dokumentacji PEAR w celu wprowadzenia bardziej 
+dopasowywalnego wyglądu, Alexander podesłał propozycję layouty i kod kilka 
+tygodni temu, mamy nadzieję, że skończy konwertowanie dokumentacji kilku
+pozostałych pakietów, tak aby można było zastąpić aktualną dokumentację.
+
+<h3>Uwagi do System.php</h3>
+
+Pakiet systemowy znalazł się w centrum uwagi ponieważ używa $_ENV, na 
+czym nie można polegać w 100% (opcjponalne ustawienie w php.ini) a
+inna anternatywa - getenv() - zmusza do powolnego wywołania funkcji 
+systemowej w celu pobrania danych. Podusmowując - klasa przechodzi
+teraz od próby wyszukiwania danych w najszybszym do najwolniejszego
+źródła.
+
+<h3>Rozszerzanie Pear Weekly News o RSS</h3>
+
+Jesus Castagnetto zasugerował tworzenie nowinek w 
+formacie RSS, tak aby nowinki mogły być umieszczane
+na innych stronach. To świetny pomysł i prawdopodobnie
+w ciągu następnych kilku tygodni będą dostępne szczegóły.
+
+<h3>Bugi i poprawki</h3>
+
+Dzięki za znajdywanie błędów i pare poprawek otrzymują: Bjoern Frantzen, Ondrej Jombik, David Jean Louis, Jeroeon Derks, Haken Kuecuekyilmaz, Arnaud Limbourg, Kubo Atsuhiro.<hr>
+
+<h2>Nowe i proponowane pakiety</h2>
+
+<h3>Alternatywny Auth</h3>
+
+Wolfram Kriesing zaproponował alternatywną klasę Auth,
+która skupia się na autentykacji przy pomocy dużej liczby
+środowisk - baz danych, ldap, NIS, SOAP (i jeszcze kilku). Oprócz
+tego ma kilka dodatków do obsługi autentykacji na poziomie
+katalogów i pozostawia wygląd i lokalizację strony do logowania
+w gestii użytkownika.
+
+<h3>APD, zaawansowany PHP Debugger - rozszerzenie</h3>
+
+George Schlossnagle zaproponował przeniesienie rozszerzenia APD
+do PECL, po świetnym przyjęciu przez głosujących można je teraz 
+znaleźć w katalogu PECL w CVS. APD umożliwia profilowanie i śledzenie
+stosu oraz zdalne wykonywanie krokowe programu.
+
+<h3>Czytnik prognozy pogody Metar</h3>
+
+Yavor Shahpasov zaproponował nową klasę do odczytywania informacji pogodowych
+ze źródeł Metar. Po krótkiej dyskusji ustalono nazwę Weather_Metar jako
+najlepszą dla tego pakietu.
+
+<h3>Rozszerzenie PHP Ogg Vorbis</h3>
+
+Dave Broudy ogłosił utoworzenie rozszerzenie PHP do odczytu danych z plików ogg vobis (jak
+mp3), co zostało zaakceptowane i kod powinien się wkrótce pojawić w CVS.
+
+<h3>Alternatywny pakiet do zapisu plików Excela</h3>
+
+Xavier Noguer przedstawił nową implementację klasy File_Excel. Chociaż
+nie jest ona kompletna stwierdził, że jest lepsza od obecnego File_Excel.
+Mike Tuupola odpowiedział stwierdzając, że z powodu braku czasu nie ma możliwości
+rozwijania oryginalnego File_Excel i chciałby zastąpić go nową implementacją.
+
+<h3>Rozszerzenie Gnu PGP dla PECL</h3>
+
+Patrick O'Lone zaproponował dołączenie biblioteki Gnu PGP Made Easy, co (podobnie
+jak klasa smbclient) powoduje kilka problemów z kodem GPL, które powinny być
+wcześniej rozwiązane, ale mamy nadzieję, że uda się to zrobić i powstanie kolejne
+świetne rozszerzenie dla PHP.
+
+<hr>
+
+<h2>Rozwój</h2>
+
+Ruch w CVS w tym tygodniu odbywał się w następujących pakietach: Auth, Auth_HTTP,
+Benchmark, Cache_Lite, DB, DB_DataObject, DB_ldap, DBA, HTML_QuickForm, HTML_Template_Flexy,
+Image_Transform, Log, Mail, MDB, PECL::imagick, Perm_LiveUser, PHP_Doc, PHPUnit,
+Tree, XML_Transformer, 
+
+<h3>Nowa i uaktualniona dokumentacja</h3>
+
+Zmiany i dodatki w xml_Transformer, db_DataObject, PECL::SOAP i PECL:APD powinny się
+pojawić w tym tygodniu.
+
+<br>
+</body></html>

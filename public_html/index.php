@@ -66,15 +66,18 @@ possibility to join the discussion via IRC.
 <br /><br />
 The current preliminary agenda is as follows:
 <ul>
-<li>Quality vs. Quantity?</li>
-<li>Possible regulations to prevent some of the recent conflicts on the mailinglist</li>
-<li>PEAR CS (method naming conventions?)</li>
-<li><a href="http://marc.theaimsgroup.com/?l=pear-dev&m=104617534710384&w=2">PFC RfC</a></li>
+<li>Quality vs. Quantity</li>
+<li>Should documentation be a requirement for new packages?
+(<?php print_link("/~mj/004-documentation.txt", "RfC"); ?>)</li>
+<li>The <acronym title="PEAR Foundation Classes">PFC</acronym>
+<a href="http://marc.theaimsgroup.com/?l=pear-dev&m=104617534710384&w=2">RfC</a></li>
+<li>PEAR on Windows</li>
+<li>Preventing conflicts among developers</li>
+<li>The website (rating system, comment system, package proposals)</li>
 <li>PEAR Installer</li>
-<li>PEAR on windows</li>
-<li>PEARweb (rating system, comment system, package proposal)</li>
-<li>PEAR promotion</li>
 <li>PHP 5</li>
+<li>PEAR CS (method naming conventions?)</li>
+<li>PEAR promotion</li>
 </ul>
 
 <a href="news/meeting-2003.php">More information can be found here.</a>

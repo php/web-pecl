@@ -1378,7 +1378,7 @@ END;
         $to   = '"PEAR general list" <pear-general@lists.php.net>';
         $from = '"PEAR Announce" <pear-dev@lists.php.net>';
         $subject = "[ANNOUNCEMENT] $release Released.";
-        mail($to, $subject, $txtanounce, "From: $from");
+        mail($to, $subject, $txtanounce, "From: $from", "-f pear-sys@php.net");
     }
 
     // }}}
@@ -1518,7 +1518,7 @@ class user
         $msg = "Your PEAR account request was rejected by " . $_COOKIE['PEAR_USER'] . ":\n".
              "$reason\n";
         $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
-        mail($email, "Your PEAR Account Request", $msg, $xhdr);
+        mail($email, "Your PEAR Account Request", $msg, $xhdr, "-f pear-sys@php.net");
         return true;
     }
 
@@ -1548,7 +1548,7 @@ class user
              "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";
         $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
-        mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
+        mail($user->email, "Your PEAR Account Request", $msg, $xhdr, "-f pear-sys@php.net");
         return true;
     }
 
@@ -1711,7 +1711,7 @@ function mail_pear_admins($subject = "PEAR Account Request", $msg, $xhdr = '')
             }
         }
         $rcpt = implode(", ", $rcpt);
-        return mail($rcpt, $subject, $msg, $xhdr);
+        return mail($rcpt, $subject, $msg, $xhdr, "-f pear-sys@php.net");
     }
     return false;
 }

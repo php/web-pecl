@@ -233,6 +233,7 @@ $bb->end();
 
 echo "<br /><br />\n";
 
+/*
 $bb = new BorderBox("Download statistics");
 
 $query = "SELECT COUNT(d.id) AS dl_number, p.id AS pid, p.name AS package, r.id AS rid, r.version AS release, p.category AS cid
@@ -278,6 +279,8 @@ while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
 echo "</table>\n";
 
 $bb->end();
+
+*/
 
 response_footer();
 ?>

@@ -40,8 +40,7 @@ $bb = new BorderBox("Account Details", "100%", "", 2, true);
 $bb->horizHeadRow("Handle:", $handle);
 $bb->horizHeadRow("Name:", $row['name']);
 if ($row['showemail'] != 0) {
-	//XXX Use contact form here to really stop spam bots.
-    $bb->horizHeadRow("Email:", "<a href=\"mailto:".$row['email']."\">".str_replace(array("@", "."), array(" at ", " dot "), $row['email'])."</a>");
+    $bb->horizHeadRow("Email:", "<a href=\"/account-mail.php?handle=" . $_GET['handle'] . "\">".str_replace(array("@", "."), array(" at ", " dot "), $row['email'])."</a>");
 }
 if ($row['homepage'] != "") {
 	$bb->horizHeadRow("Homepage:",

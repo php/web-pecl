@@ -160,7 +160,7 @@ Uploading new releases is restricted to each package's lead developer(s).
 
     $bb = new BorderBox("Upload", "90%", "", 2, true);
 
-    echo "<form method=\"post\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n";
+    echo "<form enctype=\"multipart/form-data\" method=\"post\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n";
 
     $form =& new HTML_Form($_SERVER['PHP_SELF'], 'POST');
     $bb->horizHeadRow("Distribution file", $form->returnFile("distfile"));

@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001 The PHP Group                                     |
+   | Copyright (c) 2001-2003 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -25,19 +25,19 @@
 * http://pear.php.net/Mail_Mime
 */
 
-$pinfo_url = '/package-info.php?pacid=';
-$packages = $dbh->getAll($sql = sprintf("SELECT p.id, p.name, p.summary
-                                           FROM packages p
-                                          WHERE name LIKE '%%%s%%'
-                                       ORDER BY p.name", basename($_SERVER['REDIRECT_URL'])), DB_FETCHMODE_ASSOC);
+$pinfo_url = '/package-info.php?package=';
+$sql = "SELECT p.id, p.name, p.summary
+            FROM packages p
+            WHERE name LIKE ?
+            ORDER BY p.name";
+$term = "%" . basename($_SERVER['REDIRECT_URL']) . "%";
+$packages = $dbh->getAll($sql, array($term), DB_FETCHMODE_ASSOC);
 
 if (count($packages) == 1) {
-	localRedirect($pinfo_url . $packages[0]['id']);
-
+	localRedirect($pinfo_url . $packages[0]['name']);
 } elseif (count($packages) > 3) {
 	$packages = array($packages[0], $packages[1], $packages[2]);
 	$show_search_link = true;
-
 } else {
 	$show_search_link = false;
 }
@@ -50,24 +50,28 @@ response_header("Error 404");
 <p>The requested document <i><?php echo $_SERVER['REQUEST_URI']; ?></i> was not
 found on this server.</p>
 
-<?if($packages):?>
-	Searching the current list of packages for <i><?=basename($_SERVER['REQUEST_URI'])?></i> included the following results:
+<?php if(is_array($packages)) { ?>
+	Searching the current list of packages for
+	<i><?php basename($_SERVER['REQUEST_URI']); ?></i> included the
+	following results:
 	
 	<ul>
-	<?foreach($packages as $p):?>
+	<?php foreach($packages as $p) { ?>
 		<li>
-			<?=make_link(getURL($pinfo_url . $p['id']), $p['name'])?><br />
-			<i><?=$p['summary']?></i><br /><br />
+			<?php print_link(getURL($pinfo_url . $p['name']), $p['name']); ?><br />
+			<i><?php echo $p['summary']; ?></i><br /><br />
 		</li>
-	<?endforeach?>
+	<?php } ?>
 	</ul>
 	
-	<?if($show_search_link):?>
+	<?php if($show_search_link) { ?>
 		<p align="center">
-			<?=make_link(getURL('/package-search.php?pkg_name=' . basename($_SERVER['REQUEST_URI']) . '&bool=AND&submit=Search'), 'View full search results...')?>
+			<?php print_link(getURL('/package-search.php?pkg_name=' . basename($_SERVER['REQUEST_URI']) . '&bool=AND&submit=Search'), 'View full search results...'); ?>
 		</p>
-	<?endif?>
-<?endif?>
+<?php
+    }
+}
+?>
 
 <p>If you think that this error message is caused by an error in the
 configuration of the server, please contact

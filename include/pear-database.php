@@ -72,7 +72,7 @@ function visit_node(&$tree, $node) {
 function renumber_visitations($debug = false)
 {
     global $dbh;
-    $sth = $dbh->query("SELECT * FROM packages ORDER BY name");
+    $sth = $dbh->query("SELECT * FROM categories ORDER BY name");
     if (DB::isError($sth)) {
         return $sth;
     }
@@ -105,7 +105,7 @@ function renumber_visitations($debug = false)
         if ($debug) {
             print "updating $node\n";
         }
-        $query = "UPDATE packages SET leftvisit = $l, rightvisit = $r ".
+        $query = "UPDATE categories SET leftvisit = $l, rightvisit = $r ".
                  "WHERE name = '$node'";
         $dbh->query($query);
     }
@@ -113,9 +113,40 @@ function renumber_visitations($debug = false)
 }
 
 // }}}
+/*
+$data = array(
+    'name'   => 'category name',
+    'desc'   => 'category description',
+    'parent' => 'category parent id'
+    );
+*/
+function add_category($data)
+{
+    global $dbh;
+    $name = $data['name'];
+    if (empty($name)) {
+        return PEAR::raiseError('no name given');
+    }
+    $desc   = (empty($data['desc'])) ? 'none' : $data['desc'];
+    $parent = (empty($data['parent'])) ? null : $data['parent'];
+
+    $sql = 'INSERT INTO categories (id, name, description, parent)'.
+           'VALUES (?, ?, ?, ?)';
+    $id  = $dbh->nextId('categories');
+    $sth = $dbh->prepare($sql);
+    if (DB::isError($sth)) {
+        return $sth;
+    }
+    $err = $dbh->execute($sth, array($id, $name, $desc, $parent));
+    if (DB::isError($err)) {
+        return $err;
+    }
+    return renumber_visitations();
+}
+
 // {{{ add_package()
 
-function add_package($data)
+/*function add_package($data)
 {
     global $dbh;
     $defaults = array(
@@ -143,7 +174,7 @@ function add_package($data)
         return $err;
     }
     return renumber_visitations();
-}
+}*/
 
 // }}}
 

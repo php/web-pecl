@@ -34,7 +34,9 @@ function auth_require($admin = false, $refresh = false)
 			$crypted = crypt($_SERVER['PHP_AUTH_PW'], $seed);
             if ($crypted == @$auth_user->password) {
                 $ok = true;
-            }
+            } else {
+				error_log("pear-auth: user `$user': invalid password (des)", 0);
+			}
             break;
         }
         // handle new-style MD5-encrypted passwords
@@ -42,11 +44,14 @@ function auth_require($admin = false, $refresh = false)
 			$crypted = md5($_SERVER['PHP_AUTH_PW']);
             if ($crypted == @$auth_user->password) {
                 $ok = true;
+            } else {
+				error_log("pear-auth: user `$user': invalid password (md5)", 0);
             }
             break;
         }
     }
     if (empty($auth_user->registered)) {
+		error_log("pear-auth: user `$user' not registered", 0);
         $ok = false;
     }
     if (!$ok) {

@@ -1,6 +1,9 @@
 CREATE TABLE domains (
-       domain	      VARCHAR(80) NOT NULL,
-       administrator  VARCHAR(20) NOT NULL REFERENCES authors(handle),
+    id               INTEGER NOT NULL AUTO_INCREMENT,
+    name	     VARCHAR(80) NOT NULL,
+    parent	     INTEGER,
+    description      VARCHAR(120),
 
-       PRIMARY KEY(domain)
+    PRIMARY KEY(id),
+    INDEX(name)
 );

@@ -1,7 +1,0 @@
-CREATE TABLE mytable (
-       id	INTEGER NOT NULL AUTO_INCREMENT,
-
-       PRIMARY KEY(id)
-);
-
-INSERT INTO mytable VALUES(1);

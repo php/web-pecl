@@ -18,17 +18,19 @@
 #
 
 TABLE_FILES=\
+	acl.sql \
 	aliases.sql \
-	authors.sql \
+	users.sql \
 	domains.sql \
+	maintains.sql \
 	packages.sql \
-	versions.sql
+	releases.sql
 SQL_TYPE=mysql
-SQL_USER=pear
-SQL_PASSWORD=pear
-SQL_SERVER=pear
-SQL_COMMAND=mysql -u '$(SQL_USER)' '$(SQL_SERVER)' < $< > $@ 2>&1
-SQL_PIPE_COMMAND=mysql -u '$(SQL_USER)' '$(SQL_SERVER)'
+SQL_USER=root
+#SQL_PASSWORD=-ppassword
+SQL_DB=mysql
+SQL_COMMAND=mysql -u '$(SQL_USER)' $(SQL_PASSWORD) '$(SQL_DB)' < $< > $@ 2>&1
+SQL_PIPE_COMMAND=mysql -u '$(SQL_USER)' $(SQL_PASSWORD) '$(SQL_DB)'
 SQL_GRANT_FILE=
 
 ECHO    = echo
@@ -53,7 +55,7 @@ nothing:
 	@$(ECHO) "   'make destroy'  to destroy database"
 	@$(ECHO)
 
-create: $(SQL_TARGETS) prime
+create: createdb $(SQL_TARGETS) prime
 	@echo "Looking for errors..."
 	@if grep -s Error *.res; then \
 	    echo "Fix these errors, run 'make destroy' and try again." ; \
@@ -63,16 +65,16 @@ create: $(SQL_TARGETS) prime
 
 prime: data.res
 
-destroy:
+createdb:
+	@$(SQL_PIPE_COMMAND) < createdb.sql
+
+dropdb:
+	@$(SQL_PIPE_COMMAND) < dropdb.sql
+
+destroy: dropdb
 # Do "make drop" enough times to "solve" those who won't go away because
 # of foreign keys to other tables that still exist.
-	$(MAKE) -s drop
-
-setup:
-	mysqladmin -uroot create pear
-	mysql -uroot -e "INSERT INTO user VALUES('localhost','pear','','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y')" mysql
-	mysql -uroot -e "INSERT INTO db VALUES('localhost','pear','pear','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y')" mysql
-	mysqladmin -uroot reload
+#	$(MAKE) -s drop
 
 drop: clean
 	cat $(SQL_FILES) | ./create2drop -$(SQL_TYPE) | $(SQL_PIPE_COMMAND) > drop.out
@@ -94,6 +96,10 @@ test:
 # "foo.res: bar.res".
 
 aliases.res: packages.res
-domains.res: authors.res
-packages.res: authors.res
-versions.res: packages.res
+packages.res: users.res domains.res
+releases.res: packages.res
+package_acl.res: packages.res users.res
+domain_acl.res: domains.res users.res
+maintains.res: packages.res users.res
+data.res: users.res packages.res domains.res
+

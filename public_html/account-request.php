@@ -49,15 +49,15 @@ do {
 
 	    $handle = strtolower($handle);
 	    $obj =& new PEAR_User($dbh, $handle);
-	    
+
 	    if (isset($obj->created)) {
 	        display_error("Sorry, that username is already taken");
 	        $jumpto = "handle";
 	        break;
 	    }
-	    
+
 	    $err = $obj->insert($handle);
-	    
+
 	    if (DB::isError($err)) {
 	        display_error("$handle: " . DB::errorMessage($err));
 	        $jumpto = "handle";
@@ -91,7 +91,8 @@ do {
             break;
         }
 
-	    $msg = "Username:         {$handle}\n".
+	    $msg = "Requested from:   {$_SERVER['REMOTE_ADDR']}\n".
+               "Username:         {$handle}\n".
                "Real Name:        {$name}\n".
 	           "Email:            {$email}".
 	           (@$showemail ? " (show address)" : " (hide address)") . "\n".
@@ -99,16 +100,16 @@ do {
 	           "Purpose:\n".
 	           "$purpose\n\n".
                "To handle: http://{$SERVER_NAME}/admin.php?acreq={$handle}\n";
-            
+
         if ($moreinfo) {
             $msg .= "\nMore info:\n$moreinfo\n";
         }
-	            
+
         $xhdr = "From: $name <$email>";
         $subject = "PEAR Account Request: {$handle}";
         $ok = mail_pear_admins($subject, $msg, $xhdr);
         response_header("Account Request Submitted");
-                
+
         if ($ok) {
             print "<h2>Account Request Submitted</h2>\n";
             print "Your account request has been submitted, it will ".
@@ -125,7 +126,7 @@ do {
                   "days, please drop a mail about it to the <i>pear-dev</i> ".
                   "mailing list.";
         }
-                
+
         print "<br />Click the top-left PEAR logo to go back to the front page.\n";
     }
 } while (0);
@@ -150,9 +151,15 @@ you would like to release through PEAR.
 	    print " </tr>\n";
 	    print "</table>\n";
     }
-    
+
     print "<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\">\n";
     print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
+
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">Requested from addr:</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\">" . $_SERVER['REMOTE_ADDR'];
+    print "  </td>\n";
+    print "</tr>\n";
 
     print "<tr>\n";
     print "  <th bgcolor=\"#cccccc\">Username</th>\n";
@@ -218,7 +225,7 @@ you would like to release through PEAR.
     print "</tr>\n";
 
     print "</table>\n";
-    
+
     if ($jumpto) {
 	    print "<script language=\"JavaScript\">\n<!--\n";
 	    print "document.forms[1].$jumpto.focus();\n";

@@ -850,7 +850,7 @@ class package
         foreach(array_keys($packageinfo) as $pkg) {
             $_deps = array();
             foreach($deps as $dep) {
-                if ($dep['package'] == $packageinfo[$pkg]['packageid']
+                if (isset($packageinfo[$pkg]['packageid']) && $dep['package'] == $packageinfo[$pkg]['packageid']
                     && isset($$var[$pkg])
                     && $dep['release'] == $$var[$pkg]['rid'])
                 {

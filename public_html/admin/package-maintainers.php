@@ -36,7 +36,9 @@ if (empty($id)) {
     $values   = array();
 
     foreach ($packages as $name => $package) {
-        $values[$package['packageid']] = $name;
+		if (isset($package['packageid'])) {
+            $values[$package['packageid']] = $name;
+		}
     }
 
     $bb = new BorderBox("Select package");

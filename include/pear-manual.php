@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001 The PHP Group                                     |
+   | Copyright (c) 2001-2003 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -53,15 +53,15 @@ function makeBorderTOC($this) {
     $SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
     */
 
-    $SIDEBAR_DATA.= '<tr valign="top"><td>' . 
-        make_link('./', make_image('caret-t.gif', $HOME[1]) . $HOME[1] ) . 
+    $SIDEBAR_DATA.= '<tr valign="top"><td>' .
+        make_link('./', make_image('caret-t.gif', $HOME[1]) . $HOME[1] ) .
         '<br /></td></tr>';
 
     $SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
 
     if (($HOME[1] != $UP[1]) && $UP[1]) {
-        $SIDEBAR_DATA.= '<tr valign="top"><td>' . 
-            make_link($UP[0], make_image('caret-u.gif', $UP[1]) . $UP[1] ) . 
+        $SIDEBAR_DATA.= '<tr valign="top"><td>' .
+            make_link($UP[0], make_image('caret-u.gif', $UP[1]) . $UP[1] ) .
             '<br /></td></tr>';
     }
 
@@ -77,8 +77,8 @@ function makeBorderTOC($this) {
             $img = 'box-1.gif';
         }
 
-        $SIDEBAR_DATA .= '&nbsp;' . 
-            make_link($url, make_image($img, htmlspecialchars($title,ENT_QUOTES,$CHARSET)) . htmlspecialchars($title,ENT_QUOTES,$CHARSET) ) . 
+        $SIDEBAR_DATA .= '&nbsp;' .
+            make_link($url, make_image($img, @htmlspecialchars($title,ENT_QUOTES,$CHARSET)) . @htmlspecialchars($title,ENT_QUOTES,$CHARSET) ) .
             '<br />';
     }
 
@@ -177,20 +177,20 @@ function manualHeader($title,$id="") {
         $sth = $dbh->query($query);
         $row = $sth->fetchRow();
 
-        if (is_array($row)) {           
+        if (is_array($row)) {
             ob_start();
 
             echo "<div align=\"center\"><br /><br />\n";
 
             $bb = new Borderbox("Download");
-        
+
             echo "<div align=\"left\">\n";
             print_link("/package-info.php?pacid=" . $row[0], make_image("box-0.gif") . " Package info");
             echo "</div>\n";
             $bb->end();
 
             echo "</div>\n";
-        
+
             $SIDEBAR_DATA .= ob_get_contents();
             ob_end_clean();
         }

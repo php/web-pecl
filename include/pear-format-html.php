@@ -62,13 +62,13 @@ function &draw_navigation($data, $menu_title='')
         $html .= "<b>$menu_title</b>\n";
         $html .= "<br /><br />\n";
     }
-    $me = basename($PHP_SELF);
+
     foreach ($data as $url => $tit) {
         $tt = str_replace(" ", "&nbsp;", $tit);
-        if ($url == $me) {
-            $html .= "<b>&gt;&gt;$tt&lt;&lt;</b><br />\n";
+        if ($url == $PHP_SELF) {
+            $html .= "&nbsp;&nbsp;&nbsp;" . make_image("box-1.gif") . "<b>$tt</b><br />\n";
         } else {
-            $html .= "&nbsp;&nbsp;&nbsp;<a href=\"$url\">$tt</a><br />\n";
+            $html .= "&nbsp;&nbsp;&nbsp;" . make_image("box-0.gif") . "<a href=\"$url\">$tt</a><br />\n";
         }
     }
     return $html;

@@ -1,41 +1,49 @@
 <?php
 //error_reporting(E_ALL);
 
-// expected url vars: idpack
-$idpack = (isset($idpack)) ? (int) $idpack : null;
-if (empty($idpack)) {
+// expected url vars: pacid
+$pacid = (isset($pacid)) ? (int) $pacid : null;
+if (empty($pacid)) {
     die ('No package selected');
 }
 // ** expected
 
-$dbh = DB::Connect("mysql://pear:pear@localhost/pear");
 if (DB::isError($dbh)) {
     die("DB::Factory failed: ".DB::errorMessage($dbh)."<BR>\n");
 }
-/*
-$descriptions = array(
-    "name" => "Package Name",
-    "stablerelease" => "Latest Stable Release",
-    "develrelease" => "Latest Development Release",
-    "copyright" => "License",
-    "summary" => "Package Description"
-);
-*/
-$row = $dbh->getRow("SELECT * FROM packages WHERE id = $idpack",
-                    DB_FETCHMODE_ASSOC);
+
+$dbh->setFetchmode(DB_FETCHMODE_ASSOC);
+
+// Package data
+$row = $dbh->getRow("SELECT * FROM packages WHERE id = $pacid");
 if (!$row) {
-    //die ('No package selected (db)');   // XXX Uncomment me!
+    die ('No package selected (db)');
 }
-$release  = '1.3';
-$name     = 'Net_Ping';
+$name     = $row['name'];
+$summary  = $row['summary'];
+$license  = $row['license'];
+
+// Releases Data
 $maturity = 'stable';
-$summary  = 'This is the Pear Ping Class';
-$authors  = '';
-// foreach ($maintainers as $key => $values) {
-$authors .= '<tr><td>$name &lt;<a href="mailto:$mail">$mail</a>> ($role)</td></tr>'."\n";
-// }
+$release  = '1.3';
 $release_date  = '2000-01-34';
 $release_notes = 'Bug fix release';
+
+// Authors data
+$sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, m.role
+                   FROM maintains m, users u
+                   WHERE m.package = $pacid
+                   AND m.handle = u.handle");
+$authors  = '';
+while ($sth->fetchInto($row)) {
+    $authors .= "<tr><td>{$row['name']}";
+    if ($row['showemail'] == 1) {
+        $authors .= " &lt;<a href=\"mailto:{$row['email']}\">{$row['email']}</a>&gt;";
+    }
+    $authors .= " ({$row['role']}) [<a href=\"detail-author.php?handle={$row['handle']}\">details</a>]";
+    $authors .= "</td></tr>\n";
+}
+
 response_header("Package :: $name");
 ?>
 
@@ -55,11 +63,16 @@ response_header("Package :: $name");
         <?php echo $authors;?>
         </table>
     </td>
-    <tr>
+</tr>
+<tr>
+    <th class="pack" bgcolor="#009933" width="20%">License</th>
+    <td><?php echo $license;?></td>
+</tr>
+<tr>
     <th class="pack" bgcolor="#009933" width="20%">Release Date</th>
     <td><?php echo $release_date;?></td>
-    </tr>
-    <tr>
+</tr>
+<tr>
     <th class="pack" bgcolor="#009933" width="20%">Release Notes</th>
     <td><?php echo $release_notes;?></td>
 </tr>

@@ -2,20 +2,12 @@
 
 <h1>Package search</h1>
 
-<script type="text/javascript" language="javascript">
-<!--
-    xbApi_onload = [];
-    xbApi_path = 'javascript/xbApi/';
-// -->
-</script>
-<script language="javascript" src="javascript/xbApi/xbApi.loader.js" type="text/javascript"></script>
-<script type="text/javascript" language="javascript" src="javascript/calendar/calendar.js" defer></script>
-<link rel="stylesheet" href="javascript/calendar/calendar.css" media="screen" type="text/css">
+<script type="text/javascript" language="javascript" src="javascript/calendar/browserSniffer.js"></script>
+<script type="text/javascript" language="javascript" src="javascript/calendar/dynCalendar.js"></script>
+<link rel="stylesheet" href="javascript/calendar/dynCalendar.css" media="screen" type="text/css">
 
 <script type="text/javascript" language="javascript">
 <!--
-
-    doesCalendar = ((IE || DOM) && Win && !Opera);
 
     date_updated_released_on     = false;
     date_updated_released_before = false;
@@ -30,41 +22,41 @@
     */
     function form_reset()
     {
-		searchForm = document.forms['search'];
+        searchForm = document.forms['search_form'];
 
-		if (<?=(int)isset($numrows)?>) {
-			location.href = 'package-search.php';
+        if (<?=(int)isset($numrows)?>) {
+            location.href = 'package-search.php';
 
-		} else {
-	        date_updated_released_on     = false;
-	        date_updated_released_before = false;
-	        date_updated_released_since  = false;
-	
-	        /**
-	        * Re-enable date dropdowns
-	        */
-	        searchForm.released_before_year.disabled  = false;
-	        searchForm.released_before_month.disabled = false;
-	        searchForm.released_before_day.disabled   = false;
-	
-	        searchForm.released_since_year.disabled  = false;
-	        searchForm.released_since_month.disabled = false;
-	        searchForm.released_since_day.disabled   = false;
-	
-	        searchForm.released_on_year.disabled  = false;
-	        searchForm.released_on_month.disabled = false;
-	        searchForm.released_on_day.disabled   = false;
-	
-	        released_on_disabled     = false;
-	        released_before_disabled = false;
-	        released_since_disabled  = false;
+        } else {
+            date_updated_released_on     = false;
+            date_updated_released_before = false;
+            date_updated_released_since  = false;
+    
+            /**
+            * Re-enable date dropdowns
+            */
+            searchForm.released_before_year.disabled  = false;
+            searchForm.released_before_month.disabled = false;
+            searchForm.released_before_day.disabled   = false;
+    
+            searchForm.released_since_year.disabled  = false;
+            searchForm.released_since_month.disabled = false;
+            searchForm.released_since_day.disabled   = false;
+    
+            searchForm.released_on_year.disabled  = false;
+            searchForm.released_on_month.disabled = false;
+            searchForm.released_on_day.disabled   = false;
+    
+            released_on_disabled     = false;
+            released_before_disabled = false;
+            released_since_disabled  = false;
 
-			/**
+            /**
             * Re-enable search button
             */
-			searchForm.submitButton.disabled = false;
-			return true;
-		}
+            searchForm.submitButton.disabled = false;
+            return true;
+        }
     }
 
     /**
@@ -72,30 +64,31 @@
     */
     function update_date(prefix, input)
     {
+        searchForm = document.forms['search_form'];
         if (eval('date_updated_' + prefix)) return true;
 
-        yearElement  = xbApi_getFormElement('search', prefix + '_year');
-        monthElement = xbApi_getFormElement('search', prefix + '_month');
-        dayElement   = xbApi_getFormElement('search', prefix + '_day');
+        yearElement  = searchForm.elements[prefix + '_year'];
+        monthElement = searchForm.elements[prefix + '_month'];
+        dayElement   = searchForm.elements[prefix + '_day'];
         today = new Date();
 
         switch (input) {
             case 'year':
-                if (xbApi_getFormValue(monthElement) != '' || xbApi_getFormValue(dayElement) != '') return true;
-                xbApi_setFormValue(monthElement, today.getMonth() + 1);
-                xbApi_setFormValue(dayElement, today.getDate());
+                if (monthElement.value != '' || dayElement.value != '') return true;
+                monthElement.value = today.getMonth() + 1;
+                dayElement.value = today.getDate();
                 break;
 
             case 'month':
-                if (xbApi_getFormValue(yearElement) != '' || xbApi_getFormValue(dayElement) != '') return true;
-                xbApi_setFormValue(yearElement, today.getFullYear());
-                xbApi_setFormValue(dayElement, today.getDate());
+                if (yearElement.value != '' || dayElement.value != '') return true;
+                yearElement.value = today.getFullYear();
+                dayElement.value  = today.getDate();
                 break;
 
             case 'day':
-                if (xbApi_getFormValue(yearElement) != '' || xbApi_getFormValue(monthElement) != '') return true;
-                xbApi_setFormValue(yearElement, today.getFullYear());
-                xbApi_setFormValue(monthElement, today.getMonth() + 1);
+                if (yearElement.value != '' || monthElement.value != '') return true;
+                yearElement.value  = today.getFullYear();
+                monthElement.value = today.getMonth() + 1;
                 break;
         }
 
@@ -133,7 +126,7 @@
         /**
         * Disable appropriate option based on what just changed.
         */
-        searchForm = document.forms['search'];
+        searchForm = document.forms['search_form'];
         switch (prefix) {
             case 'released_on':
                 searchForm.released_before_year.disabled  = true;
@@ -158,11 +151,6 @@
     }
 
     /**
-    * Calendar variables
-    */
-    calendarImagesPath = 'gifs/';
-
-    /**
     * Callback functions for the calendar
     */
     function setDateFromCalendar_released_on(date, month, year)
@@ -185,46 +173,46 @@
 
     function setDateFromCalendar(prefix, date, month, year)
     {
+        searchForm = document.forms['search_form'];
+
         if (eval(prefix + '_disabled') == true) {
             return;
         } else {
             disableDateOptions(prefix);
         }
 
-        yearElement  = xbApi_getFormElement('search', prefix + '_year');
-        monthElement = xbApi_getFormElement('search', prefix + '_month');
-        dayElement   = xbApi_getFormElement('search', prefix + '_day');
-
-        xbApi_setFormValue(yearElement, year);
-        xbApi_setFormValue(monthElement, month);
-        xbApi_setFormValue(dayElement, date);
+        yearElement  = searchForm.elements[prefix + '_year'].value = year;
+        monthElement = searchForm.elements[prefix + '_month'].value = month;
+        dayElement   = searchForm.elements[prefix + '_day'].value = date;
     }
 
     function validate_form()
     {
-        onYearElement  = xbApi_getFormElement('search', 'released_on_year');
-        onMonthElement = xbApi_getFormElement('search', 'released_on_month');
-        onDayElement   = xbApi_getFormElement('search', 'released_on_day');
+        searchForm = document.forms['search_form'];
 
-        beforeYearElement  = xbApi_getFormElement('search', 'released_before_year');
-        beforeMonthElement = xbApi_getFormElement('search', 'released_before_month');
-        beforeDayElement   = xbApi_getFormElement('search', 'released_before_day');
+        onYearElement  = searchForm.elements['released_on_year'];
+        onMonthElement = searchForm.elements['released_on_month'];
+        onDayElement   = searchForm.elements['released_on_day'];
 
-        sinceYearElement  = xbApi_getFormElement('search', 'released_since_year');
-        sinceMonthElement = xbApi_getFormElement('search', 'released_since_month');
-        sinceDayElement   = xbApi_getFormElement('search', 'released_since_day');
+        beforeYearElement  = searchForm.elements['released_before_year'];
+        beforeMonthElement = searchForm.elements['released_before_month'];
+        beforeDayElement   = searchForm.elements['released_before_day'];
 
-        released_on_changed     = (xbApi_getFormValue(onYearElement)     != '' || xbApi_getFormValue(onMonthElement)     != '' || xbApi_getFormValue(onDayElement)     != '');
-        released_before_changed = (xbApi_getFormValue(beforeYearElement) != '' || xbApi_getFormValue(beforeMonthElement) != '' || xbApi_getFormValue(beforeDayElement) != '');
-        released_since_changed  = (xbApi_getFormValue(sinceYearElement)  != '' || xbApi_getFormValue(sinceMonthElement)  != '' || xbApi_getFormValue(sinceDayElement)  != '');
+        sinceYearElement  = searchForm.elements['released_since_year'];
+        sinceMonthElement = searchForm.elements['released_since_month'];
+        sinceDayElement   = searchForm.elements['released_since_day'];
+
+        released_on_changed     = (onYearElement.value     != '' || onMonthElement.value     != '' || onDayElement.value     != '');
+        released_before_changed = (beforeYearElement.value != '' || beforeMonthElement.value != '' || beforeDayElement.value != '');
+        released_since_changed  = (sinceYearElement.value  != '' || sinceMonthElement.value  != '' || sinceDayElement.value  != '');
 
         if (released_on_changed && (released_since_changed || released_before_changed)) {
             alert('Cannot combine Released On and Released Before or Since!');
             return false;
         }
-		
-		document.forms['search'].submitButton.value    = 'Sending request...';
-		document.forms['search'].submitButton.disabled = true;
+        
+        document.forms['search_form'].submitButton.value    = 'Sending request...';
+        document.forms['search_form'].submitButton.disabled = true;
     }
 
 // -->
@@ -235,7 +223,7 @@
 <?$bb = new Borderbox("Search options")?>
 
 
-<form action="<?=$_SERVER['PHP_SELF']?>" method="get" name="search" onsubmit="validate_form()">
+<form action="<?=$_SERVER['PHP_SELF']?>" method="get" name="search_form" onsubmit="validate_form()">
 <table border="0">
     <tr>
         <td>Package name:</td>
@@ -246,7 +234,7 @@
             Match:
             <input type="radio" name="bool" value="AND" id="bool_and" <?=$bool_and_checked?> />
             <label for="bool_and">All words</label>
-            <input type="radio" name="bool" value="or" id="bool_or" <?=$bool_or_checked?> />
+            <input type="radio" name="bool" value="OR" id="bool_or" <?=$bool_or_checked?> />
             <label for="bool_or">Any word</label>
         </td>
     </tr>
@@ -299,13 +287,10 @@
                     <option value="<?=$value?>"><?=$value?></option>
                 <?endforeach?>
             </select>
-            <script type="text/javascript" language="javascript">
+            <script language="JavaScript" type="text/javascript">
             <!--
-            if(doesCalendar){
-                document.write('<a href="javascript: showCalendar(\'setDateFromCalendar_released_on\', \'calendar_released_on\')"><img src="gifs/calendar.gif" border="0"></a>');
-                document.write('<div id="calendar_released_on" class="calendar" onmouseover="calendarMouseOver(true)" onmouseout="calendarMouseOver(false)"></div>');
-            }
-            // -->
+                calendarReleasedOn = new dynCalendar('calendarReleasedOn', 'setDateFromCalendar_released_on', 'gifs/');
+            //-->
             </script>
         </td>
     </tr>
@@ -326,13 +311,10 @@
                     <option value="<?=$value?>"><?=$value?></option>
                 <?endforeach?>
             </select>
-            <script type="text/javascript" language="javascript">
+            <script language="JavaScript" type="text/javascript">
             <!--
-            if(doesCalendar){
-                document.write('<a href="javascript: showCalendar(\'setDateFromCalendar_released_before\', \'calendar_released_before\')"><img src="gifs/calendar.gif" border="0"></a>');
-                document.write('<div id="calendar_released_before" class="calendar" onmouseover="calendarMouseOver(true)" onmouseout="calendarMouseOver(false)"></div>');
-            }
-            // -->
+                calendarReleasedBefore = new dynCalendar('calendarReleasedBefore', 'setDateFromCalendar_released_before', 'gifs/');
+            //-->
             </script>
         </td>
     </tr>
@@ -353,13 +335,10 @@
                     <option value="<?=$value?>"><?=$value?></option>
                 <?endforeach?>
             </select>
-            <script type="text/javascript" language="javascript">
+            <script language="JavaScript" type="text/javascript">
             <!--
-            if(doesCalendar){
-                document.write('<a href="javascript: showCalendar(\'setDateFromCalendar_released_since\', \'calendar_released_since\')"><img src="gifs/calendar.gif" border="0"></a>');
-                document.write('<div id="calendar_released_since" class="calendar" onmouseover="calendarMouseOver(true)" onmouseout="calendarMouseOver(false)"></div>');
-            }
-            // -->
+                calendarReleasedSince = new dynCalendar('calendarReleasedSince', 'setDateFromCalendar_released_since', 'gifs/');
+            //-->
             </script>
         </td>
     </tr>

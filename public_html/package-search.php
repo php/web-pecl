@@ -32,13 +32,14 @@ $template_dir = dirname(dirname(__FILE__)) . '/templates/';
 require_once "HTML/Form.php";
 
 /**
- * Setup code for the form
- */
+* Setup code for the form
+*/
 $form = new HTML_Form($_SERVER['PHP_SELF']);
     
 /**
- * Months for released date dropdowns
- */
+* Months for released date dropdowns
+*/
+$months     = array();
 $months[1]  = 'January';
 $months[2]  = 'February';
 $months[3]  = 'March';
@@ -53,14 +54,14 @@ $months[11] = 'November';
 $months[12] = 'December';
 
 /**
- * Used for the Match: radio buttons
- */
+* Used for the Match: radio buttons
+*/
 $bool_and_checked = !isset($_GET['bool']) || $_GET['bool'] == "AND" ? 'checked="checked"' : '';
 $bool_or_checked  = @$_GET['bool'] == "OR" ? 'checked="checked"' : '';
 
 /**
- * Code to fetch the current category list
- */
+* Code to fetch the current category list
+*/
 $category_rows = $dbh->getAll('SELECT id, name FROM categories ORDER BY name', DB_FETCHMODE_ASSOC);
 if (!empty($_GET['pkg_category'])) {
     for ($i=0; $i<count($category_rows); $i++) {
@@ -71,8 +72,8 @@ if (!empty($_GET['pkg_category'])) {
 }
 
 /**
- * Fetch list of users/maintainers
- */
+* Fetch list of users/maintainers
+*/
 $users = $dbh->getAll('SELECT u.handle, u.name FROM users u, maintains m WHERE u.handle = m.handle GROUP BY handle ORDER BY u.name', DB_FETCHMODE_ASSOC);
 for ($i=0; $i<count($users); $i++) {
     if (empty($users[$i]['name'])) {
@@ -81,9 +82,9 @@ for ($i=0; $i<count($users); $i++) {
 }
 
 /**
- * Is form submitted? Do search and show
- * results.
- */
+* Is form submitted? Do search and show
+* results.
+*/
 if (!empty($_GET)) {
     $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
     $where = array();
@@ -172,20 +173,20 @@ if (!empty($_GET)) {
         $params['itemData'] = range(0, $numrows - 1);
         $pager = &new Pager($params);
         list($from, $to) = $pager->getOffsetByPageId();
-        $links = $pager->getLinks();
+        $links = $pager->getLinks('<img src="gifs/prev.gif" border="0" alt="&lt;&lt;" width="10" height="10">Prev', 'Next<img src="gifs/next.gif" border="0" alt="&gt;&gt;" width="10" height="10">');
     
         // Row number
         $rownum = $from - 1;
 
         /**
-         * Title html for results borderbox obj
-         * Eww.
-         */
+        * Title html for results borderbox obj
+        * Eww.
+        */
         $title_html  = sprintf('<table border="0" width="100%%" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td align="left" width="1"><nobr>%s</nobr></td>
-                                            <td><nobr>Search results (%s - %s of %s)</nobr></td>
-                                            <td align="right" width="1"><nobr>%s</nobr></td>
+                                            <td align="left" width="50"><nobr>%s</nobr></td>
+                                            <td align="center"><nobr>Search results (%s - %s of %s)</nobr></td>
+                                            <td align="right" width="50"><nobr>%s</nobr></td>
                                         </tr>
                                     </table>',
                                $links['back'],
@@ -195,6 +196,14 @@ if (!empty($_GET)) {
                                $links['next']);
 
         while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC, $rownum++) AND $rownum <= $to) {
+			/**
+            * If name was searched on, highlight the search string
+            */
+			if (!empty($_GET['pkg_name'])) {
+				$words = preg_replace('/\s+/', '|', preg_quote($_GET['pkg_name']));
+				$row['name'] = preg_replace('/(' . $words . ')/i', '<span style="background-color: #d5ffc1">\1</span>', $row['name']);
+			}
+
             $search_results[] = $row;
         }
     }    

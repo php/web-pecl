@@ -283,9 +283,9 @@ function manualHeader($title,$id="") {
         if (is_array($row)) {           
             ob_start();
 
-            echo "<div align=\"center\"><br /><br />\n";
+            echo "<div align=\"center\"><br /<br />\n";
 
-            $bb = new Borderbox("Information");
+            $bb = new Borderbox("Download");
         
             echo "<div align=\"left\">\n";
             print_link("/pkginfo.php?pacid=" . $row[0], make_image("box-0.gif") . " Package info");

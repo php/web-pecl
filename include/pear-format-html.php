@@ -356,4 +356,31 @@ function display_user_notes($user, $width = "50%")
     return sizeof($notes);
 }
 
+// {{{ user_link()
+
+/**
+ * Create link to the account information page and to the user's wishlist
+ *
+ * @param string User's handle
+ * @return mixed False on error, otherwise string
+ */
+function user_link($handle)
+{
+    global $dbh;
+
+    $query = "SELECT name, wishlist FROM users WHERE handle = '" . $handle . "'";
+    $row = $dbh->getRow($query, DB_FETCHMODE_ASSOC);
+
+    if (!is_array($row)) {
+        return false;
+    }
+
+    return sprintf("<a href=\"account-info.php?handle=%s\">%s</a>%s\n",
+                   $handle,
+                   $row['name'],
+                   ($row['wishlist'] != "" ? " [<a href=\"" . $row['wishlist'] . "\">Wishlist</a>]" : "")
+                   );
+}
+
+// }}}
 ?>

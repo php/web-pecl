@@ -134,6 +134,13 @@ form {
 	color: red;
 }
 
+.tip {
+    border: 1px solid #00c;
+    color: #006;
+    background: #eef;
+    padding: 8px;
+}
+
 .listing li {
     line-height: 200%;
 }

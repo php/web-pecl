@@ -1,4 +1,8 @@
 <?php
+require_once "HTML/Form.php";
+
+$form = new HTML_Form($_SERVER['PHP_SELF']);
+
 /*
 * TODO
 *  - Use coxs pager class
@@ -12,6 +16,53 @@
 
 response_header("Package search");
 echo '<h1>Package search</h1>';
+
+$bb = new Borderbox("Search options");
+?>
+
+<form action="<?php echo $_SERVER['PHP_SELF']?>" method="GET">
+<table border="0">
+<tr>
+    <td>Package name:</td>
+    <td valign="middle">
+    <?php $form->displayText("pkg_name", @$_GET['pkg_name']); ?>
+    </td>
+    <td>Match:
+    <?php $form->displayRadio("bool", "AND", (@$_GET['bool'] == "AND" || !isset($_GET['bool']))); ?>
+    All words
+    <?php $form->displayRadio("bool", "OR", (@$_GET['bool'] == "OR")); ?>
+    Any word
+    </td>
+</tr>
+<tr>
+    <td>Maintainer:</td>
+    <td><?php $form->displayText("pkg_maintainer", @$_GET['pkg_maintainer']); ?></td>
+</tr>
+<tr>
+    <td>Category:</td>
+    <td>
+<?php
+$sth = $dbh->query('SELECT id, name FROM categories ORDER BY name');
+
+$rows = array("" => "");
+
+while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+    $rows[$row['id']] = $row['name'];
+}
+
+$form->displaySelect("pkg_category", $rows, @$_GET['pkg_category']);
+?>
+    </td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+    <td><input type="submit" name="submit" value="Search"></td>
+</tr>
+</table>
+</form>
+
+<?php
+$bb->end();
 
 /***************************************
 ** Is form submitted? Do search and show
@@ -61,63 +112,5 @@ if(!empty($_GET)) {
     }
 }
 
-/***************************************
-** Show the form
-***************************************/
-
-$e_reporting = error_reporting(~E_NOTICE);
-?>
-<form action="<?=$_SERVER['PHP_SELF']?>" method="GET">
-<table border="0">
-	<tr>
-		<td>Package name:</td>
-		<td>
-			<input type="text" name="pkg_name" value="<?=$_GET['pkg_name']?>">
-		</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>
-			Match: <input type="RADIO" name="bool" value="AND" id="bool_and" <?=($bool == ' OR ' ? '' : 'checked="checked"')?>> <label for="bool_and">All words</label>
-			       <input type="RADIO" name="bool" value="OR" id="bool_or" <?=($bool == ' OR ' ? 'checked="checked"' : '')?>> <label for="bool_or">Any word</label>
-		</td>
-	</tr>
-
-	<tr>
-		<td>Maintainer:</td>
-		<td><input type="text" name="pkg_maintainer" value="<?=$_GET['pkg_maintainer']?>"></td>
-	</tr>
-	<tr>
-		<td>Category:</td>
-		<td><select name="pkg_category" size="1">
-		<option value=""></option>
-<?php
-$sth = $dbh->query('SELECT id, name FROM categories ORDER BY name');
-
-while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
-    if (isset($_GET['pkg_category']) && $_GET['pkg_category'] == $row['id']) {
-        echo "<option value=\"" . $row['id'] . "\" selected>" . $row['name'] . "</option>\n";
-    } else {
-        echo "<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>\n";
-    }    
-}
-?>
-		</select>
-		</td>
-	</tr>
-
-	<tr>
-		<td>&nbsp;</td>
-		<td><input type="submit" name="submit" value="Search"></td>
-	</tr>
-</table>
-</form>
-<?php
-error_reporting($e_reporting);
-
-/***************************************
-** Footer
-***************************************/
-
-	response_footer();
+response_footer();
 ?>

@@ -606,6 +606,7 @@ function rm_rf($path)
                 unlink($file);
             }
         }
+        closedir($dp);
         return rmdir($path);
     } else {
         return @unlink($path);

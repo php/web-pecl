@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!-- $Id: pearfaq.xml,v 1.1 2001-08-14 08:42:03 ssb Exp $ -->
+<!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
+          "./dbxml/docbookx.dtd">
+
+<book>
+
+<article class="faq">
+<artheader>
+    <title>PEAR-Developer FAQ</title>
+    <date>$Date: 2001-08-14 08:42:03 $</date>
+</artheader>
+
+<qandaset>
+    <qandaentry>
+        <question>
+            <para>
+                How to become a PEAR contributer?
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Author )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>
+    
+    <qandaentry>
+        <question>
+            <para>
+                How to contribute patches
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Author )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>    
+    <qandaentry>
+        <question>
+            <para>
+                How to contribute patches for 
+                <trademark>Outlook Express</trademark> users
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Author )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>
+    <qandaentry>
+        <question>
+            <para>
+                I want to contribute, in what areas could I do it?
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Author )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>    
+    <qandaentry>
+        <question>
+            <para>
+                Why is PEAR seperated into pear/ and php4/pear/?
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Author )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>    
+    <qandaentry>
+        <question>
+            <para>
+                Why differs the directory structure of pear/ and php4/pear/?
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Author )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>    
+    <qandaentry>
+        <question>
+            <para>
+                Why a flat directory structure instead of a deep?
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Author )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>    
+    <qandaentry>
+        <question>
+            <para>
+                Can I commit experimental/ unstable stuff?
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Alexander Merz )
+            </para>        
+            <para>
+                Yes. But make sure, that you mark up the experimental/ unstable
+                status of the project in the documention.
+            </para>
+        </answer>
+    </qandaentry>
+    <qandaentry>
+        <question>
+            <para>
+                Are different packages with similar features allowed?
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Author )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>    
+    <qandaentry>
+        <question>
+            <para>
+                How should I write the documentation?
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Author )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>
+    <qandaentry>
+        <question>
+            <para>
+                What is the difference between a package, a class and a file?
+            </para>
+        </question>
+        <answer>
+            <para>
+                ( by Stig Sæther Bakken )
+            </para>        
+            <para>
+                the ANSWER is 42
+            </para>
+        </answer>
+    </qandaentry>        
+</qandaset>
+
+</article>
+
+</book>

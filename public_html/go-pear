@@ -461,10 +461,6 @@ Please, enter the php.exe path.
             $tmp = trim(fgets($tty, 1024));
         }
         $old = $$var;
-        if(ereg(' ',$tmp)){
-            echo "**ERROR**: No space allowed in any path, please choose another path.\n";
-            $tmp='';
-        }
         if(WINDOWS && $var=='php_bin' ){
             if(file_exists($tmp.DIRECTORY_SEPARATOR.'php.exe')){
                 $tmp = $tmp.DIRECTORY_SEPARATOR.'php.exe';
@@ -699,7 +695,7 @@ if (WEBINSTALLER) {
 } else {
 	$config = &PEAR_Config::singleton();
 };
-
+$config->set('preferred_state', 'stable');
 foreach ($config_vars as $var) {
     $config->set($var, $$var);
 }

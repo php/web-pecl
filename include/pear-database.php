@@ -368,7 +368,11 @@ class package
                 {
                     unset($dep['rid']);
                     unset($dep['release']);
-                    $dep['package'] = $packageinfo[$dep['name']]['packageid'];
+                    if ($dep['type'] == 'pkg') {
+                        $dep['package'] = $packageinfo[$dep['name']]['packageid'];
+                    } else {
+                        $dep['package'] = 0;
+                    }
                     $_deps[] = $dep;
                 };
             };

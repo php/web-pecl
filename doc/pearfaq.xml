@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.21 2001-11-16 09:53:35 alexmerz Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.22 2001-11-16 09:56:31 alexmerz Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-11-16 09:53:35 $</date>
-  <version>$Revision: 1.21 $</version>
+  <date>$Date: 2001-11-16 09:56:31 $</date>
+  <version>$Revision: 1.22 $</version>
  </artheader>
 
  <qandaset>
@@ -169,7 +169,7 @@
     <author name="Stig Bakken"/>
     <para>
      If you just want to make a simple extension, put it in
-     pear/PECL/<extname> (that is where extensions from php4/ext/<extname>
+     pear/PECL/extname (that is where extensions from php4/ext/extname
      will be moved). If you want to write an extension following PEAR's
      function/class naming, put it in pear/FOO_Bar or whatever the right
      name is.

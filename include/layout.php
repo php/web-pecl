@@ -90,26 +90,6 @@ function print_image($file, $alt=false, $align=false, $extras=false, $dir=false,
     print make_image($file, $alt, $align, $extras, $dir);
 }
 
-
-
-// make_submit()
-//  - make a submit button image
-//
-function make_submit($file, $alt=false, $align=false, $extras=false, $dir=false, $border=0) {
-    if (!$dir) {
-        $dir = '/gifs';
-    }
-    $return = make_image($file, $alt, $align, $extras, $dir, $border);
-    if ($return != "<img />") {
-        $return = '<input type="image"'.substr($return,4);
-    } else {
-        $return = '<input type="submit" />';
-    }
-    return $return;
-}
-
-
-
 // delim()
 // print a pipe delimiter
 //
@@ -254,14 +234,13 @@ function commonHeader($title) {
 
  <tr valign="top">
 <?php if (isset($SIDEBAR_DATA)) { ?>
-  <td bgcolor="#f0f0f0" width="149">
+  <td class="sidebar_left" bgcolor="#f0f0f0" width="149">
    <table width="149" cellpadding="4" cellspacing="0">
     <tr valign="top">
-     <td style="font-size: 90%"><?php echo $SIDEBAR_DATA?><br /></td>
+     <td><?php echo $SIDEBAR_DATA?><br /></td>
     </tr>
    </table>
   </td>
-  <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
 <?php } ?>
   <td>
    <table width="100%" cellpadding="10" cellspacing="0">
@@ -286,11 +265,16 @@ function commonFooter() {
   </td>
 
 <?php if (isset($RSIDEBAR_DATA)) { ?>
-  <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
-  <td width="149" bgcolor="#f0f0f0">
-    <table width="100%" cellpadding="4" cellspacing="0"><tr valign="top"><td class="sidebar"><?php echo $RSIDEBAR_DATA; ?><br /></td></tr></table>
+  <td class="sidebar_right" width="149" bgcolor="#f0f0f0">
+    <table width="149" cellpadding="4" cellspacing="0">
+     <tr valign="top">
+      <td><?php echo $RSIDEBAR_DATA; ?><br />
+     </td>
+    </tr>
+   </table>
   </td>
 <?php } ?>
+
  </tr>
 
  <!-- Lower bar -->
@@ -302,46 +286,8 @@ function commonFooter() {
 print_link('/source.php?url='.$SCRIPT_NAME, 'SHOW SOURCE', false, 'class="menuBlack"');
 echo delim();
 print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
-
-/**
- * For now (2001-12-02) we don't have any mirror
- */
-if (0) { ?>
-
-      <script language="javascript" type="text/javascript">
-      <!--
-        function gotomirror(form) {
-          url = form.country.options[form.country.selectedIndex].value;
-          if (url != '<? echo $MYSITE; ?>') {
-            window.location.href = url;
-          }
-      return false;
-        }
-      //-->
-      </script>
-      <form method="get" action="/mirrors.php" onsubmit="return gotomirror(this);">
-      <input type="hidden" name="REDIRECT" value="1">
-      <?php
-    echo delim();
-    print_link('/mirrors.php', 'MIRRORS:', false, 'class="menuBlack"');
-    echo "&nbsp;<select class=\"small\" name=\"country\" onchange=\"gotomirror(this.form)\">\n";
-
-    foreach($MIRRORS as $url=>$mirror) {
-        if ($mirror[4] == 1) { /* only list full mirrors here */
-            if ($url==$MYSITE) {
-                echo '<option value="' . $url . '" SELECTED>' . $COUNTRIES[$mirror[0]] .
-                     ' (' . $mirror[1] . ") *\n";
-            } else {
-                echo '<option value="' . $url . '">' . $COUNTRIES[$mirror[0]] .
-                     ' (' . $mirror[1] . ")\n";
-            }
-        }
-    }
-    echo "</select> ";
-    echo make_submit('small_submit_black.gif', 'go', 'bottom' );
-    ?>&nbsp;<br />
-      </form>
-<?php } ?><br />
+?>
+      <br />
       </td>
   </tr>
   <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1); ?><br /></td></tr>

@@ -1,6 +1,7 @@
 body {
     margin: 0px;
     padding: 0px;
+    background-color: white;
 }
 
 body, td, th {
@@ -21,6 +22,16 @@ th.pack {
 th.others {
     color: #006600;
     text-align: left;
+}
+
+td.sidebar_left {
+    font-size: 90%;
+    border-right: 1px dashed #ccc;
+}
+
+td.sidebar_right {
+    font-size: 90%;
+    border-left: 1px dashed #ccc;
 }
 
 em {
@@ -60,10 +71,6 @@ submit {
     font-weight: bold;
     font-size: 75%;
     color: #000000;
-}
-
-.sidebar {
-    font-size: 85%;
 }
 
 code, pre, tt {

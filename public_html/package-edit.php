@@ -66,31 +66,29 @@ if (!$lead && !$admin) {
 
 /** Update */
 if (isset($_POST['submit'])) {
-    foreach (array("name", "license", "summary", "description", "category") as $key) {
-        $_POST[$key] = addslashes($_POST[$key]);
-    }
 
-    if ($_POST['name'] == "" || $_POST['license'] == "" ||
-        $_POST['summary'] == "")
-    {
+    if (!$_POST['name'] || !$_POST['license'] || !$_POST['summary']) {
         PEAR::raiseError("You have to enter values for name, license and summary!");
     }
 
-    $query = sprintf("UPDATE packages SET name = '%s', license = '%s',
-                      summary = '%s', description = '%s', category = '%s',
-                      homepage = '%s', package_type = '%s'
-                      WHERE id = '%s'",
-                      $_POST['name'],
-                      $_POST['license'],
-                      $_POST['summary'],
-                      $_POST['description'],
-                      $_POST['category'],
-                      $_POST['homepage'],
-                      $_POST['type'],
-                      $_GET['id']
-                    );
+    $query = 'UPDATE packages SET name = ?, license = ?,
+              summary = ?, description = ?, category = ?,
+              homepage = ?, package_type = ?, cvs_link = ?
+              WHERE id = ?';
 
-    $sth = $dbh->query($query);
+    $qparams = array(
+                  $_POST['name'],
+                  $_POST['license'],
+                  $_POST['summary'],
+                  $_POST['description'],
+                  $_POST['category'],
+                  $_POST['homepage'],
+                  $_POST['type'],
+                  $_POST['cvs_link'],
+                  $_GET['id']
+                );
+
+    $sth = $dbh->query($query, $qparams);
 
     if (PEAR::isError($sth)) {
         PEAR::raiseError("Unable to save data!");
@@ -115,7 +113,7 @@ if (isset($_POST['submit'])) {
             }
 
             break;
-    }        
+    }
 }
 
 $row = package::info((int)$_GET['id']);
@@ -182,6 +180,12 @@ $form->displaySelect("category", $rows, $row['categoryid']);
     </td>
 </tr>
 <tr>
+    <td>Web CVS Url:</td>
+    <td valign="middle">
+    <?php $form->displayText("cvs_link", $row['cvs_link'], 30); ?>
+    </td>
+</tr>
+<tr>
     <td>&nbsp;</td>
     <td><input type="submit" name="submit" value="Save changes" />&nbsp;
     <input type="reset" name="cancel" value="Cancel" onClick="javascript:window.location.href='/package-info.php?pacid=<?php echo $_GET['id']; ?>'; return false" />
@@ -206,9 +210,9 @@ foreach ($row['releases'] as $version => $release) {
     echo "  <td>" . $version . "</td>\n";
     echo "  <td>" . $release['releasedate'] . "</td>\n";
     echo "  <td>\n";
-    
-    $url = $_SERVER['PHP_SELF'] . "?id=" . 
-                     $_GET['id'] . "&release=" . 
+
+    $url = $_SERVER['PHP_SELF'] . "?id=" .
+                     $_GET['id'] . "&release=" .
                      $release['id'] . "&action=release_remove";
     $msg = "Are you sure that you want to delete the release?";
 

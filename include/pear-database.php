@@ -341,7 +341,7 @@ class package
              "c.id AS categoryid, c.name AS category, ".
              "p.stablerelease AS stable, p.license AS license, ".
              "p.summary AS summary, p.homepage AS homepage, ".
-             "p.description AS description".
+             "p.description AS description, p.cvs_link AS cvs_link".
              " FROM packages p, categories c ".
              "WHERE c.id = p.category AND p.{$what} = ?";
         $rel_sql = "SELECT version, id, doneby, license, summary, ".

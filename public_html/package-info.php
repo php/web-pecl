@@ -63,6 +63,7 @@ $description = stripslashes($pkg['description']);
 $category    = $pkg['category'];
 $homepage    = $pkg['homepage'];
 $pacid       = $pkg['packageid'];
+$cvs_link    = $pkg['cvs_link'];
 
 // Accounts data
 $sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role".
@@ -132,7 +133,7 @@ if (!empty($homepage)) {
 }
 
 if ($type == "pecl") {
-    $bb->horizHeadRow("PECL package", "That package is part of " . 
+    $bb->horizHeadRow("PECL package", "That package is part of " .
                       make_link("/manual/en/introduction.php#about-pecl", "PECL") .
                       ".");
 }
@@ -156,7 +157,7 @@ if (!empty($_COOKIE['PEAR_USER'])) {
                  "&nbsp;" . make_link("/package-delete.php?id=$pacid",
                                       make_image("delete.gif", "Delete package")) .
                  "&nbsp;[" . make_link("/admin/package-maintainers.php?pid=$pacid",
-                                       "Edit maintainers") . 
+                                       "Edit maintainers") .
                  "]</div>");
 }
 
@@ -187,6 +188,15 @@ $stats_link = make_link("/package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=
     <td align="center">[ <?php print $changelog_link; ?> ]</td>
     <td align="center">[ <?php print $stats_link; ?> ]</td>
 </tr>
+<?php
+if ($cvs_link) {
+    print '
+    <tr>
+        <td align="center">[ ' . make_link($cvs_link, 'CVS Web', 'top') . ' ]</td>
+    </tr>
+    ';
+}
+?>
 </table>
 
 <br />
@@ -215,7 +225,7 @@ if (!$relid) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
                                    "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")";
             }
-            
+
             $link_changelog = "<small>[" . make_link("/package-changelog.php?package=" .
                                                      $pkg['name'] . "&release=" .
                                                      $r_version, "Changelog")
@@ -281,7 +291,7 @@ if ($sth->numRows() == 0) {
         'sapi'   => 'SAPI Backend',
         );
 
-    // Loop per version 
+    // Loop per version
     foreach ($rels as $r_version => $rel) {
         $dep_text = "";
 

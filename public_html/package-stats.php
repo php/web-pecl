@@ -337,7 +337,7 @@ if (@!$_GET['pid']) {
 	if (DB::isError($sth)) {
 	    PEAR::raiseError("unable to generate stats");
 	}
-
+	echo '<div style="height: 300px; overflow: auto">';
 	echo "<table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"2\">\n";
 	echo "<tr align=\"left\" bgcolor=\"#cccccc\">\n";
 	echo "<th>Package name</th>\n";
@@ -369,6 +369,8 @@ if (@!$_GET['pid']) {
 	echo "</table>\n";
 
 	$bb->end();
+
+	echo '</div>';
 }
 
 response_footer();

@@ -33,7 +33,7 @@
 	<?=$table->toHtml()?>
 <?endif?>
 
-<?if($catpid):?>
+<?if($catpid and $packages):?>
 
 	<br />
 
@@ -60,27 +60,28 @@
 	}
 	
 	.closeButton {
-		position: absolute;
-		top: 0px;
-		right: 0px;
-		font-family: Marlett;
-		fonzt-size: 80%;
+		border: 2px white outset;
 		background-color: #c0c0c0;
-		border: 2px outset white;
-		width: 1px;
-		height: 1px;
-		cursor: pointer;
-		cursor: hand;
 	}
 	
+	.moreInfoHeader {
+		background-color: #dddddd;
+		border-bottom: 1px dashed #c0c0c0;
+	}
+
 	.moreInfoText {
 		font-size: 80%;
 		font-weight: bold;
 		font-family: Verdana;
+		padding-left: 5px;
 	}
 	// -->
 	</style>
 
+
+	<a href="<?=$hideMoreInfoLink?>" title="Hide all more info"><img src="gifs/moreinfo-no.gif" width="17" height="17" border="0" vspace="3" /></a>
+	<a href="<?=$showMoreInfoLink?>" title="Show all more info"><img src="gifs/moreinfo-yes.gif" width="17" height="17" border="0" vspace="3" /></a>
+	
 	<table border="0" style="border: solid 1px black" cellspacing="0" cellpadding="0">
 		<tr>
 			<td>
@@ -112,21 +113,28 @@
 							<td valign="top"><?=$p['summary']?></td>
 							<td valign="top"><?=$p['eInfo']['status']?></td>
 							<td valign="top">
-								<a href="#" onclick="toggleMoreInfo(<?=$p['id']?>); return false" onmouseover="window.status = 'View more info about <?=$p['name']?>'; return true" onmouseout="window.status = ''" title="View more info about <?=$p['name']?>">
-									<img src="gifs/moreinfo.gif" border="0" />
-								</a>
+								<?if($_browser->is_ie5up):?>
+									<a href="#" onclick="toggleMoreInfo(<?=$p['id']?>); return false" onmouseover="window.status = 'View more info about <?=$p['name']?>'; return true" onmouseout="window.status = ''" title="View more info about <?=$p['name']?>">
+										<img src="gifs/moreinfo.gif" border="0" />
+									</a>
+								<?endif?>
 							</td>
 						</tr>
 						
-						<!--
-						<tr <?if($_browser->is_ie5up):?> style="display: <?=$defaultMoreInfoVis?>" <?endif?> id="moreInfo_<?=$p['id']?>">
+						<tr <?if($_browser->is_ie5up || $defaultMoreInfoVis == 'none'):?> style="display: <?=$defaultMoreInfoVis?>" <?endif?> id="moreInfo_<?=$p['id']?>">
 							<td>&nbsp;</td>
+							
 							<td colspan="3" class="moreInfo">
-								<div style="background-color: #dddddd; border-bottom: 1px dashed #c0c0c0; position: absolute; top: 0px; left: 0px; width: 100%">
-									<div class="closeButton" onclick="toggleMoreInfo(<?=$p['id']?>)">r</div>
-									<span class="moreInfoText">More information</span>
-								</div>
-								<br>
+								<table border="0" class="moreInfoHeader" width="100%" cellspacing="0" cellpadding="0">
+									<tr>
+										<td><span class="moreInfoText">More information</span></td>
+										<td align="right">
+											<?if($_browser->is_ie5up):?>
+												<a href="javascript: toggleMoreInfo(<?=$p['id']?>)"><img class="closeButton" src="gifs/close.gif" border="0" /></a>
+											<?endif?>
+										</td>
+									</tr>
+								</table>
 
 								<table border="0">
 									<tr>
@@ -140,13 +148,17 @@
 							<td>&nbsp;</td>
 						</tr>
 
-						<tr <?if($_browser->is_ie5up):?> style="display: <?=$defaultMoreInfoVis?>" <?endif?> id="moreInfo_<?=$p['id']?>_spacer"><td colspan="5">&nbsp;</td></tr>
-						-->
+						<tr <?if($_browser->is_ie5up || $defaultMoreInfoVis == 'none'):?> style="display: <?=$defaultMoreInfoVis?>" <?endif?> id="moreInfo_<?=$p['id']?>_spacer"><td colspan="5">&nbsp;</td></tr>
 					<?endforeach?>
 				</table>
 			</td>
 		</tr>
 	</table>
+
+<?elseif($catpid):?>
+	<p align="center">
+		No packages found in this category
+	</p>
 <?endif?>
 
 <br />

@@ -113,19 +113,17 @@ function navigationBar($title,$id,$loc) {
 		if (file_exists("html/$file.html")) {
 			$links[] = make_link("html/$file.html", 'Plain HTML');
 		}
+		echo '<tr>';
 		if (count($links)) {
-			echo '<tr><td><small>View this page in ' . join (delim(), $links) . "</small></td>\n";
+			echo '<td><small>View this page in ' . join (delim(), $links) . '</small></td>';
 		}
-	}
-
-	if ($loc == 'bottom') {
+        echo '<td align="right"><small>Last updated: '.$tstamp.'</small></td></tr>';
+	} else {
 	    echo '<tr>';
 	    echo '<td valign="top" align="left"><small>'
 	         . make_link("/download-docs.php", "Download Documentation")
 	        . '</small</td>';
 	    echo '<td align="right"><small>Last updated: '.$tstamp.'<br>';
-    } else {
-        echo '<td align="right"><small>Last updated: '.$tstamp.'</td></tr>';
     }
 
 	echo '</small></td></tr>';

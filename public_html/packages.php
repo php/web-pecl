@@ -61,11 +61,12 @@ $nrow    = 0;
 $catdata = array();
 
 // Get names of sub-categories
-$subcats = $dbh->getAssoc("SELECT p.id AS pid, c.id AS id, c.name AS name, c.summary AS summary ".
+$subcats = $dbh->getAssoc("SELECT p.id AS pid, c.id AS id, c.name AS name, c.summary AS summary".
                           "  FROM categories c, categories p ".
                           " WHERE p.parent $category_where ".
                           "   AND c.parent = p.id",
                           false, null, DB_FETCHMODE_ASSOC, true);
+
 // Get names of sub-packages
 $subpkgs = $dbh->getAssoc("SELECT p.category, p.id AS id, p.name AS name, p.summary AS summary".
                           "  FROM packages p, categories c".
@@ -107,7 +108,7 @@ while ($sth->fetchInto($row)) {
     }
 
     if (sizeof($sub_links) >= $max_sub_links) {
-        $sub_links = implode(', ', $sub_links) . ' <img src="/gifs/caret-r.gif" border="0" alt="[more]" />';
+        $sub_links = implode(', ', $sub_links) . ' ' . make_image("caret-r.gif", "[more]");
     } else {
         $sub_links = implode(', ', $sub_links);
     }

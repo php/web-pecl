@@ -158,10 +158,18 @@ if ($display_form) {
 
     print "<h1>Request Account</h1>
 
-Please note that you <b>not</b> need an account for
-<b>downloading</b>.<br /> You only need an account if you have a package
-you would like to release through PEAR.
+<p>You do <b>not</b> need and account if you want to download, install and/or
+use PEAR packages. You only need to request an account if you want to
+contribute a new package to PEAR CVS, help in the maintainance of an existing
+package, or list and release your package using the PEAR packager/installer
+(without hosting the code in PEAR CVS).</p>
 
+<p>If you are contributing a package to PEAR, make sure that you have gone through
+the peer review process. Make also sure that if you are going to include code
+in PEAR CVS, that this complies with the PEAR code standards before it is
+released.</p>
+
+<p>Bogus, incomplete or incorrect requests will be summarily denied.</p>
 ";
 
     if (isset($errorMsg)) {
@@ -182,7 +190,7 @@ you would like to release through PEAR.
     $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", @$_POST['email']));
     $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", @$_POST['showemail']));
     $bb->horizHeadRow("Homepage", HTML_Form::returnText("homepage", @$_POST['homepage']));
-    $bb->horizHeadRow("Purpose of your PEAR account:", HTML_Form::returnTextarea("purpose", stripslashes(@$_POST['purpose'])));
+    $bb->horizHeadRow("Purpose of your PEAR account<br />(no account is needed for using PEAR, PEAR packages):", HTML_Form::returnTextarea("purpose", stripslashes(@$_POST['purpose'])));
     $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes(@$_POST['moreinfo'])));
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" />&nbsp;<input type=\"reset\" />");

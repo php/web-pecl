@@ -1,5 +1,6 @@
 <?php /* vim: set noet ts=4 sw=4 ft=php : */
 
+<<<<<<< functions.inc
 /**
  * Contains functions and variables used throughout the bug system
  *
@@ -83,6 +84,91 @@ if ($site == 'pear') {
     $pseudo_pkgs[] = 'PEPr';
 }
 
+=======
+/**
+ * Contains functions and variables used throughout the bug system
+ *
+ * This source file is subject to version 3.0 of the PHP license,
+ * that is bundled with this package in the file LICENSE, and is
+ * available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.
+ * If you did not receive a copy of the PHP license and are unable to
+ * obtain it through the world-wide-web, please send a note to
+ * license@php.net so we can mail you a copy immediately.
+ *
+ * @category  peclweb
+ * @package   Bugs
+ * @copyright Copyright (c) 1997-2004 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License
+ * @version   $Id$
+ */
+
+
+/*
+ * DEFINE VARIABLES ============================
+ */
+
+// Have this style sheet included in all bug pages.
+$extra_styles[] = '/css/bugs.css';
+
+// For distinguishing this site from PEAR
+$site = 'pecl';
+$siteBig = 'PECL';
+$bugEmail = 'pecl-dev@lists.php.net';
+
+// used in mail_bug_updates(), below, and class for search results
+$tla = array(
+    'Open'        => 'Opn',
+    'Bogus'       => 'Bgs',
+    'Feedback'    => 'Fbk',
+    'No Feedback' => 'NoF',
+    'Wont fix'    => 'WFx',
+    'Duplicate'   => 'Dup',
+    'Critical'    => 'Ctl',
+    'Assigned'    => 'Asn',
+    'Analyzed'    => 'Ana',
+    'Verified'    => 'Ver',
+    'Suspended'   => 'Sus',
+    'Closed'      => 'Csd',
+);
+
+$types = array(
+    'Bug'                     => 'Bug',
+    'Feature/Change Request'  => 'Req',
+);
+
+// Used in show_state_options()
+$state_types =  array (
+    'Open'         => 2,
+    'Closed'       => 2,
+    'Duplicate'    => 2,
+    'Critical'     => 1,
+    'Assigned'     => 1,
+    'Not Assigned' => 1,
+    'Analyzed'     => 1,
+    'Verified'     => 1,
+    'Suspended'    => 1,
+    'Wont fix'     => 1,
+    'No Feedback'  => 1,
+    'Feedback'     => 1,
+    'Old Feedback' => 0,
+    'Stale'        => 0,
+    'Fresh'        => 0,
+    'Bogus'        => 2,
+    'All'          => 0
+);
+
+// Items that need bug tracking but aren't real packages
+$pseudo_pkgs = array(
+    'Web Site',
+    'Documentation',
+    'Bug System',
+);
+if ($site == 'pear') {
+    $pseudo_pkgs[] = 'PEPr';
+}
+
+>>>>>>> 1.7
 
 /*
  * DEFINE FUNCTIONS ============================
@@ -408,6 +494,59 @@ function show_reason_types($current = '', $expanded = 0)
 	}
 }
 
+<<<<<<< functions.inc
+/**
+ * Prints PHP version number <option>'s for use in a <select> list
+ *
+ * @param string $current  the bug's current version number
+ * @param string $default  a version number that should be the default
+ *
+ * @return void
+ */
+function show_version_options($current, $default = '')
+{
+    $versions = array(
+        '4.3.10',
+        '4.3.9',
+        '4.3.8',
+        '4.3.7',
+        '4.3.6',
+        '4.3.5',
+        '4.3.4',
+        '4.3.3',
+        '4.3.2',
+        '4.3.1',
+        '4.3.0',
+        '4.2.2',
+        '4.2.1',
+        '4.2.0',
+        '4_3 CVS-' . date('Y-m-d'),
+        '5.0.3',
+        '5.0.2',
+        '5.0.1',
+        '5.0.0',
+        '5_0 CVS-' . date('Y-m-d'),
+        '5_1 CVS-' . date('Y-m-d'),
+        'Irrelevant'
+    );
+    $use = 0;
+
+    echo '<option value="">--Please Select--</option>' . "\n";
+    while (list(,$v) = each($versions)) {
+        echo '<option';
+        if ($current == $v) {
+            echo ' selected="selected"';
+        }
+        echo '>' . $v . "</option>\n";
+        if ($current == $v) {
+            $use++;
+        }
+    }
+    if (!$use && $current) {
+        echo '<option selected="selected">' . $current . "</option>\n";
+    }
+    echo '<option value="earlier">Earlier? Upgrade first!</option>' . "\n";
+=======
 /**
  * Prints PHP version number <option>'s for use in a <select> list
  *
@@ -459,6 +598,7 @@ function show_version_options($current, $default = '')
         echo '<option selected="selected">' . $current . "</option>\n";
     }
     echo '<option value="earlier">Earlier? Upgrade first!</option>' . "\n";
+>>>>>>> 1.7
 }
 
 /**

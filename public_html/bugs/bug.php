@@ -26,6 +26,7 @@
 /**
  * Obtain common includes
  */
+
 require_once './include/prepend.inc';
 
 /**

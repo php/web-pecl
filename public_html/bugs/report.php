@@ -1,4 +1,5 @@
 <?php /* vim: set noet ts=4 sw=4: : */
+<<<<<<< report.php
 
 /**
  * Procedures for reporting bugs
@@ -23,6 +24,32 @@
 /**
  * Obtain common includes
  */
+=======
+
+/**
+ * Procedures for reporting bugs
+ *
+ * See pearweb/sql/bugs.sql for the table layout.
+ *
+ * This source file is subject to version 3.0 of the PHP license,
+ * that is bundled with this package in the file LICENSE, and is
+ * available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.
+ * If you did not receive a copy of the PHP license and are unable to
+ * obtain it through the world-wide-web, please send a note to
+ * license@php.net so we can mail you a copy immediately.
+ *
+ * @category  pearweb
+ * @package   Bugs
+ * @copyright Copyright (c) 1997-2004 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License
+ * @version   $Id$
+ */
+
+/**
+ * Obtain common includes
+ */
+>>>>>>> 1.9
 require_once './include/prepend.inc';
 
 /**
@@ -298,12 +325,21 @@ if (!package_exists($_REQUEST['package'])) {
  simply being marked as &quot;bogus.&quot;</strong>
 </p>
 
+<<<<<<< report.php
+<p>
+ <strong>If you feel this bug concerns a security issue, eg a buffer
+ overflow, weak encryption, etc, then email
+ <?php echo make_mailto_link('pear-group@php.net?subject=%5BSECURITY%5D+possible+new+bug%21', 'pear-group'); ?>
+ who will assess the situation.</strong>
+</p>
+=======
 <p>
  <strong>If you feel this bug concerns a security issue, eg a buffer
  overflow, weak encryption, etc, then email
  <?php echo make_mailto_link('security@php.net?subject=%5BSECURITY%5D possible new bug%21', 'security'); ?>
  who will assess the situation.</strong>
 </p>
+>>>>>>> 1.9
 <?php
     }
 

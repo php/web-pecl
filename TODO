@@ -1,0 +1,21 @@
+Short Term:
+
+* Finish patch tracker
+* Finish voting system
+* Extend Damblan
+* Provide RSS feeds for all sorts of stuff
+
+Medium Term:
+
+* Add permission/karma support to the login system
+* Make the whole site XHTML valid
+* Improve backup architecture
+
+Long Term:
+
+* Make the login system use LDAP
+* Implement mirror facilities
+* Implement failover facilities
+
+
+Last Change: $Id$

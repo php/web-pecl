@@ -28,10 +28,19 @@ if (isset($_GET['package']) && empty($_GET['pacid'])) {
     $pacid = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
 }
 
+// Package data
+if (!empty($pacid)) {
+    $pkg = package::info($pacid);
+}
+
+$relid = 0;
 if (isset($_GET['version']) && empty($_GET['relid'])) {
-    $relid = $dbh->getOne("SELECT id FROM releases WHERE package = ?".
-                          " AND version = ?",
-                          array($pacid, $_GET['version']));
+    foreach ($pkg['releases'] as $version => $release) {
+        if ($version == $_GET['version']) {
+            $relid = $release['id'];
+            break;
+        }
+    }
 } else {
     $relid = (isset($_GET['relid'])) ? (int) $_GET['relid'] : null;
 }
@@ -45,9 +54,6 @@ if (empty($pacid)) {
 // ** expected
 
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
-
-// Package data
-$pkg = package::info($pacid);
 
 $name        = $pkg['name'];
 $summary     = stripslashes($pkg['summary']);
@@ -143,7 +149,7 @@ if (!empty($homepage)) {
 
 if ($relid) {
     // Find correct version for given release id
-    foreach ($pkg['releases'] as $release) {
+    foreach ($pkg['releases'] as $version => $release) {
         if ($release['id'] != $relid) {
             continue;
         }

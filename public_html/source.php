@@ -45,7 +45,8 @@ echo hdelim();
 $legal_dirs = array(
     "/manual" => 1,
     "/include" => 1,
-    "/stats" => 1);
+    "/stats" => 1,
+    "/news" => 1);
 
 $dir = dirname($url);
 if (isset($legal_dirs[$dir])) {

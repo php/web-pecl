@@ -447,12 +447,22 @@ class release
         if (PEAR::isError($package_id)) {
             return $package_id;
         }
-		if ($version == null) {
+		if ($file !== null) {
+			$path = $dbh->getOne("SELECT fullpath FROM files ".
+								 "WHERE basename = ?", $file);
+			if (PEAR::isError($path)) {
+				return $path;
+			}
+			$basename = $file;
+		} elseif ($version == null) {
 			// Get the most recent version
 			$row = $dbh->getRow("SELECT id FROM releases ".
 								"WHERE package = $package_id ".
 								"ORDER BY releasedate DESC",
 								DB_FETCHMODE_ORDERED);
+			if (PEAR::isError($row)) {
+				return $row;
+			}
 			$release_id = $row[0];
 		} elseif (release::isValidState($version)) {
 			// Get the most recent version with a given state
@@ -461,6 +471,9 @@ class release
 								"AND state = '$version' ".
 								"ORDER BY releasedate DESC",
 								DB_FETCHMODE_ORDERED);
+			if (PEAR::isError($row)) {
+				return $row;
+			}
 			$release_id = $row[0];
 		} else {
 			// Get a specific release
@@ -468,21 +481,31 @@ class release
 								"WHERE package = $package_id ".
 								"AND version = '$version'",
 								DB_FETCHMODE_ORDERED);
+			if (PEAR::isError($row)) {
+				return $row;
+			}
 			$release_id = $row[0];
 		}
-		$sql = "SELECT fullpath, basename FROM files WHERE release = ".
-			 $release_id;
-		$row = $dbh->getRow($sql, DB_FETCHMODE_ORDERED);
-		if (PEAR::isError($row)) {
-			return $row;
+		if (!isset($path) && isset($release_id)) {
+			$sql = "SELECT fullpath, basename FROM files WHERE release = ".
+				 $release_id;
+			$row = $dbh->getRow($sql, DB_FETCHMODE_ORDERED);
+			if (PEAR::isError($row)) {
+				return $row;
+			}
+			list($path, $basename) = $row;
+			if (empty($path) || !@is_file($path)) {
+				return PEAR::raiseError("release download:: no version information found");
+			}
 		}
-		list($path, $basename) = $row;
-        if (empty($path) || !@is_file($path)) {
-            return PEAR::raiseError("release download:: no version information found");
-        }
-        header('Content-type: application/octet-stream');
-        header('Content-disposition: attachment; filename="'.$basename.'"');
-        readfile($path);
+		if (isset($path)) {
+			header('Content-type: application/octet-stream');
+			header('Content-disposition: attachment; filename="'.$basename.'"');
+			readfile($path);
+			return true;
+		}
+		header('HTTP/1.0 404 Not Found');
+		print 'File not found';
     }
 
     // }}}

@@ -232,7 +232,7 @@ class package
     function info($pkg, $field = null)
     {
         global $dbh;
-        
+
         if ($pkg === (string)((int)$pkg)) {
             $what = "id";
         } else {
@@ -809,12 +809,13 @@ class release
             @unlink($file);
             return $ok;
         }
-        
+
         // Update Cache
+        include_once 'xmlrpc-cache.php';
         XMLRPC_Cache::remove('package.listAll', array(false));
         XMLRPC_Cache::remove('package.listAll', array(true));
         XMLRPC_Cache::remove('package.info', array($package, null));
-        
+
         return $file;
     }
 

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>by Alan Knowles(alan_k@php.net)</small></i></p>
+    
+<p>Wolframs Kriesing posted note about thanking all PEAR contributors for
+their work, helping him to develop his project quickly and easily, due to
+the high quality of PEAR's code base. This is where PEAR, shows it's strengths
+by offering a consistent Quality, and a flexible 'pick and choose' attitude,
+Developers lives are simplified, and Projects using it are easier to manage
+an maintain. It was another busy week on the mailing list, with discussions
+on Virtual File Systems, Plans for pear.php.net (along with getting ready
+for PEAR's official release with PHP 4.3). The DBA package being broken apart,
+and more Fruits in PEAR. This week saw ... new releases, and Two more package
+proposals, Along with continuing discussion of last weeks issues.<br>
+</p>
+    
+<hr>  
+<h2>New Releases</h2>
+    
+<h3>Stable</h3>
+    
+<ul>
+  <li><b>..</b> -..</li>
+  
+</ul>
+<h3>Beta</h3>
+    
+<ul>
+  <li><b>..</b>  -...</li>
+  
+</ul>
+     
+<h3>Development</h3>
+    
+<ul>
+  <li><b>..</b> - ...</li>
+</ul>
+    
+<hr>  
+<h2>PEAR-DEV traffic</h2>
+    
+<h3>Virtual File Systems</h3>
+Jon Wood, announced his intention to develop a Virtual File System Package
+(VFS), this lead to an interesting discussion of using the Horde VFS implementation.
+To this end, Chuck Hagenbuch of Horde packaged up Horde_VFS into a Pear package
+and made it available. However, the idea of implementing a Object Focused
+API to a VFS still remains open, and ideas about how to reuse the existing
+Horde_VFS code, and provide a Object based API are being explored on pear-dev.
+
+<h3>Last Weeks Weekly News</h3>
+Many thanks to Pierre-Alain Joye, for last weeks Pear weekly news, which
+he stood in for me (as I was busy testing PHP on vending machines), It was
+a refreshing read from a different viewpoint on the goings on in PEAR. And
+may be a future direction of the newsletter to have different authors give
+you a new perspective more often. 
+
+<h3>Plans for pear.php.net</h3>
+Martin Jansen posted his plans for Pear.php.net, including a more advanced
+Package proposal system, to try and alleviate some of the issues of Proposals
+getting lost in the daily traffic and making the process more transparent.
+Along with this he is hoping to provide a more detailed developer's summary
+page, listing open bugs, feature requests and more.There followed a lively
+discussion on the merits of things like 'top ten' bug fixers, which was taken
+off php-dev, mainly due to the fact that fixing bugs was not something that
+should be motivated by becoming a 'top fixer', rather bugs where better addressed
+in a more considered manner.
+
+<h3>PEAR::Error Summary</h3>
+Sebastian Bergmann posted a question about using the PEAR error facilities,
+something that is core to the PEAR packages. Brent Cook provided a <a
+ href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=9462">good
+summary</a> of the usage of PEAR:error, and noted that PEAR::error features
+had not really been expanded, as they will probably undergo a major overhaul
+when PHP5 is released (which features throw and catch for error handling).
+
+<h3>DBA being broken into components - SQL_Parser, DBA_Relational and classic
+DBA.</h3>
+Brent Cook announced that he was breaking DBA package into three separate
+ones, SQL_Parser, a package that can parse and read SQL statements, DBA_Relational
+for providing SQL relation database features on top of DBA databases, and the
+basic DBA package which offers a single API to work with DB2,GDBM, and file
+based key,value databases.
+
+<h3>PHPUnit the test suite, branched for Zend Engine 2 (PHP5)</h3>
+Sebastian Bergmann announced he had created a branch of PHPUnit, for the
+Zend Engine 2 (aka PHP4), the new branch features testing of namespaces,
+the new pass by reference and real private members.
+
+<h3>Bananas in PEAR?</h3>
+It's been a busy week for Sebastian, he was also asking about putting <a
+ href="http://www.vl-srm.net">SRM</a> (an PHP Application Server), packages
+into PEAR, as SRM classes are referred to as Banana's, after some discussion,
+a base class, 'Banana' was decided on, so there will now be Banana's in the
+Fruitiest Library around.. 
+
+<h3>Bugs and Fixes</h3>
+  Thanks to these people for spotting bugs and sending fixes: Pawe&#322; Go&#322;aszewski,
+Michael Kefeder, Michael Fork, phpsurf, Francisco Benza. 
+
+<hr>   
+<h2>New and Proposed Packages</h2>
+    
+<h3>Net_Dict, for querying Dictionary Servers</h3>
+Chandrashekar Bhosle proposed a Package to do Dictionary lookups using the
+DICT Protocol, this was added to CVS this week, and looks like it will grow
+to encapsulate some of the work that Jesus Castagnetto has already done on
+a similar Class.
+
+<h3>XSLT, a wrapper class for the PHP XML Stylesheet Tools</h3>
+Pierre-Alain Joye announced a wrapper to XLST  (XML templating and stylesheet
+markup standard) , which provides a single API to support the multiple
+XLST backends available in PHP, (like domxsl, libxslt and msxml4).
+
+   
+<hr>   
+
+<h2>Development</h2>
+  Active on CVS this week has been Auth, Benchmark, Cache_Lite, DB,
+DB_DataObject, DBA, DBA_Relational, HTML_Common, HTML_Quickform, Image_GraphViz,
+Image_Transform, Inline_C, Log, Mail_Queue, MDB, Net_Dict, Net_DNS, PECL:apd,
+PECL:bcompiler, PECL:mailparse, PECL:smbd, PECL:spread, Perm_LiveUser, PHPUnit,
+SQL_Parser, XML_Transformer.
+   
+<h3>New and updated documentation</h3>
+PHPdoc2 will be uploaded to a new directory on the CVS server this week,
+allowing porting of old documentation to the new Standard.
+</body>
+</html>

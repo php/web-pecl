@@ -18,6 +18,8 @@
    $Id$
 */
 
+exit;
+
 if (empty($what)) {
 	$what = basename($HTTP_SERVER_VARS['PATH_INFO']);
 }

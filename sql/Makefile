@@ -32,7 +32,8 @@ TABLE_FILES=\
 	releases.sql \
 	deps.sql \
 	notes.sql \
-	users.sql
+	users.sql \
+	state_order.sql
 SQL_TYPE=mysql
 SQL_USER=pear
 SQL_PW=pear
@@ -118,3 +119,4 @@ cvs_acl.res: users.res cvs_groups.res
 cvs_groups.res:
 cvs_group_membership.res: users.res cvs_groups.res
 provides.res: releases.res
+state_order.res:

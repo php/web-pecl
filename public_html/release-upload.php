@@ -12,6 +12,8 @@ $jumpto = false;
 
 PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
 do {
+
+    /** Upload Button **/
     if (isset($upload)) {
         include_once 'HTTP/Upload.php';
         $upload_obj = new HTTP_Upload('en');
@@ -35,35 +37,61 @@ do {
         $display_form = false;
         $display_verification = true;
 
+    /** Verify Button **/
     } elseif (isset($verify)) {
         $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
-
+        if (!@is_file($distfile)) {
+            display_error("No verified file found"); break;
+        }
         include_once "PEAR/Common.php";
         $util =& new PEAR_Common;
         $info = $util->infoFromTgzFile($distfile);
 
-        if (!@is_file($distfile)) {
-            display_error("No verified file found"); break;
+        PEAR::pushErrorHandling(PEAR_ERROR_PRINT, '<b>Warning: %s</b>');
+        $pacid = package::info($info['package'], 'id');
+        if (!checkUser($_SERVER['PHP_AUTH_USER'], $pacid)) {
+            display_error("You don't have permissions to upload this release"); break;
         }
+
+        $e = package::updateInfo($pacid, array(
+                                            'summary'     => $info['summary'],
+                                            'description' => $info['description'],
+                                            'license'     => $info['release_license']
+                                              ));
+        if (PEAR::isError($e)) {
+            display_error("Couldn't update release info"); break;
+        }
+        $users = array();
+        foreach ($info['maintainers'] as $user) {
+            $users[$user['handle']] = $user['role'];
+        }
+        $e = maintainer::updateAll($pacid, $users);
+        if (PEAR::isError($e)) {
+            display_error("Could not update maintainers info"); break;
+        }
+        PEAR::popErrorHandling();
         $file = release::upload($info['package'], $info['version'], $info['release_state'],
                                 $info['release_notes'], $distfile, md5_file($distfile));
-        @unlink($distfile);
         if (PEAR::isError($file)) {
             $ui = $file->getUserInfo();
             display_error("Error while uploading package: " .
                           $file->getMessage() . ($ui ? " ($ui)" : "") );
             break;
         }
+        @unlink($distfile);
+        PEAR::pushErrorHandling(PEAR_ERROR_PRINT, '<b>announce warnings: %s</b>');
         release::promote($info, $file);
+        PEAR::popErrorHandling();
         response_header("Release Upload Finished");
         print "The release of package `" . $info['package'] . "' version `" . $info['version'] . "' ";
         print "was completed successfully and the marketing for it started.<br /><br />";
-        $pacid = package::info($info['package'], 'id');
+
         print '<center>'.
               make_link("package-info.php?pacid=$pacid", 'Visit package home') .
               '</center>';
         $display_form = $display_verification = false;
 
+    /** Cancel Button **/
     } elseif (isset($cancel)) {
 
         $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
@@ -94,16 +122,8 @@ Uploading new releases is restricted to each package's lead developer(s).
 
 ";
 
-    $params = array($_SERVER['PHP_AUTH_USER']);
-    $query = "SELECT packages.id AS id, packages.name AS name ".
-         "FROM packages, maintains ".
-         "WHERE maintains.handle = ? ".
-         "AND maintains.role = 'lead' ".
-         "AND maintains.package = packages.id ".
-         "ORDER BY name";
-    $packages = $dbh->getAssoc($query, false, $params);
-
-    if (empty($packages)) {
+    // Remove that code when release-upload also create new packages
+    if (!checkUser($_SERVER['PHP_AUTH_USER'])) {
         display_error("You are not registered as lead developer for any packages.");
     }
 
@@ -171,6 +191,26 @@ function display_error($msg)
     global $errorMsg;
 
     $errorMsg .= "<font color=\"#cc0000\" size=\"+1\">$msg</font><br />\n";
+}
+
+function checkUser($user, $pacid = null)
+{
+    global $dbh;
+    $add = ($pacid) ? "AND p.id = " . $dbh->quote($pacid) : '';
+    // It's a lead or user of the package
+    $query = "SELECT m.handle
+              FROM packages p, maintains m
+              WHERE
+                 m.handle = ? AND
+                 p.id = m.package $add AND
+                 (m.role IN ('lead', 'developer'))";
+    $res = $dbh->getOne($query, array($user));
+    if ($res !== null) {
+        return true;
+    }
+    // Try to see if the user is an admin
+    $res = user::isAdmin($user);
+    return ($res === true);
 }
 
 ?>

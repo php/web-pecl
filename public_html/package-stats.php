@@ -350,7 +350,8 @@ if (@!$_GET['pid']) {
 	echo "</tr>\n";
 
 	$lastPackage = "";
-
+    $total_dl    = 0;
+    
 	while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
 	    if ($row['package'] == $lastPackage) {
 	        $row['package'] = "";
@@ -367,7 +368,14 @@ if (@!$_GET['pid']) {
 	    echo "<td>" . number_format($row['dl_number'], 0, '.', ',') . "</td>\n";
 	    echo "<td>[". make_link("/package-stats.php?cid=" . $row['cid'] . "&pid=" . $row['pid'] . "&rid=" . $row['rid'], "Details") . "]</td>\n";
 	    echo "</tr>\n";
+        $total_dl += $row['dl_number'];
 	}
+    echo "<tr bgcolor=\"#eeeeee\">\n";
+    echo "<td>\nTotal</td>\n";
+    echo "<td>&nbsp;</td>\n";
+    echo "<td>\n" . number_format($total_dl, 0, '.', ',') . "</td>\n";
+    echo "<td>&nbsp</td>\n";
+    echo "</tr>\n";
 
 	echo "</table>\n";
 

@@ -43,10 +43,16 @@ if (isset($_GET['maxAge']) && ((int)$_GET['maxAge']) > 0) {
 
 if ($method == "package.listAll")
 {
+    if (!isset($params[0])) {
+        $params = array(true);
+    };
     $response = XMLRPC_Cache::get($method, $params, $maxAge);
 };
 if ($method == "package.info" && (!isset($params[1]) || $params[1] === null))
 {
+    if (!isset($params[1])) {
+        $params[1] = null;
+    };
     $response = XMLRPC_Cache::get($method, $params, $maxAge);
 };
 
@@ -68,10 +74,16 @@ $response = xmlrpc_server_call_method($xs, $HTTP_RAW_POST_DATA, null,
 // Save cache
 if ($method == "package.listAll")
 {
+    if (!isset($params[0])) {
+        $params = array(true);
+    };
     XMLRPC_Cache::save($method, $params, $response);
 };
 if ($method == "package.info" && (!isset($params[1]) || $params[1] === null))
 {
+    if (!isset($params[1])) {
+        $params[1] = null;
+    };
     XMLRPC_Cache::save($method, $params, $response);
 };
 

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- $Id$ -->
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+<p> <i> <small> Vvon <a href="http://www.appelsiini.net/~tuupola/">Mika Tuupola</a> 
+  (tuupola@appelsiini.net), <a href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain 
+  Joye</a> (paj@pearfr.org)<br>
+  Deutsche &Uuml;bersetzung von <a href="http://www.21st.de/">Markus Wolff</a> (wolff@21st.de) 
+  </small> </i> </p>
+<hr />
+<p> Eine mit Releases geladene Woche, diverse interessante Diskussionen &uuml;ber 
+  das PEAR-Meeting, welches zur <a href="http://www.php-conference.com/">International 
+  PHP Conference</a> in Amsterdam stattfinden soll. Die Evolution von PEAR geht 
+  weiter, in einer Phase vieler Ver&auml;nderungen.. </p>
+<!-- SECTION --><a name="1"></a>
+<h2>In der Presse</h2>
+<!-- SECTION --><a name="2"></a>
+<p> Das Tutorial zu PHPUnit ist nun auf Englisch, Franz&ouml;sisch, Deutsch und 
+  Brasilianischem Portugiesisch auf <a href="http://www.pearfr.org/index.php/en/article/phpunit">www.pearfr.org</a> 
+  verf&uuml;gbar.</p>
+<hr>
+<p> Wenn Sie einen PEAR-bezogenen Artikel finden, senden Sie uns bitte eine Referenz 
+  an <a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a><br>
+</p>
+
+<hr>
+
+<h2>PEAR-DEV Zusammenfassung</h2>
+
+<!-- SECTION --><a name="3"></a>
+<h3>PEAR-Meeting in Amsterdam</h3>
+<p> Das PEAR-Meeting ist nun f&uuml;r den 9. Mai 2003 um 19:30 in Amsterdam geplant. 
+  Lukas Smith hat eine Themenliste als Diskussionsgrundlage zusammengestellt: 
+<ul>
+  <li>Qualit&auml;t vs. Quantit&auml;t</li>
+  <li>M&ouml;gliche Regelungen zur Vermeidung von Konflikten, wie sie k&uuml;rzlich 
+    auf der Mailingliste ausgetragen wurden</li>
+  <li>PEAR CS (Konventionen f&uuml;r die Benennung von Methoden)</li>
+  <li>PFC RFC</li>
+  <li>PEAR Installer</li>
+  <li>PEAR unter Windows</li>
+  <li>PEARweb (Bewerbungssystem, Kommentarsystem, Vorschlagen neuer Packages)</li>
+  <li>PEAR promoten</li>
+  <li>PHP5</li>
+ </ul>
+Damit die Zielsetzungen f&uuml;r dieses Meeting nicht &uuml;berbewertet werden, 
+werden die folgenden Themen als Priorit&auml;ten definiert: 
+<ul>
+  <li>Verbesserung der generellen Atmosph&auml;re innerhalb der PEAR-Community</li>
+  <li>Entwickeln eines besseren Verst&auml;ndnisses daf&uuml;r, was PEAR sein sollte 
+    - und den besten Weg, dies zu erreichen</li>
+  <li>Brainstorming &uuml;ber die Zukunft von PEAR</li>
+ </ul>
+
+<!-- SECTION --><a name="4"></a>
+<h3>LiveUser, ein Paket f&uuml;r Rechtemanagement und Authentisierung</h3>
+<p> LiveUser liefert die notwendigen Tools f&uuml;r das flexible und einfache Management 
+  von Benutzerrechten und Authentisierung. Sein Containersystem erm&ouml;glicht 
+  es, verschiedene Datenquellen f&uuml;r Rechte und Authentisierung abzufragen. 
+  Die Integration in ein bestehendes System ist durch die Erstellung eines spezifischen 
+  Containers m&ouml;glich, was es Anwendungen erlaubt, unabh&auml;ngig von den benutzten 
+  Backends immer das gleiche Interface zu benutzen.<br>
+  In dieser Woche wurde sehr viel hervorragende Arbeit geleistet - ein Update des 
+  Pakets ist f&uuml;r Montag geplant, das einen Meilenstein auf dem Weg zu einem 
+  stabilen Release darstellen wird.<br>
+ 
+</p>
+<!-- SECTION --><a name="5"></a>
+<h3>Einheitliche Methodennamen</h3>
+<p> Einmal mehr gab es eine Diskussion &uuml;ber Inputs/Output Funktionen auf der 
+  Mailingliste, einige der Vorschl&auml;ge sto&szlig;en diesmal sogar auf gro&szlig;en 
+  Anklang. In der Hauptsache ging es um Methoden f&uuml;r die R&uuml;ckgabe von 
+  Daten in einem bestimmten Format, beispielsweise "toHtml" oder "outputHtml", bezogen 
+  jeweils auf die R&uuml;ckgabe bzw. die Ausgabe von HTML. Die Pr&auml;ferenz ging 
+  im Web/Browser-Kontext allerdings mehr zu &quot;display" anstelle von "output". 
+</p>
+<!-- SECTION --><a name="6"></a>
+<h3>Quickform und Templatesysteme</h3>
+<p> In dieser Woche wurde der Grundstein f&uuml;r die Integration diverser Templatesysteme 
+  in dieses Formularhandling-Paket gelegt, was das Anpassen der hiermit erstellten 
+  Formulare in eigen Layouts stark vereinfachen d&uuml;rfte. Alexy Borzov lieferte 
+  den ersten Implementationsvorschlag sowie eine funktional leicht verbesserte Version 
+  des IT[X] Templatesystems aus dem HTML_Template_IT Paket. </p>
+
+<!--
+<h3>Bugs and Fixes</h3>
+<p>
+  Thanks to these people for spotting and fixing some bugs:
+</p>
+<hr>
+-->
+
+<!-- <h2>New and Proposed Packages</h2>
+-->
+<h2>Entwicklung</h2>
+<p> Folgende Pakete zeigten diese Woche CVS-Aktivit&auml;t: LiveUser, XML_RSS, HTML_Template_Xipe, 
+  Tree, HTTP_Header, HTML_QuickForm, MDB, PECL/soap, Auth, XML_fo2pdf, Cache, DB_DataObject, 
+  Net_URL, Crypt_CHAP, DB_ldap, imagick, HTML_Template_Flexy, PHPUnit, Image_GraphViz 
+</p>
+
+</body>
+</html>
+

@@ -25,7 +25,7 @@ if (auth_verify(@$_POST['PEAR_USER'], @$_POST['PEAR_PW'])) {
         $expire = 0;
     }
     setcookie('PEAR_USER', $_POST['PEAR_USER'], $expire, '/');
-    setcookie('PEAR_PW', $_POST['PEAR_PW'], $expire, '/');
+    setcookie('PEAR_PW', md5($_POST['PEAR_PW']), $expire, '/');
     if (isset($_POST['PEAR_OLDURL'])) {
         $gotourl = $_POST['PEAR_OLDURL'];
     } else {

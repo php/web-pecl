@@ -102,9 +102,8 @@ function show_news($lang,$date) {
                 $desc .= '...';
             }
             $out .= "<tr><td valign='top' class='compact'>";
-            $out .= "<a href=\"/package-info.php?pacid=$id&release=$version\">";
-//            $RSIDEBAR_DATA .= "$name $version</a><br /><font size=\"-1\" face=\"arial narrow,arial,helvetica,sans-serif\"><i>$releasedate:</i>$desc</font></td></tr>";
-            $out .= "$name</a><br /> ". nl2br($description);
+            $out .= "<h3><a href=\"/package-info.php?pacid=$id&release=$version\">";
+            $out .= "$name</a></H3> ". nl2br($description);
             $out .= "<P><B>Release $version - $state</B> <i>$releasedate:</i><BR>". nl2br($releasenotes);
             $out .= "</td></tr>";
         }

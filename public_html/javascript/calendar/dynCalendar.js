@@ -1,8 +1,8 @@
 /**
 * Filename.......: calendar.js
 * Project........: Popup Calendar
-* Last Modified..: $Date: 2002-10-19 16:57:38 $
-* CVS Revision...: $Revision: 1.1 $
+* Last Modified..: $Date: 2003-01-22 13:52:00 $
+* CVS Revision...: $Revision: 1.2 $
 * Copyright......: 2001, 2002 Richard Heyes
 */
 
@@ -396,7 +396,7 @@
 */
 	function dynCalendar_getDaysInMonth(month, year)
 	{
-		monthdays = [30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+		monthdays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 		if (month != 1) {
 			return monthdays[month];
 		} else {

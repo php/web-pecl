@@ -11,11 +11,11 @@ if (empty($prevsearch)) $prevsearch = '';
 //
 
 function spacer($width=1, $height=1, $align=false, $extras=false) {
-    printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt="" %s%s />',
+    printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt=""%s%s />',
         $width,
         $height,
-        ($align ? 'align="'.$align.'" ' : ''),
-        ($extras ? $extras : '')
+        ($align ? ' align="'.$align.'" ' : ''),
+        ($extras ? ' '.$extras : '')
     );
 }
 
@@ -178,28 +178,17 @@ function commonHeader($title) {
         link="#006600"
         alink="#cccc00"
         vlink="#003300"
-><a name="TOP" /></a>
-<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="#339900">
-    <td align="left" rowspan="2">
+    <td align="left" valign="top">
 <?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="2" hspace="2"') ); ?><br />
     </td>
-    <td align="right" valign="top" nowrap>
-      <font color="#ffffff"><b>
-        <?php echo strftime("%A, %B %d, %Y"); ?>
-      </b>&nbsp;<br />
+    <td align="right" valign="bottom" nowrap>
 <?php
     if (isset($GLOBALS['HTTP_COOKIE_VARS']['pear_dev'])) {
-    print "pear_dev cookie set&nbsp;<br />";
+        print "pear_dev cookie set&nbsp;<br />";
     }
-?>      </font>
-    </td>
-  </tr>
-
-  <tr bgcolor="#339900">
-    <td align="right" valign="bottom" nowrap>
-      <?php
-
     if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER'])) {
         print '<span class="menuWhite">logged in as ';
         print strtoupper($HTTP_SERVER_VARS['PHP_AUTH_USER']);
@@ -214,7 +203,7 @@ function commonHeader($title) {
     print_link('/support.php','SUPPORT',false,'class="menuBlack"');
     echo delim();
     print_link('/faq.php','FAQ',false,'class="menuBlack"');
-      ?>&nbsp;<br />
+?>&nbsp;<br />
       <?php spacer(2,2); ?><br />
     </td>
   </tr>

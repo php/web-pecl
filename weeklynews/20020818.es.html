@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+ 
+<p><small><i>por Alan Knowles (alan_k@php.net)
+traducido por Jes&uacute;s M. Castagnetto (jmcastagetto@php.net)</i></p>
+  
+<p>Una semana interesante en la lista de desarrollo de PEAR, con 4
+lanzamientos nuevos, una propuesta para un paquete nuevo, y discusiones
+acerca de las marcas de PHPDoc, convertidores entre OpenOffice y DocBook,
+Manejo de Permisos, y una actualizaci&oacute;n al paquete Net_Whois
+ </p>
+  
+<hr>  
+<h2>Lanzamientos Nuevos</h2>
+  
+<h3>Beta</h3>
+   
+<ul>
+ <li> <b>DB_DataObject </b>- Una capa de creaci&oacute;n de SQL y de modelaje de datos.
+  </li>
+  <li><b>Tree - </b>Un paquete que provee metodos para manipular y acceder
+  datos en forma de &aacute;rboles provenientes de una base de datos o de
+  archivos de XML</li>
+ 
+</ul>
+ 
+<h3>Alpha</h3>
+  
+<ul>
+   <li><b>Net_DNS - </b>Una libreria usada para resolver b&uacute;squedas de
+   DNS, transferencias de zona, y acutalizaciones dinamicas de DNS</li>
+ 
+</ul>
+  
+<h3>En Desarrollo</h3>
+  
+<ul>
+ <li><b>MDB - </b>Candidato de Lanzamiento 1 de PEAR MDB, la fusi&oacute;n de
+ DB con la Capa de Abstracci&oacute;n de Bases de Datos Metabase.</li>
+ 
+</ul>
+ 
+<hr>  
+<h2>Tr&aacute;fico en PEAR-DEV</h2>
+  
+<h3>Est&aacute;ndares de las marcas de PHPDoc</h3>
+  
+<p>Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior pregunt&oacute; acerca de
+cuales eran los est&aacute;ndares para las marcas de PHPDoc (las marcas dentro
+de las classes de PHP que permiten la generaci&oacute;n automatica de
+documentaci&ooacute;n), despues de revisar el uso de estas en PEAR.
+Ant&ocirc;nio se ofreci&ooacute; para escribir una referencia clara y concisa
+para el sitio de PEAR, por el momento la lista de marcas est&aacute;ndar y sus
+formatos se pueden ver en</p>
+<pre><a href="http://www.phpdoc.de/kongress/tags.html">http://www.phpdoc.de/kongress/tags.html</a>
+</pre>
+  
+<h3>ISO-8601 en Date</h3>
+  
+<p>Para una mejor integraci&oacute;n con el m&oacute;dulo de SOAP, 
+Baba Buehler a&ntilde;adi&oacute; ISO 8601 al m&eacute;todo format() de la
+clase Date. Tu puedes usarlo de la siguiente manera.</p>
+  
+<pre>
+%o - da la differencia entre zonas temporales en &plusmn;hh:mm
+%O - da la differencia corregida por DST entre zonas temporales en &plusmn;hh:mm
+ej.
+  Date::format("%Y-%m-%dT%H:%M:%S%O");
+</pre>
+  
+<h3>De OpenOffice a Docbook, y mas progreso en automatizar la documentaci&oacute;n</h3>
+  
+<p>Pierre-Alain Joye ha estado ocupado creando un convertidor de OpenOffice a
+DocBook. Gracias a &Eacute;ric Bellot (<a href="http://www.chez.com/ebellot">http://www.chez.com/ebellot</a>) 
+por dejarnos usar su trabajo y por la ayuda que ha dado a este proyecto. Para
+los siguientes lanzamientos, mas formatos seran a&ntilde;adidos (de Microsoft
+Word's 'save as HTML' a Docbook, o de DocBook a otros formatos). Pueden probar
+la version corriente en</p>
+  
+<pre>
+<a href="http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz">http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz</a>
+</pre>
+  
+<p>Ha habido una discusi&oacute;n continua acerca de a&ntilde;adir soporte a
+PHPDoc para que genere DocBook de los comentarios en el c&oacute;digo, y 
+Alan Knowles <a
+href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102946826409440&amp;w=2">mostr&oacute;</a>
+los resultados de usar su herramienta PHP_CodeDoc, a&ntilde;adiendo que este
+proyecto no es tan simple como parece ...</p>
+  
+<h3>Email en masa</h3>
+  
+<p>Radek Maciaszek mencion&oacute; que esta trabajando en una clase para
+manejar una lista de correo para enviar grandes cantidades de email, el
+va a enviar esta clase a Richard Heyes para que la revise y haga
+comentarios.</p>
+
+<h3>PHPUnit, demasiado exacto</h3>
+  
+<p>Wolfram Kreising estaba probando PHPUnit y descubri&oacute; que este era
+demasiado estricto para un lenguaje con tipos de variables dinamicos, e.j.
+fallaba cuando comparaba "1" == 1 dentro de un arreglo. El esta buscando
+ideas para resolver este problema.</p>
+  
+<h3>Manejo de Permisos</h3>
+  
+<p>Un t&oacute;pico de interes para todos los desarrolladores es el de
+tener un mecanismo coherente para Autentificaci&oacute;n, Autorizaci&oacute;n,
+Permisos, y manejo de Usuarios. Esto avanz&oacute; algo debido al
+considerable vol&uacute;men de discusi&oacute;n acerca del paquete LiveUser 
+en el cual Marcus Wolff ha estado trabajando. Parece que este paquete proveera
+una API est&aacute;ndar y flexible, que permitir&aacute; sistemas para una
+variedad de aplicaciones con un acceso a una API &uacute;nica. Esto
+har&aacute; que sea sencillo el integrar paquetes como foros de discusi&oacute;n
+en tus aplicaciones sin tener que modficir el c&oacute;digo interno de cada
+parte para forzar una integraci&oacute;n.</p>
+  
+<p>Lo &uacute;nico que queda es como integrar esto dentro de la estructura
+de nombres de clases en PEAR. Las sugerencias m&aacute;s populares fueron
+algo como Auth_LiveUser o Perm_LiveUser. El uso de una categoria principal
+combinada con el nombre distintivo 'LiveUser' fu&eacute; preferido en
+lugar de un nombre mas gen&eacute;rico como Auth_Simple or Auth_Complex.</p>
+  
+<p>En una nota al canto, seria importante el revisar la discusi&oacute; en
+php-dev que ha ocurrido recientemente y que trata acerca de los problemas
+de seguridad de las sesiones, a traves de trans-id, cookies y HTTP en general
+(otro t&oacute;pico con un caluroso debate, pero que al final termin&oacute;
+con sugerencias inteligentes). Ojala que un sumario complete este disponible
+en el manual de PHP pronto.</p>
+  
+<h3>Net_Whois, una nueva serie de funciones</h3>
+  
+<p>Seamus Venasse ha creado un nuevo Net_Whois, y pregunt&oacute; cual era el
+protocolo para cuando existen clases competitivas en PEAR, en vista de que
+su paquete Net_Whois ofrecia una selecci&oacute;n mas rica de funciones que
+el paquete existente. Despues de algo de discusi&oacute;n se vio claro que
+el integrar la API del paquete existente en el suyo, y luego reemplazar el
+antiguo paquete con el nuevo integrado era la mejor soluci&oacute;n. La
+decisi&oacute;n final depende de Sebastian Nohn (el mantenedor actual de
+Net_Whois).</p>
+  
+<h3>Problemas y Soluciones</h3>
+  
+<p>
+Gracias a las siguientes personas por encontrar y solucionar problemas en los
+paquetes de PEAR, Radek Maciaszek,
+Arnaud Limbourg, Tim White and Roman Neuhauser</p>
+  
+<hr> 
+<h2>Paquetes Nuevos y Propuestos</h2>
+  
+<h3>Math_Distance, medir distancias entre grupos de puntos</h3>
+  
+<p>Alfredo Rahn ha ofrecido un paquete pare calcular distancias entre
+grupos de puntos con el objetivo de estimar las agrupaciones de los
+datos en grupos multidimensionales.
+Este paqutes puede usar diferentes metricas para calcular las distancias.</p>
+  
+<hr> 
+<h2>En Desarrollo</h2>
+  
+<p>
+Activos en CVS en esta semana han sido Auth, Benchmark, Cache_Lite, Date, DB,
+DB_DataObject, HTML_Javascript, HTML_TreeMenu, I18N, MDB, Net_DNS, Net_Ping,
+PECL::Soap, PHPDoc, Tree, XML_RSS, XML_XPath, y System.</p>
+  <br>
+</body>
+</html>

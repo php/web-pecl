@@ -35,11 +35,11 @@ menu_link("Documentation", "/manual/");
 menu_link("Frequently Asked Questions", "faq.php");
 
 if (DEVBOX) {
+    menu_link("Browse Packages", "packages.php");
     menu_link("Request PEAR Account", "account-request.php");
     menu_link("New Package", "package-new.php");
-    menu_link("Administrators", "admin.php");
-    menu_link("Browse Packages", "packages.php");
     menu_link("Upload Release", "release-upload.php");
+    menu_link("Administrators", "admin.php");
     $recent = release::getRecent();
     if (@sizeof($recent) > 0) {
         

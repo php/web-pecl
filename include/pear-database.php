@@ -163,7 +163,7 @@ class category
     }
 
     // }}}
-    // {{{ -proto array category::listAll()
+    // {{{  proto array category::listAll()
 
     function listAll()
     {
@@ -221,7 +221,7 @@ class package
     }
 
     // }}}
-    // {{{ *proto struct package::info(string|int, [string])
+    // {{{  proto struct package::info(string|int, [string])
 
     /**
     * Implemented $field values:
@@ -302,7 +302,7 @@ class package
     }
 
     // }}}
-    // {{{ -proto struct package::listAll([bool])
+    // {{{  proto struct package::listAll([bool])
 
     function listAll($released_only = true)
     {
@@ -343,8 +343,11 @@ class package
     {
         global $dbh;
 		$query =
-			 "SELECT p.name AS package, r.version AS version, ".
-			 "r.state AS state, f.fullpath AS fullpath ".
+			 "SELECT ".
+			 "p.name AS package, ".
+			 "r.version AS version, ".
+			 "r.state AS state, ".
+			 "f.fullpath AS fullpath ".
 			 "FROM packages p, releases r, files f ".
 			 "WHERE p.id = r.package ".
 			 "AND f.package = p.id ".
@@ -360,14 +363,14 @@ class package
 				usort($ver, $sortfunc);
 			}
 			$res[$pkg] = array_pop($ver);
-			$res[$pkg]['filesize'] = (int)@filesize($res['fullpath']);
+			$res[$pkg]['filesize'] = (int)@filesize($res[$pkg]['fullpath']);
 			unset($res[$pkg]['fullpath']);
 		}
 		return $res;
     }
 
     // }}}
-	// {{{ -proto struct package::listUpgrades(struct)
+	// {{{  proto struct package::listUpgrades(struct)
 
 	function listUpgrades($currently_installed)
     {
@@ -420,7 +423,7 @@ class maintainer
     }
 
     // }}}
-    // {{{ *proto int maintainer::get(int, bool)
+    // {{{  proto int maintainer::get(int, bool)
 
     function get($package, $lead = false)
     {
@@ -449,7 +452,7 @@ class maintainer
 
 class release
 {
-    // {{{ -proto array release::getRecent([int])
+    // {{{  proto array release::getRecent([int])
 
     function getRecent($n = 5)
     {
@@ -680,7 +683,7 @@ class release
     }
 
     // }}}
-	// {{{ -proto bool release::isValidState(string)
+	// {{{  proto bool release::isValidState(string)
 
 	function isValidState($state)
     {
@@ -772,7 +775,7 @@ END;
     }
 
     // }}}
-    // {{{ remove
+    // {{{ NOEXPORT    release::remove(int, int)
 
     function remove($package, $release)
     {

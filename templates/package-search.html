@@ -222,7 +222,6 @@
 <!-- This class prints stuff as part of it's constructor. -->
 <?$bb = new Borderbox("Search options")?>
 
-
 <form action="<?=$_SERVER['PHP_SELF']?>" method="get" name="search_form" onsubmit="validate_form()">
 <table border="0">
     <tr>
@@ -369,7 +368,7 @@
 <?if($numrows):?>
     <?$bb = new Borderbox($title_html)?>
     <?foreach($search_results as $row):?>
-        <dt><a href="package-info.php?pacid=<?=$row['id']?>"><?=$row['name']?></a></dt>
+        <dt><a href="package-info.php?package=<?=$row['raw_name']?>"><?=$row['name']?></a></dt>
         <dd><?=$row['summary']?></dd>
         <br /><br />
     <?endforeach?>

@@ -201,6 +201,7 @@ if (!empty($_GET)) {
             */
 			if (!empty($_GET['pkg_name'])) {
 				$words = preg_replace('/\s+/', '|', preg_quote($_GET['pkg_name']));
+				$row['raw_name'] = $row['name'];
 				$row['name'] = preg_replace('/(' . $words . ')/i', '<span style="background-color: #d5ffc1">\1</span>', $row['name']);
 			}
 

@@ -3,13 +3,22 @@
 require_once 'layout.php';
 
 $GLOBALS['main_menu'] = array(
-    "index.php" => "Home",
-    "http://php.net/manual/en/pear.php" => "Documentation",
-    "account-request.php" => "Request Account",
-    "package-new.php" => "New Package",
-    "admin.php" => "Administrators",
-    "packages.php" => "Browse Packages",
-    "release-upload.php" => "Upload Release",
+    'index.php'           => 'Home',
+    'http://php.net/manual/en/pear.php' => 'Documentation',
+    'faq.php'             => 'Pear FAQ',
+    'packages.php'        => 'Browse Packages',
+    'authors.php'         => 'Browse Authors',
+    'account-request.php' => 'Request Account'
+);
+
+$GLOBALS['author_menu'] = array(
+    'package-new.php'     => 'New Package',
+    'release-upload.php'  => 'Upload Release'
+);
+
+$GLOBALS['admin_menu'] = array(
+    'admin.php'           => 'Account Requests',
+    'category-manage.php' => 'Manage Categories'
 );
 
 $GLOBALS['_style'] = '';
@@ -42,25 +51,42 @@ function response_header($title = 'The PHP Extension and Application Repository'
     $rts = rtrim($SIDEBAR_DATA);
     if (substr($rts, -1) == '-') {
         $SIDEBAR_DATA = substr($rts, 0, -1);
-    } else {
-        global $main_menu, $PHP_SELF;
-        $SIDEBAR_DATA .= "<br /><br />\n";
-        $me = basename($PHP_SELF);
-        foreach ($main_menu as $url => $tit) {
-            $tt = str_replace(" ", "&nbsp;", $tit);
-            if ($url == $me) {
-                $SIDEBAR_DATA .= "<b>&gt;&gt;$tt&lt;&lt;</b><br />\n";
-            } else {
-                $SIDEBAR_DATA .= "&nbsp;&nbsp;&nbsp;<a href=\"$url\">$tt</a><br />\n";
+    } elseif (DEVBOX) {  // For now only show bar on dev boxes
+        global $main_menu, $auth_user;
+        $SIDEBAR_DATA .= draw_navigation($main_menu);
+        if (!empty($auth_user)) {
+            if (!empty($auth_user->registered)) {
+                global $author_menu;
+                $SIDEBAR_DATA .= draw_navigation($author_menu, 'Author Actions:');
+            }
+            if (!empty($auth_user->admin)) {
+                global $admin_menu;
+                $SIDEBAR_DATA .= draw_navigation($admin_menu, 'Admin Actions:');
             }
         }
-        $SIDEBAR_DATA .= "<br /><br />\n";
     }
-
     commonHeader($title);
 }
 
-
+function &draw_navigation($data, $menu_title='')
+{
+    global $PHP_SELF;
+    $html = "<br /><br />\n";
+    if (!empty($menu_title)) {
+        $html .= "<b>$menu_title</b>\n";
+        $html .= "<br /><br />\n";
+    }
+    $me = basename($PHP_SELF);
+    foreach ($data as $url => $tit) {
+        $tt = str_replace(" ", "&nbsp;", $tit);
+        if ($url == $me) {
+            $html .= "<b>&gt;&gt;$tt&lt;&lt;</b><br />\n";
+        } else {
+            $html .= "&nbsp;&nbsp;&nbsp;<a href=\"$url\">$tt</a><br />\n";
+        }
+    }
+    return $html;
+}
 
 function response_footer($style = false)
 {
@@ -186,7 +212,7 @@ function html_table_border(&$tableobj, $width = "100%")
     $border = new HTML_Table('border="0" cellpadding="0" cellspacing="1" '.
                              "width=\"{$width}\"");
     $border->addRow(array($tableobj->toHtml()), 'bgcolor="#000000"');
-    print $border->toHtml(); 
+    print $border->toHtml();
 }
 
 ?>

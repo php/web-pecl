@@ -88,7 +88,7 @@ response_header("Package :: $name");
 </tr>
 <tr>
     <th class="pack" bgcolor="#009933" width="20%">Description</th>
-    <td><?php echo $description;?>&nbsp;</td>
+    <td><?php echo nl2br($description);?>&nbsp;</td>
 </tr>
 <tr>
     <td colspan="2" align="right">
@@ -115,13 +115,15 @@ response_header("Package :: $name");
     } else {
         $cvs_link = '&nbsp;';
     }
-    
+
     // Download link
     $get_link = make_link("/get/$name", 'Download Lastest');
+    $changelog_link = make_link("package-changelog.php?pacid=".$_GET['pacid'],
+                                'ChangeLog');
 ?>
     <td width="33%" align="center">[ <?php echo $get_link; ?> ]</td>
     <td width="33%" align="center"><?php echo $cvs_link;?></td>
-    <!-- <td width="33%" align="center">| View ChangeLog |</td> -->
+    <td width="33%" align="center">[ <?php echo $changelog_link;?> ]</td>
 </tr>
 </table>
 
@@ -177,8 +179,8 @@ if ($sth->numRows() == 0) {
 
     while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
         echo "Dependencies for version " . $row['version'] . ":<br />\n";
-        echo "<blockquote>" . $row['deps'] . "</blockquote><br />\n";        
-    }    
+        echo "<blockquote>" . $row['deps'] . "</blockquote><br />\n";
+    }
 }
 $bb->end();
 ?>

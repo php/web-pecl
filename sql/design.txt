@@ -57,6 +57,7 @@ Authors
 
 	Handle		Varchar
 	Password	Varchar
+	Ppp_only        Integer (Is this account used for proposals only?)
 	Name		Varchar
 	Email		Varchar
 	Homepage	Varchar

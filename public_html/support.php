@@ -94,13 +94,13 @@ complete your request.
     array (
       'pecl-cvs', 'PECL CVS list',
       'All the commits of the cvs PECL code repository are posted to this list automatically',
-      false, false, false, "php.pecl.cvs"
+      false, true, false, "php.pecl.cvs"
     ),
 
     array (
       'pear-doc', 'PEAR documentation list',
       'A list for discussing topics related to the PEAR documentation.',
-      false, false, true, "php.pear.doc"
+      false, true, true, "php.pear.doc"
     ),
 
     array (

@@ -56,7 +56,6 @@ $sth = $dbh->query("SELECT f.id AS id, f.release AS release,
 while ($sth->fetchInto($row)) {
 	$downloads[$row['version']][] = $row;
 }
-print "<pre>";var_dump($downloads);print "</pre>";
 
 response_header("Package :: $name");
 
@@ -66,7 +65,7 @@ response_header("Package :: $name");
 
 <h2 align="center"><?php echo "$name";?></h2>
 
-<?php border_box_start("Package Information"); ?>
+<?php $bb = new BorderBox("Package Information"); ?>
 
 <table border="0" cellspacing="2" cellpadding="2" height="48" width="100%">
 <tr>
@@ -92,7 +91,7 @@ response_header("Package :: $name");
 </tr>
 </table>
 
-<?php border_box_end(); ?>
+<?php $bb->end(); ?>
 
 <br>
 <table border="0" cellspacing="3" cellpadding="3" height="48" width="100%" align="center">
@@ -105,7 +104,7 @@ response_header("Package :: $name");
 
 <br>
 
-<?php border_box_start("Available Releases"); ?>
+<?php $bb = new BorderBox("Available Releases"); ?>
 
 <table border="0" cellspacing="0" cellpadding="3" width="100%">
   <th align="left">Version</th>
@@ -123,8 +122,8 @@ foreach ($releases as $rel) {
 	$rel['releasedate'] = substr($rel['releasedate'], 0, 10);
 	$downloads_html = '';
 	foreach ($downloads[$rel['version']] as $dl) {
-		$downloads_html .= "<a href=\"download.php?fileid={$dl['id']}\">".
-			 "{$dl['basename']}</a><br />";
+		$downloads_html .= "<a href=\"/get/$dl[basename]\">".
+			 "$dl[basename]</a><br />";
 	}
 	printf("  <td>%s</td><td>%s</td><td>%s</td><td>%s</td>\n",
 		   $rel['version'], $rel['state'], $rel['releasedate'],
@@ -133,7 +132,7 @@ foreach ($releases as $rel) {
 }
 
 ?></table>
-<?php border_box_end(); ?>
+<?php $bb->end(); ?>
 
 <!-- Package Dependencies
 <br>

@@ -68,15 +68,6 @@ complete your request.
     }
 } else {
 
-?>
-<p>
-There are three PEAR-related mailing lists available. All of them
-have archives available, and they are also available as newsgroups
-on our <a href="news://news.php.net">news server</a>. The archives
-are searchable.
-</p>
-<?php
-
   // array of lists (list, name, short desc., moderated, archive, digest, newsgroup)
   $mailing_lists = array(
 
@@ -120,6 +111,15 @@ are searchable.
 
   );
 ?>
+<p>
+There are <?php echo count($mailing_lists); ?> PEAR-related mailing 
+lists available. Most of them have archives available, and they are
+also available as newsgroups on our 
+<a href="news://news.php.net">news server</a>. The archives are
+searchable. The lists are described in more detail in the
+<a href="/manual/en/support.php">manual</a>.
+</p>
+
 <form method="POST" action="http://pear.php.net/support.php">
 <p>
 <table cellpadding="5" cellspacing="1">

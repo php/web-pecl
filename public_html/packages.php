@@ -204,9 +204,11 @@ if (!empty($catpid)) {
 echo $nrow != 0 ? $table->toHtml() : '';
 $sth->free();
 
-//Print total numberof packages
+//Print total number of packages or a link to category stats
 if(!$catpid) {
     echo "<br /><br />\nTotal number of packages: " . $totalpackages;
+} else {
+    echo "<br /><br />\n<a href=\"http://pear.php.net/package-stats.php?cid=$catpid\">Statisics For The $catname Category</a>";
 }
 
 response_footer();

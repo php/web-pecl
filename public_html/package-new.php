@@ -38,8 +38,9 @@ do {
 			  "desc" => "enter the full description",
 			  "license" => "choose a license type",
 			  "category" => "choose a category");
+    print_r($_POST);
 	foreach ($required as $field => $_desc) {
-	    if (empty($$field)) {
+	    if (empty($_POST[$field])) {
 		display_error("Please $_desc!");
 		$jumpto = $field;
 		break 2;

@@ -130,12 +130,13 @@ while ($file = readdir($dir)) {
                            WHERE name = '".$packager->pkginfo['package']."'");
 
         if (!DB::isError($sth) && ($sth->numRows() == 0)) {
-
+            $package_id =    $db->nextID('packages');
             $query = sprintf("INSERT INTO packages
-                              (name,summary)
-                              VALUES ('%s','%s')",
+                              (name,summary,id)
+                              VALUES ('%s','%s','%s')",
                              $packager->pkginfo['package'],
-                             $packager->pkginfo['summary']
+                             $packager->pkginfo['summary'],
+                             $package_id
                              );
 
             $db->query($query);
@@ -144,7 +145,7 @@ while ($file = readdir($dir)) {
                               (handle,package)
                               VALUES ('%s','%s')",
                              strtolower($packager->pkginfo['maintainer_handle']),
-                             $packager->pkginfo['package']
+                             $package_id
                              );
 
             $db->query($query);
@@ -162,8 +163,9 @@ while ($file = readdir($dir)) {
         if (!DB::isError($sth) && ($sth->numRows() == 0)) {
 
             $query = sprintf("INSERT INTO releases
-                              (package,version,releasedate,releasenotes,doneby)
-                              VALUES ('%s','%s','%s','%s','%s')",
+                              (id,package,version,releasedate,releasenotes,doneby)
+                              VALUES ('%s','%s','%s','%s','%s','%s')",
+                              $db->nextID('releases'),
                              $packager->pkginfo['package'],
                              $packager->pkginfo['version'],
                              $packager->pkginfo['release_date'],
@@ -176,7 +178,7 @@ while ($file = readdir($dir)) {
 
         /**
          * Move the tgz file to the new destination
-         */ 
+         */
          rename ($PEAR_Dir.'/'.$file.'/'.$packager->pkginfo['package'].'-'.$packager->pkginfo['version'].'.tgz',
                $TgzDir.'/'.$packager->pkginfo['package'].'-'.$packager->pkginfo['version'].'.tgz');
 

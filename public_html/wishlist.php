@@ -34,6 +34,8 @@ if (empty($url) || PEAR::isError($url)) {
 
 header("Location: $url");
 
-print "<a href=\"$url\">click here to go to $_GET[handle]'s wishlist</a>\n";
-
+printf("<a href=\"%s\">click here to go to %s's wishlist</a>",
+       $url,
+       $user
+       );
 ?>

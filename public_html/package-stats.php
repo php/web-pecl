@@ -51,7 +51,7 @@ if (User::isAdmin($_COOKIE['PEAR_USER'])) {
              . ((isset($_GET['cid']) && $_GET['cid'] != "") ? " WHERE category = '" . $_GET['cid'] . "'" : "")
              . " ORDER BY name";
 } else {
-    $query = "SELECT p.* FROM packages p, mantains m WHERE p.id = m.package"
+    $query = "SELECT p.* FROM packages p, maintains m WHERE p.id = m.package"
              . " AND m.handle = '" . $_COOKIE['PEAR_USER'] . "'"
              . ((isset($_GET['cid']) && $_GET['cid'] != "") ? " AND category = '" . $_GET['cid'] . "'" : "")
              . " ORDER BY p.name";

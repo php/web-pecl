@@ -233,54 +233,5 @@ $bb->end();
 
 echo "<br /><br />\n";
 
-/*
-$bb = new BorderBox("Download statistics");
-
-$query = "SELECT COUNT(d.id) AS dl_number, p.id AS pid, p.name AS package, r.id AS rid, r.version AS release, p.category AS cid
-            FROM downloads d, packages p, releases r
-
-            WHERE d.package = p.id AND d.release = r.id
-          GROUP BY d.package, d.release ORDER BY dl_number DESC";
-
-$sth = $dbh->query($query);
-
-if (DB::isError($sth)) {
-    PEAR::raiseError("unable to generate stats");
-}
-
-echo "<table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"2\">\n";
-echo "<tr align=\"left\" bgcolor=\"#cccccc\">\n";
-echo "<th>Package name</th>\n";
-echo "<th>Release</th>\n";
-echo "<th><u># of downloads</u></th>\n";
-echo "<th>&nbsp;</th>\n";
-echo "</tr>\n";
-
-$lastPackage = "";
-
-while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
-    if ($row['package'] == $lastPackage) {
-        $row['package'] = "";
-    } else {
-        $lastPackage = $row['package'];
-        $row['package'] = "<a href=\"package-info.php?pacid=" .
-                            $row['pid'] . "\">" .
-                            $row['package'] . "</a>\n";
-    }
-
-    echo "<tr bgcolor=\"#eeeeee\">\n";
-    echo "<td>\n" . $row['package'] .  "</td>\n";
-    echo "<td>" . $row['release'] . "</td>\n";
-    echo "<td>" . $row['dl_number'] . "</td>\n";
-    echo "<td>[". make_link("/package-stats.php?cid=" . $row['cid'] . "&pid=" . $row['pid'] . "&rid=" . $row['rid'], "Details") . "]</td>\n";
-    echo "</tr>\n";
-}
-
-echo "</table>\n";
-
-$bb->end();
-
-*/
-
 response_footer();
 ?>

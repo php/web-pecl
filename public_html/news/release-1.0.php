@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001 The PHP Group                                     |
+   | Copyright (c) 2001-2003 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -52,7 +52,7 @@ hacking:
 * Richard Heyes<br />
 * Pierre-Alain Joye
 <br /><br />
-<a href="account-info.php?handle=ssb">Stig Bakken &lt;stig&#64;php.net&gt;</a>
+<a href="/account-info.php?handle=ssb">Stig Bakken &lt;stig&#64;php.net&gt;</a>
 <br /><br />
 <a href="/weeklynews.php/en/20030119.html">READ THE INTERVIEW OF STIG BAKKEN</a><br />
 </div>

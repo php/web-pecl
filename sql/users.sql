@@ -12,6 +12,6 @@ CREATE TABLE users (
        admin         BOOL,
        userinfo      TEXT,
 
-       PRIMARY KEY(handle)
+       PRIMARY KEY(handle),
        INDEX(handle,registered)
 );

@@ -50,14 +50,13 @@ function getQueryString($catpid, $catname, $showempty = false){
 /**
 * Check for the hide/show all extended info boxes
 */
-	if (!empty($_GET['hideMoreInfo'])) {
-		setcookie('hideMoreInfo', '1', time() + (86400 * 7));
-		localRedirect('packages.php' . getQueryString(@$_GET['catpid'], @$_GET['catname']));
-
-	} elseif (!empty($_GET['showMoreInfo'])) {
-		setcookie('hideMoreInfo', '-1', time() + (86400 * 7));
-		localRedirect('packages.php' . getQueryString(@$_GET['catpid'], @$_GET['catname']));
-	}
+if (!empty($_GET['hideMoreInfo'])) {
+    setcookie('hideMoreInfo', '1', time() + (86400 * 7));
+    localRedirect('packages.php' . getQueryString(@$_GET['catpid'], @$_GET['catname']));
+} elseif (!empty($_GET['showMoreInfo'])) {
+    setcookie('hideMoreInfo', '-1', time() + (86400 * 7));
+    localRedirect('packages.php' . getQueryString(@$_GET['catpid'], @$_GET['catname']));
+}
 
 /**
 * Check input variables
@@ -180,91 +179,91 @@ if(count($catdata) > 0){
 * Begin code for showing packages if we
 * aren't at the top level.
 */
-	if (!empty($catpid)) {
-	    $nrow = 0;
-	    // Subcategories list
-	    $minPackages = ($showempty) ? 0 : 1;
-	    $subcats = $dbh->getAll("SELECT id, name, summary FROM categories WHERE " .
-	                            "parent = $catpid AND npackages >= $minPackages", DB_FETCHMODE_ASSOC);
-	    if (count($subcats) > 0) {
-	        foreach ($subcats as $subcat) {
-				$subCategories[] = sprintf('<b><a href="%s?catpid=%d&catname=%s" title="%s">%s</a></b>',
-				                           $_SERVER['PHP_SELF'],
-									       $subcat['id'],
-									       urlencode($subcat['name']),
-									       htmlspecialchars($subcat['summary']),
-									       $subcat['name']);
-	        }
-			$subCategories = implode(', ', $subCategories);
-	    }
+if (!empty($catpid)) {
+    $nrow = 0;
+    // Subcategories list
+    $minPackages = ($showempty) ? 0 : 1;
+    $subcats = $dbh->getAll("SELECT id, name, summary FROM categories WHERE " .
+                            "parent = $catpid AND npackages >= $minPackages", DB_FETCHMODE_ASSOC);
+    if (count($subcats) > 0) {
+        foreach ($subcats as $subcat) {
+            $subCategories[] = sprintf('<b><a href="%s?catpid=%d&catname=%s" title="%s">%s</a></b>',
+                                       $_SERVER['PHP_SELF'],
+                                       $subcat['id'],
+                                       urlencode($subcat['name']),
+                                       htmlspecialchars($subcat['summary']),
+                                       $subcat['name']);
+        }
+        $subCategories = implode(', ', $subCategories);
+    }
 	
-	    // Package list
-	    $packages = $dbh->getAll("SELECT id, name, summary, license FROM packages WHERE category=$catpid ORDER BY name");
+    // Package list
+    $packages = $dbh->getAll("SELECT id, name, summary, license FROM packages WHERE category=$catpid ORDER BY name");
 		
-		// Paging
-		$total = count($packages);
-		$pager = new Pager(array('totalItems' => $total, 'perPage' => 15));
-		list($first, $last) = $pager->getOffsetByPageId();
-		list($prev, $pages, $next) = $pager->getLinks('<nobr><img src="gifs/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</nobr>', '<nobr>Next<img src="gifs/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></nobr>');
+    // Paging
+    $total = count($packages);
+    $pager = new Pager(array('totalItems' => $total, 'perPage' => 15));
+    list($first, $last) = $pager->getOffsetByPageId();
+    list($prev, $pages, $next) = $pager->getLinks('<nobr><img src="gifs/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</nobr>', '<nobr>Next<img src="gifs/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></nobr>');
 
-		$packages = array_slice($packages, $first - 1, 15);
+    $packages = array_slice($packages, $first - 1, 15);
 		
-		foreach ($packages as $key => $pkg) {
-			$extendedInfo['numReleases'] = $dbh->getOne('SELECT COUNT(*) FROM releases WHERE package = ' . $pkg['id']);
-			$extendedInfo['status']      = $dbh->getOne('SELECT state FROM releases WHERE package = ' . $pkg['id'] . ' ORDER BY id DESC LIMIT 1');
-			$extendedInfo['license']     = $dbh->getOne('SELECT license FROM packages WHERE id = ' . $pkg['id'] . ' ORDER BY id DESC LIMIT 1');
+    foreach ($packages as $key => $pkg) {
+        $extendedInfo['numReleases'] = $dbh->getOne('SELECT COUNT(*) FROM releases WHERE package = ' . $pkg['id']);
+        $extendedInfo['status']      = $dbh->getOne('SELECT state FROM releases WHERE package = ' . $pkg['id'] . ' ORDER BY id DESC LIMIT 1');
+        $extendedInfo['license']     = $dbh->getOne('SELECT license FROM packages WHERE id = ' . $pkg['id'] . ' ORDER BY id DESC LIMIT 1');
 			
 
-			// Make status coloured
-			switch ($extendedInfo['status']) {
-				case 'stable':
-					$extendedInfo['status'] = '<span style="color: #006600">Stable</span>';
-					break;
+        // Make status coloured
+        switch ($extendedInfo['status']) {
+        case 'stable':
+            $extendedInfo['status'] = '<span style="color: #006600">Stable</span>';
+            break;
 
-				case 'beta':
-					$extendedInfo['status'] = '<span style="color: #ffc705">Beta</span>';
-					break;
+        case 'beta':
+            $extendedInfo['status'] = '<span style="color: #ffc705">Beta</span>';
+            break;
 				
-				case 'alpha':
-					$extendedInfo['status'] = '<span style="color: #ff0000">Alpha</span>';
-					break;
-			}
+        case 'alpha':
+            $extendedInfo['status'] = '<span style="color: #ff0000">Alpha</span>';
+            break;
+        }
 
-			$packages[$key]['eInfo'] = $extendedInfo;
-		}
+        $packages[$key]['eInfo'] = $extendedInfo;
+    }
 
-		/**
-        * More info visibility
-        */		
-		if (@$_COOKIE['hideMoreInfo'] == '1') {
-			$defaultMoreInfoVis = 'none';
+    /**
+     * More info visibility
+     */		
+    if (@$_COOKIE['hideMoreInfo'] == '1') {
+        $defaultMoreInfoVis = 'none';
 
-		} elseif (@$_COOKIE['hideMoreInfo'] == '-1') {
-			$defaultMoreInfoVis = 'inline';
+    } elseif (@$_COOKIE['hideMoreInfo'] == '-1') {
+        $defaultMoreInfoVis = 'inline';
 
-		} elseif ($_browser->is_ie5up) {
-			$defaultMoreInfoVis = 'none';
+    } elseif ($_browser->is_ie5up) {
+        $defaultMoreInfoVis = 'none';
 
-		} else {
-			$defaultMoreInfoVis = 'inline';
-		}
-	}
+    } else {
+        $defaultMoreInfoVis = 'inline';
+    }
+}
 
 /**
-* Build URLs for hide/show all links
-*/
-	$url = new Net_URL();
-	$url->addQueryString('hideMoreInfo', '1');
-	$hideMoreInfoLink = $url->getURL();
+ * Build URLs for hide/show all links
+ */
+$url = new Net_URL();
+$url->addQueryString('hideMoreInfo', '1');
+$hideMoreInfoLink = $url->getURL();
 	
-	$url->removeQueryString('hideMoreInfo');
-	$url->addQueryString('showMoreInfo', '1');
-	$showMoreInfoLink = $url->getURL();
+$url->removeQueryString('hideMoreInfo');
+$url->addQueryString('showMoreInfo', '1');
+$showMoreInfoLink = $url->getURL();
 
 /**
-* Template
-*/
-	error_reporting(E_ALL & ~E_NOTICE);
-	include($template_dir . 'packages.html');
+ * Template
+ */
+error_reporting(E_ALL & ~E_NOTICE);
+include($template_dir . 'packages.html');
 
 ?>

@@ -181,7 +181,7 @@ function commonHeader($title) {
 <table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
   <tr bgcolor="#339900">
     <td align="left" rowspan="2" width="120">
-<?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="2" hspace="2"') ); ?><br />
+<?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="2" hspace="5"') ); ?><br />
     </td>
     <td align="right" valign="top">
       <font color="#ffffff"><b>

@@ -4,7 +4,7 @@
 
 <script type="text/javascript" language="javascript" src="javascript/calendar/browserSniffer.js"></script>
 <script type="text/javascript" language="javascript" src="javascript/calendar/dynCalendar.js"></script>
-<link rel="stylesheet" href="javascript/calendar/dynCalendar.css" media="screen" type="text/css">
+<link rel="stylesheet" href="javascript/calendar/dynCalendar.css" media="screen" type="text/css" />
 
 <script type="text/javascript" language="javascript">
 <!--
@@ -241,7 +241,7 @@
     <tr>
         <td>Maintainer:</td>
         <td colspan="2">
-            <input name="pkg_maintainer" type="text" value="<?=$_GET['pkg_maintainer']?>">
+            <input name="pkg_maintainer" type="text" value="<?=$_GET['pkg_maintainer']?>" />
             <select onchange="document.forms['search_form'].pkg_maintainer.value = this.options[this.selectedIndex].value; this.selectedIndex = 0">
                 <option value="">Select user...</option>
                 <?foreach($users as $u):?>
@@ -273,7 +273,7 @@
     <tr>
         <td>On:</td>
         <td colspan="2">
-            <input type="text" name="released_on_year" value="" size="5" onkeyup="update_date('released_on', 'year')">
+            <input type="text" name="released_on_year" value="" size="5" onkeyup="update_date('released_on', 'year')" />
             <select name="released_on_month" onchange="update_date('released_on', 'month')">
                 <option value=""></option>
                 <?foreach($months as $num => $text):?>
@@ -298,7 +298,7 @@
         <td>Before:</td>
         <td colspan="2">
             <input type="text" name="released_before_year" value="" size="5" onkeyup="update_date('released_before', 'year')">
-            <select name="released_before_month" onchange="update_date('released_before', 'month')">
+            <select name="released_before_month" onchange="update_date('released_before', 'month')" />
                 <option value=""></option>
                 <?foreach($months as $num => $text):?>
                     <option value="<?=$num?>"><?=$text?></option>

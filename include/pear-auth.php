@@ -36,23 +36,23 @@ function auth_reject($realm = null, $message = null, $refresh = false)
     } elseif ($format == 'html') {
         $GLOBALS['ONLOAD'] = "document.login.PEAR_USER.focus();";
         report_error($message);
-        print "<form name=\"login\" action=\"/login.php\" method=\"POST\">\n";
+        print "<form name=\"login\" action=\"/login.php\" method=\"post\">\n";
         print "<table>\n";
         print " <tr>\n";
         print "  <td>Username:</td>\n";
-        print "  <td><input size=\"20\" name=\"PEAR_USER\"></td>\n";
+        print "  <td><input size=\"20\" name=\"PEAR_USER\" /></td>\n";
         print " </tr>\n";
         print " <tr>\n";
         print "  <td>Password:</td>\n";
-        print "  <td><input size=\"20\" name=\"PEAR_PW\" type=\"password\"></td>\n";
+        print "  <td><input size=\"20\" name=\"PEAR_PW\" type=\"password\" /></td>\n";
         print " </tr>\n";
         print " <tr>\n";
         print "  <td>&nbsp;</td>\n";
-        print "  <td><input type=\"checkbox\" name=\"PEAR_PERSIST\" value=\"on\" id=\"pear_persist_chckbx\"> <label for=\"pear_persist_chckbx\">Remember username and password.</label></td>\n";
+        print "  <td><input type=\"checkbox\" name=\"PEAR_PERSIST\" value=\"on\" id=\"pear_persist_chckbx\" /> <label for=\"pear_persist_chckbx\">Remember username and password.</label></td>\n";
         print " </tr>\n";
         print " <tr>\n";
         print "  <td>&nbsp;</td>\n";
-        print "  <td><input type=\"submit\" value=\"Log in!\"></td>\n";
+        print "  <td><input type=\"submit\" value=\"Log in!\" /></td>\n";
         print " </tr>\n";
         print "</table>\n";
         print '<input type="hidden" name="PEAR_OLDURL" value="';

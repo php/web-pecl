@@ -36,22 +36,26 @@ do {
         $display_verification = true;
 
 	} elseif (isset($verify)) {
-
         $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
+
+        include_once "PEAR/Common.php";
+        $util =& new PEAR_Common;
+        $info = $util->infoFromTgzFile($distfile);
+
         if (!@is_file($distfile)) {
             display_error("No verified file found"); break;
         }
-		$ok = release::upload($package, $version, $release_state,
-		                      $release_notes, $distfile, md5_file($distfile));
+		$ok = release::upload($info['package'], $info['version'], $info['release_state'],
+		                      $info['release_notes'], $distfile, md5_file($distfile));
 		@unlink($distfile);
 		if (PEAR::isError($ok)) {
 			display_error("Error while uploading package: ".$ok->getMessage());
 			break;
 		}
 		response_header("Release Upload Finished");
-		print "The release of package `$package' version `$version' ";
+		print "The release of package `" . $info['package'] . "' version `" . $info['version'] . "' ";
 		print "was completed successfully.<br />";
-        $pacid = package::info($package, 'id');
+        $pacid = package::info($info['package'], 'id');
         print '<center>'.
               make_link("package-info.php?pacid=$pacid", 'Visit package home') .
               '</center>';
@@ -132,13 +136,7 @@ if ($display_verification) {
     $form->addHidden('distfile', $tmpfile);
 	$form->addSubmit('verify', 'Verify Release');
     $form->addSubmit('cancel', 'Cancel');
-	/* XXX Do we really need this? */
-    foreach ($info as $name => $value) {
-		if (is_string($value)) {
-			$form->addHidden($name, $value);
-		}
-	}
-    /* XXX end */
+
 	// XXX ADD MASSIVE SANITY CHECKS HERE
 	$bb = new BorderBox("Please verify that the following release ".
 						"information is correct:");

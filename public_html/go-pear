@@ -112,7 +112,7 @@ if [ `echo $installall | grep -i 'n'` ]; then
 	files="/scripts/pear.in /Archive/Tar.php /Console/Getopt.php /PEAR.php \
 		   /System.php /PEAR /OS /package-Archive_Tar.xml \
 		   /package-Console_Getopt.xml /package-PEAR.xml \
-		   /packages/XML_RPC-1.0.2.tar /package.dtd"
+		   /packages/XML_RPC-1.0.3.tar /package.dtd"
 	installall="n"
 fi
 

@@ -927,10 +927,9 @@ END;
 
     function remove($package, $release)
     {
-        // XXX: Also delete logged downloads.
-
         global $dbh, $auth_user;
-        if (!user::maintains($auth_user->handle, $package, 'lead')) {
+        if (empty($auth_user->admin) &&
+            !user::maintains($auth_user->handle, $package, 'lead')) {
             return PEAR::raiseError('release::remove: insufficient privileges');
         }
 

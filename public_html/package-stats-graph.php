@@ -73,7 +73,7 @@ foreach ($releases as $release) {
 	                     WHERE d.package = p.id
 	                       AND p.id = %s
 	                       %s
-	                  GROUP BY MONTH(d.dl_when)
+	                  GROUP BY YEAR(d.dl_when), MONTH(d.dl_when)
 	                  ORDER BY YEAR(d.dl_when) DESC, MONTH(d.dl_when) DESC",
                    $_GET['pid'],
                    $release_clause = $rid > 0 ? 'AND d.release = ' . $rid : '');

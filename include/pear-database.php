@@ -1137,7 +1137,8 @@ class release
         $package_id = package::info($package, 'packageid');
 
         if (!$package_id) {
-            return PEAR::raiseError("release download:: package '$package' does not exist");
+            return PEAR::raiseError("release download:: package '".htmlspecialchars($package).
+                                    "' does not exist");
         } elseif (PEAR::isError($package_id)) {
             return $package_id;
         }

@@ -1,18 +1,7 @@
 SHORT TERM:
 
-* package format:
-** package.xml file needs to move to the top level in the tar file
-   new format will be:
-     package.xml
-     Foo-1.0/
-     Foo-1.0/Foo.php
-
-* xmlrpc authentication
-
 * "pear configure" to make ~/.pearrc:
-** pear.php.net username/password
 ** email address
-** xmlrpc server
 ** any client-side parameters
 
 * "pear prepare"
@@ -20,14 +9,9 @@ SHORT TERM:
    filelist.xml and generate package.xml
 ** server side: using package.info method
 
-* "pear upload"
-** client side: implement xml-rpc client
-
 * xmlrpc server methods
 ** package.alter
 ** package.annotate
-** release.newestByState(state, [package])
-** release.newestByPackage(package, [state])
 ** release.list
 ** release.get
 ** release.annotate
@@ -38,17 +22,24 @@ SHORT TERM:
 *** System class and Tar.php test under win
 *** xmlrpc extension compile fix
 
-* each class file could document its own dependencies, for example:
-    @dep php > 4.0.4pl1
-    @dep ext pcre
-    @dep prog imagick
-
 * feature for installing "application" or "app" files in a web server
   document root directory, set up virtual hosts etc.
 
 * registry files should say when the package was installed
 
+* fix package download logging
+
 MEDIUM TERM:
+
+* "pear upload"
+** client side: implement xml-rpc client
+
+* add a "live_defaults" config layer where default values
+  are retrieved from the central database and updated regularly
+* each class file could document its own dependencies, for example:
+    @dep php > 4.0.4pl1
+    @dep ext pcre
+    @dep prog imagick
 
 * script to include PEAR stuff in PHP releases
 

@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.30 2001-11-30 12:26:33 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.31 2001-12-02 18:53:47 mj Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-11-30 12:26:33 $</date>
-  <version>$Revision: 1.30 $</version>
+  <date>$Date: 2001-12-02 18:53:47 $</date>
+  <version>$Revision: 1.31 $</version>
  </artheader>
 
  <qandaset>
@@ -109,7 +109,7 @@
      Recommend way for generating patches:
      <simplelist>
       <member>
-       <command># cd /cvs/php.net/pear/NET_Ping</command>
+       <command># cd /cvs/php.net/pear/Net_Ping</command>
       </member>
       <member>
        Retrieve the latest version
@@ -131,13 +131,7 @@
       </member>
      </simplelist>
     </para>
-   </answer>
-  </qandaentry>
-
-  <qandaentry>
-   <question title="How to contribute patches for Outlook Express users" />
-   <answer>
-    <author name="Alexander Merz"/>
+    <para><emphasis>Note for Outlook Express users:</emphasis></para>
     <para>
      The mailing list software accepts only attachments of the
      content type "text/plain". OE creates the content type of a
@@ -145,7 +139,7 @@
      diff output, if stored in a file, the file has an ending,
      which is assigned to a program like Notepad
      (plain-text editors). So better rename your diff file to "file-diff.txt"
-     before attach it.
+     before attach it.    
     </para>
    </answer>
   </qandaentry>

@@ -18,17 +18,18 @@
    $Id$
 */
 
-response_header("News");
-
-echo "<h1>PEAR news</h1>";
-
-echo "<h2><a name=\"2003\" />Year 2003</h2>";
-echo "<ul>";
-
-echo "<li>" . make_link("activestate-award-ssb.php", "ActiveState Active Award for Stig Bakken") . " (July)</li>";
-echo "<li>" . make_link("meeting-2003-summary.php", "Summary of the PEAR Meeting") . " (May)</li>";
-echo "<li>" . make_link("meeting-2003.php", "PEAR Meeting in Amsterdam") . " (March)</li>";
-echo "<li>" . make_link("release-1.0.php", "PEAR 1.0 is released!") . " (January)</li>";
-
-response_footer();
+response_header("ActiveState Active Award for Stig Bakken");
 ?>
+
+<h1>ActiveState Active Award for Stig Bakken</h1>
+
+<div style="margin-left:2em;margin-right:2em">
+
+<p><a href="http://pear.php.net/account-info.php?handle=ssb">Stig Bakken</a>
+has received an ActiveState Active Award for founding and working on PEAR.
+(Read the <a href="http://www.activestate.com/Corporate/ActiveAwards/">full
+announcement</a>.) Congratulations!</p>
+
+</div>
+
+<?php response_footer(); ?>

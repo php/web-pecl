@@ -128,20 +128,8 @@ $origpwd = getcwd();
 
 register_shutdown_function('bail');
 
-if (my_env('_')) {
-    $php = my_env('_');
-} else {
-    $php = which('php');
-}
-if (empty($php)) {
-    bail("No php cgi binary found in PATH\n");
-}
+print "HTTP proxy (host:port), or Enter for none";
 
-####
-# User configurable options
-####
-
-print 'HTTP proxy (host:port), or Enter for none';
 if (!empty($http_proxy)) {
     print " [$http_proxy]";
 }
@@ -223,9 +211,10 @@ Run this script as $root or pick another location.\n");
     }
 }
 
-print "
-Do you want to install the PEAR packages bundled with PHP?
-This packages are: " . implode(', ', $pfc_packages) . ". [Y/n] : ";
+$msg = "The following PEAR packages are bundled with PHP: " .
+implode(', ', $pfc_packages);
+print "\n" . wordwrap($msg, 75) . ".\n";
+print "Would you like to install these as well? [Y/n] : ";
 $install_pfc = !stristr(fgets($tty, 1024), "n");
 print "\n";
 
@@ -234,6 +223,7 @@ print "\n";
 ####
 
 $ptmp = tempnam(tmp_dir(), 'gope');
+
 
 rm_rf($ptmp);
 mkdir_p($ptmp, 0700);
@@ -244,24 +234,6 @@ chdir($ptmp);
 ####
 
 ini_set("include_path", $ptmp);
-
-print 'Bootstrapping: PEAR...................';
-$url = 'http://cvs.php.net/co.php/php4/pear/PEAR.php?p=1';
-download_url($url, 'PEAR.php', $http_proxy);
-include_once 'PEAR.php';
-print "ok\n";
-
-print 'Bootstrapping: Archive_Tar............';
-$url = 'http://cvs.php.net/co.php/pear/Archive_Tar/Archive/Tar.php?p=1';
-mkdir('Archive', 0700);
-download_url($url, 'Archive/Tar.php', $http_proxy);
-print "ok\n";
-
-print 'Bootstrapping: Console_Getopt.........';
-$url = 'http://cvs.php.net/co.php/php4/pear/Console/Getopt.php?p=1';
-mkdir('Console', 0700);
-download_url($url, 'Console/Getopt.php', $http_proxy);
-print "ok\n";
 
 if (!extension_loaded('zlib')) {
     if (WINDOWS) {
@@ -288,12 +260,43 @@ if ($install_pfc) {
     $to_install = $installer_packages;
 }
 
-foreach ($to_install as $pkg) {
+foreach ($installer_packages as $pkg) {
     $msg = str_pad("Downloading package: $pkg", 38, '.');
     print $msg;
     $url = sprintf($urltemplate, $pkg);
     $tarball[$pkg] = download_url($url, null, $http_proxy);
     print "ok\n";
+}
+
+print 'Bootstrapping: PEAR...................';
+$r = 'RELEASE_' . ereg_replace('[^A-Za-z0-9]', '_', substr(substr($tarball['PEAR'], 5), 0, -4));
+$url = "http://cvs.php.net/co.php/php4/pear/PEAR.php?p=1&r=$r";
+download_url($url, 'PEAR.php', $http_proxy);
+include_once 'PEAR.php';
+print "ok\n";
+
+print 'Bootstrapping: Archive_Tar............';
+$r = 'RELEASE_' . ereg_replace('[^A-Za-z0-9]', '_', substr(substr($tarball['Archive_Tar'], 12), 0, -4));
+$url = "http://cvs.php.net/co.php/pear/Archive_Tar/Archive/Tar.php?p=1&r=$r";
+mkdir('Archive', 0700);
+download_url($url, 'Archive/Tar.php', $http_proxy);
+print "ok\n";
+
+print 'Bootstrapping: Console_Getopt.........';
+$r = 'RELEASE_' . ereg_replace('[^A-Za-z0-9]', '_', substr(substr($tarball['Console_Getopt'], 15), 0, -4));
+$url = "http://cvs.php.net/co.php/php4/pear/Console/Getopt.php?p=1&r=$r";
+mkdir('Console', 0700);
+download_url($url, 'Console/Getopt.php', $http_proxy);
+print "ok\n";
+
+if ($install_pfc) {
+    foreach ($pfc_packages as $pkg) {
+        $msg = str_pad("Downloading package: $pkg", 38, '.');
+        print $msg;
+        $url = sprintf($urltemplate, $pkg);
+        $tarball[$pkg] = download_url($url, null, $http_proxy);
+        print "ok\n";
+    }
 }
 
 PEAR::setErrorHandling(PEAR_ERROR_DIE, "\n%s\n");
@@ -343,10 +346,9 @@ if (!in_array($php_dir, $include_path)) {
     print "
 ******************************************************************************
 WARNING!  The include_path defined in the currently used php.ini does not
-contain the PEAR PHP directory you just configured.
-
-Current include path: ".ini_get('include_path')."
-Configured directory: $php_dir
+contain the PEAR PHP directory you just specified.  If the specified
+directory is also not in the include_path used by your scripts, you
+will have problems getting any PEAR packages working.
 ";
     if (WINDOWS) {
         print "
@@ -359,7 +361,13 @@ the installer works, but please look over your php.ini or Apache
 configuration to make sure $php_dir is in your include_path.
 ";
     }
-    print "\nPress Enter to continue: ";
+    $php_ini = PHP_CONFIG_FILE_PATH . DIRECTORY_SEPARATOR . 'php.ini';
+    print "
+Current include path           : ".ini_get('include_path')."
+Configured directory           : $php_dir
+Currently used php.ini (guess) : $php_ini
+
+Press Enter to continue: ";
     fgets($tty, 1024);
     if (!WINDOWS) {
         print 'Fixing installer include_path.........';
@@ -386,13 +394,25 @@ configuration to make sure $php_dir is in your include_path.
     }
 }
 
-bail();
+$pear_cmd = which('pear');
+$in_path = !empty($pear_cmd);
+if (empty($pear_cmd)) {
+    $pear_cmd = "$bin_dir/pear";
+}
 
-print "
-The 'pear' command is now at your service.  Try 'pear list' to see
-what packages are installed, or 'pear help' for help.
+print "The 'pear' command is now at your service at $pear_cmd\n";
+if (!$in_path) {
+    print "
+** The 'pear' command is not currently in your PATH, so you need to
+** use '$pear_cmd' until you have added
+** '$bin_dir' to your PATH environment variable.
 
-For more information about PEAR, please check these out:
+";
+}
+print "Run it without parameters to see the available actions, try 'pear list'
+to see what packages are installed, or 'pear help' for help.
+
+For more information about PEAR, see:
 
   http://pear.php.net/faq.php
   http://cvs.php.net/co.php/pearweb/doc/pear_package_manager.txt?p=1
@@ -468,9 +488,12 @@ function download_url($url, $destfile = null, $proxy = null)
 
 function which($program)
 {
-    $sep = WINDOWS ? ';' : ':';
-    $dirs = explode($sep, my_env('PATH'));
     if (WINDOWS) {
+        if (my_env('Path')) {
+            $dirs = explode(';', my_env('Path'));
+        } else {
+            $dirs = explode(';', my_env('PATH'));
+        }
         foreach ($dirs as $dir) {
             $tmp = "$dir/$program";
             if (file_exists($ret = "$tmp.exe") ||
@@ -481,13 +504,14 @@ function which($program)
             }
         }
     } else {
+        $dirs = explode(':', my_env('PATH'));
         foreach ($dirs as $dir) {
             if (is_executable("$dir/$program")) {
                 return "$dir/$program";
             }
         }
     }
-    return null;
+    return false;
 }
 
 // }}}

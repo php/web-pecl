@@ -1,7 +1,4 @@
 <?php
-
-auth_require();
-
 response_header("Accounts");
 
 $page_size = 20;

@@ -230,21 +230,20 @@ function commonHeader($title) {
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 </table>
 
-
-<table cellpadding="0" cellspacing="0">
+<table cellpadding="0" cellspacing="0" width="100%">
  <tr valign="top">
-<?php if (isset($SIDEBAR_DATA)):?>
-  <td bgcolor="#f0f0f0">
+<?php if (isset($SIDEBAR_DATA)) { ?>
+  <td bgcolor="#f0f0f0" width="149">
    <table width="149" cellpadding="4" cellspacing="0">
     <tr valign="top">
      <td class="sidebar"><?php echo $SIDEBAR_DATA?></td>
     </tr>
    </table>
   </td>
-  <td bgcolor="#cccccc" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
-<?php endif; ?>
-  <td>
-   <table width="625" cellpadding="10" cellspacing="0">
+  <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
+<?php } ?>
+  <td width="625">
+   <table width="100%" cellpadding="10" cellspacing="0">
     <tr>
      <td valign="top">
 <?php
@@ -258,13 +257,19 @@ function commonHeader($title) {
 //
 
 function commonFooter() {
-	global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES,$SCRIPT_NAME;
+	global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES,$SCRIPT_NAME, $RSIDEBAR_DATA;
 ?>
-      <br />
      </td>
     </tr>
    </table>
   </td>
+
+<?php if (isset($RSIDEBAR_DATA)) { ?>
+  <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
+  <td width="149" bgcolor="#f0f0f0">
+    <table width="100%" cellpadding="4" cellspacing="0"><tr valign="top"><td class="sidebar"><?php echo $RSIDEBAR_DATA; ?></td></tr></table>
+  </td>
+<? } ?>
  </tr>
 </table>
 

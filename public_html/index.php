@@ -38,17 +38,16 @@ if (DEVBOX) {
     menu_link("Upload Release", "release-upload.php");
     $recent = release::getRecent();
     if (@sizeof($recent) > 0) {
-        print "<b>Recent Releases</b>\n";
-        print "<table>";
+        
+        $RSIDEBAR_DATA = "<h3>Recent Releases</h3>\n";
+        $RSIDEBAR_DATA .= "<table>";
         foreach ($recent as $release) {
             extract($release);
-            print "<tr><td valign='top'><font size='-1'>";
-            print "<a href=\"pkginfo.php?package=$name&release=$version\">";
-            print "$name $version</a></font></td>";
-            print "<td valign='top'><font size='-1'>";
-            print "$doneby, $releasedate: $releasenotes</font></td></tr>\n";
+            $RSIDEBAR_DATA .= "<tr><td valign='top'><p>";
+            $RSIDEBAR_DATA .= "<a href=\"pkginfo.php?pacid=$name&release=$version\">";
+            $RSIDEBAR_DATA .= "$name $version</a><br /><small>($releasedate)</small></p></td></tr>";
         }
-        print "</table>\n";
+        $RSIDEBAR_DATA .= "</table>\n";
     }
 }
 

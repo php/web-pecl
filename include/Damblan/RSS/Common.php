@@ -45,6 +45,7 @@ class Damblan_RSS_Common {
 
         $this->_channel = &$this->_root->addChild("channel");
         $this->_channel->setAttribute("rdf:about", "http://pear.php.net/");
+        $this->_channel->addChild("link", "http://pear.php.net/");
         $this->_channel->addChild("dc:creator", "pear-webmaster@php.net");
         $this->_channel->addChild("dc:publisher", "pear-webmaster@php.net");
         $this->_channel->addChild("dc:language", "en-us");

@@ -1,6 +1,12 @@
 <?php
-
 auth_require(true);
+
+if (isset($_GET['phpinfo'])) {
+    print_image("box-0.gif");
+    print_link($_SERVER['PHP_SELF'], "Back to administration page");
+    phpinfo();
+    exit();
+}
 
 $SIDEBAR_DATA='
 This is the PEAR administration page.
@@ -11,9 +17,6 @@ This is the PEAR administration page.
 ';
 
 response_header("PEAR Administration");
-
-//print "GET: ";var_dump($HTTP_GET_VARS);print "<br />\n";
-//print "POST: ";var_dump($HTTP_POST_VARS);print "<br />\n";
 
 // {{{ adding and deleting notes
 
@@ -223,7 +226,7 @@ echo "<ul>\n";
 
 echo "<li>Uptime: " . uptime() . "</li>\n";
 echo "<li>Disk space: " . round((disk_total_space("/")/(1000*1000*1000)),2) . " GB (available: " . round((diskfreespace("/")/(1000*1000*1000)),2) . " GB)</li>\n";
-echo "<li>" . make_link("/phpinfo.php", "Output of phpinfo()") . "</li>\n";
+echo "<li>" . make_link($_SERVER['PHP_SELF'] . "?phpinfo=1", "Output of phpinfo()") . "</li>\n";
 echo "<li>Server name: " . $_SERVER['SERVER_NAME'] . "</li>\n";
 echo "<li>System date: " . date("Y-m-d H:i:s") . "</li>\n";
 
@@ -235,7 +238,7 @@ $bb = new BorderBox("Download statistics");
 
 $query = "SELECT COUNT(d.id) AS dl_number, p.id AS pid, p.name AS package, r.id AS rid, r.version AS release
             FROM downloads d, packages p, releases r
-            
+
             WHERE d.package = p.id AND d.release = r.id
           GROUP BY d.package, d.release ORDER BY dl_number DESC";
 
@@ -249,7 +252,7 @@ echo "<table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"2\">\n"
 echo "<tr align=\"left\" bgcolor=\"#cccccc\">\n";
 echo "<th>Package name</th>\n";
 echo "<th>Release</th>\n";
-echo "<th># of downloads</th>\n";
+echo "<th><u># of downloads</u></th>\n";
 echo "<th>&nbsp;</th>\n";
 echo "</tr>\n";
 

@@ -17,6 +17,7 @@
    |          Tomas V.V.Cox <cox@php.net>                                 |
    |          Martin Jansen <mj@php.net>                                  |
    +----------------------------------------------------------------------+
+   $Id$
  */
 
 require_once "DB/storage.php";
@@ -701,7 +702,7 @@ class release
         $upload = basename($upload);
         $release = "{$pkginfo['package']}-{$pkginfo['version']} ({$pkginfo['release_state']})";
         $txtanounce =<<<END
-New PEAR package $release released at http://pear.php.net
+The new PEAR package $release has been released at http://pear.php.net/.
 
 Release notes
 -------------
@@ -722,8 +723,8 @@ Authors
 $txt_authors
 END;
         $to   = '"PEAR general list" <pear-general@lists.php.net>';
-        $from = '"PEAR announce" <pear-dev@lists.php.net>';
-        $subject = "[new web release] $release";
+        $from = '"PEAR Announce" <pear-dev@lists.php.net>';
+        $subject = "[ANNOUNCEMENT] $release Released.";
         // XXX Don't send emails for local PEAR web instalations
         if ($_SERVER['SERVER_NAME'] == 'pear.php.net') {
             mail($to, $subject, $txtanounce, "FROM: $from");

@@ -231,7 +231,9 @@ Eris Free Net</a>.
 
     <li><a href="http://www.onlamp.com/pub/a/php/2001/07/19/pear.html">A Detailed Look at PEAR</a> on O'Reilly Network</li><br /><br />
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/05/24/pear.html">An Introduction to PEAR</a> on O'Reilly Network</li>
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/05/24/pear.html">An Introduction to PEAR</a> on O'Reilly Network</li><br /><br />
+
+    <li><a href="http://phpconcept.free.fr/articles/article.en.php?id=1">Configure WinCVS for PEAR</a> by Vincent  Blavent</li>
 </ul>
 
 <h2>Powered By PEAR/PECL</h2>

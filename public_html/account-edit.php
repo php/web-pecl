@@ -33,8 +33,8 @@ if (isset($HTTP_GET_VARS['handle'])) {
 ob_start();
 response_header("Edit Account: $handle");
 
-$admin = user::isAdmin($_COOKIE['PEAR_USER']);
-$user = ($_COOKIE['PEAR_USER'] === $handle);
+$admin = $auth_user->isAdmin();
+$user  = $auth_user->is($handle);
 
 if (!$admin && !$user) {
     PEAR::raiseError("Only the user himself or PEAR administrators can edit the account information.");

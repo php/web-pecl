@@ -1729,6 +1729,21 @@ class PEAR_User extends DB_storage
         $this->setup($user);
         $this->popErrorHandling();
     }
+
+    function is($handle)
+    {
+        if (!empty($_COOKIE['PEAR_USER'])) {
+            $ret = strtolower($_COOKIE['PEAR_USER']);
+        } else {
+            $ret = strtolower($this->handle);
+        }
+        return (strtolower($handle) == $ret);
+    }
+
+    function isAdmin() 
+    {
+        return ($this->admin == 1);
+    }
 }
 
 // }}}

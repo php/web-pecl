@@ -330,15 +330,18 @@ recommanded, usually in c:\php\cli\php.exe)
 } elseif ( WINDOWS && !WEBINSTALLER && strlen($php_bin) ) {
     $php_bin_sapi = win32DetectPHPSAPI();
     $php_bin_set = true;
-    if($php_bin_sapi!='cli'){
-        if($php_bin_sapi=='cgi'){
+    switch($php_bin_sapi){
+        case 'cli':
+        break;
+        case 'cgi':
             print "
 *NOTICE*
 We found php.exe under $php_bin, it uses a $php_bin_sapi SAPI. PEAR commandline
 tool works well with it, if you have a CLI php.exe available, we
 recommand to use it.
 ";
-            } else {
+        break;
+        default:
             print "
 *WARNING*
 We found php.exe under $php_bin, it uses an unknown SAPI. PEAR commandline
@@ -346,11 +349,9 @@ tool has not been tested with it, if you have a CLI (or CGI) php.exe available,
 we strongly recommand to use it.
 
 ";
-            }
+        break;
     }
 }
-
-
 
 ####
 # Temp stuff
@@ -845,9 +846,10 @@ if (WEBINSTALLER) {
 	exit;
 };
 
-// Little cleanup, this will be fixed in PEAR later
+// Little hack, this will be fixed in PEAR later
 if ( WINDOWS ) {
-    @unlink($php_dir.DIRECTORY_SEPARATOR.'.tmppear');
+    clearstatcache();
+    @unlink($bin_dir.DIRECTORY_SEPARATOR.'.tmppear');
 }
 
 if (WINDOWS && !WEBINSTALLER) {
@@ -1152,6 +1154,10 @@ function detect_install_dirs($_prefix = null) {
         }
         if( $php_bin && !is_file($php_bin) ){
             $php_bin = '';
+        } else {
+            if(!ereg(":",$php_bin)){
+                $php_bin = getcwd().DIRECTORY_SEPARATOR.$php_bin;
+            }
         }
     } else {
         if ($_prefix === null) {
@@ -1978,19 +1984,26 @@ function win32BrowseForFolder ( $label )
     global $ptmp;
     static $wshSaved=false;
     static $cscript='';
-
-    $wsh_browserfolder = 'Option Explicit
+$wsh_browserfolder = 'Option Explicit
 Dim ArgObj, var1, var2, sa, sFld
 Set ArgObj = WScript.Arguments
 Const BIF_EDITBOX = &H10
 Const BIF_NEWDIALOGSTYLE = &H40
+Const BIF_RETURNONLYFSDIRS   = &H0001
+Const BIF_DONTGOBELOWDOMAIN  = &H0002
+Const BIF_STATUSTEXT         = &H0004
+Const BIF_RETURNFSANCESTORS  = &H0008
+Const BIF_VALIDATE           = &H0020
+Const BIF_BROWSEFORCOMPUTER  = &H1000
+Const BIF_BROWSEFORPRINTER   = &H2000
+Const BIF_BROWSEINCLUDEFILES = &H4000
 Const OFN_LONGNAMES = &H200000
 Const OFN_NOLONGNAMES = &H40000
 Const ssfDRIVES = &H11
 Const ssfNETWORK = &H12
 Set sa = CreateObject("Shell.Application")
 var1=ArgObj(0)
-Set sFld = sa.BrowseForFolder(0, var1, BIF_NEWDIALOGSTYLE , ssfDRIVES )
+Set sFld = sa.BrowseForFolder(0, var1, BIF_EDITBOX + BIF_VALIDATE + BIF_BROWSEINCLUDEFILES + BIF_RETURNFSANCESTORS+BIF_NEWDIALOGSTYLE , ssfDRIVES )
 if not sFld is nothing Then
     if not left(sFld.items.item.path,1)=":" Then
         WScript.Echo sFld.items.item.path
@@ -2003,6 +2016,7 @@ End If
 ';
     if( !$wshSaved){
         $cscript = $ptmp.DIRECTORY_SEPARATOR."bf.vbs";
+        echo "CSCRIPT: ".$cscript."\n\n\n\n";
         $fh = fopen($cscript,"wb+");
         fwrite($fh,$wsh_browserfolder,strlen($wsh_browserfolder));
         fclose($fh);
@@ -2069,10 +2083,11 @@ function win32DetectPHPSAPI()
     if($php_bin!=''){
         exec($php_bin.' -v', $res);
         if(is_array($res)) {
-            if( strpos($res[0],"cli")!==false ) {
+            echo $res[0]."\n\n\n\n";
+            if( strpos($res[0],"(cli)") ) {
                 return 'cli';
             }
-            if( strpos($res[0],"cgi")!==false ) {
+            if( strpos($res[0],"cgi") ) {
                 return 'cgi';
             } else {
                 return 'unknown';

@@ -722,10 +722,12 @@ Authors
 $txt_authors
 END;
         $to   = '"PEAR general list" <pear-general@lists.php.net>';
-        $to = '<cox@localhost>';
         $from = '"PEAR announce" <pear-dev@lists.php.net>';
         $subject = "[new web release] $release";
-        mail($to, $subject, $txtanounce, "FROM: $from");
+        // XXX Don't send emails for local PEAR web instalations
+        if ($HTTP_SERVER_VARS['SERVER_NAME'] == 'pear.php.net') {
+            mail($to, $subject, $txtanounce, "FROM: $from");
+        }
     }
 }
 

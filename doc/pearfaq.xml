@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.4 2001-08-24 00:37:10 alexmerz Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.5 2001-08-31 21:58:38 mj Exp $ -->
 <!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "./dbxml/docbookx.dtd">
 
@@ -8,7 +8,7 @@
 <article class="faq">
 <artheader>
     <title>PEAR-Developer FAQ</title>
-    <date>$Date: 2001-08-24 00:37:10 $</date>
+    <date>$Date: 2001-08-31 21:58:38 $</date>
 </artheader>
 
 <qandaset>
@@ -19,9 +19,7 @@
             </para>
         </question>
         <answer>
-            <para>
-                ( by Alexander Merz )
-            </para>        
+            <author name="Alexander Merz"/>
             <para>
                 The rules are the same like getting a PHP CVS account. This mean
 				you should do one of the following things to improve your
@@ -63,9 +61,7 @@
             </para>
         </question>
         <answer>
-            <para>
-                ( by Alexander Merz, Tomas V.V. Cox )
-            </para>        
+            <author name="Alexander Merz, Tomas V.V. Cox"/>
             <para>
                 The best possibility to contribute patches is to send them to 
 				PEAR-Dev mailinglist pear-dev@lists.php.net. Make sure your 
@@ -118,9 +114,7 @@
             </para>
         </question>
         <answer>
-            <para>
-                ( by Alexander Merz )
-            </para>        
+            <author name="Alexander Merz"/>
             <para>
                 The mailing list software accepts only attachments of the 
 				content type "text/plain". OE creates the content type of a 
@@ -140,9 +134,7 @@
             </para>
         </question>
         <answer>
-            <para>
-                ( by Alexander Merz )
-            </para>        
+            <author name="Alexander Merz"/>
             <para>
                 The general directory for new PEAR-classes and moduls is 
 				pear/ in the CVS-repository. The name of the directory of the 
@@ -160,11 +152,9 @@
             </para>
         </question>
         <answer>
+            <author name=""/>
             <para>
-                ( by Author )
-            </para>        
-            <para>
-                the ANSWER is 42
+                There is no answer yet.
             </para>
         </answer>
     </qandaentry>    
@@ -175,11 +165,9 @@
             </para>
         </question>
         <answer>
+            <author name=""/>
             <para>
-                ( by Author )
-            </para>        
-            <para>
-                the ANSWER is 42
+                There is no answer yet.
             </para>
         </answer>
     </qandaentry>    
@@ -190,11 +178,9 @@
             </para>
         </question>
         <answer>
+            <author name=""/>
             <para>
-                ( by Author )
-            </para>        
-            <para>
-                the ANSWER is 42
+                There is no answer yet.
             </para>
         </answer>
     </qandaentry>    
@@ -205,9 +191,7 @@
             </para>
         </question>
         <answer>
-            <para>
-                ( by Alexander Merz )
-            </para>        
+            <author name="Alexander Merz"/>
             <para>
                 Yes. But make sure, that you mark up the experimental/ unstable
                 status of the project in the documention. The best place to do 
@@ -251,11 +235,9 @@
             </para>
         </question>
         <answer>
+            <author name=""/>
             <para>
-                ( by Author )
-            </para>        
-            <para>
-                the ANSWER is 42
+                There is no answer yet.
             </para>
         </answer>
     </qandaentry>    
@@ -266,11 +248,9 @@
             </para>
         </question>
         <answer>
+            <author name=""/>
             <para>
-                ( by Author )
-            </para>        
-            <para>
-                the ANSWER is 42
+                There is no answer yet.
             </para>
         </answer>
     </qandaentry>
@@ -281,11 +261,9 @@
             </para>
         </question>
         <answer>
+            <author name="Stig Sæther Bakken"/>
             <para>
-                ( by Stig Sæther Bakken )
-            </para>        
-            <para>
-                the ANSWER is 42
+                There is no answer yet.
             </para>
         </answer>
     </qandaentry>        

@@ -3,77 +3,101 @@
 <head>
   <title>x</title>
 </head>
-<body>
-<small><i>by Alan Knowles (alan_k@php.net)</i></small>
-<small><i>translated by Arnaud Limbourg (arnaud@limbourg.com)</i></small>
-
-<p>Apr&egrave;s quelques semaines fi&eacute;vreuses, la semaine &eacute;coul&eacute;e &agrave; &eacute;t&eacute; plut&ocirc;t calme avec deux livraisons stables et deux beta. Des discussions ont pris place sur divers sujets: rendre l'&eacute;criture de documentation plus facile, de nouvelles statistiques sur les packages, les livraisons d'&eacute;xecutables sign&eacute;s. PhpDoc est revenu &agrave; la vie et deux nouvelles extensions PECL ont vu le jour.</p>
-<hr>
-
-
+  <body>
+ <small><i>by Alan Knowles (alan_k@php.net)</i></small> <small><i>translated
+by Arnaud Limbourg (arnaud@limbourg.com)</i></small>  
+<p>Apr&egrave;s quelques semaines fi&eacute;vreuses, la semaine &eacute;coul&eacute;e
+&agrave; &eacute;t&eacute; plut&ocirc;t calme avec deux livraisons stables
+et deux beta. Des discussions ont pris place sur divers sujets: rendre l'&eacute;criture
+de documentation plus facile, de nouvelles statistiques sur les packages,
+les livraisons d'&eacute;xecutables sign&eacute;s. PhpDoc est revenu &agrave;
+la vie et deux nouvelles extensions PECL ont vu le jour.</p>
+ 
+<hr>   
 <h2>Nouvelles Releases</h2>
-
+  
 <h3>Stable</h3>
-<b>Science_Chemistry</b> - Classes permettant de representer les &nbsp;Atomes, Molecules and Macromolecules, <br />
-<b>HTML_Javascript -</b> pour travailler avec du Javascript
-
+ <b>Science_Chemistry</b> - Classes permettant de repr&eacute;senter les
+&nbsp;Atomes, Mol&eacute;cules and Macromol&eacute;cules, <br>
+ <b>HTML_Javascript -</b> Fonctions Javascript diverses et export de variables
+PHP vers des variables Javascript  
 <h3>Beta</h3>
-<b>Math_Vector</b> - Permet de g&eacute;rer les vecteurs math&eacute;matiques 2D et 3D,<br />
-<b>MDB</b> - le projet de couche d'abstraction debase de donn&eacute;es (<em>ndt: fusion entre PEAR::DB et Metabase</em>)
-
-<hr>
-
-
+ <b>Math_Vector</b> - Permet de g&eacute;rer les vecteurs math&eacute;matiques
+2D et 3D,<br>
+ <b>MDB</b> - le projet de couche d'abstraction de base de donn&eacute;es
+(<em>ndt: fusion entre PEAR::DB et Metabase</em>)  
+<hr>   
 <h2>Trafic de la liste de diffusion PEAR-DEV</h2>
-
+  
 <h3>Packages &eacute;xecutables et sign&eacute;s</h3>
-
-Apr&egrave;s discussion sur IRC, Marko Karppinen &agrave; post&eacute; le processus de distribution des &eacute;xecutables PECL (extensions PHP). Apr&egrave;s l'incident ayant vu un utilisateur mettre du code malicieux dans une distribution d'OpenSSH il est &eacute;vident qu'il est n&eacute;cessaire d'am&eacute;liorer la s&eacute;curit&eacute; et les v&eacute;rifications. Pour plus de d&eacute;tails sur cette proposition veuillez lire le fil de discussion <a
- href="http://marc.theaimsgroup.com/?l=pear-dev&m=102769689219883&w=2">ici</a> (<em>ndt: en anglais</em>)
-
+  Apr&egrave;s discussion sur IRC, Marko Karppinen &agrave; post&eacute;
+le processus de distribution des &eacute;xecutables PECL (extensions PHP).
+Apr&egrave;s l'incident ayant vu un utilisateur mettre du code malicieux
+dans une distribution d'OpenSSH il est &eacute;vident qu'il est n&eacute;cessaire
+d'am&eacute;liorer la s&eacute;curit&eacute; et les v&eacute;rifications.
+Pour plus de d&eacute;tails sur cette proposition veuillez lire le fil de
+discussion <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102769689219883&amp;w=2">ici</a>
+(<em>ndt: en anglais</em>)  
 <h3>Rendre l'effort de documentation plus facile</h3>
-Trois projets, en cours ou en analyse, pour rendre l'&eacute;criture de documentation pour PEAR plus simple.
-
+ Trois projets, en cours ou en analyse, pour rendre l'&eacute;criture de
+documentation pour PEAR plus simple.  
 <ul>
-    <li>HTML vers Docbook, Martin Jansen &agrave; propos&eacute; une simple conversion de tags de type HTML vers un format DocBook - veuillez lire le message <a
- href="http://marc.theaimsgroup.com/?l=pear-dev&m=102770762000379&w=2">ici</a> (<em>ndt: en anglais</em>)</li>
-  <li>Phpdoc vers Docbook, Alexander and Alan ont deux mentionn&eacute;s qu'une des solution est d'&eacute;tendre l'outil PHP_Codedoc d'Alan pour effectuer cette conversion. Alexander va &eacute;crire un convertisseur pour transformer des commentaires PhpDoc, le r&eacute;sultat devrait &ecirc;tre pouvoir ins&eacute;r&eacute; au manuel de PEAR.</li>
-  <li>OpenOffice vers Docbook,&nbsp; Wolfram Kriesing &eacute;tudie la possibilit&eacute; d'&eacute;crire un convertisseur pour passer du format OpenOffice XML vers Docbook</li>
+     <li>HTML vers Docbook, Martin Jansen &agrave; propos&eacute; une simple
+conversion de tags de type HTML vers un format DocBook - veuillez lire le
+message <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102770762000379&amp;w=2">ici</a>
+(<em>ndt: en anglais</em>)</li>
+   <li>Phpdoc vers Docbook, Alexander and Alan ont deux mentionn&eacute;s
+qu'une des solution est d'&eacute;tendre l'outil PHP_Codedoc d'Alan pour
+effectuer cette conversion. Alexander va &eacute;crire un convertisseur pour
+transformer des commentaires PhpDoc, le r&eacute;sultat devrait pouvoir&nbsp;&ecirc;tre
+ ins&eacute;r&eacute; au manuel de PEAR.</li>
+   <li>OpenOffice vers Docbook,&nbsp; Wolfram Kriesing &eacute;tudie la possibilit&eacute;
+d'&eacute;crire un convertisseur pour passer du format OpenOffice XML vers
+Docbook</li>
+ 
 </ul>
-
+  
 <h3>Am&eacute;lioration des statistiques sur les packages</h3>
-Tal Peer &agrave; ajout&eacute; un <a href="http://pear.php.net/package-stats.php">r&eacute;sum&eacute; complet</a> (<em>ndt: en anglais</em>) sur les statistiques des packages. Vous pouvez ainsi savoir combien de fois un package &agrave; &eacute;t&eacute; t&eacute;l&eacute;charg&eacute;.
-
+ Tal Peer &agrave; ajout&eacute; un <a
+ href="http://pear.php.net/package-stats.php">r&eacute;sum&eacute; complet</a>
+(<em>ndt: en anglais</em>) sur les statistiques des packages. Vous pouvez
+ainsi savoir combien de fois un package &agrave; &eacute;t&eacute; t&eacute;l&eacute;charg&eacute;. 
+ 
 <h3>Acc&egrave;s fichier rapide</h3>
-Apr&egrave;s une br&egrave;ve discussion Tomas Cox &agrave; post&eacute; 
-a <a  href="http://marc.theaimsgroup.com/?l=pear-dev&m=102819831726965&w=2">un rapide banc d'essai</a> montrant la plus grande rapidit&eacute; de fread() compar&eacute; &agrave; implode('',file()).
-
+ Apr&egrave;s une br&egrave;ve discussion Tomas V. Cox &agrave; post&eacute;
+ a <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102819831726965&amp;w=2">un
+rapide banc d'essai</a> montrant la plus grande rapidit&eacute; de fread()
+compar&eacute; &agrave; implode('',file()).  
 <h3>PHPDoc revient &agrave; la vie</h3>
-Le <a href="http://www.ActiveState.com/ActiveAwards2002">gagnant d'un oscar</a>
-
-Derick Rethans a relev&eacute; ses manches pour s'attaquer &agrave; corriger PhpDoc. Il est ouvert &agrave; toutes suggestions sur les fonctionnalit&eacute;s &agrave; y ajouter.
-
+ Le <a href="http://www.ActiveState.com/ActiveAwards2002">gagnant d'un oscar</a> 
+ Derick Rethans a relev&eacute; ses manches pour s'attaquer &agrave; corriger
+PhpDoc. Il est ouvert &agrave; toutes suggestions sur les fonctionnalit&eacute;s
+&agrave; y ajouter.  
 <h3>Bugs et Corrections</h3>
-Merci &agrave; ces personnes pour avoir identifi&eacute;s et corrig&eacute; des bugs: Pawe&#322; Go&#322;aszewski,
-Thomas Schulz, James Flemer, Peter Bowen
-
-<hr>
+ Merci &agrave; ces personnes pour avoir identifi&eacute;s et corrig&eacute;
+des bugs: Pawe&#322; Go&#322;aszewski, Thomas Schulz, James Flemer, Peter Bowen  
+<hr> 
 <h2>Propositions et nouveaux packages </h2>
-
+  
 <h3>PICOSQL</h3>
-Une librairie de liaison vers le SGBD <a href="http://www.picosoft.it/picosql/index.html">picosql</a> &agrave; &eacute;t&eacute; ajout&eacute;e &agrave; PECL. PICOSQL est un syst&egrave;me de gestion de base de donn&eacute;es relationnelle propri&eacute;taire qui &agrave; &eacute;t&eacute; ouvert &agrave; tous gr&acirc;ce au passage &agrave; la licence LGPL.
-
+ Une librairie de liaison vers le SGBD <a
+ href="http://www.picosoft.it/picosql/index.html">picosql</a> &agrave; &eacute;t&eacute;
+ajout&eacute;e &agrave; PECL. PICOSQL est un syst&egrave;me de gestion de
+base de donn&eacute;es relationnelle propri&eacute;taire qui &agrave; &eacute;t&eacute;
+ouvert &agrave; tous gr&acirc;ce au passage &agrave; la licence LGPL.  
 <h3>Python</h3>
-John Praise a jout&eacute; une extension Python &agrave; PECL qui permet l'utilisation de Python dans du PHP, permettant d'acc&eacute;der aux variables Python depuis PHP.
-
-<hr>
+ John Praise a jout&eacute; une extension Python &agrave; PECL qui permettant
+de m&eacute;langer Python et PHP, &nbsp;ainsi qu'acc&eacute;der aux variables
+Python depuis PHP.  
+<hr> 
 <h2>D&eacute;veloppement</h2>
-Ont &eacute;t&eacute; actif cette semaine sur le CVS PECL::picosql, PECL::python  Cache_Lite,
-DB, MDB, PHPDoc, Archive_Tar, Mail, Auth, HTML_TreeMenu, HTML_JavaScript,
-Net_Pop3, Net_Sieve, Net_URL, Pager, Mail_Mime, HTTP_Request, Tree, Math_Vector,
+ Ont &eacute;t&eacute; actif cette semaine sur le CVS PECL::picosql, PECL::python
+ Cache_Lite, DB, MDB, PHPDoc, Archive_Tar, Mail, Auth, HTML_TreeMenu, HTML_JavaScript, 
+Net_Pop3, Net_Sieve, Net_URL, Pager, Mail_Mime, HTTP_Request, Tree, Math_Vector, 
 Science_Chemistry.<br>
-
+  <br>
 </body>
 </html>
-
-

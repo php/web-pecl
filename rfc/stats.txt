@@ -1,0 +1,10 @@
+Stats:
+
+ Releases per month, globally and category wise
+ Total number of packages, ditto
+ Total number of package maintainers?
+ Total number of downloads, daily/weekly/monthly average.
+
+Some all of the above need to use a summary table rebuilt
+daily via cron to prevent spanking of MySQL every time someone views
+the stats

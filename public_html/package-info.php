@@ -191,10 +191,16 @@ if (@is_dir(PHP_CVS_REPO_DIR . "/$name")) {
 $get_link = make_link("/get/$name", 'Download Latest');
 $changelog_link = make_link("package-changelog.php?pacid=$pacid",
                             'ChangeLog');
+
+// Category ID for stats link
+$cid = $dbh->getOne('SELECT category FROM packages WHERE id = ' . $pacid);
 ?>
-    <td width="33%" align="center">[ <?php print $get_link; ?> ]</td>
-    <td width="33%" align="center"><?php print $cvs_link;?></td>
-    <td width="33%" align="center">[ <?php print $changelog_link;?> ]</td>
+    <td width="50%" align="center">[ <?php print $get_link; ?> ]</td>
+    <td width="50%" align="center">[ <?php print $changelog_link;?> ]</td>
+</tr>
+<tr>
+    <td width="50%" align="center"><nobr><?php print $cvs_link;?></nobr></td>
+    <td width="50%" align="center"><nobr>[ <a href="package-stats.php?pid=<?=$pacid?>&rid=&cid=<?=$cid?>">View package statistics</a> ]</nobr></td>
 </tr>
 </table>
 

@@ -18,7 +18,6 @@
    $Id$
  */
 
-auth_require();
 require_once "HTML/Form.php";
 
 response_header("Package statistics");
@@ -176,7 +175,116 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
             /**
             * Print the graph
             */
-            printf('<br /><img src="package-stats-graph.php?pid=%s&rid=%s" width="543" height="200" alt="">', $_GET['pid'], $_GET['rid']);
+            printf('<br /><img src="package-stats-graph.php?pid=%s&releases=%s_339900" name="stats_graph" width="543" height="200" alt="">', $_GET['pid'], (int)$_GET['rid']);
+
+			/**
+            * Print the graph control stuff
+            */
+			$releases = $dbh->getAll('SELECT id, version FROM releases WHERE package = ' . $_GET['pid'], DB_FETCHMODE_ASSOC);
+			?>
+<br /><br />
+<script language="JavaScript" type="text/javascript">
+<!--
+	function clearGraphList()
+	{
+		graphForm = document.forms['graph_control'];
+		for (i=0; i<graphForm.graph_list.options.length; i++) {
+			graphForm.graph_list.options[i] = null;
+		}
+	}
+
+	function addGraphItem()
+	{
+		graphForm = document.forms['graph_control'];
+		selectedRelease = graphForm.releases.options[graphForm.releases.selectedIndex];
+		selectedColour  = graphForm.colours.options[graphForm.colours.selectedIndex];
+
+		if (selectedRelease.value != "" && selectedColour.value != "") {
+			newText  = 'Release ' + selectedRelease.text + ' in ' + selectedColour.text;
+			newValue = selectedRelease.value + '_' + selectedColour.value;
+			graphForm.graph_list.options[graphForm.graph_list.options.length] = new Option(newText, newValue);
+
+		} else {
+			alert('Please select a release and a colour!');
+		}
+	}
+	
+	function removeGraphItem()
+	{
+		graphForm = document.forms['graph_control'];
+		graphList = graphForm.graph_list;
+
+		if (graphList.selectedIndex != null) {
+			graphList.options[graphList.selectedIndex] = null;
+		}
+	}
+	
+	function updateGraph()
+	{
+		graphForm   = document.forms['graph_control'];
+		releases_qs = '';
+
+		if (graphForm.graph_list.options.length) {
+			for (i=0; i<graphForm.graph_list.options.length; i++) {
+				if (i == 0) {
+					releases_qs += graphForm.graph_list.options[i].value;
+				} else {
+					releases_qs += ',' + graphForm.graph_list.options[i].value;
+				}
+			}
+			graphForm.update.value = 'Updating...';
+			document.images['stats_graph'].src = 'package-stats-graph.php?pid=<?=$_GET['pid']?>&releases=' + releases_qs;
+			graphForm.update.value = 'Update graph';
+
+		} else {
+			alert('Please select one or more releases to show!');
+		}
+	}
+//-->
+</script>
+<form name="graph_control"> <!-- No action as it should never be submitted -->
+<table border="0">
+	<tr>
+		<td colspan="2">
+			Show graph of:<br />
+			<select style="width: 543px" name="graph_list" size="5">
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">
+			Release:
+			<select align="absmiddle" name="releases">
+				<option value="">Select...</option>
+				<option value="0">All</option>
+				<?foreach($releases as $r):?>
+					<option value="<?=$r['id']?>"><?=$r['version']?></option>
+				<?endforeach?>
+			</select>
+			Colour:
+			<select align="absmiddle" name="colours">
+				<option>Select...</option>
+				<option value="339900">Green</option>
+				<option value="dd0000">Red</option>
+				<option value="003399">Blue</option>
+				<option value="000000">Black</option>
+				<option value="999900">Yellow</option>
+			</select>
+		</td>
+		<td align="right">
+			<input type="submit" style="width: 100px" name="add" value="Add" onclick="addGraphItem(); return false;">
+			<input type="submit" style="width: 100px" name="remove" value="Remove" onclick="removeGraphItem(); return false" />
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="2">
+			<input type="submit" name="update" value="Update graph" onclick="updateGraph(); return false" />
+		</td>
+	</tr>
+</table>
+</form>
+<br />
+			<?php
         }
 
     } else {

@@ -19,67 +19,112 @@
     include ("../include/jpgraph/jpgraph_bar.php");
 
 /**
-* Determine the stats based on the supplied
-* package id (pid) and release id (rid).
-* Release id may be empty implying all releases.
+* Cache time in secs
 */
-    for ($i=date('n'), $year=date('Y'); count(@$data_x) < 12; $i--) {
+	$cache_time = 300;
+
+/**
+* This is the x axis labels. May change when
+* selectable dates is added.
+*/
+    for ($i=date('n'), $year=date('Y'); count(@$x_axis) < 12; $i--) {
         if ($i == 0) {
             $i = 12;
             $year--;
         }
-        $data_x[$i] = date("M", mktime(0,0,0,$i,1,$year));
-        $data_y[$i] = 0;
+        $x_axis[$i] = date("M", mktime(0,0,0,$i,1,$year));
     }
 
-    $sql = sprintf("SELECT UNIX_TIMESTAMP(d.dl_when) AS date, COUNT(*) AS downloads
-                      FROM packages p, downloads d
-                     WHERE d.package = p.id
-                       AND p.id = %s
-                       %s
-                  GROUP BY MONTH(d.dl_when)
-                  ORDER BY YEAR(d.dl_when) DESC, MONTH(d.dl_when) DESC",
-                   $_GET['pid'],
-                   $release_clause = !empty($_GET['rid']) ? 'AND d.release = ' . $_GET['rid'] : '');
+/**
+* Determine the stats based on the supplied
+* package id (pid) and release id (rid).
+* If release id is empty a group bar chart is
+* drawn with each release having a different
+* color.
+*/
+	if (!empty($_GET['releases'])) {
+		$releases = explode(',', $_GET['releases']);
+	}
 
-    if ($result = $dbh->query($sql)) {
-        while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) {
-            $data_y[date('n', $row['date'])] = $row['downloads'];
-        }
-    }
+	foreach ($releases as $release) {
+		$y_axis = array();
+		list($rid, $colour) = explode('_', $release);
+		$colour = '#' . $colour;
+		foreach (array_keys($x_axis) as $key) {
+			$y_axis[$key] = 0;
+		}
 
-    $data_x = array_reverse(array_values($data_x));
-    $data_y = array_reverse(array_values($data_y));
+	    $sql = sprintf("SELECT UNIX_TIMESTAMP(d.dl_when) AS date, COUNT(*) AS downloads
+	                      FROM packages p, downloads d
+	                     WHERE d.package = p.id
+	                       AND p.id = %s
+	                       %s
+	                  GROUP BY MONTH(d.dl_when)
+	                  ORDER BY YEAR(d.dl_when) DESC, MONTH(d.dl_when) DESC",
+	                   $_GET['pid'],
+	                   $release_clause = $rid > 0 ? 'AND d.release = ' . $rid : '');
+
+	    if ($result = $dbh->query($sql)) {
+	        while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) {
+	            $y_axis[date('n', $row['date'])] = $row['downloads'];
+	        }
+	    }
+
+	    // Create the bar pot
+	    $bplots[$rid] = new BarPlot(array_reverse(array_values($y_axis)));
+	    $bplots[$rid]->SetWidth(0.6);
+	    $bplots[$rid]->SetFillGradient("white", $colour, GRAD_HOR);
+	    //$bplot->setFillColor("#339900");
+	    $bplots[$rid]->SetColor("black");
+	}
+
+    $x_axis = array_reverse(array_values($x_axis));
+	$bplots = array_values($bplots);
+
+	/**
+    * Get package name
+    */
+	$package_name = $dbh->getOne('SELECT name FROM packages WHERE id = ' . $_GET['pid']);
+	$package_rel  = !empty($_GET['rid']) ? $dbh->getOne('SELECT version FROM releases WHERE id = ' . $_GET['rid']) : '';
 
 /**
 * Go through setting up the graph
 */
-    // Main graph object
-    $graph = new Graph(543,200,"jabba", 5);    
+	if (!DEVBOX) {
+		// Send some caching headers to prevent unnecessary requests
+		header('Last-Modified: ' . date('r', md5($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'])));
+		header('Expires: ' . date('r', time() + $cache_time));
+		header('Cache-Control: public, max-age=' . $cache_time);
+		header('Pragma: cache');
+	
+	    // Main graph object
+	    $graph = new Graph(543, 200, md5($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']), $cache_time);
+	} else {
+		// Main graph object
+	    $graph = new Graph(543, 200);
+	}
     $graph->img->SetMargin(40,20,30,30);
     $graph->SetScale("textlin");
     $graph->SetMarginColor("#cccccc");
 
     // Set up the title for the graph
-    $graph->title->Set("Download statistics for " . $dbh->getOne('SELECT name FROM packages WHERE id = ' . $_GET['pid']));
+    $graph->title->Set(sprintf("Download statistics for %s %s", $package_name, $package_rel));
     $graph->title->SetColor("black");
 
     // Show 0 label on Y-axis (default is not to show)
     $graph->yscale->ticks->SupressZeroLabel(false);
 
     // Setup X-axis labels
-    $graph->xaxis->SetTickLabels($data_x);
+    $graph->xaxis->SetTickLabels($x_axis);
 
-    // Create the bar pot
-    $bplot = new BarPlot($data_y);
-    $bplot->SetWidth(0.6);
-    $bplot->SetFillGradient("white","#339900",GRAD_HOR);
-    //$bplot->setFillColor("#339900");
-
-    // Set color for the frame of each bar
-    $bplot->SetColor("black");
-    $graph->Add($bplot);
-
+	// Add the grouped or single bar chartplot
+	if (count($bplots) > 1) {
+		$gbplot = new GroupBarPlot($bplots);
+	    $graph->Add($gbplot);
+	} else {
+		$graph->Add($bplots[0]);
+	}
+	
     // Finally send the graph to the browser
     $graph->Stroke();
 ?>

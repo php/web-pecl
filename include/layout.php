@@ -178,13 +178,13 @@ function commonHeader($title) {
         link="#006600"
         alink="#cccc00"
         vlink="#003300"
-><a name="TOP" />
+><a name="TOP" /></a>
 <table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
   <tr bgcolor="#339900">
-    <td align="left" rowspan="2" width="120">
+    <td align="left" rowspan="2">
 <?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="2" hspace="2"') ); ?><br />
     </td>
-    <td align="right" valign="top">
+    <td align="right" valign="top" nowrap>
       <font color="#ffffff"><b>
         <?php echo strftime("%A, %B %d, %Y"); ?>
       </b>&nbsp;<br />
@@ -197,7 +197,7 @@ function commonHeader($title) {
   </tr>
 
   <tr bgcolor="#339900">
-    <td align="right" valign="bottom">
+    <td align="right" valign="bottom" nowrap>
       <?php
 
     if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER'])) {
@@ -238,11 +238,11 @@ function commonHeader($title) {
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 </table>
 
-<table cellpadding="0" cellspacing="0" width="100%">
+<table cellpadding="0" cellspacing="0" border="0">
  <tr valign="top">
 <?php if (isset($SIDEBAR_DATA)) { ?>
-  <td bgcolor="#f0f0f0" width="149">
-   <table width="149" cellpadding="4" cellspacing="0">
+  <td bgcolor="#f0f0f0">
+   <table width="150" cellpadding="4" cellspacing="0">
     <tr valign="top">
      <td style="font-size: 90%"><?php echo $SIDEBAR_DATA?><br /></td>
     </tr>
@@ -250,8 +250,8 @@ function commonHeader($title) {
   </td>
   <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
 <?php } ?>
-  <td width="625">
-   <table width="100%" cellpadding="10" cellspacing="0">
+  <td>
+   <table width="625" cellpadding="10" cellspacing="0">
     <tr>
      <td valign="top">
 <?php

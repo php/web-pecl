@@ -180,7 +180,7 @@ ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
 
     <li><a href="http://pear.sourceforge.net/manual/">Russian PEAR Manual</a>.</li><br><br>
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/10/11/pearcache.html">Caching PHP Programs with PEAR</a> on O'Reilly Netowkr</li><br><br>
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/10/11/pearcache.html">Caching PHP Programs with PEAR</a> on O'Reilly Network</li><br><br>
 
     <li><a href="http://www.onlamp.com/pub/a/php/2001/07/19/pear.html">A Detailed Look at PEAR</a> on O'Reilly Network</li><br><br>
 

@@ -1,0 +1,225 @@
+<?php
+/*
+   +----------------------------------------------------------------------+
+   | PEAR Web site version 1.0                                            |
+   +----------------------------------------------------------------------+
+   | Copyright (c) 2001-2003 The PHP Group                                |
+   +----------------------------------------------------------------------+
+   | This source file is subject to version 2.02 of the PHP license,      |
+   | that is bundled with this package in the file LICENSE, and is        |
+   | available at through the world-wide-web at                           |
+   | http://www.php.net/license/2_02.txt.                                 |
+   | If you did not receive a copy of the PHP license and are unable to   |
+   | obtain it through the world-wide-web, please send a note to          |
+   | license@php.net so we can mail you a copy immediately.               |
+   +----------------------------------------------------------------------+
+   | Authors: Martin Jansen <mj@php.net>                                  |
+   +----------------------------------------------------------------------+
+   $Id$
+*/
+
+auth_require(true);
+
+require_once "HTML/Form.php";
+
+response_header("PEAR Administration - Package maintainers");
+
+// Select package first
+if (empty($_GET['pid'])) {
+    $packages = package::listAll(false);
+    $values   = array();
+
+    foreach ($packages as $name => $package) {
+        $values[$package['packageid']] = $name;
+    }
+
+    $bb = new BorderBox("Select package");
+
+    $form = new HTML_Form($_SERVER['PHP_SELF']);
+    $form->addSelect("pid", "Package:", $values);
+    $form->addSubmit();
+    $form->display();
+
+    $bb->end();
+
+} else if (!empty($_GET['update'])) {
+    $all = maintainer::get($_GET['pid']);
+
+    // Transform
+    $new_list = array();
+    foreach ((array)$_GET['maintainers'] as $maintainer) {
+        list($handle, $role) = explode("||", $maintainer);
+        $new_list[$handle] = $role;
+    }
+
+    // Perform databases operations
+    $query = "SELECT role FROM maintains WHERE handle = ? AND package = ?";
+    $check = $dbh->prepare($query);
+
+    $query  = "INSERT INTO maintains VALUES (?, ?, ?)";
+    $insert = $dbh->prepare($query);
+
+    $query  = "UPDATE maintains SET role = ? WHERE handle = ? AND package = ?";
+    $update = $dbh->prepare($query);
+
+    $query  = "DELETE FROM maintains WHERE handle = ? AND package = ?";
+    $delete = $dbh->prepare($query);
+
+    /**
+     * In a first run, we delete all maintainers which are not in the
+     * new list.
+     * This isn't the best solution, but for now it works.
+     */
+    foreach ($all as $handle => $role) {
+        if (isset($new_list[$handle])) {
+            continue;
+        }
+        echo 'Deleting user <b>' . $handle . '</b> ...<br />';
+        $result = $dbh->execute($delete, array($handle, $_GET['pid']));
+    }
+
+    // Update/Insert existing maintainers
+    foreach ($new_list as $handle => $role) {
+        $result = $dbh->execute($check, array($handle, $_GET['pid']));
+
+        $row = $result->fetchRow(DB_FETCHMODE_ASSOC);
+        if (!is_array($row)) {
+            // Insert new maintainer
+            echo 'Adding user <b>' . $handle . '</b> ...<br />';
+            $result = $dbh->execute($insert, array($handle, $_GET['pid'], $role));
+        } else if ($role != $row['role']) {
+            // Update role
+            echo 'Updating user <b>' . $handle . '</b> ...<br />';
+            $result = $dbh->execute($update, array($role, $handle, $_GET['pid']));
+        }
+    }
+
+    echo '<br /><b>Done</b><br />';
+    echo '<a href="' . $_SERVER['PHP_SELF'] . '">Back</a>';
+} else {
+    echo '<script language="JavaScript" type="text/javascript">';
+    echo 'function stripName(name) {';
+    echo '    pos = name.indexOf("(");';
+    echo '    return name.substr(0, pos-1);';
+    echo '}';
+    echo 'function getRole() {';
+    echo '    for (z = 0; z < document.form.role.length; z++) {';
+    echo '        if (document.form.role.options[z].selected == true) {';
+    echo '            return document.form.role.options[z].value;';
+    echo '        }';
+    echo '    }';
+    echo '    return "lead";';
+    echo '}';
+
+    echo 'function addMaintainer() {';
+    echo '    for (i = 0; i < document.form.accounts.length; i++) {';
+    echo '        if (document.form.accounts.options[i].selected == true) {';
+    echo '            name = stripName(document.form.accounts.options[i].text);';
+    echo '            role = getRole();';
+    echo '            handle = document.form.accounts.options[i].value;';
+    echo '            value = handle + "||" + role;';
+    echo '            item = new Option(name + " (" + handle + ", " + role + ")", value);';
+    echo '            document.form[\'maintainers[]\'].options[document.form[\'maintainers[]\'].length] = item;';
+    echo '        }';
+    echo '    }';
+    echo '}';
+
+    echo 'function removeMaintainer() {';
+    echo '    for (i = 0; i < document.form[\'maintainers[]\'].length; i++) {';
+    echo '        field = document.form[\'maintainers[]\'].options[i];';
+    echo '        if (field.selected == true) {';
+    echo '            if (document.form[\'maintainers[]\'].length == 1) {';
+    echo '                alert(\'Removing the only maintainer is not possible!\');';
+    echo '                return;';
+    echo '            }';
+    echo '            if (confirm(\'Do you really want to remove \' + field.text + \'?\')) {';
+    echo '                document.form[\'maintainers[]\'].options[i] = null;';
+    echo '            }';
+    echo '        }';
+    echo '    }';
+    echo '}';
+
+    echo 'function beforeSubmit() {';
+    echo '    for (i = 0; i < document.form[\'maintainers[]\'].length; i++) {';
+    echo '        field = document.form[\'maintainers[]\'].options[i].selected = true;';
+    echo '    }';
+    echo '}';
+
+    echo 'function activateAdd() { document.form.add.disabled = false; document.form.role.disabled = false }';
+    echo 'function activateRemove() { document.form.remove.disabled = false; }';
+
+    echo '</script>';
+
+    $bb = new BorderBox("Manage maintainers", "100%");
+
+    echo '<form onSubmit="javascript:beforeSubmit()" name="form" method="get" action="' . $_SERVER['PHP_SELF'] . '">';
+    echo '<input type="hidden" name="update" value="yes" />';
+    echo '<input type="hidden" name="pid" value="' . $_GET['pid'] . '" />';
+    echo '<table border="0" cellpadding="0" cellspacing="4" border="0" width="100%">';
+    echo '<tr>';
+    echo '  <th>All users:</th>';
+    echo '  <th></th>';
+    echo '  <th>Package maintainers:</th>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '  <td>';
+    echo '  <select onChange="javascript:activateAdd();" name="accounts" size="10">';
+
+    $users = user::listAll();
+    foreach ($users as $user) {
+        if (empty($user['handle'])) {
+            continue;
+        }
+        printf('<option value="%s">%s (%s)</option>',
+               $user['handle'],
+               $user['name'],
+               $user['handle']
+               );
+    }
+    echo '  </select>';
+    echo '  </td>';
+
+    echo '  <td>';
+    echo '  <input type="submit" onClick="javascript:addMaintainer(); return false" name="add" value="Add as" />';
+    echo '  <select name="role" size="1">';
+    echo '    <option value="lead">lead</option>';
+    echo '    <option value="developer">developer</option>';
+    echo '    <option value="helper">helper</option>';
+    echo '  </select><br /><br />';
+    echo '  <input type="submit" onClick="javascript:removeMaintainer(); return false" name="remove" value="Remove" />';
+    echo '  </td>';
+
+    echo '  <td>';
+    echo '  <select multiple="yes" name="maintainers[]" onChange="javascript:activateRemove();" size="10">';
+
+    $maintainers = maintainer::get($_GET['pid']);
+    foreach ($maintainers as $handle => $role) {
+        $info = user::info($handle, "name");   // XXX: This sucks
+        printf('<option value="%s||%s">%s (%s, %s)</option>',
+               $handle,
+               $role,
+               $info['name'],
+               $handle,
+               $role
+               );
+    }
+    echo '  </select>';
+    echo '  </td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '  <td colspan="3"><input type="submit" /></td>';
+    echo '</tr>';
+    echo '</table>';
+    echo '</form>';
+
+    echo '<script language="JavaScript" type="text/javascript">';
+    echo 'document.form.remove.disabled = true;';
+    echo 'document.form.add.disabled = true;';
+    echo 'document.form.role.disabled = true;';
+    echo '</script>';
+
+    $bb->end();
+}
+
+response_footer(); ?>

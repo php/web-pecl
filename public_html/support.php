@@ -110,7 +110,14 @@ are searchable.
       'pear-doc', 'PEAR documentation list',
       'A list for discussing topics related to the PEAR documentation.',
       false, false, true, "php.pear.doc"
+    ),
+
+    array (
+      'pear-qa', 'PEAR QA list',
+      'A list for managing the PEAR Quality Assurance',
+      false, false, true, "php.pear.qa"
     )
+
   );
 ?>
 <form method="POST" action="http://pear.php.net/support.php">

@@ -315,7 +315,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
 /**
 * Display this for Global and Category stats pages only
 */
-if (!$_GET['pid']) {
+if (@!$_GET['pid']) {
 	echo '<br />';
 	$bb = new BorderBox(!empty($_GET['cid']) ? 'Category statistics for: <i>' . $category_name . '</i>' : 'Global statistics');
 	?>

@@ -37,9 +37,6 @@ class Damblan_RSS_Package extends Damblan_RSS_Common {
         $this->setDescription("The latest releases for the package " . $value);
 
         $items = $this->getRecent("package", $value, 10);
-        foreach ($items as $item) {
-            $node = $this->newItem($item['name'], "http://pear.php.net/package/" . $item['name'], htmlspecialchars($item['releasenotes']));
-            $this->addItem($node);
-        }
+        $this->__addItems($items);
     }
 }

@@ -98,6 +98,20 @@ class Damblan_RSS_Common {
     }
 
     /**
+     * Add a list of items to the feed
+     *
+     * @access protected
+     * @param  array List of items
+     * @return void
+     */
+    function __addItems($list) {
+        foreach ($list as $item) {
+            $node = $this->newItem($item['name'], "http://pear.php.net/package/" . $item['name'], $item['releasenotes']);
+            $this->addItem($node);
+        }
+    }
+
+    /**
      * Return string representation of the RSS feed
      *
      * @access public

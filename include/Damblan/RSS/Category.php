@@ -33,13 +33,10 @@ class Damblan_RSS_Category extends Damblan_RSS_Common {
     function Damblan_RSS_Category($value) {
         parent::Damblan_RSS_Common();
 
-        $this->setTitle("Latest releases");
-        $this->setDescription("The latest releases in PEAR");
+        $this->setTitle("PEAR: Latest releases in category " . $value);
+        $this->setDescription("The latest releases in the category " . $value);
 
         $items = $this->getRecent("category", $value, 10);
-        foreach ($items as $item) {
-            $node = $this->newItem($item['name'], "http://pear.php.net/package/" . $item['name'], htmlspecialchars($item['releasenotes']));
-            $this->addItem($node);
-        }
+        $this->__addItems($items);
     }
 }

@@ -33,13 +33,10 @@ class Damblan_RSS_Latest extends Damblan_RSS_Common {
     function Damblan_RSS_Latest() {
         parent::Damblan_RSS_Common();
 
-        $this->setTitle("Latest releases");
-        $this->setDescription("The latest releases in PEAR");
+        $this->setTitle("PEAR: Latest releases");
+        $this->setDescription("The latest releases in PEAR.");
 
-        $items = $this->getRecent("latest");
-        foreach ($items as $item) {
-            $node = $this->newItem($item['name'], "http://pear.php.net/package/" . $item['name'], htmlspecialchars($item['releasenotes']));
-            $this->addItem($node);
-        }
+        $items = $this->getRecent("latest", "");
+        $this->__addItems($items);
     }
 }

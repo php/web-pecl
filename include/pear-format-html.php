@@ -107,7 +107,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
         vlink="#003300"
 ><a name="TOP" />
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr bgcolor="#339900">
+  <tr bgcolor="#330099">
     <td align="left" rowspan="2" width="120" colspan="2" height="1">
 <?php print_link('/', make_image('peclsmall.gif', 'PEAR', false, 'vspace="5" hspace="5"') ); ?><br />
     </td>
@@ -119,34 +119,34 @@ function response_header($title = 'The PHP Extension Community Library', $style 
     </td>
   </tr>
 
-  <tr bgcolor="#339900">
+  <tr bgcolor="#330099">
     <td align="right" valign="bottom" colspan="3" height="1">
       <?php
 
     if (empty($_COOKIE['PEAR_USER'])) {
-        print_link('/login.php', 'Login', false, 'class="menuBlack"');
+        print_link('/login.php', 'Login', false, 'class="menuLink"');
     } else {
         print '<span class="menuWhite"><small>logged in as ';
         print strtoupper($_COOKIE['PEAR_USER']);
         print '&nbsp;</small></span><br />';
-        print_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
+        print_link('/?logout=1', 'Logout', false, 'class="menuLink"');
     }
     echo delim();
-    print_link('/manual/', 'Docs', false, 'class="menuBlack"');
+    print_link('/manual/', 'Docs', false, 'class="menuLink"');
     echo delim();
-    print_link('/packages.php', 'Packages', false, 'class="menuBlack"');
+    print_link('/packages.php', 'Packages', false, 'class="menuLink"');
     echo delim();
-    print_link('/support.php','Support',false,'class="menuBlack"');
+    print_link('/support.php','Support',false,'class="menuLink"');
     echo delim();
-    print_link('/bugs/','Bugs',false,'class="menuBlack"');
+    print_link('/bugs/','Bugs',false,'class="menuLink"');
       ?>&nbsp;<br />
       <?php spacer(2,2); ?><br />
     </td>
   </tr>
 
-  <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
+  <tr bgcolor="#000033"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
 
-  <tr bgcolor="#006600">
+  <tr bgcolor="#000066">
     <td align="right" valign="top" colspan="5" height="1" class="menuWhite">
     <form method="post" action="/search.php">
     <small>Search for</small>
@@ -160,7 +160,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
     </select>
     <input type="image" src="/gifs/small_submit_white.gif" alt="search" align="bottom" />&nbsp;<br /></form></td></tr>
 
-  <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
+  <tr bgcolor="#000033"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
 
   <!-- Middle section -->
 
@@ -235,18 +235,18 @@ function response_footer($style = false)
 
  <!-- Lower bar -->
 
-  <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
-  <tr bgcolor="#339900">
+  <tr bgcolor="#000033"><td colspan="5" height="1"><?php spacer(1,1);?><br /></td></tr>
+  <tr bgcolor="#330099">
       <td align="right" valign="bottom" colspan="5" height="1">
 <?php
-print_link('/about/privacy.php', 'PRIVACY POLICY', false, 'class="menuBlack"');
+print_link('/about/privacy.php', 'PRIVACY POLICY', false, 'class="menuLink"');
 echo delim();
-print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
+print_link('/credits.php', 'CREDITS', false, 'class="menuLink"');
 ?>
       <br />
       </td>
   </tr>
-  <tr bgcolor="#003300"><td colspan="5" height="1"><?php spacer(1,1); ?><br /></td></tr>
+  <tr bgcolor="#000033"><td colspan="5" height="1"><?php spacer(1,1); ?><br /></td></tr>
 
   <tr valign="top" bgcolor="#cccccc">
     <td colspan="5" height="1">

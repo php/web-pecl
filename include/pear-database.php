@@ -274,6 +274,7 @@ class category
             "r.state AS state " .
             "FROM packages p, releases r, categories c " .
             "WHERE p.id = r.package " .
+            "AND p.package_type = 'pecl' " . 
             "AND p.category = c.id AND c.name = '" . $category . "'" .
             "ORDER BY r.releasedate DESC";
 
@@ -750,6 +751,7 @@ class package
             "r.state AS state " .
             "FROM packages p, releases r " .
             "WHERE p.id = r.package " .
+            "AND p.package_type = 'pecl' " . 
             "AND p.name = '" . $package . "'" .
             "ORDER BY r.releasedate DESC";
 
@@ -1011,6 +1013,7 @@ class release
                                 "releases.state AS state ".
                                 "FROM packages, releases ".
                                 "WHERE packages.id = releases.package ".
+            			"AND packages.package_type = 'pecl' " . 
                                 "ORDER BY releases.releasedate DESC", 0, $n);
         $recent = array();
         // XXX Fixme when DB gets limited getAll()

@@ -21,7 +21,7 @@
 $SIDEBAR_DATA='
 <h3>Documentation</h3>
 <p>
-The manual section for PEAR can be found
+The manual section for PECL can be found
 <a href="/manual/">here</a>.</p>
 ';
 
@@ -55,7 +55,7 @@ if (isset($maillist)) {
         switch ($maillist) {
             default:
             mail("$maillist-$request-$sub@lists.php.net", "Website Subscription",
-                "This was a request generated from the form at http://pear.php.net/support.php.", "From: $email\r\n");
+                "This was a request generated from the form at http://pecl.php.net/support.php.", "From: $email\r\n");
             break;
         }
 ?>
@@ -71,24 +71,12 @@ complete your request.
   // array of lists (list, name, short desc., moderated, archive, digest, newsgroup)
   $mailing_lists = array(
 
-    'PEAR mailinglists',
+    'PECL mailinglists',
 
     array (
-      'pear-general', 'PEAR general list',
-      'A list for users of PEAR',
-      false, true, true, "php.pear.general"
-    ),
-
-    array (
-      'pear-dev', 'PEAR developers list',
-      'A list for developers of PEAR',
-      false, true, true, "php.pear.dev"
-    ),
-
-    array (
-      'pear-cvs', 'PEAR CVS list',
-      'All the commits of the cvs PEAR code repository are posted to this list automatically',
-      false, true, true, "php.pear.cvs"
+      'pecl-dev', 'PECL developers list',
+      'A list for developers of PECL',
+      false, true, true, "php.pecl.dev"
     ),
 
     array (
@@ -97,22 +85,10 @@ complete your request.
       false, true, false, "php.pecl.cvs"
     ),
 
-    array (
-      'pear-doc', 'PEAR documentation list',
-      'A list for discussing topics related to the PEAR documentation.',
-      false, true, true, "php.pear.doc"
-    ),
-
-    array (
-      'pear-qa', 'PEAR QA list',
-      'A list for managing the PEAR Quality Assurance',
-      false, false, true, "php.pear.qa"
-    )
-
   );
 ?>
 <p>
-There are <?php echo count($mailing_lists)-1; ?> PEAR-related mailing 
+There are <?php echo count($mailing_lists)-1; ?> PECL-related mailing 
 lists available. Most of them have archives available, and they are
 also available as newsgroups on our 
 <a href="news://news.php.net">news server</a>. The archives are
@@ -120,7 +96,7 @@ searchable. The lists are described in more detail in the
 <a href="/manual/en/support.php">manual</a>.
 </p>
 
-<form method="POST" action="http://pear.php.net/support.php">
+<form method="POST" action="http://pecl.php.net/support.php">
 <p>
 <table cellpadding="5" cellspacing="1">
 <?php
@@ -172,20 +148,22 @@ following the directions in that mail.
 
 <p>
 There are a variety of commands you can use to modify your subscription.
-Either send a message to pear-<tt>whatever</tt>@lists.php.net (as in,
-pear-general@lists.php.net) or you can view the commands for
+Either send a message to pecl-<tt>whatever</tt>@lists.php.net (as in,
+pecl-dev@lists.php.net) or you can view the commands for
 ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here</a>.
 </p>
 
 <p>
 If you have questions concering this website, you can contact
-<a href="mailto:pear-webmaster@php.net">pear-webmaster@php.net</a>.
+<a href="mailto:peclweb@php.net">peclweb@php.net</a>.
 </p>
 
 <p>
-Of course don't forget to visit the <i>#pear</i> IRC channel at the <a href="http://www.efnet.org">
+Of course don't forget to visit the <i>#php.pecl</i> IRC channel at the <a href="http://www.efnet.org">
 Eris Free Net</a>.
 </p>
+
+<!--
 
 <div class="listing">
 
@@ -285,7 +263,9 @@ Eris Free Net</a>.
 
 </div>
 
-<a name="icons" /><h3>Powered By PEAR/PECL</h3>
+-->
+
+<a name="icons" /><h3>Powered By PECL</h3>
 
 <p>
     What programming tool would be complete without a set of
@@ -296,10 +276,6 @@ Eris Free Net</a>.
 <?php
 
 $icons = Array(
-	'pear-power.gif'	=> 'Powered by PEAR, GIF format',
-	'pear-power.png'	=> 'Powered by PEAR, PNG format',
-	'pear-icon.gif'		=> '32x32 PEAR icon, GIF format',
-	'pear-icon.png'		=> '32x32 PEAR icon, PNG format',
 	'pecl-power.gif'	=> 'Powered by PECL, GIF format',
 	'pecl-power.png'	=> 'Powered by PECL, PNG format',
 	'pecl-icon.gif'		=> '32x32 PECL icon, GIF format',

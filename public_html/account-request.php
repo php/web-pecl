@@ -38,7 +38,7 @@ do {
                           "firstname" => "your first name",
 						  "lastname"  => "your last name",
                           "email"     => "your email address",
-                          "purpose"   => "the purpose of your PEAR account");
+                          "purpose"   => "the purpose of your PECL account");
 
 		$name = $_POST['firstname'] . " " . $_POST['lastname'];
 
@@ -127,7 +127,7 @@ do {
         }
 
         $xhdr = "From: $name <$email>";
-        $subject = "PEAR Account Request: {$handle}";
+        $subject = "PECL Account Request: {$handle}";
         $ok = mail("pear-group@php.net", $subject, $msg, $xhdr, "-f pear-sys@php.net");
         response_header("Account Request Submitted");
 
@@ -144,11 +144,11 @@ do {
             print "Your account request has been submitted, but there ".
                   "were problems mailing one or more administrators.  ".
                   "If you don't hear anything about your account in a few ".
-                  "days, please drop a mail about it to the <i>pear-dev</i> ".
+                  "days, please drop a mail about it to the <i>pecl-dev</i> ".
                   "mailing list.";
         }
 
-        print "<br />Click the top-left PEAR logo to go back to the front page.\n";
+        print "<br />Click the top-left PECL logo to go back to the front page.\n";
     }
 } while (0);
 
@@ -159,20 +159,20 @@ if ($display_form) {
     print "<h1>Request Account</h1>
 
 <p>You do <b>not</b> need an account if you want to download, install and/or
-use PEAR packages. You only need to request an account if you want to
-contribute a new package to PEAR CVS, help in the maintainance of an existing
-package, or list and release your package using the PEAR packager/installer
-(without hosting the code in PEAR CVS).</p>
+use PECL packages. You only need to request an account if you want to
+contribute a new package to PECL CVS, help in the maintainance of an existing
+package, or list and release your package using the PECL packager/installer
+(without hosting the code in PECL CVS).</p>
 
-<p>If you are contributing a package to PEAR, make sure that you have gone through
+<p>If you are contributing a package to PECL, make sure that you have gone through
 the peer review process. Make also sure that if you are going to include code
-in PEAR CVS, that this complies with the PEAR code standards before it is
+in PECL CVS, that this complies with the PECL code standards before it is
 released.</p>
 
 <p>Bogus, incomplete or incorrect requests will be summarily denied.</p>
 
 <p>
-	<strong>Confirm your reason for a PEAR account:</strong>
+	<strong>Confirm your reason for a PECL account:</strong>
 </p>
 
 <script language=\"JavaScript\" type=\"text/javascript\" defer=\"defer\">
@@ -214,8 +214,8 @@ released.</p>
 		<td valign=\"top\"><input type=\"radio\" name=\"reason\" value=\"pkg\" id=\"reason_pkg\" onclick=\"reasonClick('pkg')\" /></td>
 		<td>
 			<label for=\"reason_pkg\">
-				You have announced a new PEAR package to the Pear-Dev mailing list, it's name has been OKed, and you
-				wish to register/upload a release to the pear website.
+				You have announced a new PECL package to the PECL-Dev mailing list, it's name has been OKed, and you
+				wish to register/upload a release to the pecl website.
 			</label>
 		</td>
 	</tr>
@@ -247,7 +247,7 @@ released.</p>
     $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", @$_POST['email']));
     $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", @$_POST['showemail']));
     $bb->horizHeadRow("Homepage", HTML_Form::returnText("homepage", @$_POST['homepage']));
-    $bb->horizHeadRow("Purpose of your PEAR account<br />(No account is needed for using PEAR or PEAR packages):", HTML_Form::returnTextarea("purpose", stripslashes(@$_POST['purpose'])));
+    $bb->horizHeadRow("Purpose of your PECL account<br />(No account is needed for using PECL or PECL packages):", HTML_Form::returnTextarea("purpose", stripslashes(@$_POST['purpose'])));
     $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes(@$_POST['moreinfo'])));
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" />&nbsp;<input type=\"reset\" />");

@@ -71,6 +71,15 @@ submit {
     font-size: 75%;
     color: #000000;
 }
+.menuLink {
+    font-family: verdana,arial,helvetica,sans-serif;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 75%;
+    color: #ffffff;
+}
+
+
 
 code, pre, tt {
     font-family: Courier, "Courier New", monospace;

@@ -107,7 +107,7 @@ $subcats = $dbh->getAssoc("SELECT p.id AS pid, c.id AS id, c.name AS name, c.sum
 // Get names of sub-packages
 $subpkgs = $dbh->getAssoc("SELECT p.category, p.id AS id, p.name AS name, p.summary AS summary".
                           "  FROM packages p, categories c".
-                          " WHERE c.parent $category_where AND p.category = c.id ORDER BY p.name",
+                          " WHERE c.parent $category_where AND p.category = c.id AND p.package_type = 'pecl' ORDER BY p.name",
                           false, null, DB_FETCHMODE_ASSOC, true);
 
 $max_sub_links = 4;
@@ -198,7 +198,7 @@ if (!empty($catpid)) {
     }
 	
     // Package list
-    $packages = $dbh->getAll("SELECT id, name, summary, license FROM packages WHERE category=$catpid ORDER BY name");
+    $packages = $dbh->getAll("SELECT id, name, summary, license FROM packages WHERE category=$catpid AND package_type = 'pecl' ORDER BY name");
 		
     // Paging
     $total = count($packages);

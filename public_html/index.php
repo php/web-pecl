@@ -19,20 +19,20 @@
 */
 
 $SIDEBAR_DATA='
-<h3>What is PEAR?</h3>
+<h3>What is PECL?</h3>
 <p>
-&quot;The fleshy pome, or fruit, of a rosaceous tree (Pyrus
-communis), cultivated in many varieties in temperate
-climates.&quot;
+<acronym title="PHP Extension Community Library">PECL</acronym>
+is a repository for PHP Extensions, providing a directory of all known
+extensions and hosting facilities for downloading and development of PHP
+extensions.
 </p>
 <p>
+The packaging and distribution system used by PECL is shared with its
+sister, <acronym title="PHP Extension and Application Repository"
+>PEAR</acronym>.
+</p>
 
-<acronym title="PHP Extension and Application Repository">PEAR</acronym>
-is a framework and distribution system for reusable PHP
-components. <acronym title="PHP Extension Code Library">PECL</acronym>,
-being a subset of PEAR, is the complement for C extensions for PHP.
-<br />
-
+<p>
 See the <a href="/manual/en/faq.php">FAQ</a> and <a
 href="/manual/">manual</a> for more information.
 
@@ -44,9 +44,9 @@ response_header();
 echo '<h2>'; echo make_link('/news/', 'News'); echo '</h2>';
 echo '<h2>Documentation</h2>';
 echo '<div class="indent">';
-echo menu_link("About PEAR", "/manual/en/about-pear.php");
-echo menu_link("Manual", "/manual/");
-echo menu_link("Frequently Asked Questions", "/manual/en/faq.php");
+//echo menu_link("About PEAR", "/manual/en/about-pear.php");
+//echo menu_link("Manual", "/manual/");
+//echo menu_link("Frequently Asked Questions", "/manual/en/faq.php");
 echo menu_link("Mailing Lists & Support Resources", "/support.php");
 echo '</div>';
 echo '<h2>Downloads</h2>';
@@ -71,7 +71,7 @@ if (isset($_COOKIE['PEAR_USER'])) {
     }
 }
 // XXX Hide for the moment?
-menu_link("Request PEAR Account", "account-request.php");
+menu_link("Request PECL Account", "account-request.php");
 
 $recent = release::getRecent();
 if (@sizeof($recent) > 0) {

@@ -156,12 +156,12 @@ class category
     // }}}
     // {{{ -proto array category::listAll()
 
-	function listAll()
+    function listAll()
     {
-		global $dbh;
-		return $dbh->getAll("SELECT * FROM categories ORDER BY id",
-							null, DB_FETCHMODE_ASSOC);
-	}
+        global $dbh;
+        return $dbh->getAll("SELECT * FROM categories ORDER BY id",
+                            null, DB_FETCHMODE_ASSOC);
+    }
 
     // }}}
 }
@@ -269,17 +269,17 @@ class package
     {
         global $dbh;
         return $dbh->getAll("SELECT p.id AS packageid, p.name AS name, ".
-							"c.id AS categoryid, c.name AS category, ".
-							"p.stablerelease AS stable, ".
-							"p.license AS license, ".
-							"p.summary AS summary, ".
-							"p.description AS description, ".
-							"m.handle AS lead ".
-							" FROM packages p, categories c, maintains m ".
-							"WHERE c.id = p.category ".
-							"  AND p.id = m.package ".
-							"  AND m.role = 'lead' ".
-							"ORDER BY p.name", null, DB_FETCHMODE_ASSOC);
+                            "c.id AS categoryid, c.name AS category, ".
+                            "p.stablerelease AS stable, ".
+                            "p.license AS license, ".
+                            "p.summary AS summary, ".
+                            "p.description AS description, ".
+                            "m.handle AS lead ".
+                            " FROM packages p, categories c, maintains m ".
+                            "WHERE c.id = p.category ".
+                            "  AND p.id = m.package ".
+                            "  AND m.role = 'lead' ".
+                            "ORDER BY p.name", null, DB_FETCHMODE_ASSOC);
     }
 
     // }}}
@@ -340,7 +340,7 @@ class release
         global $dbh, $auth_user, $PHP_AUTH_USER;
         // (2) verify that package exists
         $package_id = package::_getID($package);
-		if (PEAR::isError($package_id)) {
+        if (PEAR::isError($package_id)) {
             return $package_id;
         }
 
@@ -348,9 +348,9 @@ class release
         $test = $dbh->getOne("SELECT version FROM releases ".
                              "WHERE package = ? AND version = ?",
                              array($package_id, $version));
-		if (PEAR::isError($test)) {
-			return $test;
-		}
+        if (PEAR::isError($test)) {
+            return $test;
+        }
         if ($test) {
             return PEAR::raiseError("already exists: $package $version");
         }
@@ -372,32 +372,32 @@ class release
         readfile($file);
         $data = ob_get_contents();
         ob_end_clean();
-		$testsum = md5($data);
+        $testsum = md5($data);
         if ($testsum != $md5sum) {
-			$bytes = strlen($data);
+            $bytes = strlen($data);
             return PEAR::raiseError("bad md5 checksum (checksum=$testsum ($bytes bytes: $data), specified=$md5sum)");
         }
 
         // Update releases table
         $query = "INSERT INTO releases (id,package,version,state,doneby,".
-			 "releasedate,releasenotes) VALUES(?,?,?,?,?,?,?)";
+             "releasedate,releasenotes) VALUES(?,?,?,?,?,?,?)";
         $sth = $dbh->prepare($query);
-		$release_id = $dbh->nextId("releases");
+        $release_id = $dbh->nextId("releases");
         $dbh->execute($sth, array($release_id, $package_id, $version, $state,
-		                          $PHP_AUTH_USER, gmdate('Y-m-d H:i'),
-		                          $relnotes));
-		// Update files table
-		$query = "INSERT INTO files ".
-			 "(id,package,release,md5sum,basename,fullpath) ".
-			 "VALUES(?,?,?,?,?,?)";
-		$sth = $dbh->prepare($query);
-		$file_id = $dbh->nextId("files");
-		$ok = $dbh->execute($sth, array($file_id, $package_id, $release_id,
-		                                $md5sum, basename($file), $file));
-		if (PEAR::isError($ok)) {
-			$dbh->query("DELETE FROM releases WHERE id = $release_id");
-			@unlink($file);
-		}
+                                  $PHP_AUTH_USER, gmdate('Y-m-d H:i'),
+                                  $relnotes));
+        // Update files table
+        $query = "INSERT INTO files ".
+             "(id,package,release,md5sum,basename,fullpath) ".
+             "VALUES(?,?,?,?,?,?)";
+        $sth = $dbh->prepare($query);
+        $file_id = $dbh->nextId("files");
+        $ok = $dbh->execute($sth, array($file_id, $package_id, $release_id,
+                                        $md5sum, basename($file), $file));
+        if (PEAR::isError($ok)) {
+            $dbh->query("DELETE FROM releases WHERE id = $release_id");
+            @unlink($file);
+        }
         return true;
     }
 
@@ -557,7 +557,7 @@ class user
 
 function testerror()
 {
-	return "ok";
+    return "ok";
 }
 
 // }}}
@@ -639,13 +639,13 @@ class PEAR_Release extends DB_storage
 // }}}
 
 if (!function_exists("md5_file")) {
-	function md5_file($filename) {
-		$fp = fopen($filename, "r");
-		if (is_resource($fp)) {
-			return md5(fread($fp, filesize($filename)));
-		}
-		return null;
-	}
+    function md5_file($filename) {
+        $fp = fopen($filename, "r");
+        if (is_resource($fp)) {
+            return md5(fread($fp, filesize($filename)));
+        }
+        return null;
+    }
 }
 
 ?>

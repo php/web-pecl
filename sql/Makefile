@@ -40,7 +40,7 @@ SQL_MYSQLPW=-p$(SQL_PW)
 SQL_DB=pear
 SQL_COMMAND=mysql -u '$(SQL_USER)' $(SQL_MYSQLPW) '$(SQL_DB)' < $< > $@ 2>&1
 SQL_PIPE_COMMAND=mysql -u '$(SQL_USER)' $(SQL_MYSQLPW) '$(SQL_DB)'
-SQL_ADMIN_COMMAND=mysql -u root mysql
+SQL_ADMIN_COMMAND=mysql -u root -p mysql
 SQL_GRANT_FILE=
 
 ECHO    = echo

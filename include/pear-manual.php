@@ -283,7 +283,7 @@ function manualHeader($title,$id="") {
         if (is_array($row)) {           
             ob_start();
 
-            echo "<div align=\"center\"><br /<br />\n";
+            echo "<div align=\"center\"><br /><br />\n";
 
             $bb = new Borderbox("Download");
         

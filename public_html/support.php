@@ -174,7 +174,11 @@ Eris Free Net</a>.
 
     <li><a href="http://www.onlamp.com/pub/a/php/2001/11/29/peardb.html">PEAR::DB Primer</a> on O'Reilly Network</li><br /><br />
 
-    <li><a href="http://www.nusphere.com/products/library/script_peardb.pdf">Writing Scripts with PHP's PEAR DB Class</a> - by Paul DuBois (PDF)</li>
+    <li><a href="http://www.nusphere.com/products/library/script_peardb.pdf">Writing Scripts with PHP's PEAR DB Class</a> - by Paul DuBois (PDF) in nusphere.com</li><br /><br />
+
+    <li><a href="http://evolt.org/article/Abstract_PHP_s_database_code_with_PEAR_DB/17/21927/index.html">Abstract PHP's database code with PEAR::DB</a> on evolt.org</li><br /><br />
+
+    <li><a href="http://www.devshed.com/Server_Side/PHP/DBAbstraction">Database Abstraction With PHP</a> on devshed.com</li>
 </ul>
 
 <h4>Tutorials about some PEAR classes in German:</h4>
@@ -202,11 +206,19 @@ Eris Free Net</a>.
 
     <li><a href="http://www.mamasam.com/tutorials/en_html_table.html">Table.php</a> Tutorial. The table class
     allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li><br /><br />
+
+   <li><a href="http://www.zend.com/zend/art/art-heyes.php">PEAR::Mail</a> in zend.com</li><br /><br />
+
 </ul>
 
 <h2>PEAR resources</h2>
 
 <ul>
+
+    <li><a href="http://conf.php.net/pres/slides/pres/index.php?p=slides%2Fpear%2Flt2002&id=pearlt2002">
+    2002-06-08 Karlsruhe - LinuxTag - The State of (the) PEAR </a> by Stig S. Bakken.</li><br /><br />
+
+
     <li><a href="http://conf.php.net/pres/index.php?p=slides%2Fpear&id=pear">A presentation</a> by Stig Bakken,
     who is leading PEAR development, at ApacheCon 2001 on PEAR.</li><br /><br />
 

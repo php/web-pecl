@@ -172,7 +172,6 @@ you would like to release through PEAR.
 
     $bb = new BorderBox("Request account", "90%", "", 2, true);
     print "<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\">\n";
-    $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("Username:", HTML_Form::returnText("handle", @$_POST['handle'], 12));
     $bb->horizHeadRow("Real Name:", HTML_Form::returnText("name", @$_POST['name']));
     $bb->horizHeadRow("Password:", HTML_Form::returnPassword("password", null, 10) . "   Again: " . HTML_Form::returnPassword("password2", null, 10));
@@ -181,6 +180,7 @@ you would like to release through PEAR.
     $bb->horizHeadRow("Homepage", HTML_Form::returnText("homepage", @$_POST['homepage']));
     $bb->horizHeadRow("Purpose of your PEAR account:", HTML_Form::returnTextarea("purpose", stripslashes(@$_POST['purpose'])));
     $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes(@$_POST['moreinfo'])));
+    $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" />&nbsp;<input type=\"reset\" />");
     print "</form>";
     $bb->end();

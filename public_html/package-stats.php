@@ -142,23 +142,29 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
     if (count($info['releases']) > 0) {
         echo "<br />\n";
         $bb = new Borderbox("Release statistics");
+?>
+    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+    <tr>
+        <th align="left">Version</th>
+        <th align="left">Downloads</th>
+        <th align="left">First Download</th>
+        <th align="left">Last Download</th>
+    </tr>
+<?php
+        $release_statistics = statistics::release($_GET['pid'],
+                (isset($_GET['rid']) ? $_GET['rid'] : ''));
 
-        $release_statistics = statistics::release($_GET['pid'], (isset($_GET['rid']) ? $_GET['rid'] : ""));
-
-        $i= 0;
         foreach ($release_statistics as $key => $value) {
-            $bb2 = new Borderbox("Release: " . $value['version'], 400);
-            echo "Number of downloads: <b>" . number_format($value['total'], 0, '.', ',') . "</b><br />\n";
-
-            if ($value['total'] > 1) {
-                echo "First download: <b>" . $value['first_download'] . "</b><br />\n";
-                echo "Last download: <b>" . $value['last_download'] . "</b><br />\n";
-            }
-
-            $bb2->end();
-            echo "<br />\n";
+            $version = make_link('package-info.php?pacid=' . $_GET['pid'] .
+                '&release=' . $value['version'], $value['version']);
+            echo '<tr>';
+            echo '<td>' . $version . '</td>';
+            echo '<td>' . number_format($value['total'], 0, '.', ',') . '</td>';
+            echo '<td>' . $value['first_download'] . '</td>';
+            echo '<td>' . $value['last_download'] . '</td>';
+            echo "</tr>\n";
         }
-
+        echo "</table>\n";
         $bb->end();
 
         /**

@@ -99,7 +99,7 @@ while ($sth->fetchInto($row)) {
 
     if (isset($subpkgs[$id])) {
         foreach ($subpkgs[$id] as $subpkg) {
-            $sub_links[] = '<a href="pkginfo.php?pacid='.$subpkg['id'].'" title="'.
+            $sub_links[] = '<a href="package-info.php?pacid='.$subpkg['id'].'" title="'.
                             htmlspecialchars($subpkg['summary']).'">'.$subpkg['name'].'</a>';
             if (sizeof($sub_links) >= $max_sub_links) {
                 break;
@@ -163,7 +163,7 @@ if (isset($catpid)){
         print "<dl>\n";
         while ($sth->fetchInto($row)) {
             extract($row);
-            print " <dt><a href=\"pkginfo.php?pacid=$id\">$name</a></dt>\n";
+            print " <dt><a href=\"package-info.php?pacid=$id\">$name</a></dt>\n";
             print " <dd>$summary</dd>\n";
             print " <br /><br />\n";
         }

@@ -288,7 +288,7 @@ function manualHeader($title,$id="") {
             $bb = new Borderbox("Download");
         
             echo "<div align=\"left\">\n";
-            print_link("/pkginfo.php?pacid=" . $row[0], make_image("box-0.gif") . " Package info");
+            print_link("/package-info.php?pacid=" . $row[0], make_image("box-0.gif") . " Package info");
             echo "</div>\n";
             $bb->end();
 

@@ -48,7 +48,7 @@ if (DEVBOX) {
         foreach ($recent as $release) {
             extract($release);
             $RSIDEBAR_DATA .= "<tr><td valign='top'><p>";
-            $RSIDEBAR_DATA .= "<a href=\"pkginfo.php?pacid=$id&release=$version\">";
+            $RSIDEBAR_DATA .= "<a href=\"package-info.php?pacid=$id&release=$version\">";
             $RSIDEBAR_DATA .= "$name $version</a><br /><small>($releasedate)</small></p></td></tr>";
         }
         $RSIDEBAR_DATA .= "</table>\n";

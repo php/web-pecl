@@ -105,7 +105,7 @@ if(!empty($_GET)) {
         $bb = new Borderbox("Search results (" . $result->numRows() . ")");
 
         while($result->fetchInto($row)) {
-            echo ' <dt><a href="pkginfo.php?pacid='.$row['id'].'">'.$row['name'].'</a> (<a href="/account-info.php?handle='.$row['handle'].'">'.$row['handle'].'</a>)</dt>';
+            echo ' <dt><a href="package-info.php?pacid='.$row['id'].'">'.$row['name'].'</a> (<a href="/account-info.php?handle='.$row['handle'].'">'.$row['handle'].'</a>)</dt>';
             echo ' <dd>'.$row['summary'].'</dd>';
             echo ' <br /><br />';
         }

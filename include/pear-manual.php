@@ -90,7 +90,7 @@ function makeBorderTOC($this) {
 
     $SIDEBAR_DATA .= '<tr valign="top"><td><small>&nbsp;'
                      . make_image("box-0.gif")
-                     . make_link("/download-docs.php", "Download Documentation")
+                     . make_link("/manual/", "Download Documentation")
                      . '</small></td></tr>';
 
     $SIDEBAR_DATA.= '</table></form>';

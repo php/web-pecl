@@ -34,10 +34,13 @@ $jumpto = "handle";
 
 do {
     if (isset($submit)) {
-        $required = array("handle"  => "your desired username",
-                          "name"    => "your real name",
-                          "email"   => "your email address",
-                          "purpose" => "the purpose of your PEAR account");
+        $required = array("handle"    => "your desired username",
+                          "firstname" => "your first name",
+						  "lastname"  => "your last name",
+                          "email"     => "your email address",
+                          "purpose"   => "the purpose of your PEAR account");
+
+		$name = $_POST['firstname'] . " " . $_POST['lastname'];
 
         foreach ($required as $field => $desc) {
             if (empty($$field)) {
@@ -173,7 +176,8 @@ you would like to release through PEAR.
     $bb = new BorderBox("Request account", "90%", "", 2, true);
     print "<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\">\n";
     $bb->horizHeadRow("Username:", HTML_Form::returnText("handle", @$_POST['handle'], 12));
-    $bb->horizHeadRow("Real Name:", HTML_Form::returnText("name", @$_POST['name']));
+    $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", @$_POST['firstname']));
+    $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", @$_POST['lastname']));
     $bb->horizHeadRow("Password:", HTML_Form::returnPassword("password", null, 10) . "   Again: " . HTML_Form::returnPassword("password2", null, 10));
     $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", @$_POST['email']));
     $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", @$_POST['showemail']));

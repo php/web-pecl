@@ -2,51 +2,52 @@
 
 function auth_reject($realm = null, $message = null, $refresh = false)
 {
+    global $format;
     if ($realm === null) {
         $realm = PEAR_AUTH_REALM;
     }
     if ($message === null) {
         $message = "Please enter your username and password:";
     }
-/*
-    Header("HTTP/1.0 401 Unauthorized");
-    Header("WWW-authenticate: basic realm=\"$realm\"");
-    if ($refresh) {
-        Header("Refresh: 3; url=/");
-    }
-*/
-    $GLOBALS['ONLOAD'] = "document.login.PEAR_USER.focus();";
+
     response_header($message);
-    report_error($message);
-    print "<form name=\"login\" action=\"/login.php\" method=\"POST\">\n";
-    print "<table>\n";
-    print " <tr>\n";
-    print "  <td>Username:</td>\n";
-    print "  <td><input size=\"20\" name=\"PEAR_USER\"></td>\n";
-    print " </tr>\n";
-    print " <tr>\n";
-    print "  <td>Password:</td>\n";
-    print "  <td><input size=\"20\" name=\"PEAR_PW\" type=\"password\"></td>\n";
-    print " </tr>\n";
-    print " <tr>\n";
-    print "  <td>&nbsp;</td>\n";
-    print "  <td><input type=\"checkbox\" name=\"PEAR_PERSIST\" value=\"on\"> Remember username and password.</td>\n";
-    print " </tr>\n";
-    print " <tr>\n";
-    print "  <td>&nbsp;</td>\n";
-    print "  <td><input type=\"submit\" value=\"Log in!\"></td>\n";
-    print " </tr>\n";
-    print "</table>\n";
-    print '<input type="hidden" name="PEAR_OLDURL" value="';
-    if (basename($_SERVER['PHP_SELF']) == 'login.php') {
-        print '/';
-    } elseif (isset($_POST['PEAR_OLDURL'])) {
-        print htmlspecialchars($_POST['PEAR_OLDURL']);
-    } else {
-        print htmlspecialchars($_SERVER['REQUEST_URI']);
+    if ($format == 'xmlrpc') {
+        Header("HTTP/1.0 401 Unauthorized");
+        Header("WWW-authenticate: basic realm=\"$realm\"");
+        report_error($message);
+    } elseif ($format == 'html') {
+        $GLOBALS['ONLOAD'] = "document.login.PEAR_USER.focus();";
+        report_error($message);
+        print "<form name=\"login\" action=\"/login.php\" method=\"POST\">\n";
+        print "<table>\n";
+        print " <tr>\n";
+        print "  <td>Username:</td>\n";
+        print "  <td><input size=\"20\" name=\"PEAR_USER\"></td>\n";
+        print " </tr>\n";
+        print " <tr>\n";
+        print "  <td>Password:</td>\n";
+        print "  <td><input size=\"20\" name=\"PEAR_PW\" type=\"password\"></td>\n";
+        print " </tr>\n";
+        print " <tr>\n";
+        print "  <td>&nbsp;</td>\n";
+        print "  <td><input type=\"checkbox\" name=\"PEAR_PERSIST\" value=\"on\"> Remember username and password.</td>\n";
+        print " </tr>\n";
+        print " <tr>\n";
+        print "  <td>&nbsp;</td>\n";
+        print "  <td><input type=\"submit\" value=\"Log in!\"></td>\n";
+        print " </tr>\n";
+        print "</table>\n";
+        print '<input type="hidden" name="PEAR_OLDURL" value="';
+        if (basename($_SERVER['PHP_SELF']) == 'login.php') {
+            print '/';
+        } elseif (isset($_POST['PEAR_OLDURL'])) {
+            print htmlspecialchars($_POST['PEAR_OLDURL']);
+        } else {
+            print htmlspecialchars($_SERVER['REQUEST_URI']);
+        }
+        print "\" />\n";
+        print "</form>\n";
     }
-    print "\" />\n";
-    print "</form>\n";
     response_footer();
     exit;
 }

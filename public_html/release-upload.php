@@ -70,7 +70,8 @@ do {
         if (PEAR::isError($pacid)) {
             display_error($pacid->getMessage()); break;
         }
-        if (!checkUser($_COOKIE['PEAR_USER'], $pacid)) {
+        if (!user::isAdmin($_COOKIE['PEAR_USER']) &&
+            !user::maintains($_COOKIE['PEAR_USER'], $pacid, "lead")) {
             display_error("You don't have permissions to upload this release."); break;
         }
 
@@ -107,7 +108,7 @@ do {
         print "has been completed successfully and the promoting cycle for it has started.<br /><br />";
 
         print '<center>'.
-              make_link("package-info.php?pacid=$pacid", 'Visit package home') .
+              make_link("/" . $info['package'], 'Visit package home') .
               '</center>';
         $display_form = $display_verification = false;
 

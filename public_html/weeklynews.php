@@ -157,7 +157,7 @@ function show_news($lang,$date) {
                 $desc .= '...';
             }
             $out .= "<tr><td valign='top' class='compact'>";
-            $out .= "<h3><a href=\"/package-info.php?pacid=$id&release=$version\">";
+            $out .= "<h3><a href=\"/package-info.php?package=$name&release=$version\">";
             $out .= "$name</a></H3> ". nl2br($description);
             $out .= "<P><B>".getText("Release")." $version - $state</B> <i>$releasedate:</i><BR>". nl2br($releasenotes);
             $out .= "</td></tr>";

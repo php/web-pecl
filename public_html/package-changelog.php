@@ -36,7 +36,7 @@ if (empty($pkg['name'])) {
 
 $name = $pkg['name'];
 response_header("$name Changelog");
-print '<p>' . make_link("package-info.php?pacid=$pacid", 'Return') . '</p>';
+print '<p>' . make_link("/" . $name, 'Return') . '</p>';
 $bb = new Borderbox("$name Changelog");
 
 if (count($pkg['releases']) == 0) {
@@ -62,6 +62,6 @@ if (count($pkg['releases']) == 0) {
     print "</table>\n";
 }
 $bb->end();
-print '<p>' . make_link("package-info.php?pacid=$pacid", 'Return') . '</p>';
+print '<p>' . make_link("/" . $name, 'Return') . '</p>';
 response_footer();
 ?>

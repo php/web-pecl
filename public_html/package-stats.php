@@ -133,7 +133,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 
     $info = package::info($_GET['pid']);
 
-    echo "<h2>Statistics for package \"<a href=\"package-info.php?pacid=".$_GET['pid']."\">" . $info['name'] . "</a>\"</h2>\n";
+    echo "<h2>Statistics for package \"<a href=\"/" . $info['name'] . "\">" . $info['name'] . "</a>\"</h2>\n";
     $bb = new Borderbox("General statistics");
     echo "Number of releases: <b>" . count($info['releases']) . "</b><br />\n";
     echo "Total downloads: <b>" . number_format(statistics::package($_GET['pid']), 0, '.', ',') . "</b><br />\n";
@@ -155,7 +155,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
                 (isset($_GET['rid']) ? $_GET['rid'] : ''));
 
         foreach ($release_statistics as $key => $value) {
-            $version = make_link('package-info.php?pacid=' . $_GET['pid'] .
+            $version = make_link('package-info.php?package=' . $info['name'] .
                 '&release=' . $value['version'], $value['version']);
             echo '<tr>';
             echo '<td>' . $version . '</td>';
@@ -181,6 +181,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
     $releases = $dbh->getAll('SELECT id, version FROM releases WHERE package = ' . $_GET['pid'], DB_FETCHMODE_ASSOC);
     ?>
 <br /><br />
+
 <script language="JavaScript" type="text/javascript">
 <!--
     function clearGraphList()
@@ -240,6 +241,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
     }
 //-->
 </script>
+
 <form name="graph_control" action="#">
 <input type="hidden" name="pid" value="<?php echo @$_GET['pid']; ?>" />
 <input type="hidden" name="rid" value="<?php echo @$_GET['rid']; ?>" />
@@ -376,8 +378,8 @@ if (@!$_GET['pid']) {
 	        $row['package'] = "";
 	    } else {
 	        $lastPackage = $row['package'];
-	        $row['package'] = "<a href=\"package-info.php?pacid=" .
-	                            $row['pid'] . "\">" .
+	        $row['package'] = "<a href=\"package-info.php?package=" .
+	                            $info['name'] . "\">" .
 	                            $row['package'] . "</a>\n";
 	    }
 

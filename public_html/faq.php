@@ -13,7 +13,6 @@ $tagmap = array(
     "simplelist"             => "ul",
     "simplelist,member"      => "li",
     "para"                   => "p",
-    "artheader"              => "pre",
     "command"                => "pre",
     "emphasis"               => "i",
     "ulink"                  => "a",
@@ -36,7 +35,9 @@ function makeTOC(&$toc)
             $ret .= "\n{$key}. <a href=\"faq.php#faq-{$key}\">{$value}</a><br />";
         }   
     }
-    
+
+    $ret .= "<br /><br />";
+
     return $ret;
         
 }
@@ -88,7 +89,7 @@ function startElement($parser, $elementName, $attribs)
         case "author" : {
 	        $content .= "<{$tagmap[$key1]}>";
             if (!empty($attribs['NAME'])) {
-                $content .= "Answer written by ". $attribs['NAME'];
+                $content .= "Answer written by ". $attribs['NAME'] . ".";
             }
             return;
 	    }

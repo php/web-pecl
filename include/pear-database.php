@@ -227,13 +227,15 @@ class package
     }
 
     // }}}
-    // {{{  proto struct package::info(string|int, [string])
 
     /**
      * Implemented $field values:
      * releases, notes, category, description, authors, categoryid,
      * packageid, authors
      */
+
+    // {{{  proto struct package::info(string|int, [string])
+
     function info($pkg, $field = null)
     {
         global $dbh;
@@ -411,7 +413,7 @@ class package
     /**
      * Updates fields of an existant package
      *
-     * @param 
+     * @param int $pkgid The package ID to update
      * @param array $data Assoc in the form 'field' => 'value'.
      * @return mixed True or PEAR_Error
      */

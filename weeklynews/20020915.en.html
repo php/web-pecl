@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head><body>
+
+<p><i><small>by Alan Knowles(alan_k@php.net)</small></i></p>
+
+<p>.. 
+ </p>
+
+<hr>
+<h2>New Releases</h2>
+
+
+
+<ul>
+</ul><h3>Alpha</h3>
+
+<ul>
+<li><b>..</b>&nbsp;  - ...</li></ul><h3>Development</h3>
+
+<ul>
+<li><b>...</b>&nbsp; - ....
+</li>
+</ul>
+
+
+
+<hr>
+<h2>PEAR-DEV traffic</h2>
+
+<h3>PEAR Licence FAQ</h3>Rasmus Lerdof announced that he was adding a more
+comprehensive list of licences for PEAR packages, based on a request by Richard
+Stallman. These are OSI (Open Source Institute)&nbsp; and FSF (Free Software
+Foundation) approved licenses. They should appear in the manual soon. <h3>PEAR Config new Parsers</h3>Bertrand Mansion announced he had added
+revamped the Config class and added a number of new backend parsers, and
+changed the current ones, this does break backwards compatibility, so if
+you rely on the old version you will have to make sure you tell the pear
+installer which version you require. <h3>MDB manager abstract</h3>Lucus posted a <a href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=8951">summary</a>
+of the MDB manager layer, which helps explain some of the differences and
+advantages of moving to MDB, the Metabase PEAR merger project, he has also
+been working on some documentation that will help anyone wishing to write
+a backend driver for MDB. 
+<h3>Tomas Cox away</h3>
+Tomas Cox, one of the core developers behind PEAR, announced he will a little
+busy in the next few weeks. A few jokes followed about slipping stuff in
+while he's away.. <br>
+<h3>Phpdoc2peardoc</h3>
+Alexander Merz <a href="http://lists.php.net/article.php?group=php.pear.dev&amp;article=9004">announced</a>
+the first version of a tool to convert phpdoc comments in the source into
+peardoc (for the pear manual), it involves a small amount of changes to phpdoc,
+but is a great step forward to improving the usablility of PEAR packages.
+<h3>Getting PEAR to work outside the PEAR tree.</h3>
+Peter Schoenster, while attempting to install DB_DataObjects, brought up
+the issue of how to install pear packages outside of the default pear tree,
+quite a common requirement when working on hosted servers. a number of options
+are available for this.<br>
+<br>
+<pre>pear config-set php_dir /where/i/want/pear<br></pre>
+will change the installation target directory for the current user, or you
+can just download and untar the file. To set up your include path, you can
+use&nbsp;<code>ini_set('include_path','/where/i/put/pear');</code> or use a .htaccess file with&nbsp; <code>php_value include_path /where/i/put/pear</code><h3>Bugs and Fixes</h3>
+Thanks to these people for spotting bugs and sending fixes: Pawe&#322; Go&#322;aszewski, Michael Dransfield, Jeremy Pointer, Alexy Borzov.<hr>
+
+<h2>New and Proposed Packages</h2>
+
+<h3>DB_DOM, or DB_XML&nbsp;</h3>Sandro Zic announced a class that enables
+you to store an xml document model (DOM), in a database using PEAR::DB, it's
+API is similar to php's domxml extension, and should enable faster access
+to large xml documents. <h3>HTTP_Webdav_Server </h3>Christian Stocker announced his webdav server
+package, which enables php4.3 (currently CVS version), to act as a Webdav
+server, the package includes and example file based Webdav Server.  
+<h3>Tree_Manager</h3>
+Bj&ouml;rn Schotte announce his intention to PEARify the tree_manager, there
+was some discussion on whether it may be better to merge this into the current
+existing Tree Classes.<br>
+<br>
+<br>
+<hr>
+
+<h2>Development</h2>Active on CVS this week has been &nbsp;Cache_Lite, DB_DataObject,
+DB_ldap, DBA, HTML_QuickForm, HTML_Template_Flexy, HTML_Template_IT, Image_Transform,
+Log, Mail_Mime, MDB, Pager, PECL::bcompiler, PECL::mailpars, PECL::threads,
+PECL::vpopmail, Perm_LiveUserTree, XML_Transformer and&nbsp; PEAR core packages
+  <h3>New and updated documentation</h3>
+
+Changes and additions to xml_transformer, contributing and the faq should show up this week.
+
+
+
+<br>
+<br>
+<br>
+</body></html>

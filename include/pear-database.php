@@ -1253,9 +1253,10 @@ class release
 
         // Update Cache
         include_once 'xmlrpc-cache.php';
-        XMLRPC_Cache::remove('package.listAll', array(false));
-        XMLRPC_Cache::remove('package.listAll', array(true));
-        XMLRPC_Cache::remove('package.info', array($package, null));
+        $cache = new XMLRPC_Cache;
+        $cache->remove('package.listAll', array(false));
+        $cache->remove('package.listAll', array(true));
+        $cache->remove('package.info', array($package, null));
 
         return $file;
     }

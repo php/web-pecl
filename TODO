@@ -14,10 +14,6 @@ SHORT TERM:
 * "pear upload"
 ** client side: implement xml-rpc client
 
-* installed packages registry
-** index file
-** detail files (copy of package.xml)
-
 * xmlrpc server methods
 ** package.alter
 ** package.annotate

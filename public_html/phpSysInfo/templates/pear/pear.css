@@ -1,0 +1,26 @@
+table
+{
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+table.box {
+  color: #fefefe;
+  background-color: #333333;
+  border: none;
+  padding: 1px;
+  width: 100%;
+}
+
+tr.boxheader {
+  background-color: #339900;
+}
+
+td.boxheader {
+  text-align: center;
+}
+
+tr.boxbody {
+  background-color: #f0f0f0;
+}

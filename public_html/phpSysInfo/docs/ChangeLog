@@ -1,0 +1,828 @@
+2002-06-05  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README:
+	small formatting changes.  Added a known problems section.
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Linux.inc.php:
+	Changed memory reporting to include buffers and disk cache in 'used' memory.
+	I get too many emails from people who don't understand this concept and wonder
+	why it's different from 'top' or 'free'.
+
+2002-06-01  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php: small cleanups..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	removed php3 compat functions, since XPath requires php4 so do we now, no use
+	having the compat functions.
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	Had to move language outside the conditional, the os classes use them some places..
+
+2002-05-31  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	moved more stuff inside the XML conditional, we don't need templates or languages for XML
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php, /cvsroot/phpsysinfo/phpsysinfo-dev/phpsysinfo.dtd:
+	Added some generation information that might be useful to the XML template
+	Added a global $VERSION
+	Added a small HTML/XML comment showing our URL
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added 'random' template support.
+	closes feature request #562164
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Darwin.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.NetBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.OpenBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	Code Cleanups
+	Remove network_connections() from class.Linux since we never used it
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog: .
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/eu.php:
+	adding the Basque Language (eu.php).  Andoni <andonisz at ibercom.com>
+
+2002-05-30  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	Changed format to what rcs2log generates..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog: tabs to spaces
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php, /cvsroot/phpsysinfo/phpsysinfo-dev/phpsysinfo.dtd:
+	don't need the URL in the dtd link
+	all the CPU information should be optional
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README: email address updates
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README: formatting cleanups
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/INSTALL, /cvsroot/phpsysinfo/phpsysinfo-dev/README:
+	Removed INSTALL, merged any useful information into README
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/phpsysinfo.dtd:
+	forgot we need mulitples for <device>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/network.php:
+	<device> -> <NetDevice>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php: small cleanups
+
+2002-05-29  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added DTD support, we can validate now..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/phpsysinfo.dtd:
+	adding XML DTD (We can Validate now!)
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Linux.inc.php: .
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Linux.inc.php:
+	small fix for bogomips on sparc linux
+
+2002-05-28  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/XPath.class.php:
+	updated xpath class
+
+2002-05-20  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/cs.php:
+	updated translation
+
+2002-05-08  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	don't set a cookie if we're using the xml template..
+
+2002-05-03  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	store the template as a cookie
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog: orange template
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/images/bar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/images/redbar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/images/trans.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/orange/orange.css:
+	added the orange template
+
+2002-04-16  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	obsd memory updates
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/tr.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	alpha cpu updates
+	added turkish translation
+
+2002-04-12  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	better 2.2 alpha support
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/es.php:
+	updated spanish translation
+
+2002-04-09  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/es.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	updates spanish translation
+
+2002-04-08  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog: hewbrew
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/he.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php:
+	Hebrew language & text alignment
+
+2002-04-04  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Darwin.inc.php:
+	small regex to remove <classIOPCIDevice> since XPath doens't like it.
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/filesystems.php:
+	small fix for filesystem percentage..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/hu.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added .hu translation
+
+2002-04-02  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.BSD.common.inc.php:
+	don't display linux /procfs compat..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	don't display linux compatibility procfs
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Darwin.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.NetBSD.inc.php:
+	updated class files!
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added new os class files
+
+2002-03-21  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/en.php: typo
+
+2002-03-05  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	patch for bsd ide
+
+2002-03-04  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.OpenBSD.inc.php:
+	small cpu regexp fix
+
+2002-02-25  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added xml encoding type and moved a if clause so not to produce a php
+	error.
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	added fix in format_bytesize() we shouldn't put &nbsp's into XML
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/vitals.php:
+	minor cleanups
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/XPath.class.php:
+	removed the deprecated stuff since we don't use it
+
+2002-02-22  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/hardware.php:
+	oops forgot ide() needs $text;
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	*** empty log message ***
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	type fix, fix ?template=xml
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/XPath.class.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	removed all the include/tables/*, added functionality into xml classes.
+
+2002-02-19  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	changed the xml funtions to retunr the data instead of directly doing the template
+	work.  I hope to remove the stuff in include/tables/* and just have the xml stuff w/
+	some small xml->html wrappers.
+
+2002-02-18  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	removed &nbsp's for xml and added a trim()
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	oops.. no images for XML
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/xml/vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	Added initial XML implementation
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php:
+	changed version to 2.1-cvs
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/INSTALL:
+	added a note about safe_mode
+
+2002-02-07  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README: foo
+
+2002-02-04  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.BSD.common.inc.php:
+	uniq the pci, ide, and scsi arrays
+
+2002-01-17  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/redbar_right.gif:
+	cosmetic cleanups from webbie
+
+2002-01-15  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.BSD.common.inc.php:
+	more fbsd memory fixes
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.BSD.common.inc.php:
+	*** empty log message ***
+
+2002-01-14  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.OpenBSD.inc.php:
+	only show network interfaces that have recieved packets
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.FreeBSD.inc.php:
+	quick hack to only show interfaces that have sent packets
+
+2002-01-11  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/it.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	updated it.php
+
+2002-01-09  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	added iso9660 patch
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Template.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php:
+	HTML cleanups
+	forgot a couple $f_body_close's which was causing invalid HTML
+
+2002-01-04  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/aq.css, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/blue.css, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/classic.css, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/metal.css, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	more CSS fixes from Webbie
+
+2002-01-01  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/INSTALL:
+	misc little updates..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	moved table includes into their own directory
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added the font tags properly.. since I removed color_scheme
+
+2001-12-31  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/color_scheme.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	removed color_scheme.php
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Darwin.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.NetBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Darwin.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.NetBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/os/class.OpenBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	moved all the os based includes into include/os/
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/black.css, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/blue.css, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/classic.css, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/metal.css, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/aq.css:
+	Added CSS patch from Webbie
+
+2001-12-29  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	*** empty log message ***
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/id.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	updated id.php
+
+2001-12-17  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added small patch from webbie
+
+2001-12-14  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/black.css:
+	default css stuff
+
+2001-12-13  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/ca.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added ca language
+
+2001-12-09  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README:
+	added note about freebsd removing /var/run/dmesg.boot.
+	Clean'd up a little
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php:
+	added bsd pci() patch from Alan Eldridge
+
+2001-12-04  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Darwin.inc.php:
+	added initial Darwin support
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php:
+	fixed for patch :)
+
+2001-12-03  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php:
+	fixed bsd memory size reporting..
+
+2001-11-23  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	white space removal, cleanups
+
+2001-11-17  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php:
+	mhz bug on freebsd
+
+2001-11-15  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/kr.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	updated korean translation
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php:
+	coverting tabs..
+
+2001-11-13  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	fixed pci/ide reporting
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.NetBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php:
+	bsd fixes.
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.NetBSD.inc.php:
+	Added NetBSD support
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	removed $this->sysctl_sep, made $this->grab_key() handle it nicely
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/sk.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	updated slovak translation (stenzel <stenzel at inmail.sk>)
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/INSTALL, /cvsroot/phpsysinfo/phpsysinfo-dev/README:
+	notes updates about bsd.
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php:
+	adding comments
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php:
+	BSD Updates
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	moving cpu_info() and scsi_info() back into BSD.common
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php:
+	genericizing the regexps
+
+2001-11-12  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php:
+	stupid vi.. ignoring my options.. tab to space..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	very minor cleanups
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php:
+	changed read_dmesg() to return $this->dmesg
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php: tabs -> spaces cleansup
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	tabs -> spaces cleanups
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	remove grab_key() from freebsd classfile
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.BSD.common.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.OpenBSD.inc.php:
+	forgot to cvs add..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added OpenBSD support (Scott Lipcon <slipcon at mercea.net>)
+	added class.BSD.common.inc.php (me)
+	genericized class.FreeBSD.inc.php to use new common class (me)
+	genericized class.OpenBSD.inc.php to use new common class (me)
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/sk.php:
+	added slovak translation..
+
+2001-11-11  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	fixed filesystem output ti display even if proc isn't the last filesystem (Alan Eldridge)
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php:
+	tag'd rel-1-9
+	updated for the 2.0 devel cycle
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	small cleanups.. remove the note about FreeBSD support being unstable..
+
+2001-11-07  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/se.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/sv.php:
+	se.php -> sv.php
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	fix bug w/ templates when register_globals is off
+
+2001-11-06  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	*** empty log message ***
+
+2001-11-05  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/id.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added Indonesian translation
+
+2001-11-04  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	added 2 patches from Alan E
+
+2001-10-25  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/ct.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/se.php:
+	added catalan tranlstion
+	updated swedish translation
+
+2001-10-15  Joseph Engo  <jengo at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	Fix for network information not being displayed.
+	Refear to http://sourceforge.net/forum/message.php?msg_id=248743
+
+2001-10-15  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	Updated Webbie's patch so that we only read /var/run/dmesg.boot once
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	skip the proc filesystem
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	remove cruft from old linux class
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php:
+	Only print hardware we have..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	sort the pci array
+
+2001-10-14  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	stupid
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	changing $this->getkey() to use execute_program()
+
+2001-10-14  Joseph King  <neostrider at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	Correction to Memory Usage free reporting.
+
+2001-10-14  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog: patch from webbie
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	Added patch from Webbie
+
+2001-10-10  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	memory detection
+
+2001-10-07  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php: formatting
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/INSTALL:
+	added not about freebsd support
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	comment about pipe checking..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php:
+	oops.. removed a test case..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	pipe away execute_program()
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	seperated execute_program() into 2 functions..
+	find_program() and execute_program()
+	now just to add pipe checking and path checking..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php: oops
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php:
+	updating version number to 1.9
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	very minor cleanup consistancy
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	adding freebsd patch from webbie
+	code formats and cleanups
+	changed from ``'s to execute_program()
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/box.tpl:
+	adding 'alt' tags
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	removed / nothing special..
+
+2001-10-06  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	formatting.
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php:
+	formatting
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	*** empty log message ***
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php:
+	sys_chostname() -> chostname()
+
+2001-10-04  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php:
+	formatting
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	formatting update
+
+2001-10-03  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog: misspelt Weissmann
+
+2001-09-21  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/color_scheme.php:
+	$textcolor -> $fontcolor.. oops
+
+2001-09-19  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/big5.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	adding big5 translation
+
+2001-09-17  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added browser language detection
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/aq_background.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/bar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/coininfd.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/coininfg.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/coinsupd.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/coinsupg.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/d.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/fond.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/g.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/inf.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/redbar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/space15_15.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/black/images/sup.gif:
+	adding black template
+
+2001-09-13  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/br.php:
+	updaing br translation
+
+2001-09-04  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/pl.php:
+	added polish translation
+
+2001-08-20  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/tw.php:
+	added Traditional-Chinese translation..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/bar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/coininfd.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/coininfg.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/coinsupd.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/coinsupg.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/d.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/fond.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/g.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/inf.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/metal_background.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/redbar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/space15_15.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/metal/images/sup.gif:
+	adding metal theme..
+
+2001-08-09  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/nl.php:
+	updated Dutch translation (Vincent van Adrighem <vincent at dirck.mine.nu>)
+
+2001-08-06  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	adding info about german update
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/de.php:
+	updated de.php patch # 447446
+
+2001-08-05  Joseph Engo  <jengo at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.FreeBSD.inc.php:
+	Added the new FreeBSD class
+
+2001-08-03  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	more formatting..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	fixing jengo's formatting
+
+2001-08-02  Joseph Engo  <jengo at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/common_functions.php:
+	I forgot to add this file in durring my initial commit
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	Changed some code format
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Linux.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/bar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/redbar_right.gif:
+	- Started working on abstracting the system functions to support multiable OS's
+	- Added code to detect to size of the bar graph image so it looks nice
+	- Started added sections to allow easy installation under phpGroupWare
+
+2001-07-05  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added fix incase register_globals is off
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added timestamp to the <TITLE></TITLE>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/nl.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/ro.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php:
+	updated ro and nl tranlations
+	removed display of filesystems that are mounted with '-o bind'
+
+2001-06-29  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	oops.. shouldn't have commited this quite yet
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/fi.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added finnish language
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/is.php:
+	added is.php
+
+2001-06-25  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/kr.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/ro.php:
+	added 2 translations..
+
+2001-06-02  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/et.php:
+	updated et translation
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added format_bytesize() call to capacity..
+
+2001-05-31  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	fixing sf bug # 428980
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/da.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/en.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/fr.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/nl.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	translation updates
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	small cleanup and imcremented the version to 1.8.
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	unspamified the email addresses..
+
+2001-05-30  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/INSTALL, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php:
+	oops.. michael's patch reverted the version
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	oops.. forgot a $lang->$lng conversion
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added extra notes about Michael's patches
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php:
+	tabs -> spaces
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/br.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/cs.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/da.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/de.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/en.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/es.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/et.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/fr.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/it.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/lt.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/nl.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/no.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/se.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added patches from Michal Cihar
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/form.tpl:
+	added a <br>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/images/bar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/images/redbar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/blue/images/trans.gif:
+	adding the 'blue' template (Michal Cihar <cihar@email.cz>)
+
+2001-05-29  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php:
+	incremented version to 1.7
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php:
+	added css code
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/no.php:
+	updated no.php
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog: note about the fs fix
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php:
+	oops.. someones patch had a bug
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php:
+	fixed percentage free reports in sys_fsinfo()
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog: typo
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added note about HTML validator
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/form.tpl:
+	HTML fixes.  classic template is now HTML 4.01 compliant and passes
+	the validator
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	formatting & cleanups
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	cleanups
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	more cleanups, removed extra color_scheme includes..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/color_scheme.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	code formatting, changed tabs to spaces include()'s to require_once()'s
+
+2001-05-28  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added note about language selector
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/INSTALL, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	added language selector
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php:
+	removed old line..
+	I also cleans up sys_users()
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added execute_program() note..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php:
+	added execute_program().  Pass it a command and args it looks threw a
+	internal path and executes whichever binary is first..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php:
+	formatting
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php:
+	incremented version to 1.6,
+	added template changer form (me & Jesse jesse@krylotek.com),
+	misc code cleanups (me)
+
+2001-05-27  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/br.php, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/bar_right.gif:
+	added blue bars for aq, added brazilian translation
+
+2001-05-24  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added HTML core validation
+
+2001-05-21  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/da.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/nl.php, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog:
+	added new translations
+
+2001-05-18  Uriah Welcome  <precision at users.sf.net>
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README:
+	final notes before packaging..
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php:
+	changed version to 1.5
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php:
+	fixed my email address and changed the warning threshhold on the bar graphs to 90%
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/COPYING, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/INSTALL, /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Template.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/color_scheme.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/da.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/de.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/en.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/es.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/et.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/fr.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/it.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/lt.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/no.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/se.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/aq_background.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/bar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/coininfd.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/coininfg.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/coinsupd.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/coinsupg.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/d.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/fond.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/g.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/inf.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/redbar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/space15_15.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/sup.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/bar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/redbar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/trans.gif:
+	New file.
+
+	* /cvsroot/phpsysinfo/phpsysinfo-dev/COPYING, /cvsroot/phpsysinfo/phpsysinfo-dev/ChangeLog, /cvsroot/phpsysinfo/phpsysinfo-dev/INSTALL, /cvsroot/phpsysinfo/phpsysinfo-dev/README, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/class.Template.inc.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/color_scheme.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/da.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/de.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/en.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/es.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/et.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/fr.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/it.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/lt.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/no.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/lang/se.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_footer.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_functions.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/system_header.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_filesystems.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_hardware.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_memory.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_network.php, /cvsroot/phpsysinfo/phpsysinfo-dev/includes/table_vitals.php, /cvsroot/phpsysinfo/phpsysinfo-dev/index.php, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/aq_background.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/bar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/coininfd.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/coininfg.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/coinsupd.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/coinsupg.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/d.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/fond.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/g.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/inf.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/redbar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/space15_15.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/aq/images/sup.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/box.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/form.tpl, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/bar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/bar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/bar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/redbar_left.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/redbar_middle.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/redbar_right.gif, /cvsroot/phpsysinfo/phpsysinfo-dev/templates/classic/images/trans.gif:
+	initial checkin of 1.3 code
+

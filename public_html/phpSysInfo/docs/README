@@ -1,0 +1,79 @@
+phpSysInfo 2.1 - http://phpsysinfo.sourceforge.net/
+
+Copyright (c), 1999-2002, Uriah Welcome (precision@users.sf.net)
+Copyright (c), 1999-2001, Matthew Snelham (infinite@users.sf.net)
+
+
+CURRENT TESTED PLATFORMS
+------------------------
+  - Linux 2.2+
+  - FreeBSD 4.x
+  - OpenBSD 2.8+
+  - NetBSD
+  - Darwin/OSX
+
+  If your platform is not here try checking out the mailing list archives or
+  the message boards on SourceForge.  (PS, I don't know how/want to do a Win32
+  port, but I'll be happy to take a patch)
+
+
+INSTALLATION AND CONFIGURATION
+------------------------------
+  Just decompress and untar the source (which you should have done by now,
+  if you're reading this...), into your webserver's document root.
+
+  - make sure your 'php.ini' file's include_path entry contains "."
+  - make sure your 'php.ini' has safe_mode set to 'off'.
+
+  Please keep in the mind that because phpSysInfo requires access to many
+  files in /proc and other system binary you **MUST DISABLE** php's
+  safe_mode.  Please see the PHP documentation for information on how you
+  can do this.
+
+  That's it.  Restart your webserver (if you changed php.ini), and viola!
+
+
+KNOWN PROBLEMS
+--------------
+  - small bug under FreeBSD with memory reporting
+  - XML will not work properly/validate under anything except Linux and
+    Net/FreeBSD The "This is Under Development" warning gets printed and
+	isn't valid in XML.
+
+
+PLATFORM SPECIFIC ISSUES
+------------------------
+  - FreeBSD
+    There is currently a bug in FreeBSD that if you boot your system up and
+	drop to single user mode and then again back to multiuser the system
+	removes /var/run/dmesg.boot.  This will cause phpsysinfo to fail.  A bug
+	has already been reported to the FreeBSD team.  (PS, this may exist in
+	other *BSDs also)
+
+
+WHAT TO DO IF IT DOESN'T WORK
+-----------------------------
+  First make sure you've read this file completely, especially the
+  "INSTALLATION AND CONFIGURATION" section.  If it still doesn't work then
+  you have two options.
+  
+  1. Submit a bug on SourceForge. (preferred)
+     (http://sourceforge.net/projects/phpsysinfo/)
+
+  2. Send an email to the developer list.
+     (phpsysinfo-devel@lists.sourceforge.net)
+
+
+OTHER NOTES
+-----------
+  If you have an great ideas or wanna help out, just drop by the project
+  page at SourceForge (http://sourceforge.net/projects/phpsysinfo/)
+  
+
+LICENSING
+---------
+  This program and all associated files are released under the GNU Public
+  License, see COPYING for details.
+
+
+$Id$

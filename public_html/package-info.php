@@ -1,16 +1,31 @@
 <?php
-// expected url vars: pacid
-$pacid = (isset($pacid)) ? (int) $pacid : null;
 
-if (empty($pacid)) {
+// {{{ setup, queries
+
+$version = '';
+// expected url vars: pacid relid package release
+if (isset($_GET['package']) && empty($_GET['pacid'])) {
+    $pacid = $dbh->getOne("SELECT id FROM packages WHERE name = ?",
+                          array($_GET['package']));
+} else {
+    $pacid = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
+}
+
+if (isset($_GET['version']) && empty($_GET['relid'])) {
+    $relid = $dbh->getOne("SELECT id FROM releases WHERE package = ?".
+                          " AND version = ?",
+                          array($pacid, $_GET['version']));
+} else {
+    $relid = (isset($_GET['relid'])) ? (int) $_GET['relid'] : null;
+}
+
+if (empty($pacid) && empty($relid)) {
     response_header("Error");
-    PEAR::raiseError('No package selected');
+    PEAR::raiseError('No package or release selected');
     response_footer();
     exit();
 }
 // ** expected
-
-define('PHP_CVS_REPO_DIR', '/repository/pear');
 
 if (DB::isError($dbh)) {
     response_header("Error");
@@ -22,25 +37,39 @@ if (DB::isError($dbh)) {
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 // Package data
-$row = $dbh->getRow("SELECT * FROM packages WHERE id = $pacid");
-if (!$row) {
-    response_header("Error");
-    PEAR::raiseError('No package selected.');
+$pkg = $dbh->getRow("SELECT * FROM packages WHERE id = $pacid");
+if (PEAR::isError($pkg) || empty($pkg)) {
+    response_header('Invalid package');
+    PEAR::raiseError('Invalid package');
     response_footer();
-    exit();
+    exit;
 }
 
-$name        = $row['name'];
-$summary     = stripslashes($row['summary']);
-$license     = $row['license'];
-$description = stripslashes($row['description']);
-$category    = $row['category'];
+// Release data
+if ($relid) {
+    $rel = $dbh->getRow("SELECT * FROM releases WHERE id = $relid");
+    if (PEAR::isError($rel) || empty($rel)) {
+        response_header('Invalid release');
+        PEAR::raiseError('Invalid release');
+        response_footer();
+        exit;
+    }
+    $version = $rel['version'];
+} else {
+    $rel = array();
+}
+
+$name        = $pkg['name'];
+$summary     = stripslashes($pkg['summary']);
+$license     = $pkg['license'];
+$description = stripslashes($pkg['description']);
+$category    = $pkg['category'];
 
 // Accounts data
-$sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, m.role
-                   FROM maintains m, users u
-                   WHERE m.package = $pacid
-                   AND m.handle = u.handle");
+$sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, m.role".
+                   " FROM maintains m, users u".
+                   " WHERE m.package = $pacid".
+                   " AND m.handle = u.handle");
 $accounts  = '';
 while ($sth->fetchInto($row)) {
     $accounts .= "<tr><td>{$row['name']}";
@@ -51,100 +80,123 @@ while ($sth->fetchInto($row)) {
     $accounts .= "</td></tr>\n";
 }
 
-$releases = $dbh->getAll(
-	"SELECT id, version, state, releasedate, releasenotes
-     FROM releases
-     WHERE package = $pacid
-     ORDER BY releasedate DESC");
-
-$sth = $dbh->query("SELECT f.id AS id, f.release AS release,
-                           f.platform AS platform, f.format AS format,
-                           f.md5sum AS md5sum, f.basename AS basename,
-                           f.fullpath AS fullpath, r.version AS version
-                      FROM files f, releases r
-                     WHERE f.package = $pacid AND f.release = r.id");
-while ($sth->fetchInto($row)) {
+if (!$relid) {
+    $releases = $dbh->getAll(
+        "SELECT id, version, state, releasedate, releasenotes FROM releases".
+        " WHERE package = $pacid ORDER BY releasedate DESC");
+    $sth = $dbh->query("SELECT f.id AS id, f.release AS release,".
+                       " f.platform AS platform, f.format AS format,".
+                       " f.md5sum AS md5sum, f.basename AS basename,".
+                       " f.fullpath AS fullpath, r.version AS version".
+                       " FROM files f, releases r".
+                       " WHERE f.package = $pacid AND f.release = r.id");
+    while ($sth->fetchInto($row)) {
 	$downloads[$row['version']][] = $row;
+    }
 }
 
-response_header("Package :: $name");
+// }}}
+// {{{ page header
 
-?>
+if ($version) {
+    response_header("Package :: $name :: $version");
+} else {
+    response_header("Package :: $name");
+}
 
-<!-- PKGINFO start -->
-<?php html_category_urhere($category, true); ?>
+html_category_urhere($category, true);
 
-<h2 align="center"><?php echo "$name";?></h2>
+print "<h2 align=\"center\">$name";
+if ($version) {
+    print " $version";
+}
+print "</h2>\n";
 
-<?php $bb = new BorderBox("Package Information"); ?>
+// }}}
+// {{{ "Package Information" box
+
+$bb = new BorderBox("Package Information"); ?>
 
 <table border="0" cellspacing="2" cellpadding="2" height="48" width="100%">
 <tr>
     <th class="pack" bgcolor="#009933" width="20%">Summary</th>
-    <td><?php echo $summary;?></td>
+    <td><?php print $summary;?></td>
 </tr>
 <tr>
     <th class="pack" bgcolor="#009933" width="20%">Maintainers</th>
     <td>
         <table border="0" cellspacing="1" cellpadding="1" width="100%">
-        <?php echo $accounts;?>
+        <?php print $accounts;?>
         </table>
     </td>
 </tr>
 <tr>
     <th class="pack" bgcolor="#009933" width="20%">License</th>
-    <td><?php echo $license;?></td>
+    <td><?php print $license;?></td>
 </tr>
 <tr>
     <th class="pack" bgcolor="#009933" width="20%">Description</th>
-    <td><?php echo nl2br($description);?>&nbsp;</td>
+    <td><?php print nl2br($description);?>&nbsp;</td>
 </tr>
 <tr>
     <td colspan="2" align="right">
-<?php print_link("/package-edit.php?id=" . @$_GET['pacid'],
+<?php print_link("/package-edit.php?id=$pacid",
         make_image("edit.gif", "Edit package information")); ?>
 &nbsp;
-<?php print_link("/package-delete.php?id=" . @$_GET['pacid'],
+<?php print_link("/package-delete.php?id=$pacid",
         make_image("delete.gif", "Delete package")); ?>
     </td>
 </tr>
 </table>
 
-<?php $bb->end(); ?>
+<?php
+
+$bb->end();
+
+// }}}
+// {{{ latest/cvs/changelog links
+
+?>
 
 <br />
 <table border="0" cellspacing="3" cellpadding="3" height="48" width="100%" align="center">
 <tr>
 <?php
-    // CVS link
-    if (@is_dir(PHP_CVS_REPO_DIR . "/$name")) {
-        $cvs_link = "[ " . make_link("http://cvs.php.net/cvs.php/pear/$name",
-                                     'View Source Code &amp; Docs', 'top')
-                         . " ] ";
-    } else {
-        $cvs_link = '&nbsp;';
-    }
 
-    // Download link
-    $get_link = make_link("/get/$name", 'Download Lastest');
-    $changelog_link = make_link("package-changelog.php?pacid=".$_GET['pacid'],
-                                'ChangeLog');
+// CVS link
+if (@is_dir(PHP_CVS_REPO_DIR . "/$name")) {
+    $cvs_link = "[ " . make_link("http://cvs.php.net/cvs.php/pear/$name",
+                                 'View Source Code &amp; Docs', 'top')
+    . " ] ";
+    // XXX if "version" is set, add a release tag to the cvs link
+} else {
+    $cvs_link = '&nbsp;';
+}
+
+// Download link
+$get_link = make_link("/get/$name", 'Download Latest');
+$changelog_link = make_link("package-changelog.php?pacid=$pacid",
+                            'ChangeLog');
 ?>
-    <td width="33%" align="center">[ <?php echo $get_link; ?> ]</td>
-    <td width="33%" align="center"><?php echo $cvs_link;?></td>
-    <td width="33%" align="center">[ <?php echo $changelog_link;?> ]</td>
+    <td width="33%" align="center">[ <?php print $get_link; ?> ]</td>
+    <td width="33%" align="center"><?php print $cvs_link;?></td>
+    <td width="33%" align="center">[ <?php print $changelog_link;?> ]</td>
 </tr>
 </table>
 
 <br />
 
 <?php
-$bb = new BorderBox("Available Releases");
 
-if (count($releases) == 0) {
-    echo "This package has not released any versions yet.";
-} else {
-?>
+// }}}
+// {{{ "Available Releases"
+
+if (!$relid) {
+    $bb = new BorderBox("Available Releases");
+    if (count($releases) == 0) {
+        print "<i>No releases for this package.</i>";
+    } else {
+        ?>
     <table border="0" cellspacing="0" cellpadding="3" width="100%">
         <th align="left">Version</th>
         <th align="left">State</th>
@@ -154,55 +206,117 @@ if (count($releases) == 0) {
 
     <?php
 
-    foreach ($releases as $rel) {
+        foreach ($releases as $r) {
 	    print " <tr>\n";
-	    if (empty($rel['state'])) {
-		    $rel['state'] = 'devel';
+	    if (empty($r['state'])) {
+                $r['state'] = 'devel';
 	    }
-	    $rel['releasedate'] = substr($rel['releasedate'], 0, 10);
+	    $r['releasedate'] = substr($r['releasedate'], 0, 10);
 	    $downloads_html = '';
-	    foreach ($downloads[$rel['version']] as $dl) {
+	    foreach ($downloads[$r['version']] as $dl) {
     		$downloads_html .= "<a href=\"/get/$dl[basename]\">".
-	    		 "$dl[basename]</a><br />";
+                     "$dl[basename]</a><br />";
 	    }
-
-	    $link_changelog = "[ " . make_link("/package-changelog.php?pacid=" 
-	                                . $_GET['pacid'] . "&release="
-	                                . $rel['version'], "Changelog")
-	                      . " ]";
-
-	    printf("  <td>%s</td><td>%s</td><td>%s</td><td>%s</td><td valign=\"middle\">%s</td>\n",
-                $rel['version'], $rel['state'], $rel['releasedate'],
-                $downloads_html, "<small>" . $link_changelog . "</small>\n");
-        print " </tr>\n";
+            
+	    $link_changelog = "[ " . make_link("/package-changelog.php?pacid=".
+                                               "$pacid&release=" .
+                                               $r['version'], "Changelog")
+                              . " ]";
+            $href_release = "$_SERVER[PHP_SELF]?pacid=$pacid&version=".
+                            urlencode($r['version']);
+	    printf("  <td><a href=\"$href_release\">%s</a></td><td>%s</td><td>%s</td><td>%s</td><td valign=\"middle\">%s</td>\n",
+                   $r['version'], $r['state'], $r['releasedate'],
+                   $downloads_html, "<small>" . $link_changelog . "</small>\n");
+            print " </tr>\n";
+        }
     }
+    print "</table>\n";
+    $bb->end();
+
+    print "<br /><br />\n";
 }
-?></table>
-<?php
-$bb->end();
 
-echo "<br /><br />\n";
+// }}}
+// {{{ "Dependencies"
 
-$bb = new Borderbox("Package dependencies");
+$title = "Dependencies";
+if ($relid) {
+	$title .= " for version $version";
+}
+$bb = new Borderbox($title);
 
-$query = "SELECT * FROM deps WHERE package = '" . $_GET['pacid'] . "'";
-
-$sth = $dbh->query($query);
+$query = "SELECT * FROM deps WHERE package = ?";
+$params = array($pacid);
+if ($relid) {
+	$query .= " AND release = ?";
+	$params[] = $relid;
+}
+$prh = $dbh->prepare($query);
+$sth = $dbh->execute($prh, array($pacid, $relid));
 
 if ($sth->numRows() == 0) {
-    echo "<i>This package has no dependencies towards other packages.</i>\n";
+    print "<i>No dependencies registered.</i>\n";
 } else {
-
+    $lastversion = '';
+    $rel_trans = array(
+        'lt' => 'older than %s',
+        'le' => 'version %s or older',
+        'eq' => 'version %s',
+        'ne' => 'any version but %s',
+        'gt' => 'newer than %s',
+        'ge' => '%s or newer',
+/*        'lt' => '<',
+        'le' => '<=',
+        'eq' => '=',
+        'ne' => '!=',
+        'gt' => '>',
+        'ge' => '>=', */
+        );
+    $dep_type_desc = array(
+        'pkg'    => 'PEAR Package',
+        'ext'    => 'PHP Extension',
+        'php'    => 'PHP Version',
+        'prog'   => 'Program',
+        'ldlib'  => 'Development Library',
+        'rtlib'  => 'Runtime Library',
+        'os'     => 'Operating System',
+        'websrv' => 'Web Server',
+        'sapi'   => 'SAPI Backend',
+        );
+    print "      <dl>\n";
     while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
-        echo "Dependencies for version " . $row['version'] . ":<br />\n";
-        echo "<blockquote>" . $row['deps'] . "</blockquote><br />\n";
+        if ($row['version'] != $lastversion) {
+            print "\n";
+            if ($lastversion) {
+                print "       </dd>\n";
+            }
+            print "       <dt>Dependencies for version $row[version]:</dt>\n";
+            print "       <dd>\n";
+        } else {
+            print "<br />\n";
+        }
+        print "        ";
+        if (isset($rel_trans[$row['relation']])) {
+            $rel = sprintf($rel_trans[$row['relation']], $row['version']);
+            printf("%s: %s %s",
+                   $dep_type_desc[$row['type']], $row['name'], $rel);
+        } else {
+            printf("%s: %s", $dep_type_desc[$row['type']], $row['name']);
+        }
+        $lastversion = $row['version'];
     }
+    if ($lastversion) {
+        print "\n       </dd>\n";
+    }
+    print "      </dl>\n";
 }
 $bb->end();
-?>
 
-<!-- PKGINFO end -->
+// }}}
+// {{{ page footer
 
-<?php
 response_footer();
+
+// }}}
+
 ?>

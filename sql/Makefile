@@ -33,7 +33,7 @@ TABLE_FILES=\
 	deps.sql \
 	notes.sql \
 	users.sql \
-	state_order.sql
+#	state_order.sql
 SQL_TYPE=mysql
 SQL_USER=pear
 SQL_PW=pear

@@ -1,7 +1,7 @@
 CREATE TABLE users (
        handle	     VARCHAR(20) NOT NULL,
        password	     VARCHAR(64),
-       ppp_only      TINYINT(4) NOT NULL default '0'
+       ppp_only      TINYINT(4) NOT NULL default '0',
        name	     VARCHAR(100),
        email	     VARCHAR(100),
        homepage	     VARCHAR(255),

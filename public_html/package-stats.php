@@ -45,17 +45,9 @@ function reloadMe()
 </script>
 
 <?php
-/** Get packages for the user */
-if (User::isAdmin($_COOKIE['PEAR_USER'])) {
-    $query = "SELECT * FROM packages"
-             . ((isset($_GET['cid']) && $_GET['cid'] != "") ? " WHERE category = '" . $_GET['cid'] . "'" : "")
-             . " ORDER BY name";
-} else {
-    $query = "SELECT p.* FROM packages p, maintains m WHERE p.id = m.package"
-             . " AND m.handle = '" . $_COOKIE['PEAR_USER'] . "'"
-             . ((isset($_GET['cid']) && $_GET['cid'] != "") ? " AND category = '" . $_GET['cid'] . "'" : "")
-             . " ORDER BY p.name";
-}
+$query = "SELECT * FROM packages"
+         . (!empty($_GET['cid']) ? " WHERE category = '" . $_GET['cid'] . "'" : "")
+         . " ORDER BY name";
 
 $sth = $dbh->query($query);
 

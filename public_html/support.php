@@ -29,7 +29,16 @@ response_header("Support");
 ?>
 
 <h2>Support</h2>
-<h2>Mailing Lists</h2>
+
+<b>Table of Conents</b>
+<ul>
+  <li><a href="#lists">Mailing Lists</a></li>
+  <li><a href="#tutorials">Tutorials</a></li>
+  <li><a href="#resources">Resources</a></li>
+  <li><a href="#icons">PEAR Icons</a></li>
+</ul>
+
+<a name="lists" /><h3>Mailing Lists</h3>
 
 <?php
 if (isset($maillist)) {
@@ -166,7 +175,7 @@ Of course don't forget to visit the <i>#pear</i> IRC channel at the <a href="htt
 Eris Free Net</a>.
 </p>
 
-<h2>PEAR Tutorials</h2>
+<a name="tutorials" /><h3>PEAR Tutorials</h3>
 
 <h4>Tutorials about the PEAR DB class:</h4>
 
@@ -217,7 +226,7 @@ Eris Free Net</a>.
 
 </ul>
 
-<h2>PEAR resources</h2>
+<a name="resources" /><h3>PEAR resources</h3>
 
 <ul>
 
@@ -242,7 +251,7 @@ Eris Free Net</a>.
     <li><a href="http://www.phpconcept.net/articles/article.en.php?id=1">Configure WinCVS for PEAR</a> by Vincent Blavet</li>
 </ul>
 
-<h2>Powered By PEAR/PECL</h2>
+<a name="icons" /><h3>Powered By PEAR/PECL</h3>
 
 <p>
     What programming tool would be complete without a set of

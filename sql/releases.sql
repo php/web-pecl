@@ -5,6 +5,8 @@ CREATE TABLE releases (
        doneby	      VARCHAR(20) NOT NULL REFERENCES users(handle),
        releasedate    DATETIME NOT NULL,
        releasenotes   TEXT DEFAULT '',
+       md5sum	      VARCHAR(32),
+       distfile	      VARCHAR(200),
 
        PRIMARY KEY(id),
        UNIQUE INDEX(package, version)

@@ -104,6 +104,8 @@ while ($sth->fetchInto($row)) {
 }
 
 if (!$relid) {
+    $downloads = array();
+
     $releases = $dbh->getAll(
         "SELECT id, version, state, releasedate, releasenotes FROM releases".
         " WHERE package = $pacid ORDER BY releasedate DESC");

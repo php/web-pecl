@@ -88,7 +88,8 @@ function auth_verify($user, $passwd)
     }
     if (!$ok) {
         if (cvs_verify_password($user, $passwd)) {
-            $auth_user = (object)array('handle' => $user);
+            // (cox) Why is that here?
+            //$auth_user = (object)array('handle' => $user);
             $ok = true;
         }
     }
@@ -149,6 +150,7 @@ function init_auth_user()
 {
     global $auth_user, $dbh;
     if (empty($_COOKIE['PEAR_USER']) || empty($_COOKIE['PEAR_PW'])) {
+        $auth_user = null;
         return false;
     }
     if (!empty($auth_user)) {

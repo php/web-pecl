@@ -18,6 +18,8 @@
    $Id$
 */
 
+auth_require(true);
+
 /**
  * TODO
  *

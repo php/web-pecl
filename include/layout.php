@@ -275,7 +275,7 @@ function commonFooter() {
   <td width="149" bgcolor="#f0f0f0">
     <table width="100%" cellpadding="4" cellspacing="0"><tr valign="top"><td class="sidebar"><?php echo $RSIDEBAR_DATA; ?></td></tr></table>
   </td>
-<? } ?>
+<?php } ?>
  </tr>
 </table>
 
@@ -353,4 +353,4 @@ if (0) { ?>
 </html>
 <?php
 }
-
+?>

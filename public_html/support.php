@@ -181,6 +181,7 @@ Eris Free Net</a>.
     by Derick Rethans</li>
     <li><a href="http://talks.php.net/show/extending-php-apachecon2003">Writing a PHP Extension (PHP 4), Apachecon 
     November 19, 2003. Las Vegas, NV</a> by Jim Winstead</li>
+	 <li><a href="http://www.php.net/~wez/extending-php.pdf">Extending PHP: a 3 hour tutorial, PHP{Con West, Santa Clara, October 2003 (PDF)</a> by Wez Furlong</li>
     <li><a href="http://www.derickrethans.nl/ze-ext/talk.html">Zend and Extending PHP (PHP 4), PHP Forum 2002
     Paris, France - December 10, 2002</a> by Derick Rethans</li>
 </ul>

@@ -11,6 +11,20 @@ require_once "HTML/Form.php";
 $form = new HTML_Form($_SERVER['PHP_SELF']);
 
 response_header("Edit package");
+?>
+
+<script language="javascript">
+<!--
+
+function confirmed_goto(url, message) {
+    if (confirm(message)) {
+        location = url;
+    }
+}
+// -->
+</script>
+
+<?php
 echo "<h1>Edit package</h1>";
 
 if (!isset($_GET['id'])) {
@@ -63,7 +77,27 @@ if (isset($_POST['submit'])) {
     } else {
         echo "<b>Package information successfully updated.</b><br /><br />\n";
     }
+} else if (isset($_GET['action'])) {
+
+    switch ($_GET['action']) {
+
+        case "release_remove" :
+            if (!isset($_GET['release'])) {
+                PEAR::raiseError("Missing package ID!");
+                break;
+            }
+
+            if (release::remove($_GET['id'], $_GET['release'])) {
+                echo "<b>Release successfully deleted.</b><br /><br />\n";
+            } else {
+                PEAR::raiseError("An error occured while deleting the
+                                  release!");
+            }
+
+            break;
+    }        
 }
+
 
 $query = sprintf("SELECT * FROM packages WHERE id = '%s'",
                  $_GET['id']
@@ -126,6 +160,43 @@ $form->displaySelect("category", $rows, $row['category']);
 </form>
 
 <?php
+$bb->end();
+
+echo "<br /><br />\n";
+
+$bb = new Borderbox("Manage releases");
+
+echo "<table border=\"0\">\n";
+
+echo "<tr><th>Version</th><th>Releasedate</th><th>Actions</th></tr>\n";
+
+$query = sprintf("SELECT * FROM releases WHERE package = '%s'",
+                 $_GET['id']
+                 );
+
+$releases = (array)$dbh->getAll($query, DB_FETCHMODE_ASSOC);
+
+foreach ($releases as $release) {
+    echo "<tr>\n";
+    echo "  <td>" . $release['version'] . "</td>\n";
+    echo "  <td>" . $release['releasedate'] . "</td>\n";
+    echo "  <td>\n";
+    
+    $url = $_SERVER['PHP_SELF'] . "?id=" . 
+                     $_GET['id'] . "&release=" . 
+                     $release['id'] . "&action=release_remove";
+    $msg = "Are you sure that you want to delete the release?";
+
+    echo "<a href=\"javascript:confirmed_goto('$url', '$msg')\">"
+         . make_image("delete.gif")
+         . "</a>\n";
+
+    echo "</td>\n";
+    echo "</tr>\n";
+}
+
+echo "</table>\n";
+
 $bb->end();
 
 response_footer();

@@ -754,7 +754,7 @@ END;
             }
         }
 
-        $query = sprintf("DELETE FROM fullpath WHERE package = '%s' AND release = '%s'",
+        $query = sprintf("DELETE FROM files WHERE package = '%s' AND release = '%s'",
                          $package,
                          $release
                          );

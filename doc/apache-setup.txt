@@ -1,0 +1,15 @@
+These are the typical Apache directives you need to set up a
+development site for pearweb (this PHP installation has PEAR stuff
+installed in /usr/share/pear):
+
+<VirtualHost *>
+ ServerName pear.localdomain
+ DocumentRoot /path/to/pearweb/public_html
+ DirectoryIndex index.php index.html
+ php_value include_path .:/path/to/pearweb/include:/usr/share/pear
+ php_value auto_prepend_file pear-prepend.php
+ php_value magic_quotes_gpc off
+ <Location /get>
+  ForceType application/x-httpd-php
+ </Location>
+</VirtualHost>

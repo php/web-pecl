@@ -28,7 +28,7 @@ if (isset($_GET['phpinfo'])) {
 }
 
 $SIDEBAR_DATA='
-This is the PEAR administration page.
+This is the PEAR administration page.<br />
 <noscript><p>
 <!-- be annoying! -->
 <b><blink>You must enable Javascript to use this page!</blink></b>
@@ -103,6 +103,12 @@ function confirmed_submit(button, action, required, errormsg) {
     }
 }
 
+function updateRejectReason(selectObj) {
+    if (selectObj.selectedIndex != 0) {
+        document.forms['account_form'].reason.value = selectObj.options[selectObj.selectedIndex].value;
+    }
+    selectObj.selectedIndex = 0;
+}
 // -->
 </script>
 <?php
@@ -190,24 +196,11 @@ do {
    (will be emailed to <?= $requser->email ?>):<br />
    <textarea rows="3" cols="60" name="reason"></textarea><br />
 
-   <!-- Some default reasons -->
-   <script language="JavaScript" type="text/javascript">
-   <!--
-   		function updateRejectReason(selectObj)
-		{
-			if (selectObj.selectedIndex != 0) {
-				document.forms['account_form'].reason.value = selectObj.options[selectObj.selectedIndex].value;
-			}
-			selectObj.selectedIndex = 0;
-		}
-   //-->
-   </script>
-
-   <select onchange="return updateRejectReason(this)">
+    <select onchange="return updateRejectReason(this)">
    		<option>Select reason...</option>
    		<option value="You don't need a PEAR account to use PEAR or PEAR packages">You don't need a PEAR account to use PEAR or PEAR packages</option>
-		<option value="Please propose all new classes to the Pear-Dev mailing list first">Please propose all new classes to the Pear-Dev mailing list first</option>
-		<option value="Please send all bug fixes to the Pear-Dev mailing list">Please send all bug fixes to the Pear-Dev mailing list</option>
+		<option value="Please propose all new classes to the mailing list pear-dev@lists.php.net first">Please propose all new classes to the mailing list pear-dev@lists.php.net first</option>
+		<option value="Please send all bug fixes to the mailing list pear-dev@lists.php.net">Please send all bug fixes to the mailing list pear-dev@lists.php.net</option>
 		<option value="Please supply valid credentials, including your full name and a descriptive reason for an account">Please supply valid credentials, including your full name and a descriptive reason for an account</option>
    </select>
 

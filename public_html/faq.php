@@ -3,7 +3,7 @@ response_header("FAQ");
 
 echo "<h1>PEAR Frequently Asked Questions</h1>";
 
-$ID = 0;
+$ID = 1;
 
 function startElement($parser, $elementName, $elementAttributes)
 {
@@ -58,6 +58,10 @@ function startElement($parser, $elementName, $elementAttributes)
             if (isset($elementAttributes['NAME'])) {
                 echo $elementAttributes['NAME'];
             }            
+            break;
+
+        case "faqlink" :
+            echo "<a href=\"faq.php#faq-".$elementAttributes['FAQ']."\">";
             break;
 
         case "author" :
@@ -120,6 +124,7 @@ function endElement($parser, $elementName)
             break;
         
         case "ulink" :
+        case "faqlink" :
             echo "</a>";
             break;
         

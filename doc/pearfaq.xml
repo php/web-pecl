@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.15 2001-09-24 07:23:17 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.16 2001-10-07 10:16:30 mj Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-09-24 07:23:17 $</date>
-  <version>$Revision: 1.15 $</version>
+  <date>$Date: 2001-10-07 10:16:30 $</date>
+  <version>$Revision: 1.16 $</version>
  </artheader>
 
  <qandaset>
@@ -290,6 +290,19 @@
     On all mailing lists mentioned above the language is english and the way
     you ask questions should always be polite :-).
     </para>
+   </answer>
+  </qandaentry>
+  <qandaentry>
+   <question title="Does PEAR work on windows?" />
+   <answer>
+    <author name="Martin Jansen"/>
+    
+    <para>To make PEAR work on Windows, you simple need to add the
+    PEAR installation dir (e.g. c:\php\pear) to the include_path
+    directive in your php.ini.</para>
+    
+    <para>Note: There are some classes (like Schedule/At.php), that do
+    not work on Windows, because they use *nix specific commands.</para>
    </answer>
   </qandaentry>
  </qandaset>

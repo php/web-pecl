@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001 The PHP Group                                     |
+   | Copyright (c) 2001-2003 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -114,15 +114,6 @@ function auth_verify($user, $passwd)
         }
         $ok = false;
     }
-/*
-    if (!$ok) {
-        if (cvs_verify_password($user, $passwd)) {
-            // (cox) Why is that here?
-            //$auth_user = (object)array('handle' => $user);
-            $ok = true;
-        }
-    }
-*/
     if ($ok) {
         $auth_user->_readonly = true;
         return true;

@@ -82,8 +82,10 @@ $installer_packages = array(
     );
 $pfc_packages = array(
     'DB',
+    'Net_Socket',
+    'Net_SMTP',
     'Mail',
-    'XML_Parser',
+    'XML_Parser'
     );
 
 print "Welcome to go-pear!

@@ -218,14 +218,24 @@ do {
     // {{{ admin menu
     } else {
 
-        $bb = new BorderBox("Account Requests", "30%");
-        $requests = $dbh->getAssoc("SELECT handle,name,email FROM users ".
-                                   "WHERE registered = 0");
+        $bb = new BorderBox("Account Requests", "50%", "", 4, true);
+        $requests = $dbh->getAssoc("SELECT u.handle,u.name,n.note FROM users u ".
+                                   "LEFT JOIN notes n ON n.uid = u.handle ".
+                                   "WHERE u.registered = 0");
         if (is_array($requests) && sizeof($requests) > 0) {
+            $bb->headRow("Name", "Handle", "Status", "&nbsp;");
+
             foreach ($requests as $handle => $data) {
-                list($name, $email) = $data;
-                print "<a href=\"" . $_SERVER['PHP_SELF'] . "?acreq=$handle\">$name ($handle)</a><br />\n";
+                list($name, $note) = $data;
+                $rejected = (preg_match("/^Account rejected:/", $note));
+
+                $bb->plainRow($name,
+                              $handle,
+                              ($rejected ? "rejected" : "<font color=\"#FF0000\">open</font>"),
+                              "<a href=\"" . $_SERVER['PHP_SELF'] . "?acreq=$handle\">" . make_image("edit.gif") . "</a>"
+                              );
             }
+
         } else {
             print "No account requests.";
         }

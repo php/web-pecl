@@ -20,38 +20,33 @@
 
 // expected url vars: pacid package
 if (isset($_GET['package']) && empty($_GET['pacid'])) {
-    $pacid = $dbh->getOne("SELECT id FROM packages WHERE name = ?",
-                          array($_GET['package']));
+    $pacid = $_GET['package'];
 } else {
     $pacid = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
 }
 
-if ($pacid != (string)(int)$pacid) {
-    die('Invalid package id');
-}
-$name = package::info($pacid, 'name');
+$pkg = package::info($pacid);
 
+if (empty($pkg['name'])) {
+    response_header("Error");
+    PEAR::raiseError('Invalid package');
+    response_footer();
+    exit();
+}
+
+$name = $pkg['name'];
 response_header("$name Changelog");
 print '<p>' . make_link("package-info.php?pacid=$pacid", 'Return') . '</p>';
 $bb = new Borderbox("$name Changelog");
 
-$sql = "SELECT releases.version AS version, ".
-       "DATE_FORMAT(releases.releasedate, '%Y-%m-%d') AS releasedate, ".
-       "releases.releasenotes AS releasenotes, ".
-       "releases.state AS state ".
-       "FROM releases ".
-       "WHERE releases.package = $pacid ".
-       "ORDER BY releases.releasedate DESC";
-
-$res = $dbh->query($sql);
-
-if ($res->numRows() < 1) {
+if (count($pkg['releases']) == 0) {
     print "<center><p><i>No releases yet</i></p></center>";
 } else {
     print "<table width=\"100%\" border=\"0\">\n";
 
-    while ($res->fetchInto($row, DB_FETCHMODE_ASSOC)) {
-        extract($row);
+    foreach ($pkg['releases'] as $version => $release) {
+        extract($release);
+
         if (isset($_GET['release']) && $_GET['release'] == $version) {
             $bgcolor1 = "#dddddd";
             $bgcolor2 = "#eeeeee";

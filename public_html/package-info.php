@@ -66,7 +66,7 @@ $description = stripslashes($pkg['description']);
 $category    = $pkg['category'];
 
 // Accounts data
-$sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, m.role".
+$sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role".
                    " FROM maintains m, users u".
                    " WHERE m.package = $pacid".
                    " AND m.handle = u.handle");

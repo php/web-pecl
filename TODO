@@ -20,12 +20,9 @@ SHORT TERM:
 
 * xmlrpc server methods
 ** package.new
-** package.info
 ** package.publish (or maybe release.put or release.publish?)
-** package.list
 ** package.alter
 ** package.annotate
-** package.notes
 ** release.list
 ** release.get
 ** release.annotate

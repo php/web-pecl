@@ -18,12 +18,12 @@ response_header("PEAR Administration");
 // {{{ adding and deleting notes
 
 if (@$cmd == "Add note" && !empty($note) && !empty($key) && !empty($id)) {
-    add_note($key, $id, $note);
+    note::add($key, $id, $note);
     unset($cmd);
 }
 
 elseif (@$cmd == "Delete note" && !empty($id)) {
-    delete_note($id);
+    note::delete($id);
 }
 
 // }}}
@@ -33,7 +33,7 @@ elseif (@$cmd == "Delete note" && !empty($id)) {
 elseif (@$cmd == "Open Account" && !empty($uid)) {
     // another hack to remove the temporary "purpose" field
     // from the user's "userinfo"
-    if (open_account($uid)) {
+    if (user_activate($uid)) {
 	print "<p>Opened account $uid...</p>\n";
     }
 }
@@ -42,7 +42,7 @@ elseif (@$cmd == "Open Account" && !empty($uid)) {
 // {{{ reject account request
 
 elseif (@$cmd == "Reject Request" && !empty($uid)) {
-    if (reject_account_request($uid, $reason)) {
+    if (user_rejectrequest($uid, $reason)) {
 	print "<p>Rejected account request for $uid...</p>\n";
     }
 }
@@ -51,7 +51,7 @@ elseif (@$cmd == "Reject Request" && !empty($uid)) {
 // {{{ delete account request
 
 elseif (@$cmd == "Delete Request" && !empty($uid)) {
-    if (delete_account($uid)) {
+    if (user_delete($uid)) {
 	print "<p>Deleted account request for \"$uid\"...</p>";
     }
 }

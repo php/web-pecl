@@ -20,7 +20,7 @@ if (empty($catid)) {
             'name'   => $catname,
             'desc'   => $catdesc,
             'parent' => $catid);
-        add_category($data);
+        category::add($data);
     } elseif (isset($remove)) {
         // XXXX TODO: implement remove categories
     }

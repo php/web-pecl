@@ -32,7 +32,7 @@ do {
 	}
 
 	$dbh->expectError(DB_ERROR_ALREADY_EXISTS);
-	$pkg = add_package(array(
+	$pkg = package::add(array(
 	    'name'        => $name,
 	    'category'    => $category,
 	    'license'     => $license,

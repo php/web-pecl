@@ -43,7 +43,7 @@ foreach (explode("\n", $packages) as $line) {
     } else {
         $catid = $catmap[$category];
     }
-    add_package(array('name'     => $name,
+    package::add(array('name'     => $name,
                       'license'  => 'PEAR License',
                       'description' => '',
                       'summary'  => $summary,

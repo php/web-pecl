@@ -165,274 +165,331 @@ function renumber_visitations($debug = false)
 
 // }}}
 
-// {{{ add_category()
+// These classes correspond to tables and methods define operations on
+// each.  They are packaged into classes for easier xmlrpc
+// integration.
 
-/*
-$data = array(
-    'name'   => 'category name',
-    'desc'   => 'category description',
-    'parent' => 'category parent id'
-    );
-*/
-function add_category($data)
+class category
 {
-    global $dbh;
-    $name = $data['name'];
-    if (empty($name)) {
-        return PEAR::raiseError('no name given');
-    }
-    $desc   = (empty($data['desc'])) ? 'none' : $data['desc'];
-    $parent = (empty($data['parent'])) ? null : $data['parent'];
+    // {{{ category::add()
 
-    $sql = 'INSERT INTO categories (id, name, description, parent)'.
-           'VALUES (?, ?, ?, ?)';
-    $id  = $dbh->nextId('categories');
-    $sth = $dbh->prepare($sql);
-    if (DB::isError($sth)) {
-        return $sth;
-    }
-    $err = $dbh->execute($sth, array($id, $name, $desc, $parent));
-    if (DB::isError($err)) {
-        return $err;
-    }
-    $err = renumber_visitations();
-    if (PEAR::isError($err)) {
-        return $err;
-    }
-    return $id;
+    /*
+    $data = array(
+    	'name'   => 'category name',
+    	'desc'   => 'category description',
+    	'parent' => 'category parent id'
+    	);
+    */
+    function category::add($data)
+    {
+		global $dbh;
+		$name = $data['name'];
+		if (empty($name)) {
+			return PEAR::raiseError('no name given');
+		}
+		$desc   = (empty($data['desc'])) ? 'none' : $data['desc'];
+		$parent = (empty($data['parent'])) ? null : $data['parent'];
+		
+		$sql = 'INSERT INTO categories (id, name, description, parent)'.
+			 'VALUES (?, ?, ?, ?)';
+		$id  = $dbh->nextId('categories');
+		$sth = $dbh->prepare($sql);
+		if (DB::isError($sth)) {
+			return $sth;
+		}
+		$err = $dbh->execute($sth, array($id, $name, $desc, $parent));
+		if (DB::isError($err)) {
+			return $err;
+		}
+		$err = renumber_visitations();
+		if (PEAR::isError($err)) {
+			return $err;
+		}
+		return $id;
+	}
+	
+    // }}}
 }
 
-// }}}
-// {{{ add_package()
-
-// add a package, return new package id or PEAR error
-function add_package($data)
+class package
 {
-    global $dbh;
-    // name, category
-    // license, summary, description
-    // lead
-    extract($data);
-    if (empty($license)) {
-        $license = "PEAR License";
-    }
-    if (!empty($category) && (int)$category == 0) {
-        $category = $dbh->getOne("SELECT id FROM categories WHERE name = ?",
-                                 array($category));
-    }
-    if (empty($category)) {
-        return PEAR::raiseError("add_package: invalid `category' field");
-    }
-    if (empty($name)) {
-        return PEAR::raiseError("add_package: invalid `name' field");
-    }
-    $query = "INSERT INTO packages (id,name,category,license,summary,description) VALUES(?,?,?,?,?,?)";
-    $id = $dbh->nextId("packages");
-    if (DB::isError($sth = $dbh->prepare($query))) {
-        return $sth;
-    }
-    $err = $dbh->execute($sth, array($id, $name, $category, $license, $summary, $description));
-    if (DB::isError($err)) {
-        return $err;
-    }
-    if (isset($lead) && DB::isError($err = add_maintainer($id, $lead, 'lead'))) {
-        return $err;
-    }
-    if (DB::isError($err = renumber_visitations())) {
-        return $err;
-    }
-    return $id;
+    // {{{ package::add()
+
+    // add a package, return new package id or PEAR error
+    function package::add($data)
+    {
+		global $dbh;
+		// name, category
+		// license, summary, description
+		// lead
+		extract($data);
+		if (empty($license)) {
+			$license = "PEAR License";
+		}
+		if (!empty($category) && (int)$category == 0) {
+			$category = $dbh->getOne("SELECT id FROM categories WHERE name = ?",
+									 array($category));
+		}
+		if (empty($category)) {
+			return PEAR::raiseError("package::add: invalid `category' field");
+		}
+		if (empty($name)) {
+			return PEAR::raiseError("package::add: invalid `name' field");
+		}
+		$query = "INSERT INTO packages (id,name,category,license,summary,description) VALUES(?,?,?,?,?,?)";
+		$id = $dbh->nextId("packages");
+		if (DB::isError($sth = $dbh->prepare($query))) {
+			return $sth;
+		}
+		$err = $dbh->execute($sth, array($id, $name, $category, $license, $summary, $description));
+		if (DB::isError($err)) {
+			return $err;
+		}
+		if (isset($lead) && DB::isError($err = maintainer::add($id, $lead, 'lead'))) {
+			return $err;
+		}
+		if (DB::isError($err = renumber_visitations())) {
+			return $err;
+		}
+		return $id;
+	}
+
+    // }}}
+	// {{{ package::info()
+
+    function info($pkg)
+    {
+		global $dbh;
+		if ($pkg === (string)((int)$pkg)) {
+			$what = "id";
+		} else {
+			$what = "name";
+		}
+		$info =
+			 $dbh->getRow("SELECT p.id AS packageid, p.name AS name, ".
+						  "c.id AS categoryid, c.name AS category, ".
+						  "p.stablerelease AS stable, p.license AS license, ".
+						  "p.summary AS summary, ".
+						  "p.description AS description".
+						  " FROM packages p, categories c ".
+						  "WHERE c.id = p.category AND p.{$what} = ?",
+						  array($pkg), DB_FETCHMODE_ASSOC);
+		$info['releases'] =
+			 $dbh->getAssoc("SELECT version, id, doneby, license, summary, ".
+							"description, releasedate, releasenotes, maturity ".
+							"FROM releases WHERE package = ?", false,
+							array($info['packageid']));
+		$info['notes'] =
+			 $dbh->getAssoc("SELECT id, nby, ntime, note FROM notes ".
+							"WHERE pid = ?", false, array($info['packageid']));
+		return $info;
+	}
+
+    // }}}
 }
 
-// }}}
-// {{{ add_maintainer()
-
-function add_maintainer($package, $user, $role)
+class maintainer
 {
-    global $dbh;
-    $query = "INSERT INTO maintains VALUES(?,?,?)";
-    $sth = $dbh->prepare($query);
-    if (DB::isError($sth)) {
-        return $sth;
-    }
-    $err = $dbh->execute($sth, array($user, $package, $role));
-    if (DB::isError($err)) {
-        return $err;
-    }
-    return DB_OK;
+    // {{{ maintainer::add()
+
+    function add($package, $user, $role)
+    {
+		global $dbh;
+		$query = "INSERT INTO maintains VALUES(?,?,?)";
+		$sth = $dbh->prepare($query);
+		if (DB::isError($sth)) {
+			return $sth;
+		}
+		$err = $dbh->execute($sth, array($user, $package, $role));
+		if (DB::isError($err)) {
+			return $err;
+		}
+		return DB_OK;
+	}
+
+    // }}}
 }
-
-// }}}
-
-// {{{ get_recent_releases()
-
-function &get_recent_releases($n = 5) {
-    global $dbh;
-    $sth = $dbh->query("SELECT packages.name, packages.summary, ".
-                       "releases.version, releases.releasedate, ".
-                       "releases.releasenotes, releases.doneby ".
-                       "FROM packages, releases ".
-                       "WHERE packages.name = releases.package ".
-                       "ORDER BY releases.releasedate DESC");
-    $recent = array();
-    // XXX FIXME when DB gets rowlimit support
-    while ($n-- > 0 && ($err = $sth->fetchInto($row, DB_FETCHMODE_ASSOC)) === DB_OK) {
-        $recent[] = $row;
-    }
-    return $recent;
-}
-
-// }}}
-// {{{ release_upload()
-
-function release_upload($package, $version, $relnotes, &$tarball, $md5sum)
+	
+class release
 {
-    global $_return_value; // used by XML-RPC backend
-    global $dbh, $auth_user;
+	// {{{ release::getRecent()
 
-    // (2) verify that package exists
-    $test = $dbh->getOne("SELECT name FROM packages WHERE name = ?",
-                         array($package));
-    if (isset($_return_value)) return $_return_value;
-    if (empty($test)) {
-        return "no such package: $package";
-    }
+	function getRecent($n = 5)
+    {
+		global $dbh;
+		$sth = $dbh->query("SELECT packages.name AS name, ".
+						   "packages.summary AS summary, ".
+						   "releases.version AS version, ".
+						   "releases.releasedate AS releasedate, ".
+						   "releases.releasenotes AS releasenotes, ".
+						   "releases.doneby AS doneby ".
+						   "FROM packages, releases ".
+						   "WHERE packages.name = releases.package ".
+						   "ORDER BY releases.releasedate DESC");
+		$recent = array();
+		// XXX FIXME when DB gets rowlimit support
+		while ($n-- > 0 && ($err = $sth->fetchInto($row, DB_FETCHMODE_ASSOC)) === DB_OK) {
+			$recent[] = $row;
+		}
+		return $recent;
+	}
 
-    // (3) verify that version does not exist
-    $test = $dbh->getOne("SELECT version FROM releases ".
-                         "WHERE package = ? AND version = ?",
-                         array($package, $version));
-    if (isset($_return_value)) return $_return_value;
-    if ($test) {
-        return "already exists: $package $version";
-    }
+    // }}}
+    // {{{ release::upload()
 
-    // (4) store tar ball to temp file
-    $tempfile = sprintf("%s/%s%s-%s.tgz",
-                        PEAR_TARBALL_DIR, ".new.", $package, $version);
-    $file = sprintf("%s/%s-%s.tgz", PEAR_TARBALL_DIR, $package, $version);
-    $fp = @fopen($tempfile, "w");
-    if (!$fp) {
-        return "fopen failed: $php_errormsg";
-    }
-    fwrite($fp, $distfile);
-    fclose($fp);
-    // later: do lots of integrity checks on the tarball
-    if (!@rename($tempfile, $file)) {
-        return "rename failed: $php_errormsg";
-    }
+	function upload($package, $version, $relnotes, &$tarball, $md5sum)
+	{
+		global $_return_value; // used by XML-RPC backend
+		global $dbh, $auth_user;
 
-    // (5) verify MD5 checksum
-    ob_start();
-    readfile($file);
-    $data = ob_get_contents();
-    ob_end_clean();
-    if (md5($data) != $md5sum) {
-        return "bad md5 checksum";
-    }
+		// (2) verify that package exists
+		$test = $dbh->getOne("SELECT name FROM packages WHERE name = ?",
+							 array($package));
+		if (isset($_return_value)) return $_return_value;
+		if (empty($test)) {
+			return "no such package: $package";
+		}
 
-    // Update releases table
-    $query = "INSERT INTO releases VALUES(?,?,?,?,?,?,?)";
-    $sth = $dbh->prepare($query);
-    $dbh->execute($sth, array($package, $version, $auth_user->handle,
-                              gmdate('Y-m-d H:i'), $relnotes, $md5sum,
-                              $file));
-    if (isset($_return_value)) return $_return_value;
+		// (3) verify that version does not exist
+		$test = $dbh->getOne("SELECT version FROM releases ".
+							 "WHERE package = ? AND version = ?",
+							 array($package, $version));
+		if (isset($_return_value)) return $_return_value;
+		if ($test) {
+			return "already exists: $package $version";
+		}
 
+		// (4) store tar ball to temp file
+		$tempfile = sprintf("%s/%s%s-%s.tgz",
+							PEAR_TARBALL_DIR, ".new.", $package, $version);
+		$file = sprintf("%s/%s-%s.tgz", PEAR_TARBALL_DIR, $package, $version);
+		$fp = @fopen($tempfile, "w");
+		if (!$fp) {
+			return "fopen failed: $php_errormsg";
+		}
+		fwrite($fp, $distfile);
+		fclose($fp);
+		// later: do lots of integrity checks on the tarball
+		if (!@rename($tempfile, $file)) {
+			return "rename failed: $php_errormsg";
+		}
+
+		// (5) verify MD5 checksum
+		ob_start();
+		readfile($file);
+		$data = ob_get_contents();
+		ob_end_clean();
+		if (md5($data) != $md5sum) {
+			return "bad md5 checksum";
+		}
+
+		// Update releases table
+		$query = "INSERT INTO releases VALUES(?,?,?,?,?,?,?)";
+		$sth = $dbh->prepare($query);
+		$dbh->execute($sth, array($package, $version, $auth_user->handle,
+		                          gmdate('Y-m-d H:i'), $relnotes, $md5sum, $file));
+		if (isset($_return_value)) return $_return_value;
+	}
+
+    // }}}
 }
 
-// }}}
-
-// {{{ add_note()
-
-function add_note($key, $value, $note)
+class note
 {
-    global $dbh, $PHP_AUTH_USER;
-    $nby = $PHP_AUTH_USER;
-    $nid = $dbh->nextId("notes");
-    $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
-                          "VALUES(?,?,?,?,?)");
-    return $dbh->execute($stmt, array($nid, $value, $nby,
-                                      gmdate('Y-m-d H:i'), $note));
+    // {{{ note::add()
+
+    function add($key, $value, $note)
+    {
+		global $dbh, $PHP_AUTH_USER;
+		$nby = $PHP_AUTH_USER;
+		$nid = $dbh->nextId("notes");
+		$stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
+							  "VALUES(?,?,?,?,?)");
+		return $dbh->execute($stmt, array($nid, $value, $nby,
+		                     gmdate('Y-m-d H:i'), $note));
+	}
+
+    // }}}
+    // {{{ note::delete()
+
+    function delete($id)
+    {
+		global $dbh;
+		$id = (int)$id;
+		return $dbh->query("DELETE FROM notes WHERE id = $id");
+	}
+
+    // }}}
+    // {{{ note::deleteAll()
+
+    function note::deleteall($key, $value)
+    {
+        global $dbh;
+		return $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
+	}
+
+    // }}}
 }
 
-// }}}
-// {{{ delete_note()
-
-function delete_note($id)
+class user
 {
-    global $dbh;
-    $id = (int)$id;
-    return $dbh->query("DELETE FROM notes WHERE id = $id");
+    // {{{ user::delete()
+
+    function delete($uid)
+    {
+		global $dbh;
+		note::deleteall("uid", $uid);
+		$dbh->query('DELETE FROM users WHERE handle = '. $dbh->quote($uid));
+		return ($dbh->affectedRows() > 0);
+	}
+
+    // }}}
+    // {{{ user::rejectRequest()
+
+    function rejectrequest($uid, $reason)
+    {
+		global $PHP_AUTH_USER, $dbh;
+		list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
+									array($uid));
+		note::add("uid", $uid, "Account rejected: $reason");
+		$msg = "Your PEAR account request was rejected by $PHP_AUTH_USER:\n".
+			 "$reason\n";
+		$xhdr = "From: $PHP_AUTH_USER@php.net";
+		mail($email, "Your PEAR Account Request", $msg, $xhdr);
+		return true;
+	}
+
+    // }}}
+    // {{{ user::activate()
+
+    function activate($uid)
+    {
+		global $PHP_AUTH_USER, $dbh;
+		
+		$user =& new PEAR_User($dbh, $uid);
+		if (@$user->registered) {
+			return false;
+		}
+		@$arr = unserialize($user->userinfo);
+		note::deleteall("uid", $uid);
+		$user->set('registered', 1);
+		if (is_array($arr)) {
+			$user->set('userinfo', $arr[1]);
+		}
+		$user->set('created', gmdate('Y-m-d H:i'));
+		$user->set('createdby', $PHP_AUTH_USER);
+		$user->store();
+		note::add("uid", $uid, "Account opened");
+		$msg = "Your PEAR account request has been opened.\n".
+			 "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
+			 "the top-right menu.\n";
+		$xhdr = "From: $PHP_AUTH_USER@php.net";
+		mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
+		return true;
+	}
+
+    // }}}
 }
-
-// }}}
-// {{{ delete_all_notes()
-
-function delete_all_notes($key, $value)
-{
-    global $dbh;
-    return $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
-}
-
-// }}}
-
-// {{{ delete_account()
-
-function delete_account($uid)
-{
-    global $dbh;
-    delete_all_notes("uid", $uid);
-    $dbh->query('DELETE FROM users WHERE handle = '. $dbh->quote($uid));
-    return ($dbh->affectedRows() > 0);
-}
-
-// }}}
-// {{{ reject_account_request()
-
-function reject_account_request($uid, $reason)
-{
-    global $PHP_AUTH_USER, $dbh;
-    list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
-                                array($uid));
-    add_note("uid", $uid, "Account rejected: $reason");
-    $msg = "Your PEAR account request was rejected by $PHP_AUTH_USER:\n".
-           "$reason\n";
-    $xhdr = "From: $PHP_AUTH_USER@php.net";
-    mail($email, "Your PEAR Account Request", $msg, $xhdr);
-    return true;
-}
-
-// }}}
-// {{{ open_account()
-
-function open_account($uid)
-{
-    global $PHP_AUTH_USER, $dbh;
-
-    $user =& new PEAR_User($dbh, $uid);
-    if (@$user->registered) {
-        return false;
-    }
-    @$arr = unserialize($user->userinfo);
-    delete_all_notes("uid", $uid);
-    $user->set('registered', 1);
-    if (is_array($arr)) {
-        $user->set('userinfo', $arr[1]);
-    }
-    $user->set('created', gmdate('Y-m-d H:i'));
-    $user->set('createdby', $PHP_AUTH_USER);
-    $user->store();
-    add_note("uid", $uid, "Account opened");
-    $msg = "Your PEAR account request has been opened.\n".
-           "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
-           "the top-right menu.\n";
-    $xhdr = "From: $PHP_AUTH_USER@php.net";
-    mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
-    return true;
-}
-
-// }}}
 
 // {{{ mail_pear_admins()
 

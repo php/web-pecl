@@ -35,7 +35,7 @@ if (DEVBOX) {
     menu_link("Browse Packages", "packages.php");
     menu_link("Want to contribute?", "signup.php");
     menu_link("Upload Release", "release-upload.php");
-    $recent = get_recent_releases();
+    $recent = release::getRecent();
     if (@sizeof($recent) > 0) {
         print "<b>Recent Releases</b>\n";
         print "<table>";

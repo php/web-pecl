@@ -10,7 +10,7 @@ if (empty($domain)) {
     $package_title = "Package Browser: $domain";
 }
 
-$sth = $dbh->query("SELECT packages.name, packages.leftvisit, packages.rightvisit, packages.placeholder, releases.release FROM packages LEFT JOIN releases ON packages.name = releases.package WHERE $package_where");
+$sth = $dbh->query("SELECT packages.name, packages.leftvisit, packages.rightvisit, packages.placeholder, releases.version FROM packages LEFT JOIN releases ON packages.name = releases.package WHERE $package_where");
 
 //$sth = $dbh->query("SELECT * FROM packages WHERE $package_where");
 
@@ -49,9 +49,9 @@ while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC) === DB_OK) {
         print "<A HREF=\"pkginfo.php?package=$name\">$name</A>";
     }
     print "</TD>\n  <TD BGCOLOR=\"$bg2\">";
-    if ($release) {
-        print "<A HREF=\"pkginfo.php?package=$name&release=$release\">";
-        print "$release</A>";
+    if ($version) {
+        print "<A HREF=\"pkginfo.php?package=$name&release=$version\">";
+        print "$version</A>";
     } else {
         print "&nbsp;";
     }

@@ -333,12 +333,6 @@ function localRedirect($url)
 	exit;
 }
 
-#function localRedirect($file)
-#{
-#    $location = "http://" . $GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST'] . "/" . $file;
-#    header("Location: " . $location);
-#}
-
 function displayed_user_email($user)
 {
     return "<a href=\"mailto:$user@php.net\">$user@php.net</a>";

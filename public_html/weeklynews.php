@@ -50,7 +50,8 @@ function show_languages($visitlang = "") {
         'fr'    => 'French',
         'de'    => 'German',
         'pt_BR' => 'Brazilian Portuguese',
-	'pl'	=> 'Polish'
+        'pl'	=> 'Polish',
+        'es'	=> 'Spanish'
     );
     echo getText("View In"). ' :: ';
     $page = "";
@@ -180,7 +181,8 @@ if (preg_match("/^\/weeklynews.php\/([a-z_]{2,5})/i",$_SERVER['REQUEST_URI'],$ar
         "de"    => "de",
         "fr"    => "fr",
         "pt_BR" => "pt_BR",
-        "pl"    => "pl"
+        "pl"    => "pl",
+        "es"    => "es"
     );
 
     $iso_maps = array(
@@ -188,8 +190,9 @@ if (preg_match("/^\/weeklynews.php\/([a-z_]{2,5})/i",$_SERVER['REQUEST_URI'],$ar
         "de"        => "iso-8859-1",
         "fr"        => "iso-8859-1",
         "pt_BR"     => "iso-8859-1",
-        "pl"        => "iso-8859-2"
-    );    
+        "pl"        => "iso-8859-2",
+        "es"        => "iso-8859-2"
+    );
 
     $show_lang = $args[1];
     $locale = $lang_maps[$args[1]];

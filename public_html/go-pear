@@ -402,14 +402,30 @@ Press Enter to continue: ";
     }
 }
 
-$pear_cmd = which('pear');
-$in_path = !empty($pear_cmd);
-if (empty($pear_cmd)) {
-    $pear_cmd = "$bin_dir/pear";
+$pear_cmd = $bin_dir . DIRECTORY_SEPARATOR . 'pear';
+
+// check that the installed pear and the one in tha path are the same (if any)
+$pear_old = which('pear', $bin_dir);
+if ($pear_old && $pear_old != $pear_cmd) {
+    // check if it is a link or symlink
+    $islink = WINDOWS ? is_link($pear_old) : false;
+    if ($islink && readlink($pear_old) != $pear_cmd) {
+        print "\n** WARNING! The link $pear_old does not point to the " .
+              "installed $pear_cmd\n";
+    } elseif (is_writable($pear_old)) {
+        rename($pear_old, "{$pear_old}_old");
+        print "\n** WARNING! Backed up old pear to {$pear_old}_old\n";
+    } else {
+        print "\n** WARNING! Old version found at $pear_old, please remove it or ".
+              "be sure to use the new $pear_cmd command\n";
+    }
 }
 
-print "The 'pear' command is now at your service at $pear_cmd\n";
-if (!$in_path) {
+print "\nThe 'pear' command is now at your service at $pear_cmd\n";
+
+// Alert the user if the pear cmd is not in PATH
+$old_dir = $pear_old ? dirname($pear_old) : false;
+if (!which('pear', $old_dir)) {
     print "
 ** The 'pear' command is not currently in your PATH, so you need to
 ** use '$pear_cmd' until you have added
@@ -417,6 +433,7 @@ if (!$in_path) {
 
 ";
 }
+
 print "Run it without parameters to see the available actions, try 'pear list'
 to see what packages are installed, or 'pear help' for help.
 
@@ -494,7 +511,7 @@ function download_url($url, $destfile = null, $proxy = null)
 // }}}
 // {{{ which()
 
-function which($program)
+function which($program, $dont_search_in = false)
 {
     if (WINDOWS) {
         if (my_env('Path')) {
@@ -502,8 +519,14 @@ function which($program)
         } else {
             $dirs = explode(';', my_env('PATH'));
         }
+        if ($dont_search_in &&
+            ($key = array_search($dont_search_in, $dirs)) !== false)
+        {
+            unset($dirs[$key]);
+        }
+
         foreach ($dirs as $dir) {
-            $tmp = "$dir/$program";
+            $tmp = "$dir\\$program";
             if (file_exists($ret = "$tmp.exe") ||
                 file_exists($ret = "$tmp.com") ||
                 file_exists($ret = "$tmp.bat") ||
@@ -513,6 +536,11 @@ function which($program)
         }
     } else {
         $dirs = explode(':', my_env('PATH'));
+        if ($dont_search_in &&
+            ($key = array_search($dont_search_in, $dirs)) !== false)
+        {
+            unset($dirs[$key]);
+        }
         foreach ($dirs as $dir) {
             if (is_executable("$dir/$program")) {
                 return "$dir/$program";

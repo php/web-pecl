@@ -14,17 +14,22 @@ print "<A HREF=\"add-author.php\">NEW</A> \n";
 
 print "<P>\n";
 
-print "<TABLE BORDER=1>\n";
-print " <TR>\n";
-print "  <TH>Handle</TH>\n";
-print "  <TH>Name</TH>\n";
-print "  <TH>Email</TH>\n";
-print "  <TH>Homepage</TH>\n";
+print "<TABLE BORDER=0 CELLSPACING=1 CELLPADDING=3>\n";
+print " <TR BGCOLOR=\"$pear_green\">\n";
+print "  <TH><FONT COLOR=\"#ffffff\">Handle</FONT></TH>\n";
+print "  <TH><FONT COLOR=\"#ffffff\">Name</FONT></TH>\n";
+print "  <TH><FONT COLOR=\"#ffffff\">Email</FONT></TH>\n";
+print "  <TH><FONT COLOR=\"#ffffff\">Homepage</FONT></TH>\n";
 print " </TR>\n";
 
+$rowno = 0;
 while (is_array($row = $sth->fetchRow(DB_GETMODE_ASSOC))) {
     extract($row);
-    print " <TR>\n";
+    if (++$rowno % 2) {
+	print " <TR>\n";
+    } else {
+	print " <TR BGCOLOR=\"#e8e8e8\">\n";
+    }
     print "  <TD>$handle</TD>\n";
     print "  <TD>$name</TD>\n";
     if ($showemail) {

@@ -3,17 +3,33 @@
 require_once "DB.php";
 require_once "DB/storage.php";
 
+$pear_green = "#00b03b";
+
 $DSN = "mysql://pear@localhost/pear";
 
 function pageHeader($title = "PEAR: PHP Extension and Add-on Repository",
 		    $style = false)
 {
-    $GLOBALS['_style'] = $style;
+    global $_style, $pear_green;
+    $_style = $style;
     print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n";
     print "<HTML><HEAD>\n";
     print " <TITLE>$title</TITLE>\n";
     print "</HEAD>\n";
     print "<BODY BGCOLOR=\"#ffffff\" TEXT=\"#000000\">\n";
+    print "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=\"100%\">\n";
+    print "<TR BGCOLOR=\"$pear_green\"><TD ALIGN=\"left\">";
+    print "<IMG SRC=\"/gifs/pearsmall.gif\" WIDTH=96 HEIGHT=48 ALT=\"\">";
+    print "</TD><TD ALIGN=\"left\" VALIGN=\"top\">";
+    print "<FONT COLOR=\"#ffffff\" SIZE=\"-1\">";
+    print "&nbsp;login<BR>";
+    print "&nbsp;foo<BR>";
+    print "&nbsp;bar<BR>";
+    print "</TD><TD ALIGN=\"center\" VALIGN=\"middle\" WIDTH=\"100%\">";
+    print "<FONT COLOR=\"#ffffff\" SIZE=\"+1\"><B>";
+    print $title;
+    print "</B></FONT></TD></TR></TABLE>\n";
+    print "<BR><BR>\n";
     register_shutdown_function("pageFooter");
 }
 
@@ -87,6 +103,10 @@ class Author extends DB_storage
 	    $this->setup($handle);
 	}
     }
+}
+
+function menuLink($text, $url) {
+    print "<H3><A HREF=\"$url\"><IMG ALIGN=\"left\" SRC=\"/gifs/onlypear.gif\" WIDTH=19 HEIGHT=24 BORDER=0>$text</A></H3>\n";
 }
 
 function authReject($realm, $login_file = false)

@@ -20,14 +20,16 @@
   </releaseinfo>
   <revhistory>
    <revision>
-    <revnumber>$Revision: 1.6 $</revnumber>
-    <date>$Date: 2000-07-28 21:04:44 $</date>
+    <revnumber>$Revision: 1.7 $</revnumber>
+    <date>$Date: 2000-08-01 11:00:35 $</date>
     <authorinitials>$Author: ssb $</authorinitials>
    </revision>
   </revhistory>
  </artheader>
  
- <simpara>PEAR is dedicated to Malin Bakken, born 1999-11-21.</simpara>
+ <simpara>PEAR is dedicated to <ulink
+ url="http://www.pvv.org/~ssb/malin/">Malin Bakken</ulink>, born
+  1999-11-21.</simpara>
 
  <section id="pear-whatis">
   <title>What is PEAR?</title>

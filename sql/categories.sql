@@ -4,7 +4,7 @@ CREATE TABLE categories (
        name	      VARCHAR(80) NOT NULL,
        summary	      TEXT,
        description    TEXT,
-       npackages      INTEGER,
+       npackages      INTEGER DEFAULT 0,
        pkg_left	      INTEGER,
        pkg_right      INTEGER,
        cat_left	      INTEGER,

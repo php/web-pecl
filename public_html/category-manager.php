@@ -30,7 +30,7 @@ if (empty($catid)) {
 <form action="<?php echo $GLOBALS['PHP_SELF'] . "?catid=$catid&insert=1"; ?>" method="post">
 <table border="0" cellpadding="2" cellspacing="1" width="100%">
 <tr>
-    <td rowspan="3" width="30%"><?php print get_categories_menu('tree');?></td>
+    <td rowspan="4" width="30%"><?php print get_categories_menu('tree');?></td>
     <td><h3>You are browsing category:</h3><br><?php print get_categories_menu('urhere');?>
     </td>
 </tr>
@@ -53,11 +53,17 @@ if (empty($catid)) {
 
     </td>
 </tr>
+<?php if (isset($catid)) { ?>
 </tr>
     <td><b>Delete category: <?php print $name;?></b><br>
-    <font color="red">(warning it will delete all subcategories and all packages!)</font>
+    <font color="red">(Warning: This will delete <b>all</b> subcategories and <b>all</b> packages!)</font>
     </td>
 </tr>
+</tr>
+    <td><b><?php print_link("/packages.php?catpid=" . $catid . "&catname=" . $name, "List"); ?>
+    all packages from this category.</b></td>
+</tr>
+<?php } ?>
 </table>
 </form>
 <?php

@@ -89,7 +89,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
- <title>PEAR :: <?php echo $title; ?></title>
+ <title>PECL :: <?php echo $title; ?></title>
  <link rel="shortcut icon" href="/gifs/favicon.ico" />
  <link rel="stylesheet" href="/style.css" />
  <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/feeds/latest.rss" />

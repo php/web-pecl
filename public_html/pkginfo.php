@@ -1,6 +1,11 @@
 <?php
 
-response_header("PEAR :: Package :: $package");
+response_header("Package :: $package");
+
+$dbh = DB::Connect("mysql://pear:pear@localhost/pear");
+if (DB::isError($dbh)) {
+    die("DB::Factory failed: ".DB::errorMessage($dbh)."<BR>\n");
+}
 
 $descriptions = array(
     "name" => "Package Name",

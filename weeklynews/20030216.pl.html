@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- $Id$ -->
+<html>
+<head>
+  <title>x</title>
+  <META http-equiv=content-type content="text/html; charset=iso-8859-2">
+</head>
+<body>
+<p>
+ <i>
+  <small>
+   autorzy: 
+  <a href="http://www.appelsiini.net/%7Etuupola/">Mika
+Tuupola</a> (tuupola@appelsiini.net),    <a
+ href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a>
+(paj@pearfr.org),
+tłumaczenie: Robert Janeczek (rashid@php.net)
+  </small>
+ </i>
+</p>
+<p>
+</p>
+ Ten tydzień w krainie PEAR był dosyć pracowity - 9 nowych wydań, 
+ z których 2 to zupełnie nowe pakiety. Całkowita liczba dostępnych
+ pakietów wynosi obecnie 151. Największą kategorią jest Networking 
+ zawierająca 27 pakietów. Kolejną po Networking najliczniejszą
+ kategorią jest HTML, w niej 15 elementów, oraz Database - 11. Mimo
+ podania tutaj tych liczb nie zapominamy, że jakość jest ważniejsza
+ od ilości.
+<hr />
+<!-- SECTION <a name="1"></a>
+<h2>Package of the week</h2>
+<h3></h3>
+<h3></h3>
+<p>
+</p>
+-->
+
+<h2>W prasie</h2>
+<!-- SECTION --><a name="2"></a>
+<h3></h3>
+<p>
+ Nie pojawiło się nic specjalnie interesującego w tym tygodniu.
+</p>
+
+<hr>
+<p>
+Jeśli ktokolwiek z was wyczyta gdzieś artykuły, czy newsy o PEAR
+- chętnie umieścimy odnośniki do nich w weekly news, wystarczy nam 
+je podesłać (<a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>).
+</p>
+
+<hr>
+
+<h2>Skrót z PEAR-DEV</h2>
+
+<!-- SECTION --><a name="3"></a>
+<h3>Rozwój PEAR DB i MDB</h3>
+<p>
+ Lukas Smith niepokoi się tym czy i jak rozszerzenia dla PEAR DB powinny
+ być przenoszone do MDB. Jeśli MDB ma zostać standardową warstwą
+ abstrakcji baz danych w PEAR, to musi zapewniać pełną kompatybilność
+ wsteczną z DB. Jeśli nie, to można skorzystać z nieco większej
+ dowolności przy tworzeniu MDB. Wciąż nie ma jasnej odpowiedzi
+ w kwestii tego, jaka będzie zależność między DB a MDB - czy
+ MDB powinno kiedyś zastąpić DB czy też ich rozwój powinien 
+ być kontynuowany osobno.
+</p>
+<!-- SECTION --><a name="4"></a>
+<h3>Utrzymanie wysokiej jakości</h3>
+<p>
+ W kolejnym mailu Lukas zwrócił uwagę, że obecnie trudno jest
+ nadąrzyć za propozycjami pakietów, ich akceptacją i powodami
+ takiego działania. Dodatkowo wydaje się, że obniżamy trochę
+ nasze wymagania, bo nie wszystkie pakiety są wysokiej jakości.
+</p>
+<p>
+ Rozwiązaniem problemu pakietów i ich akceptacji jest stary pomysł
+ działu "New Package Proposal" na stronie PEAR. Nowe pakiety byłyby
+ proponowane i poddawane pod głosowanie za jego pośrednictwem. 
+ Obecnie system pracuje, ale mogą być problemy kiedy dołączy
+ większa ilość programistów.
+</p>
+<p>
+ W sprawie jakości to programiści PEAR zadecydują czy preferować
+ jakość czy ilość.
+</p>
+<!-- SECTION --><a name="5"></a>
+<h3></h3>
+<p>
+</p>
+
+<!--
+<h3>Bugs and Fixes</h3>
+<p>
+  Thanks to these people for spotting and fixing some bugs:
+</p>
+<hr>
+-->
+
+<h2>Nowe i proponowane pakiety</h2>
+<!-- SECTION --><a name="5"></a>
+<h3>HTML_PageHandler</h3>
+<p>
+ Wolfram Kriesing zaproponował klasę HTML_PageHandler, która
+ obsługuje podstawowe zadania obsługi form. Klasa jest 
+ nakładką na DB_QueryTool i korzysta z jej metod do zadań
+ takich jak zapisywanie, usuwanie czy edycja danych.
+</p>
+<!-- SECTION --><a name="6"></a>
+<h3>HTTP_Session</h3>
+<p>
+ Alexander Radivanovich zaproponował HTTP_Session,  klasę
+ która jest nakładką na natywne mechazmy obsługi sesji, do 
+ tego zawierta obiektowe API do przechowywania w bazie danych
+ sesji. Pierwsze wydanie już jest dostępne.
+</p>
+<!-- SECTION --><a name="7"></a>
+<h3>Net_IMAP</h3>
+<p>
+ Damian Alejandro Fernandez Sosa tworzy użyteczną implementację
+ protokołu IMAP, która daje dostęp do IMAP osobom, które
+ nie mają wkompilowanego odpowiedniego modułu.
+</p>
+
+<!-- SECTION --><a name="8"></a>
+<h3>Crypt_DES</h3>
+<p>
+ Tim Thorpe zaproponował pakiet, który implementuje algorytm DES, 
+ zarówno natywny procesor jak i nakładkę na libmcrypt, jeśli
+ obsługa jest wkompilowana.
+</p>
+
+<h2>Rozwój</h2>
+<p>
+  uch w CVS w tym tygodniu odbywał się w następujących pakietach:
+  HTML_Form, HTML_Template_Xipe, Config, DB_QueryTool, 
+  HTTP_WebDAV_Server, Image_GraphViz, PEC::uuid, Auth_SAP,
+  PEAR, PECL::ntuser, PECL::radius, Net_Ping, Tree, 
+  HTML_QuickForm, Config, HTML_Template_Flexy, 
+  HTML_Template_PHPLIB, Auth_SASL, Perm_LiveUser, PECL::cybercash,
+  DB_DataObject, Net_Ident, Spreadsheet_Excel_Writer, 
+  Image_GIS, DB, HTML_Form, File_HtAccess, Date, PECL::namazu
+</p>
+
+</body>
+</html>

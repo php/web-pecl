@@ -24,11 +24,6 @@ Returns the html needed to print in the category selection page
 */
 function initialize_categories_menu () {
     global $dbh, $tree, $menu;
-    if (empty($dbh)) {
-        include_once 'DB.php';
-        PEAR::setErrorHandling(PEAR_ERROR_DIE);
-        $dbh = DB::connect('mysql://pear:pear@localhost/pear');
-    }
 
     $sth = $dbh->query('SELECT id, name, parent, cat_left, cat_right
                         FROM categories ORDER BY name');

@@ -188,14 +188,14 @@ function commonHeader($title) {
       <?php
 
 	if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER'])) {
-		print_link('/logout.php', 'logout', false, 'class="menuBlack"');
+		print_link('/logout.php', 'LOGOUT', false, 'class="menuBlack"');
 	} else {
-		print_link('/login.php', 'login', false, 'class="menuBlack"');
+		print_link('/login.php', 'LOGIN', false, 'class="menuBlack"');
 	}
 	echo delim();
-	print_link('http://php.net/manual/en/pear.php', 'documentation', false, 'class="menuBlack"');
+	print_link('http://php.net/manual/en/pear.php', 'DOCS', false, 'class="menuBlack"');
 	echo delim();
-	print_link('/support.php','support',false,'class="menuBlack"');
+	print_link('/support.php','SUPPORT',false,'class="menuBlack"');
       ?>&nbsp;<br>
       <?php spacer(2,2); ?><br>
     </td>

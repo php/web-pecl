@@ -25,8 +25,8 @@ mailing list]
 
 Now to the use-cases:
 
-1. Programmer who is new to PEAR wants to register himself and publish his
-   brand new "Money_Fast" package:
+1. (done) Programmer who is new to PEAR wants to register himself and
+   publish his brand new "Money_Fast" package:
     1. applies for PEAR account
     2. gets email when account is open
     3. proceed to use-case 2

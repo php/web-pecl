@@ -78,7 +78,7 @@ while ($sth->fetchInto($row)) {
     }
     $accounts .= " ({$row['role']})";
     if (!empty($row['wishlist'])) {
-        $accounts .= " [<a href=\"wishlist.php?handle={$row['handle']}\">wishlist</a>]";
+        $accounts .= " [<a href=\"wishlist.php/{$row['handle']}\">wishlist</a>]";
     }
     $accounts .= " [<a href=\"account-info.php?handle={$row['handle']}\">details</a>]";
     $accounts .= "</td></tr>\n";

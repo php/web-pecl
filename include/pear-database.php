@@ -22,6 +22,7 @@
 
 require_once 'DB/storage.php';
 require_once 'PEAR/Common.php';
+require_once 'HTTP.php';
 
 // {{{ validate()
 
@@ -820,6 +821,7 @@ class release
 
             release::logDownload($package_id, $log_release, $log_file);
 
+            header('Last-modified: '.HTTP::date(filemtime($path)));
             header('Content-type: application/octet-stream');
             if ($uncompress) {
                 $tarname = preg_replace('/\.tgz$/', '.tar', $basename);

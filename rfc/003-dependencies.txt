@@ -1,0 +1,68 @@
+Title:         Dependencies in PEAR Packages
+Version:       $Revision$
+Status:        proposal
+Maintainer:    Stig S. Bakken <ssb@fast.no>
+Created:       2001-08-28
+Modified:      2001-08-28
+
+1. Introduction
+
+This document describes how PEAR should manage dependencies between
+packages, or between packages and external components, operating
+environment and other factors.
+
+2. Dependency Phases
+
+There are three phases where dependencies need to be considered:
+
+ * When a package is built (for packages with C code)
+
+ * When a package is installed
+
+ * When a package is used
+
+When building a package, there may be dependencies to external
+libraries, to a certain PHP version or maybe to a specific operating
+system or web server.  If the dependencies in this phase are not
+satisfied, we'll never get to the next phase.
+
+When installing a package, there may also be dependencies to external
+libraries, especially if it contains a C extension linked with a
+shared library.  The most typical install-time dependencies are to
+have another package installed, to have a bundled PHP feature enabled
+or to have a specific or minimum PHP version.
+
+Finally there are run-time dependencies.  Hopefully everything should
+be working fine when we get here, but there may be some code that
+relies on configuration options that may be changed run-time, and the
+installer has no way of checking that.  Run-time dependencies should
+be handled much more gracefully than build/install-time ones, applying
+workarounds wherever possible.  Php.ini options are typical examples
+of run-time dependencies: whether the URL fopen wrappers are enabled,
+whether PHP is running in safe mode, and so on.
+
+3. Dependency Types
+
+These are the different types of dependencies we would like to
+support:
+
+ * another PEAR package installed
+ * specific version of another PEAR package installed
+ * minimum version of another PEAR package installed
+ * bundled PHP extension available
+ * specific version of PHP with bundled extension available
+ * minimum version of PHP with bundled extension available
+ * specific version of PHP
+ * minimum version of PHP
+ * external program
+ * external library for linking
+ * external runtime library
+ * operating system
+ * specific version of operating system
+ * minimum version of operating system
+ * web server
+ * specific version of web server
+ * minimum version of web server
+ * SAPI backend
+ * specific version of PHP with SAPI backend
+ * minimum version of PHP with SAPI backend

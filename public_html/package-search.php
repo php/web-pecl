@@ -77,19 +77,19 @@ if (!empty($_GET)) {
     if (!empty($_GET['pkg_name'])) {
         $searchwords = preg_split('/\s+/', $_GET['pkg_name']);
         for ($i=0; $i<count($searchwords); $i++) {
-            $searchwords[$i] = sprintf("name LIKE '%%%s%%'", addslashes($searchwords[$i]));
+            $searchwords[$i] = sprintf("name LIKE %s", $dbh->quote('%' . $searchwords[$i] . '%'));
         }
         $where[] = '(' . implode($bool, $searchwords) . ')';
     }
     
     // Build maintainer part of query
     if (!empty($_GET['pkg_maintainer'])) {
-        $where[] = sprintf("handle LIKE '%%%s%%'", addslashes($_GET['pkg_maintainer']));
+        $where[] = sprintf("handle LIKE %s", $dbh->quote('%' . $_GET['pkg_maintainer'] . '%'));
     }
     
     // Build category part of query
     if (!empty($_GET['pkg_category'])) {
-        $where[] = sprintf("category = '%s'", addslashes($_GET['pkg_category']));
+        $where[] = sprintf("category = %s", $dbh->quote($_GET['pkg_category']));
     }
         
     /**
@@ -145,6 +145,7 @@ if (!empty($_GET)) {
                     WHERE p.id = m.package " . $where . "
                  GROUP BY p.id
                  ORDER BY p.name";
+
     $result = $dbh->query($sql);
 
     // Run through any results

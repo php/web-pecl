@@ -1669,85 +1669,87 @@ class release
                 $deps['required']['package'] = array($deps['required']['package']);
             }
             foreach ($deps['required']['package'] as $pkgdep) {
-                if ($pkgdep['channel'] == 'pear.php.net' && strtolower($pkgdep['package']) == 'pear') {
+                if ($pkgdep['channel'] == 'pear.php.net' && strtolower($pkgdep['name']) == 'pear') {
                     $pearused = true;
                 }
             }
         }
-        foreach ($storedeps as $dep) {
-            $prob = array();
-
-            if (empty($dep['type']) ||
-                !in_array($dep['type'], $_PEAR_Common_dependency_types))
-            {
-                $prob[] = 'type';
-            }
-
-            if (empty($dep['name'])) {
-                /*
-                 * NOTE from pajoye in ver 1.166:
-                 * This works for now.
-                 * This would require a 'cleaner' InfoFromXXX
-                 * which may return a defined set of data using
-                 * default values if required.
-                 */
-                if (strtolower($dep['type']) == 'php') {
-                    $dep['name'] = 'PHP';
-                } else {
-                    $prob[] = 'name';
+        if (is_array($storedeps)) {
+            foreach ($storedeps as $dep) {
+                $prob = array();
+    
+                if (empty($dep['type']) ||
+                    !in_array($dep['type'], $_PEAR_Common_dependency_types))
+                {
+                    $prob[] = 'type';
                 }
-            } elseif (strtolower($dep['name']) == 'pear') {
-                if (!$pearused && $compatible) {
-                    // there is no need for a PEAR dependency here
-                    continue;
+    
+                if (empty($dep['name'])) {
+                    /*
+                     * NOTE from pajoye in ver 1.166:
+                     * This works for now.
+                     * This would require a 'cleaner' InfoFromXXX
+                     * which may return a defined set of data using
+                     * default values if required.
+                     */
+                    if (strtolower($dep['type']) == 'php') {
+                        $dep['name'] = 'PHP';
+                    } else {
+                        $prob[] = 'name';
+                    }
+                } elseif (strtolower($dep['name']) == 'pear') {
+                    if (!$pearused && $compatible) {
+                        // there is no need for a PEAR dependency here
+                        continue;
+                    }
+                    if (!$pearused && !$compatible) {
+                        $dep['name'] = 'PEAR Installer';
+                    }
                 }
-                if (!$pearused && !$compatible) {
-                    $dep['name'] = 'PEAR Installer';
+    
+                if (empty($dep['rel']) ||
+                    !in_array($dep['rel'], $_PEAR_Common_dependency_relations))
+                {
+                    $prob[] = 'rel';
                 }
-            }
-
-            if (empty($dep['rel']) ||
-                !in_array($dep['rel'], $_PEAR_Common_dependency_relations))
-            {
-                $prob[] = 'rel';
-            }
-
-            if (empty($dep['optional'])) {
-                $optional = 0;
-            } else {
-                if ($dep['optional'] != strtolower($dep['optional'])) {
-                    $prob[] = 'optional';
-                }
-                if ($dep['optional'] == 'yes') {
-                    $optional = 1;
-                } else {
+    
+                if (empty($dep['optional'])) {
                     $optional = 0;
+                } else {
+                    if ($dep['optional'] != strtolower($dep['optional'])) {
+                        $prob[] = 'optional';
+                    }
+                    if ($dep['optional'] == 'yes') {
+                        $optional = 1;
+                    } else {
+                        $optional = 0;
+                    }
                 }
-            }
-
-            if (count($prob)) {
-                $res = PEAR::raiseError('The following attribute(s) ' .
-                        'were missing or need proper values: ' .
-                        implode(', ', $prob));
-            } else {
-                $res = $dbh->execute($sth,
-                        array(
-                            $package_id,
-                            $release_id,
-                            $dep['type'],
-                            $dep['rel'],
-                            @$dep['version'],
-                            $dep['name'],
-                            $optional));
-            }
-
-            if (PEAR::isError($res)) {
-                $dbh->query('DELETE FROM deps WHERE ' .
-                            "release = $release_id");
-                $dbh->query('DELETE FROM releases WHERE ' .
-                            "id = $release_id");
-                @unlink($file);
-                return $res;
+    
+                if (count($prob)) {
+                    $res = PEAR::raiseError('The following attribute(s) ' .
+                            'were missing or need proper values: ' .
+                            implode(', ', $prob));
+                } else {
+                    $res = $dbh->execute($sth,
+                            array(
+                                $package_id,
+                                $release_id,
+                                $dep['type'],
+                                $dep['rel'],
+                                @$dep['version'],
+                                $dep['name'],
+                                $optional));
+                }
+    
+                if (PEAR::isError($res)) {
+                    $dbh->query('DELETE FROM deps WHERE ' .
+                                "release = $release_id");
+                    $dbh->query('DELETE FROM releases WHERE ' .
+                                "id = $release_id");
+                    @unlink($file);
+                    return $res;
+                }
             }
         }
 

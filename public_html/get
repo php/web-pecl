@@ -1,0 +1,41 @@
+<?php
+/*
+Pear package downloader
+Usage:
+// to get the lastest version of the HTTP_Upload package
+pear install http://pear.php.net/get/HTTP_Upload
+// to get the version 1.2 of the HTTP_Upload package
+pear install http://pear.php.net/get/HTTP_Upload/1.2
+
+cmd structure:
+/PEAR_package
+/PEAR_package/version
+
+other things like: "/PEAR_package/info" could be easily implemented
+
+It requires this to be added to httpd.conf/.htaccess:
+<Location "/get">
+ForceType application/x-httpd-php
+</Location>
+*/
+include './myinclude.php';
+
+function error_404($obj) {
+    header('HTTP/1.0 404 Not Found');
+    echo $obj->getMessage();
+    if (DEVBOX) {
+        echo ' ' . $obj->getDebugInfo();
+    }
+    exit;
+}
+
+PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'error_404');
+
+if (!isset($PATH_INFO) || $PATH_INFO == '/') {
+    PEAR::raiseError('no package selected');
+}
+$opts = explode('/', $PATH_INFO);
+$package = $opts[1];
+$version = (isset($opts[2])) ? $opts[2] : null;
+release::HTTPdownload($package, $version);
+?>

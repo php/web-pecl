@@ -143,6 +143,21 @@ function auth_require($admin = false, $refresh = false)
     return true;
 }
 
+/**
+ * Perform logout for the current user
+ */
+function auth_logout()
+{
+    if (isset($_COOKIE['PEAR_USER'])) {
+        setcookie('PEAR_USER', '', 0, '/');
+        unset($_COOKIE['PEAR_USER']);
+    }
+    if (isset($_COOKIE['PEAR_PW'])) {
+        setcookie('PEAR_PW', '', 0, '/');
+        unset($_COOKIE['PEAR_PW']);
+    }
+}
+
 $cvspasswd_file = "/repository/CVSROOT/passwd";
 
 function cvs_find_password($user)

@@ -65,15 +65,8 @@ if (empty($dbh)) {
 
 $LAST_UPDATED = date("D M d H:i:s Y T", filectime($_SERVER['SCRIPT_FILENAME']));
 
-if (@$_GET['logout'] === '1') {
-    if (isset($_COOKIE['PEAR_USER'])) {
-        setcookie('PEAR_USER', '', 0, '/');
-        unset($_COOKIE['PEAR_USER']);
-    }
-    if (isset($_COOKIE['PEAR_PW'])) {
-        setcookie('PEAR_PW', '', 0, '/');
-        unset($_COOKIE['PEAR_PW']);
-    }
+if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
+    auth_logout();
 }
 
 if (!empty($_COOKIE['PEAR_USER']) && !@auth_verify($_COOKIE['PEAR_USER'], $_COOKIE['PEAR_PW'])) {

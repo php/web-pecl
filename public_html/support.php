@@ -229,6 +229,9 @@ Eris Free Net</a>.
 <a name="resources" /><h3>PEAR resources</h3>
 
 <ul>
+    <li><a href="http://conf2.php.net/show/powerpear">2002-11-03 Frankfurt - 
+    International PHP Conference - Teach Yourself PEAR in 6 Hours</a>
+    by Stig S. Bakken.</li><br /><br />
 
     <li><a href="http://conf.php.net/pres/slides/pres/index.php?p=slides%2Fpear%2Flt2002&id=pearlt2002">
     2002-06-08 Karlsruhe - LinuxTag - The State of (the) PEAR </a> by Stig S. Bakken.</li><br /><br />

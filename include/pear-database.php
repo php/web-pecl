@@ -136,6 +136,16 @@ class category
     }
 
     // }}}
+    // {{{ proto array category::listAll()
+
+	function listAll()
+    {
+		global $dbh;
+		return $dbh->getAll("SELECT * FROM categories ORDER BY id",
+							null, DB_FETCHMODE_ASSOC);
+	}
+
+    // }}}
 }
 
 class package
@@ -217,18 +227,21 @@ class package
     // }}}
     // {{{ proto struct package::listAll()
 
-    function listAll($name, $params, $appdata)
+    function listAll()
     {
         global $dbh;
-        return $dbh->getAssoc("SELECT p.id AS packageid, p.name AS name, ".
-                              "c.id AS categoryid, c.name AS category, ".
-                              "p.stablerelease AS stable, ".
-                              "p.license AS license, ".
-                              "p.summary AS summary, ".
-                              "p.description AS description".
-                              " FROM packages p, categories c ".
-                              "WHERE c.id = p.category ".
-                              "ORDER BY p.name");
+        return $dbh->getAll("SELECT p.id AS packageid, p.name AS name, ".
+							"c.id AS categoryid, c.name AS category, ".
+							"p.stablerelease AS stable, ".
+							"p.license AS license, ".
+							"p.summary AS summary, ".
+							"p.description AS description, ".
+							"m.handle AS lead ".
+							" FROM packages p, categories c, maintains m ".
+							"WHERE c.id = p.category ".
+							"  AND p.id = m.package ".
+							"  AND m.role = 'lead' ".
+							"ORDER BY p.name", null, DB_FETCHMODE_ASSOC);
     }
 
     // }}}

@@ -34,7 +34,8 @@ function pear_xmlrpc_dispatcher($method_name, $params, $appdata)
     $function = $xmlrpc_method_index[$method_name][$type_key];
     if (strstr($function, "::")) {
         list($class, $method) = explode("::", $function);
-        $ret = call_user_method_array($method, $class, $params);
+        // XXX deprecated syntax
+        $ret = @call_user_method_array($method, $class, $params);
     } else {
         $ret = call_user_func_array($function, $params);
     }

@@ -1,5 +1,11 @@
 SHORT TERM:
 
+* "pear configure" to make ~/.pearrc:
+** pear.php.net username/password
+** email address
+** xmlrpc server
+** any client-side parameters
+
 * "pear prepare"
 ** client side: fetch package information from server, combine with
    filelist.xml and generate package.xml
@@ -8,26 +14,17 @@ SHORT TERM:
 * "pear upload"
 ** client side: implement xml-rpc client
 
-* "pear configure" to make ~/.pearrc:
-** pear.php.net username/password
-** email address
-** xmlrpc server
-** any client-side parameters
-
 * installed packages registry
 ** index file
 ** detail files (copy of package.xml)
 
 * xmlrpc server methods
-** package.new
-** package.publish (or maybe release.put or release.publish?)
 ** package.alter
 ** package.annotate
 ** release.list
 ** release.get
 ** release.annotate
 ** release.notes
-** category.list
 
 * "pear" script:
 ** windows support: System class and Tar.php test under win

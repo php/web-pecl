@@ -19,7 +19,7 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 			$return_type = $matches[1][$i];
 			$method_name = $matches[2][$i];
 			$parameters  = $matches[3][$i];
-			$docstrings  = $matches[5][$i]; // XXX unfinished
+//			$docstrings  = $matches[5][$i]; // XXX unfinished
 			//print "signature: $return_type <b>$method_name</b>($parameters)<br />\n";
 			$return_type_permutations = explode("|", $return_type);
 			$xmlrpc_method = str_replace("::", ".", $method_name);

@@ -54,7 +54,7 @@
 # Use .htaccess on Apache webservers for example.
 #
 #
-
+$sapi_name = php_sapi_name();
 set_time_limit(0);
 @ob_end_flush();
 ob_implicit_flush(true);
@@ -63,16 +63,16 @@ define('WEBINSTALLER', (php_sapi_name() != 'cli' && !( substr(php_sapi_name(),0,
 ini_set('track_errors', true);
 ini_set('html_errors', WEBINSTALLER);
 ini_set('magic_quotes_runtime', false);
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting( E_ALL & ~E_NOTICE);
 define('WINDOWS', (substr(PHP_OS, 0, 3) == 'WIN'));
 define('GO_PEAR_VER', '0.2.2');
 
 define('WIN32GUI', !WEBINSTALLER && WINDOWS && php_sapi_name()== 'cli' && which('cscript'));
 
+/**
+ * See bug #23069
+ */
 
-/*
-    See bug #23069
-*/
 if ( WEBINSTALLER && WINDOWS ) {
     $php_sapi_name = win32DetectPHPSAPI();
     if($php_sapi_name=='cgi'){
@@ -133,7 +133,7 @@ if (WEBINSTALLER) {
 	$installer_packages[] = 'HTML_Template_IT';
 	$installer_packages[] = 'Net_UserAgent_Detect';
 	$installer_packages[] = 'PEAR_Frontend_Web';
-};
+}
 $pfc_packages = array(
     'DB',
     'Net_Socket',
@@ -157,7 +157,8 @@ if (WEBINSTALLER) {
 	$config_desc['cache_dir'] = 'PEAR Installer cache directory';
 	$config_desc['cache_ttl'] = 'Cache TimeToLive';
 	$config_desc['webfrontend_file'] = 'Filename of WebFrontend';
-};
+    $config_desc['php_bin'] = "php.exe path, optional (CLI command tools)";
+}
 
 if (my_env('HTTP_PROXY')) {
 	$http_proxy = my_env('HTTP_PROXY');
@@ -209,12 +210,12 @@ if (WEBINSTALLER) {
 			'install_pfc' => true,
             'DHTML' => true,
 			);
-	};
+	}
 	if (!isset($_GET['step'])) {
 		$_GET['step'] = 'Welcome';
         /* clean up old sessions datas */
         session_destroy();
-	};
+	}
 	if ($_GET['step'] == 'install') {
 		$_SESSION['go-pear']['http_proxy'] = strip_magic_quotes($_POST['proxy']['host']).':'.strip_magic_quotes($_POST['proxy']['port']);
 		if ($_SESSION['go-pear']['http_proxy'] == ':') {
@@ -245,9 +246,9 @@ if (WEBINSTALLER) {
 	$http_proxy = $_SESSION['go-pear']['http_proxy'];
 	foreach($_SESSION['go-pear']['config'] as $var => $value) {
 		$$var = $value;
-	};
+	}
 	$install_pfc = $_SESSION['go-pear']['install_pfc'];
-};
+}
 
 if (!WEBINSTALLER) {
 	$tty = WINDOWS ? @fopen('\con', 'r') : @fopen('/dev/tty', 'r');
@@ -280,7 +281,7 @@ If you wish to abort, press Control-C now, or press Enter to continue: ";
 	if (!empty($tmp)) {
 	    $http_proxy = $tmp;
 	}
-};
+}
 
 $origpwd = getcwd();
 
@@ -297,7 +298,7 @@ end($config_vars);
 $last = key($config_vars);
 
 if (WEBINSTALLER) {
-    if ( sizeof($www_errors) ) {
+    if ( isset($www_errors) && sizeof($www_errors) ) {
         displayHTML('config');
         exit();
     } else {
@@ -359,7 +360,7 @@ we strongly recommand to use it.
 
 $foo = tmp_dir();
 $ptmp = tempnam($foo, 'gope');
-if(WINDOWS){
+if (WINDOWS) {
     $ptmp = str_replace($foo,'',$ptmp);
     $foo=str_replace("\\\\",'/',$foo);
     $s = substr($ptmp,0,1);
@@ -400,7 +401,7 @@ if (!$ok) {
 		$_ENV = array();
 	};
 	$_ENV['TMPDIR'] = $_ENV['TEMP'] = $prefix.'/tmp';
-};
+}
 
 while (!WEBINSTALLER) {
     print "
@@ -515,8 +516,7 @@ if (!WEBINSTALLER) {
 	print "Would you like to install these as well? [Y/n] : ";
 	$install_pfc = !stristr(fgets($tty, 1024), "n");
 	print "\n";
-};
-
+}
 
 ####
 # Download
@@ -557,7 +557,7 @@ displayHTMLProgress($progress = 5);
 
 if (file_exists(dirname(__FILE__).'/go-pear-bundle') || is_dir(dirname(__FILE__).'/go-pear-bundle')) {
 	$dh = @opendir(dirname(__FILE__).'/go-pear-bundle');
-};
+}
 $local_dir = array();
 if ($dh) {
 	while($file = @readdir($dh)) {
@@ -566,7 +566,7 @@ if ($dh) {
 		};
 		$local_dir[] = $file;
 	};
-};
+}
 
 foreach ($installer_packages as $pkg) {
 	foreach($local_dir as $file) {
@@ -597,7 +597,8 @@ if (in_array('Getopt.php', $local_dir)) {
 } else {
 	download_url($url, 'PEAR.php', $http_proxy);
 	echo "(remote) ";
-};
+}
+
 include_once 'PEAR.php';
 print "ok\n";
 
@@ -625,7 +626,7 @@ if (in_array('Getopt.php', $local_dir)) {
 } else {
 	download_url($url, 'Console/Getopt.php', $http_proxy);
 	echo "(remote) ";
-};
+}
 print "ok\n";
 
 if ($install_pfc) {
@@ -677,6 +678,7 @@ if (WEBINSTALLER) {
 } else {
 	$config = &PEAR_Config::singleton();
 };
+
 foreach ($config_vars as $var) {
     $config->set($var, $$var);
 }
@@ -842,9 +844,14 @@ if (WEBINSTALLER) {
     	ob_end_clean();
 
     	displayHTML('install', $out);
-    };
+    }
+	// Little hack, this will be fixed in PEAR later
+	if ( WINDOWS ) {
+	    clearstatcache();
+	    @unlink($bin_dir.DIRECTORY_SEPARATOR.'.tmppear');
+	}
 	exit;
-};
+}
 
 // Little hack, this will be fixed in PEAR later
 if ( WINDOWS ) {
@@ -948,8 +955,8 @@ function download_url($url, $destfile = null, $proxy = null)
 function which($program, $dont_search_in = false)
 {
     if (WINDOWS) {
-        if (my_env('Path')) {
-            $dirs = explode(';', my_env('Path'));
+        if ($_path=my_env('Path')) {
+            $dirs = explode(';', $_path);
         } else {
             $dirs = explode(';', my_env('PATH'));
         }
@@ -1159,6 +1166,13 @@ function detect_install_dirs($_prefix = null) {
                 $php_bin = getcwd().DIRECTORY_SEPARATOR.$php_bin;
             }
         }
+        if (!is_file($php_bin)) {
+            if (is_file('c:/php/cli/php.exe')) {
+                $php_bin = 'c:/php/cli/php.exe';
+            } elseif (is_file('c:/php4/cli/php.exe')) {
+                $php_bin = 'c:/php4/cli/php.exe';
+            }
+        }
     } else {
         if ($_prefix === null) {
             $prefix    = dirname(PHP_BINDIR);
@@ -1189,7 +1203,7 @@ function detect_install_dirs($_prefix = null) {
 
 function displayHTMLHeader()
 {
-    ?>
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
@@ -1399,7 +1413,7 @@ function displayHTMLHeader()
         alink="#cccc00"
         vlink="#003300"
 >
-	<?php
+<?php
 }
 
 // }}}
@@ -1456,9 +1470,9 @@ function displayHTML($page = 'Welcome', $data = array())
 	   </a><br/>
 
        <img src="<?php echo basename(__FILE__); ?>?action=img&amp;img=smallpear" border="0">
-	   <?php if ($page == 'install') echo '<span class="green">'; ?>
+<?php if ($page == 'install') echo '<span class="green">'; ?>
  	     Complete installtion<br/>
-	   <?php if ($page == 'install') echo '</span>'; ?>
+<?php if ($page == 'install') echo '</span>'; ?>
 
      </td>
     </tr>
@@ -1475,29 +1489,29 @@ function displayHTML($page = 'Welcome', $data = array())
   <td width="20">
   </td>
   <td>
-    <?php
-		if ($page == 'error') {
-			?>
+<?php
+	if ($page == 'error') {
+?>
 			<span class="title">Error</span><br/>
 			<br/>
-			<?php
-				$value = $data;
-				if (preg_match('/ok$/', $value)) {
-					$value = preg_replace('/(ok)$/', '<span class="green">\1</span>', $value);
-				};
-				if (preg_match('/failed$/', $value)) {
-					$value = preg_replace('/(failed)$/', '<span style="color: #ff0000">\1</span>', $value);
-				};
-				if (preg_match('/^install ok:/', $value)) {
-					$value = preg_replace('/^(install ok:)/', '<span class="green">\1</span>', $value);
-				};
-				if (preg_match('/^Warning:/', $value)) {
-					$value = '<span style="color: #ff0000">'.$value.'</span>';
-				};
+<?php
+		$value = $data;
+		if (preg_match('/ok$/', $value)) {
+			$value = preg_replace('/(ok)$/', '<span class="green">\1</span>', $value);
+		}
+		if (preg_match('/failed$/', $value)) {
+			$value = preg_replace('/(failed)$/', '<span style="color: #ff0000">\1</span>', $value);
+		}
+		if (preg_match('/^install ok:/', $value)) {
+			$value = preg_replace('/^(install ok:)/', '<span class="green">\1</span>', $value);
+		}
+		if (preg_match('/^Warning:/', $value)) {
+			$value = '<span style="color: #ff0000">'.$value.'</span>';
+		}
 
-			echo nl2br($value);
-		} elseif ($page == 'Welcome') {
-			?>
+		echo nl2br($value);
+	} elseif ($page == 'Welcome') {
+?>
 			<span class="title">Welcome to go-pear <?php echo GO_PEAR_VER; ?>!</span><br/>
 			<br/>
 			Go-pear will install the Web Frontend of the PEAR Installer and all the needed <br/>
@@ -1507,11 +1521,14 @@ function displayHTML($page = 'Welcome', $data = array())
 			with PHP: <?php echo implode(', ', $GLOBALS['pfc_packages']); ?>.<br/>
 			<br/>
 			<a href="<?php echo basename(__FILE__); ?>?step=config" class="green">Next &gt;&gt;</a>
-			<?php
-		} elseif ($page == 'config') {
-
+<?php
+	} elseif ($page == 'config') {
+		if (!empty($GLOBAL['http_proxy'])) {
 			list($proxy_host, $proxy_port) = explode(':', $GLOBALS['http_proxy']);
-			?>
+		} else {
+			$proxy_host = $proxy_port = '';
+		}
+?>
 			<form action="<?php echo basename(__FILE__);?>?step=install" method="post">
 			<span class="title">Configuration</span><br/>
 			<br/>
@@ -1533,36 +1550,36 @@ function displayHTML($page = 'Welcome', $data = array())
 			  </TR>
 			</table>
 			<TABLE border="0">
-			<?php
-                // Display error messages
-                if(isset($GLOBALS['www_errors']) && sizeof($GLOBALS['www_errors']) ) {
-                    $www_errors = $GLOBALS['www_errors'];
-                    echo "<tr><td>";
-                    echo '<span class="red">ERROR(S):</span>';
-                    echo "</td></tr>";
-                    foreach($www_errors as $n => $var) {
-                        echo "<tr><td>";
-                        echo '<span class="red">'.$GLOBALS['config_desc'][$n].': </span>';
-                        echo "</td><td>";
-                        echo '<span class="red">'.$www_errors[$n].'</span>';
-                        echo "<br>\n";
-                        echo "</td></tr>\n";
-                    }
-                }
+<?php
+	// Display error messages
+		if (isset($GLOBALS['www_errors']) && sizeof($GLOBALS['www_errors']) ) {
+		    $www_errors = $GLOBALS['www_errors'];
+		    echo "<tr><td>";
+		    echo '<span class="red">ERROR(S):</span>';
+		    echo "</td></tr>";
+		    foreach ($www_errors as $n => $var) {
+		        echo "<tr><td>";
+		        echo '<span class="red">'.$GLOBALS['config_desc'][$n].': </span>';
+		        echo "</td><td>";
+		        echo '<span class="red">'.$www_errors[$n].'</span>';
+		        echo "<br>\n";
+		        echo "</td></tr>\n";
+		    }
+		}
 
-				foreach($GLOBALS['config_vars'] as $n => $var) {
-					printf('<tr><td>%d. %s</td><td><input type="text" name="config[%s]" value="%s"></td></tr>',
-						$n,
-						$GLOBALS['config_desc'][$var],
-						$var,
-						$GLOBALS[$var]);
-				};
-			?>
+		foreach ($GLOBALS['config_vars'] as $n => $var) {
+			printf('<tr><td>%d. %s</td><td><input type="text" name="config[%s]" value="%s"></td></tr>',
+			$n,
+			$GLOBALS['config_desc'][$var],
+			$var,
+			$GLOBALS[$var]);
+		}
+?>
 			</TABLE>
 			<br/><hr/><br/>
 			The following PEAR packages are common ones, and can be installed<br/>
 			by go-pear too: <br/>
-			<?php	echo implode(', ', $GLOBALS['pfc_packages']);?>.<br/>
+<?php	echo implode(', ', $GLOBALS['pfc_packages']);?>			.<br/>
 			<input type="checkbox" name="install_pfc" <?php if($GLOBALS['install_pfc']) echo 'checked';?>> Install those too<br/>
 			<br/><br/>
 			<table border="0">
@@ -1587,9 +1604,9 @@ function displayHTML($page = 'Welcome', $data = array())
 			// -->
 			</script>
 
-			<?php
-				if (WIN && phpversion() == '4.1.1') {
-					?>
+<?php
+		if (WINDOWS && phpversion() == '4.1.1') {
+?>
 					<table border="0">
 					  <TR>
 					    <TD valign="top"><img src="<?php echo basename(__FILE__); ?>?action=img&amp;img=note" border="0"></TD>
@@ -1601,20 +1618,20 @@ function displayHTML($page = 'Welcome', $data = array())
 		                </TD>
 					  </TR>
 					</table>
-					<?php
-				};
-			?>
+<?php
+		}
+?>
 			<br/>
 			<input type="submit" value="Install" onClick="javascript: submitButton.value='Downloading and installing ... please wait ...'" name="submitButton">
 			</form>
-			<?php
-		} elseif ($page == 'install') {
-			?>
+<?php
+	} elseif ($page == 'install') {
+?>
 			<span class="title">Installation Complete - Summary</span><br/>
-			<?php
-            displayHTMLInstallationSummary($data);
-		} elseif ($page == 'preinstall') {
-            ?>
+<?php
+		displayHTMLInstallationSummary($data);
+	} elseif ($page == 'preinstall') {
+?>
 			<span class="title">Installation in progress ...</span><br/>
 			<br/>
 			<script language="javascript">
@@ -1754,9 +1771,9 @@ function displayHTML($page = 'Welcome', $data = array())
 			  </td>
 			</tr>
 			</table>
-			<?php
-		};
-	?>
+<?php
+	}
+?>
   </td>
 </tr>
 </table>
@@ -1789,26 +1806,26 @@ function displayHTMLFooter()
 
 function displayHTMLInstallationSummary($data = '')
 {
-			$next     = NULL;
-			$prefix   = dirname($GLOBALS['webfrontend_file']);
-			$doc_root = strip_magic_quotes($_SERVER['DOCUMENT_ROOT']);
-			$file_dir = dirname(__FILE__);
-			if ( WINDOWS ) {
-				$prefix   = str_replace('/', '\\', strtolower($prefix));
-				$doc_root = str_replace('/', '\\', strtolower($doc_root));
-				$file_dir = str_replace('/', '\\', strtolower($file_dir));
-			};
+	$next     = NULL;
+	$prefix   = dirname($GLOBALS['webfrontend_file']);
+	$doc_root = strip_magic_quotes($_SERVER['DOCUMENT_ROOT']);
+	$file_dir = dirname(__FILE__);
+	if ( WINDOWS ) {
+		$prefix   = str_replace('/', '\\', strtolower($prefix));
+		$doc_root = str_replace('/', '\\', strtolower($doc_root));
+		$file_dir = str_replace('/', '\\', strtolower($file_dir));
+	}
 
-			if ($doc_root && substr($prefix, 0, strlen($doc_root)) == $doc_root) {
-				$next = substr($prefix, strlen($doc_root)).'/index.php';
-			} else if ($file_dir && substr($prefix, 0, strlen($file_dir)) == $file_dir) {
-				$next = substr($prefix, strlen($file_dir)).'/index.php';
-			};
+	if ($doc_root && substr($prefix, 0, strlen($doc_root)) == $doc_root) {
+		$next = substr($prefix, strlen($doc_root)).'/index.php';
+	} else if ($file_dir && substr($prefix, 0, strlen($file_dir)) == $file_dir) {
+		$next = substr($prefix, strlen($file_dir)).'/index.php';
+	}
 
-            if ($data) {
-                echo "<br/>".$data;
-            };
-            ?>
+    if ($data) {
+        echo "<br/>".$data;
+    }
+?>
 			<br/>
 			<table border="0">
 			  <TR>
@@ -1818,8 +1835,7 @@ function displayHTMLInstallationSummary($data = '')
 				  <b>Note:</b> To use PEAR without any problems you need to add your<br/>
 				  PEAR Installation path (<?php echo $GLOBALS['php_dir']; ?>)<br>
 				  to your <a href="http://www.php.net/manual/en/configuration.directives.php#ini.include_path">include_path</a>.<br/>
-				  You can use <i>adjust_incpath.php</i> coming with go-pear to change your<br/>
-				  include_path (you might need to change adjust_incpath.php to match your needs).<br/>
+                      <br/>
 				  Using a .htaccess file or directly edit httpd.conf would be working solutions<br/>
 				  for Apache running servers, too.<br/>
 			      </span>
@@ -1833,9 +1849,9 @@ function displayHTMLInstallationSummary($data = '')
 			<br/>
 			Thanks for using go-pear!<br/>
 			<br/>
-			<?php
-				if ($next === NULL) {
-					?>
+<?php
+	if ($next === NULL) {
+?>
 					<table border="0">
 					  <TR>
 					    <TD valign="top"><img src="<?php echo basename(__FILE__); ?>?action=img&amp;img=note" border="0"></TD>
@@ -1848,19 +1864,19 @@ function displayHTMLInstallationSummary($data = '')
 		                </TD>
 					  </TR>
 					</table>
-					<?php
-				} else {
-                    if ($_GET['step'] == 'install-progress') {
-    					?>
+<?php
+	} else {
+		if ($_GET['step'] == 'install-progress') {
+?>
     					<a href="<?php echo $next;?>" class="green" target="_parent">Start Web Frontend of the PEAR Installer &gt;&gt;</a>
-    					<?php
-                    } else {
-    					?>
+<?php
+		} else {
+?>
     					<a href="<?php echo $next;?>" class="green">Start Web Frontend of the PEAR Installer &gt;&gt;</a>
-    					<?php
-                    };
-				};
-};
+<?php
+		}
+	}
+}
 
 // }}}
 // {{{ strip_magic_quotes
@@ -2082,10 +2098,10 @@ function win32DetectPHPSAPI()
     if($php_bin!=''){
         exec($php_bin.' -v', $res);
         if(is_array($res)) {
-            if( strpos($res[0],"(cli)") ) {
+            if( isset($res[0]) && strpos($res[0],"(cli)")) {
                 return 'cli';
             }
-            if( strpos($res[0],"cgi") ) {
+            if( isset($res[0]) && strpos($res[0],"cgi")) {
                 return 'cgi';
             } else {
                 return 'unknown';

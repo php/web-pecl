@@ -247,10 +247,12 @@ Eris Free Net</a>.
 <?php
 
 $icons = Array(
-    'pear-power.gif'    => 'Powered by PEAR, GIF format',
-    'pear-power.png'    => 'Powered by PEAR, PNG format',
-    'pecl-power.gif'    => 'Powered by PECL, GIF format',
-    'pecl-power.png'    => 'Powered by PECL, PNG format',
+	'pear-power.gif'	=> 'Powered by PEAR, GIF format',
+	'pear-power.png'	=> 'Powered by PEAR, PNG format',
+	'pear-icon.gif'		=> '32x32 PEAR icon, GIF format',
+	'pecl-power.gif'	=> 'Powered by PECL, GIF format',
+	'pecl-power.png'	=> 'Powered by PECL, PNG format',
+	'pecl-icon.gif'		=> '32x32 PECL icon, GIF format',
 );
 
 echo '<table cellpadding="5" cellspacing="1">';

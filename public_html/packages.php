@@ -10,7 +10,7 @@ if (empty($catpid)) {
     $category_where = "categories.parent IS NULL";
     $category_title = "Package Browser: Top Level Categories";
 } else {
-    $category_where = "categories.parent = " . $dbh->quote($catpid);
+    $category_where = "categories.parent = " . $catpid;
     $category_title = "Package Browser: " . urldecode($catname);
 }
 
@@ -28,12 +28,12 @@ while ($sth->fetchInto($row)) {
     $npackages = ($rightvisit - $leftvisit - 1) / 2;
     if ($npackages == 0) {
         //continue;  // XXXX Uncomment me to only show categories with packages
-    } // XXXX change me with elseif
-    settype($npackages, "string");
+    } // XXXX change me with elseif (show table head only when there are values)
     if ($nrow == 0) {
         $table->addRow(array("Category", "#&nbsp;Packages", "Summary"),
                              'bgcolor="#ffffff"', 'TH');
     }
+    settype($npackages, 'string');
     $bg = ($nrow++ % 2) ? '#f0f0f0' : '#e0e0e0';
     $name = "<a href=\"$PHP_SELF?catpid=$id&catname=".urlencode($name)."\">$name</a>";
 
@@ -43,16 +43,39 @@ while ($sth->fetchInto($row)) {
     $table->setCellAttributes($nrow, 2, "width=\"70%\" bgcolor=\"$bg\"");
 }
 if ($nrow == 0) {
-    print "<center><p>No sub-categories in this level yet</p></center>";
+    print '<center><p>No sub-categories in this level</p></center>';
 }
 html_table_border($table);
+$sth->free();
 
 print '<br /><hr width="60%" />';
 
 // 2) Show packages of this level
-print '<table border="0" width="100%"><tr><td>';
-print "<center><p>No packages in this level yet</p></center>";
-print '</td></tr></table>';
+/* XXXX TODO:
+- Show link to direct download
+- Paginate results (use my Pager?)
+*/
+$nrow = 0;
+$table = new HTML_Table('border="0" cellpadding="2" cellspacing="1" width="100%"');
+if (!empty($catpid)) {
+    $sth = $dbh->query("SELECT id, name, summary FROM packages WHERE category=$catpid");
+
+    while ($res->fetchInto($row)) {
+        extract($row);
+        if ($nrow == 0) {
+            $table->addRow(array("Name", "Summary"), 'bgcolor="#ffffff"', 'TH');
+        }
+        $bg = ($nrow++ % 2) ? '#f0f0f0' : '#e0e0e0';
+        $name = "<a href=\"pkginfo.php?pacid=$id\">$name</a>";
+        $table->addRow(array($name, $summary));
+        $table->setCellAttributes($nrow, 0, "width=\"20%\" bgcolor=\"$bg\"");
+        $table->setCellAttributes($nrow, 1, "width=\"80%\" bgcolor=\"$bg\"");
+    }
+}
+if ($nrow == 0) {
+    print '<center><p>No packages in this level</p></center>';
+}
+html_table_border($table);
 
 response_footer();
 

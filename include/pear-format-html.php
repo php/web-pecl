@@ -56,7 +56,7 @@ function response_header($title = 'The PHP Extension and Application Repository'
         $SIDEBAR_DATA .= draw_navigation($main_menu);
         init_auth_user();
         if (!empty($auth_user)) {
-            if (empty($auth_user->registered)) { // XXXX registered = only visitor?
+            if (!empty($auth_user->registered)) {
                 global $author_menu;
                 $SIDEBAR_DATA .= draw_navigation($author_menu, 'Author Actions:');
             }

@@ -273,7 +273,7 @@ function commonHeader($title) {
   </td>
   <td bgcolor="#cccccc" width="1" background="/gifs/checkerboard.gif"><?php spacer(1,1);?><br /></td>
 <?php } ?>
-  <td width="625">
+  <td>
    <table width="100%" cellpadding="10" cellspacing="0">
     <tr>
      <td valign="top">

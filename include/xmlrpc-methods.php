@@ -2,7 +2,8 @@
 
 require_once "signatures.php";
 
-parse_signatures_from_file("../include/pear-database.php", &$xmlrpc_method_index, "index");
+parse_signatures_from_file("../include/pear-database.php",
+                           &$xmlrpc_method_index, "index");
 
 function pear_register_xmlrpc_methods($xs)
 {
@@ -11,6 +12,7 @@ function pear_register_xmlrpc_methods($xs)
 //        error_log("registering $method");
         xmlrpc_server_register_method($xs, $method, "pear_xmlrpc_dispatcher");
     }
+    xmlrpc_server_register_introspection_callback($xs, "pear_xmlrpc_introspection_callback");
 }
 
 function pear_xmlrpc_dispatcher($method_name, $params, $appdata)
@@ -51,6 +53,45 @@ function pear_xmlrpc_dispatcher($method_name, $params, $appdata)
     error_log("$method_name returned ".ob_get_contents());
     ob_end_clean();
 */
+    return $ret;
+}
+
+
+function pear_xmlrpc_introspection_callback($userdata)
+{
+    parse_signatures_from_file("../include/pear-database.php", &$signatures,
+                               "signatures");
+    $ret = "<introspection version='1.0'>\n";
+    $ret .= " <methodList>\n";
+    foreach ($signatures as $sig) {
+        $ret .= "  <methodDescription name='$sig[method_name]'>\n";
+        $ret .= "   <author/>\n";
+        $ret .= "   <purpose/>\n";
+        $ret .= "   <signatures>\n";
+	foreach ($sig["param_types"] as $params) {
+		$ret .= "    <signature>\n";
+		$ret .= "     <params>\n";
+		$paramlist = explode(",", $params);
+		foreach ($paramlist as $param) {
+			$ret .= "      <value type='$param'/>\n";
+		}
+		$ret .= "     </params>\n";
+		$ret .= "     <returns>\n";
+		$ret .= "      <value type='$sig[return_type]'/>\n";
+		$ret .= "     </returns>\n";
+		$ret .= "    </signature>\n";
+	}
+        $ret .= "   </signatures>\n";
+        $ret .= "   <see/>\n";
+        $ret .= "   <examples/>\n";
+        $ret .= "   <errors/>\n";
+        $ret .= "   <notes/>\n";
+        $ret .= "   <bugs/>\n";
+        $ret .= "   <todo/>\n";
+        $ret .= "  </methodDescription>\n";
+    }
+    $ret .= " </methodList>\n";
+    $ret .= "</introspection>\n";
     return $ret;
 }
 

@@ -295,15 +295,18 @@ class release
     }
 
     // }}}
-    // {{{ proto bool release::upload(string, string, string, binary, string)
+    // {{{ proto bool release::upload(string, string, string, string, binary, string)
 
-    function upload($package, $version, $relnotes, &$tarball, $md5sum)
+    function upload($package, $version, $state, $relnotes, &$tarball, $md5sum)
     {
         global $dbh, $auth_user;
 
         // (2) verify that package exists
         $test = $dbh->getOne("SELECT name FROM packages WHERE name = ?",
                              array($package));
+		if (PEAR::isError($test)) {
+			return $test;
+		}
         if (empty($test)) {
             return PEAR::raiseError("no such package: $package");
         }
@@ -312,6 +315,9 @@ class release
         $test = $dbh->getOne("SELECT version FROM releases ".
                              "WHERE package = ? AND version = ?",
                              array($package, $version));
+		if (PEAR::isError($test)) {
+			return $test;
+		}
         if ($test) {
             return PEAR::raiseError("already exists: $package $version");
         }

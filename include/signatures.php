@@ -13,14 +13,13 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 	// format: array( array(returntype, methodname, paramlist), ... )
 	settype($signatures, "array");
 	$matches = array();
-	if (preg_match_all('/proto\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)\s*?\n(\s*?\/\/\s*?(.*?)\s*?\n)?/s',
+	if (preg_match_all('/proto\s+([a-z|]+)\s+([a-zA-Z0-9_:]+)\s*\(([^\)]*)\)\s*?\n(\s*?\/\/\s+?(.*?)\s*?\n)?/s',
 					   $contents, $matches)) {
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
-			$return_type = $matches[1][$i];
-			$method_name = $matches[2][$i];
-			$parameters  = $matches[3][$i];
-//			$docstrings  = $matches[5][$i]; // XXX unfinished
-			//print "signature: $return_type <b>$method_name</b>($parameters)<br />\n";
+			$return_type =  $matches[1][$i];
+			$method_name =  $matches[2][$i];
+			$parameters  =  $matches[3][$i];
+			//$purpose     = @$matches[5][$i]; // XXX unfinished
 			$return_type_permutations = explode("|", $return_type);
 			$xmlrpc_method = str_replace("::", ".", $method_name);
 			$param_list = preg_split('/\s*,\s*/', $parameters);
@@ -56,7 +55,6 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 					}
 					$params[$j] = $param_variations[$j][0];
 				}
-				//print "$nump params, $v variations<br>\n";
 				if (sizeof($varyat) > 0) {
 					_signature_worker($paramlist_permutations, $params, $varyat, $param_variations);
 				} else {
@@ -64,6 +62,7 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 				}
 			}
 			if ($out_format == "full_description") {
+				// XXX this format is still buggy
 				foreach ($return_type_permutations as $ret_type) {
 					foreach ($paramlist_permutations as $paramlist => $dummy) {
 						foreach (explode(",", $paramlist) as $ind => $pp) {
@@ -82,12 +81,13 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 				}
 			} else {
 				foreach ($return_type_permutations as $ret_type) {
-					foreach ($paramlist_permutations as $paramlist => $dummy) {
-						$signatures[] = array($xmlrpc_method, $ret_type, $paramlist);
-					}
+					$signatures[] = array(
+						"method_name" => $xmlrpc_method,
+						"return_type" => $ret_type,
+						"param_types" => array_keys($paramlist_permutations),
+					);
 				}
 			}
-			//print "<br>\n";
 		}
 	}
 	return true;

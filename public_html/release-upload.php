@@ -21,6 +21,7 @@ do {
         }
         if ($file->isValid()) {
             $file->setName('uniq', 'pear-');
+            $file->setValidExtensions('tgz', 'accept');
             $tmpfile = $file->moveTo(PEAR_UPLOAD_TMPDIR);
             if (PEAR::isError($tmpfile)) {
                     display_error($tmpfile->getMessage()); break;

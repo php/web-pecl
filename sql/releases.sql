@@ -11,5 +11,6 @@ CREATE TABLE releases (
        releasenotes   TEXT DEFAULT '',
 
        PRIMARY KEY(id),
+       INDEX(state),
        UNIQUE INDEX(package, version)
 );

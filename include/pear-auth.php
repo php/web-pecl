@@ -94,13 +94,16 @@ function cvs_verify_password($user, $pass)
 */
 function init_auth_user()
 {
+    global $PHP_AUTH_USER, $PHP_AUTH_PW;
+    if (empty($PHP_AUTH_USER) || empty($PHP_AUTH_PW)) {
+        return false;
+    }
     global $auth_user;
     if (!empty($auth_user)) {
         return true;
     }
-    global $PHP_AUTH_USER, $PHP_AUTH_PW, $dbh;
-    $user = $PHP_AUTH_USER;
-    $auth_user = new PEAR_User($dbh, $user);
+    global $dbh;
+    $auth_user = new PEAR_User($dbh, $PHP_AUTH_USER);
     switch (strlen(@$auth_user->password)) {
         // handle old-style DES-encrypted passwords
         case 13: {

@@ -246,17 +246,30 @@ class package
              "WHERE c.id = p.category AND p.{$what} = ?";
         $rel_sql = "SELECT version, id, doneby, license, summary, ".
              "description, releasedate, releasenotes, state ".
-             "FROM releases WHERE package = ?";
+             "FROM releases ".
+             "WHERE package = ?".
+             "ORDER BY releasedate DESC";
         $notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
+        $deps_sql = "SELECT type, relation, version, name 
+                     FROM deps 
+                     WHERE package = ?";
         if ($field === null) {
             $info =
                  $dbh->getRow($pkg_sql, array($pkg), DB_FETCHMODE_ASSOC);
             $info['releases'] =
                  $dbh->getAssoc($rel_sql, false, array($info['packageid']),
                  DB_FETCHMODE_ASSOC);
+            $rels = array_keys($info['releases']);
+            $info['stable'] = $rels[0];
             $info['notes'] =
                  $dbh->getAssoc($notes_sql, false, array($info['packageid']),
                  DB_FETCHMODE_ASSOC);
+            $deps =
+                 $dbh->getAll($deps_sql, array($info['packageid']),
+                 DB_FETCHMODE_ASSOC);
+            foreach($deps as $dep) {
+                $info['releases'][$dep['version']]['deps'][] = $dep;
+            };
         } else {
             // get a single field
             if ($field == 'releases' || $field == 'notes') {
@@ -321,12 +334,30 @@ class package
             "  AND m.role = 'lead' ".
             "ORDER BY p.name", false, null, DB_FETCHMODE_ASSOC);
         $stablereleases = $dbh->getAssoc(
-            "SELECT p.name, r.version AS stable ".
+            "SELECT p.name, r.id as rid, r.version AS stable ".
             "FROM packages p, releases r ".
-            "WHERE p.id = r.package AND r.state = 'stable'");
+            "WHERE p.id = r.package AND r.state = 'stable' ".
+            "ORDER BY r.releasedate DESC ", false, null, DB_FETCHMODE_ASSOC);
+        $deps = $dbh->getAll(
+            "SELECT package, release , type, relation, version, name ".
+            "FROM deps", null, DB_FETCHMODE_ASSOC);
         foreach ($stablereleases as $pkg => $stable) {
-            $packageinfo[$pkg]['stable'] = $stable;
+            $packageinfo[$pkg]['stable'] = $stable['stable'];
         }
+        foreach(array_keys($packageinfo) as $pkg) {
+            $_deps = array();
+            foreach($deps as $dep) {
+                if ($dep['package'] == $packageinfo[$pkg]['packageid'] 
+                    && $dep['release'] == $stablereleases[$pkg]['rid']) 
+                {
+                    unset($dep['rid']);
+                    unset($dep['release']);
+                    $_deps[] = $dep;
+                };
+            };
+            $packageinfo[$pkg]['deps'] = $_deps;
+        };
+        
         if ($released_only) {
             foreach ($packageinfo as $pkg => $info) {
                 if (!isset($stablereleases[$pkg])) {

@@ -36,16 +36,25 @@ require_once "PEAR/Packager.php";
 require_once "DB.php";
 
 /**
- * Directory where to store the TGZ files
- * @var string
- */
-$TgzDir = "/var/www/pear/download";
-
-/**
  * Directory where the PEAR packages reside
  * @var string
  */
-$PEAR_Dir = "/var/cvs/pear";
+$PEAR_Dir = (isset($argv[1])) ? $argv[1] : '/var/cvs/pear';
+if ($PEAR_Dir{0} != '/') {
+    die ('Only absolute paths allowed');
+} elseif (!@is_dir($PEAR_Dir)) {
+    die ("Pear dir: $PEAR_Dir is not valid");
+}
+/**
+ * Directory where to store the TGZ files
+ * @var string
+ */
+$TgzDir = (isset($argv[2])) ? $argv[2] : '/var/www/pear/download';
+if ($TgzDir{0} != '/') {
+    die ('Only absolute paths allowed');
+} elseif (!is_dir($TgzDir) || !is_writeable($TgzDir)) {
+    die ("Pear dir: $TgzDir is not valid");
+}
 
 /**
 * DSN for pear packages database
@@ -57,10 +66,6 @@ PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'pear_error');
 
 if (DB::isError($db = DB::connect($dsn))) {
     die ("Couldn't open database -> $dsn\n");
-}
-
-if (!is_dir($TgzDir) || !is_writeable($TgzDir)) {
-    die ("Couldn't use $TgzDir as target packages dir");
 }
 
 if (!($dir = opendir($PEAR_Dir))) {
@@ -83,22 +88,23 @@ while ($file = readdir($dir)) {
         */
         $packager =& new PEAR_Packager();
         $packager->debug = 0;
-        if (PEAR::isError($packager->Package())) {
-            echo "Reading of {$PEAR_Dir}/package.xml failed!\n";
+        $pack_name = $packager->Package();
+        if (PEAR::isError($pack_name)) {
+            echo "Reading of {$PEAR_Dir}/package.xml failed!\n".$pack_name->getMessage();
             chdir ('..');
             continue;
         }
 
         $xml .=
-        "<Package>\n".
-        "    <Name>".$packager->pkginfo['package']."</Name>\n".
-        "    <Summary>".$packager->pkginfo['summary']."</Summary>\n".
-        "    <Release>\n".
-        "        <Version>".$packager->pkginfo['version']."</Version>\n".
-        "        <Date>".$packager->pkginfo['release_date']."</Date>\n".
-        "        <Notes>".$packager->pkginfo['release_notes']."</Notes>\n".
-        "    </Release>\n".
-        "</Package>\n";
+        "   <Package>\n".
+        "       <Name>".$packager->pkginfo['package']."</Name>\n".
+        "       <Summary>".$packager->pkginfo['summary']."</Summary>\n".
+        "       <Release>\n".
+        "           <Version>".$packager->pkginfo['version']."</Version>\n".
+        "           <Date>".$packager->pkginfo['release_date']."</Date>\n".
+        "           <Notes>".$packager->pkginfo['release_notes']."</Notes>\n".
+        "       </Release>\n".
+        "   </Package>\n";
 
         /**
          * Look if there is already an entry for the author
@@ -179,8 +185,9 @@ while ($file = readdir($dir)) {
         /**
          * Move the tgz file to the new destination
          */
-         rename ($PEAR_Dir.'/'.$file.'/'.$packager->pkginfo['package'].'-'.$packager->pkginfo['version'].'.tgz',
-               $TgzDir.'/'.$packager->pkginfo['package'].'-'.$packager->pkginfo['version'].'.tgz');
+         $dest = $TgzDir.'/'.basename($pack_name);
+         copy($pack_name, $dest);
+         unlink($pack_name);
 
         chdir ('..');
     }

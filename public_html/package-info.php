@@ -253,7 +253,7 @@ if (!$relid) {
             $downloads_html = '';
             foreach ($downloads[$r['version']] as $dl) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
-                                   "$dl[basename]</a> (".sprintf("%.1fkB",filesize($dl['fullpath'])/1024.0).")<br />";
+                                   "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")<br />";
             }
             
             $link_changelog = "[ " . make_link("/package-changelog.php?pacid=".
@@ -294,14 +294,18 @@ if ($relid) {
 }
 $bb = new Borderbox($title);
 
-$query = "SELECT * FROM deps WHERE package = ?";
+// Select all releases
+$query = "SELECT * FROM releases WHERE package = ?";
 $params = array($pacid);
 if ($relid) {
-    $query .= " AND release = ?";
+    $query .= " AND id = ?";
     $params[] = $relid;
 }
-$prh = $dbh->prepare($query);
-$sth = $dbh->execute($prh, array($pacid, $relid));
+$query .= " ORDER BY version DESC";
+    
+$rels = $dbh->getAll($query, $params);
+
+usort($rels, "version_sort");
 
 if ($sth->numRows() == 0) {
     print "<i>No dependencies registered.</i>\n";
@@ -314,7 +318,7 @@ if ($sth->numRows() == 0) {
         'ne' => 'any version but %s',
         'gt' => 'newer than %s',
         'ge' => '%s or newer',
-/*        'lt' => '<',
+/*      'lt' => '<',
         'le' => '<=',
         'eq' => '=',
         'ne' => '!=',
@@ -332,42 +336,61 @@ if ($sth->numRows() == 0) {
         'websrv' => 'Web Server',
         'sapi'   => 'SAPI Backend',
         );
-    print "      <dl>\n";
-    while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
-        if ($row['version'] != $lastversion) {
+
+    // Loop per version 
+    foreach ($rels as $rel) {
+        $query = "SELECT * FROM deps WHERE package = ? AND release = ?";
+        $params = array($pacid, $rel['id']);
+        $prh = $dbh->prepare($query);
+        $sth = $dbh->execute($prh, $params);
+
+        print "\n       <dl>\n";
+
+        if ($rel['version'] != $lastversion) {
             print "\n";
             if ($lastversion) {
                 print "       </dd>\n";
             }
-            print "       <dt>Dependencies for version $row[version]:</dt>\n";
+            if (!isset($_GET['version'])) {
+                print "       <dt>Dependencies for version {$rel['version']}:</dt>\n";
+            }
             print "       <dd>\n";
         } else {
             print "<br />\n";
         }
         print "        ";
-		
-		// Print link if it's a PEAR package and it's in the db
-		if ($row['type'] == 'pkg' AND $pid = $dbh->getOne(sprintf("SELECT id FROM packages WHERE name = '%s'", $row['name']))) {
-			$row['name'] = sprintf('<a href="package-info.php?pacid=%s">%s</a>', $pid, $row['name']);
-		}
 
-        if (isset($rel_trans[$row['relation']])) {
-            $rel = sprintf($rel_trans[$row['relation']], $row['version']);
-            printf("%s: %s %s",
-                   $dep_type_desc[$row['type']], $row['name'], $rel);
+        if ($sth->numRows() != 0) {
+
+
+            while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+                // Print link if it's a PEAR package and it's in the db
+                if ($row['type'] == 'pkg' AND $pid = $dbh->getOne(sprintf("SELECT id FROM packages WHERE name = '%s'", $row['name']))) {
+                    $row['name'] = sprintf('<a href="package-info.php?pacid=%s">%s</a>', $pid, $row['name']);
+                }
+
+                if (isset($rel_trans[$row['relation']])) {
+                    $rel = sprintf($rel_trans[$row['relation']], $row['version']);
+                    printf("%s: %s %s",
+                           $dep_type_desc[$row['type']], $row['name'], $rel);
+                } else {
+                    printf("%s: %s", $dep_type_desc[$row['type']], $row['name']);
+                }
+                print "<br />\n";
+            }
+
+            if ($lastversion) {
+                print "\n       </dd>\n";
+            }
         } else {
-            printf("%s: %s", $dep_type_desc[$row['type']], $row['name']);
+            print "<i>No dependencies registered.</i>\n";
         }
-        $lastversion = $row['version'];
+        print "\n       </dl>\n";
     }
-    if ($lastversion) {
-        print "\n       </dd>\n";
-    }
-    print "      </dl>\n";
 }
 $bb->end();
 
-// Ho ho ho (I must be Santa Claws)
+// Ho ho ho (I must be Santa Claws)! Yeah right, and I'm the pope
 ?>
 
 <script language="JavaScript" type="text/javascript">
@@ -394,4 +417,10 @@ response_footer();
 
 // }}}
 
+// {{{ Reverse version sort function
+function version_sort($a, $b)
+{
+    return 1 - version_compare($a['version'], $b['version']);
+}
+// }}}
 ?>

@@ -135,7 +135,13 @@ function make_link ($url, $linktext=false, $target=false, $extras=false) {
 	);
 }
 
+// make_mailto_link()
+// return a mailto-hyperlink
+//
 
+function make_mailto_link ($url, $linktext=false, $extras=false) {
+    return make_link("mailto:" . $url, ($linktext ? $linktext : $url), false, $extras);
+}
 
 // print_link()
 // echo a hyperlink to something, within the site

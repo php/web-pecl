@@ -4,3 +4,4 @@ Disallow: /get
 Disallow: /xmlrpc.php
 Disallow: /search.php
 Disallow: /package-search.php
+Disallow: /distributions

@@ -37,7 +37,7 @@
 #
 
 set_time_limit(0);
-ob_end_flush();
+@ob_end_flush();
 ob_implicit_flush(true);
 ini_set('track_errors', true);
 ini_set('html_errors', false);

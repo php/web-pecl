@@ -42,8 +42,9 @@ $GLOBALS['user_menu'] = array(
 );
 
 $GLOBALS['admin_menu'] = array(
-    '/admin/'                     => 'Account Requests',
-    '/admin/category-manager.php' => 'Categories'
+    '/admin/'                     => 'Overview',
+    '/admin/category-manager.php' => 'Categories',
+    '/admin/package-maintainers.php' => 'Maintainers'
 );
 
 $GLOBALS['_style'] = '';

@@ -228,6 +228,7 @@ function commonHeader($title) {
     <input class="small" type="text" name="search_string" value="" size="20" />
     <small>in the</small>
     <select name="search_in" class="small">
+	<option value="packages">Packages</option>
     <option value="pear-dev">Developer mailing list</option>
     <option value="pear-general">General mailing list</option>
     <option value="pear-cvs">CVS commits mailing list</option>

@@ -14,6 +14,11 @@ if (!isset($HTTP_POST_VARS['search_in'])) {
 
 switch ($HTTP_POST_VARS['search_in']) {
 
+	case "packages":
+		header('Location: /package-search.php?pkg_name='.urlencode($HTTP_POST_VARS['search_string']).'&bool=AND&submit=Search');
+		exit;
+		break;
+
     case "pear-dev" :
     case "pear-cvs" :
     case "pear-general" :

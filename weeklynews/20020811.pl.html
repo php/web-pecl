@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><META http-equiv=content-type content="text/html; charset=iso-8859-2"><title>x</title></head><body>
+<small><i>autor: Alan Knowles alan_k@php.net (tłumaczenie: Robert Janeczek rashid@php.net)</i></small>
+<p>Kolejny pracowity tydzień w wiecie PEAR, 5 nowych wydań i 2 pakiety dodane
+, do tego dyskusja na temat statusu strony webowej PEAR, powrót do życia Forum
+oraz wydanie kandydackie MDB.
+
+</p><hr>
+
+<h2>Nowe wydania</h2>
+
+<h3>Stabilne</h3>
+<ul>
+<li><b>Var_Dump -</b> graficzna wersja funkcji var_dump z PHP</li>
+<li><b>Cache</b> - w pełni funkcjonalny system do cache`owania najróżniejszych danych.</li>
+<li><b>Date</b>- obiektowa reprezentacja dat z obsługš dat spoza standardowego zakresu unixowego (1970-2038)</li>
+</ul>
+
+<h3>Beta</h3>
+<ul>
+<li><b>Cache_Lite</b> - szybki i bezpieczny pakiet do cache`owania skryptów PHP.</li>
+</ul>
+
+<h3>Rozwojowe</h3>
+<ul>
+  <li><b>MDB</b> - połšczenie PEAR DB i warstwy abstrakcji baz danych Metabase.</li>
+</ul>
+<br>
+
+<hr>
+
+<h2>Skrót z PEAR-DEV</h2>
+
+<h3>Znajdywania listy pakietów</h3>
+Zaistniała krótka dyskusja o wywietlaniu linku do <a href="http://pear.php.net/packages.php">listy pakietów</a>
+na głównej stronie webowej PEAR. Sprawa jest zwišzana z faktem, że w obecnych
+wydaniach PHP jedynš możliwociš użycia instalatora PEAR jest:
+<pre>lynx -source http://pear.php.net/go-pear | php</pre>
+Jednakże, od momentu udostępnienia PHP 4.3.0, nie będzie to już potrzebne 
+(instalator będzie w pakiecie dystrybucyjnym), więc używanie i dostęp do
+pakietów PEAR stanie się znacznie łatwiejszy. Również ze względu na to, że
+strona wciąż przechodzi małą ewolucję będzie lepiej zaprezentować w pełni
+sprawny system dystrybucyjny niż udostępniać managera pakietów PEAR kiedy
+wciąż są z nim jeszcze małe problemy. W międzyczasie, żeby zobaczyć stronę
+PEAR w pełnej krasie trzeba wejść pod ten adres i wtedy odświeżyć stronę:
+<pre><a href="http://pear.php.net/?devme">http://pear.php.net/?devme</a></pre>
+Jeden z najbardziej denerwujących problemów został w tym tygodniu naprawiony
+przez Tomas`a Cox, dzięki zaciętej walce z błędami proces tworzenia nowego
+pakietu i uploadowania pierwszego wydania jest teraz wyraźnie latwiejszy.
+<h3>Kolejny język nowinek tygodniowych</h3>
+Jesus M. Castagnetto, (wsółautor Professional PHP Programming i kilku pakietów PEAR),
+rozpoczął tłumaczenie nowinek na hiszpański.
+
+<h3>MDB pierwsze wydanie kandydackie</h3>
+Lukas Smith ogłosił, że uznaje MDB, połączenie 
+Metabase i PEAR DB, za gotowe do testów beta i poszukuje
+wszelkich dziur, które powinny być usunięte przed wydaniem
+wersji 1.0.
+
+<h3>Kategoria PHP zaczyna się wypełniać</h3>
+Po krótkiej dyskusji, Var_Dump Frederic`a
+Poeydomenge zostało dodane do nowej kategorii - PHP, wraz z 
+PHPDoc, PHPUnit i bcompiler przeniesionymi z kategorii PEAR. Var_dump nadal
+wymaga zmiany nazwy, aby był zgodny ze standardami nazewnictwa PEAR, np.
+na PHP_VarDump albo PHP_Var_Dump.
+
+<h3>Kolejne problemy z Zend Engine 2</h3>Brad Bulger wywęszył, że używając 
+nowego Zend Engine można się spodziewać ciekawych efektów ubocznych - warto
+zwrócić na nie uwagę. Problem znaleziony przez niego był związany z tym, że
+metoda mkdir w pakiecie System ma taką samą nazwę jak standardowa funkcja
+PHP, a ponieważ w ZE2 już nie trzeba używać $this-&gt;mkdir() żeby wywołać
+lokalną metodę, silnik mylił mkdir (wywołanie systemowe) z wywołaniem 
+metody mkdir...
+
+<h3>Forum wraca do życia</h3>
+???? Wodzu spytał, czy może przejąć część pracy nad pakietem Forum, 
+konwertując go bardziej w stronę standardów PEAR i dodając nową
+funckjonalność.
+Jak zwykle odpowiedzią były fanfary i poklepywanie po ramieniu. 
+
+<h3>Docbook łatwiejszy - OpenOffice XSLT</h3>
+Sandro Zic pojawił się żeby poinformować, że są już dostępne
+konwertery z OpenOffice do Docbook XSLT - na stronie: 
+<a href="http://www.chez.com/ebellot/ooo2sdbk/">http://www.chez.com/ebellot/ooo2sdbk/</a>,
+jeśli ktoś chce wypróbować, to społeczność PEAR będzie bardzo ciekawe wyników.
+
+<h3>Bugi i poprawki</h3>
+Dzięki za znajdywanie błędów i pare poprawek otrzymują: James Flemer, Mike
+Tuupola, Matt Allen, Rob, Pierre-Alain Joye, Arnaud Limbourg,Troels Arvin i
+Wim Vinckier
+
+
+<hr>
+
+<h2>Propozycje pakietów:</h2>
+
+<h3>Var_Dump</h3>
+Var_dump jest bardziej eleganckim i szczegółowym var_dump() do wyświetlania zmiennych. 
+Obecnie skupia się na tworzeniu wyjścia w HTML.
+
+<h3>PECL::Threads</h3>Po rozwiązaniu problemów technicznych związanych
+z dodawaniem wsparcia dla wątków do PHP, Alan Knowles i Shane Caraveo
+mają gotowy i działający prototyp w PECL. To jest wieloplatformowe
+rozszerzenie, które obecnie pozwala uruchomić inny wątek w php przy
+użyciu składni podobnej do include, oprócz tego możliwe jest przekazywanie
+zmiennych między tymi wątkami. Jest to bardzo przydatne do tworzenia
+serwerów TCP i aplikacji GTK. Bardziej standardowy interfejs: thread_create('function_name'),
+również jest obecnie opracowywany<hr>
+
+<h2>Rozwój</h2>
+Ruch w CVS w tym tygodniu odbywał się w następujących pakietach: MDB, HTML_Javascript,
+HTML_Post, DB_DataObject, PECL::Threads, I18N, Console_Getopt, Cache_Lite,
+Auth, DB, Date, HTML_QuickForm, DB_ldap, HTTP_Upload, Math_Numbers and Net_Ping.
+
+
+<br>
+</body></html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>by Alan Knowles(alan_k@php.net)  (&uuml;bersetzt von Alexander Merz alexmerz(at)</small></i></p>
+    
+<p>
+Kurz und b&uuml;ndig: Im Vordergrund der Diskussionen stand das kommende PHP 4.3-Release; und
+die Diskussion um ein Virtual-File-System ging weiter. LiveUser steht kurz vor seinem ersten 
+Release. Daneben ging es um PEAR-Werbebanner und &Uuml;berlegungen f&uuml;r die Zend Engine 2.
+Dazu gab es acht neue Releases ( 1 'stable', 2 'beta', 3 'alpha' und 2 'development'), zwei
+neue Package-Vorschl&auml;ge und PEARDoc2 befindet sich endlich im CVS.
+</p>	
+
+<hr>  
+<h2>Neue Releases</h2>
+    
+<h3>Stable</h3>
+<ul>
+	<li>
+  		<b>Auth</b> - 
+		Funktionen f&uuml;r ein Authentifizierungs-System
+	</li> 
+</ul>
+
+
+<h3>Beta</h3>    
+<ul>
+	<li>
+		<b>Tree</b> - 
+		Funktionen für den Zugriff und zur Bearbeitung von Baumstrukturen aus Datenbanken oder XML		
+	</li>
+  	<li>
+		<b>DBA</b> - 
+		Bereitstellung einer dateibasierenden Datenbanken über die PHP-DBA-Funktionen oder per Emulation, 
+		einschließlich einer einfachen SQL-Implementierung				
+	</li>
+</ul>
+
+<h3>Alpha</h3>   
+<ul>
+	<li>
+		<b>PECL::ecasound</b> - 
+		Funktionen f&uuml;r die fortgeschrittene Audio-Bearbeitung, PHP-Erweiterung f&uuml;r die Ecasound-Library, 
+	</li>
+  	<li>
+		<b>XML_XSLT_Wrapper</b> - 
+		Abstraktionsschicht f&uuml;r XSL-Transformationen
+	</li>
+  	<li>
+		<b>Inline_C</b> -
+		Funktionen zur Einbindung von C-Code direkt in PHP-Dateien
+	</li>
+</ul>
+
+<h3>Development</h3>   
+<ul>
+  	<li>
+		<b>SQL_Parser</b> - 
+		Parser und Tokenizer f&uuml;r SQL
+	</li>
+ 	<li>
+		<b>DBA_Relational</b> -
+		Funktionen zum Zugriff auf DBA-artige Datenbanken mit SQL
+	</li>
+</ul>
+  
+
+<hr>  
+<h2>PEAR-Dev Meldungen</h2>
+    
+<h3>Virtual-File-System</h3>
+<p>
+Fortsetzung zur Diskussion um ein k&uuml;nstliches Dateisystem: Wez Furlong
+beschrieb in einer Nachricht die neue Stream-Unterst&uuml;tzung in PHP 4.3.
+Sie erm&ouml;glicht das Schreiben eigener Dateisystem-Treiber in PHP. Damit 
+k&ouml;nnen die &uuml;blichen Datei-Funktionen in PHP (fopen etc.) auch auf solch
+k&uuml;nstliche Dateisysteme zugreifen.
+</p>
+
+<h3>PEAR in PHP 4.3</h3>
+<p>
+Das Release von PHP 4.3 r&uuml;ckt n&auml;her heran; mit hoher Priorit&auml;t
+werden noch zwei Themen behandelt: ein mysteri&ouml;ser Bug in Tar_Archive
+und letzte Tests der Win32-Installationsroutine.
+</p>
+ 
+<h3>Branches f&uuml;r die Zend Engine 2</h3>
+<p>
+Sebastian Bergmann erzeugte letzte Woche einen Branch f&uuml;r ZE-2-spezifische 
+PHPUnit-Teile. Es wurde dar&uuml;ber diskutiert, ob dieses Vorgehen grunds&auml;tzlich f&uuml;r
+ZE-2-spezifische PEAR-Bestandteile sinnvoll ist. Das Ergebniss war, dass Packages unter ZE 1 und
+ZE 2 laufen sollten. Nur wenn das nicht m&ouml;glich ist, sollte ein CVS-Branch erzeugt werden.
+</p>
+
+<h3>LiveUser kurz vor'm Release</h3>
+<p>
+Markus Wolffs LiveUser steht kurz vor dem ersten Release. Er dankte Christian, Lukas
+und Pierre-Alain f&uuml;r ihre Hilfe bei der schnellen Fertigstellung des neuen 
+Authentifizierungs- und Authentikationsystem.
+</p>
+
+<h3>Mehr PEAR-Werbebanner</h3>
+<p>
+Bertrand Mansion nannte einen Link f&uuml;r seinen PHP-Werbebanner:
+<img src="http://www.mamasam.com/pear_ad_2.gif" alt="pear banner" align="top">.<br>
+Er kann frei zur Promotion von PEAR benutzt werden. 
+</p>
+<p>
+Nach eine Anfrage erg&auml;nzte Colin Viebrock einige neue kleine neue PEAR-Bildchen
+auf der <a href="http://pear.php.net/support.php">PEAR-Supportseite</a>. Sie sind
+in den Formaten GIF und PNG f&uuml;r PEAR <img src="http://pear.php.net/gifs/pear-icon.gif">
+und PECL <img src="http://pear.php.net/gifs/pecl-icon.gif"> verf&uuml;gbar.
+</p>
+ 
+<h3>Bugs und Fixes</h3>
+<p>
+Dank an
+Francisco Benza,
+Jason Rust, phpsurf, Pawe&#322; Go&#322;aszewski und Urs Gehrig   
+f&uuml;r Bug-Meldungen und Korrekturen.   
+</p>
+
+<hr>   
+<h2>Neue und vorgeschlagene Packages</h2>
+    
+<h3>package f&uuml;r Hash-Berechnungen und HMAC-Signaturen</h3>
+<p>
+Jesus Castagnetto's Package erzeugt Hashes auf Basis allgemein verf&uuml;gbarer
+PHP-Funktionen. Hashes erm&ouml;glichen u.a. die Pr&uuml;fung auf ver&auml;nderte Daten.
+</p>
+
+<h3>Net_Auth_SASL</h3>
+<p>
+Richard Heyes' Package implementiert die SASL-Verschl&uuml;sselung f&uuml;r
+die Daten&uuml;bermittlung &uuml;ber Socketverbindungen. Damit kann die Sicherheit
+bei der &Uuml;bermittlung verbessert werden, insbesondere bei
+Klar-Text-Protokolle (z.B. SMTP, IMAP).
+</p>
+    
+<hr>    
+<h2>Development</h2>
+<p>
+CVS-Aktivit&auml;ten fanden letzte Woche bei
+  Auth_SASL, Cache_Lite, DBA, DBA_Relational,
+HTTP_Request, Inline_C, Log, Message, Net_DIME, Net_Ident, Net_URL, PECL::ecasound,
+PECL::python, Perm_LiveUser, SOAP, SOAP_Interop, SQL_Parser, Text_Password,
+Tree, XML_Transformer, XML_XSLT_Wrapper und dem PEAR installer statt.    
+</p>
+
+<h3>Neue und verbesserte Dokumentation</h3>
+<p>
+PEARDoc2 befindet sich nun im CVS im Verzeichniss peardoc/peardoc2.
+Autoren sind aufgerufen, die bestehende Dokumentation zu konvertieren
+oder neue zu erg&auml;nzen.
+</p>
+</body>
+</html>

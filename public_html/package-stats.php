@@ -340,7 +340,7 @@ if (@!$_GET['pid']) {
 	}
 	
 	if ($rows > 12) {
-		echo '<div style="height: 300px; overflow: auto">';
+		echo '<div id="jabba" style="height: 300px; overflow: auto">';
 	}
 	echo "<table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"2\">\n";
 	echo "<tr align=\"left\" bgcolor=\"#cccccc\">\n";

@@ -107,8 +107,12 @@ if (empty($id)) {
         }
     }
 
+    $url = $_SERVER['PHP_SELF'];
+    if (!empty($_GET['pid'])) {
+        $url .= "?pid=" . $_GET['pid'];
+    }
     echo '<br /><b>Done</b><br />';
-    echo '<a href="' . $_SERVER['PHP_SELF'] . '">Back</a>';
+    echo '<a href="' . $url . '">Back</a>';
 } else {
     if (!isAllowed($id)) {
         PEAR::raiseError("Only the lead maintainer of the package or PEAR

@@ -1,5 +1,8 @@
 <?php
-
+if (!DEVBOX) {
+    header("Location: /");
+    exit;
+}
 auth_require(false);
 $url = "http://$HTTP_HOST";
 if ($SERVER_PORT != 80) {

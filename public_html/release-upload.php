@@ -12,7 +12,7 @@ $jumpto = false;
 
 PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
 do {
-	if (isset($upload)) {
+    if (isset($upload)) {
         include_once 'HTTP/Upload.php';
         $upload_obj = new HTTP_Upload('en');
         $file = $upload_obj->getFiles('distfile');
@@ -24,7 +24,7 @@ do {
             $file->setValidExtensions('tgz', 'accept');
             $tmpfile = $file->moveTo(PEAR_UPLOAD_TMPDIR);
             if (PEAR::isError($tmpfile)) {
-                    display_error($tmpfile->getMessage()); break;
+                display_error($tmpfile->getMessage()); break;
             }
             $tmpsize = $file->getProp('size');
         } elseif ($file->isMissing()) {
@@ -35,7 +35,7 @@ do {
         $display_form = false;
         $display_verification = true;
 
-	} elseif (isset($verify)) {
+    } elseif (isset($verify)) {
         $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
 
         include_once "PEAR/Common.php";
@@ -45,24 +45,26 @@ do {
         if (!@is_file($distfile)) {
             display_error("No verified file found"); break;
         }
-		$file = release::upload($info['package'], $info['version'], $info['release_state'],
-		                      $info['release_notes'], $distfile, md5_file($distfile));
-		@unlink($distfile);
-		if (PEAR::isError($file)) {
-			display_error("Error while uploading package: ".$file->getMessage());
-			break;
-		}
+        $file = release::upload($info['package'], $info['version'], $info['release_state'],
+                                $info['release_notes'], $distfile, md5_file($distfile));
+        @unlink($distfile);
+        if (PEAR::isError($file)) {
+            $ui = $file->getUserInfo();
+            display_error("Error while uploading package: " .
+                          $file->getMessage() . ($ui ? " ($ui)" : "") );
+            break;
+        }
         release::promote($info, $file);
-		response_header("Release Upload Finished");
-		print "The release of package `" . $info['package'] . "' version `" . $info['version'] . "' ";
-		print "was completed successfully and the marketing for it started.<br /><br />";
+        response_header("Release Upload Finished");
+        print "The release of package `" . $info['package'] . "' version `" . $info['version'] . "' ";
+        print "was completed successfully and the marketing for it started.<br /><br />";
         $pacid = package::info($info['package'], 'id');
         print '<center>'.
               make_link("package-info.php?pacid=$pacid", 'Visit package home') .
               '</center>';
-		$display_form = $display_verification = false;
+        $display_form = $display_verification = false;
 
-	} elseif (isset($cancel)) {
+    } elseif (isset($cancel)) {
 
         $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
         if (@is_file($distfile)) {
@@ -92,58 +94,58 @@ Uploading new releases is restricted to each package's lead developer(s).
 
 ";
 
-    $packages = $dbh->getAssoc("SELECT packages.id AS id, ".
-							   "packages.name AS name ".
-							   "FROM packages, maintains ".
-							   "WHERE maintains.handle = ? ".
-							   "AND maintains.role = 'lead' ".
-							   "AND maintains.package = packages.id ".
-							   "ORDER BY name",
-							   false, array($PHP_AUTH_USER));
+    $params = array($_SERVER['PHP_AUTH_USER']);
+    $query = "SELECT packages.id AS id, packages.name AS name ".
+         "FROM packages, maintains ".
+         "WHERE maintains.handle = ? ".
+         "AND maintains.role = 'lead' ".
+         "AND maintains.package = packages.id ".
+         "ORDER BY name";
+    $packages = $dbh->getAssoc($query, false, $params);
 
-	if (empty($packages)) {
-		display_error("You are not registered as lead developer for any packages.");
-	}
-
-    if (isset($errorMsg)) {
-		print "<table>\n";
-		print " <tr>\n";
-		print "  <td>&nbsp;</td>\n";
-		print "  <td><b>$errorMsg</b></td>\n";
-		print " </tr>\n";
-		print "</table>\n";
+    if (empty($packages)) {
+        display_error("You are not registered as lead developer for any packages.");
     }
 
-    $form =& new HTML_Form($PHP_SELF, "POST");
-	$form->addFile("distfile", "Distribution file");
+    if (isset($errorMsg)) {
+        print "<table>\n";
+        print " <tr>\n";
+        print "  <td>&nbsp;</td>\n";
+        print "  <td><b>$errorMsg</b></td>\n";
+        print " </tr>\n";
+        print "</table>\n";
+    }
+
+    $form =& new HTML_Form($_SERVER['PHP_SELF'], 'POST');
+    $form->addFile("distfile", "Distribution file");
     $form->addSubmit("upload", "Upload!");
     $form->display();
 
     if ($jumpto) {
-		print "\n<script language=\"JavaScript\">\n<!--\n";
-		print "document.forms[1].$jumpto.focus();\n";
-		print "// -->\n</script>\n";
+        print "\n<script language=\"JavaScript\">\n<!--\n";
+        print "document.forms[1].$jumpto.focus();\n";
+        print "// -->\n</script>\n";
     }
 }
 
 if ($display_verification) {
-	include_once "PEAR/Common.php";
-	response_header("Upload New Release: Verify");
-	$util =& new PEAR_Common;
-    // XXX this will leave files in PEAR_UPLOAD_TMPDIR if users don't complete the
-	// next screen.  Janitor cron job recommended!
-	$info = $util->infoFromTgzFile(PEAR_UPLOAD_TMPDIR . "/$tmpfile");
-	$form =& new HTML_Form($PHP_SELF, "POST");
+    include_once "PEAR/Common.php";
+    response_header("Upload New Release: Verify");
+    $util =& new PEAR_Common;
+    // XXX this will leave files in PEAR_UPLOAD_TMPDIR if users don't
+    // complete the next screen.  Janitor cron job recommended!
+    $info = $util->infoFromTgzFile(PEAR_UPLOAD_TMPDIR . "/$tmpfile");
+    $form =& new HTML_Form($PHP_SELF, "POST");
     $form->addHidden('distfile', $tmpfile);
-	$form->addSubmit('verify', 'Verify Release');
+    $form->addSubmit('verify', 'Verify Release');
     $form->addSubmit('cancel', 'Cancel');
 
-	// XXX ADD MASSIVE SANITY CHECKS HERE
-	$bb = new BorderBox("Please verify that the following release ".
-						"information is correct:");
-	print "<table border=\"0\" cellpadding=\"3\" cellspacing=\"0\">\n";
-	print "<tr><th align=\"right\">Package:</th><td>$info[package]</td></tr>\n";
-	print "<tr><th align=\"right\">Version:</th><td>$info[version]</td></tr>\n";
+    // XXX ADD MASSIVE SANITY CHECKS HERE
+    $bb = new BorderBox("Please verify that the following release ".
+                        "information is correct:");
+    print "<table border=\"0\" cellpadding=\"3\" cellspacing=\"0\">\n";
+    print "<tr><th align=\"right\">Package:</th><td>$info[package]</td></tr>\n";
+    print "<tr><th align=\"right\">Version:</th><td>$info[version]</td></tr>\n";
 
     foreach (array('summary', 'description', 'release_state', 'release_date', 'releases_notes') as $key) {
         if (!isset($info[$key])) {
@@ -157,9 +159,9 @@ if ($display_verification) {
     print "<tr><th align=\"right\" valign=\"top\">Release Date:</th><td>" . $info['release_date'] . "</td></tr>\n";
     print "<tr><th align=\"right\" valign=\"top\">Release Notes:</th><td>" . nl2br($info['release_notes']) . "</td></tr>\n";
 
-	print "</table>\n";
-	$form->display();
-	$bb->end();
+    print "</table>\n";
+    $form->display();
+    $bb->end();
 }
 
 response_footer();

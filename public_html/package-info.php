@@ -1,17 +1,22 @@
 <?php
-//error_reporting(E_ALL);
-
 // expected url vars: pacid
 $pacid = (isset($pacid)) ? (int) $pacid : null;
+
 if (empty($pacid)) {
-    die ('No package selected');
+    response_header("Error");
+    PEAR::raiseError('No package selected');
+    response_footer();
+    exit();
 }
 // ** expected
 
 define('PHP_CVS_REPO_DIR', '/repository/pear');
 
 if (DB::isError($dbh)) {
-    die("DB::Factory failed: ".DB::errorMessage($dbh)."<BR>\n");
+    response_header("Error");
+    PEAR::raiseError("DB::Factory failed: ".DB::errorMessage($dbh));
+    response_footer();
+    exit();
 }
 
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
@@ -19,7 +24,10 @@ $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 // Package data
 $row = $dbh->getRow("SELECT * FROM packages WHERE id = $pacid");
 if (!$row) {
-    die ('No package selected (db)');
+    response_header("Error");
+    PEAR::raiseError('No package selected.');
+    response_footer();
+    exit();
 }
 $name        = $row['name'];
 $summary     = stripslashes($row['summary']);

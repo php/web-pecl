@@ -137,7 +137,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
     
     $bb = new Borderbox("General statistics");
     echo "Number of releases: <b>" . count($info['releases']) . "</b><br />\n";
-    echo "Total downloads: <b>" . number_format(::package($_GET['pid']), 0, '.', ',') . "</b><br />\n";
+    echo "Total downloads: <b>" . number_format(statistics::package($_GET['pid']), 0, '.', ',') . "</b><br />\n";
     $bb->end();
     
     if (count($info['releases']) > 0) {

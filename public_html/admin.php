@@ -219,10 +219,16 @@ echo "<br/><br/>";
 
 $bb = new BorderBox("System information", "50%");
 
-echo "Uptime: " . uptime() . "<br/>";
-echo "Disk space: " . round((disk_total_space("/")/(1000*1000*1000)),2) . " GB (available: " . round((diskfreespace("/")/(1000*1000*1000)),2) . " GB)<br/>";
+echo "<ul>\n";
+
+echo "<li>Uptime: " . uptime() . "</li>\n";
+echo "<li>Disk space: " . round((disk_total_space("/")/(1000*1000*1000)),2) . " GB (available: " . round((diskfreespace("/")/(1000*1000*1000)),2) . " GB)</li>\n";
+echo "<li>" . make_link("/phpinfo.php", "Output of phpinfo()") . "</li>\n";
+echo "<li>Server name: " . $_SERVER['SERVER_NAME'] . "</li>\n";
+echo "<li>System date: " . date("Y-m-d H:i:s") . "</li>\n";
 
 $bb->end();
+
 
 response_footer();
 

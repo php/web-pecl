@@ -57,42 +57,47 @@ function startElement($parser, $elementName, $attribs)
          */
         case "qandaset" : {
             $content .= "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\">";
-	    return;
-	}
+	        return;
+	    }
+
         case "question" : {
             $content .= "<tr><td bgcolor=\"#cccccc\"><a name=\"faq-{$ID}\" /><font size=\"+1\">";
             $content .= $attribs['TITLE'];
-	    $TOC[$ID++] = $attribs['TITLE'];
-	    return;
-	}
+	        $TOC[$ID++] = $attribs['TITLE'];
+	        return;
+	    }
+
         case "answer" : {
             $content .= "<tr><td bgcolor=\"#eeeeee\">";
-	    return;
-	}
+	        return;
+	    }
+
         case "ulink" : {
             $content .= "<a href=\"".$attribs['URL']."\">";
             if (!empty($attribs['NAME'])) {
                 $content .= $attribs['NAME'];
             }            
-	    return;
-	}
+	        return;
+	    }
+
         case "faqlink" : {
             $content .= "<a href=\"faq.php#faq-".$attribs['FAQ']."\">";
             return;
-	}
+	    }
+
         case "author" : {
-	    $content .= "<{$tagmap[$key1]}>";
+	        $content .= "<{$tagmap[$key1]}>";
             if (!empty($attribs['NAME'])) {
-                $content .= "Answer written by $attribs[NAME]";
+                $content .= "Answer written by". $attribs['NAME'];
             }
-            return;            
-	}
+            return;
+	    }
     }
     
     if (isset($tagmap[$key2])) {
-	$content .= "<{$tagmap[$key2]}>";
+	    $content .= "<{$tagmap[$key2]}>";
     } elseif (isset($tagmap[$key1])) {
-	$content .= "<{$tagmap[$key1]}>";
+	    $content .= "<{$tagmap[$key1]}>";
     }
 }
 
@@ -112,22 +117,24 @@ function endElement($parser, $elementName)
          */        
         case "qandaset" : {
             $content .= "</table>";
-	    return;
-	}
+	        return;
+	    }
+
         case "question" : {
             $content .= "</font></td></tr>\n";
             return;
-	}
+	    }
+
         case "answer" : {
             $content .= "<br /></td></tr>\n";
             return;
-	}
+	    }
     }
 
     if (isset($tagmap[$key2])) {
-	$content .= "</{$tagmap[$key2]}>";
+	    $content .= "</{$tagmap[$key2]}>";
     } elseif (isset($tagmap[$key1])) {
-	$content .= "</{$tagmap[$key1]}>";
+	    $content .= "</{$tagmap[$key1]}>";
     }
 }
 
@@ -138,7 +145,11 @@ function characterData($parser, $data)
 
 $filename = "../doc/pearfaq.xml";
 
-$fp = fopen($filename, "r") or die("error opening pearfaq.xml");
+$fp = @fopen($filename, "r");
+
+if (!$fp) {
+    PEAR::raiseError("error opening pearfaq.xml");
+}
 
 $parser = xml_parser_create();
 
@@ -147,11 +158,11 @@ xml_set_character_data_handler($parser, "characterData");
 
 while ($data = fread($fp, 4096)) {
     if (!xml_parse($parser, $data, feof($fp))) {
-	$code = xml_get_error_code($parser);
-	$msg = "While parsing pearfaq.xml on line " .
-	     xml_get_current_line_number($parser) . ": " .
-	     xml_error_string($code);
-	PEAR::raiseError($msg, $code);
+	    $code = xml_get_error_code($parser);
+	    $msg = "While parsing pearfaq.xml on line " .
+	        xml_get_current_line_number($parser) . ": " .
+	        xml_error_string($code);
+	    PEAR::raiseError($msg, $code);
     }
 }
 

@@ -24,7 +24,6 @@ if (empty($format)) {
 }
 
 include_once "pear-format-$format.php";
-PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
 if (DEVBOX && empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));

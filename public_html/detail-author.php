@@ -1,4 +1,5 @@
 <?php
+
 response_header("Author information");
 
 $handle = $HTTP_GET_VARS['handle'];

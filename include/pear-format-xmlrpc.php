@@ -1,62 +1,128 @@
 <?php
 
-require_once "XML/RPC.php";
-require_once "XML/RPC/Server.php";
+PEAR::setErrorHandling(PEAR_ERROR_RETURN);
 
-$GLOBALS['_return_value'] = null;
+// {{{ pear_xmlrpc_error()
 
-function response_header($title = null, $style = null)
+function pear_xmlrpc_error($error) {
+    return false;
+}
+
+// }}}
+
+// {{{ xu_query_http_post()
+
+/* generic function to call an http server with post method */
+function xu_query_http_post($request,
+                            $host,
+                            $uri,
+                            $port,
+                            $debug, 
+                            $timeout,
+                            $user,
+                            $pass,
+                            $secure = false)
 {
-    static $called;
-    if ($called) {
-        return;
+    $response_buf = "";
+    if ($host && $uri && $port) {
+        $content_len = strlen($request);
+        
+        $fsockopen = $secure ? "fsockopen_ssl" : "fsockopen";
+        
+//        dbg1("opening socket to host: $host, port: $port, uri: $uri", $debug);
+        $query_fd = $fsockopen($host, $port, $errno, $errstr, 10);
+        if ($query_fd) {
+            
+            $auth = "";
+            if ($user) {
+                $auth = "Authorization: Basic " .
+                    base64_encode($user . ":" . $pass) . "\r\n";
+            }
+            
+            $http_request = 
+                "POST $uri HTTP/1.0\r\n" .
+                "User-Agent: xmlrpc-epi-php/0.2 (PHP)\r\n" .
+                "Host: $host:$port\r\n" .
+                $auth .
+                "Content-Type: text/xml\r\n" .
+                "Content-Length: $content_len\r\n" . 
+                "\r\n" .
+                $request;
+            
+//            dbg1("sending http request:</h3> <xmp>\n$http_request\n</xmp>", $debug);
+            
+            fputs($query_fd, $http_request, strlen($http_request));
+            
+//            dbg1("receiving response...", $debug);
+            
+            while (!feof($query_fd)) {
+                $line = fgets($query_fd, 4096);
+                if (!$header_parsed) {
+                    if ($line === "\r\n" || $line === "\n") {
+                        $header_parsed = 1;
+                    }
+//                    dbg2("got header - $line", $debug);
+                }
+                else {
+                    $response_buf .= $line;
+                }
+            }
+            
+            fclose($query_fd);
+        }
+        else {
+//            dbg1("socket open failed", $debug);
+        }
     }
-    $called = true;
+    else {
+//        dbg1("missing param(s)", $debug);
+    }
+    
+//    dbg1("got response:</h3>. <xmp>\n$response_buf\n</xmp>\n", $debug);
+    
+    return $response_buf;
 }
 
-function response_footer($style = false)
+// }}}
+// {{{ xu_rpc_http()
+
+/* call an xmlrpc method on a remote http server */
+function xu_rpc_http($method_name,
+                     $args,
+                     $host,
+                     $uri = "/",
+                     $port = 80,
+                     $debug = false, 
+                     $timeout = 0,
+                     $user = false,
+                     $pass = false,
+                     $secure = false)
 {
-    global $_return_value;
-    static $called;
-    if ($called) {
-	return;
+    $response_buf = "";
+    if ($host && $uri && $port) {
+        $request_xml = xmlrpc_encode_request($method_name, $args, array(version => "xmlrpc"));
+        $response_buf = xu_query_http_post($request_xml, $host, $uri, $port, $debug,
+                                           $timeout, $user, $pass, $secure);
+        
+        $retval = xu_find_and_decode_xml($response_buf, $debug);
     }
-    $called = true;
+    return $retval;
 }
 
-function menu_link($text, $url) {
-}
+// }}}
+// {{{ xu_find_and_decode_xml()
 
-function &xmlrpc_error($str) {
-    global $XML_RPC_erruser;
-    $error = new XML_RPC_Response(0, $XML_RPC_erruser, $str);
-    return $error;
-}
-
-function report_error($error)
+function xu_find_and_decode_xml($buf)
 {
-    global $_return_value, $XML_RPC_erruser;
-    if (PEAR::isError($error)) {
-        $error = $error->getMessage();
+    if (strlen($buf)) {
+        $xml_begin = substr($buf, strpos($response_buf, "<?xml"));
+        if (strlen($xml_begin)) {
+            $retval = xmlrpc_decode($xml_begin);
+        }
     }
-    $_return_value = new XML_RPC_Response(0, $XML_RPC_erruser, $error);
+    return $retval;
 }
 
-function error_handler($errobj)
-{
-    global $_return_value, $XML_RPC_erruser;
-    if (PEAR::isError($errobj)) {
-        $msg = $errobj->getMessage();
-        $info = $errobj->getUserInfo();
-    } else {
-        $msg = $errobj;
-        $info = '';
-    }
-    $report = "$msg";
-    if ($info) {
-        $report .= " ** $info";
-    }
-    report_error($report);
-}
+// }}}
 
 ?>

@@ -1,0 +1,44 @@
+PEAR.PHP.NET XML-RPC INTERFACE
+
+Methods are generally named <entity>.<operation>.
+
+List of methods:
+
+package.new
+	parameters:
+		struct:
+			name (string)
+			category (int or string)
+			license (string)
+			summary (string)
+			description (string)
+			lead (string)
+	return value:
+		(boolean) true on success
+		  -OR-
+		(fault)
+
+package.info
+
+package.publish (?)
+
+package.list
+
+package.alter
+
+package.annotate
+
+package.notes
+
+release.list
+
+release.get
+
+release.annotate
+
+release.notes
+
+category.list
+
+category.browse
+

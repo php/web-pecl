@@ -1,5 +1,7 @@
 <?php
 
+PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
+
 require_once 'layout.php';
 
 $GLOBALS['main_menu'] = array(
@@ -22,23 +24,6 @@ $GLOBALS['admin_menu'] = array(
 );
 
 $GLOBALS['_style'] = '';
-
-function smarty_func_page_start($params)
-{
-    extract($params);
-    if (empty($title)) {
-        $title = "The PHP Extension and Application Repository";
-    }
-    if (isset($sidebardata)) {
-        $GLOBALS['SIDEBAR_DATA'] = $sidebardata;
-    }
-    response_header($title);
-}
-
-function smarty_func_page_end($params)
-{
-    response_footer();
-}
 
 function response_header($title = 'The PHP Extension and Application Repository', $style = false)
 {
@@ -146,41 +131,6 @@ function error_handler($errobj, $title = "Error")
     exit;
 }
 
-function smarty_func_border_box_start($params)
-{
-    extract($params);
-    if (!isset($width)) {
-        $width = "90%";
-    }
-    if (!isset($indent)) {
-        $indent = "";
-    }
-    print "$indent<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"$width\">\n";
-    print "$indent <tr>\n";
-    print "$indent  <td bgcolor=\"#000000\">\n";
-    print "   <table cellpadding=\"2\" cellspacing=\"1\" border=\"0\" width=\"100%\">\n";
-    if (isset($title)) {
-        print "$indent    <tr bgcolor=\"#cccccc\">\n";
-        print "$indent     <th>$title</th>\n";
-        print "$indent    </tr>\n";
-    }
-    print "$indent    <tr bgcolor=\"#ffffff\">\n";
-    print "$indent     <td>\n";
-}
-
-function smarty_func_border_box_end($params)
-{
-    extract($params);
-    if (!isset($indent)) {
-        $indent = "";
-    }
-    print "$indent     </td>\n";
-    print "$indent    </tr>\n";
-    print "$indent   </table>\n";
-    print "$indent  </td>\n";
-    print "$indent </tr>\n";
-    print "$indent</table>\n";
-}
 
 function border_box_start($title, $width = "90%", $indent = "")
 {

@@ -33,17 +33,24 @@ class Damblan_RSS_Common {
     var $_tree = null;
     var $_root = null;
     var $_channel = null;
+    var $_seq = null;
 
     function Damblan_RSS_Common() {
         $this->_tree = new XML_Tree;
-        $this->_root = &$this->_tree->addRoot("rss");
+        $this->_root = &$this->_tree->addRoot("rdf:RDF");
 
-        // For now we use RSS 0.91, but this might change one fine day
-        $this->_root->setAttribute("version", "0.91");
+        $this->_root->setAttribute("xmlns:rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+        $this->_root->setAttribute("xmlns", "http://purl.org/rss/1.0/");
+        $this->_root->setAttribute("xmlns:dc", "http://purl.org/dc/elements/1.1/");
 
         $this->_channel = &$this->_root->addChild("channel");
+        $this->_channel->setAttribute("rdf:about", "http://pear.php.net/");
         $this->_channel->addChild("dc:creator", "pear-webmaster@php.net");
-        $this->_channel->addChild("language", "en-us");
+        $this->_channel->addChild("dc:publisher", "pear-webmaster@php.net");
+        $this->_channel->addChild("dc:language", "en-us");
+
+        $c_items = &$this->_channel->addChild("items");
+        $this->_seq = &$c_items->addChild("rdf:Seq");
     }
 
     /**
@@ -79,7 +86,8 @@ class Damblan_RSS_Common {
     function newItem($title, $link, $desc) {
         $item = new XML_Tree_Node("item");
 
-        $item->addChild("title", htmlspecialchars($title));
+        $item->setAttribute("rdf:about", $link);
+        $item->addChild("title", $title);
         $item->addChild("link", htmlspecialchars($link));
         $item->addChild("description", htmlspecialchars($desc));
 
@@ -94,7 +102,10 @@ class Damblan_RSS_Common {
      * @return void
      */
     function addItem(&$item) {
-        $this->_channel->addChild($item);
+        $e = $item->getElement(array(1));
+        $c = &$this->_seq->addChild("rdf:li");
+        $c->setAttribute("rdf:resource", $e->content);
+        $this->_root->addChild($item);
     }
 
     /**

@@ -1173,7 +1173,7 @@ function detect_install_dirs($_prefix = null) {
             $php_bin   = $t;
         } elseif ( $t=which('php') ) {
             $php_bin = $t;
-        } elseif ( is_file($prefix.'\cli\php.exee') ) {
+        } elseif ( is_file($prefix.'\cli\php.exe') ) {
             $php_bin = $prefix.'\cli\php.exe';
         } elseif ( is_file($prefix.'\php.exe') ) {
             $php_bin = $prefix.'\php.exe';

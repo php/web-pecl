@@ -249,7 +249,7 @@ class package
         $rel_sql = "SELECT version, id, doneby, license, summary, ".
              "description, releasedate, releasenotes, state ".
              "FROM releases ".
-             "WHERE package = ?".
+             "WHERE package = ? ".
              "ORDER BY releasedate DESC";
         $notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
         $deps_sql = "SELECT type, relation, version, name, release

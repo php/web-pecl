@@ -43,6 +43,16 @@ if (isset($_SERVER['PEAR_TARBALL_DIR'])) {
 } else {
     define('PEAR_TARBALL_DIR', '/var/lib/pear'); 
 }
+if (isset($_SERVER['PEAR_PATCHES'])) {
+    define('PEAR_PATCHES', $_SERVER['PEAR_PATCHES']);
+} else {
+    define('PEAR_PATCHES', '/var/lib/pear/patches/');
+}
+if (isset($_SERVER['PEAR_CVS'])) {
+    define('PEAR_CVS', $_SERVER['PEAR_CVS']);
+} else {
+    define('PEAR_CVS', '/var/lib/pear/patches/cvs/');
+}
 if (isset($_SERVER['PHP_CVS_REPO_DIR'])) {
     define('PHP_CVS_REPO_DIR', $_SERVER['PHP_CVS_REPO_DIR']);
 } else {

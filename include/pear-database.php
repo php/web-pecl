@@ -234,7 +234,7 @@ class package
     // }}}
     // {{{ *proto struct package::info(string|int)
 
-    function info($pkg)
+    function info($pkg, $field = null)
     {
         global $dbh;
         if ($pkg === (string)((int)$pkg)) {
@@ -242,23 +242,58 @@ class package
         } else {
             $what = "name";
         }
-        $info =
-             $dbh->getRow("SELECT p.id AS packageid, p.name AS name, ".
-                          "c.id AS categoryid, c.name AS category, ".
-                          "p.stablerelease AS stable, p.license AS license, ".
-                          "p.summary AS summary, ".
-                          "p.description AS description".
-                          " FROM packages p, categories c ".
-                          "WHERE c.id = p.category AND p.{$what} = ?",
-                          array($pkg), DB_FETCHMODE_ASSOC);
-        $info['releases'] =
-             $dbh->getAssoc("SELECT version, id, doneby, license, summary, ".
-                            "description, releasedate, releasenotes, maturity ".
-                            "FROM releases WHERE package = ?", false,
-                            array($info['packageid']));
-        $info['notes'] =
-             $dbh->getAssoc("SELECT id, nby, ntime, note FROM notes ".
-                            "WHERE pid = ?", false, array($info['packageid']));
+		$pkg_sql = "SELECT p.id AS packageid, p.name AS name, ".
+			 "c.id AS categoryid, c.name AS category, ".
+			 "p.stablerelease AS stable, p.license AS license, ".
+			 "p.summary AS summary, ".
+			 "p.description AS description".
+			 " FROM packages p, categories c ".
+			 "WHERE c.id = p.category AND p.{$what} = ?";
+		$rel_sql = "SELECT version, id, doneby, license, summary, ".
+			 "description, releasedate, releasenotes, state ".
+			 "FROM releases WHERE package = ?";
+		$notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
+		if ($field === null) {
+			$info =
+				 $dbh->getRow($pkg_sql, array($pkg), DB_FETCHMODE_ASSOC);
+			$info['releases'] =
+				 $dbh->getAssoc($rel_sql, false, array($info['packageid']),
+				                DB_FETCHMODE_ASSOC);
+			$info['notes'] =
+				 $dbh->getAssoc($notes_sql, false, array($info['packageid']),
+				                DB_FETCHMODE_ASSOC);
+		} else {
+			// get a single field
+			if ($field == 'releases' || $field == 'notes') {
+				if ($what == "name") {
+					$pid = $dbh->getOne("SELECT id FROM packages ".
+										"WHERE name = ?", array($pkg));
+				} else {
+					$pid = $pkg;
+				}
+				if ($field == 'releases') {
+					$info = $dbh->getAssoc($rel_sql, false, array($pid),
+					                       DB_FETCHMODE_ASSOC);
+				} elseif ($field == 'notes') {
+					$info = $dbh->getAssoc($notes_sql, false, array($pid),
+					                       DB_FETCHMODE_ASSOC);
+				}
+			} elseif ($field == 'category') {
+				$sql = "SELECT c.name FROM categories c, packages p ".
+					 "WHERE c.id = p.category AND p.$what = ?";
+				$info = $dbh->getAssoc($sql, false, array($pkg));
+			} else {
+				if ($field == 'categoryid') {
+					$dbfield = 'category';
+				} elseif ($field == 'packageid') {
+					$dbfield = 'id';
+				} else {
+					$dbfield = $field;
+				}
+				$sql = "SELECT $dbfield FROM packages WHERE $what = ?";
+				$info = $dbh->getOne($sql, array($pkg));
+			}
+		}
         return $info;
     }
 
@@ -402,46 +437,64 @@ class release
     }
 
     // }}}
+    // {{{        void release::HTTPdownload(string, [string], [string])
 
-    function HTTPdownload($package, $version = null)
+	// not for xmlrpc export
+    function HTTPdownload($package, $version = null, $file = null)
     {
         global $dbh;
-        $package_id = package::_getID($package);
+        $package_id = package::info($package, 'packageid');
         if (PEAR::isError($package_id)) {
             return $package_id;
         }
-        // We want the lastest version
-        if ($version == null) {
-            $sql = "SELECT f.fullpath FROM releases r, files f
-                    WHERE r.package = $package_id
-                    AND r.package = f.package
-                    AND r.id = f.release
-                    ORDER BY r.releasedate DESC";
-            // XXX Fixme when Pear DB supports "limitGetOne()"
-            $res = $dbh->limitQuery($sql, 0, 1);
-            if (PEAR::isError($res)) {
-                return $res;
-            }
-            $path = $res->fetchRow(DB_FETCHMODE_ORDERED);
-        // specific version
-        } else {
-            $sql = "SELECT f.fullpath FROM releases r, files f
-                    WHERE r.package = $package_id
-                    AND r.package = f.package
-                    AND r.id = f.release
-                    AND r.version = ?";
-            $path = $db->getOne($sql, array($version));
-        }
-        if (PEAR::isError($path)) {
-            return $path;
-        }
+		if ($version == null) {
+			// Get the most recent version
+			$row = $dbh->getRow("SELECT id FROM releases ".
+								"WHERE package = $package_id ".
+								"ORDER BY releasedate DESC",
+								DB_FETCHMODE_ORDERED);
+			$release_id = $row[0];
+		} elseif (release::isValidState($version)) {
+			// Get the most recent version with a given state
+			$row = $dbh->getRow("SELECT id FROM releases ".
+								"WHERE package = $package_id ".
+								"AND state = '$version' ".
+								"ORDER BY releasedate DESC",
+								DB_FETCHMODE_ORDERED);
+			$release_id = $row[0];
+		} else {
+			// Get a specific release
+			$row = $dbh->getRow("SELECT id FROM releases ".
+								"WHERE package = $package_id ".
+								"AND version = '$version'",
+								DB_FETCHMODE_ORDERED);
+			$release_id = $row[0];
+		}
+		$sql = "SELECT fullpath, basename FROM files WHERE release = ".
+			 $release_id;
+		$row = $dbh->getRow($sql, DB_FETCHMODE_ORDERED);
+		if (PEAR::isError($row)) {
+			return $row;
+		}
+		list($path, $basename) = $row;
         if (empty($path) || !@is_file($path)) {
             return PEAR::raiseError("release download:: no version information found");
         }
         header('Content-type: application/octet-stream');
-        header('Content-disposition: attachment; filename="'. basename($path) .'"');
+        header('Content-disposition: attachment; filename="'.$basename.'"');
         readfile($path);
     }
+
+    // }}}
+	// {{{ -proto bool release::isValidState(string)
+
+	function isValidState($state)
+    {
+		static $states = array('devel', 'snapshot', 'alpha', 'beta', 'stable');
+		return in_array($state, $states);
+	}
+
+    // }}}
 }
 
 class note
@@ -640,7 +693,7 @@ class PEAR_Release extends DB_storage
 
 if (!function_exists("md5_file")) {
     function md5_file($filename) {
-        $fp = fopen($filename, "r");
+        $fp = @fopen($filename, "r");
         if (is_resource($fp)) {
             return md5(fread($fp, filesize($filename)));
         }

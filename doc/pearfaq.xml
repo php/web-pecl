@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.11 2001-09-03 11:57:57 ssb Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.12 2001-09-03 12:25:37 ssb Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-09-03 11:57:57 $</date>
-  <version>$Revision: 1.11 $</version>    
+  <date>$Date: 2001-09-03 12:25:37 $</date>
+  <version>$Revision: 1.12 $</version>    
  </artheader>
 
  <qandaset>
@@ -37,7 +37,7 @@
        public pre-work does not make much sense.
       </para>
       <para>
-       See also <ulink url="http://wwww.php.net/cvs-php.php">Using 
+       See also <ulink url="http://www.php.net/cvs-php.php">Using 
        CVS for PHP Development</ulink>.
       </para>
       <para>

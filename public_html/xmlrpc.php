@@ -1,5 +1,8 @@
 <?php // -*- C++ -*-
 
+if (!isset($HTTP_RAW_POST_DATA)) {
+    die('invalid XML RPC request');
+}
 require_once "xmlrpc-methods.php";
 $xs = xmlrpc_server_create();
 pear_register_xmlrpc_methods($xs);

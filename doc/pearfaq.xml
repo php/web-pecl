@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.31 2001-12-02 18:53:47 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.32 2001-12-05 18:37:09 mj Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-12-02 18:53:47 $</date>
-  <version>$Revision: 1.31 $</version>
+  <date>$Date: 2001-12-05 18:37:09 $</date>
+  <version>$Revision: 1.32 $</version>
  </artheader>
 
  <qandaset>
@@ -56,7 +56,7 @@
        chances to get a CVS account.
        <simplelist>
 	 <member>
-         Send <faqlink faq="2">patches</faqlink> for existing PEAR classes.
+         Send <faqlink faq="3">patches</faqlink> for existing PEAR classes.
         </member>
 	 <member>
          Create and <emphasis>maintain</emphasis> a new class for PEAR.
@@ -163,28 +163,18 @@
    <question title="I have written a PHP module in C. What are the rules 
    of including those in PEAR?" />
    <answer>
-    <author name="Stig Bakken"/>
+    <author name="Stig Bakken and Martin Jansen"/>
     <para>
-     If you just want to make a simple extension, put it in
-     pear/PECL/extname (that is where extensions from php4/ext/extname
-     will be moved). If you want to write an extension following PEAR's
-     function/class naming, put it in pear/FOO_Bar or whatever the right
-     name is.
+     If you just want to make a simple extension that does not follow the
+     <ulink url="/manual/standards.php">PEAR coding standards</ulink>,
+     put it in pear/PECL/extname (that is where extensions from
+     php4/ext/extname will be moved). If you want to write
+     an extension following PEAR's function/class naming, put it in
+     pear/Foo_Bar or whatever the right name is.
     </para>
    </answer>
   </qandaentry> 
  
-  <qandaentry>
-   <question title="What's PECL?" />
-   <answer>
-    <author name="Martin Jansen"/>
-    <para>
-     This used to be the former name of PEAR: PHP Extension and Code Library 
-     (pronounced "pickle").
-    </para>
-   </answer>
-  </qandaentry> 
-
   <qandaentry>
    <question title="How do I install a PECL module written in C?" />
    <answer>

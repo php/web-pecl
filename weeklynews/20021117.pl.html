@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+<p><i><small>autor: Alan Knowles alan_k@php.net (t³umaczenie: Robert Janeczek rashid@php.net)</small></i></p>
+Po tygodniowej przerwie spowodowanej opó¼nieniem w odlocie z 
+PHP Conference, w tym tygodniu wszystkie wydarzenia z obu tygodni. 
+By³y to tygodnie ca³kiem pracowite, poka¼nie w±tki pojawi³y siê na 
+grupie mailowej, do tego ca³kiem spora liczba nowych propozycji pakietów,
+zbli¿aj±c PEAR odrobinkê do rozmiarów CPAN. Zrezygnowa³em z podsumowania
+nowych wydañ, bo jest ono dostêpne pod konieæ newsów (po angielsku),
+a skupi³em siê na nowinkach z listy i krótkim podsumowaniu nowych
+pakietów.
+<hr>
+<h2>Skrót z PEAR-DEV</h2>
+<h3>Rozwi±zania problemów z Include Path</h3>
+Po dosyæ d³ugiej dyskusji w ostatnich miesi±cach o sposobach obs³ugi
+folderów instalacyjnych PEAR w ¶rodowiskach hostowanych, Stig
+Bakken og³osi³ chêæ dodania nowej dyrektywy do php,
+'{get,set,restore}_include_path()', aby umo¿liwiæ modyfikacjê 
+include path, nawet na stronie hostowanej uruchomionej w trybie safe mode 
+(gdzie ini_set mo¿e byæ wy³±czone).<br>
+<h3>Konwerter z PHPdoc do PEAR manual</h3>
+Alexander og³osi³ wydanie konwertera z PHPdoc do PEAR manual opartego
+na kodzie phpdoc <br>
+<p> <a class="moz-txt-link-freetext"
+ href="http://www-user.tu-chemnitz.de/%7Emeal/pd2pm-0.5.zip">http://www-user.tu-chemnitz.de/~meal/pd2pm-0.5.zip<br>
+</a></p>
+Z tej samej beczki: Greg Beaver og³osi³, ¿e konwerter z phpdocumentor 
+do peardoc2 jest gotowy w 85%. Szybkie tworzenie dokumentacji jest teraz
+znacznie prostsze.
+<h3>Nowa lista mailowa dla Peardoc</h3>
+Twórcy dokumentacji Pear maj± od teraz w³asn± listê mailow±, wiêc je¶li chcesz pomóc
+w dokumentowaniu dostêpnych pakietów, zapisz siê na ni± wysy³aj±c maila do  <br>
+<pre wrap="">  <a class="moz-txt-link-rfc2396E"
+ href="mailto:pear-doc-subscribe@lists.php.net">pear-doc-subscribe@lists.php.net</a></pre>
+<h3>PHP Documentor wchodzi do PEAR</h3>
+Greg Beaver og³osi³ wydanie nowej wersji phpDocumentor, dopracowanego
+narzêdzia do konwersji z phpdoc na html/pdf itp. Zg³osi³ równie¿ chêæ
+udostêpnienia pakietu za po¶rednictwem instalatora pear i przez stronê web.<br>
+<br>
+<h3>Pakiety do obs³ugi grafów w PEAR</h3>
+Richard Udovich og³osi³, ¿e rozpocz±³ prace nad pakietem grafowym. W zwi±zku z 
+tym pojawi³a siê dyskusja, jako ¿e pakiet JpGraph ju¿ jest 
+czê¶ci± drzewa php w cvs - dostêpny jest pod podwójn± licencj±, 
+QPl i komercyjn±. &nbsp;
+<h3> </h3>
+<h3>Bugi i poprawki</h3>
+Dziêki tym ludziom wykryto kilka nowych b³êdów: Pawe&#322;
+Go&#322;aszewski, Arnaud Limbourg, Mika Tuupola and Yavor Shahpasov. Poniewa¿
+w ostatnich tygodniach by³o prawie 500, prawdopodobnie kogo¶
+pomin±³em, nie wspominaj±c o tym, ¿e wiele poprawek jest wysy³anych
+bezpo¶rednio do zarz±dzaj±cych pakietami.
+<hr>
+<h2>Nowe i proponowane pakiety</h2>
+<h3>Spreadsheet_Excel, do pracy z plikami Excel</h3>
+Xavier Noguer zg³osi³ klasê zapisuj±c± w formacie Excel, opart± o
+modu³ Spreadsheet::WriteExcel z CPAN autorstwa John'a McNamara. Klasa zawiera
+wiele ciekawych funkcji do zapisywania i tworzenia plików excela w locie,
+w tym podstawow± obs³ugê ustawiania komórek, wraz z formatowaniem, wzorami
+obrazkami i wieloma innymi rzeczami. Po zakoñczeniu dyskusji nad nazewnictwem
+powinna pojawiæ siê w PEAR.<br>
+<br>
+<h3>XDB - interfejs do baz danych XML</h3>
+Richard Samar zg³osi³ kilka nak³adek do korzystania z baz XML: Xindice i
+Tamino.
+<h3>Pager_Sliding - wzbogacona klasa Pager</h3>
+Lorenzo Alberton zg³osi³ now± klasê Sliding Pager, która ma API 
+podobne do istniej±cej klasy w PEAR, ale oferuje bogatszy interfejs.
+Lorenzo by³ bardzo mi³y i zaimplementowa³ dodatek dobrze wspó³pracuj±cy
+z szablonami.<br>
+<h3>PECL::SPPLUS - dostêp do francuskiego interfejsu p³atniczego</h3>
+Nicolas Chaillan zg³osi³ rozszerzenie php umo¿liwiaj±ce dostêp do 
+interfejsu p³atniczego banku Caisse Epargne.<br>
+<h3>HTML_Template_SmartyLite - SimpleTemplate</h3>
+Po rozmowie z Alanem podczas PHP Conference, Wolfram Kriesing
+zg³osi³ chêæ staworzenia Simple Template, silnika szablonów
+podobnego do Smarty, wraz z dodatkami takimi jak narzêdzia
+t³umacz±ce I18N i system cache`uj±cy z PEAR. Pomys³ polega na 
+po³±czeniu funkcjonalno¶ci z HTML_Template_Flexy, które rozwinê³o siê
+z wcze¶niejszej wersji SimpleTemplate, z j±drem i zast±pienie HTML_Template_Flexy. <br>
+<br>
+<h3>MySQL UDF - osadzony PHP w Mysql</h3>
+David Sklar zg³osi³ rozszerzenie Mysql, które pozwala pisaæ 
+stored procedures w PHP wewn±trz Mysql. Korzysta ono z nowej
+wersji PHP osadzonego, któe pojawi siê w nadchodz±cym PHP 4.3. <br>
+<br>
+<h3>DataObjects dls LDAP</h3>
+Chrigu zg³osi³ chêæ stworzenia interfejsu dla LDAP podobnego do 
+DataObjects<br>
+<h3>Mnogosearch - nowa nak³adka na silnik wyszukiwawczy</h3>
+Bertrand Mansion og³osi³, ¿e stworzy³ uaktualniony interfejs dla
+silnika Mnogosearch, który pozwala na korzystanie z ró¿nych systemów
+szablonów, np. Smarty czy HTML_Template_IT.<br>
+<br>
+<h3>Numbers_Spell</h3>
+Piotr Klaban zg³osi³ pakiet konwertuj±cy liczby na s³owa w ró¿nych
+jêzykach, aktualnie w amerykañskiej i brytyjskiej odmianie angielskiego
+i polskim.<br>
+<br>
+<h3>Struktury danych</h3>
+Robin Johnson og³osi³, ¿e zamierza stworzyæ grupê klas do obs³ugi
+struktur danych, w podobny sposób jak to robi Java Collections. <br>
+<hr>
+<h2>Rozwój</h2>
+<p>Ruch w CVS w tym tygodniu odbywa³ siê w nastêpuj±cych pakietach: Cache, 
+Cache_Lite, Date, DB,
+DB_DataObject, DB_ldap, DBA, File_Find, File_HtAccess, FSM,
+HTML_Javascript, HTML_QuickFrom, HTML_TreeMenu, Log, MDB, Net_URL,
+PECL::apd, PECL::mailparse, PECL::optimizer, PECL::python, PECL::spplus,
+SOAP, Text_Password, XML_Transformer, PEAR.</p>
+</body>
+</html>

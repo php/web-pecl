@@ -223,7 +223,7 @@ function commonHeader($title) {
 
   <tr bgcolor="#006633">
     <td align="right" valign="top" colspan="2">
-    <form method="POST" action="/search.php">
+    <form method="post" action="/search.php">
     <font color="#ffffff"><small>search for</small>
     <input class="small" type="text" name="search_string" value="" size="20" />
     <small>in the</small>
@@ -244,7 +244,7 @@ function commonHeader($title) {
   <td bgcolor="#f0f0f0" width="149">
    <table width="149" cellpadding="4" cellspacing="0">
     <tr valign="top">
-     <td STYLE="font-size: 90%"><?php echo $SIDEBAR_DATA?></td>
+     <td style="font-size: 90%"><?php echo $SIDEBAR_DATA?></td>
     </tr>
    </table>
   </td>

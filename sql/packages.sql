@@ -1,14 +1,16 @@
 CREATE TABLE packages (
+       id             INTEGER NOT NULL,
        name	      VARCHAR(80) NOT NULL,
-       placeholder    INTEGER(1) DEFAULT '0',
+       virtual        INTEGER(1) DEFAULT '0',
        parent         VARCHAR(80),
        stablerelease  VARCHAR(20),
        develrelease   VARCHAR(20),
-       copyright      VARCHAR(20) DEFAULT 'PEAR License',
+       license        VARCHAR(20),
        summary	      TEXT,
        description    TEXT,
        leftvisit      INTEGER,
        rightvisit     INTEGER,
 
-       PRIMARY KEY(name)
+       PRIMARY KEY(id),
+       UNIQUE INDEX(name)
 );

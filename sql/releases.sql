@@ -1,4 +1,5 @@
 CREATE TABLE releases (
+       id	      INTEGER NOT NULL,
        package        VARCHAR(80) NOT NULL REFERENCES packages(name),
        version	      VARCHAR(20) NOT NULL,
        doneby	      VARCHAR(20) NOT NULL REFERENCES users(handle),
@@ -8,5 +9,6 @@ CREATE TABLE releases (
        md5sum	      VARCHAR(32),
        distfile	      VARCHAR(200),
 
-       PRIMARY KEY(package, version)
+       PRIMARY KEY(id),
+       UNIQUE INDEX(package, version)
 );

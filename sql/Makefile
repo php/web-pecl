@@ -18,17 +18,20 @@
 #
 
 TABLE_FILES=\
-	acl.sql \
+	package_acl.sql \
 	maintains.sql \
 	packages.sql \
 	releases.sql \
+	deps.sql \
+	notes.sql \
 	users.sql
 SQL_TYPE=mysql
 SQL_USER=pear
-SQL_PASSWORD=-ppear
+SQL_PW=pear
+SQL_MYSQLPW=-p$(SQL_PW)
 SQL_DB=pear
-SQL_COMMAND=mysql -u '$(SQL_USER)' $(SQL_PASSWORD) '$(SQL_DB)' < $< > $@ 2>&1
-SQL_PIPE_COMMAND=mysql -u '$(SQL_USER)' $(SQL_PASSWORD) '$(SQL_DB)'
+SQL_COMMAND=mysql -u '$(SQL_USER)' $(SQL_MYSQLPW) '$(SQL_DB)' < $< > $@ 2>&1
+SQL_PIPE_COMMAND=mysql -u '$(SQL_USER)' $(SQL_MYSQLPW) '$(SQL_DB)'
 SQL_ADMIN_COMMAND=mysql -u root mysql
 SQL_GRANT_FILE=
 
@@ -62,7 +65,8 @@ create: createdb $(SQL_TARGETS) prime
 	    echo "No errors found." ; \
 	fi
 
-prime: data.res
+prime:
+	php -q data.php $(SQL_TYPE) $(SQL_USER) $(SQL_PW) $(SQL_DB)
 
 createdb:
 	@$(SQL_ADMIN_COMMAND) < createdb.sql
@@ -94,9 +98,10 @@ test:
 # if the table "foo" has foreign keys to the table "bar", add
 # "foo.res: bar.res".
 
-acl.res: packages.res users.res
+package_acl.res: packages.res users.res
 maintains.res: packages.res users.res
 packages.res: users.res
 releases.res: packages.res
+deps.res: packages.res
 users.res:
-data.res: users.res packages.res
+notes.res: packages.res users.res

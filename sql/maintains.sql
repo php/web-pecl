@@ -1,7 +1,7 @@
 CREATE TABLE maintains (
     handle      VARCHAR(20) NOT NULL REFERENCES users(handle),
-    package     VARCHAR(20) NOT NULL REFERENCES packages(name),
-    role        VARCHAR(40),
+    package     INTEGER NOT NULL REFERENCES packages(id),
+    role        ENUM('lead', 'developer', 'contributor', 'helper') NOT NULL,
 
-    UNIQUE INDEX(handle,package)
+    PRIMARY KEY(handle,package)
 );

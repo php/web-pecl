@@ -1,10 +1,13 @@
 <?php
 
+ini_set("y2k_compliance", "on");
 if ($HTTP_SERVER_VARS['QUERY_STRING'] == 'devme') {
     $duration = 86400 * 360;
-    ini_set("y2k_compliance", "on");
     setcookie("pear_dev", "on", time() + $duration, "/");
     $HTTP_COOKIE_VARS['pear_dev'] = "on";
+} elseif ($HTTP_SERVER_VARS['QUERY_STRING'] == 'undevme') {
+    setcookie("pear_dev");
+    unset($HTTP_COOKIE_VARS['pear_dev']);
 }
 
 
@@ -18,6 +21,7 @@ components.
 <br />
 
 </p>
+-
 ';
 
 response_header();

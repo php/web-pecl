@@ -4,6 +4,14 @@
  *
  * $Id$
  */
+if (!isset($HTTP_POST_VARS['search_in'])) {
+    response_header("Search");
+    echo "<h2>Search</h2>\n";
+    echo "<font color=\"#990000\"><b>Please use the search system via the search form above.</b></font>\n";
+    response_footer();
+    exit();
+}
+
 switch ($HTTP_POST_VARS['search_in']) {
 
     case "pear-dev" :
@@ -20,7 +28,9 @@ switch ($HTTP_POST_VARS['search_in']) {
         break;
 
     default :
-        response_header("Search");        
+        response_header("Search");
+        echo "<h2>Search</h2>\n";
+        echo "<font color=\"#990000\"><b>Invalid search target.</b></font>\n";
         response_footer();
         break;
 }

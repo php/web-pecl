@@ -326,9 +326,9 @@ class package
         if (empty($name)) {
             return PEAR::raiseError("package::add: invalid `name' field");
         }
-        $query = "INSERT INTO packages (id,name,package_type,category,license,summary,description,homepage) VALUES(?,?,?,?,?,?,?,?)";
+        $query = "INSERT INTO packages (id,name,package_type,category,license,summary,description,homepage,cvs_link) VALUES(?,?,?,?,?,?,?,?,?)";
         $id = $dbh->nextId("packages");
-        $err = $dbh->query($query, array($id, $name, $type, $category, $license, $summary, $description, $homepage));
+        $err = $dbh->query($query, array($id, $name, $type, $category, $license, $summary, $description, $homepage, $cvs_link));
         if (DB::isError($err)) {
             return $err;
         }

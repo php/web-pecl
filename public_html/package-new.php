@@ -63,6 +63,7 @@ do {
                                   'summary'     => $_POST['summary'],
                                   'description' => $_POST['desc'],
                                   'homepage'    => $_POST['homepage'],
+                                  'cvs_link'    => $_POST['cvs_link'],
                                   'lead'        => $auth_user->handle
                                   ));
         $dbh->popExpect();
@@ -128,7 +129,9 @@ minimum.
     $bb->horizHeadRow("Type", $types . "<small>(Unless you really know what you are doing, you should select PEAR here)</small>");
     $bb->horizHeadRow("Summary", $form->returnText("summary", get("summary"), $width));
     $bb->horizHeadRow("Full description", $form->returnTextarea("desc", get("desc"), $width, 3));
-    $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 20));
+    $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 40));
+    $bb->horizHeadRow("CVS Web Url", $form->returnText("cvs_link", get("cvs_link"), 40) .
+                                     '<br /><small>For example: http://cvs.php.net/cvs.php/pear/XML_Parser</small>');
     $bb->fullRow($form->returnSubmit("Submit Request", "submit"));
     $bb->end();
 
@@ -137,7 +140,7 @@ minimum.
         print "document.forms[1].$jumpto.focus();\n";
         print "// -->\n</script>\n";
     }
-    
+
     print "</form>\n";
 }
 

@@ -33,8 +33,8 @@ elseif (@$cmd == "Delete note" && !empty($id)) {
 elseif (@$cmd == "Open Account" && !empty($uid)) {
     // another hack to remove the temporary "purpose" field
     // from the user's "userinfo"
-    if (user_activate($uid)) {
-	print "<p>Opened account $uid...</p>\n";
+    if (user::activate($uid)) {
+        print "<p>Opened account $uid...</p>\n";
     }
 }
 
@@ -42,8 +42,8 @@ elseif (@$cmd == "Open Account" && !empty($uid)) {
 // {{{ reject account request
 
 elseif (@$cmd == "Reject Request" && !empty($uid)) {
-    if (user_rejectrequest($uid, $reason)) {
-	print "<p>Rejected account request for $uid...</p>\n";
+    if (user::rejectRequest($uid, $reason)) {
+        print "<p>Rejected account request for $uid...</p>\n";
     }
 }
 
@@ -51,8 +51,8 @@ elseif (@$cmd == "Reject Request" && !empty($uid)) {
 // {{{ delete account request
 
 elseif (@$cmd == "Delete Request" && !empty($uid)) {
-    if (user_delete($uid)) {
-	print "<p>Deleted account request for \"$uid\"...</p>";
+    if (user::delete($uid)) {
+        print "<p>Deleted account request for \"$uid\"...</p>";
     }
 }
 

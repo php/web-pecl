@@ -117,14 +117,13 @@ if (isset($_POST['submit'])) {
     }        
 }
 
+$row = package::info((int)$_GET['id']);
 
-$query = sprintf("SELECT * FROM packages WHERE id = '%s'",
-                 $_GET['id']
-                 );
-
-$sth = $dbh->query($query);
-
-$row = $sth->fetchRow(DB_FETCHMODE_ASSOC);
+if (empty($row['name'])) {
+    PEAR::raiseError("Illegal package id");
+    response_footer();
+    exit();
+}
 
 $bb = new Borderbox("Edit package information");
 ?>
@@ -195,15 +194,9 @@ echo "<table border=\"0\">\n";
 
 echo "<tr><th>Version</th><th>Releasedate</th><th>Actions</th></tr>\n";
 
-$query = sprintf("SELECT * FROM releases WHERE package = '%s'",
-                 $_GET['id']
-                 );
-
-$releases = (array)$dbh->getAll($query, DB_FETCHMODE_ASSOC);
-
-foreach ($releases as $release) {
+foreach ($row['releases'] as $version => $release) {
     echo "<tr>\n";
-    echo "  <td>" . $release['version'] . "</td>\n";
+    echo "  <td>" . $version . "</td>\n";
     echo "  <td>" . $release['releasedate'] . "</td>\n";
     echo "  <td>\n";
     

@@ -30,51 +30,41 @@
     */
     function form_reset()
     {
-        searchForm = document.forms['search'];
+		searchForm = document.forms['search'];
 
-        date_updated_released_on     = false;
-        date_updated_released_before = false;
-        date_updated_released_since  = false;
+		if (<?=(int)isset($numrows)?>) {
+			location.href = 'package-search.php';
 
-        /**
-        * Re-enable date dropdowns
-        */
-        searchForm.released_before_year.disabled  = false;
-        searchForm.released_before_month.disabled = false;
-        searchForm.released_before_day.disabled   = false;
+		} else {
+	        date_updated_released_on     = false;
+	        date_updated_released_before = false;
+	        date_updated_released_since  = false;
+	
+	        /**
+	        * Re-enable date dropdowns
+	        */
+	        searchForm.released_before_year.disabled  = false;
+	        searchForm.released_before_month.disabled = false;
+	        searchForm.released_before_day.disabled   = false;
+	
+	        searchForm.released_since_year.disabled  = false;
+	        searchForm.released_since_month.disabled = false;
+	        searchForm.released_since_day.disabled   = false;
+	
+	        searchForm.released_on_year.disabled  = false;
+	        searchForm.released_on_month.disabled = false;
+	        searchForm.released_on_day.disabled   = false;
+	
+	        released_on_disabled     = false;
+	        released_before_disabled = false;
+	        released_since_disabled  = false;
 
-        searchForm.released_since_year.disabled  = false;
-        searchForm.released_since_month.disabled = false;
-        searchForm.released_since_day.disabled   = false;
-
-        searchForm.released_on_year.disabled  = false;
-        searchForm.released_on_month.disabled = false;
-        searchForm.released_on_day.disabled   = false;
-
-        released_on_disabled     = false;
-        released_before_disabled = false;
-        released_since_disabled  = false;
-
-        /**
-        * Set dates to blank
-        */
-        searchForm.released_before_year.value          = '';
-        searchForm.released_before_month.selectedIndex = 0;
-        searchForm.released_before_day.selectedIndex   = 0;
-
-        searchForm.released_since_year.value          = '';
-        searchForm.released_since_month.selectedIndex = 0;
-        searchForm.released_since_day.selectedIndex   = 0;
-
-        searchForm.released_on_year.value          = '';
-        searchForm.released_on_month.selectedIndex = 0;
-        searchForm.released_on_day.selectedIndex   = 0;
-
-        /**
-        * Now set date dropdowns to their search values
-        * if any.
-        */
-        setReleaseDropdowns();
+			/**
+            * Re-enable search button
+            */
+			searchForm.submitButton.disabled = false;
+			return true;
+		}
     }
 
     /**
@@ -232,6 +222,9 @@
             alert('Cannot combine Released On and Released Before or Since!');
             return false;
         }
+		
+		document.forms['search'].submitButton.value    = 'Sending request...';
+		document.forms['search'].submitButton.disabled = true;
     }
 
 // -->
@@ -375,9 +368,8 @@
     <tr>
         <td>&nbsp;</td>
         <td colspan="2">
-            <input type="submit" value="Search" />
-            <input type="reset" value="Reset" onclick="form_reset(); return false" />
-            <input type="reset" value="Clear" onclick="location.href='package-search.php'; return false" />
+            <input type="reset" value="Clear" onclick="return form_reset()" />
+            <input type="submit" name="submitButton" value="Search" />
         </td>
     </tr>
 </table>

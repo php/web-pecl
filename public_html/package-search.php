@@ -38,6 +38,11 @@ if(!empty($_GET)) {
         $where[] = "handle like '%".addslashes($_GET['pkg_maintainer'])."%'";
     }
 
+    // Build category part of query
+    if(!empty($_GET['pkg_category'])) {
+        $where[] = "category = '".addslashes($_GET['pkg_category'])."'";
+    }
+    
     // Compose query and execute
     $where  = !empty($where) ? ' AND '.implode(' AND ', $where) : '';
     $sql    = "select p.id, p.name, p.category, p.summary, m.handle from packages p, maintains m where p.id = m.package " . $where . " order by p.name";
@@ -81,6 +86,24 @@ $e_reporting = error_reporting(~E_NOTICE);
 	<tr>
 		<td>Maintainer:</td>
 		<td><input type="text" name="pkg_maintainer" value="<?=$_GET['pkg_maintainer']?>"></td>
+	</tr>
+	<tr>
+		<td>Category:</td>
+		<td><select name="pkg_category" size="1">
+		<option value=""></option>
+<?php
+$sth = $dbh->query('SELECT id, name FROM categories ORDER BY name');
+
+while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+    if (isset($_GET['pkg_category']) && $_GET['pkg_category'] == $row['id']) {
+        echo "<option value=\"" . $row['id'] . "\" selected>" . $row['name'] . "</option>\n";
+    } else {
+        echo "<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>\n";
+    }    
+}
+?>
+		</select>
+		</td>
 	</tr>
 
 	<tr>

@@ -129,6 +129,10 @@ PTMP="${TMPDIR}/${PTMP}"
 origpwd=`pwd`
 cd $PTMP
 
+TMPPASS="$PTMP/cvspass"
+echo ":pserver:cvsread@cvs.php.net:/repository phpfi" > $TMPPASS
+export CVSPASS=$TMPPASS
+
 ####
 # Download
 ####

@@ -7,7 +7,7 @@ setupNavigation(array(
   'up'   => array('contributing-howto.php', 'How to contribute to PEAR'),
   'toc'  => array(
     array('contributing-howto.php#contributing-howto', ''),
-    array('contributing-howto.php#AEN449', ''),
+    array('contributing-howto.php#AEN473', ''),
     array('contributing-howto.php#contributing-introduction', 'Introduction'),
     array('contributing-requirements.php', 'Requirements'),
     array('contributing-introducing.php', 'Introducing your code'))));
@@ -34,7 +34,9 @@ NAME="contributing-requirements"
 HREF="       standards.php"
 TARGET="_top"
 >PEAR coding standards</A
->.</P
+>. This is
+      necessary because PEAR has the aim to provide well suited
+      and standards compliant source code.</P
 ></LI
 ><LI
 ><P
@@ -46,7 +48,7 @@ TARGET="_top"
 ><LI
 ><P
 >You are willing document your code in an appropriate
-      way.</P
+      way. The prefered way of documentation is Docbook XML.</P
 ></LI
 ></UL
 >

@@ -90,9 +90,9 @@ HREF="packages.php"
 ><DD
 ><DL
 ><DT
-><A
+>II. <A
 HREF="packages.auth.php"
->Auth: creating authentication realms</A
+>Auth</A
 ></DT
 ><DT
 ><A

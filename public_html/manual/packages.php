@@ -3,7 +3,7 @@ sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
   'prev' => array('class.pear-error.php', 'PEAR_Error'),
-  'next' => array('packages.auth.php', ''),
+  'next' => array('packages.auth.php', 'Auth'),
   'up'   => array('index.php', 'PEAR Manual'),
   'toc'  => array(
     array('index.php#manual', ''),
@@ -33,9 +33,9 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
-><A
+>II. <A
 HREF="packages.auth.php"
->Auth: creating authentication realms</A
+>Auth</A
 ></DT
 ><DT
 ><A

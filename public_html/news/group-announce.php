@@ -18,20 +18,22 @@
    $Id$
 */
 
-response_header("News");
-
-echo "<h1>PEAR news</h1>";
-
-echo "<h2><a name=\"2003\" />Year 2003</h2>";
-echo "<ul>";
-
-echo "<li>" . make_link("group-announce.php", "Announcing the PEAR Group") . " (August)</li>";
-echo "<li>" . make_link("activestate-award-ssb.php", "ActiveState Active Award for Stig Bakken") . " (July)</li>";
-echo "<li>" . make_link("meeting-2003-summary.php", "Summary of the PEAR Meeting") . " (May)</li>";
-echo "<li>" . make_link("meeting-2003.php", "PEAR Meeting in Amsterdam") . " (March)</li>";
-echo "<li>" . make_link("release-1.0.php", "PEAR 1.0 is released!") . " (January)</li>";
-
-echo "</ul>";
-
-response_footer();
+response_header("ActiveState Active Award for Stig Bakken");
 ?>
+
+<h1>Announcing the PEAR Group</h1>
+
+<div style="margin-left:2em;margin-right:2em">
+
+<p>On 12th August 2003 <?php echo user_link("ssb", true); ?>, the founder of PEAR, announced
+the forming of the PEAR Group, which will be the governing body of
+PEAR. The full announcement can be
+<?php echo make_link("http://marc.theaimsgroup.com/?l=pear-dev&m=106073080219083&w=2",
+                     "found here"); ?>.</p>
+<p>More information about the Group, including a first administrative
+document, can be found at a <?php echo make_link("/group/", "dedicated place"); ?> 
+on pear.php.net.</p>
+
+</div>
+
+<?php response_footer(); ?>

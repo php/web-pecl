@@ -21,17 +21,20 @@
 /**
  * Details about PEAR accounts
  */
+require_once "Damblan/URL.php";
+$site = new Damblan_URL();
+
+$params = array("handle" => "");
+$site->getElements($params);
+
+$handle = $params['handle'];
 
 /**
- * Redirect to the accounts list if no ID was specified
+ * Redirect to the accounts list if no handle was specified
  */
-if (!isset($HTTP_GET_VARS['handle'])) {
+if (empty($handle)) {
     localRedirect("/accounts.php");
-} else {
-    $handle = $HTTP_GET_VARS['handle'];
 }
-
-response_header("Author information");
 
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
@@ -39,13 +42,16 @@ $row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 ".
                     "AND handle = ?", array($handle));
 
 if ($row === null) {
+    // XXX: make_404();
     PEAR::raiseError("No account information found!");
 }
 
 $access = $dbh->getCol("SELECT path FROM cvs_acl WHERE username = ?", 0,
                        array($handle));
 
-print "<h1>Information about account \"$handle\"</h1>\n";
+response_header($row['name']);
+
+print "<h1>" . $row['name'] . "</h1>\n";
 
 print "<table border=\"0\" cellspacing=\"4\" cellpadding=\"0\">\n";
 print "<tr><td valign=\"top\">\n";
@@ -54,7 +60,7 @@ $bb = new BorderBox("Account Details", "100%", "", 2, true);
 $bb->horizHeadRow("Handle:", $handle);
 $bb->horizHeadRow("Name:", $row['name']);
 if ($row['showemail'] != 0) {
-    $bb->horizHeadRow("Email:", "<a href=\"/account-mail.php?handle=" . $_GET['handle'] . "\">".str_replace(array("@", "."), array(" at ", " dot "), $row['email'])."</a>");
+    $bb->horizHeadRow("Email:", "<a href=\"/account-mail.php?handle=" . $handle . "\">".str_replace(array("@", "."), array(" at ", " dot "), $row['email'])."</a>");
 }
 if ($row['homepage'] != "") {
 	$bb->horizHeadRow("Homepage:",
@@ -82,10 +88,6 @@ $query = "SELECT p.id, p.name, m.role
 
 $sth = $dbh->query($query);
 
-if (DB::IsError($sth)) {
-    DB::raiseError("query failed: ".$sth->message);
-}
-
 $bb->end();
 
 print "</td><td valign=\"top\">\n";
@@ -95,7 +97,7 @@ $bb = new BorderBox("Maintaining These Packages:", "100%", "", 2, true);
 if ($sth->numRows() > 0) {
 	$bb->headRow("Package Name", "Role");
     while (is_array($row = $sth->fetchRow())) {
-		$bb->plainRow("<a href=\"/" . $row['name'] . "\">" . $row['name'] . "</a>",
+		$bb->plainRow("<a href=\"/package/" . $row['name'] . "\">" . $row['name'] . "</a>",
 					  $row['role']);
     }
 }
@@ -106,7 +108,7 @@ print "<br />\n";
 
 display_user_notes($handle, "100%");
 
-print "<br /><a href=\"account-edit.php?handle=$handle\">". make_image("edit.gif", "Edit") . "</a>";
+print "<br /><a href=\"/account-edit.php?handle=$handle\">". make_image("edit.gif", "Edit") . "</a>";
 
 print "</td></tr></table>\n";
 

@@ -72,7 +72,6 @@ if (empty($catpid)) {
 
 response_header($category_title);
 
-//	$dbh->setErrorHandling(PEAR_ERROR_DIE);
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 // 1) Show categories of this level
@@ -135,7 +134,6 @@ while ($sth->fetchInto($row)) {
     } else {
         $sub_links = implode(', ', $sub_links);
     }
-
 
     settype($npackages, 'string');
     settype($ncategories, 'string');
@@ -207,8 +205,9 @@ $sth->free();
 //Print total number of packages or a link to category stats
 if(!$catpid) {
     echo "<br /><br />\nTotal number of packages: " . $totalpackages;
+    echo "<br />" . make_link('/package-stats.php', 'View package statistics');
 } else {
-    echo "<br /><br />\n<a href=\"http://pear.php.net/package-stats.php?cid=$catpid\">Statisics For The $catname Category</a>";
+    echo "<br /><br />\n<a href=\"/package-stats.php?cid=$catpid\">Statistics for category &quot;$catname&quot;</a>";
 }
 
 response_footer();

@@ -89,6 +89,12 @@ are searchable.
       'pear-cvs', 'PEAR CVS list',
       'All the commits of the cvs PEAR code repository are posted to this list automatically',
       false, true, true, "php.pear.cvs"
+    ),
+
+    Array (
+      'pear-doc', 'PEAR documentation list',
+      'A list for discussing topics related to the PEAR documentation.',
+      false, false, false, ""
     )
 
   );

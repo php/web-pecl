@@ -54,7 +54,7 @@ if ($offset > 0) {
 print "</th>\n";
 print "  <td colspan=\"3\">";
 
-print '<table border="0"><tr><td>';
+print '<table border="0" width="100%"><tr><td>';
 foreach ($firstletters as $fl) {
 	$o = $first_letter_offsets[$fl];
 	if ($o >= $offset && $o <= $last_shown) {

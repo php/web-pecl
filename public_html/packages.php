@@ -55,7 +55,7 @@ $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 	
 // 1) Show categories of this level
 	
-$sth     = $dbh->query("SELECT * from categories WHERE parent $category_where");
+$sth     = $dbh->query("SELECT * from categories WHERE parent $category_where ORDER BY name");
 $table   = new HTML_Table('border="0" cellpadding="6" cellspacing="2" width="100%"');
 $nrow    = 0;
 $catdata = array();
@@ -64,13 +64,13 @@ $catdata = array();
 $subcats = $dbh->getAssoc("SELECT p.id AS pid, c.id AS id, c.name AS name, c.summary AS summary".
                           "  FROM categories c, categories p ".
                           " WHERE p.parent $category_where ".
-                          "   AND c.parent = p.id",
+                          "   AND c.parent = p.id ORDER BY c.name",
                           false, null, DB_FETCHMODE_ASSOC, true);
 
 // Get names of sub-packages
 $subpkgs = $dbh->getAssoc("SELECT p.category, p.id AS id, p.name AS name, p.summary AS summary".
                           "  FROM packages p, categories c".
-                          " WHERE c.parent $category_where AND p.category = c.id",
+                          " WHERE c.parent $category_where AND p.category = c.id ORDER BY p.name",
                           false, null, DB_FETCHMODE_ASSOC, true);
 
 while ($sth->fetchInto($row)) {
@@ -159,7 +159,7 @@ if (isset($catpid)){
     */
     $nrow = 0;
     if (!empty($catpid)) {
-        $sth = $dbh->query("SELECT id, name, summary FROM packages WHERE category=$catpid");
+        $sth = $dbh->query("SELECT id, name, summary FROM packages WHERE category=$catpid ORDER BY name");
         print "<dl>\n";
         while ($sth->fetchInto($row)) {
             extract($row);

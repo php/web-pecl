@@ -512,18 +512,29 @@ class maintainer
         // Only admins and leads can do this.
         global $dbh, $auth_user;
         if (empty($auth_user->admin)) {
-            $aq = "SELECT role FROM maintains WHERE handle = ? package = ?";
+            $aq = "SELECT role FROM maintains WHERE handle = ? AND package = ?";
             $test = $dbh->getRow($aq, array($auth_user->handle, $pkgid),
                                  DB_FETCHMODE_ORDERED);
-            if (empty($test) || $test[0] != 'lead') {
-                auth_reject(true);
+            if (DB::isError($test)) {
+                return $test;
+            }
+            if (empty($test) || ($test[0] != 'lead' && $test[0] != 'developer')) {
+                return PEAR::raiseError("You don't have enought priviledges ({$test[0]})");
             }
         }
         $sql = "SELECT handle, role FROM maintains WHERE package = ?";
         $old = $dbh->getAssoc($sql, false, array($pkgid));
+        if (DB::isError($old)) {
+            return $old;
+        }
         $old_users = array_keys($old);
         $new_users = array_keys($users);
-        //printr($old); printr($users);
+        if (!$auth_user->admin && !in_array($auth_user->handle, $new_users)) {
+            return PEAR::raiseError("You can not delete your self as maintainer or won't ".
+                                    "be able to complete the update process. Set your name ".
+                                    "in package.xml or let the new lead developer to upload ".
+                                    "the new release");
+        }
         foreach ($users as $user => $role) {
             if (!maintainer::isValidRole($role)) {
                 return PEAR::raiseError("invalid role '$role' for user '$user'");
@@ -540,6 +551,9 @@ class maintainer
             if ($role != $old[$user]) {
                 $sql = "UPDATE maintains SET role=? WHERE package=? AND handle=?";
                 $res = $dbh->query($sql, array($role, $pkgid, $user));
+                if (DB::isError($res)) {
+                    return $res;
+                }
             }
         }
         // Drop users who are no longer maintainers
@@ -547,6 +561,9 @@ class maintainer
             if (!in_array($old_user, $new_users)) {
                 $sql = "DELETE FROM maintains WHERE package=? AND handle=?";
                 $res = $dbh->query($sql, array($pkgid, $old_user));
+                if (DB::isError($res)) {
+                    return $res;
+                }
             }
         }
         return true;

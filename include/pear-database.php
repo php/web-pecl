@@ -251,7 +251,7 @@ class package
              "WHERE package = ?".
              "ORDER BY releasedate DESC";
         $notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
-        $deps_sql = "SELECT type, relation, version, name
+        $deps_sql = "SELECT type, relation, version, name, release
                      FROM deps
                      WHERE package = ?";
         if ($field === null) {
@@ -269,7 +269,17 @@ class package
                  $dbh->getAll($deps_sql, array($info['packageid']),
                  DB_FETCHMODE_ASSOC);
             foreach($deps as $dep) {
-                $info['releases'][$dep['version']]['deps'][] = $dep;
+                $rel_version = null;
+                foreach($info['releases'] as $version => $rel) {
+                    if ($rel['id'] == $dep['release']) {
+                        $rel_version = $version;
+                        break;
+                    };
+                };
+                if ($rel_version !== null) {
+                    unset($dep['release']);
+                    $info['releases'][$rel_version]['deps'][] = $dep;
+                };
             };
         } else {
             // get a single field
@@ -352,6 +362,7 @@ class package
             $_deps = array();
             foreach($deps as $dep) {
                 if ($dep['package'] == $packageinfo[$pkg]['packageid']
+                    && isset($stablereleases[$pkg])
                     && $dep['release'] == $stablereleases[$pkg]['rid'])
                 {
                     unset($dep['rid']);
@@ -845,8 +856,8 @@ class release
             $dbh->query("DELETE FROM releases WHERE id = $release_id");
             @unlink($file);
             return $ok;
-        }
-
+        };
+        
         // Update Cache
         include_once 'xmlrpc-cache.php';
         XMLRPC_Cache::remove('package.listAll', array(false));

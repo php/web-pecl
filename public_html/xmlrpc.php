@@ -16,7 +16,10 @@ print $response;
 
 function xmlrpc_error_handler($errno, $errmsg, $file, $line, $vars)
 {
-    $errortype = array (
+    if (error_reporting() == 0) {
+        return;
+    }
+    static $errortype = array (
         1   =>  "Error",
         2   =>  "Warning",
         4   =>  "Parsing Error",
@@ -29,7 +32,6 @@ function xmlrpc_error_handler($errno, $errmsg, $file, $line, $vars)
         512 =>  "User Warning",
         1024=>  "User Notice"
     );
-//    if ($errno & 8) return; // ignore notices
     $prefix = $errortype[$errno];
     $file = basename($file);
     $error_message = "$file:$line: $prefix: $errmsg";

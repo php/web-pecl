@@ -112,7 +112,7 @@ complete your request.
   );
 ?>
 <p>
-There are <?php echo count($mailing_lists); ?> PEAR-related mailing 
+There are <?php echo count($mailing_lists)-1; ?> PEAR-related mailing 
 lists available. Most of them have archives available, and they are
 also available as newsgroups on our 
 <a href="news://news.php.net">news server</a>. The archives are

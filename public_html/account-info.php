@@ -49,7 +49,7 @@ if ($row['homepage'] != "") {
 }
 
 $bb->horizHeadRow("Registered since:", $row['created']);
-$bb->horizHeadRow("Additional information:", $row['userinfo']);
+$bb->horizHeadRow("Additional information:", empty($row['userinfo'])?"&nbsp;":$row['userinfo']);
 $bb->horizHeadRow("CVS Access:", implode("<br />", $access));
 
 if ($row['admin'] == 1) {

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- $Id$ -->
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+<p>
+ <i>
+  <small>
+    por Mika Tuupola (tuupola@appelsiini.net), Pierre-Alain Joye (paj@pearfr.org); algumas partes reescritas por Arnaud Limbourg (arnaud@limbourg.com)
+  </small>
+ </i>
+</p>
+<p>
+
+<hr>
+<h2>Na Imprensa</h2>
+<!-- SECTION --><a name="1" />
+<h3>Edi&ccedil;&atilde;o Internacional da PHP-Magazine</h3>
+<p>
+ Tivemos prazer em ver a nova edi&ccedil;&atilde;o internacional da <a href="http://www.php-mag.net">PHP Magazine</a>.
+ Nesta primeira edi&ccedil;&atilde;o de alta qualidade voc&ecirc; pode encontrar uma introdu&ccedil;&atilde;o muito boa ao <a href="http://www.php-mag.net/itr/online_artikel/show.php3?id=283&p=0&nodeid=114">PEAR::MDB</a> escrita por Lukas Smith. Tamb&eacute;m encontra-se uma boa introdu&ccedil;&atilde;o feita por Zeev Suraski sobre como escrever extens&otilde;es PHP.
+</p>
+
+<!-- SECTION --><a name="2" />
+<h3>PHP-Magazin</h3>
+<p>
+ A edi&ccedil;&atilde;o de janeiro de 2003 da <a href="http://www.phpmag.de/">PHP-Magazin</a> (em Alem&atilde;o) cont&eacute;m um artigo de Alexander Merz que explica como configurar, administrar e usar o PEAR. Hartmut Holzgraefe mostra-nos como usar o PEAR::HTTP_WebDAV_Server e Richard Samar introduz os bancos de dados XML XPath e XQuery bem como os m&oacute;dulos PEAR::XDB, especialmente o driver Tamino.<br />
+ Note que Alexander Merz agora tem uma coluna permanente na revista (come&ccedil;ando na edi&ccedil;&atilde;o 01/2003), onde ele escrever&aacute; sobre o PEAR.
+</p>
+
+<p>
+ Teremos prazer em ver mais e mais artigos sobre o projeto PEAR. Se voc&ecirc; encontrar algum artigo sinta-se a vontade para enviar-nos (<a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>) refer&ecirc;ncias a serem adicionadas &agrave;s not&iacute;cias semanais.
+</p>
+
+<hr>
+
+<h2>Tr&aacute;fego na lista PEAR-DEV</h2>
+
+<!-- SECTION --><a name="3" />
+<h3>DB_DOM Pronto para o CVS</h3>
+<p>
+ Sandro Zic notificou a lista que o c&oacute;digo est&aacute; sobre "pearifica&ccedil;&atilde;o". O gerenciamento do XML feito como no DOM num pacote definido por uma estrutura de tabela RDBMS tamb&eacute;m foi aprovado na lista e est&aacute; pronto para ser "cometido" ao CVS. Infelizmente n&atilde;o se chegou a um acordo sobre o nome do pacote. Sugest&otilde;es s&atilde;o bem vindas.
+</p>
+<p>
+ Os nomes propostos incluem: DB_DOM, DB_XML, DB_XML_DOM, XML_DB e XML_DB_DOM. Sinta-se a vontade para enviar id&eacute;ias para a <a href="mailto:pear-dev@lists.php.net">lista</a>.
+</p>
+
+<!-- SECTION --><a name="4" />
+<h3>Funda&ccedil;&atilde;o PEAR?</h3>
+<p>
+  Aconteceram algumas discuss&otilde;es sobre se deveria existir uma funda&ccedil;&atilde;o para patrocinar o desenvolvimento do PEAR ou n&atilde;o. Existem funda&ccedil;&otilde;es similares patrocinando grandes projetos, como FreeBSD e Perl. Entretando, o PEAR ainda est&aacute; em um pequeno n&uacute;mero de projetos Open Source e uma funda&ccedil;&atilde;o seria um pouco de exagero neste momento. A whishlist por desenvolvedor existente atualmente parece ser adequado por enquanto.
+</p>
+
+<h3>Erros e Corre&ccedil;&otilde;es</h3>
+<p>
+  Agradecimentos a estas pessoas por detectar e corrigir alguns erros: Warren Konkel, Demian Turner, Patrick O'Lone, Jeroen Houben, Vlad Borisoff e Blake Schwendima.
+</p>
+
+<hr>
+
+<h2>Pacotes Novos e Propostos</h2>
+
+<!-- SECTION --><a name="5" />
+<h3>Net_LMTP</h3>
+<p>
+ Damian Alejandro Fernandez Sosa sugeriu uma classe que seja capaz de distribuir e-mails via LMTP (Local Mail Transfer Protocol - Protocolo Interno de Transfer&ecirc;ncia de Mail, definido na <a href="http://www.faqs.org/rfcs/rfc2033.html">RFC 2033</a>). O nome proposto foi Net_LMTP que se encaixa perfeitamente. O Net_LMTP &eacute; baseado no Net_SMTP.
+</p>
+
+<!-- SECTION --><a name="6" />
+<h3>PHPDocumentor</h3>
+<p>
+ O <a href="http://pear.php.net/package-info.php?pacid=173">PHPDocumentor</a>, o qual podia ser conseguido em <a href="http://www.phpdoc.org/">http://www.phpdoc.org</a> por algum tempo est&aacute; tamb&eacute;m dispon&iacute;vel agora atrav&eacute;s do instalador do PEAR. Se algu&eacute;m experienciar problemas com a instala&ccedil;&atilde;o beta 2 no Windows, por favor, envie um e-mail para a <a href="mailto:pear-general@lists.php.net">lista</a>.
+</p>
+
+<!-- SECTION --><a name="7" />
+<h3>Gtk_VarDump</h3>
+<p>
+ <a href="http://pear.php.net/package-info.php?pacid=166">Gtk_VarDump</a> teve seu primeiro release.
+</p>
+
+<h2>Desenvolvimento</h2>
+<p>
+  Ativo no CVS esta semana: Net_SMTP, Mail_Mbox, MDB, Image_GIS, DB_QueryTool, I18N, HTTP_Header, Spreadsheet_Excel_Writer,HTTP_Request, PECL::apd, DB_DataObject, PECL::bcompiler, Gtk_VarDump, PEAR, Perm_LiveUser, DB, HTML_OOH_Form, PECL::session_pgsql, PECL::imagick. PECL::spplus, PECL::radius, PECL::vpopmail e Console_Table.
+</p>
+
+</body>
+</html>

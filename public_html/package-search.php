@@ -64,7 +64,6 @@ $bb->end();
 ***************************************/
 
 if(!empty($_GET)) {
-    //    $dbh->setErrorHandling(PEAR_ERROR_DIE);
     $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
     $where = array();
     $bool  = @$_GET['bool'] == 'AND' ? ' AND ' : ' OR ';

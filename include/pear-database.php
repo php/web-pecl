@@ -20,7 +20,8 @@
    $Id$
  */
 
-require_once "DB/storage.php";
+require_once 'DB/storage.php';
+require_once 'PEAR/Common.php';
 
 // {{{ validate()
 
@@ -401,6 +402,35 @@ class package
     }
 
     // }}}
+    /**
+    * Updates fields of an existant package
+    *
+    * @param array $data Assoc in the form 'field' => 'value'.
+    * @return mixed True or PEAR_Error
+    */
+    function updateInfo($pkgid, $data)
+    {
+        global $dbh;
+        $package_id = package::info($pkgid, 'id');
+        if (PEAR::isError($package_id) || empty($package_id)) {
+            return PEAR::raiseError("package `$package' must be registered first");
+        }
+        // XXX (cox) what about 'name' & 'license'?
+        $allowed = array('summary', 'description', 'category');
+        $fields = $prep = array();
+        foreach($allowed as $a) {
+            if (isset($data[$a])) {
+                $fields[] = "$a = ?";
+                $prep[]   = $data[$a];
+            }
+        }
+        if (!count($fields)) {
+            return;
+        }
+        $sql = 'UPDATE packages SET ' . implode(', ', $fields) .
+               " WHERE id=$package_id";
+        return $dbh->query($sql, $prep);
+    }
 }
 
 class maintainer
@@ -410,6 +440,9 @@ class maintainer
     function add($package, $user, $role)
     {
         global $dbh;
+        if (!user::exists($user)) {
+            return PEAR::raiseError("User $user does not exist");
+        }
         $query = "INSERT INTO maintains VALUES(?,?,?)";
         $sth = $dbh->prepare($query);
         if (DB::isError($sth)) {
@@ -429,25 +462,80 @@ class maintainer
     {
         global $dbh;
         $query = "SELECT handle FROM maintains WHERE package = '" . $package . "'";
-
         if ($lead) {
             $query .= " AND role = 'lead'";
         }
-
         $sth = $dbh->query($query);
-
         if (DB::isError($sth)) {
             return sth;
         }
-
         while ($row = $sth->fetchRow()) {
             $rows[] = $row[0];
         }
-
         return $rows;
     }
 
     // }}}
+
+    function isValidRole($role)
+    {
+        static $roles;
+        if (empty($roles)) {
+            $roles = PEAR_Common::getUserRoles();
+        }
+        return in_array($role, $roles);
+    }
+
+    function drop($pkgid, $user)
+    {
+        global $dbh;
+        $sql = "DELETE FROM maintains WHERE package = ? AND handle = ?";
+        return $dbh->query($sql, array($pkgid, $user));
+    }
+
+    /**
+    * Update user and roles of a package
+    *
+    * @param int $pkgid The package id to update
+    * @param array $users Assoc array containing the list of users
+    *                     in the form: '<user>' => '<role>'
+    * @return mixed PEAR_Error or true
+    */
+    function updateAll($pkgid, $users)
+    {
+        global $dbh;
+        $sql = "SELECT handle, role FROM maintains WHERE package = ?";
+        $old = $dbh->getAssoc($sql, false, array($pkgid));
+        $old_users = array_keys($old);
+        $new_users = array_keys($users);
+        //printr($old); printr($users);
+        foreach ($users as $user => $role) {
+            if (!maintainer::isValidRole($role)) {
+                return PEAR::raiseError("invalid role '$role' for user '$user'");
+            }
+            // The user is not present -> add him
+            if (!in_array($user, $old_users)) {
+                $e = maintainer::add($pkgid, $user, $role);
+                if (PEAR::isError($e)) {
+                    return $e;
+                }
+                continue;
+            }
+            // Users exists but role has changed -> update it
+            if ($role != $old[$user]) {
+                $sql = "UPDATE maintains SET role=? WHERE package=? AND handle=?";
+                $res = $dbh->query($sql, array($role, $pkgid, $user));
+            }
+        }
+        // Drop users who are no longer maintainers
+        foreach ($old_users as $old_user) {
+            if (!in_array($old_user, $new_users)) {
+                $sql = "DELETE FROM maintains WHERE package=? AND handle=?";
+                $res = $dbh->query($sql, array($pkgid, $old_user));
+            }
+        }
+        return true;
+    }
 }
 
 class release
@@ -676,9 +764,9 @@ class release
             if (!isset($log_release)) {
                 $log_release = $release_id;
             }
-            
+
             release::logDownload($package_id, $log_release, $log_file);
-            
+
             header('Content-type: application/octet-stream');
             if ($uncompress) {
                 $tarname = preg_replace('/\.tgz$/', '.tar', $basename);
@@ -688,7 +776,7 @@ class release
                 header('Content-disposition: attachment; filename="'.$basename.'"');
                 readfile($path);
             }
-            
+
             return true;
         }
         header('HTTP/1.0 404 Not Found');
@@ -943,13 +1031,21 @@ class user
     {
         global $dbh;
 
-        $query = "SELECT handle FROM users WHERE handle = '" . $handle . "' AND admin = 1";
-        $sth = $dbh->query($query);
+        $query = "SELECT handle FROM users WHERE handle = ? AND admin = 1";
+        $sth = $dbh->query($query, array($handle));
 
         return ($sth->numRows() > 0);
     }
 
     // }}}
+
+    function exists($handle)
+    {
+        global $dbh;
+        $sql = "SELECT handle FROM users WHERE handle=?";
+        $res = $dbh->query($sql, array($handle));
+        return ($res->numRows() > 0);
+    }
 }
 
 class statistics
@@ -986,7 +1082,7 @@ class statistics
                  . " GROUP BY d.release";
 
         $rows = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
-        
+
         if (DB::isError($rows)) {
             return PEAR::raiseError($rows->getMessage());
         } else {

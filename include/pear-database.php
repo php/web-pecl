@@ -413,7 +413,7 @@ class package
         global $dbh;
         $package_id = package::info($pkgid, 'id');
         if (PEAR::isError($package_id) || empty($package_id)) {
-            return PEAR::raiseError("package `$package' must be registered first");
+            return PEAR::raiseError("Package not registered. Please register it first with \"New Package\"");
         }
         // XXX (cox) what about 'name'?
         $allowed = array('license', 'summary', 'description', 'category');
@@ -706,7 +706,7 @@ class release
                 $uncompress = true;
             }
             $row = $dbh->getRow("SELECT fullpath, release, id FROM files ".
-                                "WHERE basename = ?", array($file),
+                                "WHERE UPPER(basename) = ?", array(strtoupper($file)),
                                 DB_FETCHMODE_ASSOC);
             if (PEAR::isError($row)) {
                 return $row;

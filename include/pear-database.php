@@ -402,23 +402,31 @@ class package
     }
 
     // }}}
+    // {{{ +proto bool   package::updateInfo(string|int, struct)
     /**
-    * Updates fields of an existant package
-    *
-    * @param array $data Assoc in the form 'field' => 'value'.
-    * @return mixed True or PEAR_Error
-    */
+     * Updates fields of an existant package
+     *
+     * @param 
+     * @param array $data Assoc in the form 'field' => 'value'.
+     * @return mixed True or PEAR_Error
+     */
     function updateInfo($pkgid, $data)
     {
-        global $dbh;
+        global $dbh, $auth_user;
         $package_id = package::info($pkgid, 'id');
         if (PEAR::isError($package_id) || empty($package_id)) {
             return PEAR::raiseError("Package not registered. Please register it first with \"New Package\"");
         }
+        if (empty($auth_user->admin)) {
+            $role = user::maintains($auth_user->handle, $package_id);
+            if ($role != 'lead' && $role != 'developer') {
+                return PEAR::raiseError("Insufficient privileges");
+            }
+        }
         // XXX (cox) what about 'name'?
         $allowed = array('license', 'summary', 'description', 'category');
         $fields = $prep = array();
-        foreach($allowed as $a) {
+        foreach ($allowed as $a) {
             if (isset($data[$a])) {
                 $fields[] = "$a = ?";
                 $prep[]   = $data[$a];
@@ -431,6 +439,8 @@ class package
                " WHERE id=$package_id";
         return $dbh->query($sql, $prep);
     }
+
+    // }}}
 }
 
 class maintainer
@@ -488,7 +498,8 @@ class maintainer
     }
 
     // }}}
-    // {{{  proto
+    // {{{ NOEXPORT      maintainer::drop(int, string)
+
     function drop($pkgid, $user)
     {
         global $dbh;
@@ -511,16 +522,8 @@ class maintainer
     {
         // Only admins and leads can do this.
         global $dbh, $auth_user;
-        if (empty($auth_user->admin)) {
-            $aq = "SELECT role FROM maintains WHERE handle = ? AND package = ?";
-            $test = $dbh->getRow($aq, array($auth_user->handle, $pkgid),
-                                 DB_FETCHMODE_ORDERED);
-            if (DB::isError($test)) {
-                return $test;
-            }
-            if (empty($test) || ($test[0] != 'lead' && $test[0] != 'developer')) {
-                return PEAR::raiseError("You don't have enough privileges ({$test[0]})");
-            }
+        if (empty($auth_user->admin) || !user::maintains($auth_user->handle, $pkgid, 'lead')) {
+            return PEAR::raiseError("Insufficient privileges");
         }
         $sql = "SELECT handle, role FROM maintains WHERE package = ?";
         $old = $dbh->getAssoc($sql, false, array($pkgid));
@@ -1073,6 +1076,7 @@ class user
     }
 
     // }}}
+    // {{{ +proto bool   user::exists(string)
 
     function exists($handle)
     {
@@ -1081,6 +1085,23 @@ class user
         $res = $dbh->query($sql, array($handle));
         return ($res->numRows() > 0);
     }
+
+    // }}}
+    // {{{ +proto string user::maintains(string|int, [string])
+
+    function maintains($user, $pkgid, $role = 'any')
+    {
+        global $dbh;
+        $package_id = package::info($pkgid, 'id');
+        if ($role == 'any') {
+            return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? '.
+                                'AND package = ?', array($user, $package_id));
+        }
+        return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? AND package = ? '.
+                            'AND role = ?', array($user, $package_id, $role));
+    }
+
+    // }}}
 }
 
 class statistics
@@ -1159,15 +1180,9 @@ class PEAR_User extends DB_storage
     function PEAR_User(&$dbh, $user)
     {
         $this->DB_storage("users", "handle", $dbh);
-        // XXX horrible hack until we get temporary error handlers
-        $oldmode = $this->_default_error_mode;
-        $this->_default_error_mode = PEAR_ERROR_RETURN;
+        $this->pushErrorHandling(PEAR_ERROR_RETURN);
         $this->setup($user);
-        if (empty($oldmode)) {
-            unset($this->_default_error_mode);
-        } else {
-            $this->_default_error_mode = $oldmode;
-        }
+        $this->popErrorHandling();
     }
 }
 
@@ -1179,15 +1194,9 @@ class PEAR_Package extends DB_storage
     function PEAR_Package(&$dbh, $package, $keycol = "id")
     {
         $this->DB_storage("packages", $keycol, $dbh);
-        // XXX horrible hack until we get temporary error handlers
-        $oldmode = $this->_default_error_mode;
-        $this->_default_error_mode = PEAR_ERROR_RETURN;
+        $this->pushErrorHandling(PEAR_ERROR_RETURN);
         $this->setup($package);
-        if (empty($oldmode)) {
-            unset($this->_default_error_mode);
-        } else {
-            $this->_default_error_mode = $oldmode;
-        }
+        $this->popErrorHandling();
     }
 }
 
@@ -1199,15 +1208,9 @@ class PEAR_Release extends DB_storage
     function PEAR_Release(&$dbh, $release)
     {
         $this->DB_storage("releases", "id", $dbh);
-        // XXX horrible hack until we get temporary error handlers
-        $oldmode = $this->_default_error_mode;
-        $this->_default_error_mode = PEAR_ERROR_RETURN;
+        $this->pushErrorHandling(PEAR_ERROR_RETURN);
         $this->setup($release);
-        if (empty($oldmode)) {
-            unset($this->_default_error_mode);
-        } else {
-            $this->_default_error_mode = $oldmode;
-        }
+        $this->popErrorHandling();
     }
 }
 

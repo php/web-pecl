@@ -78,7 +78,7 @@ function makeBorderTOC($this) {
         }
 
         $SIDEBAR_DATA .= '&nbsp;' . 
-            make_link($url, make_image($img, htmlspecialchars($title,$CHARSET)) . htmlspecialchars($title,$CHARSET) ) . 
+            make_link($url, make_image($img, htmlspecialchars($title,EN_QUOTES,$CHARSET)) . htmlspecialchars($title,EN_QUOTES,$CHARSET) ) . 
             '<br />';
     }
 

@@ -277,6 +277,16 @@ function commonFooter() {
   <tr bgcolor="#003300"><td><?php spacer(1,1);?></td></tr>
   <tr bgcolor="#009933">    
       <td align="right" valign="bottom">
+<?php
+print_link('/source.php?url='.$SCRIPT_NAME, 'SHOW SOURCE', false, 'class="menuBlack"');
+echo delim();
+print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
+
+/**
+ * For now (2001-12-02) we don't have any mirror
+ */
+if (0) { ?>
+
       <script language="javascript" type="text/javascript">
       <!--
         function gotomirror(form) {
@@ -291,11 +301,6 @@ function commonFooter() {
       <form method="get" action="/mirrors.php" onsubmit="return gotomirror(this);">
       <input type="hidden" name="REDIRECT" value="1">
       <?php
-	# TODO: should send current url above, so we can redirect to
-	# the same page on the mirror, and do the same in our javascript.
-	print_link('/source.php?url='.$SCRIPT_NAME, 'SHOW SOURCE', false, 'class="menuBlack"');
-	echo delim();
-	print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
 	echo delim();
 	print_link('/mirrors.php', 'MIRRORS:', false, 'class="menuBlack"');
 	echo "&nbsp;<select class=\"small\" name=\"country\" onchange=\"gotomirror(this.form)\">\n";
@@ -315,6 +320,7 @@ function commonFooter() {
 	echo make_submit('small_submit_black.gif', 'go', 'bottom' );
       ?>&nbsp;<br />
       </form>
+<?php } ?>
       </td>    
   </tr>
   <tr bgcolor="#003300"><td><?php spacer(1,1); ?></td></tr>

@@ -18,7 +18,6 @@ It requires this to be added to httpd.conf/.htaccess:
 ForceType application/x-httpd-php
 </Location>
 */
-include './myinclude.php';
 
 function error_404($obj) {
     header('HTTP/1.0 404 Not Found');

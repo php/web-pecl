@@ -79,9 +79,9 @@ class Damblan_RSS_Common {
     function newItem($title, $link, $desc) {
         $item = new XML_Tree_Node("item");
 
-        $item->addChild("title", $title);
-        $item->addChild("link", $link);
-        $item->addChild("description", $desc);
+        $item->addChild("title", htmlspecialchars($title));
+        $item->addChild("link", htmlspecialchars($link));
+        $item->addChild("description", htmlspecialchars($desc));
 
         return $item;
     }

@@ -132,7 +132,7 @@ $bb = new BorderBox("Package Information"); ?>
 </tr>
 <tr>
     <th class="pack" bgcolor="#009933" width="20%">License</th>
-    <td><?php print $license;?></td>
+    <td><?php print get_license_link($license);?></td>
 </tr>
 <tr>
     <th class="pack" bgcolor="#009933" width="20%">Description</th>

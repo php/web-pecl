@@ -294,6 +294,30 @@ function displayed_user_email($user)
 	return "<a href=\"mailto:$user@php.net\">$user@php.net</a>";
 }
 
+/**
+ * Get URL to license text
+ *
+ * @todo  Add more licenses here
+ * @param string Name of the license
+ * @return string Link to license URL
+ */
+function get_license_link($license = "")
+{
+    switch ($license) {
+
+        case "PHP License" :
+        case "PHP 2.02" :
+            $link = "http://www.php.net/license/2_02.txt";
+            break;
+
+        default :
+            $link = "";
+            break;
+    }
+
+    return ($link != "" ? "<a href=\"" . $link . "\">" . $license . "</a>\n" : $license);
+}
+
 function display_user_notes($user, $width = "50%")
 {
 	global $dbh;

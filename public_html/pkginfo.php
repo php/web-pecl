@@ -46,10 +46,8 @@ $releases = $dbh->getAll(
 	"SELECT id, version, state, releasedate, releasenotes
      FROM releases
      WHERE package = $pacid
-     ORDER BY releasedate");
-/*
-$sth = $dbh->query("SELECT * FROM files WHERE package = $pacid");
-*/
+     ORDER BY releasedate DESC");
+
 $sth = $dbh->query("SELECT f.id AS id, f.release AS release,
                            f.platform AS platform, f.format AS format,
                            f.md5sum AS md5sum, f.basename AS basename,
@@ -79,7 +77,6 @@ response_header("Package :: $name");
 <tr>
     <th class="pack" bgcolor="#009933" width="20%">Maintainers</th>
     <td>
-        <!-- Maintainers -->
         <table border="0" cellspacing="1" cellpadding="1" width="100%">
         <?php echo $accounts;?>
         </table>
@@ -96,10 +93,10 @@ response_header("Package :: $name");
 <tr>
     <td colspan="2" align="right">
 <?php print_link("/package-edit.php?id=" . @$_GET['pacid'],
-        make_image("edit.gif", "Edit package information (Administrators only)")); ?>
+        make_image("edit.gif", "Edit package information")); ?>
 &nbsp;
 <?php print_link("/package-delete.php?id=" . @$_GET['pacid'],
-        make_image("delete.gif", "Delete package (Administrators only)")); ?>
+        make_image("delete.gif", "Delete package")); ?>
     </td>
 </tr>
 </table>
@@ -163,51 +160,28 @@ if (count($releases) == 0) {
     }
 }
 ?></table>
-<?php $bb->end(); ?>
+<?php
+$bb->end();
 
-<!-- Package Dependencies
-<br>
-<table border="0" cellspacing="3" cellpadding="3" width="100%">
-<tr>
-    <th class="others" colspan="3" bgcolor="#DDDDDD">Net_Ping dependencies:</th>
-</tr>
-<tr>
-    <td colspan="3">PHP > 4.0.5</td>
-</tr>
-<tr>
-    <td>_Net_Foo-1.5_</td>
-    <td>| Download |</td>
-    <td>| View Source Code / Doc On-line |</td>
-</tr>
-<tr>
-    <td colspan="3" align="center">&nbsp;<br>| Download All Packages |</td>
-</tr>
-</table>
--->
-<!-- Related Links
-<br>
-<table border="0" cellspacing="3" cellpadding="3" width="100%">
-<tr>
-    <th class="others" colspan="3" bgcolor="#DDDDDD">Related Links:</th>
-</tr>
-<tr>
-    <td>_Home Page_</td>
-    <td>Description</td>
-</tr>
-</table>
--->
-<!-- Other releases download
-<br>
-<table border="0" cellspacing="3" cellpadding="3" width="100%">
-<tr>
-    <th class="others" colspan="3" bgcolor="#DDDDDD">Other releases download:</th>
-</tr>
-<tr>
-    <td>_Last CVS version_</td>
-</tr>
-</table>
-<br>
--->
+echo "<br /><br />\n";
+
+$bb = new Borderbox("Package dependencies");
+
+$query = "SELECT * FROM deps WHERE package = '" . $_GET['pacid'] . "'";
+
+$sth = $dbh->query($query);
+
+if ($sth->numRows() == 0) {
+    echo "<i>This package has no dependencies towards other packages.</i>\n";
+} else {
+
+    while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+        echo "Dependencies for version " . $row['version'] . ":<br />\n";
+        echo "<blockquote>" . $row['deps'] . "</blockquote><br />\n";        
+    }    
+}
+$bb->end();
+?>
 
 <!-- PKGINFO end -->
 

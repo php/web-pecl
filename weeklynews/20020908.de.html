@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head><body>
+
+<p><i><small>by Alan Knowles(alan_k@php.net) (&uuml;bersetzt von Alexander Merz alexmerz(at)php.net)</small></i></p>
+
+<p>
+<b>Kurz und b&uuml;ndig:</b><br>
+Diese Woche ist das 85. Package registriert wurden! Richard Stallman best&auml;tigte, dass die PHP-Lizenz den Ma&szlig;gaben
+der "Free Software Fundation" entsprechen und empfahl sie f&uuml;r PEAR. Dazu 2 'stable'-Releases, 1 'alpha'- und 1 'development'-Release.
+<br>
+Weitere Diskussionen um Standards und einheitliche Methodennamen. APD widmet sich verst&auml;rkt dem Profiling und es gibt einen
+dritten Release-Kandidaten der MDB. 5 neue Package-Vorschl&auml;ge d&uuml;rfen ebenfalls nicht vergessen werden.
+</p>
+
+<hr>
+<h2>Neue Releases</h2>
+
+<h3>Stable</h3>
+
+<ul>
+	<li>
+		<b>XML_Transformer</b> - Transformator f&uuml;r XML-Tags zu PHP-Code oder Text.
+		Vergleichbar mit XSLT.
+	</li>
+	<li>
+		<b>Crypt_Xtea</b> - Asymetrische Verschl&uuml;sselung bin&auml;rer Daten
+		mit einem kleinen Verschl&uuml;sselungsalgorithmus.
+	</li>
+</ul>
+ 
+<h3>Beta</h3>
+
+<ul>
+	<li>
+		<b>Console_Table</b> - Daten-Ausgabe auf der Konsole als Tabelle.
+	</li>
+	<li>
+		<b>HTML_Template_IT</b> - Das Package besteht aus den Template-Klassen 
+		HTML_Template_IT und HTML_Template_ITX. ITX ist eine PHPLib-kompatible
+		Template-Klasse, IT ist eine vereinfachte Version davon.
+	</li>
+	<li>
+		<b>HTML_Template_Flexy</b> - Ein Template-System &auml;hnlich Smarty,
+		aber 'leichtgewichtiger' und schneller
+	</li>
+	<li>
+		<b>DB_DataObject</b> - Ein Package f&uuml;r die Generierung 
+		von SQL-Anweisungen und Datenmodellierung.
+	</li>
+	<li>
+		<b>bcompiler</b> - Ein Bytecode-Compilier und -Decompilier f&uuml;r Klassen
+		als PHP-Erweiterung.
+	</li>
+
+</ul>
+
+<h3>Alpha</h3>
+
+<ul>
+	<li>
+		<b>imagick</b> - Eine PHP-Erweiterung f&uuml;r die Bildbearbeitung.
+		Basiert auf der Imagick-Bibliothek. Beherrscht eine gro&szlig;e Anzahl
+		an Bildformaten.
+	</li>
+</ul>
+
+
+<h3>Development</h3>
+
+<ul>
+	<li>
+		<b>MDB</b> - 3. Release-Kandidat der Metabase-Database-Abstraktions-Schicht.
+	</li>
+</ul>
+
+
+
+<hr>
+<h2>PEAR-DEV Meldungen</h2>
+
+<h3>Einheitliche Funktionsnamen</h3>
+<p>
+Im Rahmen des Release des HTML_Template_IT-Packages beschrieb Markus Wolff
+seine Idee einer einheitlichen Funktionsbenennung innerhalb PEARs. Typische 
+Beispiele daf&uuml;r sind getHTML() und toString().
+Das Problem besteht darin, die notwendige Balance zu finden zwischen R&uuml;ckw&auml;rtskompatibilit&auml;t
+existierender Klassen und einer Verbesserung der allgemeinen PEAR-API.
+</p>
+
+<h3>APD - verbessertes Profiling</h3>
+<p>
+George Schlossnagle &uuml;berarbeitet die Profiling-Funktionen seines PHP-Debuggers.
+Innerhalb entsprechender Diskussion zur Verbesserung wurde der alte Code entfernt. 
+Der neue Code steht im 'execute_wrapper'-CVS-Branch zur Verf&uuml;gung.
+</p>
+
+<h3>MDB als 3. Release-Kandidat verf&uuml;gbar</h3>
+<p>
+Lukas Smith verbesserte denn XML-Schema-Parser und fixte das neue MDB_Frontend-Package.
+Im Zusammenhang mit diesem RC entstand eine lebhafte Diskussion &uuml;ber einen besseren
+Support mit Datenbanktreibern. Wer Lukas beim Erstellen/&Uuml;berarbeiten der Treiber, besonders 
+f&uuml;r Oracle und MSSQL, helfen m&ouml;chte, kann ihn auf der PEAR-Dev-Mailingliste erreichen;
+nat&uuml;rlich auch bei Unterst&uuml;tzung f&uuml;r andere Treiber.
+</p>
+
+<h3>Bugs und Fixes</h3>
+<p>
+Dank an 
+Jan Wagner, Mike McCallister, Wolfram Kriesing, Brent Cook
+f&uuml;r Bug-Meldungen und Korrekturen.
+</p>
+<hr>
+
+<h2>Neue und Vorgeschlagene Packages</h2>
+
+<h3>Console_Table - Daten-Ausgabe auf der Konsole als Tabelle</h3>
+<p>
+Richard Heyes schlug eine neues Package f&uuml;r die Darstellung
+von Information in Tabellenform	in Kommandozeilenumgebungen. An der Erweiterung
+um eine farbliche Darstellung wird gearbeitet.
+</p>
+
+<h3>Text_Password - Erzeugung verst&auml;ndlicher Passw&ouml;rter</h3>
+<p>
+Martin Jansen schlug ein neues Package zur Erstellung f&uuml;r Menschen-verst&auml;ndliche
+Passw&ouml;rter. Nach der Diskussion wurde beschlossen, da&szlig; Text_Password neben dieser Funktion
+auch in der Lage sein sollte, auch 'unverst&auml;ndliche' Passw&ouml;rter zu erzeugen.
+</p>
+
+<h3>MDB_Frontend - eine phpMyAdmin-&auml;hnliches Oberfl&auml;che auf MDB-Basis</h3>
+<p>
+Christian Dickmann schlug ein neues Package f&uuml;r den Web-Zugriff auf Datenbanken &auml;hnlich
+phpMyAdmin vor. Es setzt auf MDB auf und l&auml;&szlig;t sich so f&uuml;r eine Vielzahl von Datenbanken 
+nutzen. Es wurde einhellig begr&uuml;&szlig;t.
+</p>
+ 
+<h3>Net_Ident - Ermitteln von 'Ident'-Information &uuml;ber Socket-Verbindungen</h3>
+<p>
+Ondrej Jombik schlug ein Package f&uuml;r die Ermittlung von 'Ident'-Nutzer-Information
+vor. Es basiert auf der Arbeit von Gavin Brown.
+</p>
+
+<h3>Crypt_Xtea - Ein kleines Verschl&uuml;sselungswerkzeug</h3>
+<p>
+Jeroen Derks &uuml;bertrug seine neue Klasse Crypt_Xtea in das CVS. Es 
+stellt Funktionen f&uuml;r asymetrische Verschl&uuml;sselung bin&auml;rer
+Daten bereit. Der Algorithmus ist 'Xtea'.
+</p>
+
+<hr>
+
+<h2>Entwicklung</h2>
+<p>
+CVS-Aktivit&auml;ten fanden letzte Woche bei
+Auth, Cache, Cache_Lite,
+DB_DataObject, DBA, HTML_QuickForm, HTML_Template_IT, Image_Transform, Mail,
+MDB, MDB_Frontend, Net_Curl, Net_URL, PEAR_Frontend_Web, PECL::apd, PECL::bcompiler,
+PECL::imagick, PECL::mailparse, Perm_LiveUser, SOAP_Interop, Text_Password,
+XML_Transformer statt.
+</p>
+
+<h3>Neue und &uuml;berarbeite Dokuumentation</h3>
+<p>
+&Auml;nderungen und Erg&auml;nzungen an 
+HTML_Template_IT and HTML_Template_ITX statt.
+</p>
+
+</body></html>

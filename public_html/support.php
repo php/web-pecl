@@ -147,6 +147,10 @@ ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
 <h4>Tutorials about some PEAR classes in German:</h4>
 
 <ul>   
+    <li>Tutorial about a lot of PEAR-classes
+    <a href="http://www.tu-chemnitz.de/~meal/php/peardoc/index.html">http://www.tu-chemnitz.de/~meal/php/peardoc/index.html</a>
+    </li><br><br>
+    
     <li>IT[X] is a template class:<br>
     <a href="http://www.ulf-wendel.de/projekte/itx/index.php">http://www.ulf-wendel.de/projekte/itx/index.php</a>
     </li><br><br>

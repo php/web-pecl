@@ -166,4 +166,26 @@ function html_table_border(&$tableobj, $width = "100%")
     print $border->toHtml();
 }
 
+// prints "urhere" menu bar
+function html_category_urhere($id, $name=null)
+{
+    global $PHP_SELF;
+    $html = "<a href=\"$PHP_SELF\">Top Level</a>";
+    if ($id !== null) {
+        global $dbh;
+        $res = $dbh->query("SELECT c.id, c.name
+                            FROM categories c, categories cat
+                            WHERE cat.id = $id
+                            AND c.cat_left < cat.cat_left
+                            AND c.cat_right > cat.cat_right");
+
+        while ($res->fetchInto($row, DB_FETCHMODE_ASSOC)) {
+            $html .= "  :: ".
+                     "<a href=\"$PHP_SELF?catpid={$row['id']}&catname={$row['name']}\">".
+                     "{$row['name']}</a>";
+        }
+        $html .= "  :: <b>$name</b>";
+    }
+    print "$html<br /><br />";
+}
 ?>

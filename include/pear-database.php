@@ -819,7 +819,7 @@ class maintainer
         if (is_string($package)) {
             $package = package::info($package, 'id');
         }
-        $err = $dbh->query("INSERT INTO maintains VALUES(?,?,?)",
+        $err = $dbh->query("INSERT INTO maintains VALUES(?,?,?,1)",
                            array($user, $package, $role));
         if (DB::isError($err)) {
             return $err;

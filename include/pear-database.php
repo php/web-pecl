@@ -705,7 +705,7 @@ class release
         extract($info);
         @unlink($upload_ref);
 
-        $role = user::maintains($auth_user->handle, $package);
+        $role = user::maintains($auth_user->handle, $package_id);
         if ($role != 'lead' && $role != 'developer' && !$auth_user->admin) {
             return PEAR::raiseError('release::confirmUpload: insufficient privileges');
         }

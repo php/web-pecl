@@ -269,9 +269,9 @@ function html_category_urhere($id, $name=null)
                      "<a href=\"$PHP_SELF?catpid={$row['id']}&catname={$row['name']}\">".
                      "{$row['name']}</a>";
         }
-        $html .= "  :: <b>$name</b>";
+        $html .= "  :: <b>".htmlspecialchars($name)."</b>";
     }
-    print "$html<br /><br />";
+    print "$html";
 }
 
 function localRedirect($file)

@@ -21,24 +21,26 @@ function auth_reject($realm = null, $message = null, $refresh = false)
 
 function auth_require($admin = false, $refresh = false)
 {
-    global $PHP_AUTH_USER, $PHP_AUTH_PW, $dbh;
-    global $auth_user;
+    global $dbh, $auth_user;
 
-    $user = $PHP_AUTH_USER;
+    $user = @$_SERVER['PHP_AUTH_USER'];
+	$passwd = @$_SERVER['PHP_AUTH_PW'];
     $auth_user = new PEAR_User($dbh, $user);
     $ok = false;
     switch (strlen(@$auth_user->password)) {
         // handle old-style DES-encrypted passwords
         case 13: {
             $seed = substr($auth_user->password, 0, 2);
-            if (crypt($PHP_AUTH_PW, $seed) == @$auth_user->password) {
+			$crypted = crypt($_SERVER['PHP_AUTH_PW'], $seed);
+            if ($crypted == @$auth_user->password) {
                 $ok = true;
             }
             break;
         }
         // handle new-style MD5-encrypted passwords
         case 32: {
-            if (md5($PHP_AUTH_PW) == @$auth_user->password) {
+			$crypted = md5($_SERVER['PHP_AUTH_PW']);
+            if ($crypted == @$auth_user->password) {
                 $ok = true;
             }
             break;
@@ -48,7 +50,7 @@ function auth_require($admin = false, $refresh = false)
         $ok = false;
     }
     if (!$ok) {
-        if (cvs_verify_password($user, $PHP_AUTH_PW)) {
+        if (cvs_verify_password($user, $passwd)) {
             $auth_user = (object)array('handle' => $user);
         } else {
             auth_reject(null, null, $refresh);
@@ -96,28 +98,26 @@ function cvs_verify_password($user, $pass)
 */
 function init_auth_user()
 {
-    global $PHP_AUTH_USER, $PHP_AUTH_PW;
-    if (empty($PHP_AUTH_USER) || empty($PHP_AUTH_PW)) {
+    global $auth_user, $dbh;
+    if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW'])) {
         return false;
     }
-    global $auth_user;
     if (!empty($auth_user)) {
         return true;
     }
-    global $dbh;
-    $auth_user = new PEAR_User($dbh, $PHP_AUTH_USER);
+    $auth_user = new PEAR_User($dbh, $_SERVER['PHP_AUTH_USER']);
     switch (strlen(@$auth_user->password)) {
         // handle old-style DES-encrypted passwords
         case 13: {
             $seed = substr($auth_user->password, 0, 2);
-            if (crypt($PHP_AUTH_PW, $seed) == @$auth_user->password) {
+            if (crypt($_SERVER['PHP_AUTH_PW'], $seed) == @$auth_user->password) {
                 return true;
             }
             break;
         }
         // handle new-style MD5-encrypted passwords
         case 32: {
-            if (md5($PHP_AUTH_PW) == @$auth_user->password) {
+            if (md5($_SERVER['PHP_AUTH_PW']) == @$auth_user->password) {
                 return true;
             }
             break;

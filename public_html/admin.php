@@ -215,6 +215,15 @@ do {
 
 } while (false);
 
+echo "<br/><br/>";
+
+$bb = new BorderBox("System information", "50%");
+
+echo "Uptime: " . uptime() . "<br/>";
+echo "Disk space: " . round((disk_total_space("/")/(1000*1000*1000)),2) . " GB (available: " . round((diskfreespace("/")/(1000*1000*1000)),2) . " GB)<br/>";
+
+$bb->end();
+
 response_footer();
 
 ?>

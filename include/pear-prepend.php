@@ -26,6 +26,29 @@ if (empty($format)) {
 
 include_once "pear-format-$format.php";
 
+/**
+ * Interface to uptime
+ *
+ * Tell how long the system has been running.
+ *
+ * @return string
+ */
+function uptime()
+{
+    $result = exec("uptime");
+
+    $elements = split(" ", $result);
+
+    foreach ($elements as $key => $value) {
+        if ($value == "up") {
+            $uptime = $elements[$key+1] . " " . str_replace(",", "", $elements[$key+2]);
+            break;
+        }
+    }
+
+    return $uptime;
+}
+
 if (DEVBOX && empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }

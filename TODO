@@ -29,6 +29,10 @@ SHORT TERM:
 ** release.notes
 ** category.list
 
+* "pear" script:
+** windows support: System class and Tar.php test under win
+
+
 MEDIUM TERM:
 
 * script to include PEAR stuff in PHP releases

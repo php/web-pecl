@@ -1,12 +1,30 @@
+<!-- $Id$ //-->
 <?php
 response_header("FAQ");
 
 echo "<h1>PEAR Frequently Asked Questions</h1>";
 
-$ID = 1;
+$ID = 0;
+$TOC = array();
+$content = "";
+
+function makeTOC($toc)
+{
+    $content = "<h3>Table of contents</h3>";
+    if (is_array($toc)) {
+        foreach ($toc as $key => $value) {
+            $content .= "<a href=\"faq.php#faq-".$key."\">".$value."</a><br/>";
+        }   
+    }
+    
+    return $content;
+        
+}
 
 function startElement($parser, $elementName, $elementAttributes)
 {
+
+    $content = "";
 
     switch (strtolower($elementName)) {
 
@@ -14,73 +32,80 @@ function startElement($parser, $elementName, $elementAttributes)
          * Tag defining the table structure
          */
         case "qandaset" :
-            echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\">";
+            $content .= "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\">";
             break;
 
         case "question" :
-            echo "<tr><td bgcolor=\"#cccccc\"><a name=\"faq-".$GLOBALS['ID']++."\"><h3>";
+            $content .= "<tr><td bgcolor=\"#cccccc\"><a name=\"faq-".$GLOBALS['ID']."\"><h3>";
+            $content .= $elementAttributes['TITLE'];
+            $GLOBALS['TOC'][$GLOBALS['ID']] = $elementAttributes['TITLE'];
+            $GLOBALS['ID']++;
             break;
 
         case "answer" :
-            echo "<tr><td bgcolor=\"#eeeeee\">";
+            $content .= "<tr><td bgcolor=\"#eeeeee\">";
             break;
 
         /**
          * Tags defining the appearance of lists
          */            
         case "simplelist" :
-            echo "<ul>";
+            $content .= "<ul>";
             break;
 
         case "member" :
-            echo "<li>";
+            $content .= "<li>";
             break;
 
         /**
          * Appearance
          */
         case "para" :
-            echo "<p>";
+            $content .= "<p>";
             break;
 
         case "artheader" :
         case "command" :
-            echo "<pre>";
+            $content .= "<pre>";
             break;
         
         case "emphasis" :
-            echo "<em>";
+            $content .= "<em>";
             break;
 
         case "ulink" :
-            echo "<a href=\"".$elementAttributes['URL']."\">";
+            $content .= "<a href=\"".$elementAttributes['URL']."\">";
             
             if (isset($elementAttributes['NAME'])) {
-                echo $elementAttributes['NAME'];
+                $content .=$elementAttributes['NAME'];
             }            
             break;
 
         case "faqlink" :
-            echo "<a href=\"faq.php#faq-".$elementAttributes['FAQ']."\">";
+            $content .= "<a href=\"faq.php#faq-".$elementAttributes['FAQ']."\">";
             break;
 
         case "author" :
             if ($elementAttributes['NAME'] != "") {
-                echo "<b>Answer written by ".$elementAttributes['NAME'].".";
+                $content .= "<b>Answer written by ".$elementAttributes['NAME'].".";
             } else {
-                echo "<b>";
+                $content .= "<b>";
             }
             break;            
 
         case "break" :
-            echo "<br/>";
+            $content .= "<br/>";
             break;
     }
+    
+    $GLOBALS['content'] .= $content;
 
 }
 
 function endElement($parser, $elementName)
 {
+
+    $content = "";
 
     switch (strtolower($elementName)) {
 
@@ -88,57 +113,58 @@ function endElement($parser, $elementName)
          * Tags defining the table structure
          */        
         case "qandaset" :
-            echo "</table>";
+            $content .= "</table>";
             break;
 
         case "question" :
-            echo "</h3></td></tr>\n";
+            $content .= "</h3></td></tr>\n";
             break;
             
         case "answer" :
-            echo "</td></tr>\n";
+            $content .= "</td></tr>\n";
             break;
 
         /**
          * Tags defining the appearance of lists
          */
         case "simplelist" :
-            echo "</ul>";
+            $content .= "</ul>";
             break;
 
         case "member" :
-            echo "</li>";
+            $content .= "</li>";
             break;
 
         case "para" :
-            echo "</p>";
+            $content .= "</p>";
             break;
         
         case "artheader" :
         case "command" :
-            echo "</pre>";
+            $content .= "</pre>";
             break;
 
         case "emphasis" :
-            echo "</em>";
+            $content .= "</em>";
             break;
         
         case "ulink" :
         case "faqlink" :
-            echo "</a>";
+            $content .= "</a>";
             break;
         
         case "author" :
-            echo "</b>";
+            $content .= "</b>";
             break;
     }
-
+    
+    $GLOBALS['content'] .= $content;
 
 }
 
 function characterData($parser, $data)
 {
-    echo $data;
+    $GLOBALS['content'] .= htmlspecialchars($data);
 }
 
 if (getenv("SERVER_NAME") != "pear.php.net") {
@@ -160,6 +186,10 @@ while ($data = fread($fp, 4096)) {
 
 xml_parser_free($parser);
 fclose($fp);
+
+echo makeTOC($TOC);
+
+echo $content;
 
 response_footer();
 ?>

@@ -20,6 +20,7 @@ print "  <TH><FONT COLOR=\"#ffffff\">Handle</FONT></TH>\n";
 print "  <TH><FONT COLOR=\"#ffffff\">Name</FONT></TH>\n";
 print "  <TH><FONT COLOR=\"#ffffff\">Email</FONT></TH>\n";
 print "  <TH><FONT COLOR=\"#ffffff\">Homepage</FONT></TH>\n";
+print "  <TH><FONT COLOR=\"#ffffff\">Commands</FONT></TH>\n";
 print " </TR>\n";
 
 $rowno = 0;
@@ -38,6 +39,7 @@ while (is_array($row = $sth->fetchRow(DB_GETMODE_ASSOC))) {
 	print "  <TD>(not shown)</TD>\n";
     }
     print "  <TD><A HREF=\"$homepage\">$homepage</A></TD>\n";
+    print "  <TD><A HREF=\"edit-author.php\">[edit]</A></TD>\n";
     print " </TR>\n";
 }
 

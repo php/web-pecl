@@ -26,9 +26,9 @@ if (DB::isError($dbh)) {
 //
 $error_queries = array(
     "SELECT * FROM fkjsfs"                    => 'DB_ERROR_NOSUCHTABLE',
-    "SELECT * FROM authors WHERE fooooo = 42" => 'DB_ERROR_NOSUCHFIELD',
-    "SELECT *= FROM authors"                  => 'DB_ERROR_SYNTAX',
-    "CREATE TABLE authors ( id INTEGER )"     => 'DB_ERROR_CANNOT_CREATE',
+    "SELECT * FROM users WHERE fooooo = 42"   => 'DB_ERROR_NOSUCHFIELD',
+    "SELECT *= FROM users"                    => 'DB_ERROR_SYNTAX',
+    "CREATE TABLE users ( id INTEGER )"       => 'DB_ERROR_CANNOT_CREATE',
     "INSERT INTO mytable VALUES(1)"           => 'DB_ERROR_ALREADY_EXISTS',
     "DROP TABLE nonexistant"                  => 'DB_ERROR_NOSUCHTABLE'
 );

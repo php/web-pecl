@@ -1,6 +1,6 @@
 <?php // -*- C++ -*-
 
-require_once "html_form.php";
+require_once "HTML/Form.php";
 
 authRequire(1);
 
@@ -34,11 +34,13 @@ do {
 	if ($password != $password2) {
 	    displayError("Passwords did not match");
 	    $password = $password2 = "";
+	    $jumpto = "password";
 	    break;
 	}
 
 	if (!$password) {
 	    displayError("Empty passwords not allowed");
+	    $jumpto = "password";
 	    break;
 	}
 
@@ -97,9 +99,7 @@ if ($display_form) {
 	print "document.forms[0].$jumpto.focus();\n";
 	print "\n// -->\n</SCRIPT>\n";
     }
+    pageFooter();
 }
-
-pageFooter();
-
 
 ?>

@@ -1,10 +1,6 @@
 <?php
 
-$t1 = microtime();
-
-include_once "html_form.php";
-
-$t2 = microtime();
+require_once "HTML/Form.php";
 
 pageHeader("PEAR: Add a package");
 
@@ -20,11 +16,5 @@ $form->addSubmit();
 $form->display();
 
 pageFooter();
-
-$t3 = microtime();
-
-print "t1=$t1<br>\n";
-print "t2=$t2 (".((double)$t2-(double)$t1).")<br>\n";
-print "t3=$t3 (".((double)$t3-(double)$t2).")<br>\n";
 
 ?>

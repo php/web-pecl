@@ -118,7 +118,8 @@ do {
                 foreach ($info->getMaintainers() as $user) {
                     $users[strtolower($user['handle'])] = array(
                                                             'role'   => $user['role'],
-                                                            'active' => $user['active'] == 'yes',
+                                                            'active' => !isset($user['active']) ||
+                                                                $user['active'] == 'yes',
                                                           );
                 }
                 $e = maintainer::updateAll($pacid, $users);
@@ -244,17 +245,6 @@ is 16 MB.
 </p>
 
 <p>
-<strong>IMPORTANT:</strong> If you have not created a package.xml version 2.0 using
-the PEAR 1.4.0a2 command &quot;pear convert&quot; and packaged with &quot;pear
-package package.xml package2.xml&quot; your release will not properly upload at pecl.php.net.
-</p>
-
-<p>However, you can still upload this release through pear.php.net's upload release box if you do
-not wish to try out the new package.xml format right now.  Note that 100% BC is maintained if you follow
-these instructions.
-</p>
-
-<p>
 Uploading new releases is restricted to each package's lead developer(s).
 </p>
 MSG;
@@ -300,7 +290,8 @@ if ($display_verification) {
             $errors[] = $info->getMessage();
         }
         if ($info->getChannel() != 'pecl.php.net') {
-            $errors[] = 'Only channel pecl.php.net packages may be released at pecl.php.net';
+            $warnings[] = 'Your package uses package.xml 1.0.  With the release of PEAR 1.4.0 stable, '
+                . 'PECL packages will require package.xml 2.0 and channel name "pecl.php.net"';
         }
         switch ($info->getPackageType()) {
             case 'extsrc' :
@@ -311,6 +302,11 @@ if ($display_verification) {
             break;
             case 'php' :
                 $type = 'PHP package';
+                if ($info->getPackagexmlVersion() == '1.0') {
+                    $warnings[] = 'package.xml 1.0 cannot distinguish between different release ' .
+                        'types';
+                }
+            break;
             default :
                 $errors[] = 'Release type ' . $info->getPackageType() . ' is not ' .
                     'supported at pecl.php.net, only Extension releases are supported.  ' .

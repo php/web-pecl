@@ -1,28 +1,36 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
- 
-<title>x</title>
-</head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head>
+
 <body>
 <p><i><small>by Alan Knowles(alan_k@php.net)</small></i></p>
 
-<p>..</p>
+<p>A very interesting read this week on the pear development list, with 4
+New Releases, 1 New package proposed, and discussions on PHPDoc Tags, OpenOffice
+Docbook converters, Permission Management and an upgraded Net_Whois package.<br>
+</p>
 
 <hr>
 
 <h2>New Releases</h2>
 
-<h3>Stable</h3>
+<h3></h3><ul>
+</ul>
+<h3>Beta</h3>
+
 
 <ul>
-	<li>
-		<p><b>.. -</b> ..</p>
-	</li>
+<li> <b>DB_DataObject </b>- An SQL builder and Data Modeling Layer.</p></li><li><b>Tree - </b>A package which provides methods to manipulate and access tree like data from Databases or XML files  </li>
+</ul>
+<h3>Alpha</h3>
+
+<ul>
+  <li><b>Net_DNS - </b>A resolver library used to do DNS queries, zone transfers and dynamic DNS updates</li>
 </ul>
 
+<h3>Development</h3>
 
-
+<ul>
+<li><b>MDB - </b>Release Candidate 1, of&nbsp; the&nbsp; PEAR DB, Metabase Merger Database Abastraction Layer.</li>
+</ul>
 <hr>
 
 <h2>PEAR-DEV traffic</h2>
@@ -36,9 +44,7 @@ range of uses in pear, Ant&ocirc;nio offered to write a clear quick
 reference for the PEAR site, at present you can find the list of
 standard tags and formats a</p>
 
-<pre>
-<a href=
-"http://www.phpdoc.de/kongress/tags.html">http://www.phpdoc.de/kongress/tags.html</a>
+<pre><a href="http://www.phpdoc.de/kongress/tags.html">http://www.phpdoc.de/kongress/tags.html</a>
 </pre>
 
 <h3>ISO-8601 in Date</h3>
@@ -47,12 +53,7 @@ standard tags and formats a</p>
 8601 to the format() method of the Date class. You can use it by
 with the following syntax.</p>
 
-<pre>
-%o - gives the raw timezone offset in &plusmn;hh:mm
-%O - gives the dst-corrected offset in &plusmn;hh:mm
-eg.
-Date::format("%Y-%m-%dT%H:%M:%S%O");
-</pre>
+<pre>%o - gives the raw timezone offset in &plusmn;hh:mm<br>%O - gives the dst-corrected offset in &plusmn;hh:mm<br>eg.<br>Date::format("%Y-%m-%dT%H:%M:%S%O");<br></pre>
 
 <h3>OpenOffice to Docbook, and more progress on Automating the
 documentation</h3>
@@ -62,14 +63,11 @@ converter, along with a method for converting Microsoft word 'save
 as HTML' output into Docbook. you can try out the current
 version at</p>
 
-<pre>
-<a href=
-"http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz">http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz</a>
+<pre><a href="http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz">http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz</a>
 </pre>
 
 <p>There was continuing discussion of adding support to PHPDoc to
-generate Docbook from the comments, and Alan Knowles <a href=
-"http://marc.theaimsgroup.com/?l=pear-dev&m=102946826409440&w=2">
+generate Docbook from the comments, and Alan Knowles <a href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102946826409440&amp;w=2">
 posted</a> his first effort at doing this using his PHP_CodeDoc
 tool, Noting that the task is not as simple as it appears to
 be....</p>
@@ -98,16 +96,16 @@ working on. This looks like it will provide a flexible standard
 API, that would enable back ends for a variety of applications to
 accessed using a single API. Enabling you to integrate bulletin
 board or forum packages within your applications without having to
-modifying code to suit each application.</P>
+modifying code to suit each application.</p>
 
-<P>The only remaining matter was how to integrate this into the PEAR
+<p>The only remaining matter was how to integrate this into the PEAR
 class naming structure, Suggestions that got better reviews where
 along the lines of Auth_LiveUser, Perm_LiveUser. The use of a top
 level category combined with a more distinct name 'LiveUser' was
 prefered over a more generic name like Auth_Simple or
-Auth_Complex.</P>
+Auth_Complex.</p>
 
-<P>On a side issue to this, it may be worth researching some of the
+<p>On a side issue to this, it may be worth researching some of the
 discussion on php-dev recently that has dealt with the security
 issues behind sessions, both trans-sid, cookees and HTTP in general
 (another topic of heated debate, but eventually ending with
@@ -148,6 +146,5 @@ mathematical functions to do the calculations.<br>
 Date, DB, DB_DataObject, HTML_Javascript, HTML_TreeMenu, I18N, MDB,
 Net_DNS, Net_Ping, PECL::Soap, PHPDoc, Tree, XML_RSS, XML_XPath,
 System.</p>
-</body>
-</html>
 
+</body></html>

@@ -18,7 +18,11 @@ if (empty($catid)) {
             'name'   => $catname,
             'desc'   => $catdesc,
             'parent' => $catid);
-        category::add($data);
+        if (PEAR::isError(category::add($data))) {
+            $message = "Error while saving category";
+        } else {
+            $message = "Successfully saved new category.";
+        }
     } elseif (isset($remove)) {
         // XXXX TODO: implement remove categories
     }
@@ -26,44 +30,37 @@ if (empty($catid)) {
                          WHERE id = $catid", DB_FETCHMODE_ASSOC);
     extract($row);
 }
+
+if (isset($message)) {
+    echo "<b><font color=\"#FF0000\">" . $message . "</font></b><br /><br />\n";
+}
 ?>
 <form action="<?php echo $GLOBALS['PHP_SELF'] . "?catid=$catid&insert=1"; ?>" method="post">
 <table border="0" cellpadding="2" cellspacing="1" width="100%">
 <tr>
     <td rowspan="4" width="30%"><?php print get_categories_menu('tree');?></td>
-    <td><h3>You are browsing category:</h3><br /><?php print get_categories_menu('urhere');?>
+    <td valign="top"><h3>You are browsing category:</h3><?php print get_categories_menu('urhere');?>
     </td>
 </tr>
 </tr>
-    <td><b>Insert a new sub-category under: <?php print $name; ?></b><br/><br/>
+    <td valign="top">
+<?php
+$bb = new Borderbox("Insert new sub-category under: " . $name, "90%", "", 2, true);
 
-    <table border="0" width="100%">
-    <tr>
-        <td>Name:</td>
-        <td><input type="text" name="catname" size="15" /></td>
-    </tr>
-    <tr>
-         <td>Summary:</td>
-         <td><input type="text" name="catdesc" size="40" /></td>
-    </tr>
-    <tr>
-        <td align="center" colspan="2"><input type="submit" name="action" value="Insert" /></td>
-    </tr>
-    </table>
+$bb->plainRow("Name", "<input type=\"text\" name=\"catname\" size=\"15\" />");
+$bb->plainRow("Summary", "<input type=\"text\" name=\"catdesc\" size=\"40\" />");
+$bb->plainRow("<input type=\"submit\" name=\"action\" value=\"Insert\" />");
 
-    </td>
+$bb->end();
+
+if (isset($catid)) {
+    echo "<br /><br />\n";
+    echo make_link($_SERVER['PHP_SELF'] . "?remove=" . $name, "Delete") . " category " . $name . "<br />\n";
+    echo "<font color=\"red\">(Warning: This will delete <b>all</b> subcategories and <b>all</b> packages!)</font><br /><br />\n";
+    print_link("/packages.php?catpid=" . $catid . "&catname=" . $name, "List");
+    echo ' all packages from this category.</b>';
+} ?>
 </tr>
-<?php if (isset($catid)) { ?>
-</tr>
-    <td><b>Delete category: <?php print $name;?></b><br />
-    <font color="red">(Warning: This will delete <b>all</b> subcategories and <b>all</b> packages!)</font>
-    </td>
-</tr>
-</tr>
-    <td><b><?php print_link("/packages.php?catpid=" . $catid . "&catname=" . $name, "List"); ?>
-    all packages from this category.</b></td>
-</tr>
-<?php } ?>
 </table>
 </form>
 <?php

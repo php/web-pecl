@@ -28,7 +28,7 @@ do {
             }
             $tmpsize = $file->getProp('size');
         } elseif ($file->isMissing()) {
-            display_error("No file uploaded, please be serious :-)"); break;
+            display_error("No file uploaded"); break;
         } elseif ($file->isError()) {
             display_error($file->errorMsg()); break;
         }
@@ -50,7 +50,7 @@ do {
 		}
 		response_header("Release Upload Finished");
 		print "The release of package `$package' version `$version' ";
-		print "was completed successfully.<br>";
+		print "was completed successfully.<br />";
         $pacid = package::info($package, 'id');
         print '<center>'.
               make_link("package-info.php?pacid=$pacid", 'Visit package home') .

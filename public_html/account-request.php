@@ -6,7 +6,7 @@ function display_error($msg)
 {
     global $errorMsg;
 
-    $errorMsg .= "<FONT COLOR=\"#CC0000\" SIZE=\"+1\">$msg</FONT><BR>\n";
+    $errorMsg .= "<font color=\"#CC0000\" size=\"+1\">$msg</font><br />\n";
 }
 
 $display_form = true;
@@ -83,7 +83,7 @@ do {
             if (PEAR::isError($err)) {
                 print "Failed setting $var: ";
                 print $err->getMessage();
-                print "<BR>\n";
+                print "<br />\n";
                 $errors++;
             }
         }
@@ -110,7 +110,7 @@ do {
         response_header("Account Request Submitted");
                 
         if ($ok) {
-            print "<H2>Account Request Submitted</H2>\n";
+            print "<h2>Account Request Submitted</h2>\n";
             print "Your account request has been submitted, it will ".
                   "be reviewed by a human shortly.  This may take from two ".
                   "minutes to several days, depending on how much time people ".
@@ -118,7 +118,7 @@ do {
                   "You will get an email when your account is open, or if ".
                   "your request was rejected for some reason.";
         } else {
-            print "<H2>Possible Problem!</H2>\n";
+            print "<h2>Possible Problem!</h2>\n";
             print "Your account request has been submitted, but there ".
                   "were problems mailing one or more administrators.  ".
                   "If you don't hear anything about your account in a few ".
@@ -134,95 +134,95 @@ if ($display_form) {
 
     response_header("Request Account");
 
-    print "<H1>Request Account</H1>
+    print "<h1>Request Account</h1>
 
 Please note that you <b>not</b> need an account for
-<b>downloading</b>.<br> You only need an account if you have a package
+<b>downloading</b>.<br /> You only need an account if you have a package
 you would like to release through PEAR.
 
 ";
 
     if (isset($errorMsg)) {
-	    print "<TABLE>\n";
-	    print " <TR>\n";
-	    print "  <TD>&nbsp;</TD>\n";
-	    print "  <TD><B>$errorMsg</B></TD>\n";
-	    print " </TR>\n";
-	    print "</TABLE>\n";
+	    print "<table>\n";
+	    print " <tr>\n";
+	    print "  <td>&nbsp;</td>\n";
+	    print "  <td><b>$errorMsg</b></td>\n";
+	    print " </tr>\n";
+	    print "</table>\n";
     }
     
-    print "<FORM action=\"" . $HTTP_SERVER_VARS['PHP_SELF'] . "\" method=\"post\">\n";
-    print "<TABLE BORDER=\"0\" CELLSPACING=\"1\" CELLPADDING=\"5\">\n";
-    
-    print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">Username</TH>\n";
-    print "  <TD bgcolor=\"#e8e8e8\">";
+    print "<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\">\n";
+    print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
+
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">Username</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\">";
     HTML_Form::displayText("handle", @$HTTP_POST_VARS['handle'], 12);
-    print "  </TD>\n";
-    print "</TR>\n";
+    print "  </td>\n";
+    print "</tr>\n";
 
-    print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">Real Name</TH>\n";
-    print "  <TD bgcolor=\"#e8e8e8\">";
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">Real Name</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\">";
     HTML_Form::displayText("name", @$HTTP_POST_VARS['name']);
-    print "  </TD>\n";
-    print "</TR>\n";
+    print "  </td>\n";
+    print "</tr>\n";
 
-    print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">Password</TH>\n";
-    print "  <TD bgcolor=\"#e8e8e8\">";
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">Password</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\">";
     HTML_Form::displayPassword("password", null, 10);
     print "   Again: ";
     HTML_Form::displayPassword("password2", null, 10);
-    print "  </TD>\n";
-    print "</TR>\n";
+    print "  </td>\n";
+    print "</tr>\n";
 
-    print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">Email Address</TH>\n";
-    print "  <TD bgcolor=\"#e8e8e8\">";
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">Email Address</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\">";
     HTML_Form::displayText("email", @$HTTP_POST_VARS['email']);
-    print "  </TD>\n";
-    print "</TR>\n";
+    print "  </td>\n";
+    print "</tr>\n";
 
-    print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">Show Email Address?</TH>\n";
-    print "  <TD bgcolor=\"#e8e8e8\">";
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">Show Email Address?</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\">";
     HTML_Form::displayCheckbox("showemail", @$HTTP_POST_VARS['showemail']);
-    print "  </TD>\n";
-    print "</TR>\n";
+    print "  </td>\n";
+    print "</tr>\n";
 
-    print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">Homepage</TH>\n";
-    print "  <TD bgcolor=\"#e8e8e8\">";
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">Homepage</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\">";
     HTML_Form::displayText("homepage", @$HTTP_POST_VARS['homepage']);
-    print "  </TD>\n";
-    print "</TR>\n";
+    print "  </td>\n";
+    print "</tr>\n";
 
-    print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">Purpose of your PEAR account</TH>\n";
-    print "  <TD bgcolor=\"#e8e8e8\">";
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">Purpose of your PEAR account</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\">";
     HTML_Form::displayTextarea("purpose", stripslashes(@$HTTP_POST_VARS['purpose']));
-    print "  </TD>\n";
-    print "</TR>\n";
+    print "  </td>\n";
+    print "</tr>\n";
 
-    print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">More relevant information about you (optional)</TH>\n";
-    print "  <TD bgcolor=\"#e8e8e8\">";
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">More relevant information about you (optional)</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\">";
     HTML_Form::displayTextarea("moreinfo", stripslashes(@$HTTP_POST_VARS['moreinfo']));
-    print "  </TD>\n";
-    print "</TR>\n";
+    print "  </td>\n";
+    print "</tr>\n";
 
-    print "<TR>\n";
-    print "  <TH bgcolor=\"#cccccc\">&nbsp;</TH>\n";
-    print "  <TD bgcolor=\"#e8e8e8\"><INPUT type=\"submit\" name=\"submit\">&nbsp;<INPUT type=\"reset\"></TD>\n";
-    print "</TR>\n";
+    print "<tr>\n";
+    print "  <th bgcolor=\"#cccccc\">&nbsp;</th>\n";
+    print "  <td bgcolor=\"#e8e8e8\"><input type=\"submit\" name=\"submit\" />&nbsp;<input type=\"reset\" /></td>\n";
+    print "</tr>\n";
 
-    print "</TABLE>\n";
+    print "</table>\n";
     
     if ($jumpto) {
-	    print "<SCRIPT LANGUAGE=\"JavaScript\">\n<!--\n";
+	    print "<script language=\"JavaScript\">\n<!--\n";
 	    print "document.forms[1].$jumpto.focus();\n";
-	    print "\n// -->\n</SCRIPT>\n";
+	    print "\n// -->\n</script>\n";
     }
 }
 

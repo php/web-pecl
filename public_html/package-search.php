@@ -56,7 +56,7 @@ $form->displaySelect("pkg_category", $rows, @$_GET['pkg_category']);
 </tr>
 <tr>
     <td>&nbsp;</td>
-    <td><input type="submit" name="submit" value="Search"></td>
+    <td><input type="submit" name="submit" value="Search" /></td>
 </tr>
 </table>
 </form>

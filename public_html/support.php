@@ -94,12 +94,12 @@ while ( list(, $listinfo) = each($mailing_lists)) {
 	} else {
   
 		echo '<tr align="center" bgcolor="#e0e0e0">';
-		echo '<td align="left"><b>' . $listinfo[1] . '</b><br><small>'. $listinfo[2] . '</small></td>';
+		echo '<td align="left"><b>' . $listinfo[1] . '</b><br /><small>'. $listinfo[2] . '</small></td>';
 		echo '<td>' . ($listinfo[3] ? 'yes' : 'no') . '</td>';
 		echo '<td>' . ($listinfo[4] ? make_link("http://marc.theaimsgroup.com/?l=".$listinfo[0], 'yes') : 'n/a') . '</td>';
 		echo '<td>' . ($listinfo[6] ? make_link("news://news.php.net/".$listinfo[6], 'yes') : 'n/a') . '</td>';
-		echo '<td><input name="maillist" type="radio" value="' . $listinfo[0] . '"></td>';
-		echo '<td>' . ($listinfo[5] ? '<input name="maillist" type="radio" value="'.$listinfo[0].'-digest">' : 'n/a' ) . '</td>';
+		echo '<td><input name="maillist" type="radio" value="' . $listinfo[0] . '" /></td>';
+		echo '<td>' . ($listinfo[5] ? '<input name="maillist" type="radio" value="'.$listinfo[0].'-digest" />' : 'n/a' ) . '</td>';
 		echo '</tr>' . "\n";
 
 	}
@@ -111,9 +111,9 @@ while ( list(, $listinfo) = each($mailing_lists)) {
 
 <p align="center">
 <b>Email:</b>
-<input type=text name="email" width=40 value="user@example.com">
-<input type=submit name="action" value="Subscribe">
-<input type=submit name="action" value="Unsubscribe">
+<input type=text name="email" width=40 value="user@example.com" />
+<input type=submit name="action" value="Subscribe" />
+<input type=submit name="action" value="Unsubscribe" />
 </p>
 
 </form>
@@ -141,14 +141,14 @@ If you have questions concering this website, you can contact
 <h4>Tutorials about the PEAR DB class:</h4>
 
 <ul>
-    <li><a href="http://vulcanonet.com/soft/?pack=pear_tut">PEAR DB Tutorial</a> by Tomas V.V.Cox</li><br><br>
+    <li><a href="http://vulcanonet.com/soft/?pack=pear_tut">PEAR DB Tutorial</a> by Tomas V.V.Cox</li><br /><br />
 
     <li><a href="http://vulcanonet.com/soft/?pack=pager">Pear DB Pager Class Tutorial</a> by Tomas V.V.Cox.
-    This class handles all the stuff needed for displaying paginated results from a database query.</li><br><br>    
+    This class handles all the stuff needed for displaying paginated results from a database query.</li><br /><br />    
 
-    <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li><br><br>
+    <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li><br /><br />
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/11/29/peardb.html">PEAR::DB Primer</a> on O'Reilly Network</li><br><br>
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/11/29/peardb.html">PEAR::DB Primer</a> on O'Reilly Network</li><br /><br />
 
     <li><a href="http://www.nusphere.com/products/library/script_peardb.pdf">Writing Scripts with PHP's PEAR DB Class</a> - by Paul DuBois (PDF)</li>
 </ul>
@@ -158,14 +158,14 @@ If you have questions concering this website, you can contact
 <ul>   
     <li>Tutorial about a lot of PEAR-classes
     <a href="http://www.tu-chemnitz.de/~meal/php/peardoc/index.html">http://www.tu-chemnitz.de/~meal/php/peardoc/index.html</a>
-    </li><br><br>
+    </li><br /><br />
     
-    <li>IT[X] is a template class:<br>
+    <li>IT[X] is a template class:<br />
     <a href="http://www.ulf-wendel.de/projekte/itx/index.php">http://www.ulf-wendel.de/projekte/itx/index.php</a>
-    </li><br><br>
+    </li><br /><br />
     
     <li><a href="http://www.ulf-wendel.de/projekte/menu/tutorial.php">Menu.php Tutorial</a> in German.
-    This class generates a HTML menu from a multidimensional hash.</li><br><br>    
+    This class generates a HTML menu from a multidimensional hash.</li><br /><br />    
 
     <li><a href="http://www.ulf-wendel.de/projekte/cache/">Tutorial about the PEAR Cache class</a></li>
 </ul>
@@ -174,26 +174,26 @@ If you have questions concering this website, you can contact
 
 <ul>
     <li><a href="http://php.chregu.tv/sql2xml/">XML_sql2xml tutorial</a>. A PEAR class for converting SQL
-    query results or arrays to XML.</li><br><br>
+    query results or arrays to XML.</li><br /><br />
 
     <li><a href="http://www.mamasam.com/tutorials/en_html_table.html">Table.php</a> Tutorial. The table class
-    allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li><br><br>
+    allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li><br /><br />
 </ul>  
 
 <h2>PEAR resources</h2>
 
 <ul>
     <li><a href="http://conf.php.net/pres/index.php?p=slides%2Fpear&id=pear">A presentation</a> by Stig Bakken,
-    who is leading PEAR development, at ApacheCon 2001 on PEAR.</li><br><br>
+    who is leading PEAR development, at ApacheCon 2001 on PEAR.</li><br /><br />
 
     <li><a href="http://conf.php.net/pear2">An updated presentation</a> by Jon Parise,
-    a PEAR contributor, from the O'Reilly Open Source Convention 2001.</li><br><br>
+    a PEAR contributor, from the O'Reilly Open Source Convention 2001.</li><br /><br />
 
-    <li><a href="http://pear.sourceforge.net/manual/">Russian PEAR Manual</a>.</li><br><br>
+    <li><a href="http://pear.sourceforge.net/manual/">Russian PEAR Manual</a>.</li><br /><br />
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/10/11/pearcache.html">Caching PHP Programs with PEAR</a> on O'Reilly Network</li><br><br>
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/10/11/pearcache.html">Caching PHP Programs with PEAR</a> on O'Reilly Network</li><br /><br />
 
-    <li><a href="http://www.onlamp.com/pub/a/php/2001/07/19/pear.html">A Detailed Look at PEAR</a> on O'Reilly Network</li><br><br>
+    <li><a href="http://www.onlamp.com/pub/a/php/2001/07/19/pear.html">A Detailed Look at PEAR</a> on O'Reilly Network</li><br /><br />
 
     <li><a href="http://www.onlamp.com/pub/a/php/2001/05/24/pear.html">An Introduction to PEAR</a> on O'Reilly Network</li>
 </ul>

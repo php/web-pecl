@@ -17,7 +17,7 @@ switch ($type) {
 
 $dbh = DB::connect($dsn);
 if (DB::isError($dbh)) {
-    die("DB::connect failed: ".DB::errorMessage($dbh)."<BR>\n");
+    die("DB::connect failed: ".DB::errorMessage($dbh)."<br />\n");
 }
 
 //

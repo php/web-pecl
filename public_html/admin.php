@@ -162,10 +162,10 @@ do {
 	print "$i  <td>\n";
 	print "$i   To add a note, enter it here:<br />\n";
 	print "$i    <textarea rows=\"3\" cols=\"55\" name=\"note\"></textarea><br />\n";
-	print "$i   <input type=\"submit\" value=\"Add note\" name=\"cmd\">\n";
-	print "$i   <input type=\"hidden\" name=\"key\" value=\"uid\">\n";
-	print "$i   <input type=\"hidden\" name=\"id\" value=\"$requser->handle\">\n";
-	print "$i   <input type=\"hidden\" name=\"acreq\" value=\"$acreq\">\n";
+	print "$i   <input type=\"submit\" value=\"Add note\" name=\"cmd\" />\n";
+	print "$i   <input type=\"hidden\" name=\"key\" value=\"uid\" />\n";
+	print "$i   <input type=\"hidden\" name=\"id\" value=\"$requser->handle\" />\n";
+	print "$i   <input type=\"hidden\" name=\"acreq\" value=\"$acreq\" />\n";
 	print "$i  </td>\n";
 	print "$i </tr>\n";
 	print "$i</table>\n";
@@ -175,8 +175,8 @@ do {
 ?>
 
 <form action="<?= $PHP_SELF ?>" method="POST">
-<input type="hidden" name="cmd" value="">
-<input type="hidden" name="uid" value="<?= $requser->handle ?>">
+<input type="hidden" name="cmd" value="" />
+<input type="hidden" name="uid" value="<?= $requser->handle ?>" />
 <table cellpadding="3" cellspacing="0" border="0" width="90%">
  <tr>
   <td align="center"><input type="button" value="Open Account" onclick="confirmed_submit(this, 'open this account')" /></td>

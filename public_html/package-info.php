@@ -111,7 +111,7 @@ response_header("Package :: $name");
 
 <?php $bb->end(); ?>
 
-<br>
+<br />
 <table border="0" cellspacing="3" cellpadding="3" height="48" width="100%" align="center">
 <tr>
 <?php
@@ -135,7 +135,7 @@ response_header("Package :: $name");
 </tr>
 </table>
 
-<br>
+<br />
 
 <?php
 $bb = new BorderBox("Available Releases");

@@ -4,16 +4,16 @@ response_header('Credits');
 
 ?>
 
-<H2>Credits</H2>
+<h2>Credits</h2>
 
-<H3>PEAR website team</H3>
+<h3>PEAR website team</h3>
 
-<UL>
-  <LI>Stig S&aelig;ther Bakken</LI>
-  <LI>Martin Jansen</LI>
-  <LI>Colin Viebrock</LI>
-  <LI>Tomas V.V.Cox</LI>
-</UL>
+<ul>
+  <li>Stig S&aelig;ther Bakken</li>
+  <li>Martin Jansen</li>
+  <li>Colin Viebrock</li>
+  <li>Tomas V.V.Cox</li>
+</ul>
 
 <?php
 

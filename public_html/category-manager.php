@@ -31,7 +31,7 @@ if (empty($catid)) {
 <table border="0" cellpadding="2" cellspacing="1" width="100%">
 <tr>
     <td rowspan="4" width="30%"><?php print get_categories_menu('tree');?></td>
-    <td><h3>You are browsing category:</h3><br><?php print get_categories_menu('urhere');?>
+    <td><h3>You are browsing category:</h3><br /><?php print get_categories_menu('urhere');?>
     </td>
 </tr>
 </tr>
@@ -40,14 +40,14 @@ if (empty($catid)) {
     <table border="0" width="100%">
     <tr>
         <td>Name:</td>
-        <td><input type="text" name="catname" size="15"></td>
+        <td><input type="text" name="catname" size="15" /></td>
     </tr>
     <tr>
          <td>Summary:</td>
-         <td><input type="text" name="catdesc" size="40"></td>
+         <td><input type="text" name="catdesc" size="40" /></td>
     </tr>
     <tr>
-        <td align="center" colspan="2"><input type="submit" name="action" value="Insert"></td>
+        <td align="center" colspan="2"><input type="submit" name="action" value="Insert" /></td>
     </tr>
     </table>
 
@@ -55,7 +55,7 @@ if (empty($catid)) {
 </tr>
 <?php if (isset($catid)) { ?>
 </tr>
-    <td><b>Delete category: <?php print $name;?></b><br>
+    <td><b>Delete category: <?php print $name;?></b><br />
     <font color="red">(Warning: This will delete <b>all</b> subcategories and <b>all</b> packages!)</font>
     </td>
 </tr>

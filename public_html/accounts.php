@@ -6,7 +6,7 @@ response_header("Accounts");
 
 $page_size = 20;
 
-print "<H1>Accounts</H1>\n";
+print "<h1>Accounts</h1>\n";
 
 $all_firstletters = $dbh->getCol('SELECT SUBSTRING(handle,1,1) FROM users '.
 								 'WHERE registered = 1 ORDER BY handle');
@@ -72,7 +72,7 @@ if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80) {
 }
 $gourl .= "/account-info.php";
 print "u=prompt('Go to account:','');if(u)location.href='$gourl?handle='+u;";
-print '" value="Go to account.."/></td></tr><tr><td>';
+print '" value="Go to account.." /></td></tr><tr><td>';
 printf("Displaying accounts %d - %d of %d<br />\n",
 	   $offset, min($offset+$show, $naccounts), $naccounts);
 $sth = $dbh->limitQuery('SELECT handle,name,email,homepage,showemail '.

@@ -126,9 +126,9 @@ following the directions in that mail.
 
 <p>
 There are a variety of commands you can use to modify your subscription.
-Either send a message to pear-whatever-help@lists.php.net (as in,
+Either send a message to pear-<tt>whatever</tt>-help@lists.php.net (as in,
 pear-general-help@lists.php.net) or you can view the commands for
-ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
+ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here</a>.
 </p>
 
 <p>
@@ -138,7 +138,7 @@ If you have questions concering this website, you can contact
 
 <p>
 Of course don't forget to visit the <i>#pear</i> IRC channel at the <a href="http://www.efnet.org">
-Eris Free Net</a>
+Eris Free Net</a>.
 </p>
 
 <h2>PEAR Tutorials</h2>

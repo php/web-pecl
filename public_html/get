@@ -53,7 +53,6 @@ if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], array('1', 'yes'
 } else {
     $uncompress = false;
 }
-@error_log("get: uncompress=$_GET[uncompress] PATH_INFO=$_SERVER[PATH_INFO]", 0);
 switch (sizeof($opts)) {
 	case 2: {
 		if (preg_match('/^([a-zA-Z0-9_]+)-(.*)\.(tar|tgz)$/', $opts[1], $matches)) {

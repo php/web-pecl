@@ -93,6 +93,13 @@ response_header("Package :: $name");
     <th class="pack" bgcolor="#009933" width="20%">Description</th>
     <td><?php echo $description;?>&nbsp;</td>
 </tr>
+<!--
+<tr>
+    <td colspan="2" align="right">
+    <?php print_link("/package-edit.php?id=" . @$_GET['pacid'], "Edit"); ?>
+    </td>
+</tr>
+-->
 </table>
 
 <?php $bb->end(); ?>
@@ -103,49 +110,56 @@ response_header("Package :: $name");
 <?php
     // CVS link
     if (@is_dir(PHP_CVS_REPO_DIR . "/$name")) {
-        $cvs_link = make_link("http://cvs.php.net/cvs.php/pear/$name",
-                              '| View Source Code &amp; Docs |', 'top');
+        $cvs_link = "[ " . make_link("http://cvs.php.net/cvs.php/pear/$name",
+                                     'View Source Code &amp; Docs', 'top')
+                         . " ] ";
     } else {
         $cvs_link = '&nbsp;';
     }
+    
     // Download link
-    $get_link = make_link("/get/$name", '| Download Lastest |');
+    $get_link = make_link("/get/$name", 'Download Lastest');
 ?>
+    <td width="33%" align="center">[ <?php echo $get_link; ?> ]</td>
     <td width="33%" align="center"><?php echo $cvs_link;?></td>
-    <td width="33%" align="center">| View ChangeLog |</td>
-    <td width="33%" align="center"><?php echo $get_link; ?></td>
+    <!-- <td width="33%" align="center">| View ChangeLog |</td> -->
 </tr>
 </table>
 
 <br>
 
-<?php $bb = new BorderBox("Available Releases"); ?>
-
-<table border="0" cellspacing="0" cellpadding="3" width="100%">
-  <th align="left">Version</th>
-  <th align="left">State</th>
-  <th align="left">Release Date</th>
-  <th align="left">Downloads</th>
- </tr>
 <?php
+$bb = new BorderBox("Available Releases");
 
-foreach ($releases as $rel) {
-	print " <tr>\n";
-	if (empty($rel['state'])) {
-		$rel['state'] = 'devel';
-	}
-	$rel['releasedate'] = substr($rel['releasedate'], 0, 10);
-	$downloads_html = '';
-	foreach ($downloads[$rel['version']] as $dl) {
-		$downloads_html .= "<a href=\"/get/$dl[basename]\">".
-			 "$dl[basename]</a><br />";
-	}
-	printf("  <td>%s</td><td>%s</td><td>%s</td><td>%s</td>\n",
-		   $rel['version'], $rel['state'], $rel['releasedate'],
-		   $downloads_html);
-	print " </tr>\n";
+if (count($releases) == 0) {
+    echo "This package has not released any versions yet.";
+} else {
+?>
+    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+        <th align="left">Version</th>
+        <th align="left">State</th>
+        <th align="left">Release Date</th>
+        <th align="left">Downloads</th>
+
+    <?php
+
+    foreach ($releases as $rel) {
+	    print " <tr>\n";
+	    if (empty($rel['state'])) {
+		    $rel['state'] = 'devel';
+	    }
+	    $rel['releasedate'] = substr($rel['releasedate'], 0, 10);
+	    $downloads_html = '';
+	    foreach ($downloads[$rel['version']] as $dl) {
+    		$downloads_html .= "<a href=\"/get/$dl[basename]\">".
+	    		 "$dl[basename]</a><br />";
+	    }
+	    printf("  <td>%s</td><td>%s</td><td>%s</td><td>%s</td>\n",
+                $rel['version'], $rel['state'], $rel['releasedate'],
+                $downloads_html);
+        print " </tr>\n";
+    }
 }
-
 ?></table>
 <?php $bb->end(); ?>
 

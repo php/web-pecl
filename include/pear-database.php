@@ -345,6 +345,39 @@ class package
     }
 
     // }}}
+
+    // {{{  proto struct package::listAllwithReleases()
+
+    /**
+     * Get list of packages and their releases
+     *
+     * @access public
+     * @return array
+     * @static
+     */
+    function listAllwithReleases()
+    {
+        global $dbh;
+
+        $query = "SELECT p.id AS pid, p.name, r.id AS rid, r.version, r.state FROM packages p, releases r WHERE p.id = r.package ORDER BY p.name";
+        $sth = $dbh->query($query);
+
+        if (DB::isError($sth)) {
+            return $sth;
+        }
+
+        while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+            $packages[$row['pid']]['name'] = $row['name'];
+            $packages[$row['pid']]['releases'][] = array('id' => $row['rid'],
+                                                         'version' => $row['version'],
+                                                         'state' => $row['state']
+                                                         );
+        }
+
+        return $packages;
+    }
+
+    // }}}
     // {{{  proto struct package::listLatestReleases([string])
 
     function listLatestReleases($state = '')

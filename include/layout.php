@@ -165,7 +165,7 @@ function commonHeader($title) {
   'http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
- <title>PEAR: <?php echo $title; ?></title>
+ <title>PEAR :: <?php echo $title; ?></title>
  <link rel="stylesheet" href="/style.css" />
 </head>
 

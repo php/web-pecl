@@ -54,7 +54,7 @@ if (!isset($_GET['id'])) {
  * The user has to be either a lead developer of the package or
  * a PEAR administrator.
  */
-$lead = in_array($_COOKIE['PEAR_USER'], maintainer::get($_GET['id'], true));
+$lead = in_array($_COOKIE['PEAR_USER'], array_keys(maintainer::get($_GET['id'], true)));
 $admin = user::isAdmin($_COOKIE['PEAR_USER']);
 
 if (!$lead && !$admin) {

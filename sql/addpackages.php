@@ -1,8 +1,7 @@
 <?php
-
 print "Adding packages...\n";
 
-// Drops all categories and adds sample categories
+// Drops all packages and adds sample packages
 
 $dbh->expectError(DB_ERROR_NOSUCHTABLE);
 $dbh->query('DELETE FROM packages');
@@ -35,20 +34,21 @@ $catmap = $dbh->getAssoc("SELECT name,id FROM categories");
 
 foreach (explode("\n", $packages) as $line) {
     if (trim($line) == '') {
-	continue;
+        continue;
     }
     list($name,$category,$lead,$summary) = explode(";", trim($line));
     if (empty($catmap[$category])) {
-	print "Package: $name: skipped - unknown category `$category'\n";
-	continue;
+        print "Package: $name: skipped - unknown category `$category'\n";
+        continue;
     } else {
-	$catid = $catmap[$category];
+        $catid = $catmap[$category];
     }
-    add_package(array('name' => $name,
-		      'license' => 'PEAR License',
-		      'description' => '',
-		      'summary' => $summary,
-		      'category' => $catid));
+    add_package(array('name'     => $name,
+                      'license'  => 'PEAR License',
+                      'description' => '',
+                      'summary'  => $summary,
+                      'category' => $catid,
+                      'lead'     => $lead));
     print "Package: $name\n";
 }
 

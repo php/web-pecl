@@ -1,5 +1,4 @@
 <?php
-
 ini_set('y2k_compliance', 'on');
 if ($HTTP_SERVER_VARS['QUERY_STRING'] == 'devme') {
     $duration = 86400 * 360;
@@ -37,6 +36,8 @@ menu_link("Frequently Asked Questions", "faq.php");
 if (DEVBOX) {
     menu_link("Browse Packages", "packages.php");
     menu_link("Request PEAR Account", "account-request.php");
+    echo hdelim();
+    echo "<h3>The following operations require a valid PEAR account:</h3>";
     menu_link("New Package", "package-new.php");
     menu_link("Upload Release", "release-upload.php");
     menu_link("Administrators", "admin.php");

@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>x</title></head><body>
+<small><i>por Alan Knowles (alan_k@php.net)
+traducido por Jes&uacute;s M. Castagnetto (jmcastagetto@php.net)</i>
+</small>
+<p>Como de costumbre, una semana ocupada en el mundo de PEAR, con 5
+lanzamientos nuevos, y 2 paquetes nuevos a&ntilde;adidos, y adem&aacute;s
+la discusi&oacute;n acerca del estado del sitio de web the PEAR, Forum
+regresando al mundo de los vivos, y MDB con un candidato para lanzamiento.
+</p><hr>
+
+<h2>Nuevos Lanzamientos</h2>
+
+<h3>Estable</h3>
+<ul>
+<li><b>Var_Dump -</b> Una versi&oacute;n gr&aacute;fica de la
+funci&oacute;n var_dump en PHP</li>
+<li><b>Cache</b> - Un sistema de almacenamiento temporal de datos de
+diferentes tipos.li>
+<li><b>Date</b>- Una clase que representa fechas y que puede manipular
+fechas fuera del rango est&aacute;ndar en Unix (1970-2038)</li>
+</ul>
+
+<h3>Beta</h3>
+<ul>
+<li><b>Cache_Lite</b> - Un paquete r&aacute;pido y seguro para el
+almacenamiento temporal de resultados de tus programas de PHP</li>
+</ul>
+
+<h3>En Desarrollo</h3>
+<ul>
+  <li><b>MDB</b> - una combinaci&oacute;n de PEAR DB y la Capa de 
+Abstracci&oacute;n de Bases de Datos MetaBase.</li>
+</ul>
+<br>
+
+<hr>
+
+<h2>Tr&aacute;fico en PEAR-DEV</h2>
+
+<h3>Como encontrar la lista de paquetes</h3>
+Hubo una discusi&oacute;n corta acerca de mostrar el enlace a
+la <a href="http://pear.php.net/packages.php">lista de paquetes</a>
+en la p&aacute;gina principal del sitio de web de PEAR. Esto esta
+relacionado con el hecho de que en la versi&oacute;n corriente de PHP
+la &uacute;nica forma de usar el instalador de PEAR es el usar el
+comando
+<pre>lynx -source http://pear.php.net/go-pear | php</pre>
+Cuando PHP 4.3.0 sea lanzado esto no va a ser necesario (pues el
+instalador sera distribuido con PHP), asi que el usar y acceder los
+paquetes de PEAR sera mucho m&aacute;s f&aacute;cil. Y como el sitio
+de web de PEAR est&aacute siendo modificado lo mejor seria el presentar
+un sistema de distribuci&oacute;n que este trabajando completamente, en
+lugar de un empacador/installador de PEAR el cual a&uacute;n tiene algunos
+peque&ntilde;os problemas. De manera que por mientras para poder ver el
+sitio de PEAR en toda su gloria, ustedes tendran que usar la direcci&oacute;n
+siguiente (y luego refrescar la p&aacute;gina).
+<pre><a href="http://pear.php.net/?devme">http://pear.php.net/?devme</a></pre>
+Uno de los problemas m&aacute;s fastidiosos fue solucionado esta semana por Tomas Cox,
+gracias a su diligente correci&oacute;n de errores el proceso de creaci&oacute;n
+de un paquete nuevo y el de ejecutar el primer lanzamiento de este es mucho
+mas sencillo.
+<h3>M&aacute;s traducciones para las noticias semanales.</h3>
+Jes&uacute;s M. Castagnetto, (co-autor de
+Professional PHP Programming y algunos paquetes de PEAR), ha comenzado a
+traducir al Espa&ntilde;ol las noticias semanales.
+
+<h3>Candidato de Lanzamiento 1 de MDB</h3>
+Lukas Smith anunci&oacute; que el considera que MDB,
+la combinaci&oacute;n de Metabase/PEAR DB, esta lista para testeo en beta, 
+y estaba buscando los "huecos" que necesitan llenarse antes de declarar
+la versi&oacute;n 1.0 lista para lanzar.
+
+<h3>La categoria PHP se empez&oacute; a llenar</h3>
+Despu&eacute;s algo de discusi&oacute;n, la clase Var_Dump de Frederic
+Poeydomenge ha sido incluida en la nueva categoria PHP, junto con
+PHPDoc, PHPUnit y bcompiler, los que se movieron de la categoria PEAR.
+Var_Dump a&uacute;n necesita cambiar el nombre para que este de acuerdo
+al est&aacute;ndar de nombramiento de PEAR, ej. PHP_VarDump or PHP_Var_Dump.
+
+<h3>M&aacute;s cuestiones relacionadas a Zend Engine 2</h3>
+Brad Bulger encontr&oacute; que cuando us&oacute; la nueva
+Zend Engine, unos efectos secundarios interesantes aparecieron y
+por los cuales sera importante el mantenerlos presentes.
+El problema ocurri&oacute; con el m&eacute;todo mkdir en el paquete
+System, el cual tiene el mismo nombre que la funci&oacute;n de PHP
+nativa, como no es necesario el usar <code>$this-&gt;mkdir()</code> en ZE2 para
+llamar a un m&eacute;todo local, ZE2 estaba confundiendo mkdir (la
+llamada de sistema nativa) con la llamada al m&eacute;todo mkdir...
+
+<h3>Forum regresa al mundo de los vivos</h3>
+&#1050;&#1074;&#1086;&#1090;&#1080;&#1088;&#1086;&#1085;&#1080;&#1077; Wodzu 
+pregunt&oacute; si el podria ponerse a cargo de desarrollar el paquete
+Forum, convirti&eacute;ndolo a los est&aacute;ndares de PEAR y a&ntilde;adiendo
+algunas opciones. Como de costumbre esta oferta econtr&oacute; una positiva, calurosa,
+y bulliciosa acogida en la lista.
+
+<h3>Haciendo Docbook f&aacute;cil - OpenOffice XSLT</h3>
+Sandro Zic mencion&oacute; que existen convertidores de XSLT de 
+OpenOffice a Docbook, disponibles en
+<a href="http://www.chez.com/ebellot/ooo2sdbk/">http://www.chez.com/ebellot/ooo2sdbk/</a>, 
+si alguno lo prueba y obtiene unos resultados la comunidad de PEAR estar&aacute; muy
+interesada en saberlo.
+
+<h3>Problemas y Correciones</h3>
+Gracias a las siguientes personas por hayar y corregir algunos problemas,
+James Flemer, Mike
+Tuupola, Matt Allen, Rob, Pierre-Alain Joye, Arnaud Limbourg,Troels Arvin y
+Wim Vinckier
+
+<hr>
+
+<h2>Paquetes Nuevos y Propuestos</h2>
+
+<h3>Var_Dump</h3>
+Var_dump es una clase que emite informaci&oacute;n acerca de variables
+en forma mas detallada y elegante. Por el momento se concentra en
+generar HTML.
+
+<h3>PECL::Threads</h3>
+Despu&eacute;s de solucionar los problemas t&eacute;cnicos para a&ntilde;adir
+soporte para Threading en PHP,
+Alan Knowles y Shane Caraveo tienen un prototipo en PECL,
+la cual es una extensi&oacute;n que trabaja en diferentes plataformas que
+permite el empezar otro thread en PHP usando una sintaxis similar a la
+de <code>include</code>, y el pasar variables de una thread a la otra.
+Esta extensi&oacute;n es muy &uacute;til para el desarrollo de servidores
+que usen TCP o aplicaciones en PHP-GTK. Una interface mas est&aacute;ndar
+del tipo <code>thread_create('function_name')</code> esta siendo desarrollada.
+<hr>
+
+<h2>Desarrollo</h2>
+Los paquetes activos en CVS esta semana fueron:
+MDB, HTML_Javascript,
+HTML_Post, DB_DataObject, PECL::Threads, I18N, Console_Getopt, Cache_Lite,
+Auth, DB, Date, HTML_QuickForm, DB_ldap, HTTP_Upload, Math_Numbers y Net_Ping.
+
+<br>
+</body></html>

@@ -21,7 +21,8 @@ installed in /usr/share/pear):
  Alias /user    /usr/local/www/pearweb/public_html/account-info.php
 
  RewriteEngine On
- RewriteRule   /download-docs.php    /manual/index.php
+ RewriteRule   /download-docs.php    /manual/index.php [R=301]
+ RewriteRule   /rss.php              /feeds/latest.rss [R=301]
 
  #
  # Rewriting rules for the RSS feeds

@@ -3,6 +3,10 @@
 require_once "DB.php";
 require_once "../include/pear-database.php";
 
+if(!ini_get('register_globals')){
+	extract($HTTP_SERVER_VARS);
+}
+
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 list($progname, $type, $user, $pass, $db) = $argv;
 $dbh = DB::connect("$type://$user:$pass@localhost/$db");

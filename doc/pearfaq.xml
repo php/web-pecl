@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.24 2001-11-16 15:24:15 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.25 2001-11-18 18:04:07 jon Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-11-16 15:24:15 $</date>
-  <version>$Revision: 1.24 $</version>
+  <date>$Date: 2001-11-18 18:04:07 $</date>
+  <version>$Revision: 1.25 $</version>
  </artheader>
 
  <qandaset>
@@ -182,7 +182,7 @@
     <author name="Martin Jansen"/>
     <para>
      This used to be the former name of PEAR: PHP Extension and Code Library 
-     (pronounced "picke").
+     (pronounced "pickle").
     </para>
    </answer>
   </qandaentry>    

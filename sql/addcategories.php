@@ -8,37 +8,44 @@ $dbh->dropSequence('categories');
 $dbh->popExpect();
 
 $categories = '
-Authentication;
-Benchmarking;
-Caching;
-Configuration;
-Console;
-Encryption;
-Database;
-Date and Time;
-File System;
-HTML;
-HTTP;
-Images;
-Logging;
-Mail;
-Math;
-Networking;
-Numbers;
-Payment;
-PEAR;PEAR infrastructure
-Scheduling;
-Science;
-XML;
+Authentication;;
+Benchmarking;;
+Caching;;
+Configuration;;
+Console;;
+Encryption;;
+Database;;
+Date and Time;;
+File System;;
+HTML;;
+HTTP;;
+Images;;
+Logging;;
+Mail;;
+Math;;
+Networking;;
+Numbers;;
+Payment;;
+PEAR;PEAR infrastructure;
+Scheduling;;
+Science;;
+XML;;
+XML-RPC;;XML
 ';
 
+$catids = array();
 foreach (explode("\n", $categories) as $line) {
-    if (trim($line) == '') {
-	continue;
+	if (trim($line) == '') {
+		continue;
     }
-    list($name, $desc) = explode(";", trim($line));
-    add_category(array('name' => $name, 'desc' => $desc));
-    print "Category: $name\n";
+	list($name, $desc, $parent) = explode(";", trim($line));
+	$params = array('name' => $name, 'desc' => $desc);
+	if (!empty($parent)) {
+		$params['parent'] = $catids[$parent];
+	}
+	$catid = add_category($params);
+	$catids[$name] = $catid;
+	print "Category: $name\n";
 }
 
 ?>

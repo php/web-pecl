@@ -1,0 +1,72 @@
+<!-- EN-Revision: 1.5 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>por Alan Knowles - alan_k@php.net (traduzido por Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior - floripa@php.net)</small></i></p>
+    
+<p>Outra semana quieta, j&aacute; que alguns desenvolvedores do PEAR est&atilde;o se preparando para a PHP Conference em Frankfurt (venha ver quem est&aacute; por tr&aacute;s de todo aquele c&oacute;digo). Discuss&otilde;es sobre o dirname(__FILE__) continuaram, com o "arquiteto" original explicando as raz&otilde;es para tal decis&atilde;o. Tr&ecirc;s novos pacotes foram propostos esta semana, j&aacute; que o PEAR continua a atrair o c&oacute;digo e extens&otilde;es PHP da melhor qualidade, al&eacute;m de uma quantidade cont&iacute;nua de novos lan&ccedil;amentos: 4 est&aacute;veis e 4 betas.</p>
+
+<hr>
+<h2>Novos Lan&ccedil;amentos</h2>
+    
+<h3>Est&aacute;vel</h3>
+    
+<ul>
+  <li><b>HTML_Select</b> - prov&ecirc; caixas de sele&ccedil;&atilde;o para pa&iacute;ses, pa&iacute;ses do Reino Unido e estados dos EUA</li>
+  <li><b>Log</b> - um framework para prover log</li>
+  <li><b>HTML_QuickForm</b> - um pacote que prov&ecirc; m&eacute;todos para criar, validar e processar formul&aacute;rios HTML</li>
+  <li><b>HTML_Table</b> - m&eacute;todos para o desenho f&aacute;cil e eficiente de tabelas HTML</li>
+</ul>
+
+<h3>Beta</h3>
+  
+<ul>
+  <li><b>PEAR_Frontend_Web</b> - a interface web para o instalador do PEAR</li>
+  <li><b>SOAP_Interop</b> - um conjunto de testes para servi&ccedil;os SOAP</li>
+  <li><b>Net_DIME</b> - um pacote que prov&ecirc; uma interface para o DIME (protocolo de mensagens instant&acirc;neas)</li>
+  <li><b>SOAP</b> - um conjunto de bibliotecas que permitem ao PHP atuar como servidor e cliente SOAP</li>
+</ul>
+         
+<hr>   
+
+<h2>Tr&aacute;fego na Lista PEAR-DEV</h2>
+    
+<h3>Continua&ccedil;&atilde;o - Paths do PEAR no require_once e o uso do dirname(__FILE__)</h3>
+Seguindo a discuss&atilde;o das &uacute;ltimas semanas em usar dirname(__FILE__) para os "caminhos", Stig
+Bakken indicou os s&eacute;rios problema de usar isto em conjunto com m&uacute;ltiplas instala&ccedil;&otilde;es do PEAR (global + usu&aacute;rio). O problema est&aacute; no fato de que o require_once poderia se confundir seriamente e pode terminar carregando duas classes com o mesmo nome em dois diferentes arquivos, causando um conflito. O m&eacute;todo atual de deixar o include path fazer tal classifica&ccedil;&atilde;o parece ser a &uacute;nica solu&ccedil;&atilde;o vi&aacute;vel atualmente.</p>
+
+<h3>Novos containers MDB para o PEAR cache e mail queue</h3>
+<p>Lorenzo Alberton anunciou que escreveu containers do MDB para o PEAR cache e o mail queue.</p>
+
+<h3>Notas do usu&aacute;rio para o manual do PEAR</h3>
+<p>Foi sugerido por Jon Wood que um dos mais populares caracter&iacute;sticas do manual do PHP fosse adicionado ao manual do PEAR. N&atilde;o houveram muitas respostas. Tudo indica que quando o PEARDoc2 estiver no ar esta sera uma funcionalidade importante que ser&aacute; adicionada.</p>
+
+<h3>Erros e Corre&ccedil;&otilde;es</h3>
+Agradecimentos a estas pessoas pela detec&ccedil;&atilde;o e corre&ccedil;ao de alguns erros: David Viner, Daniel C, Lorenzo Alberton, Sebastian R&ouml;bke, Mika Tuupola, Alan Richmond e Robin Ericsson</p>
+
+<hr>   
+
+<h2>Pacotes Novos e Propostos</h2>
+    
+<h3>APC (Cache Avan&ccedil;ado do PHP) agora em PECL</h3>
+<p>George Schlossnagle anunciou sua inten&ccedil;&atilde;o de adicionar o APC, um cache PHP dispon&iacute;vel livremente, ao PECL.</p>
+
+<h3>ezSQL - uma API a banco de dados simplificada</h3>
+<p>Justin Vncent prop&ocirc;s sua API para banco de dados simplificada para uso do PEAR, depois de algumas confus&otilde;es sobre como ele se encaixaria no PEAR. Um concenso geral &eacute; de que este tipo de wrapper como uma extens&atilde;o ao DB ou MDB pode ser &uacute;til para alguns usu&aacute;rios. Apesar de que os desenvolvedores do PEAR "puristas" n&atilde;o concordaram t&atilde;o firmemente com o encapsulamento dos detalhes de conex&atilde;o ao banco de dados.</p>
+
+<h3>Net_Cyrus - uma interface para os comandos de gerenciamento do servidor IMAP Cyrus</h3>
+<p>Richard Heyes prop&ocirc;s uma pacote para fornecer uma interface ao servidor de mails IMAP Cyrus, permitindo a adi&ccedil;&atilde;o de novos usu&aacute;rios e altera&ccedil;&otilde;es de seus direitos de acesso.</p>
+
+<hr>     
+
+<h2>Desenvolvimento</h2>
+
+<p>Ativo no CVS esta semana: Benchmark, Cache, DBA_Relational, File_Find,
+HTML_QuickFrom, HTML_Table, Image_Transform, Inline_C, Log, Mail_Queue, MDB,
+PECL::bcompiler, PECL::python, Perm_LiveUser, Scince_Chemistry, SOAP, SQL_Parser, al&eacute;m de atualiza&ccedil;&otilde;es no PEARDoc2, incluindo arquivos e o FAQ.</p>
+</body>
+</html>

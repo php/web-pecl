@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+  <body>
+    <small><i>by Alan Knowles alan_k@php.net </i></small><small><i>transalted
+ by Pierre-Alain Joye paj@pearfr.org</i></small><br>
+      
+<p>En consid&eacute;rant les vacances estivales, PEAR a v&eacute;cu une autre
+ semaine tr&egrave;s active avec 2 sorties stables, 3 versions beta, des
+discussions  autour de PEAR dans Gentoo, de nouvelles cat&eacute;gories,
+un nouveau manuel  et un logo "Powered by PEAR".<br>
+  </p>
+   
+<hr>     
+<h2>Nouvelles Sorties</h2>
+        
+<h3>Stable</h3>
+    Log - Un 'framework' pour 'loger' dans un fichier, via syslog,&nbsp;
+SQL ou plus encore.<br>
+  HTML_Table - Un module de construction de table HTML.     
+<h3>Beta</h3>
+  bcompile - Un compilateur bytecode pout php (pour l'instant seulement pour
+ les classes).<br>
+PEAR_Frontend_Gtk - l'interface graphique pour l'installeur  pear (lancer
+avec pear -G, n&eacute;cessite&nbsp;<a href="http://gtk.php.net">PHP-Gtk</a>),
+HTML_Javascript, des outils pour  travailler avec Javascript.<br>
+  <br>
+   
+<hr>     
+<h2>Trafic de PEAR-DEV</h2>
+        
+<h3>PEAR et Gentoo</h3>
+       
+<p>Gentoo a int&eacute;gr&eacute; quelques modules PEAR dans Portage (syst&egrave;me
+ de gestion des modules de Gentoo). La liste de ceux-ci est consultable sur
+<a href="http://www.gentoo.org/packages/dev-php/index.html">Gentoo dev-php</a>.
+     <br>
+       </p>
+     
+<h3>Nouvelles Cat&eacute;gories PHP, Template</h3>
+       
+<p>Suivant l'introduction de bcompiler, il f&ucirc;t sugg&eacute;rer qu'une
+ nouvelle cat&eacute;gorie 'PHP' (ndt: dans l'arborescence des packages PEAR)
+ pourrait &ecirc;tre tr&egrave;s utile. Elle pourrait contenir des packages
+comme PHPDoc, PHPUnit et bcompiler, &eacute;tant tous des packages qui parsent,
+ compilent, testent des scripts PHP. Cette proposition f&ucirc;t, de mani&egrave;re
+ g&eacute;n&eacute;rale, bien accept&eacute;e et consid&eacute;r&eacute;e
+comme raisonnable.<br>
+  L'autre suggestion, Template, serait destin&eacute;e pour des packages
+comme  HTML_Template_IT, Template_Flexy, Template_Smart. Ces packages, r&eacute;sidant
+ actuellement sous HTML, peuvent servir pour d'autres types de fichiers (XML,
+ Email, RTF, ...) que l'HTML, les votes stopp&egrave;rent sur 2-3 pour, et
+un contre.<br>
+      </p>
+     
+<h3>Nouvelles hebdomadaires et HTML</h3>
+       
+<p>La plupart des traducteurs ont signal&eacute; que le format HTML g&eacute;n&eacute;r&eacute; 
+par Mozilla pour les weekly news rendait la traduction difficile dans des 
+&eacute;diteurs tels Vi/emacs, etc... Alan accepta de nettoyer &nbsp;le code 
+avant de le publier sur le cvs. Deux traductions ont &eacute;t&eacute; ajout&eacute;es:
+&nbsp;Ant&ocirc;nio Carlos Ven&acirc;ncio  J&uacute;nio (Brazilian Portuguese)
+and Robert Janeczek (Polish). &nbsp;Les weekly news devrait utiliser gettext
+(pour les titres principaux), cependant nous sommes toujours en attente d'une
+confirmation des webmestres sur sa disponibilit&eacute;.<br>
+   </p>
+     
+<h3>Smarty and PEAR</h3>
+       
+<p>Il est clair que <a href="http://smarty.php.net">Smarty</a> doit &ecirc;tre
+disponible en tant que package PEAR, (sans m&ecirc;me respecter les standarts
+PEAR) et seuls quelques changements mineurs le ferait fonctionner en toute
+transparence avec l'installeur de PEAR.<br>
+ </p>
+ 
+<h3>PEAR Movements </h3>
+       
+<p>Stig continue de d&eacute;placer les parties non essentielles de PEAR hors
+de la distribution PHP (laquelle pourrait contenir juste assez pour charger 
+le 'packager' pear et continuer).<br>
+ Net_SMTP, Net_Curl, Mail sont maintenant dans le cvs principal de PEAR (seule 
+le package file va &ecirc;tre distribu&eacute; avec PHP-4.3, le QA va avoir 
+lieu bient&ocirc;t).<br>
+   </p>
+     
+<h3>Changing Databases in DB and MDB, and ODBC cursors</h3>
+       
+<p>La question du changement de bases de donn&eacute;es en utilisant la couche 
+d'abstratction de PEAR a &eacute;t&eacute; soulev&eacute;e, apr&egrave;s discussion,
+la m&eacute;thode sugg&eacute;r&eacute;e est la suivante :<br>
+   </p>
+     
+<pre>$db-&gt;disconnect();<br>$db = DB::connect($new_dsn);</pre>
+       
+<p>Ceci est la m&eacute;thode recommand&eacute;e, comme tous les syst&egrave;mes 
+de bases de donn&eacute;es ne supportent pas le changement &nbsp;(au niveau 
+de php) de bases. A ce propos, si quelqu'un veut impl&eacute;menter une solution
+de changement de bases (pour celles qui le supportent), &nbsp;de d&eacute;connection 
+(pour les autres), est le bienvenue pour envoyer les patches.</p>
+<p> Lukas nous signala que MDB le g&egrave;re correctement (ndt: Manuel confirma 
+la m&eacute;thode utilis&eacute;e, d&eacute;connection et reconnection).<br>
+  </p>
+     
+<p>Sur le m&ecirc;me sujet, Tomas (ndt: Tomas V. Cox) indica qu'il d&eacute;sirait 
+ajouter le support des curseurs dans le format DSN pour ODBC, par exemple 
+: </p>
+     
+<pre>odbc://user:pass@ds?cursor_type=SQL_CUR_USE_ODBC</pre>
+         
+<h3>Guide du d&eacute;velopeur et PEARdoc2</h3>
+       
+<p>Martin Jansen a ajout&eacute; un nouveau guide du d&eacute;velopeur dans 
+le manuel de PEAR, ceci afin d'aider &agrave; r&eacute;pondre rapidement aux
+question fr&eacute;quentes des d&eacute;velopeurs. Ce guide inclut, par exemple,
+comment &eacute;crire le fichier de d&eacute;finition d'un package (package.xml)
+et pourquoi les standarts de codage existent.<br>
+ Alexander a termin&eacute; la r&eacute;vision compl&egrave;te du manuel
+de PEAR, le rendant plus modulaire et plus ais&eacute; &agrave; &eacute;tendre, 
+attendez vous &agrave; voir un tout nouveau manuel en ligne tr&egrave;s bient&ocirc;t.<br>
+ </p>
+ 
+<p>    </p>
+     
+<h3>DB_Pager retourne des r&eacute;sultats constants</h3>
+       
+<p>Richard Wall envoya un patch pour permettre &agrave; DB_Pager::getData() 
+&nbsp;de retourner un nombre constant de pages, actuellement la m&eacute;thode 
+de Google est appliq&eacute;e . Il f&ucirc;t d&eacute;cid&eacute; de rendre 
+la nouvelle version 'user friendly' (ndt: je vous laisse traduire :) ) en 
+ajoutant une option suppl&eacute;mentaire &agrave; la m&eacute;thode actuelle.<br>
+   </p>
+     
+<h3>S&eacute;curit&eacute; et Config_DB</h3>
+       
+<p> Bertand Mansion signala que Config_DB, contain&egrave;re du package Config, 
+&eacute;crivait le DSN complet (Database username,password etc.) quand certaines 
+erreurs apparaissait, ce n'est pas un effet tr&egrave;s &nbsp;d&eacute;sir&eacute;. 
+L'attention des d&eacute;velopeurs f&ucirc;t attir&eacute;e sur le fait d'imprimer 
+des messages d'erreurs incluant les mots de passes et autres donn&eacute;es 
+sensibles n'&eacute;tait pas souhaitable.<br>
+   </p>
+     
+<h3>Passage par r&eacute;f&eacute;rence</h3>
+       
+<p>Pour ceux qui ne suivent pas PHP-DEV, deux articles int&eacute;ressants, 
+concernant la rapidit&eacute; de php pour le passage par r&eacute;f&eacute;rence, 
+ont &eacute;t&eacute; signal&eacute;s. Contrairement au C, php est actuellement 
+plus lent pour le passage de cha&icirc;nes ou d'entiers par r&eacute;f&eacute;rence, 
+&nbsp;soyez donc attentifs &agrave; cette fonctionnalit&eacute; dans les packages
+n&eacute;cessitant des performances sp&eacute;ciales.<br>
+ R&eacute;f&eacute;rences  :[<a
+ href="http://www.zend.com/zend/art/ref-count.php">http://www.zend.com/zend/art/ref-count.php</a>] 
+ and [<a
+ href="http://phplens.com/lens/php-book/optimizing-debugging-php.php">http://phplens.com/lens/php-book/optimizing-debugging-php.php</a>]
+     </p>
+     
+<h3>OpenOffice et pour &eacute;crire dans le format docbook</h3>
+       
+<p><a href="http://www.openoffice.org">Open office</a> envisage d'ajouter 
+le format docbook pour le mode &eacute;dition, et&nbsp; <a
+ href="http://www.abiword.org">abiword</a> peut exporter vers le format docbook, 
+en l'&eacute;tat, aucune de ces deux solutions n'est pleinement satisfaisante. 
+Actuellement, les meilleurs r&eacute;sultats sont obtenus par des &eacute;diteurs 
+du type Vi, emacs ou n'importe quel autre &eacute;diteur text, ou, pour les 
+utilisateurs Windows, XMetal. Lecture recommand&eacute;e pour les auteurs, 
+le php-doc how-to : <a
+ href="http://cvs.php.net/co.php/phpdoc/howto/howto.html.tar.gz">http://cvs.php.net/co.php/phpdoc/howto/howto.html.tar.gz</a> 
+    </p>
+     
+<h3>PEAR Snapshots</h3>
+       
+<p>Quelqu'un demanda si des snapshots de tous les packages de PEAR pourraient 
+&ecirc;tre disponbile. En g&eacute;n&eacute;ral, il y a relativement peu d'int&eacute;r&ecirc;t
+&agrave; le faire (d&ucirc; &agrave; la grande taille que pear devrait propablement
+atteindre), a noter que si quelqu'un veut le mettre en place, il est le bienvenue.
+Afin de fournir une solution proche et viable, la commande suivante devrait
+&ecirc;tre ajout&eacute; (ndt: d&eacute;j&agrave; disponible sur le cvs):<br>
+   </p>
+     
+<pre>pear upgrade-all </pre>
+       
+<p>laquelle mettra &agrave; jour l'ensemble des packages install&eacute;s 
+vers la nouvelle version.   </p>
+     
+<h3>Powered by PEAR</h3>
+    <img src="http://pear.php.net/gifs/pear-power.gif"
+ alt="powered by pear" width="88" height="31" hspace="10" align="left">
+    Colin Viebrock a ajout&eacute; un nouveau logo 'powered by PEAR' sur
+vos sites utilisant pear, vous pouvez le t&eacute;l&eacute;charger sur depuis 
+:  <a href="http://pear.php.net/gifs/pear-power.gif">http://pear.php.net/gifs/pear-power.gif<br>
+ </a>ou <a href="http://pear.php.net/gifs/pear-power.png">http://pear.php.net/gifs/pear-power.png</a><br>
+        
+<h3><br>
+  </h3>
+   
+<h3>Bugs et Fixes</h3>
+       
+<p>Merci &agrave; Pawe&#322; Go&#322;aszewski, Matt Allen, James E. Flemer, Tal Peer 
+and  Dave Clark pour avoir mis aux jours quelques bugs et corrections.   
+</p>
+     
+<hr>     
+<h2>Packages propos&eacute;s:</h2>
+         
+<h3>Cache_Lite - Cache SpeedyGonzales.</h3>
+ 
+<p>Fabien Marty proposa une version &eacute;dulcor&eacute; de la classe Cache, 
+avec comme but principal les perfomances (dans une classe unique), fonctionnement 
+s&ucirc;re sous NFS et mise en cache de blocks. Ap&egrave;es une &acirc;pre 
+discussion sur le nom &agrave; lui donner (inclut des suggestions comme Cache_Fast,
+ Cache_Simple,  Cache_HighTraffic, Cache_RoadRunner,&nbsp; Cache_SpeedyGonzales
+ and&nbsp; Cache_BeepBeep), Cache_Lite f&ucirc;t choisi. A noter que des
+solutions comme Zend Accelerator, PHPAccelerator et APC peuvent apporter
+beaucoup si vos priorit&eacute;s sont la vitesse et la performance.<br>
+ </p>
+ 
+<hr>    
+<h2>D&eacute;velopement </h2>
+      Actifs cette semaine sur le cvs : CVS: MDB, The Pear manual and FAQ, 
+PECL::soap, DB,  HTML_Table,XML_CSSML,PHPDoc,Mail, HTML_Javascript, Auth_HTTP, 
+PECL::bcompiler,  HTML_QuickForm, Config, Log,Auth, PEAR_FrontEnd_Gtk, XML_RPC, 
+Net_NNTP.      <br>
+   <br>
+  <br>
+ <br>
+</body>
+</html>

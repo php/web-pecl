@@ -30,6 +30,7 @@ if (isset($HTTP_GET_VARS['handle'])) {
     $handle = "";
 }
 
+ob_start();
 response_header("Edit Account: $handle");
 
 $admin = user::isAdmin($_COOKIE['PEAR_USER']);
@@ -100,6 +101,36 @@ switch ($HTTP_POST_VARS['command']) {
         return;
     }
 
+    case "change_password" : {
+        $user = &new PEAR_User($dbh, $handle);
+        $execute = true;
+
+        if (empty($_POST['password_old']) || empty($_POST['password1']) ||
+            empty($_POST['password2'])) {
+
+            PEAR::raiseError("Please fill out all password fields.");
+            $execute = false;
+        }
+
+        if ($user->get("password") != md5($_POST['password_old'])) {
+            PEAR::raiseError("You provided a wrong old password.");
+            $execute = false;
+        }
+
+        if ($_POST['password1'] != $_POST['password2']) {
+            PEAR::raiseError("The new passwords do not match.");
+            $execute = false;
+        }
+
+        if ($execute === true) {
+            $user->set("password", md5($_POST['password1']));
+            if ($user->store()) {
+                auth_logout();
+                localRedirect("/login.php");
+            }
+        }
+    }
+
     default : {
         $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
         $row = $dbh->getRow("SELECT * FROM users WHERE handle = ?",
@@ -113,13 +144,17 @@ switch ($HTTP_POST_VARS['command']) {
         }
 
 
-        print "<form action=\"" . $HTTP_SERVER_VARS['PHP_SELF'] . "?handle=" . $_GET['handle'] . "\" method=\"post\">\n";
+        print "<form action=\"" . $HTTP_SERVER_VARS['PHP_SELF'] . "?handle=" . $handle . "\" method=\"post\">\n";
         print "<input type=\"hidden\" name=\"command\" value=\"update\" />\n";
         print "<input type=\"hidden\" name=\"handle\" value=\"$handle\" />\n";
 
         print "<h1>Editing account \"$handle\"</h1>\n";
 
-        print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
+        print "<ul><li><a href=\"#password\">Manage your password</a></li></ul>";
+
+        $bb = new BorderBox("Edit your information");
+
+        print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\" width=\"100%\">\n";
         print " <tr>\n";
         print "  <th bgcolor=\"#CCCCCC\">Handle:</th>\n";
         print "  <td bgcolor=\"#e8e8e8\">$handle</td>\n";
@@ -192,8 +227,49 @@ switch ($HTTP_POST_VARS['command']) {
 
         print "</form>\n";
 
+        $bb->end();
+
+        print "<br /><br /><a name=\"password\" />";
+
+        $bb = new BorderBox("Change password");
+
+        print "<form method=\"post\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n";
+        print "<input type=\"hidden\" name=\"handle\" value=\"" . $handle . "\" />\n";
+        print "<input type=\"hidden\" name=\"command\" value=\"change_password\" />\n";
+        print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\" width=\"100%\">\n";
+
+        print " <tr>\n";
+        print "  <th bgcolor=\"#CCCCCC\">Old Password:</th>\n";
+        print "  <td bgcolor=\"#e8e8e8\">";
+        HTML_Form::displayPassword("password_old", "", 25);
+        print "  </td>\n";
+        print " </tr>\n";
+
+        print " <tr>\n";
+        print "  <th bgcolor=\"#CCCCCC\">New Password:</th>\n";
+        print "  <td bgcolor=\"#e8e8e8\">";
+        HTML_Form::displayPassword("password1", "", 25);
+        print " repeat ";
+        HTML_Form::displayPassword("password2", "", 25);
+        print "  </td>\n";
+        print " </tr>\n";
+
+        print " <tr>\n";
+        print "  <th bgcolor=\"#CCCCCC\">&nbsp;</th>\n";
+        print "  <td bgcolor=\"#e8e8e8\"><input type=\"submit\" value=\"Submit\" name=\"submit\" />";
+        print "  (You will be redirected to a login form where you have";
+        print "  to enter your new password.)";
+        print "  </td>\n";
+        print " </tr>\n";
+
+        print "</table>\n";
+
+        $bb->end();
+
         response_footer();
 
     }
 }
+
+ob_end_flush();
 ?>

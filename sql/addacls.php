@@ -72,7 +72,8 @@ if (is_resource($avail)) {
 	$ent = 0;
 	foreach ($acl_paths as $path => $acldata) {
 		foreach ($acldata as $user => $foo) {
-			$dbh->execute($sth, array($user, 'user', $path, 1));
+			$type = isset($group_comment[$user]) ? 'group' : 'user';
+			$dbh->execute($sth, array($user, $type, $path, 1));
 			$ent++;
 		}
 	}

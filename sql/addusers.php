@@ -14,6 +14,7 @@ sebastian;*;Sebastian Bergmann;;0
 sn;*;Sebastian Nohn;sebastian@nohn.net;0
 ssb;aaXRbnur6Ub86;Stig S. Bakken;;1
 zyprexia;*;Dave Mertens;dmertens@zyprexia.com;0
+jimw;aai6p0orwS6qE;Jim Winstead;jimw@apache.org;1
 ';
 
 $sth = $dbh->prepare("INSERT INTO users ".

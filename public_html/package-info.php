@@ -30,15 +30,6 @@ if (!$row) {
     exit();
 }
 
-$package_infos = $dbh->getAll("SELECT * FROM package_info WHERE package = '" . $pacid . "'");
-
-if (DB::isError($package_infos)) {
-    response_header("Error");
-    PEAR::raiseError("");
-    response_footer();
-    exit();    
-}
-
 $name        = $row['name'];
 $summary     = stripslashes($row['summary']);
 $license     = $row['license'];

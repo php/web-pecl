@@ -1,0 +1,18 @@
+Online URL for this proposal: http://pear.php.net/ppp/info.php/{id}
+
+Created:  {date}
+Name      {name}
+Category: {category}
+
+Description:
+{desc}
+
+User: {name} <{email}>
+
+You can vote for or against this proposal at the URL provided above.
+
+-- 
+Important note:
+When replying to this proposal, please take care that the reply is
+also sent to the author's email address. If your mail client supports
+the Reply-To header, everything should work fine.

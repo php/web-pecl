@@ -25,7 +25,7 @@ response_header("Privacy Policy");
 <h2>Email</h2>
 
 <p>We will not give away your email address to anyone, who is not
-related to the operations of pear.php.net. We will also <b>never</b>
+related to the operations of pecl.php.net. We will also <b>never</b>
 ask you to send us any of your passwords via email.</p>
 
 <h2>Logfiles</h2>
@@ -35,7 +35,7 @@ but we do only use those files for statistical purposes.</p>
 
 <h2>Cookies</h2>
 
-<p>Pear.php.net uses cookies to keep track of user sessions. Unless
+<p>Pecl.php.net uses cookies to keep track of user sessions. Unless
 you login on the site, the cookies will not be used to store personal
 information and we do not give away the information from the cookies.</p>
 

@@ -137,7 +137,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
     
     $bb = new Borderbox("General statistics");
     echo "Number of releases: <b>" . count($info['releases']) . "</b><br />\n";
-    echo "Total downloads: <b>" . statistics::package($_GET['pid']) . "</b><br />\n";
+    echo "Total downloads: <b>" . number_format(::package($_GET['pid']), 0, '.', ',') . "</b><br />\n";
     $bb->end();
     
     if (count($info['releases']) > 0) {
@@ -149,7 +149,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
         $i= 0;
         foreach ($release_statistics as $key => $value) {
             $bb2 = new Borderbox("Release: " . $value['version'], 400);
-            echo "Number of downloads: <b>" . $value['total'] . "</b><br />\n";
+            echo "Number of downloads: <b>" . number_format($value['total'], 0, '.', ',') . "</b><br />\n";
     
             if ($value['total'] > 1) {
                 echo "First download: <b>" . $value['first_download'] . "</b><br />\n";

@@ -75,8 +75,8 @@ function show_news($lang,$date) {
     $end =  mktime (0,0,0,substr($date,4,2)  ,substr($date,6,2),substr($date,0,4));
     $start =  mktime(0,0,0,date("m",$end)  ,date("d",$end)-7,date("Y",$end));
     
-    response_header("PEAR Weekly News - ". $week->format("%d %B %Y") );
-    echo "<H1>PEAR Weekly News for week ending " . $week->format("%d %B %Y") . "</H1>";
+    response_header("PEAR Weekly News - ". date("d M Y", $end) );
+    echo "<H1>PEAR Weekly News for week ending " . date("d M Y", $end) . "</H1>";
     
     
     $summary = implode('',file(dirname(__FILE__) . "/../weeklynews/$date.{$lang}.html"));

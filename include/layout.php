@@ -180,7 +180,7 @@ function commonHeader($title) {
         vlink="#003300"
 ><a name="TOP" />
 <table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
-  <tr bgcolor="#009933">
+  <tr bgcolor="#339900">
     <td align="left" rowspan="2" width="120">
 <?php print_link('/', make_image('pearsmall.gif', 'PEAR', false, 'vspace="2" hspace="2"') ); ?><br />
     </td>
@@ -196,7 +196,7 @@ function commonHeader($title) {
     </td>
   </tr>
 
-  <tr bgcolor="#009933">
+  <tr bgcolor="#339900">
     <td align="right" valign="bottom">
       <?php
 
@@ -221,7 +221,7 @@ function commonHeader($title) {
 
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 
-  <tr bgcolor="#006633">
+  <tr bgcolor="#006600">
     <td align="right" valign="top" colspan="2">
     <form method="post" action="/search.php">
     <font color="#ffffff"><small>search for</small>
@@ -283,7 +283,7 @@ function commonFooter() {
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="#003300"><td><?php spacer(1,1);?><br /></td></tr>
-  <tr bgcolor="#009933">
+  <tr bgcolor="#339900">
       <td align="right" valign="bottom">
 <?php
 print_link('/source.php?url='.$SCRIPT_NAME, 'SHOW SOURCE', false, 'class="menuBlack"');

@@ -90,8 +90,6 @@
 	    $bplots[$rid]->SetFillGradient("white", $colour, GRAD_HOR);
 	    //$bplot->setFillColor("#339900");
 	    $bplots[$rid]->SetColor("black");
-	    $bplots[$rid]->SetValueFormat("%d");
-        $bplots[$rid]->ShowValue();`
 	}
 
     $x_axis = array_reverse(array_values($x_axis));

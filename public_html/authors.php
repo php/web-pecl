@@ -26,9 +26,9 @@ if (preg_match('/^[a-z]$/i', @$letter)) {
 if (empty($show)) {
 	$show = $page_size;
 } else {
-	settype($show, "int");
+	settype($show, "integer");
 }
-settype($offset, "int");
+settype($offset, "integer");
 
 $nauthors = $dbh->getOne("SELECT COUNT(handle) FROM users ".
 						 "WHERE registered = 1");

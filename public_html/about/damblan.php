@@ -31,8 +31,8 @@ don&apos;t. For now.</p>
 but with an additional &quot;m&quot;. Please do not ask for the reason.</p>
 
 <p>Currently the feature set of Damblan is quite limited, but we are
-working towards integrating RSS support, caching, parsing and sending
-emails and other great stuff. At a certain point there may be even the
+working towards integrating caching, parsing and sending emails and 
+other great stuff. At a certain point there may be even the
 possibility to download and install Damblan as a PEAR package.</p>
 
 <p>If you have questions or comments about Damblan, get in touch with

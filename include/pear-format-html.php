@@ -9,11 +9,11 @@ $GLOBALS['main_menu'] = array(
     '/manual/index.php'    => 'Documentation',
     '/faq.php'             => 'PEAR FAQ',
     '/packages.php'        => 'Package Browser',
-    '/accounts.php'        => 'Account Browser',
     '/account-request.php' => 'Request Account'
 );
 
 $GLOBALS['user_menu'] = array(
+    '/accounts.php'        => 'Account Browser',
     '/package-new.php'     => 'New Package',
     '/release-upload.php'  => 'Upload Release'
 );

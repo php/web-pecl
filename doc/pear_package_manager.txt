@@ -27,11 +27,14 @@ according to requirements. Every package is maintained by its own
 development team and has its own release cycles - independent from
 the PEAR base installation.
 
-Presently the PEAR Package Manager can install packages, create them, manage a registry of installed packages, check dependencies, interact with a xml-rpc service and a bounch of other things.
+Presently the PEAR Package Manager can install packages, create them,
+manage a registry of installed packages, check dependencies, interact
+with a xml-rpc service and a bounch of other things.
 
 Since at the time of writing most parts of PEAR are still in
 development stage we will extensively cover the installation of the
-Package Manager from CVS. The PEAR Package Manager is included with the main PHP distribution.
+Package Manager from CVS. The PEAR Package Manager is included with
+the main PHP distribution.
 
 
 ================================================================
@@ -137,14 +140,14 @@ Example:
 
 
 To enhance team work of developers, PEAR provides them with a pear/
-directory in the CVS module at cvs.php.net. But the directory 
+directory in the CVS module at cvs.php.net. But the directory
 structure there differs from that of the later PEAR installation.
 
-To ensure scalability in terms of the number of developers, every 
+To ensure scalability in terms of the number of developers, every
 PEAR sub-project has its own directory. For example a 'Net' project,
 that should supply all classes for networking you can think of, would
 probably become to big for a small group of developers which only may
-want to contribute a Whois package. 
+want to contribute a Whois package.
 
 Therefore all sub-projects for "Net" are located directly under
 pear/. For Whois this would be Net_Whois. That way the package
@@ -174,23 +177,46 @@ The according package.xml would look like this:
 
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package>
+
+<!-- Package description -->
+
 	<name>Net_Whois</name>
-	<summary> The PEAR::Net_Whois class
+	<summary>A tool for querying Whois Servers</summary>
+    <description>
+    The PEAR::Net_Whois class
 	provides a tool for querying Whois Servers
-	</summary>
+    </description>
+
+<!-- Authors -->
+
 	<maintainers>
 		<maintainer>
-			<user>SN</user>
+			<user>SN</user> <!-- php cvs user -->
 			<name>Sebastian Nohn</name>
 			<email>sebastian@nohn.net</email>
+            <role>lead</role> <!-- 'lead','developer','contributor','helper' -->
 		</maintainer>
 	</maintainers>
-	<release>
+
+<!-- Current release -->
+
+    <release>
+
+        <!-- Release details -->
+
 		<version>0.1</version>
+        <state>beta</state>   <!-- 'alpha','beta','stable','snapshot' -->
 		<date>2001-08-22</date>
 		<notes> This is the initial independent release of
 		the Net_Whois package.
 		</notes>
+
+        <!-- Dependencies -->
+
+        <deps></deps> <!-- see point 5. -->
+
+        <!-- Files -->
+
 		<filelist>
 			<dir name="/" BaseInstallDir="Net">
 				<file role="php">Whois.php</file>
@@ -223,7 +249,7 @@ path.
 Whois.php is "php". It must be one of "php" for source files, "docs"
 for documentation or "test" for test files. Test files will not be
 installed. Since this tag is contained inside the previous <Dir ..>
-tag, Whois.php will be installed to PATH_TO_PEAR/Net. 
+tag, Whois.php will be installed to PATH_TO_PEAR/Net.
 
 A subdir is specified with <dir name="docs" role="docs">. A directory
 also has one of the mentioned types. In this case it will be of type

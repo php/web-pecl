@@ -59,7 +59,7 @@ foreach ($releases as $release) {
     echo "  <item>\n";
     echo "    <title>" . $release['name'] . " " . $release['version'] . "</title>\n";
     echo "    <pubDate>" . $release['releasedate'] . "</pubDate>\n";
-    printf("    <link>http://pear.php.net/package-info.php?pacid=%s&amp;release=%s</link>\n",
+    printf("    <link>http://pear.php.net/package-info.php?pacid=%s&amp;version=%s</link>\n",
            $release['id'],
            $release['version']
           );

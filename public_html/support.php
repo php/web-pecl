@@ -234,6 +234,42 @@ Eris Free Net</a>.
     <li><a href="http://www.onlamp.com/pub/a/php/2001/05/24/pear.html">An Introduction to PEAR</a> on O'Reilly Network</li>
 </ul>
 
+<h2>Powered By PEAR/PECL</h2>
+
+<p>
+	What programming tool would be complete without a set of 
+	icons to put on your webpage, telling the world what makes
+	your site tick?
+</p>
+
+<?
+$icons = Array(
+	'pear-power.gif'	=> 'Powered by PEAR, GIF format',
+	'pear-power.png'	=> 'Powered by PEAR, PNG format',
+	'pecl-power.gif'	=> 'Powered by PECL, GIF format',
+	'pecl-power.png'	=> 'Powered by PECL, PNG format',
+);
+
+echo '<table cellpadding="5" cellspacing="1">';
+
+foreach ($icons as $file=>$desc) {
+	echo '<tr bgcolor="e0e0e0">';
+	echo '<td>' . makeImage($file,$desc) . '<br></td>';
+	echo '<td>' . $desc . '<br><small>';
+	$size = @getimagesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
+	if ($size) {
+		echo $size[0] . ' x ' . $size[1] . ' pixels<br>'
+	}
+	$size = @filesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
+	if ($size) {
+		echo $size . ' bytes<br>'
+	}
+	echo '</small>';
+	echo '</td></tr>';
+}
+
+echo '</table>';
+
 <?php
 }
 response_footer();

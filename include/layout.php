@@ -170,8 +170,9 @@ function commonHeader($title) {
 </head>
 
 <body
-    topmargin="0" leftmargin="0"
-    marginheight="0" marginwidth="0"
+	topmargin="0" leftmargin="0"
+	marginheight="0" marginwidth="0"
+        background="/gifs/beta_bg.gif"
         bgcolor="#ffffff"
         text="#000000"
         link="#003300"

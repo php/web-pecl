@@ -92,7 +92,7 @@ $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 // 1) Show categories of this level
 
-$sth     = $dbh->query("SELECT * from categories WHERE parent $category_where ORDER BY name");
+$sth     = $dbh->query("SELECT c.*, COUNT(p.id) AS npackages FROM categories c LEFT JOIN packages p ON p.category = c.id WHERE p.package_type = 'pecl' AND c.parent $category_where GROUP BY c.id ORDER BY name");
 $table   = new HTML_Table('border="0" cellpadding="6" cellspacing="2" width="100%"');
 $nrow    = 0;
 $catdata = array();

@@ -1,0 +1,53 @@
+<?php
+// manage categories
+
+auth_require(true);
+response_header("PEAR :: Packages");
+include_once 'pear-category.php';
+include_once 'pear-database.php';
+
+// expected url vars: catid (category id)
+$catid = (isset($catid)) ? (int) $catid : null;
+// ** expected
+
+if (empty($catid)) {
+    $name   = 'Top Level';
+    $parent = 0;
+    $category_title = "Package Browser: Top Level Categories";
+} else {
+    if (isset($insert)) {
+        $data = array(
+            'name'   => $catname,
+            'desc'   => $catdesc,
+            'parent' => $catid);
+        add_category($data);
+    }
+    // XXXX TODO extract the full category path with visitations
+    $row = $dbh->getRow("SELECT name, parent FROM categories
+                         WHERE id = $catid", DB_FETCHMODE_ASSOC);
+    extract($row);
+}
+?>
+<table border="0" cellpadding="2" cellspacing="1" width="100%">
+<tr>
+    <td rowspan="3" width="30%"><?php print cat_selector();?></td>
+    <td><h3>You are browsing category: <?php print $name;?></h3></td>
+</tr>
+</tr>
+    <td><b>Insert a new sub-category in: <?php print $name; ?></b><br/><br/>
+    <form action="<?php echo $GLOBALS['PHP_SELF'] . "?catid=$catid&insert=1"; ?>" method="post">
+    Name: <input type="text" name="catname" size="20"><br>
+    Summary: <input type="text" name="catdesc" size="30">
+    <input type="submit" name="action" value="Insert">
+    </form>
+    <p>
+    </p>
+    </td>
+</tr>
+</tr>
+    <td><b>Delete</b></td>
+</tr>
+</table>
+<?php
+response_footer();
+?>

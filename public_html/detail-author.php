@@ -48,7 +48,7 @@ print " </TR>\n";
 
 print " <TR>\n";
 print "  <TH BGCOLOR=\"#CCCCCC\">Additional information:</TH>\n";
-print "  <TD BGCOLOR=\"#e8e8e8\">".$row['userinfo']."</TD>\n";
+print "  <TD BGCOLOR=\"#e8e8e8\">".$row['userinfo']."&nbsp;</TD>\n";
 print " </TR>\n";
 
 if ($row['admin'] == 1) {

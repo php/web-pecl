@@ -34,6 +34,10 @@ class Damblan_RSS_Category extends Damblan_RSS_Common {
     function Damblan_RSS_Category($value) {
         parent::Damblan_RSS_Common();
 
+        if (category::isValid($value) == false) {
+            return PEAR::raiseError("The requested URL " . $_SERVER['REQUEST_URI'] . " was not found on this server.");
+        }
+
         $this->setTitle("PEAR: Latest releases in category " . $value);
         $this->setDescription("The latest releases in the category " . $value);
 

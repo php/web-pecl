@@ -34,6 +34,10 @@ class Damblan_RSS_Package extends Damblan_RSS_Common {
     function Damblan_RSS_Package($value) {
         parent::Damblan_RSS_Common();
 
+        if (package::isValid($value) == false) {
+            return PEAR::raiseError("The requested URL " . $_SERVER['REQUEST_URI'] . " was not found on this server.");
+        }
+
         $this->setTitle("Latest releases");
         $this->setDescription("The latest releases for the package " . $value);
 

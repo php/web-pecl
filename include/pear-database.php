@@ -212,6 +212,30 @@ class package
     }
 
     // }}}
+    // {{{ +proto int package::_getID(string|int)
+
+    function _getID($package)
+    {
+        global $dbh;
+        // verify that package exists
+        if (preg_match('/^\d+$/', $package)) {
+            $package_id = $package;
+            $error = $dbh->getOne("SELECT name FROM packages ".
+                                    "WHERE id = ?", array($package));
+            if (PEAR::isError($error)) {
+                return $error;
+            }
+        } else {
+            $package_id = $dbh->getOne("SELECT id FROM packages ".
+                                       "WHERE name = ?", array($package));
+        }
+        if (empty($package_id)) {
+            return PEAR::raiseError("no such package: $package");
+        }
+        return $package_id;
+    }
+
+    // }}}
     // {{{ *proto struct package::info(string|int)
 
     function info($pkg)
@@ -318,24 +342,10 @@ class release
     function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
         global $dbh, $auth_user, $PHP_AUTH_USER;
-
-		// (2) verify that package exists
-		if (preg_match('/^\d+$/', $package)) {
-			$package_id = $package;
-			$package = $dbh->getOne("SELECT name FROM packages ".
-									"WHERE id = ?", array($package));
-			if (PEAR::isError($package)) {
-				return $package;
-			}
-		} else {
-			$package_id = $dbh->getOne("SELECT id FROM packages ".
-									   "WHERE name = ?", array($package));
-		}
+        // (2) verify that package exists
+        $package_id = package::_getID($package);
 		if (PEAR::isError($package_id)) {
-			return $package_id;
-		}
-        if (empty($package_id)) {
-            return PEAR::raiseError("no such package: $package");
+            return $package_id;
         }
 
         // (3) verify that version does not exist
@@ -396,6 +406,46 @@ class release
     }
 
     // }}}
+
+    function HTTPdownload($package, $version = null)
+    {
+        global $dbh;
+        $package_id = package::_getID($package);
+        if (PEAR::isError($package_id)) {
+            return $package_id;
+        }
+        // We want the lastest version
+        if ($version == null) {
+            $sql = "SELECT f.fullpath FROM releases r, files f
+                    WHERE r.package = $package_id
+                    AND r.package = f.package
+                    AND r.id = f.release
+                    ORDER BY r.releasedate DESC";
+            // XXX Fixme when Pear DB supports "limitGetOne()"
+            $res = $dbh->limitQuery($sql, 0, 1);
+            if (PEAR::isError($res)) {
+                return $res;
+            }
+            $path = $res->fetchRow(DB_FETCHMODE_ORDERED);
+        // specific version
+        } else {
+            $sql = "SELECT f.fullpath FROM releases r, files f
+                    WHERE r.package = $package_id
+                    AND r.package = f.package
+                    AND r.id = f.release
+                    AND r.version = ?";
+            $path = $db->getOne($sql, array($version));
+        }
+        if (PEAR::isError($path)) {
+            return $path;
+        }
+        if (empty($path) || !@is_file($path)) {
+            return PEAR::raiseError("release download:: no version information found");
+        }
+        header('Content-type: application/octet-stream');
+        header('Content-disposition: attachment; filename="'. basename($path) .'"');
+        readfile($path);
+    }
 }
 
 class note

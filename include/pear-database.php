@@ -1358,6 +1358,7 @@ class release
             if (PEAR::isError($row)) {
                 return $row;
             }
+
             list($path, $basename, $log_file) = $row;
             if (empty($path) || !@is_file($path)) {
                 return PEAR::raiseError("release download:: no version information found");
@@ -1472,9 +1473,6 @@ class release
      */
     function promote($pkginfo, $upload)
     {
-        if ($_SERVER['SERVER_NAME'] != 'pear.php.net') {
-            return;
-        }
         $pacid   = package::info($pkginfo['package'], 'packageid');
         $authors = package::info($pkginfo['package'], 'authors');
         $txt_authors = '';
@@ -1488,7 +1486,7 @@ class release
         $upload = basename($upload);
         $release = "{$pkginfo['package']}-{$pkginfo['version']} ({$pkginfo['release_state']})";
         $txtanounce =<<<END
-The new PEAR package $release has been released at http://pear.php.net/.
+The new PEAR package $release has been released at http://pecl.php.net/.
 
 Release notes
 -------------
@@ -1500,16 +1498,16 @@ Package Info
 
 Related Links
 -------------
-Package home: http://pear.php.net/package/$pkginfo[package]
-   Changelog: http://pear.php.net/package-changelog.php?package=$pkginfo[package]
-    Download: http://pear.php.net/get/$upload
+Package home: http://pecl.php.net/package/$pkginfo[package]
+   Changelog: http://pecl.php.net/package-changelog.php?package=$pkginfo[package]
+    Download: http://pecl.php.net/get/$upload
 
 Authors
 -------------
 $txt_authors
 END;
-        $to   = '"PEAR general list" <pear-general@lists.php.net>';
-        $from = '"PEAR Announce" <pear-dev@lists.php.net>';
+        $to   = '"PECL developers list" <pecl-dev@lists.php.net>';
+        $from = '"PECL Announce" <pecl-dev@lists.php.net>';
         $subject = "[ANNOUNCEMENT] $release Released.";
         mail($to, $subject, $txtanounce, "From: $from", "-f pear-sys@php.net");
     }

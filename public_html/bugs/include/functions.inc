@@ -483,7 +483,9 @@ function show_types($current, $show_any, $default = '')
         $bug_items['PEPr']          = '&nbsp;&nbsp;&nbsp;PEPr';
         $bug_items['Documentation'] = 'Documentation';
 
-        $sql = "SELECT name FROM packages WHERE package_type = '$site'";
+        $sql = "
+            SELECT name FROM packages
+            WHERE package_type = '$site' ORDER BY name";
         $list = $dbh->getCol($sql);
         foreach ($list as $name) {
             $bug_items[$name] = $name;

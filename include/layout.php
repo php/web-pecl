@@ -213,28 +213,17 @@ function commonHeader($title) {
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 
   <tr bgcolor="#006633">
-      <td align="right" valign="top" colspan="2">&nbsp;
-<?php /*
-        <form method="POST" action="/search.php">
-        <font color="#ffffff">
-        <small>search for</small>
-<input class="small" type="text" name="pattern" value="<? echo htmlspecialchars($GLOBALS['prevsearch']) ?>" size="30" />
-<small>in the</small>
-<select name="show" class="small">
-<option value="packages" selected>packages</option>
-<option value="nosource">whole site</option>
-<option value="manual">online documentation</option>
-<option value="bugdb">bug database</option>
-<option value="maillist">general mailing list</option>
-<option value="devlist">developer mailing list</option>
-<option value="source">website source code    </option>
-</select>
-<?	echo make_submit('small_submit_white.gif', 'search', 'bottom');
-      ?>&nbsp;<br />
-     </font></form>
-*/ ?>
-     </td>
-  </tr>
+    <td align="right" valign="top" colspan="2">
+    <form method="POST" action="/search.php">
+    <font color="#ffffff"><small>search for</small>
+    <input class="small" type="text" name="search_string" value="" size="20" />
+    <small>in the</small>
+    <select name="search_in" class="small">
+    <option value="pear-dev">Developer mailing list</option>
+    <option value="pear-general">General mailing list</option>
+    <option value="pear-cvs">CVS commits mailing list</option>
+    </select>
+    <?php echo make_submit('small_submit_white.gif', 'search', 'bottom'); ?></font>&nbsp;<br /></form></td></tr>
 
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br /></td></tr>
 </table>

@@ -164,7 +164,7 @@ while ($cat_row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
     $rows[$cat_row['id']] = $cat_row['name'];
 }
 
-$form->displaySelect("category", $rows, $row['category']);
+$form->displaySelect("category", $rows, $row['categoryid']);
 ?>
     </td>
 </tr>

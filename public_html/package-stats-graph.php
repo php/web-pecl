@@ -90,6 +90,7 @@
 	    $bplots[$rid]->SetFillGradient("white", $colour, GRAD_HOR);
 	    //$bplot->setFillColor("#339900");
 	    $bplots[$rid]->SetColor("black");
+	$bplots[$rid]->value->setFormat('%d'); 
         $bplots[$rid]->value->Show();
 	}
 

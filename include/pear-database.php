@@ -232,6 +232,7 @@ class package
     function info($pkg, $field = null)
     {
         global $dbh;
+        
         if ($pkg === (string)((int)$pkg)) {
             $what = "id";
         } else {
@@ -321,6 +322,7 @@ class package
     function listAll($released_only = true)
     {
         global $dbh;
+
         $packageinfo = $dbh->getAssoc(
             "SELECT p.name, p.id AS packageid, ".
             "c.id AS categoryid, c.name AS category, ".
@@ -334,15 +336,17 @@ class package
             "  AND m.role = 'lead' ".
             "ORDER BY p.name", false, null, DB_FETCHMODE_ASSOC);
         $stablereleases = $dbh->getAssoc(
-            "SELECT p.name, r.id as rid, r.version AS stable ".
+            "SELECT p.name, r.id AS rid, r.version AS stable, r.state AS state ".
             "FROM packages p, releases r ".
-            "WHERE p.id = r.package AND r.state = 'stable' ".
+            "WHERE p.id = r.package".
+            ($released_only ? " AND r.state = 'stable' " : "").
             "ORDER BY r.releasedate DESC ", false, null, DB_FETCHMODE_ASSOC);
         $deps = $dbh->getAll(
             "SELECT package, release , type, relation, version, name ".
             "FROM deps", null, DB_FETCHMODE_ASSOC);
         foreach ($stablereleases as $pkg => $stable) {
             $packageinfo[$pkg]['stable'] = $stable['stable'];
+            $packageinfo[$pkg]['state']  = $stable['state'];
         }
         foreach(array_keys($packageinfo) as $pkg) {
             $_deps = array();
@@ -748,6 +752,7 @@ class release
         }
 
         $info = array("package_id" => $package_id,
+                      "package" => $package,
                       "version" => $version,
                       "state" => $state,
                       "relnotes" => $relnotes,
@@ -804,6 +809,12 @@ class release
             @unlink($file);
             return $ok;
         }
+        
+        // Update Cache
+        XMLRPC_Cache::remove('package.listAll', array(false));
+        XMLRPC_Cache::remove('package.listAll', array(true));
+        XMLRPC_Cache::remove('package.info', array($package, null));
+        
         return $file;
     }
 

@@ -24,10 +24,57 @@ if (!isset($HTTP_RAW_POST_DATA)) {
 set_error_handler("xmlrpc_error_handler");
 
 require_once "xmlrpc-methods.php";
+require_once "xmlrpc-cache.php";
+
 $xs = xmlrpc_server_create();
 pear_register_xmlrpc_methods($xs);
+
+
+$method   = "";
+$response = false;
+$params   = xmlrpc_decode_request($HTTP_RAW_POST_DATA, &$method);
+
+// Read cache
+if (isset($_GET['maxAge']) && ((int)$_GET['maxAge']) > 0) {
+    $maxAge = $_GET['maxAge'];
+} else {
+    $maxAge = null;
+};
+
+if ($method == "package.listAll")
+{
+    $response = XMLRPC_Cache::get($method, $params, $maxAge);
+};
+if ($method == "package.info" && $params[1] === null)
+{
+    $response = XMLRPC_Cache::get($method, $params, $maxAge);
+};
+
+if ($response !== false) {
+    if (strlen($response) > 0) {
+        $response .= '<!-- Used Cache -->';
+        header('Content-type: text/xml');
+        header('Content-length: '.strlen($response));
+        print $response;
+    } else {
+        header('HTTP/1.0 304 Not Modified');
+    };
+    exit;
+};
+
 $response = xmlrpc_server_call_method($xs, $HTTP_RAW_POST_DATA, null,
                                       array('output_type' => 'xml'));
+
+// Save cache
+if ($method == "package.listAll")
+{
+    XMLRPC_Cache::save($method, $params, $response);
+};
+if ($method == "package.info" && $params[1] === null)
+{
+    XMLRPC_Cache::save($method, $params, $response);
+};
+
 header('Content-type: text/xml');
 header('Content-length: '.strlen($response));
 print $response;

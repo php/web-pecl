@@ -1,12 +1,19 @@
 <?php
+
 ini_set('y2k_compliance', 'on');
-if ($HTTP_SERVER_VARS['QUERY_STRING'] == 'devme') {
+if ($_SERVER['QUERY_STRING'] == 'devme') {
     $duration = 86400 * 360;
     setcookie('pear_dev', 'on', time() + $duration, '/');
-    $HTTP_COOKIE_VARS['pear_dev'] = 'on';
-} elseif ($HTTP_SERVER_VARS['QUERY_STRING'] == 'undevme') {
+    $_COOKIE['pear_dev'] = 'on';
+} elseif ($_SERVER['QUERY_STRING'] == 'undevme') {
     setcookie('pear_dev', '', time() - 3600, '/');
-    unset($HTTP_COOKIE_VARS['pear_dev']);
+    unset($_COOKIE['pear_dev']);
+}
+if (!empty($_GET['logout'])) {
+    setcookie('PEAR_USER', '', 0, '/');
+    setcookie('PEAR_PW', '', 0, '/');
+    unset($_COOKIE['PEAR_USER']);
+    unset($_COOKIE['PEAR_PW']);
 }
 
 
@@ -37,20 +44,25 @@ if (DEVBOX) {
     menu_link("Browse Packages", "packages.php");
     menu_link("Request PEAR Account", "account-request.php");
     echo hdelim();
-    echo "<h3>The following operations require a valid PEAR account:</h3>";
+    echo "<h3>Available when logged in:</h3>";
     menu_link("New Package", "package-new.php");
     menu_link("Upload Release", "release-upload.php");
     menu_link("Administrators", "admin.php");
     $recent = release::getRecent();
     if (@sizeof($recent) > 0) {
-        
         $RSIDEBAR_DATA = "<h3>Recent Releases</h3>\n";
         $RSIDEBAR_DATA .= "<table>";
         foreach ($recent as $release) {
             extract($release);
-            $RSIDEBAR_DATA .= "<tr><td valign='top'><p>";
+            $releasedate = substr($releasedate, 0, 10);
+            $desc = substr($releasenotes, 0, 40);
+            if (strlen($releasenotes) > 40) {
+                $desc .= '...';
+            }
+            $RSIDEBAR_DATA .= "<tr><td valign='top' class='compact'>";
             $RSIDEBAR_DATA .= "<a href=\"package-info.php?pacid=$id&release=$version\">";
-            $RSIDEBAR_DATA .= "$name $version</a><br /><small>($releasedate)</small></p></td></tr>";
+//            $RSIDEBAR_DATA .= "$name $version</a><br /><font size=\"-1\" face=\"arial narrow,arial,helvetica,sans-serif\"><i>$releasedate:</i>$desc</font></td></tr>";
+            $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i>$desc</td></tr>";
         }
         $RSIDEBAR_DATA .= "</table>\n";
     }

@@ -153,11 +153,7 @@ class category
         $sql = 'INSERT INTO categories (id, name, description, parent)'.
              'VALUES (?, ?, ?, ?)';
         $id  = $dbh->nextId('categories');
-        $sth = $dbh->prepare($sql);
-        if (DB::isError($sth)) {
-            return $sth;
-        }
-        $err = $dbh->execute($sth, array($id, $name, $desc, $parent));
+        $err = $dbh->query($sql, array($id, $name, $desc, $parent));
         if (DB::isError($err)) {
             return $err;
         }
@@ -208,10 +204,7 @@ class package
         }
         $query = "INSERT INTO packages (id,name,category,license,summary,description) VALUES(?,?,?,?,?,?)";
         $id = $dbh->nextId("packages");
-        if (DB::isError($sth = $dbh->prepare($query))) {
-            return $sth;
-        }
-        $err = $dbh->execute($sth, array($id, $name, $category, $license, $summary, $description));
+        $err = $dbh->query($query, array($id, $name, $category, $license, $summary, $description));
         if (DB::isError($err)) {
             return $err;
         }
@@ -485,20 +478,22 @@ class package
 
 class maintainer
 {
-    // {{{ +proto int    maintainer::add(int, string, string)
+    // {{{ +proto int    maintainer::add(int|string, string, string)
 
     function add($package, $user, $role)
     {
-        global $dbh;
+        global $dbh, $auth_user;
+        if (empty($auth_user->admin) && !user::maintains($auth_user->handle, $pkgid, 'lead')) {
+            return PEAR::raiseError('maintainer::add: insufficient privileges');
+        }
         if (!user::exists($user)) {
             return PEAR::raiseError("User $user does not exist");
         }
-        $query = "INSERT INTO maintains VALUES(?,?,?)";
-        $sth = $dbh->prepare($query);
-        if (DB::isError($sth)) {
-            return $sth;
+        if (is_string($package)) {
+            $package = package::info($package, 'id');
         }
-        $err = $dbh->execute($sth, array($user, $package, $role));
+        $err = $dbh->query("INSERT INTO maintains VALUES(?,?,?)",
+                           array($user, $package, $role));
         if (DB::isError($err)) {
             return $err;
         }
@@ -506,23 +501,29 @@ class maintainer
     }
 
     // }}}
-    // {{{  proto int    maintainer::get(int, bool)
+    // {{{  proto struct maintainer::get(int|string, [bool])
 
     function get($package, $lead = false)
     {
         global $dbh;
-        $query = "SELECT handle FROM maintains WHERE package = '" . $package . "'";
+        if (is_string($package)) {
+            $package = package::info($package, 'id');
+        }
+        $query = "SELECT handle, role FROM maintains WHERE package = '" . $package . "'";
         if ($lead) {
             $query .= " AND role = 'lead'";
         }
-        $sth = $dbh->query($query);
-        if (DB::isError($sth)) {
-            return $sth;
-        }
-        while ($row = $sth->fetchRow()) {
-            $rows[] = $row[0];
-        }
-        return $rows;
+        return $dbh->getAssoc($query);
+    }
+
+    // }}}
+    // {{{  proto struct maintainer::getByUser(string)
+
+    function getByUser($user)
+    {
+        global $dbh;
+        $query = 'SELECT p.name, m.role FROM packages p, maintains m WHERE m.package = p.id AND m.handle = ?';
+        return $dbh->getAssoc($query, false, array($user));
     }
 
     // }}}
@@ -538,13 +539,19 @@ class maintainer
     }
 
     // }}}
-    // {{{ NOEXPORT      maintainer::drop(int, string)
+    // {{{ +proto bool   maintainer::remove(int|string, string)
 
-    function drop($pkgid, $user)
+    function remove($package, $user)
     {
-        global $dbh;
+        global $dbh, $auth_user;
+        if (empty($auth_user->admin) && !user::maintains($auth_user->handle, $package, 'lead')) {
+            return PEAR::raiseError('maintainer::drop: insufficient privileges');
+        }
+        if (is_string($package)) {
+            $package = package::info($package, 'id');
+        }
         $sql = "DELETE FROM maintains WHERE package = ? AND handle = ?";
-        return $dbh->query($sql, array($pkgid, $user));
+        return $dbh->query($sql, array($package, $user));
     }
 
     // }}}
@@ -1156,6 +1163,24 @@ class user
         }
         return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? AND package = ? '.
                             'AND role = ?', array($user, $package_id, $role));
+    }
+
+    // }}}
+    // {{{  proto string user::info(string, [string])
+
+    function info($user, $field = null)
+    {
+        global $dbh;
+        if ($field === null) {
+            return $dbh->getRow('SELECT * FROM users WHERE handle = ?',
+                                array($user), DB_FETCHMODE_ASSOC);
+        }
+        if (preg_match('/[^a-z]/', $user)) {
+            return null;
+        }
+        return $dbh->getRow('SELECT ! FROM users WHERE handle = ?',
+                            array($field, $user), DB_FETCHMODE_ASSOC);
+        
     }
 
     // }}}

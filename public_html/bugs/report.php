@@ -91,7 +91,7 @@ you can scroll down and click the submit button to really enter the details into
 						$summary = htmlspecialchars($summary);
 					}
 
-					$bug_url = "/bug.php?id=$row[id]&edit=2";
+					$bug_url = "/bugs/bug.php?id=$row[id]&edit=2";
 
 					echo "<tr><td colspan=\"2\"><a href=\"$bug_url\">Bug #" . $row['id'] . ": " . $row['sdesc'] . "</a></td></tr>";
 					echo "<tr><td>" . $summary . "</td>";
@@ -144,16 +144,18 @@ you can scroll down and click the submit button to really enter the details into
 			$sdesc = stripslashes($in['sdesc']);
 
 			$ascii_report = "$report$sdesc\n\n".wordwrap($fdesc);
-			$ascii_report.= "\n-- \nEdit bug report at http://bugs.php.net/?id=$cid&edit=";
+			$ascii_report.= "\n-- \nEdit bug report at http://pear.php.net/bugs/bug.php?id=$cid&edit=";
 
 			//list($mailto,$mailfrom) = get_bugtype_mail($in['bug_type']);
             list($developers, $mailfrom) = get_bugtype_mail($in['bug_type']);
+
 
 			$email = stripslashes($in['email']);
 			$protected_email = '"'.spam_protect($email)."\" <$mailfrom>";
 
 			// provide shortcut URLS for "quick bug fixes"
 			$dev_extra = "";
+            /*
 			$maxkeysize = 0;
 			foreach ($RESOLVE_REASONS as $v) {
 				if (!$v['webonly']) {
@@ -166,6 +168,7 @@ you can scroll down and click the submit button to really enter the details into
 					$dev_extra .= str_pad($v['desc'] . ":", $maxkeysize) .
 						" http://bugs.php.net/fix.php?id=$cid&r=$k\n";
 			}
+            */
 
 			// Set extra-headers
 			$extra_headers = "From: $protected_email\n";
@@ -178,10 +181,10 @@ you can scroll down and click the submit button to really enter the details into
 
             // mail to package developers
             foreach ($developers as $mailto) {
-                //mailno($mailto, "#$cid [NEW]: $sdesc", $ascii_report."1\n-- \n$dev_extra", $extra_headers);
+                mail($mailto, "#$cid [NEW]: $sdesc", $ascii_report."1\n-- \n$dev_extra", $extra_headers);
             }
             // mail to reporter
-            //mailno($email, "Bug #$cid: $sdesc", $ascii_report."2\n", "From: PHP Bug Database <$mailfrom>\nX-PHP-Bug: $cid\nMessage-ID: <bug-$cid@bugs.php.net>");
+            mail($email, "Bug #$cid: $sdesc", $ascii_report."2\n", "From: PHP Bug Database <$mailfrom>\nX-PHP-Bug: $cid\nMessage-ID: <bug-$cid@bugs.php.net>");
             header("Location: bug.php?id=$cid&thanks=4");
             exit;
         }
@@ -192,28 +195,28 @@ you can scroll down and click the submit button to really enter the details into
 
 if (!isset($in)) {
     commonHeader("Report - New");
+    show_bugs_menu($package);
 ?>
 
-<p>Before you report a bug, make sure to search for similar bugs using the form
-at the top of the page or our <a href="search.php">advanced search page</a>.<br />
-Also, read the instructions for <a href="how-to-report.php">how to report a bug
+<p>Before you report a bug, make sure to search for similar bugs using the
+"Bug List" link. Also, read the instructions for <a target="top" href="http://bugs.php.net/how-to-report.php">how to report a bug
 that someone will want to help fix</a>.</p>
 
 <p>If you aren't sure that what you're about to report is a bug, you should ask for help using one of the means for support
-<a href="http://www.php.net/support.php">listed here</a>.</p>
+<a href="/support.php">listed here</a>.</p>
 
 <p><strong>Failure to follow these instructions may result in your bug
 simply being marked as "bogus".</strong></p>
 
 <p><strong>If you feel this bug concerns a security issue, eg a buffer overflow, weak encryption, etc, then email
-<a href="mailto:security@php.net?subject=possible new bug!">security@php.net</a> who will assess the situation. </strong></p>
+<a href="mailto:pear-group@php.net?subject=%5BSECURITY%5D+possible+new+bug%21">pear-group@php.net</a> who will assess the situation. </strong></p>
 
 <?php
 }
 
 if ($errors) display_errors($errors);
 ?>
-<form method="post" action="<?php echo $PHP_SELF;?>">
+<form method="post" action="<?php echo "$PHP_SELF?package=$package";?>">
 <input type="hidden" name="in[did_luser_search]" value="<?php echo $in['did_luser_search'] ? 1 : 0; ?>" />
 <table>
  <tr>
@@ -229,7 +232,9 @@ if ($errors) display_errors($errors);
  </tr><tr>
   <th align="right">Package affected:</th>
   <td colspan="2">
-    <select name="in[bug_type]"><?php show_types($in['bug_type'],0,$package);?></select>
+    <input type="hidden" name="in[bug_type]" value="<?php echo $package;?>">
+    <?php echo $package;?>
+    <!-- <select name="in[bug_type]"><?php //show_types($in['bug_type'],0,$package);?></select> -->
   </td>
  </tr><tr>
   <th align="right">Operating system:</th>
@@ -249,7 +254,7 @@ if ($errors) display_errors($errors);
   <td><font size="-2">
     You may enter any password here, which will be stored for this bug report.
     This password allows you to come back and modify your submitted bug report
-    at a later date. [<a href="/bug-pwd-finder.php">Lost a bug password?</a>]
+    at a later date. <!-- [<a href="/bug-pwd-finder.php">Lost a bug password?</a>] -->
   </font></td>
  </tr>
 </table>

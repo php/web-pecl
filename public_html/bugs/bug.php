@@ -13,6 +13,7 @@ require_once './include/trusted-devs.inc';
 
 $mail_bugs_to = 'php-bugs@lists.php.net';
 
+/*
 if (isset($save) && isset($pw)) { # non-developers don't have $user set
 	setcookie("MAGIC_COOKIE",
 	          base64_encode("$user:$pw"),
@@ -21,6 +22,11 @@ if (isset($save) && isset($pw)) { # non-developers don't have $user set
 }
 if (isset($MAGIC_COOKIE) && !isset($user) && !isset($pw)) {
   list($user,$pw) = explode(":", base64_decode($MAGIC_COOKIE));
+}
+*/
+if (isset($_COOKIE['PEAR_USER']) && isset($_COOKIE['PEAR_PW'])) {
+    $user = $_COOKIE['PEAR_USER'];
+    $pw = $_COOKIE['PEAR_PW'];
 }
 
 @mysql_connect("localhost","pear","pear")
@@ -168,7 +174,7 @@ elseif ($in && $edit == 1) {
 }
 
 if ($in && !$errors && $success) {
-	//mail_bug_updates($bug,$in,$from,$ncomment,$edit);
+	mail_bug_updates($bug,$in,$from,$ncomment,$edit);
 	header("Location: $PHP_SELF?id=$id&thanks=$edit");
 	exit;
 }
@@ -189,7 +195,7 @@ elseif ($thanks == 4) {?>
 Thank you for your help! If the status of the bug report you submitted changes,
 you will be notified. You may return here and check on the status or update
 your report at any time. That URL for your bug report is: <a
-href="http://bugs.php.net/<?php echo $id?>">http://bugs.php.net/<?php echo
+href="/bugs/bug.php?id=<?php echo $id?>">http://pear.php.net/bugs/bug.php?id=<?php echo
 $id?></a>.
 </div>
 <?php

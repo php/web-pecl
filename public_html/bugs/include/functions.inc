@@ -305,7 +305,7 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit=1)
 	/* user text with attention, headers and previous messages */
     $user_text  = "ATTENTION! Do NOT reply to this email!\n" .
                   "To reply, use the web interface found at\n" .
-                  "http://bugs.php.net/?id=$bug[id]&edit=2\n\n\n" .
+                  "http://pear.php.net/bugs/bug.php?id=$bug[id]&edit=2\n\n\n" .
                   $header_text .
                   $wrapped_text;
 
@@ -313,7 +313,7 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit=1)
 	$dev_text = $header_text .
                 $wrapped_text .
                 "\n-- \nEdit this bug report at " .
-                "http://bugs.php.net/?id=$bug[id]&edit=1\n";
+                "http://pear.php.net/bugs/bug.php?id=$bug[id]&edit=1\n";
 
 	/* send mail if status was changed or there is a comment */
 	if ($in[status] != $bug[status] || $ncomment != "") {
@@ -580,13 +580,23 @@ function format_search_string($search)
 	return array(" AND MATCH (bugdb.email,sdesc,ldesc) AGAINST ('" . addslashes($search) . "')", $ignored);
 }
 
+// PEAR Related only
 function show_bugs_menu($pkgname)
 {
+    echo '<table width="100%" align="center" border="0"><tr><td>';
     echo make_link("/package-info.php?package=$pkgname", "Package home");
     echo "&nbsp;|&nbsp;";
     echo make_link("/bugs/report.php?package=$pkgname", "Report a new bug");
     echo "&nbsp;|&nbsp;";
-    echo make_link("/bugs/search.php?cmd=display&bug_type[]=$pkgname", "Bug list");
+    echo make_link("/bugs/search.php?cmd=display&bug_type[]=$pkgname&status=Open", "Bug list");
+    if (preg_match('/search.php/', $_SERVER['PHP_SELF'])) {
+        // This could be changes by a SELECT box and JS
+        echo '</td><td align="right">Status: ';
+        echo make_link("/bugs/search.php?cmd=display&bug_type[]=$pkgname&status=Open", 'Open');
+        echo "&nbsp;|&nbsp;";
+        echo make_link("/bugs/search.php?cmd=display&bug_type[]=$pkgname&status=All", 'All');
+        echo '</td></tr></table>';
+    }
     echo "<hr/>";
 }
 

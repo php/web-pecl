@@ -29,9 +29,6 @@ $access = $dbh->getCol("SELECT path FROM cvs_acl WHERE username = ?", 0,
                        array($handle));
 
 print "<h1>Information about account \"$handle\"</h1>\n";
-print "<a href=\"account-edit.php?handle=$handle\">". make_image("edit.gif", "Edit") . "</a>";
-print "<br />\n";
-print "<br />\n";
 
 print "<table border=\"0\" cellspacing=\"4\" cellpadding=\"0\">\n";
 print "<tr><td valign=\"top\">\n";
@@ -53,7 +50,7 @@ $bb->horizHeadRow("Additional information:", empty($row['userinfo'])?"&nbsp;":$r
 $bb->horizHeadRow("CVS Access:", implode("<br />", $access));
 
 if ($row['wishlist'] != "") {
-    $bb->horizHeadRow("Wishlist:", make_link($row['wishlist']));
+    $bb->horizHeadRow("Wishlist:", make_link("/wishlist.php/" . $row['handle'], "Click here to be redirected."));
 }
 
 if ($row['admin'] == 1) {
@@ -91,6 +88,8 @@ $bb->end();
 print "<br />\n";
 
 display_user_notes($handle, "100%");
+
+print "<br /><a href=\"account-edit.php?handle=$handle\">". make_image("edit.gif", "Edit") . "</a>";
 
 print "</td></tr></table>\n";
 

@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>x</title>
+<META http-equiv=content-type content="text/html; charset=iso-8859-2">
+</head>
+<body>
+<p><i><small>autor: Alan Knowles alan_k@php.net (tłumaczenie: Robert Janeczek rashid@php.net)</small></i></p>
+
+<p>5 nowych wydań w tym tygodniu, w tym drugie wydanie kandydackie MDB,
+2 nowe pakiety, PEAR rozwijający się gwałtownie dzięki nowym autorom kodu,
+poprawki i nowe pomysły. Odwieczny problem dokumentowania tego zestawu narzędzi
+jest atakowany na wielu fromtach dzięki pomocy konwerterów z phpdoc do docbook
+i podobnymi narzędziami z OpenOffice. W tym tygodniu istniejące klasy takie jak
+Auth/Permissions, Config zostały przeegzaminowane i przygotowywane są plany 
+poważnych usprawnień. W międzyczasie Rasmus pomagał przy problemach z 
+warunkami licencjonowania niezgodnymi z GPL.</p>
+
+<hr>
+<h2>Nowe wydania</h2>
+
+<h3>Stabilne</h3>
+
+<ul>
+<li><b>Net_IPv4</b> - Klasa do obliczeń na adresach IP (broadcast itp.)</li>
+</ul>
+
+<h3>Beta</h3>
+
+<ul>
+<li><b>DB_DataObject</b> - Warstwa budowy SQL i modelowania danych.</li>
+<li><b>Math_Vector</b> -  Klasy do reprezentowania wektorów w dwu-, trzy-, i więcej wymiarowych
+wektorów, oprócz tego klasy do przeprowadzania operacji na wektorach</li>
+<li><b>Tree</b> - Łatwy sposób manipulowania danymi w formie drzew, z plików XML lub baz danych</li>
+</ul>
+
+<h3>Alpha</h3>
+
+<ul>
+<li><b>Validate</b> - Zestaw metod do sprawdzania danych (np. liczb, emaili, numerów kard kredytowych itp.)</li>
+</ul>
+
+<h3>Rozwojowe</h3>
+
+<ul>
+<li><b>MDB -</b> Drugie wydania kandydackie PEAR MDB, połączenia Metabase i warstwy abstrakcji baz danych PRAR.</li>
+</ul>
+
+<hr>
+<h2>Skrót z PEAR-DEV</h2>
+
+<h3>Ciąg dalszy z zeszłych tygodni</h3>
+
+Liczne dyskusje były prowadzone na temat wątków poruszanych w zeszłych tygodniach:
+pisano o Math_Vector, Math_Distance i hurtowym mailowaniu (klasa dodana jako Mail_Queue),
+konfliktach z nowym Zend Engine w System oraz Wolfram kontynuował swoje śledztwo na temat
+zbyt dużej dokładności PHPUnit powodującej problemy.
+
+<h3>Integracja PHPDocu z PEAR</h3>
+
+Jako że wyraźnie obserwujemy spadek aktywności twórców phpdoc
+a PhpDocu staje się defacto standardem generowania wyników
+phpdoc, po wymianie kilku informacji z drużyną phpdocu 
+można stwierdzić, że phpdocu będzie zaadoptowane jako
+nowe narzędzie do dokumentowania API PEAR i czynione są 
+starania mające na celu jego integrację w postaci pakietu
+PEAR.
+
+<h3>Nowe API dla klasy Config</h3>
+
+Bertrand Mansion wprowadzał ostatnio zmiany i rozwijał funkcjonalność
+klasy Config. Ta istnotna zmiana będzie wykorzystywać 
+umiejętność instalatora PEAR do prawidłowej pracy ze starymi
+i nowymi pakietami, jako że zmiany nie są kompatybilne wstecz.
+
+<h3>Perm_LiveUser już w CVS</h3>
+
+Marcus Wolff dodał Perm_LiveUser do CVS, po krótkiej zabawie
+z prawidłowym nazewnictwem. W międzyczasie Lukas Smith również
+pracował nad Perm_LiveUser rozwiązując problemy występujące
+kiedy administratorzy zmieniali uprawnienia użytkownika podczas
+gdy ten był zalogowany. 
+
+<h3>Wykrywanie języka w Weekly News</h3>
+
+Wolfram Kriesing zasugerował nowy I18N_Negotiator do 
+pomocy przy wykrywaniu języka używanego do wyświetlania nowinek
+PEAR. Zakładając, że uda się zainstalować ten pakiet na serwerze 
+PRAR, Alan ucieszył się z tej możliwości. To oznacza, że jeśli
+masz ustawiony domyślny język w przeglądarce, to zostanie ci
+automatycznie pokazana właściwa strona.
+Ondrej Jombik zasugerował użycie Net_Geo lub czegoś podobnego
+do wykrywania kraju z adresu IP, Alan był przeciwko, bo 
+bycie w Hong Kongu zaowocowałoby otrzymaniem tradycyjnego chińskiego
+(którego on nie zna), więc wolał pozwolić użytkownikowi zdecydować
+poprzez ustawienie przeglądarki odpowiednio.
+
+<h3>Drugie wydanie kandydackie MDB</h3>
+
+Lukas Smith ogłosił, że skończył drugie wydanie kandydackie projektu
+łączącego Metabase z PEAR DB, w którym dołączył zmiany w managerze
+i udoskonalił parser schematów XML. Ma nadzieję na szybki odzew, żeby
+ukończyć prace nad wersją 1.0 w przyszłym tygodniu.
+
+<h3>Problemy PECL::Smbclient z GPL</h3>
+
+Rozszerzenie smbclient autorstwa Jelmer'a Vernooij zostało dodane
+do PEAR, co doprowadziło do dyskusji na temat problemów z łączeniem
+kodu na licencji GPL z PHP. Jako że PHP ma licencję typu BSD, łączenie
+kodu GPL z nim powoduje problemy licencyjne. Są one podobne do problemów,
+które miał projekt Mozilla z dołączaniem kodu GPL i prowadzą
+do potrójnego schematu licencyjnego. Rasmus dodał notatkę na ten temat
+do FAQ PEAR zalecającą unikanie łączenia z pracami GPL (LGPL jest OK).
+Jedynym wyjściem z sytuacji może być otrzymanie specjalnego pozwolenia
+od autorów Samby na dołączenie smbclient do rozszerzenia Jelmer'a.
+
+<h3>Bugi i poprawki</h3>
+
+Liczne bugi i poprawki w tym tygodniu. Dzięki za ich znajdywanie błędów dla:
+Chuck Hagenbuch, Adam Maccabee
+Trachtenberg, Keith Schoenefeld, Pawe&#322;
+Go&#322;aszewski, Ondrej Jombik, Tabata Tomoyuki, Aaron
+Hawley
+
+
+
+<hr>
+
+<h2>Nowe i proponowane pakiety</h2>
+
+<h3>Net_IPv4, obliczanie adresu broadcast i adresów sieci</h3>
+
+Eric zaoferował mały pakier, który może przeprowadzać kalkulacje 
+sieciowe. Nie było sprzeciwów, więc czekamy na kolejne użyteczne
+narzędzie w PEAR.
+
+<h3>Benchmark_Profiler</h3>
+
+Mathias Englert ogłosił stworzenie Benchmark_Profiler, który mimo
+podobieństwa do Benchmark_Timer ma kilka dodatkowych możliwości 
+obliczania czasu spędzanego w metodach i funkcjach.
+<hr>
+<h2>Rozwój</h2>
+
+ARuch w CVS w tym tygodniu odbywał się w następujących pakietach:
+Auth, Cache_Lite,
+DB_DataObject, Image_Transform, Math_Vector, MDB, Net_CheckIP,
+Net_DNS, NetIPv4, PECL::smbc, PECL::tclink, Perm_LiveUser, PHPDoc,
+SOAP, Tree, Validate.
+
+<h3>Nowa i uaktualniona dokumentacja</h3>
+
+Zmiant i dodatki w PECL::Soap, Net_IPv4 i dokumentacji PEAR
+powinny się pojawić w tym tygodniu.
+
+</body>
+</html>
+

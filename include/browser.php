@@ -81,7 +81,11 @@ class browser
     {
         // Detemine what user agent we are using
         if (is_null($in_userAgent)) {
+            if (isset($GLOBALS['HTTP_SERVER_VARS']['HTTP_USER_AGENT'])) {
                 $this->userAgent = $GLOBALS['HTTP_SERVER_VARS']['HTTP_USER_AGENT'];
+            } else {
+                $this->userAgent = '';
+            }
         } else {
             $this->userAgent = $in_userAgent;
         }

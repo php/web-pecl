@@ -1,5 +1,5 @@
 		     PEAR BACKEND DATABASE DESIGN
-				 $Id$
+	 $Id$
 
 TERMINOLOGY
 
@@ -98,8 +98,7 @@ This is an example package.xml file for the PEAR package "DB/foosql"
 in a (binary) distribution file called "DB_foosql-1.1b2.tar.gz":
 
 <?xml version="1.0" ?>
-<Package xmlns="http://xmlns.php.net/pear/packagedesc"
-         Type="Binary">
+<Package xmlns="http://xmlns.php.net/pear/packagedesc" Type="Binary">
  <Name>DB/foosql</Name>
  <Summary>
   DB/foosql is the DB backend for FooSQL.

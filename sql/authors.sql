@@ -1,5 +1,5 @@
 CREATE TABLE authors (
-       handle	     VARCHAR(20),
+       handle	     VARCHAR(20) NOT NULL,
        password	     VARCHAR(64),
        name	     VARCHAR(100),
        email	     VARCHAR(100),
@@ -9,6 +9,8 @@ CREATE TABLE authors (
        createdby     VARCHAR(20),
        showemail     BOOL,
        registered    BOOL,
-       credentials   INTEGER,
-       authorinfo    TEXT
+       admin         BOOL,
+       authorinfo    TEXT,
+
+       PRIMARY KEY(handle)
 );

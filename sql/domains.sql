@@ -4,6 +4,3 @@ CREATE TABLE domains (
 
        PRIMARY KEY(domain)
 );
-
-INSERT INTO domains VALUES('', 'SSB');
-INSERT INTO domains VALUES('DB', 'SSB');

@@ -142,17 +142,19 @@ do {
         }
         list($purpose, $moreinfo) = @unserialize($requser->userinfo);
 
-        $bb = new BorderBox("Account request from $requser->name &lt;$requser->email&gt;", "100%", "", 2, true);
-        $bb->horizHeadRow("Requested username:", $requser->handle);
-        $bb->horizHeadRow("Realname:", $requser->name);
-        $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . $requser->email . "\">" . $requser->email . "</a>");
-        $bb->horizHeadRow("MD5-encrypted password:", $requser->password);
-        $bb->horizHeadRow("Purpose of account:", $purpose);
-        $bb->horizHeadRow("More information:", $moreinfo);
+        $bb = new BorderBox("Account request from " . htmlspecialchars($requser->name)
+		  	. "&lt;" . htmlspecialchars($requser->email) . "&gt;", "100%", "", 2, true);
+        $bb->horizHeadRow("Requested username:", htmlspecialchars($requser->handle));
+        $bb->horizHeadRow("Realname:", htmlspecialchars($requser->name));
+        $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . htmlspecialchars($requser->email) . "\">" .
+		  		htmlspecialchars($requser->email) . "</a>");
+        $bb->horizHeadRow("MD5-encrypted password:", htmlspecialchars($requser->password));
+        $bb->horizHeadRow("Purpose of account:", htmlspecialchars($purpose));
+        $bb->horizHeadRow("More information:", htmlspecialchars($moreinfo));
         $bb->end();
 
 	    print "<br />\n";
-	    $bb = new BorderBox("Notes for user $requser->handle");
+	    $bb = new BorderBox("Notes for user " . htmlspecialchars($requser->handle));
 	    $notes = $dbh->getAssoc("SELECT id,nby,UNIX_TIMESTAMP(ntime) AS ntime,note FROM notes ".
 	                "WHERE uid = ? ORDER BY ntime", true,
 	                array($requser->handle));
@@ -214,9 +216,9 @@ do {
 
     <select onchange="return updateRejectReason(this)">
    		<option>Select reason...</option>
-   		<option value="You don't need a PEAR account to use PEAR or PEAR packages.">You don't need a PEAR account to use PEAR or PEAR packages.</option>
-		<option value="Please propose all new packages to the mailing list pear-dev@lists.php.net first.">Please propose all new packages to the mailing list pear-dev@lists.php.net first.</option>
-		<option value="Please send all bug fixes to the mailing list pear-dev@lists.php.net.">Please send all bug fixes to the mailing list pear-dev@lists.php.net.</option>
+   		<option value="You don't need a PECL account to use PECL or PECL packages.">You don't need a PECL account to use PECL or PECL packages.</option>
+		<option value="Please propose all new packages to the mailing list pear-dev@lists.php.net first.">Please propose all new packages to the mailing list pecl-dev@lists.php.net first.</option>
+		<option value="Please send all bug fixes to the mailing list pecl-dev@lists.php.net.">Please send all bug fixes to the mailing list pecl-dev@lists.php.net.</option>
 		<option value="Please supply valid credentials, including your full name and a descriptive reason for an account.">Please supply valid credentials, including your full name and a descriptive reason for an account.</option>
    </select>
 

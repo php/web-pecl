@@ -1,5 +1,5 @@
 <!--
-     $Id: package-1.1.dtd,v 1.1 2003-09-03 12:09:41 cox Exp $
+     $Id: package-1.1.dtd,v 1.2 2003-09-07 12:42:25 cox Exp $
 
      This is the PEAR package description, version 1.0b3.
      It should be used with the informal public identifier:
@@ -52,7 +52,7 @@
 
 <!ELEMENT changelog (release)*>
 
-<!ELEMENT release (license?,version,state,date,notes,filelist,provides*,deps?)>
+<!ELEMENT release (license?,version,state,date,notes,filelist?,provides*,deps?)>
 
 <!ELEMENT license (#PCDATA)>
 

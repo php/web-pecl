@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001 The PHP Group                                     |
+   | Copyright (c) 2001-2003 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -18,25 +18,27 @@
    $Id$
 */
 
-/*
-Pear package downloader
-Usage:
-// to get the lastest version of the HTTP_Upload package
-pear install http://pear.php.net/get/HTTP_Upload
-// to get the version 1.2 of the HTTP_Upload package
-pear install http://pear.php.net/get/HTTP_Upload/1.2
-
-cmd structure:
-/PEAR_package
-/PEAR_package/version
-
-other things like: "/PEAR_package/info" could be easily implemented
-
-It requires this to be added to httpd.conf/.htaccess:
-<Location "/get">
-ForceType application/x-httpd-php
-</Location>
-*/
+/**
+ * PEAR package downloader
+ *
+ * Usage:
+ *
+ * // to get the lastest version of the HTTP_Upload package
+ * pear install http://pear.php.net/get/HTTP_Upload
+ * // to get the version 1.2 of the HTTP_Upload package
+ * pear install http://pear.php.net/get/HTTP_Upload/1.2
+ *
+ * cmd structure:
+ * /PEAR_package
+ * /PEAR_package/version
+ *
+ * other things like: "/PEAR_package/info" could be easily implemented
+ *
+ * It requires this to be added to httpd.conf/.htaccess:
+ * <Location "/get">
+ *  ForceType application/x-httpd-php
+ * </Location>
+ */
 
 // shut up or we risk getting corrupted tgz files
 error_reporting(0);
@@ -59,7 +61,7 @@ PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'error_404');
 // This is needed to be able to test the downloads with "wget"
 // or the pear installer
 if (empty($dbh)) {
-    $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
+    $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => false));
 }
 
 if (!isset($_SERVER['PATH_INFO']) || $_SERVER['PATH_INFO'] == '/') {

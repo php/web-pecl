@@ -1,0 +1,164 @@
+#!/bin/sh
+# +----------------------------------------------------------------------+
+# | PHP Version 4                                                        |
+# +----------------------------------------------------------------------+
+# | Copyright (c) 1997-2002 The PHP Group                                |
+# +----------------------------------------------------------------------+
+# | This source file is subject to version 2.02 of the PHP license,      |
+# | that is bundled with this package in the file LICENSE, and is        |
+# | available at through the world-wide-web at                           |
+# | http://www.php.net/license/2_02.txt.                                 |
+# | If you did not receive a copy of the PHP license and are unable to   |
+# | obtain it through the world-wide-web, please send a note to          |
+# | license@php.net so we can mail you a copy immediately.               |
+# +----------------------------------------------------------------------+
+# | Authors: Tomas V.V.Cox <cox@idecnet.com>                             |
+# +----------------------------------------------------------------------+
+#
+# Automatically download all the files needed to run the "pear" command
+# (the PEAR package installer)
+#
+# Usage: This script could be directly launched or can be passed
+# via lynx so:
+# $ lynx -source http://pear.php.net/go-pear | sh
+#
+# TODO:
+#	-rewrite in PHP
+#
+# Rev4 2002-04-27:
+#
+#       - Moved from http://pear.php.net/~cox/go-pear to
+#	  http://pear.php.net/go-pear
+#	- Adapt the @prefix@ to the new @bindir@ (patch by Naoki Shima)
+#	- Actually make the "pear" cmd file executable when a relative
+#	  path is selected
+#
+# Rev3 2002-03-26:
+#
+#	- Made the script more portable to able to run in other Unix
+#	  platforms (contributed by Piotr Klaban <makler+pear@man.torun.pl>).
+#	  Tested on Linux, Solaris and FreeBSD.
+#
+# Rev2 2002-03-25:
+#
+#	- Added initial informative message
+#	- Added the ability to download all the files under php4/pear module
+#	- The user can now select where to place the 'pear' cmd
+#
+# Rev1 2002-03-24: Initial
+
+echo
+echo "This script will install the PEAR Installer command 'pear' and"
+echo "all the files needed by it. The 'pear' command is the tool"
+echo "that can manage PEAR packages downloaded both from the PEAR web"
+echo "(http://pear.php.net) or from the 'pear/' CVS module of cvs.php.net"
+echo
+echo "With this script you could also download and install, from CVS,"
+echo "the common PEAR files that comes with any PHP distribution (located"
+echo "at php4/pear in CVS). The common PEAR files means classes like PEAR DB,"
+echo "XML_Parser, IT template engine or Mail. Please read the"
+echo "FAQ at http://pear.php.net/faq.php for more information"
+echo
+echo "For an explanation on how to use the PEAR Installer or what PEAR"
+echo "packages are, visit:"
+echo " http://cvs.php.net/co.php/pearweb/doc/pear_package_manager.txt"
+echo
+
+php=`which php`
+if [ -z "$php" ]; then
+	echo "No php cgi binary found in PATH"
+	exit 1
+fi
+prefix=`echo $php | perl -pe 's/\/bin\/php//'`
+TARGET="${prefix}/bin/pear"
+
+####
+# User configurable options
+####
+
+echo "Which file name do you want for the 'pear' executable?"
+echo -n "[$TARGET] : "
+read destpearin < /dev/tty
+if [ ! -z "$destpearin" ]; then
+	TARGET=$destpearin
+fi
+touch $TARGET > /dev/null
+if [ $? -ne 0 ]; then
+	echo "Could not create file '$TARGET'"
+	exit 1
+fi
+
+echo "Some files need to be installed in your system"
+echo "In what directory do you want to install them?"
+echo "(note that the path has to be in the include_path of your php.ini)"
+echo -n "[$prefix/lib/php] : "
+read destdir < /dev/tty
+if [ -z "$destdir" ]; then
+	destdir="$prefix/lib/php"
+fi
+if [ ! -d $destdir ]; then
+	echo "Directory '$destdir' does not exist or is not a directory"
+	exit 1
+fi
+
+echo -n "Do you want to install also the common PEAR files? [Y/n] : "
+read installall < /dev/tty
+files="/"
+if [ `echo $installall | grep -i 'n'` ]; then
+	files="/scripts/pear.in /Archive/Tar.php /Console/Getopt.php /PEAR.php /System.php /PEAR"
+fi
+
+####
+# Temp stuff
+####
+
+if [ -z "$TMPDIR" ]; then
+	TMPDIR=/tmp
+fi
+PTMP=`date +%s`
+PTMP="${TMPDIR}/${PTMP}"
+/bin/rm -rf $PTMP && mkdir -m 0700 -p $PTMP
+origpwd=`pwd`
+cd $PTMP
+
+####
+# Download
+####
+
+echo "Downloading files..."
+
+for i in $files; do
+	cvs -d :pserver:cvsread@cvs.php.net:/repository \
+	    export -D "now" "php4/pear$i"
+done
+pearin=php4/pear/scripts/pear.in
+if [ ! -f $pearin ]; then
+	echo "Could not download the files from CVS"
+	exit 1
+fi
+echo "done!"
+
+####
+# Copy files
+####
+
+/bin/cp -fR php4/pear/* $destdir < /dev/tty
+
+####
+# Set the right interpreter for the pear cmd
+####
+
+prefix=`echo $prefix | perl -pe 's#\/#\x5c\/#g;'`
+cat $pearin | perl -pe "s#\@bindir@#$prefix\/bin#" > $TARGET
+
+cd $origpwd
+chmod +x $TARGET
+
+rm -rf $PTMP
+
+echo
+echo "The 'pear' command has been successfully installed under $TARGET"
+echo "try it typing '$TARGET' for help"
+echo
+
+exit

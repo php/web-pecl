@@ -179,11 +179,11 @@ Eris Free Net</a>.
 
 <a name="tutorials" /><h3>PEAR Tutorials</h3>
 
-<h4>Tutorials about the PEAR DB class:</h4>
+<h4>Tutorials about the PEAR DB package:</h4>
 
 <ul>
-    <li><a href="http://vulcanonet.com/soft/?pack=pager">Pear DB Pager Class Tutorial</a> by Tomas V.V.Cox.
-    This class handles all the stuff needed for displaying paginated results from a database query.</li>
+    <li><a href="http://vulcanonet.com/soft/?pack=pager">Pear DB_Pager package Tutorial</a> by Tomas V.V.Cox.
+    This package handles all the stuff needed for displaying paginated results from a database query.</li>
 
     <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li>
 
@@ -196,33 +196,33 @@ Eris Free Net</a>.
     <li><a href="http://www.devshed.com/Server_Side/PHP/DBAbstraction">Database Abstraction With PHP</a> on devshed.com</li>
 </ul>
 
-<h4>Tutorials about some PEAR classes in German:</h4>
+<h4>Tutorials about some PEAR packages in German:</h4>
 
 <ul>
-    <li>Tutorial about a lot of PEAR-classes
+    <li>Tutorial about a lot of PEAR packages
     <a href="http://www.tu-chemnitz.de/~meal/php/peardoc/index.html">http://www.tu-chemnitz.de/~meal/php/peardoc/index.html</a>
     </li>
 
-    <li>IT[X] is a template class:<br />
+    <li>IT[X]:
     <a href="http://www.ulf-wendel.de/projekte/itx/index.php">http://www.ulf-wendel.de/projekte/itx/index.php</a>
     </li>
 
     <li><a href="http://www.ulf-wendel.de/projekte/menu/tutorial.php">Menu.php Tutorial</a> in German.
-    This class generates a HTML menu from a multidimensional hash.</li>
+    This package generates a HTML menu from a multidimensional hash.</li>
 
-    <li><a href="http://www.ulf-wendel.de/projekte/cache/">Tutorial about the PEAR Cache class</a></li>
+    <li><a href="http://www.ulf-wendel.de/projekte/cache/">Tutorial about the PEAR Cache package</a></li>
 </ul>
 
 <h4>Other tutorials:</h4>
 
 <ul>
-    <li><a href="http://php.chregu.tv/sql2xml/">XML_sql2xml tutorial</a>. A PEAR class for converting SQL
+    <li><a href="http://php.chregu.tv/sql2xml/">XML_sql2xml tutorial</a>. A PEAR package for converting SQL
     query results or arrays to XML.</li>
 
-    <li><a href="http://www.mamasam.com/tutorials/en_html_table.html">Table.php</a> Tutorial. The table class
+    <li><a href="http://www.mamasam.com/tutorials/en_html_table.html">Table.php</a> Tutorial. The table package
     allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li>
 
-   <li><a href="http://www.zend.com/zend/art/art-heyes.php">PEAR::Mail</a> in zend.com</li>
+   <li><a href="http://www.zend.com/zend/art/art-heyes.php">PEAR::Mail</a> on zend.com</li>
 
 </ul>
 

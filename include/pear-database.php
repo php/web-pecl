@@ -207,25 +207,49 @@ class PEAR_User extends DB_storage
     function PEAR_User(&$dbh, $user)
     {
 	$this->DB_storage("users", "handle", &$dbh);
+	// XXX horrible hack until we get temporary error handlers
+	$oldmode = $this->_default_error_mode;
+	$this->_default_error_mode = PEAR_ERROR_RETURN;
         $this->setup($user);
+	if (empty($oldmode)) {
+	    unset($this->_default_error_mode);
+	} else {
+	    $this->_default_error_mode = $oldmode;
+	}
     }
 }
 
 class PEAR_Package extends DB_storage
 {
-    function PEAR_User(&$dbh, $package)
+    function PEAR_Package(&$dbh, $package)
     {
-        $this->DB_storage("packages", "name", &$dbh);
+        $this->DB_storage("packages", "id", &$dbh);
+	// XXX horrible hack until we get temporary error handlers
+	$oldmode = $this->_default_error_mode;
+	$this->_default_error_mode = PEAR_ERROR_RETURN;
         $this->setup($package);
+	if (empty($oldmode)) {
+	    unset($this->_default_error_mode);
+	} else {
+	    $this->_default_error_mode = $oldmode;
+	}
     }
 }
 
 class PEAR_Release extends DB_storage
 {
-    function PEAR_Release(&$dbh, $package, $release)
+    function PEAR_Release(&$dbh, $release)
     {
-        $this->DB_storage("releases", array("package", "release"), &$dbh);
-        $this->setup(array($package, $release));
+        $this->DB_storage("releases", "id", &$dbh);
+	// XXX horrible hack until we get temporary error handlers
+	$oldmode = $this->_default_error_mode;
+	$this->_default_error_mode = PEAR_ERROR_RETURN;
+        $this->setup($release);
+	if (empty($oldmode)) {
+	    unset($this->_default_error_mode);
+	} else {
+	    $this->_default_error_mode = $oldmode;
+	}
     }
 }
 

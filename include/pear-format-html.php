@@ -2,7 +2,7 @@
 
 require_once 'layout.php';
 
-
+$GLOBALS['_style'] = '';
 
 function response_header($title = 'The PHP Extension and Application Repository', $style = false)
 {

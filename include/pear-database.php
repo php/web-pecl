@@ -1610,11 +1610,17 @@ class release
 
         require_once 'Archive/Tar.php';
         $tar = &new Archive_Tar($file);
+        $oldpackagexml = $tar->extractInString('package.xml');
         if (($packagexml = $tar->extractInString('package2.xml')) ||
               ($packagexml = $tar->extractInString('package.xml'))) {
             // success
         } else {
             return PEAR::raiseError('Archive uploaded does not appear to contain a package.xml!');
+        }
+        if ($oldpackagexml != $packagexml) {
+            $compatible = true;
+        } else {
+            $compatible = false;
         }
         // Update releases table
         $query = "INSERT INTO releases (id,package,version,state,doneby,".
@@ -1648,84 +1654,100 @@ class release
             "VALUES (?,?,?,?,?,?,?)";
         $sth = $dbh->prepare($query);
 
-        /*
-         * The dependencies are only accessible via the package
-         * definition. Because of this we need to instantiate
-         * a PEAR_Common object here.
-         */
-        $common = new PEAR_Common();
-        $pkg_info = $common->InfoFromTgzFile($file);
+        require_once 'PEAR/PackageFile.php';
+        require_once 'PEAR/Config.php';
+        $config = &PEAR_Config::singleton();
+        $pf = &new PEAR_PackageFile($config);
+        $pkg_info = $pf->fromXmlString($packagexml, PEAR_VALIDATE_DOWNLOADING,
+            $compatible ? 'package2.xml' : 'package.xml');
 
-        foreach ($pkg_info as $key => $value) {
-            if ($key == "release_deps") {
-                foreach ($value as $dep) {
-                    $prob = array();
-
-                    if (empty($dep['type']) ||
-                        !in_array($dep['type'], $_PEAR_Common_dependency_types))
-                    {
-                        $prob[] = 'type';
-                    }
-
-                    if (empty($dep['name'])) {
-                        /*
-                         * NOTE from pajoye in ver 1.166:
-                         * This works for now.
-                         * This would require a 'cleaner' InfoFromXXX
-                         * which may return a defined set of data using
-                         * default values if required.
-                         */
-                        if (strtolower($dep['type']) == 'php') {
-                            $dep['name'] = 'PHP';
-                        } else {
-                            $prob[] = 'name';
-                        }
-                    }
-
-                    if (empty($dep['rel']) ||
-                        !in_array($dep['rel'], $_PEAR_Common_dependency_relations))
-                    {
-                        $prob[] = 'rel';
-                    }
-
-                    if (empty($dep['optional'])) {
-                        $optional = 0;
-                    } else {
-                        if ($dep['optional'] != strtolower($dep['optional'])) {
-                            $prob[] = 'optional';
-                        }
-                        if ($dep['optional'] == 'yes') {
-                            $optional = 1;
-                        } else {
-                            $optional = 0;
-                        }
-                    }
-
-                    if (count($prob)) {
-                        $res = PEAR::raiseError('The following attribute(s) ' .
-                                'were missing or need proper values: ' .
-                                implode(', ', $prob));
-                    } else {
-                        $res = $dbh->execute($sth,
-                                array(
-                                    $package_id,
-                                    $release_id,
-                                    $dep['type'],
-                                    $dep['rel'],
-                                    @$dep['version'],
-                                    $dep['name'],
-                                    $optional));
-                    }
-
-                    if (PEAR::isError($res)) {
-                        $dbh->query('DELETE FROM deps WHERE ' .
-                                    "release = $release_id");
-                        $dbh->query('DELETE FROM releases WHERE ' .
-                                    "id = $release_id");
-                        @unlink($file);
-                        return $res;
-                    }
+        $deps = $pkg_info->getDeps(true); // get the package2.xml actual content
+        $storedeps = $pkg_info->getDeps(); // get the BC-compatible content
+        $pearused = false;
+        if (isset($deps['required']['package'])) {
+            if (!isset($deps['required']['package'][0])) {
+                $deps['required']['package'] = array($deps['required']['package']);
+            }
+            foreach ($deps['required']['package'] as $pkgdep) {
+                if ($pkgdep['channel'] == 'pear.php.net' && strtolower($pkgdep['package']) == 'pear') {
+                    $pearused = true;
                 }
+            }
+        }
+        foreach ($storedeps as $dep) {
+            $prob = array();
+
+            if (empty($dep['type']) ||
+                !in_array($dep['type'], $_PEAR_Common_dependency_types))
+            {
+                $prob[] = 'type';
+            }
+
+            if (empty($dep['name'])) {
+                /*
+                 * NOTE from pajoye in ver 1.166:
+                 * This works for now.
+                 * This would require a 'cleaner' InfoFromXXX
+                 * which may return a defined set of data using
+                 * default values if required.
+                 */
+                if (strtolower($dep['type']) == 'php') {
+                    $dep['name'] = 'PHP';
+                } else {
+                    $prob[] = 'name';
+                }
+            } elseif (strtolower($dep['name']) == 'pear') {
+                if (!$pearused && $compatible) {
+                    // there is no need for a PEAR dependency here
+                    continue;
+                }
+                if (!$pearused && !$compatible) {
+                    $dep['name'] = 'PEAR Installer';
+                }
+            }
+
+            if (empty($dep['rel']) ||
+                !in_array($dep['rel'], $_PEAR_Common_dependency_relations))
+            {
+                $prob[] = 'rel';
+            }
+
+            if (empty($dep['optional'])) {
+                $optional = 0;
+            } else {
+                if ($dep['optional'] != strtolower($dep['optional'])) {
+                    $prob[] = 'optional';
+                }
+                if ($dep['optional'] == 'yes') {
+                    $optional = 1;
+                } else {
+                    $optional = 0;
+                }
+            }
+
+            if (count($prob)) {
+                $res = PEAR::raiseError('The following attribute(s) ' .
+                        'were missing or need proper values: ' .
+                        implode(', ', $prob));
+            } else {
+                $res = $dbh->execute($sth,
+                        array(
+                            $package_id,
+                            $release_id,
+                            $dep['type'],
+                            $dep['rel'],
+                            @$dep['version'],
+                            $dep['name'],
+                            $optional));
+            }
+
+            if (PEAR::isError($res)) {
+                $dbh->query('DELETE FROM deps WHERE ' .
+                            "release = $release_id");
+                $dbh->query('DELETE FROM releases WHERE ' .
+                            "id = $release_id");
+                @unlink($file);
+                return $res;
             }
         }
 

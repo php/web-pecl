@@ -349,8 +349,8 @@ class package
         $stablereleases = $dbh->getAssoc(
             "SELECT p.name, r.id AS rid, r.version AS stable, r.state AS state ".
             "FROM packages p, releases r ".
-            "WHERE p.id = r.package".
-            ($released_only ? " AND r.state = 'stable' " : "").
+            "WHERE p.id = r.package ".
+            ($released_only ? "AND r.state = 'stable' " : "").
             "ORDER BY r.releasedate ASC ", false, null, DB_FETCHMODE_ASSOC);
         $deps = $dbh->getAll(
             "SELECT package, release , type, relation, version, name ".

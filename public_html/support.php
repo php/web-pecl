@@ -119,7 +119,9 @@ while ( list(, $listinfo) = each($mailing_lists)) {
         echo '<td align="left"><b>' . $listinfo[1] . '</b><br /><small>'. $listinfo[2] . '</small></td>';
         echo '<td>' . ($listinfo[3] ? 'yes' : 'no') . '</td>';
         echo '<td>' . ($listinfo[4] ? make_link("http://marc.theaimsgroup.com/?l=".$listinfo[0], 'yes') : 'n/a') . '</td>';
-        echo '<td>' . ($listinfo[6] ? make_link("news://news.php.net/".$listinfo[6], 'yes') : 'n/a') . '</td>';
+        echo '<td>' . ($listinfo[6] ? ( make_link("news://news.php.net/".$listinfo[6], 'yes')
+                                        . ' ' . make_link("http://news.php.net/group.php?group=" . $listinfo[6], 'http') )
+                                       : 'n/a') . '</td>';
         echo '<td><input name="maillist" type="radio" value="' . $listinfo[0] . '" /></td>';
         echo '<td>' . ($listinfo[5] ? '<input name="maillist" type="radio" value="'.$listinfo[0].'-digest" />' : 'n/a' ) . '</td>';
         echo '</tr>' . "\n";

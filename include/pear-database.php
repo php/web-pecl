@@ -208,14 +208,15 @@ class package
         if (DB::isError($err)) {
             return $err;
         }
-        if (isset($lead) && DB::isError($err = maintainer::add($id, $lead, 'lead'))) {
-            return $err;
-        }
         $sql = "update categories set npackages = npackages + 1
                 where id = $category";
         if (DB::isError($err = $dbh->query($sql))) {
             return $err;
         }
+        if (isset($lead) && DB::isError($err = maintainer::add($id, $lead, 'lead'))) {
+            return $err;
+        }
+
         return $id;
     }
 
@@ -537,9 +538,11 @@ class maintainer
     function add($package, $user, $role)
     {
         global $dbh, $auth_user;
+        /*
+        That breaks package-new.php, as the new package do not have any lead assigned
         if (empty($auth_user->admin) && !user::maintains($auth_user->handle, $package, 'lead')) {
             return PEAR::raiseError('maintainer::add: insufficient privileges');
-        }
+        }*/
         if (!user::exists($user)) {
             return PEAR::raiseError("User $user does not exist");
         }

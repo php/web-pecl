@@ -30,5 +30,7 @@ echo "<li>" . make_link("meeting-2003-summary.php", "Summary of the PEAR Meeting
 echo "<li>" . make_link("meeting-2003.php", "PEAR Meeting in Amsterdam") . " (March)</li>";
 echo "<li>" . make_link("release-1.0.php", "PEAR 1.0 is released!") . " (January)</li>";
 
+echo "</ul>";
+
 response_footer();
 ?>

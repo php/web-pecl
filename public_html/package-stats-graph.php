@@ -15,8 +15,8 @@
 *    bar chart.
 */
 
-    include ("../jpgraph/jpgraph.php");
-    include ("../jpgraph/jpgraph_bar.php");
+    include ("../include/jpgraph/jpgraph.php");
+    include ("../include/jpgraph/jpgraph_bar.php");
 
 /**
 * Determine the stats based on the supplied

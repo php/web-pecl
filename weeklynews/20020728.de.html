@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>x</title></head>
+
+<body>
+<small><i>by Alan Knowles alan_k@php.net (&uuml;bersetzt von Alexander Merz alexmerz(at)php.net)</i></small>
+<p>
+Gro&szlig;e Gesch&auml;ftigkeit im PEAR - trotz der Sommerferien -
+mit 2 'stable'-Releases, 3 'beta'-Releases, und Diskussion angefangen vom PEAR in Gentoo &uuml;ber 
+neue Kategorien, vom neue Manual zum 'powered by PEAR'-Icon.
+</p> 
+
+<hr>
+
+<h2>Neue Releases</h2>
+
+<h3>Stable</h3>
+<p>
+Log - ein Logging-Framework auf der Basis von Dateien/Syslog/SQL/etc. <br>
+HTML_Table - ein Package um HTML-Tabellen zu erzeugen<br>
+</p>
+
+<h3>Beta</h3>
+<p>
+bcompiler - ein PHP-Bytecode-Compiler (derzeit nur f&uuml;r Klassen)<br>
+PEAR_Frontend_Gtk - das Desktop-Interface f&uuml;r den PEAR-Installer (Start mit 'pear -G', ben&ouml;tigt 
+<a href="http://gtk.php.net">PHP-Gtk</a>)<br>
+HTML_Javascript - Mittel f&uuml;r den Umgang mit Javascript
+</p>
+
+<hr>
+
+<h2>PEAR-DEV Meldungen</h2>
+
+<h3>PEAR und Gentoo</h3>
+<p>
+Gentoo f&uuml;gten einige PEAR-Packages ihrem 'portage'-Verzeichniss hinzu. 
+Portage ist das Gentoo-eigene Installationsprogamm.
+Eine Liste der verf&uuml;gbaren Packages befindet sich auf 
+<a href="http://www.gentoo.org/packages/dev-php/index.html">Gentoo dev-php</a>.
+</p> 
+
+<h3>Die neuen Kategorien PHP und Template</h3>
+<p>
+Im Zusammenhang mit der bcompiler-Einf&uuml;hrung wurde die Kategorie 'PHP' vorgeschlagen.
+Sie w&uuml;rde u.a. die Packages PHPDoc, PHPUnit und bcompiler beinhalten. Diese Packages 
+besch&auml;ftigen sich mit dem Parsen, Compiling etc. von PHP.
+Der Vorschlag wurde allgemein angenommen.
+</p>
+<p>
+Der zweiter Vorschlag ist die Einf&uuml;hrung der Kategorie 'Template' z.B f&uuml;r die 
+(k&uuml;nftigen) Packages HTML_Template_IT, Template_Flexy und Template_Smart.
+W&auml;hrend der betreffenden Diskussion wurde herausgestellt, dass die genannten Template-Klassen 
+auch f&uuml;r andere Dateiarten (z.B. XML, EMails, RTF) geeignet sind.
+Der Vorschlag erhielt drei Pro- und eine Contra-Stimmen.
+</p>
+
+<h3>Die 'Weekly news' und HTML</h3>
+<p>
+Ein Gro&szlig;teil der &Uuml;bersetzter beschwerten sich &uuml;ber das
+durch Mozilla automatisch erzeugte HTML in den 'Weekly News'. Es erschwert die &Uuml;bersetzung
+bei Benutzung von reinen Texteditoren.
+Alan wird zuk&uuml;nftig den erzeugten Code vor dem Commit aufr&auml;umen.
+<p>
+Zus&auml;tzliche &Uuml;bersetzungen gibt es jetzt in brasilianischem Portugiesich
+(Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nio) und Polnisch (Robert Janeczek).
+Die &Uuml;bersetzungen sollen k&uuml;nftig durch die Gettext-Extension von
+PHP vereinfacht werden. Im Moment wird noch auf eine Reaktion des Adminstrators
+des PHP-Webservers hinsichtlich der Installation gewartet .
+</p>
+
+<h3>Smarty und PEAR</h3>
+<p>
+Demn&auml;chst wird <a href="http://smarty.php.net">Smarty</a> als PEAR Package
+verf&uuml;gbar sein, auch wenn es nicht unmittelbar zu PEAR geh&ouml;rt.
+Es sind nur wenige &Auml;nderungen notwendig, um eine problemlose Installation
+zu gew&auml;hrleisten.
+</p>
+
+<h3>PEAR-Package Verschiebungen</h3>
+<p>
+Stig setzte seine Bem&uuml;hungen fort, f&uuml;r den Betrieb des PEAR-Installer nicht 
+notwendige Teile aus der PHP-Distribution herauszunehmen.
+Net_SMTP, Net_Curl und Mail befinden sich nun im PEAR-CVS-Verzeichniss.
+Allein die Package-Dateien werden mit PHP 4.3 zum Zweck der Qualti&auml;tsanalyse ausgeliefert.
+</p>
+
+<h3>Wechsel der Datenbank unter DB und MDB plus ODBC Cursor</h3>
+<p>
+W&auml;hrend einer Diskussion, wurde gefragt, wie man die Datenbank unter den
+PEAR Datenbank-Schicht wechselt. Nach einigen Diskussionen wurde folgendes
+genannt:
+
+<pre>
+$db-&gt;disconnect();
+$db = DB::connect($new_dsn);
+</pre>
+</p>
+<p>
+Das ist der empfohlene Weg, solange nicht alle Datenbank-Treiber unter PHP
+die Umschaltung zwischen Datenbanken erlauben. 
+Wer eine L&ouml;sung, sprich Patch, f&uuml;r dieses Problem hat, ist wilkommen. Sie sollte
+ber&uuml;cksichtigen, das eben nicht alle Datenbank-Extensions dieses beherrschen. 
+Abh&auml;ngig von der Datenbank muss der Treiber dann per Befehl oder eben per 
+disconnect() - connect() die Datenbank wechseln.
+Lukas bemerkte, dass MDB damit keine Probleme h&auml;tte.
+</p>
+
+<p>Tomas lies in einer &auml;hnlichen Diskussion durchblicken, dass die Unterst&uuml;tzung von 
+ODBC-Cursor geplant sind. Ein entsprechender DSN:
+<pre>odbc://user:pass@ds?cursor_type=SQL_CUR_USE_ODBC</pre>
+</p>
+
+<h3>Developers Guide und PEARdoc2</h3>
+<p>Martin Jansen erg&auml;nzte das PEAR-Manual um eine Einf&uuml;hrung 
+f&uuml;r PEAR-Entwickler. Es ist hilfreich bei der L&ouml;sung typischer
+Anfangsprobleme, z.B.: Wie man eine korrekte package.xml erzeugt - oder
+warum es einen "Coding Standard" gibt.
+</p>
+<p>
+W&auml;hrenddessen beendete Alexander Merz seine &Uuml;berarbeitung des
+PEAR-Manuals. Es ist nun wesentlich modularer und einfacher zu erweitern.
+Das 'neue' Manual wird hoffentlich in K&uuml;rze online verf&uuml;gbar sein.
+</p>
+	
+<h3>DB_Pager gibt konstante Werte zur&uuml;ck</h3>
+<p>
+Richard Wall sandte einen Patch f&uuml;r DB_Pager::getData(),
+damit es eine konstante Zahl zur&uuml;ckzugibt.
+Derzeit folgt es der Google-Methode - was einige Entwickler irritierte.
+Zuk&uuml;nftig wird es eine 'Entwickler-freundlichere' Version zus&auml;tzlich zu
+derzeitigen Funktion geben.
+</p>
+
+<h3>Sicherheit und Config_DB &nbsp;</h3>
+<p>
+Bertand Mansion stellte fest, dass der Config_DB-Container des 
+Config-Packages den DSN (enth&auml;lt u.a. Datenbank-Benutzername und Passwort) einer 
+Datenbank-Verbindung ausgibt. Entwickler sollten also darauf achten, in welchen
+Situation die unmittelbare Ausgabe von sicherheitsrelevanten Daten in Fehlermeldungen
+sinnvoll und notwendig ist. Ansonsten kann es zu erheblichen Sicherheitsproblemen kommen. 
+</p>
+
+<h3>&Uuml;ergabe "by reference"</h3>
+<p>
+Wer die PHP-Dev-Mailingliste nicht verfolgt:
+es gab zwei interesante Artikel &uuml;ber die &Uuml;bergabe 'by reference'.
+Im Gegensatz zu 'C', ist die &Uuml;bergabe per Referenz bei Zeichenketten und
+Integer-Zahlen langsamer als die &Uuml;bergabe des direkten Wertes. 
+Es ist also Vorsicht angesagt, wenn man diese M&ouml;glichkeit in 
+geschwindigkeitskritischen Packages verwenden will. Siehe auch
+[<a href="http://www.zend.com/zend/art/ref-count.php">http://www.zend.com/zend/art/ref-count.php</a>] und 
+[<a href="http://phplens.com/lens/php-book/optimizing-debugging-php.php">http://phplens.com/lens/php-book/optimizing-debugging-php.php</a>]
+</p>
+
+<h3>OpenOffice und Abiword f&uuml;r die DocBook-Erzeugung</h3>
+<p>
+<a href="http://www.openoffice.org">OpenOffice</a> wird zuk&uuml;nftig die unmittelbare Speicherung in DocBook unterst&uuml;tzen.
+<a href="http://www.abiword.org">Abiword</a> kann Daten nach DocBook konvertieren.
+Unabh&auml;ngig davon sind Emacs, Vim oder jeder andere Texteditor - oder <a href="http://www.softquad.com/">XMetal</a> f&uuml;r 
+Windows-Nutzer - die bessere Wahl f&uuml;r Manual-Autoren. In diesem Zusammenhang empfiehlt sich auch ein Blick
+in das "phpdoc how-to" in
+<a href="http://cvs.php.net/co.php/phpdoc/howto/howto.html.tar.gz">http://cvs.php.net/co.php/phpdoc/howto/howto.html.tar.gz</a>  
+</p>
+
+<h3>PEAR Snapshots</h3>
+<p>
+Es wurde nach einem verf&uuml;gbarem Snapshot aller PEAR-Packages gefragt.
+Solches wird es seiten der PEAR-Community nicht geben - in Anbetracht der zu erwartenden Gr&ouml;&szlig;e eines
+solchen Snapshots. Wenn jemand einen Service anbieten m&ouml;chte, ist er willkommen.
+Unabh&auml;ngig davon wird es aber ein 
+<pre>pear upgrade-all </pre>
+geben, mit dem alle installierten Packages auf den neusten Stand gebracht werden
+k&ouml;nnen.
+</p>
+
+<h3>"Powered by PEAR"</h3>
+<img src="http://pear.php.net/gifs/pear-power.gif" alt="powered by pear" width="88" height="31" hspace="10" align="left">
+Colin Viebrock 'malte' eine Reihe von Grafiken f&uuml;r die eigene 'PEAR-powered'-Homepage.
+Die Datei kann problemlos von  
+<a href="http://pear.php.net/gifs/pear-power.gif">http://pear.php.net/gifs/pear-power.gif</a>
+kopiert werden.
+</p>
+
+<h3>Bugs und Fixes</h3>
+<p>Danke an Pawe&#322; Go&#322;aszewski, Matt Allen, James E. Flemer, Tal Peer und Dave Clark f&uuml;r 
+Bug-Meldungen und Korrekturen.
+</p>
+ 
+<hr>
+
+<h2>Package-Vorschl&auml;ge</h2>
+
+
+<h3>Cache_Lite - Der 'SpeedyGonzales'-Cache</h3>
+
+<p>
+Marty Fabien schlug eine auf schnelle Ausf&uuml;hrung bedachte Version der
+existierenden Cache-Klasse - plus Stabilit&auml;t bei NFS und Block-Caching.
+Nach gro&szlig;em Tobowahu mit Vorschl&auml;gen wie 'Cache_Fast', 'Cache_Simple',
+'Cache_HighTraffic', 'Cache_RoadRunner', 'Cache_SpeedyGonzales' und 'Cache_BeepBeep')
+entschlo&szlig; man sich f&uuml;r 'Cache_Lite'.
+Sucht man allerdings nach dem Turbo-Booster f&uuml;r seine Webseite, so sind der
+Zend Cache, PHPAcelerator und APC wohl die sinnvollere Wahl.
+
+<hr>
+<h2>Development </h2>
+
+CVS-Aktivit&auml;ten fanden letzte Woche bei MDB, The PEAR Manual und FAQ, PECL::soap, DB, HTML_Table,XML_CSSML,PHPDoc,Mail,
+HTML_Javascript, Auth_HTTP, PECL::bcompiler, HTML_QuickForm, Config, Log,Auth,
+PEAR_FrontEnd_Gtk, XML_RPC, Net_NNTP statt.
+
+</body></html>

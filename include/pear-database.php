@@ -742,6 +742,9 @@ class release
     */
     function promote($pkginfo, $upload)
     {
+        if ($_SERVER['SERVER_NAME'] != 'pear.php.net') {
+            return;
+        }
         $pacid   = package::info($pkginfo['package'], 'packageid');
         $authors = package::info($pkginfo['package'], 'authors');
         $txt_authors = '';

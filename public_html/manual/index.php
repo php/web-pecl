@@ -109,6 +109,11 @@ HREF="contributing.php"
 ><DD
 ><DL
 ><DT
+>3. <A
+HREF="contributing-howto.php"
+>How to contribute to PEAR</A
+></DT
+><DT
 ><A
 HREF="packages.skeleton.php"
 >Skeleton for creating PEAR docbook documentation</A

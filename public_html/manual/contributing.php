@@ -3,7 +3,7 @@ sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
   'prev' => array('packages.net_checkip.php', ''),
-  'next' => array('packages.skeleton.php', ''),
+  'next' => array('contributing-howto.php', 'How to contribute to PEAR'),
   'up'   => array('index.php', 'PEAR Manual'),
   'toc'  => array(
     array('index.php#manual', ''),
@@ -31,6 +31,11 @@ CLASS="TOC"
 ><DT
 ><B
 >Table of Contents</B
+></DT
+><DT
+>3. <A
+HREF="contributing-howto.php"
+>How to contribute to PEAR</A
 ></DT
 ><DT
 ><A

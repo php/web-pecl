@@ -2,11 +2,13 @@
 sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
-  'prev' => array('contributing.php', 'Contributing to PEAR'),
+  'prev' => array('contributing-introducing.php', 'Introducing your code'),
   'next' => array('index.php#AEN0', ''),
   'up'   => array('contributing.php', 'Contributing to PEAR'),
   'toc'  => array(
     array('contributing.php#contributing', ''),
+    array('contributing.php#AEN0', ''),
+    array('contributing-howto.php', 'How to contribute to PEAR'),
     array('contributing.php#AEN0', ''),
     array('packages.skeleton.php', ''))));
 manualHeader('','packages.skeleton.php');
@@ -17,10 +19,17 @@ CLASS="TITLEPAGE"
 ><H1
 CLASS="title"
 ><A
-NAME="AEN448"
+NAME="AEN481"
 >Skeleton for creating PEAR docbook documentation</A
 ></H1
 ><HR></DIV
+><P
+>You can get the XML soure file for the skeleton
+ <A
+HREF="http://pear.php.net/downloads/skeleton.xml"
+TARGET="_top"
+>here</A
+></P
 ><DIV
 CLASS="section"
 ><H1

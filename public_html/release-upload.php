@@ -52,9 +52,10 @@ do {
 			display_error("Error while uploading package: ".$ok->getMessage());
 			break;
 		}
+        release::promote($info, $distfile);
 		response_header("Release Upload Finished");
 		print "The release of package `" . $info['package'] . "' version `" . $info['version'] . "' ";
-		print "was completed successfully.<br />";
+		print "was completed successfully and the marketing for it started.<br /><br />";
         $pacid = package::info($info['package'], 'id');
         print '<center>'.
               make_link("package-info.php?pacid=$pacid", 'Visit package home') .

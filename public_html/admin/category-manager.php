@@ -27,7 +27,7 @@ auth_require(true);
  *   deleting categories.
  */
 
-$template_dir = dirname(dirname(__FILE__)) . '/templates/';
+$template_dir = dirname(dirname(__FILE__)) . '/../templates/';
 	
 /**
  * Function to recurse thru the tree adding nodes to treemenu
@@ -63,7 +63,7 @@ function parseTree(&$structure, $parent = null)
  * Form submitted?
  */
 if (!empty($_POST)) {
-    include_once '../include/pear-category.php';
+    include_once '../../include/pear-category.php';
 
     switch (@$_POST['action']) {
     case 'add':
@@ -124,7 +124,7 @@ if (!empty($_SESSION['category_manager']['error_msg'])) {
 }
 
 $categories   = $dbh->getAll('SELECT id, name, description FROM categories ORDER BY id', null, DB_FETCHMODE_ASSOC);
-$treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, array('images' => 'gifs/TreeMenu', 'defaultClass' => 'treeMenuOff'));
+$treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, array('images' => '../gifs/TreeMenu', 'defaultClass' => 'treeMenuOff'));
 
 include($template_dir . 'category-manager.html');
 ?>

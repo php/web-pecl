@@ -136,7 +136,7 @@ cd $PTMP
 echo "Downloading files..."
 
 for i in $files; do
-	cvs -d :pserver:cvsread@cvs.php.net:/repository \
+	cvs -q -d :pserver:cvsread@cvs.php.net:/repository \
 	    export -D "now" "php4/pear$i"
 done
 pearin=php4/pear/scripts/pear.in

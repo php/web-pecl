@@ -67,9 +67,12 @@ we may have to limit participation if the interest becomes too great. The
 meeting room can hold up to 15 people. We may also have to moderate the IRC
 channel if things become too confusing to follow.<br />
 IRC Channels:<br />
-Freenode
-#pear for general discussion between users listening/watching *about* the meeting 
-#pear.meeting the channel for the meeting +m (moderated)
+<br />
+Freenode channels:
+<ul>
+<li>#pear for general discussion between users listening/watching *about* the meeting</li>
+<li>#pear.meeting the channel for the meeting +m (moderated)</li>
+</ul>
 <br />
 When necessary newer members of the PEAR community may therefore
 be unable to directly communicate with the meeting. I would therefore 

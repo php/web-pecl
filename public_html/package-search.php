@@ -5,8 +5,6 @@ $form = new HTML_Form($_SERVER['PHP_SELF']);
 
 /*
 * TODO
-*  - Use coxs pager class
-*  - Show all packages when no search terms entered or not?
 *  - More stuff to search on, eg summary, version
 */
 
@@ -100,11 +98,29 @@ if(!empty($_GET)) {
     $result = $dbh->query($sql);
 
     // Print any results
-    if($result->numRows() > 0) {        
-        echo "<br /><br />\n";
-        $bb = new Borderbox("Search results (" . $result->numRows() . ")");
+    if (($numrows = $result->numRows()) > 0) { 
 
-        while($result->fetchInto($row)) {
+        // Paging
+        include_once('Pager.php');
+        $params['itemData'] = range(0, $numrows - 1);
+        $pager =& new Pager($params);
+        list($from, $to) = $pager->getOffsetByPageId();
+        $links = $pager->getLinks('<nobr><< Prev</nobr>', '<nobr>Next >></nobr>');
+
+        // Row number
+        $rownum = $from - 1;
+        
+        echo "<br /><br />\n";
+        
+        // Title of borderbox
+        $title_html  = '<table border="0" width="100%" cellspacing="0" cellpadding="0"><tr>';
+        $title_html .= '<td align="left" width="1">' . $links['back'] . '</td>';
+        $title_html .= '<td>Search results (' . $from . ' - ' . $to . ' of ' . $numrows . ')</td>';
+        $title_html .= '<td align="right" width="1">' . $links['next'] . '</td></tr></table>';
+
+        $bb = new Borderbox($title_html);
+
+        while ($result->fetchInto($row, DB_FETCHMODE_ASSOC, $rownum++) AND $rownum <= $to) {
             echo ' <dt><a href="package-info.php?pacid='.$row['id'].'">'.$row['name'].'</a> (<a href="/account-info.php?handle='.$row['handle'].'">'.$row['handle'].'</a>)</dt>';
             echo ' <dd>'.$row['summary'].'</dd>';
             echo ' <br /><br />';

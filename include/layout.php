@@ -201,7 +201,8 @@ function commonHeader($title) {
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br></td></tr>
 
   <tr bgcolor="#006633">
-      <td align="right" valign="top" colspan="2">
+      <td align="right" valign="top" colspan="2">&nbsp;
+<!--
         <form method="POST" action="/search.php">
         <font color="#ffffff">
         <small>search for</small>
@@ -218,7 +219,9 @@ function commonHeader($title) {
 </SELECT>
 <?	echo make_submit('small_submit_white.gif', 'search', 'bottom');
       ?>&nbsp;<br>
-     </font></form></td>
+     </font></form>
+//-->     
+     </td>
   </tr>
 
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br></td></tr>

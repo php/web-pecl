@@ -299,6 +299,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
 	$total_maintainers = number_format($dbh->getOne("SELECT COUNT(DISTINCT handle) FROM maintains"), 0, '.', ',');
 	$total_releases    = number_format($dbh->getOne("SELECT COUNT(*) FROM package_stats"), 0, '.', ',');
 	$total_categories  = number_format($dbh->getOne("SELECT COUNT(*) FROM categories"), 0, '.', ',');
+    $total_downloads   = number_format($dbh->getOne("SELECT COUNT(*) FROM downloads"), 0, '.', ',');
 	$query             = "SELECT dl_number, package, release, pid, rid, cid FROM package_stats ORDER BY dl_number DESC";
 
 }
@@ -323,6 +324,10 @@ if (@!$_GET['pid']) {
 		<td width="25%">Total Categories:</td>
 		<td width="25%" align="center" bgcolor="#cccccc"><?=$total_categories?></td>
 	</tr>
+    <tr>
+        <td width="25%">Total Downloads:</td>
+        <td width="25%" align="center" bgcolor="#cccccc"><?=$total_downloads?></td>
+   </tr>
 </table>
 	<?php
 	$bb->end();
@@ -350,7 +355,6 @@ if (@!$_GET['pid']) {
 	echo "</tr>\n";
 
 	$lastPackage = "";
-    $total_dl    = 0;
     
 	while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
 	    if ($row['package'] == $lastPackage) {
@@ -368,15 +372,7 @@ if (@!$_GET['pid']) {
 	    echo "<td>" . number_format($row['dl_number'], 0, '.', ',') . "</td>\n";
 	    echo "<td>[". make_link("/package-stats.php?cid=" . $row['cid'] . "&pid=" . $row['pid'] . "&rid=" . $row['rid'], "Details") . "]</td>\n";
 	    echo "</tr>\n";
-        $total_dl += $row['dl_number'];
 	}
-    echo "<tr bgcolor=\"#eeeeee\">\n";
-    echo "<td>\n<b>Total</b></td>\n";
-    echo "<td>&nbsp;</td>\n";
-    echo "<td>\n<b>" . number_format($total_dl, 0, '.', ',') . "</b></td>\n";
-    echo "<td>&nbsp</td>\n";
-    echo "</tr>\n";
-
 	echo "</table>\n";
 
 	$bb->end();

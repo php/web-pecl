@@ -158,7 +158,7 @@ if ($display_form) {
 
     print "<h1>Request Account</h1>
 
-<p>You do <b>not</b> need and account if you want to download, install and/or
+<p>You do <b>not</b> need an account if you want to download, install and/or
 use PEAR packages. You only need to request an account if you want to
 contribute a new package to PEAR CVS, help in the maintainance of an existing
 package, or list and release your package using the PEAR packager/installer

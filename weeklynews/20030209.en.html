@@ -20,11 +20,78 @@
 <hr />
  <!-- SECTION --><a name="1"></a>
 <h2>Package of the week</h2>
-<h3></h3>
-<h3></h3>
+<h3>Mono extension</h3>
+<h3>Who's Sterling Hughes</h3>
 <p>
+  Don't ask me, 
+  <a href="http://www.googlism.com/index.htm?ism=Sterling+Hughes&type=1">ask google!</a>
 </p>
+<h3>What is the pros/cons of publishing your work under PEAR/PECL ?</h3>
+<p>
+  PEAR/PECL's advantages will be different for every situation; in
+  general, I see 2 big advantages:<br>
+<ol>
+  <li>You want an automated package distribution and management system. 
+  Installing the mono extension without the pear installer requires a
+  small amount of magic.  Using the pear package system, it takes me only
+  a few minutes to create new releases, and for users, its a simple:i<br><br>
 
+  $ pear install mono<br><br>
+
+  (Note: you may use PEAR's package system outside of the PEAR framework. 
+  External projects, for instance xdebug, do this.)<br><br>
+  </li>
+  <li> You want to publicize your library.  You not only want other
+  developers to use your core, but you want reap the benefits of their
+  usage: testing and debugging.  There is no better place for announcing a
+  package then PEAR/PECL, which has the weight of the PHP project behind
+  it.</li>
+  </ol>
+  As for cons - I don't see any.  Unless you want to be closed, but then,
+  PEAR is not really the place for you.
+</p>
+<h3>What do you hope for the future of PEAR/PECL ?</h3>
+<p>
+  Evangelism - making PEAR the de-facto resource.  Its current
+  framework/system is pretty robust; Stig and the team have done a great
+  job building it, now its time to let them come.
+</p>
+<h3>Mono, can you describe this package and the Mono technology ?</h3>
+<p>
+  Mono is an open source implementation of various components in the .NET framework.  The Mono 
+  extension is concerned with the Common Language Runtime (CLR) portion of Mono.  CLR is a 
+  common bytecode to which all .NET languages are compiled.  Compilers are currently available
+  for C#, C++, C, VB.NET, and Java.<br><br>
+
+  CLR aims to commoditize the language syntax.  Use different languages for different 
+  purposes.  If you prefer to write web frontends in PHP, but all your backend 
+  code in C or C# - do so!  Previously interfacing with such code was inefficient, 
+  and required either a protocol bridge, such as COM or DCOM, or writing an extension, 
+  often very time consuming.  .NET is a functionality upgrade: everything is the 
+  under the same hood.<br><br>
+
+  The mono extension allows you to access .NET assemblies (called "hosting").  It 
+  works much like the Java extension, using Mono to do the dirty work.  For example, 
+  the quintessential Hello World, with a .NET twist:<br>
+<pre CLASS="php"><code>
+&lt;?php
+$Console = new Mono('System.Console');
+$Console-&gt;WriteLine('Hello World');
+?&gt;
+</code></pre>
+</p>
+<h3>What do you actually need from the community ?</h3>
+<p>
+George and I need the same thing: a billion dollars.  I, however, will
+settle for lesser amounts, like a million or a couple hundred thousand.
+
+Just use the package!  If you find bugs, or have questions drop me an
+email, sterling@php.net.
+</p>
+<p>
+Thank's to Sterling Hughes for this interview.
+</p>
+<p >
 <h2>In the press</h2>
 <!-- SECTION --><a name="2"></a>
 <h3>php|architect</h3>

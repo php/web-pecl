@@ -55,7 +55,7 @@ if (DEVBOX) {
             $RSIDEBAR_DATA .= "<tr><td valign='top' class='compact'>";
             $RSIDEBAR_DATA .= "<a href=\"package-info.php?pacid=$id&release=$version\">";
 //            $RSIDEBAR_DATA .= "$name $version</a><br /><font size=\"-1\" face=\"arial narrow,arial,helvetica,sans-serif\"><i>$releasedate:</i>$desc</font></td></tr>";
-            $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i>$desc</td></tr>";
+            $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i> $desc</td></tr>";
         }
         $RSIDEBAR_DATA .= "</table>\n";
     }

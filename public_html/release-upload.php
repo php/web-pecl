@@ -72,8 +72,7 @@ do {
             display_error($e->getMessage()); break;
         }
         $file = release::upload($info['package'], $info['version'], $info['release_state'],
-                                $info['release_notes'], $distfile, md5_file($distfile),
-                                (isset($_POST['forceUpload']) ? true : false));
+                                $info['release_notes'], $distfile, md5_file($distfile));
         if (PEAR::isError($file)) {
             $ui = $file->getUserInfo();
             display_error("Error while uploading package: " .
@@ -141,7 +140,6 @@ Uploading new releases is restricted to each package's lead developer(s).
 
     $form =& new HTML_Form($_SERVER['PHP_SELF'], 'POST');
     $form->addFile("distfile", "Distribution file");
-    $form->addCheckbox("forceUpload", "Re-release if necessary?", 0);
     $form->addSubmit("upload", "Upload!");
     $form->display();
 
@@ -207,11 +205,6 @@ if ($display_verification) {
     print "<tr><th align=\"right\" valign=\"top\">Release Notes:</th><td>" . nl2br($info['release_notes']) . "</td></tr>\n";
 
     print "</table>\n";
-
-    if (isset($_POST['forceUpload'])) {
-        $form->addHidden("forceUpload", "1");
-    }
-
     $form->display();
     $bb->end();
 }

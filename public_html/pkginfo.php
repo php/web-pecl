@@ -1,6 +1,5 @@
 <?php
 //error_reporting(E_ALL);
-response_header("Package :: $package");
 
 // expected url vars: idpack
 $idpack = (isset($idpack)) ? (int) $idpack : null;
@@ -37,6 +36,7 @@ $authors .= '<tr><td>$name &lt;<a href="mailto:$mail">$mail</a>> ($role)</td></t
 // }
 $release_date  = '2000-01-34';
 $release_notes = 'Bug fix release';
+response_header("Package :: $name");
 ?>
 <center><h2><?php echo "$name $release ($maturity)";?></h2></center>
 <table border="1" cellspacing="3" cellpadding="3" height="48" width="100%">

@@ -27,7 +27,7 @@ function validate($entity, $field, $value /* , $oldvalue, $object */) {
 
 // }}}
 
-// {{{ visit_node()
+// {{{ renumber_visitations()
 
 /*
 
@@ -54,111 +54,38 @@ To get all leaf nodes:
  SELECT * FROM table WHERE right-1 = left;
 
  */
-function visit_node(&$tree, $node, &$cnt, $debug) {
-    // XXX this stuff seriously needs to be reimplemented
-    static $pkg_visitno, $cat_visitno;
-    if (empty($pkg_visitno) || empty($node)) {
-        $pkg_visitno = 1;
-    }
-    if (empty($cat_visitno) || empty($node)) {
-        $cat_visitno = 1;
-    }
-    $tree[$node]['cat_left'] = $cat_visitno++;
-    $tree[$node]['pkg_left'] = $pkg_visitno;
-    $inc = 1;
-    if (isset($cnt[$node])) {
-        $inc += $cnt[$node];
-    }
-    if ($debug) {
-        var_dump($cnt[$node]);
-        print "inc=$inc<br />\n";
-    }
-    $pkg_visitno += $inc;
-    if (isset($tree[$node]['children'])) {
-        foreach ($tree[$node]['children'] as $cnode) {
-            visit_node($tree, $cnode, $cnt, $debug);
-        }
-    }
-    $tree[$node]['cat_right'] = $cat_visitno++;
-    $tree[$node]['pkg_right'] = $pkg_visitno;
-    $pkg_visitno += $inc;
-}
 
-// }}}
-// {{{ renumber_visitations()
-
-function renumber_visitations($debug = false)
+function renumber_visitations($id, $parent)
 {
     global $dbh;
-    $sth = $dbh->query("SELECT category FROM packages");
-    if (DB::isError($sth)) {
-        return $sth;
+    if ($parent === null) {
+        $left = $dbh->getOne("select max(cat_right) + 1 from categories
+                              where parent is null");
+        $left = ($left !== null) ? $left : 1; // first node
+    } else {
+        $left = $dbh->getOne("select cat_right from categories where id = $parent");
     }
-    $pkg_count = array();
-    while ($sth->fetchInto($row, DB_FETCHMODE_ORDERED) === DB_OK) {
-        if (isset($pkg_count[$row[0]])) {
-            $pkg_count[$row[0]]++;
-        } else {
-            $pkg_count[$row[0]] = 1;
-        }
+    $right = $left + 1;
+    // update my self
+    $err = $dbh->query("update categories
+                        set cat_left = $left, cat_right = $right
+                        where id = $id");
+    if (PEAR::isError($err)) {
+        return $err;
     }
-    $sth->free();
-    $sth = $dbh->query("SELECT * FROM categories ORDER BY name");
-    if (DB::isError($sth)) {
-        return $sth;
+    if ($parent === null) {
+        return true;
     }
-    $tree = array(0 => array("children" => array()));
-    $cat_oldleft = array();
-    $cat_oldright = array();
-    $pkg_oldleft = array();
-    $pkg_oldright = array();
-    $new_count = array();
-    while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC) === DB_OK) {
-        extract($row);
-        settype($parent, 'integer');
-        $tree[$parent]["children"][] = $id;
-        $tree[$id]["parent"] = $parent;
-        $cat_oldleft[$id] = (int)$cat_left;
-        $cat_oldright[$id] = (int)$cat_right;
-        $pkg_oldleft[$id] = (int)$pkg_left;
-        $pkg_oldright[$id] = (int)$pkg_right;
-        if (!isset($pkg_count[$id])) {
-            $new_count[$id] = 0;
-        } elseif ($npackages != $pkg_count[$id]) {
-            $new_count[$id] = $pkg_count[$id];
-        }
+    $err = $dbh->query("update categories set cat_left = cat_left+2
+                        where cat_left > $left");
+    if (PEAR::isError($err)) {
+        return $err;
     }
-    $pkg_visitno = 0;
-    $cat_visitno = 0;
-    visit_node($tree, 0, $pkg_count, $pkg_visitno, $debug);
-    foreach ($tree as $node => $data) {
-        if (!isset($pkg_oldleft[$node])) {
-            continue;
-        }
-        $pl = $data["pkg_left"];
-        $pr = $data["pkg_right"];
-        $cl = $data["cat_left"];
-        $cr = $data["cat_right"];
-        if ($pkg_oldleft[$node] == $pl && $pkg_oldright[$node] == $pr &&
-            $cat_oldleft[$node] == $cl && $cat_oldright[$node] == $cr) {
-            if ($debug) {
-                print "keeping $node<br />\n";
-            }
-            continue;
-        }
-        if ($debug) {
-            print "updating $node<br />\n";
-        }
-        $query = "UPDATE categories SET pkg_left=$pl, pkg_right=$pr";
-        $query .= ", cat_left=$cl, cat_right=$cr";
-        if (isset($new_count[$node])) {
-            $query .= ", npackages={$new_count[$node]}";
-        }
-        $query .= " WHERE id=$node";
-        if ($debug) {
-            print "$query\n";
-        }
-        $dbh->query($query);
+    // (cat_right >= $left) == update the parent but not the node itself
+    $err = $dbh->query("update categories set cat_right = cat_right+2
+                        where cat_right >= $left and id <> $id");
+    if (PEAR::isError($err)) {
+        return $err;
     }
     return true;
 }
@@ -201,7 +128,7 @@ class category
         if (DB::isError($err)) {
             return $err;
         }
-        $err = renumber_visitations();
+        $err = renumber_visitations($id, $parent);
         if (PEAR::isError($err)) {
             return $err;
         }
@@ -248,7 +175,9 @@ class package
         if (isset($lead) && DB::isError($err = maintainer::add($id, $lead, 'lead'))) {
             return $err;
         }
-        if (DB::isError($err = renumber_visitations())) {
+        $sql = "update categories set npackages = npackages + 1
+                where id = $category";
+        if (DB::isError($err = $dbh->query($sql))) {
             return $err;
         }
         return $id;

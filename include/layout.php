@@ -172,7 +172,7 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
 //
 
 function commonHeader($title) {
-    global $SIDEBAR_DATA, $HTTP_SERVER_VARS, $ONLOAD, $auth_user, $RSIDEBAR_DATA;
+    global $SIDEBAR_DATA, $ONLOAD;
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -182,10 +182,6 @@ function commonHeader($title) {
  <link rel="shortcut icon" href="/gifs/favicon.ico" />
  <link rel="stylesheet" href="/style.css" />
  <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/rss.php" />
- <meta name="description" content="This is the homepage of the PHP PEAR project." />
- <?php // XXX: Add more keywords here. ?>
- <meta name="keywords" content="PEAR, PECL, PHP, PHP Extension and Application Repository, Code, download" />
-
 </head>
 
 <body <?php

@@ -200,7 +200,9 @@ accept these locations.
 }
 
 foreach ($config_vars as $n => $var) {
-    $$var = str_replace('$prefix', $prefix, $$var);
+    foreach ($config_vars as $m => $var2) {
+        $$var = str_replace('$'.$var2, $$var2, $$var);
+    }
 }
 
 foreach ($config_vars as $var) {

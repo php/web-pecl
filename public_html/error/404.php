@@ -25,12 +25,13 @@
 * http://pear.php.net/Mail_Mime
 */
 
+$pkg = strtr($_SERVER['REDIRECT_URL'], "-","_");
 $pinfo_url = '/package-info.php?package=';
 $sql = "SELECT p.id, p.name, p.summary
             FROM packages p
             WHERE name LIKE ?
             ORDER BY p.name";
-$term = "%" . basename($_SERVER['REDIRECT_URL']) . "%";
+$term = "%" . basename($pkg) . "%";
 $packages = $dbh->getAll($sql, array($term), DB_FETCHMODE_ASSOC);
 
 if (count($packages) == 1) {

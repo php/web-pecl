@@ -116,6 +116,8 @@ if (@sizeof($recent) > 0) {
 //            $RSIDEBAR_DATA .= "$name $version</a><br /><font size=\"-1\" face=\"arial narrow,arial,helvetica,sans-serif\"><i>$releasedate:</i>$desc</font></td></tr>";
         $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i> $desc</td></tr>";
     }
+    $image = make_link("/rss.php", make_image("xml.gif", "RSS feed"));
+    $RSIDEBAR_DATA .= "<tr><td width=\"100%\" align=\"right\">" . $image . "</td></tr>\n";
     $RSIDEBAR_DATA .= "</table>\n";
 }
 

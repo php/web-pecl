@@ -37,8 +37,12 @@ User authentication, revision control, wysiwyg editing. - which currently this (
 - archived page - look at old stufff.
 
 */
-
-
+if (!function_exists("getText")) {
+    function getText($string) { return $string; }
+    
+    
+    
+}
  
 function show_languages($visitlang = "") {
     $available_langs = array(
@@ -188,14 +192,16 @@ if (preg_match("/^\/weeklynews.php\/([a-z]{2})/",$_SERVER['REQUEST_URI'],$args))
     );
     $show_lang = $args[1];
     $locale = $lang_maps[$args[1]];
-     setlocale(LC_ALL, $locale);
+    setlocale(LC_ALL, $locale);
     /*
     if (!setlocale(LC_ALL, $locale)) {
         echo "NOT SUPPORTED? LC_MESSAGES, $locale ";
     }
     */
-    bindtextdomain("weeklynews", "../weeklynews/locale");
-    textdomain("weeklynews");
+    if (function_exists("bindtextdomain")) {
+        bindtextdomain("weeklynews", "../weeklynews/locale");
+        textdomain("weeklynews");
+    }
     //echo getText("test");
 }
 

@@ -13,7 +13,7 @@
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
-   | Authors:                                                             |
+   | Authors: Martin Jansen <mj@php.net>                                  |
    +----------------------------------------------------------------------+
    $Id$
 */
@@ -39,12 +39,11 @@ if (!isset($_GET['limit']) || $_GET['limit'] == "") {
 header("Content-type: text/xml");
 echo "<?xml version=\"1.0\"?>\n";
 ?>
-
-<rss version="0.9">
+<rss version="0.93">
 <channel>
   <title>PEAR</title>
   <link>http://pear.php.net/</link>
-  <description>This are the latest releases from PEAR.</description>
+  <description>This is a list containing the latest releases from PEAR.</description>
   <image>
     <url>http://pear.php.net/gifs/pearsmall.gif</url>
     <title>PEAR</title>
@@ -55,21 +54,15 @@ echo "<?xml version=\"1.0\"?>\n";
 
 <?php
 foreach (release::getRecent($limit) as $release) {
-
-    $desc = substr($release['releasenotes'], 0, 40);
-    if (strlen($release['releasenotes']) > 40) {
-        $desc .= '...';
-    }
-
     echo "  <item>\n";
-
     echo "    <title>" . $release['name'] . "</title>\n";
+    echo "    <pubDate>" . $release['releasedate'] . "</pubDate>\n";
     printf("    <link>http://pear.php.net/package-info.php?pacid=%s&amp;release=%s</link>\n",
            $release['id'],
            $release['version']
           );
 
-    echo "    <description>" . htmlspecialchars($desc) . "</description>\n";
+    echo "    <description>" . htmlspecialchars($release['releasenotes']) . "</description>\n";
     echo "  </item>\n";
 }
 ?>

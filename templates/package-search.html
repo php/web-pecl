@@ -370,7 +370,7 @@
 
     <?foreach($search_results as $row):?>
         <tr>
-            <td><a href="package-info.php?package=<?=$row['raw_name']?>"><?=$row['name']?></a></td>
+            <td><a href="/<?=$row['raw_name']?>"><?=$row['name']?></a></td>
             <td><?=$row['summary']?></td>
         </tr>
     <?endforeach?>

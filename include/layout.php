@@ -6,9 +6,9 @@ require_once 'site.php';
 
 if (empty($prevsearch)) $prevsearch = '';
 
-# spacer()
-# print a IMG tag for a sized spacer GIF
-#
+// spacer()
+// print a IMG tag for a sized spacer GIF
+//
 
 function spacer($width=1, $height=1, $align=false, $extras=false) {
 	printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt="" %s%s>',
@@ -21,9 +21,9 @@ function spacer($width=1, $height=1, $align=false, $extras=false) {
 
 
 
-# resize_image()
-# tag the output of make_image() and resize it manually
-#
+// resize_image()
+// tag the output of make_image() and resize it manually
+//
 
 function resize_image($img, $width=1, $height=1) {
 	$str = preg_replace('/width=\"([0-9]+?)\"/i', '', $img );
@@ -34,9 +34,9 @@ function resize_image($img, $width=1, $height=1) {
 
 
 
-# make_image()
-# return an IMG tag for a given file (relative to the images dir)
-#
+// make_image()
+// return an IMG tag for a given file (relative to the images dir)
+//
 
 function make_image($file, $alt=false, $align=false, $extras=false, $dir=false, $border=0) {
 	global $HTTP_SERVER_VARS;
@@ -68,9 +68,9 @@ function make_image($file, $alt=false, $align=false, $extras=false, $dir=false, 
 
 
 
-# print_image()
-# print an IMG tag for a given file
-#
+// print_image()
+// print an IMG tag for a given file
+//
 
 function print_image($file, $alt=false, $align=false, $extras=false, $dir=false, $border=0) {
 	print make_image($file, $alt, $align, $extras, $dir);
@@ -78,9 +78,9 @@ function print_image($file, $alt=false, $align=false, $extras=false, $dir=false,
 
 
 
-# make_submit()
-#  - make a submit button image
-#
+// make_submit()
+//  - make a submit button image
+//
 function make_submit($file, $alt=false, $align=false, $extras=false, $dir=false, $border=0) {
 	if (!$dir) {
 		$dir = '/gifs';
@@ -96,9 +96,9 @@ function make_submit($file, $alt=false, $align=false, $extras=false, $dir=false,
 
 
 
-# delim()
-# print a pipe delimiter
-#
+// delim()
+// print a pipe delimiter
+//
 
 function delim($color=false) {
 	if (!$color) {
@@ -109,9 +109,9 @@ function delim($color=false) {
 
 
 
-# hdelim()
-# print a horizontal delimiter (just a wide line);
-#
+// hdelim()
+// print a horizontal delimiter (just a wide line);
+//
 
 function hdelim($color="#000000") {
 	if (!$color) {
@@ -122,9 +122,9 @@ function hdelim($color="#000000") {
 
 
 
-# make_link()
-# return a hyperlink to something, within the site
-#
+// make_link()
+// return a hyperlink to something, within the site
+//
 
 function make_link ($url, $linktext=false, $target=false, $extras=false) {
 	return sprintf("<a href=\"%s\"%s%s>%s</a>",
@@ -137,9 +137,9 @@ function make_link ($url, $linktext=false, $target=false, $extras=false) {
 
 
 
-# print_link()
-# echo a hyperlink to something, within the site
-#
+// print_link()
+// echo a hyperlink to something, within the site
+//
 
 function print_link($url, $linktext=false, $target=false, $extras=false) {
 	echo make_link($url, $linktext, $target, $extras);
@@ -147,9 +147,9 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
 
 
 
-# commonheader()
-#
-#
+// commonheader()
+//
+//
 
 function commonHeader($title) {
 	global $SIDEBAR_DATA, $HTTP_SERVER_VARS;
@@ -179,7 +179,11 @@ function commonHeader($title) {
       <font color="#ffffff"><b>
         <?php echo strftime("%A, %B %d, %Y"); ?>
       </b>&nbsp;<br>
-      </font>
+<?php
+    if (isset($GLOBALS['HTTP_COOKIE_VARS']['pear_dev'])) {
+	print "pear_dev cookie set&nbsp;<br>";
+    }
+?>      </font>
     </td>
   </tr>
 
@@ -256,9 +260,9 @@ function commonHeader($title) {
 
 
 
-# commonfooter()
-#
-#
+// commonfooter()
+//
+//
 
 function commonFooter() {
 	global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES,$SCRIPT_NAME;

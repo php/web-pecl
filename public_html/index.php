@@ -1,5 +1,13 @@
 <?php
 
+if ($HTTP_SERVER_VARS['QUERY_STRING'] == 'devme') {
+    $duration = 86400 * 360;
+    ini_set("y2k_compliance", "on");
+    setcookie("pear_dev", "on", time() + $duration, "/");
+    $HTTP_COOKIE_VARS['pear_dev'] = "on";
+}
+
+
 $SIDEBAR_DATA='
 <h3>What is PEAR?</h3>
 <p>
@@ -14,11 +22,9 @@ components.
 
 response_header();
 
-print "<!-- $REMOTE_ADDR -->\n";
-
 menu_link("Documentation", "http://php.net/manual/en/pear.php");
 
-if ($SERVER_NAME != "pear.php.net") {
+if (DEVBOX) {
     menu_link("Request PEAR Account", "account-request.php");
     menu_link("New Package", "package-new.php");
     menu_link("Administrators", "admin.php");

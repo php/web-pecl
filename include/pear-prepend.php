@@ -8,6 +8,12 @@ require_once "pear-database.php";
 
 error_reporting(E_ALL);
 
+if ($HTTP_SERVER_VARS['SERVER_NAME'] != 'pear.php.net' || isset($HTTP_COOKIE_VARS['pear_dev'])) {
+    define('DEVBOX', true);
+} else {
+    define('DEVBOX', false);
+}
+
 if (empty($format)) {
     if (basename($PHP_SELF) == "xmlrpc.php") {
 	$format = "xmlrpc";

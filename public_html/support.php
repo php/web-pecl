@@ -26,7 +26,7 @@ if (isset($maillist)) {
 		$sub = str_replace("@", "=", $email);
 		switch ($maillist) {
 		    default:
-			mail("$maillist-$request-$sub@lists.php.net", "Website Subscription", 
+			mail("$maillist-$request-$sub@lists.php.net", "Website Subscription",
 				"This was a request generated from the form at http://pear.php.net/support.php.", "From: $email\r\n");
 			break;
 		}
@@ -53,7 +53,7 @@ are searchable.
   $mailing_lists = Array(
 
     'PEAR mailinglists',
-    
+
     Array (
       'pear-general', 'PEAR general list',
       'A list for users of PEAR',
@@ -71,7 +71,7 @@ are searchable.
       'All the commits of the cvs PEAR code repository are posted to this list automatically',
       false, true, true, "php.pear.cvs"
     )
-  
+
   );
 ?>
 <form method="POST" action="http://pear.php.net/support.php">
@@ -92,7 +92,7 @@ while ( list(, $listinfo) = each($mailing_lists)) {
 		echo '</tr>' . "\n";
 
 	} else {
-  
+
 		echo '<tr align="center" bgcolor="#e0e0e0">';
 		echo '<td align="left"><b>' . $listinfo[1] . '</b><br /><small>'. $listinfo[2] . '</small></td>';
 		echo '<td>' . ($listinfo[3] ? 'yes' : 'no') . '</td>';
@@ -136,6 +136,11 @@ If you have questions concering this website, you can contact
 <a href="mailto:pear-webmaster@php.net">pear-webmaster@php.net</a>.
 </p>
 
+<p>
+Of course don't forget to visit the <i>#pear</i> IRC channel at the <a href="http://www.efnet.org">
+Eris Free Net</a>
+</p>
+
 <h2>PEAR Tutorials</h2>
 
 <h4>Tutorials about the PEAR DB class:</h4>
@@ -144,7 +149,7 @@ If you have questions concering this website, you can contact
     <li><a href="http://vulcanonet.com/soft/?pack=pear_tut">PEAR DB Tutorial</a> by Tomas V.V.Cox</li><br /><br />
 
     <li><a href="http://vulcanonet.com/soft/?pack=pager">Pear DB Pager Class Tutorial</a> by Tomas V.V.Cox.
-    This class handles all the stuff needed for displaying paginated results from a database query.</li><br /><br />    
+    This class handles all the stuff needed for displaying paginated results from a database query.</li><br /><br />
 
     <li><a href="http://www.phpbuilder.com/columns/allan20010115.php3">PEAR DB Tutorial</a> on phpbuilder.com</li><br /><br />
 
@@ -155,22 +160,22 @@ If you have questions concering this website, you can contact
 
 <h4>Tutorials about some PEAR classes in German:</h4>
 
-<ul>   
+<ul>
     <li>Tutorial about a lot of PEAR-classes
     <a href="http://www.tu-chemnitz.de/~meal/php/peardoc/index.html">http://www.tu-chemnitz.de/~meal/php/peardoc/index.html</a>
     </li><br /><br />
-    
+
     <li>IT[X] is a template class:<br />
     <a href="http://www.ulf-wendel.de/projekte/itx/index.php">http://www.ulf-wendel.de/projekte/itx/index.php</a>
     </li><br /><br />
-    
+
     <li><a href="http://www.ulf-wendel.de/projekte/menu/tutorial.php">Menu.php Tutorial</a> in German.
-    This class generates a HTML menu from a multidimensional hash.</li><br /><br />    
+    This class generates a HTML menu from a multidimensional hash.</li><br /><br />
 
     <li><a href="http://www.ulf-wendel.de/projekte/cache/">Tutorial about the PEAR Cache class</a></li>
 </ul>
 
-<h4>Other tutorials:</h4>        
+<h4>Other tutorials:</h4>
 
 <ul>
     <li><a href="http://php.chregu.tv/sql2xml/">XML_sql2xml tutorial</a>. A PEAR class for converting SQL
@@ -178,7 +183,7 @@ If you have questions concering this website, you can contact
 
     <li><a href="http://www.mamasam.com/tutorials/en_html_table.html">Table.php</a> Tutorial. The table class
     allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li><br /><br />
-</ul>  
+</ul>
 
 <h2>PEAR resources</h2>
 

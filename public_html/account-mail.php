@@ -78,7 +78,7 @@ if (isset($_POST['submit'])) {
         $text = "[This message has been brought to you via pear.php.net.]\n\n";
         $text .= wordwrap($_POST['text'], 72);
 
-        if (@mail('martin@urmel', $_POST['subject'], $text)) {
+        if (@mail($row['email'], $_POST['subject'], $text)) {
             echo '<p>Your message has been sent successfully.</p>';
         } else {
             PEAR::raiseError('An error occured while sending the message!');

@@ -4,19 +4,19 @@ require_once "XML/RPC/Server.php";
 
 ini_set("track_errors", true);
 
-$GLOBALS['release_upload_sig'] =
-array(array('string', // return type
-            'string', // package
-            'string', // version
-            'string', // release notes
-            'base64', // tar ball
-            'string'),// md5sum
+$release_upload_sig =
+array(array($XML_RPC_String, // return type
+            $XML_RPC_String, // package
+            $XML_RPC_String, // version
+            $XML_RPC_String, // release notes
+            $XML_RPC_Base64, // tar ball
+            $XML_RPC_String),// md5sum
       );
-$GLOBALS['release_upload_doc'] = "Upload a new release for a package.";
+$release_upload_doc = "Upload a new release for a package.";
 
 function xmlrpc_release_upload($m)
 {
-    global $_return_value;
+    global $_return_value, $XML_RPC_Boolean;
     // parameters: package, version, releasenotes, tarball, md5sum
     // implicit: doneby, releasedate
 
@@ -39,7 +39,7 @@ function xmlrpc_release_upload($m)
 
     $ret = release_upload($package, $version, $relnotes, $distfile, $md5sum);
     if ($ret === true) {
-        return new XML_RPC_Response(new xmlrpcval(1, $XML_RPC_Boolean));
+        return new XML_RPC_Response(new XML_RPC_Value(1, $XML_RPC_Boolean));
     } else {
         return xmlrpc_error($ret);
     }

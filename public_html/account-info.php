@@ -40,7 +40,7 @@ $bb = new BorderBox("Account Details", "100%", "", 2, true);
 $bb->horizHeadRow("Handle:", $handle);
 $bb->horizHeadRow("Name:", $row['name']);
 if ($row['showemail'] != 0) {
-	$bb->horizHeadRow("Email:", $row['email']);
+	$bb->horizHeadRow("Email:", "<a href=\"mailto:".$row['email']."\">".$row['email']."</a>");
 }
 if ($row['homepage'] != "") {
 	$bb->horizHeadRow("Homepage:",

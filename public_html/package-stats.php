@@ -133,7 +133,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 
     $info = package::info($_GET['pid']);
 
-    echo "<h2>Statistics for package \"<a href=\"http://pear.php.net/package-info.php?pacid=".$_GET['pid']."\">" . $info['name'] . "</a>\"</h2>\n";
+    echo "<h2>Statistics for package \"<a href=\"package-info.php?pacid=".$_GET['pid']."\">" . $info['name'] . "</a>\"</h2>\n";
     $bb = new Borderbox("General statistics");
     echo "Number of releases: <b>" . count($info['releases']) . "</b><br />\n";
     echo "Total downloads: <b>" . number_format(statistics::package($_GET['pid']), 0, '.', ',') . "</b><br />\n";
@@ -317,7 +317,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 */
 if (@!$_GET['pid']) {
 	echo '<br />';
-	$bb = new BorderBox(!empty($_GET['cid']) ? 'Category statistics for: <i><a href="http://pear.php.net/packages.php?catpid='.$_GET['cid'].'&catname='.str_replace(' ', '+', $category_name).'">' . $category_name . '</a></i>' : 'Global statistics');
+	$bb = new BorderBox(!empty($_GET['cid']) ? 'Category statistics for: <i><a href="packages.php?catpid='.$_GET['cid'].'&catname='.str_replace(' ', '+', $category_name).'">' . $category_name . '</a></i>' : 'Global statistics');
 	?>
 <table border="0" width="100%">
 	<tr>

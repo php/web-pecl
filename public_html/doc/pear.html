@@ -1,0 +1,281 @@
+<HTML
+><HEAD
+><TITLE
+>PEAR: PHP Extension and Add-on Repository</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.44"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="ARTICLE"
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="title"
+><A
+NAME="AEN2"
+>PEAR: PHP Extension and Add-on Repository</A
+></H1
+><H3
+CLASS="author"
+>Stig Bakken</H3
+><HR></DIV
+><P
+>PEAR is dedicated to Malin Bakken, born 1999-11-21.</P
+><DIV
+CLASS="section"
+><HR><H1
+CLASS="section"
+><A
+NAME="pear-whatis"
+>What is PEAR?</A
+></H1
+><P
+>&#13;   PEAR is a code repository for PHP extensions and PHP library code
+   similar to TeX's CTAN and Perl's CPAN.
+  </P
+><P
+>&#13;   The intention behind PEAR is to provide a means for library
+   code authors to organize their code in a standard way shared by
+   other developers, and to give the PHP community a single source and
+   single set of tools for getting such code.
+  </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H1
+CLASS="section"
+><A
+NAME="pear-admin"
+>Administration</A
+></H1
+><P
+>&#13;   This section will describe the rules for how files are structured
+   and how functions and classes should be named.
+  </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H1
+CLASS="section"
+><A
+NAME="pear-tools"
+>Tools</A
+></H1
+><P
+>&#13;   This section will describe the tools provided to PEAR users.
+  </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H1
+CLASS="section"
+><A
+NAME="pear-rules"
+>Coding Rules and Guidelines</A
+></H1
+><P
+>&#13;   This section describes some rules that are meant to make PEAR code
+   available to as many users as possible.  If you plan to contribute
+   to PEAR, please read this section carefully and follow these rules,
+   or someone will yell at you. :-)
+  </P
+><DIV
+CLASS="section"
+><HR><H2
+CLASS="section"
+><A
+NAME="pear-rules-filenames"
+>File Naming Conventions</A
+></H2
+><P
+>&#13;    Use the extension <TT
+CLASS="filename"
+>.php</TT
+> for
+    all files with PHP code in them.
+   </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H2
+CLASS="section"
+><A
+NAME="pear-rules-options"
+>Depending on Optional Features</A
+></H2
+><P
+>&#13;    PEAR code is meant to be useable with all (reasonable)
+    configurations of PHP.  Since PHP is very configurable and many of
+    its features are optional, this requires extra attention from you
+    as a PEAR author to make sure that your code works with different
+    configurations.
+   </P
+><P
+>&#13;    One example is the <TT
+CLASS="parameter"
+><I
+>magic_quotes_gpc</I
+></TT
+> config
+    option.  PEAR code should work with this option enabled or
+    disabled.  Here's an example of how to properly do that:
+    <DIV
+CLASS="informalexample"
+><P
+></P
+><PRE
+CLASS="programlisting"
+>&#13;// If magic_quotes_gpc is enabled, remove those slashes.
+if (ini_get("magic_quotes_gpc")) {
+    $arg = stripslashes($arg);
+}
+</PRE
+><P
+></P
+></DIV
+>
+   </P
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="pear-rules-phptags"
+>PHP Code Block Tags</A
+></H3
+><P
+>&#13;     Always use the <B
+CLASS="command"
+>&#60;?php ?&#62;</B
+> syntax, the
+     shorter forms such as <B
+CLASS="command"
+>&#60;? ?&#62;</B
+> and
+     <B
+CLASS="command"
+>&#60;% %&#62;</B
+> may be disabled by the user.
+    </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="pear-rules-gpcvars"
+>HTTP_*_VARS</A
+></H3
+><P
+>&#13;     GET/POST/cookie can be configured to not be set in the global
+     namespace, so PEAR code reading these should always use the
+     global arrays <TT
+CLASS="varname"
+>$HTTP_GET_VARS</TT
+>,
+     <TT
+CLASS="varname"
+>$HTTP_POST_VARS</TT
+>,
+     <TT
+CLASS="varname"
+>$HTTP_COOKIE_VARS</TT
+>,
+     <TT
+CLASS="varname"
+>$HTTP_SERVER_VARS</TT
+>,
+     <TT
+CLASS="varname"
+>$HTTP_ENV_VARS</TT
+> and
+     <TT
+CLASS="varname"
+>$HTTP_POST_FILES</TT
+> rather than the global
+     variables.
+    </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="pear-rules-scope"
+>Scope Issues</A
+></H3
+><P
+>&#13;     If you need to set some global variables in the top-level part of
+     your code (outside classes and functions), it is necessary to use
+     <TT
+CLASS="varname"
+>$GLOBALS</TT
+> to make sure your variable is
+     actually set in the global scope regardless of where your file is
+     included from.
+    </P
+><P
+>&#13;     It is possible, and often very useful, to include a file from
+     within a function.  The included file will inherit the calling
+     code's scope:
+
+     <DIV
+CLASS="example"
+><P
+><B
+>Beispiel 1 file1.php</B
+></P
+><PRE
+CLASS="programlisting"
+>&#13;&#60;?php $myglobal = 42; ?&#62;
+</PRE
+></DIV
+>
+
+     <DIV
+CLASS="example"
+><P
+><B
+>Beispiel 2 file2.php</B
+></P
+><PRE
+CLASS="programlisting"
+>&#13;&#60;?php
+
+class Foo {
+    function Foo($arg) {
+        if ($arg == 42) {
+            include("file1.php");
+        }
+    }
+}
+
+?&#62;
+</PRE
+></DIV
+>
+    </P
+><P
+>&#13;     This actually sets <TT
+CLASS="varname"
+>$myglobal</TT
+> as a local
+     variable in the <TT
+CLASS="classname"
+>Foo</TT
+> class's constructor
+     function, not as a global variable.
+    </P
+></DIV
+></DIV
+></DIV
+></DIV
+></BODY
+></HTML
+>

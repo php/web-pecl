@@ -28,9 +28,17 @@ if ($res->numRows() < 1) {
 
     while ($res->fetchInto($row, DB_FETCHMODE_ASSOC)) {
         extract($row);
-        print "<tr><td><p><b>Version: $version-$state ($releasedate)".
+        if (isset($_GET['release']) && $_GET['release'] == $version) {
+            $bgcolor1 = "#dddddd";
+            $bgcolor2 = "#eeeeee";
+        } else {
+            $bgcolor1 = "#FFFFFF";
+            $bgcolor2 = "#FFFFFF";
+        }
+
+        print "<tr bgcolor=\"" . $bgcolor1 . "\"><td><p><b>Version: $version-$state ($releasedate)".
               "</b></p></td></tr>\n".
-              '<tr><td>' . nl2br($releasenotes) ."<br /></td></tr>\n";
+              "<tr bgcolor=\"" . $bgcolor2 . "\"><td>" . nl2br($releasenotes) ."<br /></td></tr>\n";
     }
     print "</table>\n";
 }

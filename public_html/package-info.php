@@ -29,6 +29,16 @@ if (!$row) {
     response_footer();
     exit();
 }
+
+$package_infos = $dbh->getAll("SELECT * FROM package_info WHERE package = '" . $pacid . "'");
+
+if (DB::isError($package_infos)) {
+    response_header("Error");
+    PEAR::raiseError("");
+    response_footer();
+    exit();    
+}
+
 $name        = $row['name'];
 $summary     = stripslashes($row['summary']);
 $license     = $row['license'];
@@ -149,6 +159,7 @@ if (count($releases) == 0) {
         <th align="left">State</th>
         <th align="left">Release Date</th>
         <th align="left">Downloads</th>
+        <th></th>
 
     <?php
 
@@ -163,9 +174,15 @@ if (count($releases) == 0) {
     		$downloads_html .= "<a href=\"/get/$dl[basename]\">".
 	    		 "$dl[basename]</a><br />";
 	    }
-	    printf("  <td>%s</td><td>%s</td><td>%s</td><td>%s</td>\n",
+
+	    $link_changelog = "[ " . make_link("/package-changelog.php?pacid=" 
+	                                . $_GET['pacid'] . "&release="
+	                                . $rel['version'], "Changelog")
+	                      . " ]";
+
+	    printf("  <td>%s</td><td>%s</td><td>%s</td><td>%s</td><td valign=\"middle\">%s</td>\n",
                 $rel['version'], $rel['state'], $rel['releasedate'],
-                $downloads_html);
+                $downloads_html, "<small>" . $link_changelog . "</small>\n");
         print " </tr>\n";
     }
 }

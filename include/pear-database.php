@@ -908,8 +908,8 @@ Package Info
 
 Related Links
 -------------
-Package home: http://pear.php.net/package-info.php?pacid=$pacid
-   Changelog: http://pear.php.net/package-changelog.php?pacid=$pacid
+Package home: http://pear.php.net/package-info.php?package=$pkginfo[package]
+   Changelog: http://pear.php.net/package-changelog.php?package=$pkginfo[package]
     Download: http://pear.php.net/get/$upload
 
 Authors

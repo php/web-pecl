@@ -250,7 +250,7 @@ class category
     }
 
     // }}}
-    // {{{ getRecent
+    // {{{  proto array  category::getRecent(int, string)
 
     /**
      * Get list of recent releases for the given category
@@ -707,7 +707,7 @@ class package
     }
 
     // }}}
-    // {{{ getRecent
+    // {{{  proto array  package::getRecent(int, string)
 
     /**
      * Get list of recent releases for the given package

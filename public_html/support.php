@@ -33,22 +33,22 @@ response_header("Support");
 
 <?php
 if (isset($maillist)) {
-	# should really grab some email validating routine and use it here.
-	if (empty($email) || $email == 'user@example.com') {
-		echo "You forgot to specify an email address to be added to the list.  ";
-		echo "Go back and try again.";
-	} else {
-		$request = strtolower($action);
+    # should really grab some email validating routine and use it here.
+    if (empty($email) || $email == 'user@example.com') {
+        echo "You forgot to specify an email address to be added to the list.  ";
+        echo "Go back and try again.";
+    } else {
+        $request = strtolower($action);
                 if ($request != "subscribe" && $request != "unsubscribe") {
                     $request = "subscribe";
                 }
-		$sub = str_replace("@", "=", $email);
-		switch ($maillist) {
-		    default:
-			mail("$maillist-$request-$sub@lists.php.net", "Website Subscription",
-				"This was a request generated from the form at http://pear.php.net/support.php.", "From: $email\r\n");
-			break;
-		}
+        $sub = str_replace("@", "=", $email);
+        switch ($maillist) {
+            default:
+            mail("$maillist-$request-$sub@lists.php.net", "Website Subscription",
+                "This was a request generated from the form at http://pear.php.net/support.php.", "From: $email\r\n");
+            break;
+        }
 ?>
 <p>
 A request has been entered into the mailing list processing queue. You
@@ -56,7 +56,7 @@ should receive an email at <?php echo $email;?> shortly describing how to
 complete your request.
 </p>
 <?php
-	}
+    }
 } else {
 
 ?>
@@ -99,29 +99,29 @@ are searchable.
 <?php
 
 while ( list(, $listinfo) = each($mailing_lists)) {
-	if (!is_array($listinfo)) {
+    if (!is_array($listinfo)) {
 
-		echo '<tr bgcolor="#cccccc">';
-		echo '<th>' . $listinfo . '</th>';
-		echo '<th>Moderated</th>';
-		echo '<th>Archive</th>';
-		echo '<th>Newsgroup</th>';
-		echo '<th>Normal</th>';
-		echo '<th>Digest</th>';
-		echo '</tr>' . "\n";
+        echo '<tr bgcolor="#cccccc">';
+        echo '<th>' . $listinfo . '</th>';
+        echo '<th>Moderated</th>';
+        echo '<th>Archive</th>';
+        echo '<th>Newsgroup</th>';
+        echo '<th>Normal</th>';
+        echo '<th>Digest</th>';
+        echo '</tr>' . "\n";
 
-	} else {
+    } else {
 
-		echo '<tr align="center" bgcolor="#e0e0e0">';
-		echo '<td align="left"><b>' . $listinfo[1] . '</b><br /><small>'. $listinfo[2] . '</small></td>';
-		echo '<td>' . ($listinfo[3] ? 'yes' : 'no') . '</td>';
-		echo '<td>' . ($listinfo[4] ? make_link("http://marc.theaimsgroup.com/?l=".$listinfo[0], 'yes') : 'n/a') . '</td>';
-		echo '<td>' . ($listinfo[6] ? make_link("news://news.php.net/".$listinfo[6], 'yes') : 'n/a') . '</td>';
-		echo '<td><input name="maillist" type="radio" value="' . $listinfo[0] . '" /></td>';
-		echo '<td>' . ($listinfo[5] ? '<input name="maillist" type="radio" value="'.$listinfo[0].'-digest" />' : 'n/a' ) . '</td>';
-		echo '</tr>' . "\n";
+        echo '<tr align="center" bgcolor="#e0e0e0">';
+        echo '<td align="left"><b>' . $listinfo[1] . '</b><br /><small>'. $listinfo[2] . '</small></td>';
+        echo '<td>' . ($listinfo[3] ? 'yes' : 'no') . '</td>';
+        echo '<td>' . ($listinfo[4] ? make_link("http://marc.theaimsgroup.com/?l=".$listinfo[0], 'yes') : 'n/a') . '</td>';
+        echo '<td>' . ($listinfo[6] ? make_link("news://news.php.net/".$listinfo[6], 'yes') : 'n/a') . '</td>';
+        echo '<td><input name="maillist" type="radio" value="' . $listinfo[0] . '" /></td>';
+        echo '<td>' . ($listinfo[5] ? '<input name="maillist" type="radio" value="'.$listinfo[0].'-digest" />' : 'n/a' ) . '</td>';
+        echo '</tr>' . "\n";
 
-	}
+    }
 }
 
 ?>
@@ -237,36 +237,36 @@ Eris Free Net</a>.
 <h2>Powered By PEAR/PECL</h2>
 
 <p>
-	What programming tool would be complete without a set of
-	icons to put on your webpage, telling the world what makes
-	your site tick?
+    What programming tool would be complete without a set of
+    icons to put on your webpage, telling the world what makes
+    your site tick?
 </p>
 
 <?php
 
 $icons = Array(
-	'pear-power.gif'	=> 'Powered by PEAR, GIF format',
-	'pear-power.png'	=> 'Powered by PEAR, PNG format',
-	'pecl-power.gif'	=> 'Powered by PECL, GIF format',
-	'pecl-power.png'	=> 'Powered by PECL, PNG format',
+    'pear-power.gif'    => 'Powered by PEAR, GIF format',
+    'pear-power.png'    => 'Powered by PEAR, PNG format',
+    'pecl-power.gif'    => 'Powered by PECL, GIF format',
+    'pecl-power.png'    => 'Powered by PECL, PNG format',
 );
 
 echo '<table cellpadding="5" cellspacing="1">';
 
 foreach ($icons as $file=>$desc) {
-	echo '<tr bgcolor="e0e0e0">';
-	echo '<td>' . make_image($file,$desc) . '<br></td>';
-	echo '<td>' . $desc . '<br><small>';
-	$size = @getimagesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
-	if ($size) {
-		echo $size[0] . ' x ' . $size[1] . ' pixels<br>';
-	}
-	$size = @filesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
-	if ($size) {
-		echo $size . ' bytes<br>';
-	}
-	echo '</small>';
-	echo '</td></tr>';
+    echo '<tr bgcolor="e0e0e0">';
+    echo '<td>' . make_image($file,$desc) . '<br></td>';
+    echo '<td>' . $desc . '<br><small>';
+    $size = @getimagesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
+    if ($size) {
+        echo $size[0] . ' x ' . $size[1] . ' pixels<br>';
+    }
+    $size = @filesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
+    if ($size) {
+        echo $size . ' bytes<br>';
+    }
+    echo '</small>';
+    echo '</td></tr>';
 }
 
 echo '</table>';

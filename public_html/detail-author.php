@@ -73,7 +73,8 @@ print "</TABLE>\n";
 $query = "SELECT p.id, p.name, m.role
           FROM packages p, maintains m
           WHERE m.handle = '$handle'
-          AND p.id = m.package";
+          AND p.id = m.package
+          ORDER BY p.name";
 
 $sth = $dbh->query($query);
 
@@ -85,7 +86,7 @@ if ($sth->numRows() > 0) {
     print "<BR><BR>\n";
     print "<TABLE BORDER=\"0\" CELLSPACING=\"1\" CELLPADDING=\"5\">\n";
     print " <TR>\n";
-    print "  <TH colspan=\"2\" BGCOLOR=\"#e8e8e8\">The author is maintaing the following packages:</TD>";
+    print "  <TH colspan=\"2\" BGCOLOR=\"#e8e8e8\">The author is maintaining the following packages:</TD>";
     print " </TR>\n<TR><TH BGCOLOR=\"#e8e8e8\">Package Name</TH>";
     print "<TH BGCOLOR=\"#e8e8e8\">Role</TH></TR>\n";
 

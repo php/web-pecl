@@ -39,6 +39,9 @@ function initialize_categories_menu () {
         $tree[$parent]['children'][] = $id;
         $tree[$id]['parent'] = $parent;
         $subcats = ($cat_right - $cat_left - 1) / 2;
+        if ($subcats < 1 && $subcats > 0) {
+            $subcats = 1;
+        }
         if ($subcats > 0) {
             $name = "$name ($subcats)";
         }

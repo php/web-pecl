@@ -1216,6 +1216,7 @@ class release
             }
             $release_id = $row['id'];
         } elseif (release::isValidState($version)) {
+            $version = strtolower($version);
             // Get the most recent version with a given state
             $row = $dbh->getRow("SELECT id FROM releases ".
                                 "WHERE package = $package_id ".
@@ -1226,6 +1227,9 @@ class release
                 return $row;
             }
             $release_id = $row['id'];
+            if (!isset($release_id)) {
+                return PEAR::raiseError("$package does not have any releases with state \"$version\"");
+            }
         } else {
             // Get a specific release
             $row = $dbh->getRow("SELECT id FROM releases ".

@@ -25,7 +25,7 @@ if (empty($format)) {
 include_once "pear-format-$format.php";
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
-if ($SERVER_NAME != 'pear.php.net' && empty($dbh)) {
+if (DEVBOX && empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }
 

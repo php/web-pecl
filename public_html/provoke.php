@@ -4,7 +4,7 @@
 // and output code to insert into the DB_dbtype constructor.
 //
 
-use "DB";
+require_once 'DB.php';
 
 header("Content-type: text/plain");
 

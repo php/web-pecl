@@ -5,7 +5,7 @@
  * $Id$
  */
 
-auth_require();
+auth_require(true);
 
 require_once "HTML/Form.php";
 
@@ -14,20 +14,6 @@ echo "<h1>Delete package</h1>";
 
 if (!isset($_GET['id'])) {
     PEAR::raiseError("No package ID specified.");
-    response_footer();
-    exit();
-}
-
-/**
- * The user has to be either a lead developer of the package or
- * a PEAR administrator.
- */
-$lead = in_array($PHP_AUTH_USER, maintainer::get($_GET['id'], true));
-$admin = user::isAdmin($PHP_AUTH_USER);
-
-if (!$lead && !$admin) {
-    PEAR::raiseError("Only the lead maintainer of the package or PEAR
-                      administrators can delete the package.");
     response_footer();
     exit();
 }

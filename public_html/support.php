@@ -131,6 +131,11 @@ pear-general-help@lists.php.net) or you can view the commands for
 ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
 </p>
 
+<p>
+If you have questions concering this website, you can contact
+<a href="mailto:pear-webmaster@php.net">pear-webmaster@php.net</a>.
+</p>
+
 <h2>PEAR Tutorials</h2>
 
 <h4>Tutorials about the PEAR DB class:</h4>
@@ -173,7 +178,11 @@ ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
 
     <li><a href="http://www.mamasam.com/tutorials/en_html_table.html">Table.php</a> Tutorial. The table class
     allows you to generate HTML tables without the need to include HTML tags in your PHP code.</li><br><br>
+</ul>  
 
+<h2>PEAR resources</h2>
+
+<ul>
     <li><a href="http://conf.php.net/pres/index.php?p=slides%2Fpear&id=pear">A presentation</a> by Stig Bakken,
     who is leading PEAR development, at ApacheCon 2001 on PEAR.</li><br><br>
 
@@ -187,8 +196,7 @@ ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here.</a>
     <li><a href="http://www.onlamp.com/pub/a/php/2001/07/19/pear.html">A Detailed Look at PEAR</a> on O'Reilly Network</li><br><br>
 
     <li><a href="http://www.onlamp.com/pub/a/php/2001/05/24/pear.html">An Introduction to PEAR</a> on O'Reilly Network</li>
-</ul>  
-
+</ul>
 
 <?php
 }

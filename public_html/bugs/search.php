@@ -294,7 +294,7 @@ if ($warnings) display_warnings($warnings);
 </form>
 
 <?php
-respose_footer();
+response_footer();
 
 function show_prev_next($begin,$rows,$total_rows,$link,$limit) {
 	if($limit=='All') return;

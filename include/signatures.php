@@ -31,10 +31,8 @@ function parse_signatures_from_file($file, &$signatures, $out_format = "signatur
 	if (!is_resource($fp)) {
 		return false;
 	}
-	$contents = "";
-	while (!feof($fp)) {
-		$contents .= fread($fp, 10240);
-	}
+	$contents = fread($fp, filesize($file));
+    fclose($fp);
 	// format: array( array(returntype, methodname, paramlist), ... )
 	settype($signatures, "array");
 	$matches = array();

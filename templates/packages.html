@@ -1,9 +1,9 @@
 <script language="JavaScript" type="text/javascript">
 <!--
-	function toggleMoreInfo(packageID, rowNode)
+	function toggleMoreInfo(packageName, rowNode)
 	{
 		if (!document.getElementById) {
-			location.href = 'http://pearweb/package-info.php?pacid=' + packageID;
+			location.href = '/package-info.php?package=' + packageName;
 			return;
 		}
 
@@ -116,11 +116,11 @@
 					<?foreach($packages as $p):?>
 						<tr>
 							<td valign="top"><?=$first++?></td>
-							<td valign="top"><a href="package-info.php?pacid=<?=$p['id']?>"><strong><?=$p['name']?></strong></td>
+							<td valign="top"><a href="package-info.php?package=<?=$p['name']?>"><strong><?=$p['name']?></strong></td>
 							<td valign="top"><?=$p['summary']?></td>
 							<td valign="top">
 								<?if($_browser->is_ie5up):?>
-									<a href="#" onclick="toggleMoreInfo(<?=$p['id']?>); return false" onmouseover="window.status = 'View more info about <?=$p['name']?>'; return true" onmouseout="window.status = ''" title="View more info about <?=$p['name']?>">
+									<a href="#" onclick="toggleMoreInfo(<?=$p['name']?>); return false" onmouseover="window.status = 'View more info about <?=$p['name']?>'; return true" onmouseout="window.status = ''" title="View more info about <?=$p['name']?>">
 										<img src="gifs/moreinfo.gif" border="0" />
 									</a>
 								<?endif?>

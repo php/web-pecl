@@ -38,8 +38,11 @@ climates.&quot;
 </p>
 <p>
 
-PEAR is a framework and distribution system for reusable PHP
-components.
+<acronym title="PHP Extension and Application Repository">PEAR</acronym>
+is a framework and distribution system for reusable PHP
+components. <acronym title="PHP Extension Code Library">PECL</acronym>,
+being a subset of PEAR, is the complement for C extensions for PHP.
+<br />
 
 See the <a href="/manual/en/faq.php">FAQ</a> and <a
 href="/manual/">manual</a> for more information.

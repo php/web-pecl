@@ -160,6 +160,7 @@ if (!empty($_GET)) {
                           maintains m
                           $release_join
                     WHERE p.id = m.package " . $where . "
+                 AND p.package_type='pecl'
                  GROUP BY p.id
                  ORDER BY p.name";
 

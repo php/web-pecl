@@ -30,7 +30,7 @@ Legend for needed perms to execute methods:
 */
 function parse_signatures_from_file($file, &$signatures, $out_format = "signatures")
 {
-    $cache_file = PEAR_TMPDIR . '/' . basename($file) . '.' . $out_format;
+    $cache_file = PEAR_TMPDIR . '/pecl-' . basename($file) . '.' . $out_format;
     if (@filemtime($cache_file) > @filemtime($file)) {
         $signatures = unserialize(file_get_contents($cache_file));
         return true;

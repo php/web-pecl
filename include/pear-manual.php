@@ -66,6 +66,10 @@ function makeBorderTOC($this) {
 
 	$SIDEBAR_DATA.= '</small></td></tr>';
 
+    if (count($TOC) > 1) {
+        $SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
+    }
+
     $SIDEBAR_DATA .= '<tr valign="top"><td><small>&nbsp;'
                      . make_image("box-0.gif")
                      . make_link("/download-docs.php", "Download Documentation")

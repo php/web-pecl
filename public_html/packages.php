@@ -25,7 +25,9 @@ $table = new HTML_Table('border="0" cellpadding="2" cellspacing="1" width="100%"
 $nrow = 0;
 while ($sth->fetchInto($row)) {
     extract($row);
-    $npackages = ($rightvisit - $leftvisit - 1) / 2;
+    $npackages = $rightvisit - $leftvisit - 1;
+//    $d = $rightvisit - $leftvisit;
+//    if ($d > 0) $npackages = ($d + 1) / 2;
     if ($npackages == 0) {
         //continue;  // XXXX Uncomment me to only show categories with packages
     } // XXXX change me with elseif (show table head only when there are values)

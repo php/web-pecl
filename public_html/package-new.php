@@ -38,6 +38,7 @@ do {
 	    'license'     => $license,
 	    'summary'     => $summary,
 	    'description' => $desc,
+	    'lead'        => $PHP_AUTH_USER,
 	));
 	$dbh->popExpect();
 	if (DB::isError($pkg) && $pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
@@ -45,7 +46,6 @@ do {
 			  "Package already exists");
 	    exit;
 	}
-	$err = add_maintainer($pkg, $PHP_AUTH_USER, 'lead');
 	$display_form = false;
 	response_header("Package Registered");
 	print "The package `$name' has been registered in PEAR.<br />\n";

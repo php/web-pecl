@@ -62,7 +62,7 @@ function visit_node(&$tree, $node, &$cnt, $debug) {
     $tree[$node]['leftvisit'] = $visitno;
     $inc = 1;
     if (isset($cnt[$node])) {
-        $inc += $cnt[$node] * 2;
+        $inc += $cnt[$node];
     }
     if ($debug) {
         var_dump($cnt[$node]);
@@ -189,22 +189,22 @@ function add_package($data)
         $license = "PEAR License";
     }
     if (empty($category)) {
-        return PEAR::raiseError("no `category' field");
+        return PEAR::raiseError("add_package: no `category' field");
     }
     if (empty($name)) {
-        return PEAR::raiseError("no `name' field");
+        return PEAR::raiseError("add_package: no `name' field");
     }
-    $query = "INSERT INTO packages (id,name,category,license,summary,".
-             "description) VALUES(?,?,?,?,?,?)";
+    $query = "INSERT INTO packages (id,name,category,license,summary,description) VALUES(?,?,?,?,?,?)";
     $id = $dbh->nextId("packages");
-    $sth = $dbh->prepare($query);
-    if (DB::isError($sth)) {
+    if (DB::isError($sth = $dbh->prepare($query))) {
         return $sth;
     }
-    $err = $dbh->execute($sth, array($id, $name, $category, $license,
-                                     $summary, $description));
+    $err = $dbh->execute($sth, array($id, $name, $category, $license, $summary, $description));
     if (DB::isError($err)) {
         return $err;
+    }
+    if (isset($lead) && DB::isError($err = add_maintainer($id, $lead, 'lead'))) {
+	return $err;
     }
     if (DB::isError($err = renumber_visitations())) {
         return $err;

@@ -124,7 +124,7 @@ if (empty($id)) {
     $bb = new BorderBox("Manage maintainers", "100%");
 
     echo '<script src="/javascript/package-maintainers.js" type="text/javascript"></script>';
-    echo '<form onSubmit="javascript:beforeSubmit()" name="form" method="get" action="' . $_SERVER['PHP_SELF'] . '">';
+    echo '<form onSubmit="beforeSubmit()" name="form" method="get" action="' . $_SERVER['PHP_SELF'] . '">';
     echo '<input type="hidden" name="update" value="yes" />';
     echo '<input type="hidden" name="pid" value="' . $id . '" />';
     echo '<table border="0" cellpadding="0" cellspacing="4" border="0" width="100%">';
@@ -136,7 +136,7 @@ if (empty($id)) {
 
     echo '<tr>';
     echo '  <td>';
-    echo '  <select onChange="javascript:activateAdd();" name="accounts" size="10">';
+    echo '  <select onChange="activateAdd();" name="accounts" size="10">';
 
     $users = user::listAll();
     foreach ($users as $user) {
@@ -153,17 +153,17 @@ if (empty($id)) {
     echo '  </td>';
 
     echo '  <td>';
-    echo '  <input type="submit" onClick="javascript:addMaintainer(); return false" name="add" value="Add as" />';
+    echo '  <input type="submit" onClick="addMaintainer(); return false" name="add" value="Add as" />';
     echo '  <select name="role" size="1">';
     echo '    <option value="lead">lead</option>';
     echo '    <option value="developer">developer</option>';
     echo '    <option value="helper">helper</option>';
     echo '  </select><br /><br />';
-    echo '  <input type="submit" onClick="javascript:removeMaintainer(); return false" name="remove" value="Remove" />';
+    echo '  <input type="submit" onClick="removeMaintainer(); return false" name="remove" value="Remove" />';
     echo '  </td>';
 
     echo '  <td>';
-    echo '  <select multiple="yes" name="maintainers[]" onChange="javascript:activateRemove();" size="10">';
+    echo '  <select multiple="yes" name="maintainers[]" onChange="activateRemove();" size="10">';
 
     $maintainers = maintainer::get($id);
     foreach ($maintainers as $handle => $role) {

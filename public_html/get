@@ -50,7 +50,7 @@ $opts = explode('/', $PATH_INFO);
 $ok = false;
 switch (sizeof($opts)) {
 	case 2: {
-		if (preg_match('/^([a-zA-Z0-9_]+)-(.*)\.tgz$/', $opts[1], $matches)) {
+		if (preg_match('/^([a-zA-Z0-9_]+)-(.*)\.(tar|tgz)$/', $opts[1], $matches)) {
 			list(, $package, $version) = $matches;
 			$ok = release::HTTPdownload($package, $version, $opts[1]);
 		} else {

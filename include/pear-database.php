@@ -598,10 +598,10 @@ class release
     }
 
     // }}}
-    // {{{ NOEXPORT      release::HTTPdownload(string, [string], [string])
+    // {{{ NOEXPORT      release::HTTPdownload(string, [string], [string], [bool])
 
     // not for xmlrpc export
-    function HTTPdownload($package, $version = null, $file = null)
+    function HTTPdownload($package, $version = null, $file = null, $uncompress = false)
     {
         global $dbh;
         $package_id = package::info($package, 'packageid');
@@ -613,8 +613,13 @@ class release
         }
 
         if ($file !== null) {
+            if (substr($file, -4) == '.tar') {
+                $file = substr($file, 0, -4) . '.tgz';
+                $uncompress = true;
+            }
             $row = $dbh->getRow("SELECT fullpath, release, id FROM files ".
-                                "WHERE basename = '" . $file . "'", DB_FETCHMODE_ASSOC);
+                                "WHERE basename = ?", array($file),
+                                DB_FETCHMODE_ASSOC);
             if (PEAR::isError($row)) {
                 return $row;
             } elseif ($row === null) {
@@ -675,8 +680,14 @@ class release
             release::logDownload($package_id, $log_release, $log_file);
             
             header('Content-type: application/octet-stream');
-            header('Content-disposition: attachment; filename="'.$basename.'"');
-            readfile($path);
+            if ($uncompress) {
+                $tarname = preg_replace('/\.tgz$/', '.tar', $basename);
+                header('Content-disposition: attachment; filename="'.$tarname.'"');
+                readgzfile($path);
+            } else {
+                header('Content-disposition: attachment; filename="'.$basename.'"');
+                readfile($path);
+            }
             
             return true;
         }

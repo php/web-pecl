@@ -1,6 +1,6 @@
 <script language="JavaScript" type="text/javascript">
 <!--
-	function toggleMoreInfo(packageName, rowNode)
+	function toggleMoreInfo(packageName, packageID)
 	{
 		if (!document.getElementById) {
 			location.href = '/package/' + packageName;
@@ -120,7 +120,7 @@
 							<td valign="top"><?=$p['summary']?></td>
 							<td valign="top">
 								<?if($_browser->is_ie5up):?>
-									<a href="#" onclick="toggleMoreInfo(<?=$p['name']?>); return false" onmouseover="window.status = 'View more info about <?=$p['name']?>'; return true" onmouseout="window.status = ''" title="View more info about <?=$p['name']?>">
+									<a href="#" onclick="toggleMoreInfo(<?="'".$p['name']."'"?>,<?=$p['id']?>); return false" onmouseover="window.status = 'View more info about <?=$p['name']?>'; return true" onmouseout="window.status = ''" title="View more info about <?=$p['name']?>">
 										<img src="gifs/moreinfo.gif" border="0" />
 									</a>
 								<?endif?>
@@ -136,7 +136,7 @@
 										<td><span class="moreInfoText">More information</span></td>
 										<td align="right">
 											<?if($_browser->is_ie5up):?>
-												<a href="javascript: toggleMoreInfo(<?=$p['id']?>)"><img class="closeButton" src="gifs/close.gif" border="0" /></a>
+												<a href="javascript: toggleMoreInfo(<?="'".$p['name']."'"?>,<?=$p['id']?>)"><img class="closeButton" src="gifs/close.gif" border="0" /></a>
 											<?endif?>
 										</td>
 									</tr>

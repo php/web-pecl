@@ -78,7 +78,7 @@
 	    extract($row);
 
 	    $ncategories = ($cat_right - $cat_left - 1) / 2;
-	    if (!$showempty AND $ncategories < 1) {
+	    if (!$showempty AND $npackages < 1) {
 	        continue;  // Show categories with packages
 	    }
 

@@ -232,9 +232,9 @@ function commonHeader($title) {
     echo delim();
     print_link('/manual/', 'Docs', false, 'class="menuBlack"');
     echo delim();
-    print_link('/support.php','Support',false,'class="menuBlack"');
+    print_link('/packages.php', 'Packages', false, 'class="menuBlack"');
     echo delim();
-    print_link('/manual/en/faq.php','FAQ',false,'class="menuBlack"');
+    print_link('/support.php','Support',false,'class="menuBlack"');
     echo delim();
     print_link('/weeklynews.php','Weekly News',false,'class="menuBlack"');
       ?>&nbsp;<br />

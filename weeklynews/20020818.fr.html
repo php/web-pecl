@@ -3,172 +3,179 @@
 <head>
   <title>x</title>
 </head>
-<body>
- 
-<p><i><small>par&nbsp; Alan Knowles(alan_k@php.net)<br>
-traduit&nbsp; par &nbsp;Pierre-Alain Joye (paj@pearfr.org)<br>
-</small></i></p>
-  
-<p>De tr&egrave;s int&eacute;ressantes lectures durant cette semaine sur
-la liste de d&eacute;velopement pear, avec 4 nouvelles sorties, un nouveau
-package, ainsi que des discussions sur les tags PHPDoc, convertisseurs OpenOffice
-vers Docbook, Gestion des permissions et mise &agrave; jour du package Net_Whois.<br>
-</p>
-<hr>  
-<h2>Nouvelles sorties</h2>
-  
-<h3></h3>
-<ul>
- 
-</ul>
- 
-<h3>Beta</h3>
+  <body>
    
+<p><i><small>par&nbsp; Alan Knowles(alan_k@php.net)<br>
+ traduit&nbsp; par &nbsp;Pierre-Alain Joye (paj@pearfr.org)<br>
+ </small></i></p>
+    
+<p>De tr&egrave;s int&eacute;ressantes lectures durant cette semaine sur la
+liste de d&eacute;velopement pear, avec 4 nouvelles sorties, un nouveau package,
+ainsi que des discussions sur les tags PHPDoc, convertisseurs OpenOffice vers
+Docbook, Gestion des permissions et mise &agrave; jour du package Net_Whois.<br>
+ </p>
+ 
+<hr>   
+<h2>Nouvelles sorties</h2>
+    
+<h3></h3>
+ 
 <ul>
- <li> <b>DB_DataObject </b>- Un constructeur de requ&ecirc;tes SQL et une
-couche 'Data Modeling' (ndt: si qqn a une traduction adpatee :) ).
+   
+</ul>
+   
+<h3>Beta</h3>
+     
+<ul>
+  <li> <b>DB_DataObject </b>- Un constructeur de requ&ecirc;tes SQL et une 
+couche 'Data Modeling' (ndt: si qqn a une traduction adpatee :) ).     
     <p></p>
-  </li>
-  <li><b>Tree - </b>Ce package permet la manipulation et l'acc&egrave;s &agrave;
-des donn&eacute;es en arbre depuis une base de donn&eacute;es ou des fichiers
-XML.  </li>
- 
+   </li>
+   <li><b>Tree - </b>Ce package permet la manipulation et l'acc&egrave;s
+&agrave; des donn&eacute;es en arbre depuis une base de donn&eacute;es ou
+des fichiers XML.  </li>
+   
 </ul>
- 
+   
 <h3>Alpha</h3>
-  
+    
 <ul>
-   <li><b>Net_DNS - </b>Une librairie de r&eacute;solution utilis&eacute;e
-pour des requ&ecirc;tes DNS, transferts de zone et mises &agrave; jour dynamiques
+    <li><b>Net_DNS - </b>Une librairie de r&eacute;solution utilis&eacute;e 
+pour des requ&ecirc;tes DNS, transferts de zone et mises &agrave; jour dynamiques 
 de DNS</li>
- 
+   
 </ul>
-  
+    
 <h3>Development</h3>
-  
+    
 <ul>
- <li><b>MDB - </b>Release Candidate 1 de PEAR MDB, Metabase Merger Database
+  <li><b>MDB - </b>Release Candidate 1 de PEAR MDB, Metabase Merger Database 
 Abastraction Layer.</li>
- 
+   
 </ul>
- 
-<hr>  
+   
+<hr>   
 <h2>PEAR-DEV traffic</h2>
-  
+    
 <h3>PHP doc tag standards</h3>
-  
-<p>Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior nous interpella sur
-les tags PHPDoc (les tags &agrave; l'int&eacute;rieur des classes PHP permettant
-de produire automatiquement la documentation). Ayant recenc&eacute; l'ensemble
-des tags utilis&eacute;s in pear, Ant&ocirc;nio s'est propos&eacute; afin
-de r&eacute;diger un r&eacute;f&eacute;rence claire et rapide pour le site
-PEAR, pour l'instant, vous pouvez trouvez la list des tags et formats standarts
+    
+<p>Ant&ocirc;nio Carlos Ven&acirc;ncio J&uacute;nior nous interpella sur les
+tags PHPDoc (les tags &agrave; l'int&eacute;rieur des classes PHP permettant 
+de produire automatiquement la documentation). Ayant recenc&eacute; l'ensemble 
+des tags utilis&eacute;s in pear, Ant&ocirc;nio s'est propos&eacute; afin 
+de r&eacute;diger un r&eacute;f&eacute;rence claire et rapide pour le site 
+PEAR, pour l'instant, vous pouvez trouvez la list des tags et formats standarts 
 sur :</p>
-  
+    
 <pre><a href="http://www.phpdoc.de/kongress/tags.html">http://www.phpdoc.de/kongress/tags.html</a>
 </pre>
-  
+    
 <h3>ISO-8601 in Date</h3>
-  
-<p>Afin de mieux int&eacute;grer Date avec le module SOAP, Baba Buehler lui
-ajouta le format ISO 8601. Vous pouvez l'utiliser avec la syntaxe suivante
+    
+<p>Afin de mieux int&eacute;grer Date avec le module SOAP, Baba Buehler lui 
+ajouta le format ISO 8601. Vous pouvez l'utiliser avec la syntaxe suivante 
 :</p>
-  
+    
 <pre>%o - gives the raw timezone offset in &plusmn;hh:mm<br>%O - gives the dst-corrected offset in &plusmn;hh:mm<br>example :<br>Date::format("%Y-%m-%dT%H:%M:%S%O");<br></pre>
-  
-<h3>OpenOffice vers Docbook, plus de progr&egrave;s sur l'automatisation
-de la documentation</h3>
-  
-<p>Pierre-Alain Joye s'est occup&eacute; de r&eacute;aliser un convertisseur
-de documents OpenOffice vers Docbook. Remerciements &agrave; &Eacute;ric
-Bellot (<a href="http://www.chez.com/ebellot">http://www.chez.com/ebellot</a>)
-pour nous avoir authoriser &agrave; utiliser son travail &nbsp;et l'aide
-apport&eacute;e durant ce travail. D&egrave;s la version suivante, d'autres
-formats suivront, dont Microsoft word 'saved as HTML' et docbook vers des
-formats natifs. Vous pouvez essayer la version actuelle sur :</p>
-  
+    
+<h3>OpenOffice vers Docbook, plus de progr&egrave;s sur l'automatisation de
+la documentation</h3>
+    
+<p>Pierre-Alain Joye s'est occup&eacute; de r&eacute;aliser un convertisseur 
+de documents OpenOffice vers Docbook. Remerciements &agrave; &Eacute;ric Bellot
+(<a href="http://www.chez.com/ebellot">http://www.chez.com/ebellot</a>) pour
+nous avoir authoriser &agrave; utiliser son travail &nbsp;et l'aide apport&eacute;e
+durant ce travail. D&egrave;s la version suivante, d'autres formats suivront,
+dont Microsoft word 'saved as HTML' et docbook vers des formats natifs. Vous
+pouvez essayer la version actuelle sur :</p>
+    
 <pre><a href="http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz">http://www.pearfr.org/docconvert/Doc_Convert-0.1.tgz</a>
 </pre>
-  
-<p>Il y e&ucirc;t la continuation de la discussion sur l'ajout de la g&eacute;n&eacute;ration
+    
+<p>Il y e&ucirc;t la continuation de la discussion sur l'ajout de la g&eacute;n&eacute;ration 
 Docbook depuis les commentaires, et and Alan Knowles <a
- href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102946826409440&amp;w=2"> posta</a>
-son premier effort en le faisant avec son outils&nbsp; PHP_CodeDoc. Notez
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=102946826409440&amp;w=2"> posta</a> 
+son premier effort en le faisant avec son outils&nbsp; PHP_CodeDoc. Notez 
 que la t&acirc;che n'est pas aussi simple qu'il n'y para&icirc;t...<br>
-</p>
-  
+ </p>
+    
 <h3>Bulk emailing</h3>
-  
-<p>Radek Maciaszek nous a signal&eacute; qu'il avait travaill&eacute; sur
-une classe de gestion de 'mail queue' afin d'envoyer une grande quantit&eacute;s
+    
+<p>Radek Maciaszek nous a signal&eacute; qu'il avait travaill&eacute; sur 
+une classe de gestion de 'mail queue' afin d'envoyer une grande quantit&eacute;s 
 de mails, il l'a envoy&eacute; &agrave; Richard Heyes (auteur de <a
- href="http://www.v-webmail.co.uk/">v-webmail</a>) afin qu'il puisse la passer
+ href="http://www.v-webmail.co.uk/">v-webmail</a>) afin qu'il puisse la passer 
 en revue et ajouter quelques commentaires.</p>
-  
+    
 <h3>PHPUnit, devenant trop pointu</h3>
-<p>Wolfram Kreising testant PHPUnit et d&eacute;couvra qu'il devenait vraiment
-trop stircte pour un langage &agrave; typage faible, &eacute;chouant &agrave;
-comparer "1" == 1 dans des tableaux. Il est en train de r&eacute;fl&eacute;chir
+ 
+<p>Wolfram Kreising testant PHPUnit et d&eacute;couvra qu'il devenait vraiment 
+trop stircte pour un langage &agrave; typage faible, &eacute;chouant &agrave; 
+comparer "1" == 1 dans des tableaux. Il est en train de r&eacute;fl&eacute;chir 
 comment solutionner ce probl&egrave;me.<br>
-</p>
-  
+ </p>
+    
 <h3>Gestions des permissions</h3>
-  
-<p>Toujours un sujet du plus grand int&eacute;r&ecirc;t pour tous les d&eacute;velopeurs
-d'un m&eacute;canisme coh&eacute;rent d'authentification, de permissions,
-de gestion des utilisateurs. Cette fois, un pas significatif a &eacute;t&eacute;
-faite suite une longue discussion sur le package LiveUser, sur lequel Markus
-Wolff a travaill&eacute;. Il appara&icirc;t qu'il va fournir une API flexible
-et standart, ce qui va permettre &agrave; beaucoup &nbsp;aux back ends de
-beaucoup d'application d'acc&eacute;der &agrave; une seule API. Vous permettant
-d'int&eacute;grer des forums ou des bulletins boars dans vos applications
+    
+<p>Toujours un sujet du plus grand int&eacute;r&ecirc;t pour tous les d&eacute;velopeurs 
+d'un m&eacute;canisme coh&eacute;rent d'authentification, de permissions, 
+de gestion des utilisateurs. Cette fois, un pas significatif a &eacute;t&eacute; 
+faite suite une longue discussion sur le package LiveUser, sur lequel Markus 
+Wolff a travaill&eacute;. Il appara&icirc;t qu'il va fournir une API flexible 
+et standart, ce qui va permettre &agrave; beaucoup &nbsp;aux back ends de 
+beaucoup d'application d'acc&eacute;der &agrave; une seule API. Vous permettant 
+d'int&eacute;grer des forums ou des bulletins boars dans vos applications 
 sans modifier le code de chaque application.<br>
-</p>
-<p>Le seul point en suspens &eacute;tait de savoir comment l'int&eacute;grer
-&nbsp;&agrave; la structure des noms de class. &nbsp;Les suggestions qui
-ont re&ccedil;ues le meilleur accueil sont dans la lign&eacute;e de Auth_LiveUser
-ou Perm_LiveUser. L'utilisation d'une cat&eacute;gorie de haut niveau combin&eacute;
-avec un nom plus distinct 'LiveUser' f&ucirc;t pr&eacute;f&eacute;r&eacute;
+ </p>
+ 
+<p>Le seul point en suspens &eacute;tait de savoir comment l'int&eacute;grer 
+&nbsp;&agrave; la structure des noms de class. &nbsp;Les suggestions qui ont
+re&ccedil;ues le meilleur accueil sont dans la lign&eacute;e de Auth_LiveUser 
+ou Perm_LiveUser. L'utilisation d'une cat&eacute;gorie de haut niveau combin&eacute; 
+avec un nom plus distinct 'LiveUser' f&ucirc;t pr&eacute;f&eacute;r&eacute; 
 aux noms g&eacute;n&eacute;riques comme  Auth_Simple ou Auth_Complex.</p>
-  
-<p>A ce propos, il peut &ecirc;tre important de rechercher les discussions
-r&eacute;centes sur php-dev parlant de la s&eacute;curit&eacute; derri&egrave;re
-des session, que ce soit avec le trans-sid, des cookies ou HTTP en g&eacute;n&eacute;ral
-(un autre sujet de d&eacute;bats br&ucirc;lants, pouvant &eacute;ventuellement
-se terminer par une suggestion intelligente). Heureusement, un r&eacute;sum&eacute;
+    
+<p>A ce propos, il peut &ecirc;tre important de rechercher les discussions 
+r&eacute;centes sur php-dev parlant de la s&eacute;curit&eacute; derri&egrave;re 
+des session, que ce soit avec le trans-sid, des cookies ou HTTP en g&eacute;n&eacute;ral 
+(un autre sujet de d&eacute;bats br&ucirc;lants, pouvant &eacute;ventuellement 
+se terminer par une suggestion intelligente). Heureusement, un r&eacute;sum&eacute; 
 complet sera disponible prochainement dans le manuel de php.<br>
-</p>
-  
+ </p>
+    
 <h3>Net_Whois, un nouvel ensemble de fonctionnalit&eacute;s</h3>
-  
-<p>Seamus Venasse a cr&eacute;e un nouveau Net_Whois, et s'interrogea sur
-les classes concurrentes au sein de PEAR, son package Whois offrant de&nbsp;
-plus riches fonctionnalit&eacute;s que l'actuel package. Apr&egrave;s quelques
-discutions, il f&ucirc;t claire que le fait de fusionner les fonctionnalit&eacute;s
-existantes dans la sienne et remplacer l'ancien &eacute;tait de loin la meilleure
-solution. La d&eacute;cision finale appartient &agrave; l'auteur du package
+    
+<p>Seamus Venasse a cr&eacute;e un nouveau Net_Whois, et s'interrogea sur 
+les classes concurrentes au sein de PEAR, son package Whois offrant de&nbsp; 
+plus riches fonctionnalit&eacute;s que l'actuel package. Apr&egrave;s quelques 
+discutions, il f&ucirc;t claire que le fait de fusionner les fonctionnalit&eacute;s 
+existantes dans la sienne et remplacer l'ancien &eacute;tait de loin la meilleure 
+solution. La d&eacute;cision finale appartient &agrave; l'auteur du package 
 actuel, Sebastian Nohn.<br>
-</p>
+ </p>
+ 
 <h3>Bugs et Fixes</h3>
-  
-<p>Merci &agrave; ces personnes pour nous avoir signaler ou corriger des
-bugs : Radek Maciaszek, Arnaud Limbourg, Tim White and Roman Neuhauser</p>
-  
-<hr> 
+    
+<p>Merci &agrave; ces personnes pour nous avoir signaler ou corriger des bugs
+: Radek Maciaszek, Arnaud Limbourg, Tim White and Roman Neuhauser</p>
+    
+<hr>  
 <h2>Nouvelle propositions de package</h2>
-  
-<h3>Math_Distance, mesurer les distances entre de multiples points</h3>
-  
-<p>Alfredo offrit un nouveau package pour calculer les distances entre de
-multiples points, avec la possibilit&eacute; d'utilisers plusieurs fonctions
-math&eacute;matiques pour effectuer les calculs. </p>
-  
-<hr> 
+    
+<h3>Math_Distance, mesurer les distances entre des groupes de points</h3>
+    
+<p>Alfredo Rahn offrit un nouveau package pour calculer les distances entre
+des groupes de points, avec comme objectif d'estimer les groupes de donn&eacute;es
+en ensembles multidimensionnels. Plusieurs m&eacute;triques sont disponibles
+pour effectuer les calculs. </p>
+    
+<hr>  
 <h2>D&eacute;velopment</h2>
-  
-<p>Actif cette semaine sur le CVS : Auth, Benchmark, Cache_Lite, Date, DB,
-DB_DataObject, HTML_Javascript, HTML_TreeMenu, I18N, MDB, Net_DNS, Net_Ping,
+    
+<p>Actif cette semaine sur le CVS : Auth, Benchmark, Cache_Lite, Date, DB, 
+DB_DataObject, HTML_Javascript, HTML_TreeMenu, I18N, MDB, Net_DNS, Net_Ping, 
 PECL::Soap, PHPDoc, Tree, XML_RSS, XML_XPath, System.</p>
-  <br>
+   <br>
+ <br>
 </body>
 </html>

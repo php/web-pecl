@@ -68,6 +68,17 @@ function uptime()
     return $uptime;
 }
 
+function get($name)
+{
+    if (!empty($_GET[$name])) {
+        return $_GET[$name];
+    } else if (!empty($_POST[$name])) {
+        return $_POST[$name];
+    } else {
+        return "";
+    }
+}
+    
 if (empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }

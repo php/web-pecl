@@ -113,24 +113,28 @@ minimum.
     $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");
     $form =& new HTML_Form($_SERVER['PHP_SELF'], "POST");
 
-    $bb = new BorderBox("Register package", "100%");
-    $form->addText("name", "Package Name", null, 20);
-    $form->addText("license", "License", null, 20);
-    $form->addSelect("category", "Category", $categories, '', 1,
-                     '--Select Category--');
-    $form->addText("summary", "One-liner description", null, $width);
-    $form->addTextarea("desc", "Full description", null, $width, 3);
-    $form->addText("homepage", "Additional project homepage", null, 20);
-    $form->addSubmit("submit", "Submit Request");
+    print "<form method=\"post\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n";
 
-    $form->display();
+    $bb = new BorderBox("Register package", "100%", "", 2, true);
+
+    $bb->horizHeadRow("Package Name", $form->returnText("name", get("name"), 20));
+    $bb->horizHeadRow("License", $form->returnText("license", get("license"), 20));
+    $cats = $form->returnSelect("category", $categories, get("category"), 1,
+                                "--Select Category--");
+    $bb->horizHeadRow("Category", $cats);
+    $bb->horizHeadRow("Summary", $form->returnText("summary", get("summary"), $width));
+    $bb->horizHeadRow("Full description", $form->returnTextarea("desc", get("desc"), $width, 3));
+    $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 20));
+    $bb->fullRow($form->returnSubmit("Submit Request", "submit"));
+    $bb->end();
 
     if ($jumpto) {
         print "\n<script language=\"JavaScript\">\n<!--\n";
         print "document.forms[1].$jumpto.focus();\n";
         print "// -->\n</script>\n";
     }
-    $bb->end();
+    
+    print "</form>\n";
 }
 
 response_footer();

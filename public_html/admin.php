@@ -274,8 +274,6 @@ do {
 							document.forms['mass_reject_form'].cmd.value = 'Reject Request';
 							return true;
 						}
-						
-						return false;
 						break;
 
 					case 'delete':
@@ -285,6 +283,8 @@ do {
 						}
 						break;
 				}
+				
+				return false;
 			}
         //-->
         </script>

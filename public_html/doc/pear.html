@@ -24,9 +24,48 @@ NAME="AEN2"
 ><H3
 CLASS="author"
 >Stig Bakken</H3
+><DIV
+CLASS="revhistory"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+COLSPAN="3"
+><B
+>Revision History</B
+></TH
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+>Revision $Revision$</TD
+><TD
+ALIGN="LEFT"
+>$Date$</TD
+><TD
+ALIGN="LEFT"
+>Revised by: $Author$</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+COLSPAN="3"
+></TD
+></TR
+></TABLE
+></DIV
 ><HR></DIV
 ><P
 >PEAR is dedicated to Malin Bakken, born 1999-11-21.</P
+><P
+>&#13;  This document is incomplete.  For now it only contains a brief
+  description of PEAR and "Coding Rules and Guidelines".  The rules
+  and guidelines are initial suggestions, and this part is still open
+  to discussion.
+ </P
 ><DIV
 CLASS="section"
 ><HR><H1
@@ -37,38 +76,15 @@ NAME="pear-whatis"
 ></H1
 ><P
 >&#13;   PEAR is a code repository for PHP extensions and PHP library code
-   similar to TeX's CTAN and Perl's CPAN.
+   inspired by TeX's CTAN and Perl's CPAN.
   </P
 ><P
->&#13;   The intention behind PEAR is to provide a means for library
-   code authors to organize their code in a standard way shared by
-   other developers, and to give the PHP community a single source and
-   single set of tools for getting such code.
-  </P
-></DIV
-><DIV
-CLASS="section"
-><HR><H1
-CLASS="section"
-><A
-NAME="pear-admin"
->Administration</A
-></H1
-><P
->&#13;   This section will describe the rules for how files are structured
-   and how functions and classes should be named.
-  </P
-></DIV
-><DIV
-CLASS="section"
-><HR><H1
-CLASS="section"
-><A
-NAME="pear-tools"
->Tools</A
-></H1
-><P
->&#13;   This section will describe the tools provided to PEAR users.
+>&#13;   The intention behind PEAR is to provide a means for library code
+   authors to share their code with other developers, to give the PHP
+   community an infrastructure for using third-party code, to define
+   standards that help developers write code that runs in different
+   PHP configurations, and to provide tools for code maintenance and
+   distribution.
   </P
 ></DIV
 ><DIV
@@ -90,23 +106,110 @@ CLASS="section"
 ><HR><H2
 CLASS="section"
 ><A
-NAME="pear-rules-filenames"
->File Naming Conventions</A
+NAME="pear-names"
+>Naming Conventions</A
 ></H2
 ><P
 >&#13;    Use the extension <TT
 CLASS="filename"
 >.php</TT
 > for
-    all files with PHP code in them.
+    all files with PHP code (files that when included don't output
+    anything, but only define variables, constants, functions or
+    classes).
    </P
+><P
+>&#13;    A related set of one or more classes and functions in PEAR are
+    called packages.  Not modules, since this term is already taken by
+    Apache, and not extensions, because that is what PHP's bundled
+    "modules" of C code are called.  "Packages" it is.
+   </P
+><P
+>&#13;    The main structure in PEAR is the package structure.  Although
+    this structure maps 1:1 down to the file system, it is
+    conceptually not a filesystem structure.  The structure is based
+    on the developer's view when writing code, which is the parameters
+    to "use" or "import" (PEAR is currently using "include" though).
+    An example:
+    <DIV
+CLASS="informalexample"
+><P
+></P
+><P
+CLASS="literallayout"
+>DB<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB/common<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB/mysql<br>
+HTML<br>
+&nbsp;&nbsp;&nbsp;&nbsp;HTML/Form<br>
+</P
+><P
+></P
+></DIV
+>
+    Here, the names listed are the parameters the user will give the
+    "use" or "import" PHP statements.  It maps down to the filesystem
+    level by adding <TT
+CLASS="filename"
+>.php</TT
+>.  This
+    means that each "top-level" node will have both a file and a
+    directory in the top-level directory.  But we have an excuse for
+    this: the PEAR structure is conceptually different from the
+    filesystem structure, as explained above.  So there.
+   </P
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="pear-funcnames"
+>Function and Method Names</A
+></H3
+><P
+>&#13;     Functions (not methods), should be named with underscores, like
+     this: <TT
+CLASS="function"
+>my_function</TT
+>.  Methods should be named
+     with initial lower-case studlycaps like this:
+     <TT
+CLASS="function"
+>myFunction</TT
+>.
+    </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="pear-classnames"
+>Class Names</A
+></H3
+><P
+>&#13;     Class names are not as straightforward.  PEAR should never have
+     name conflicts among its classes (and preferably ditto for
+     functions, but that can be solved using static methods in
+     classes).  Since PHP doesn't have packages or name spaces yet, we
+     need to "brute force" it.  The solution is currently not too
+     pretty, maybe it serves as inspiration for the Zend authors to
+     implement name spaces :-).
+    </P
+><P
+>&#13;     The basic class name rule is to use the package name and
+     substitute slashes with underscores.  The package "DB/mysql" has
+     its code in the file "DB/mysql.php" and defines a class called
+     "DB_mysql".
+    </P
+></DIV
 ></DIV
 ><DIV
 CLASS="section"
 ><HR><H2
 CLASS="section"
 ><A
-NAME="pear-rules-options"
+NAME="pear-options"
 >Depending on Optional Features</A
 ></H2
 ><P
@@ -146,7 +249,7 @@ CLASS="section"
 ><HR><H3
 CLASS="section"
 ><A
-NAME="pear-rules-phptags"
+NAME="pear-phptags"
 >PHP Code Block Tags</A
 ></H3
 ><P
@@ -169,7 +272,7 @@ CLASS="section"
 ><HR><H3
 CLASS="section"
 ><A
-NAME="pear-rules-gpcvars"
+NAME="pear-gpcvars"
 >HTTP_*_VARS</A
 ></H3
 ><P
@@ -207,7 +310,7 @@ CLASS="section"
 ><HR><H3
 CLASS="section"
 ><A
-NAME="pear-rules-scope"
+NAME="pear-scope"
 >Scope Issues</A
 ></H3
 ><P
@@ -229,7 +332,7 @@ CLASS="varname"
 CLASS="example"
 ><P
 ><B
->Beispiel 1 file1.php</B
+>Example 1. file1.php</B
 ></P
 ><PRE
 CLASS="programlisting"
@@ -242,7 +345,7 @@ CLASS="programlisting"
 CLASS="example"
 ><P
 ><B
->Beispiel 2 file2.php</B
+>Example 2. file2.php</B
 ></P
 ><PRE
 CLASS="programlisting"

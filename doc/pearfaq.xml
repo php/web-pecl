@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.13 2001-09-04 21:29:41 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.14 2001-09-24 00:17:18 cox Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-09-04 21:29:41 $</date>
-  <version>$Revision: 1.13 $</version>    
+  <date>$Date: 2001-09-24 00:17:18 $</date>
+  <version>$Revision: 1.14 $</version>
  </artheader>
 
  <qandaset>
@@ -33,23 +33,23 @@
          Standards</ulink>.
         </member>
 	</simplelist>
-       Requesting an account without having existing source code or 
+       Requesting an account without having existing source code or
        public pre-work does not make much sense.
       </para>
       <para>
-       See also <ulink url="http://www.php.net/cvs-php.php">Using 
+       See also <ulink url="http://www.php.net/cvs-php.php">Using
        CVS for PHP Development</ulink>.
       </para>
       <para>
-       You should announce your intention of commiting new stuff to 
-       the PEAR developers list. It's strongly recommended to 
+       You should announce your intention of commiting new stuff to
+       the PEAR developers list. It's strongly recommended to
        subscribe to the list. See the <ulink
        url="http://pear.php.net/support.php">support page</ulink>
        for information about subscribing.
       </para>
     </answer>
   </qandaentry>
-  
+
   <qandaentry>
    <question title="How to contribute patches?" />
    <answer>
@@ -57,17 +57,17 @@
     <para>
      The best possibility to contribute patches is to send them to the
      PEAR developers list <ulink url="mailto:pear-dev@lists.php.net"
-     name="pear-dev@lists.php.net"/>. 
+     name="pear-dev@lists.php.net"/>.
     </para>
     <para>
      Make sure your patch is based on a current CVS snapshot. Don't send
-     the complete file(s). Use diff or the diff command of CVS and 
+     the complete file(s). Use diff or the diff command of CVS and
      attach the output of diff to the mail.
     </para>
     <para>
      Another possibility is to send the patches directly to the
-     author(s) of the class. But sometimes the author isn't the 
-     maintainer, in vacation or has no access to CVS at the 
+     author(s) of the class. But sometimes the author isn't the
+     maintainer, in vacation or has no access to CVS at the
      moment. So better use the mailinglist.
     </para>
     <para>
@@ -86,10 +86,8 @@
       </member>
       <member>
        Check if there have been no modifications while you was modifing
-       the file. If there were, re-adapt your patch to this 
+       the file. If there were, re-adapt your patch to this
        last release.
-      </member>
-      <member>
        <command># cvs update</command>
       </member>
       <member>
@@ -99,20 +97,19 @@
      </simplelist>
     </para>
    </answer>
-  </qandaentry>    
+  </qandaentry>
   <qandaentry>
    <question title="How to contribute patches for Outlook Express users" />
    <answer>
     <author name="Alexander Merz"/>
     <para>
-     The mailing list software accepts only attachments of the 
-     content type "text/plain". OE creates the content type of a 
-     attachment by checking the file ending. So make sure that the 
-     diff output, if stored in a file, the file has an ending, 
-     which is assigned to a program like Notepad 
-     (plain-text editors). So better copy&amp;paste the diff 
-     output into the mail instead of attaching them, or use another
-     email client.
+     The mailing list software accepts only attachments of the
+     content type "text/plain". OE creates the content type of a
+     attachment by checking the file ending. So make sure that the
+     diff output, if stored in a file, the file has an ending,
+     which is assigned to a program like Notepad
+     (plain-text editors). So better rename your diff file to "file-diff.txt"
+     before attach it.
     </para>
    </answer>
   </qandaentry>
@@ -121,15 +118,15 @@
    <answer>
     <author name="Alexander Merz"/>
     <para>
-     The general directory for new PEAR-classes and modules is 
-     pear/ in the CVS repository. The name of the directory of the 
-     new class is build from the class name and the package name. 
-     If you wrote a class called Bar as a part of the package Foo, 
-     the name of the directory is Foo_Bar. So the resulting path 
+     The general directory for new PEAR-classes and modules is
+     pear/ in the CVS repository. The name of the directory of the
+     new class is build from the class name and the package name.
+     If you wrote a class called Bar as a part of the package Foo,
+     the name of the directory is Foo_Bar. So the resulting path
      is <filename>pear/Foo_Bar</filename>.
     </para>
    </answer>
-  </qandaentry>    
+  </qandaentry>
   <qandaentry>
    <question title="Why is PEAR seperated into pear/ and php4/pear/?" />
    <answer>
@@ -147,7 +144,7 @@
      release automatically.
     </para>
    </answer>
-  </qandaentry>    
+  </qandaentry>
   <qandaentry>
    <question title="Why does the directory structure of pear/ and php4/pear/ differ?" />
    <answer>
@@ -163,7 +160,7 @@
      this is all determined by the package description file.
     </para>
    </answer>
-  </qandaentry>    
+  </qandaentry>
   <qandaentry>
    <question title="Why a flat directory structure instead of a deep?" />
    <answer>
@@ -174,16 +171,16 @@
      cycles, CVS access control and so on.
     </para>
    </answer>
-  </qandaentry>    
+  </qandaentry>
   <qandaentry>
    <question title="Can I commit experimental/unstable stuff?" />
     <answer>
      <author name="Alexander Merz"/>
      <para>
       Yes. But make sure, that you mark up the experimental/unstable
-      status of the project in the documention. The best place to do 
-      this is in the package.xml in the &lt;status&gt;-tag. 
-      The values for this tag are 
+      status of the project in the documention. The best place to do
+      this is in the package.xml in the &lt;status&gt;-tag.
+      The values for this tag are
      <variablelist>
       <varlistentry>
 	<term>alpha</term>
@@ -223,7 +220,7 @@
 	</listitem>
       </varlistentry>
       <varlistentry>
-	<term>cvs</term>
+	<term>snapshot</term>
 	<listitem>
 	 <simpara>
          a CVS snapshot from a certain date
@@ -245,13 +242,15 @@
      There is no answer yet.
     </para>
    </answer>
-  </qandaentry>    
+  </qandaentry>
   <qandaentry>
    <question title="How should I write the documentation?" />
    <answer>
-    <author name=""/>
+    <author name="Tomas V.V.Cox"/>
     <para>
-     There is no answer yet.
+     The selected standar to write the API documentation is <ulink url="http://phpdoc.de/">
+     PHPDoc</ulink>. For the rest of the documentation like the manual or usage examples, the
+     recommended formats are plain text, HTML or <ulink url="http://docbook.org/">DocBook</ulink>.
     </para>
    </answer>
   </qandaentry>
@@ -263,7 +262,7 @@
      There is no answer yet.
     </para>
    </answer>
-  </qandaentry>        
+  </qandaentry>
   <qandaentry>
    <question title="I have a question about PEAR. Where should I ask?" />
    <answer>
@@ -272,15 +271,15 @@
      <member>General questions about the usage of PEAR components should be posted
      to the mailing list <ulink url="mailto:pear-general@lists.php.net">pear-general@lists.php.net</ulink>.
      </member>
-     
+
      <member>
      All technical discussions concerning the development of PEAR
      components should be posted to <ulink url="mailto:pear-dev@lists.php.net">
      pear-dev@lists.php.net</ulink>.
      </member>
-     
+
      <member>
-      Question concerning the website can be sent to 
+      Question concerning the website can be sent to
       <ulink url="mailto:pear-webmaster@php.net">pear-webmaster@php.net</ulink>.
      </member>
     </simplelist>
@@ -292,7 +291,7 @@
     you ask questions should always be polite :-).
     </para>
    </answer>
-  </qandaentry>        
+  </qandaentry>
  </qandaset>
 
 </article>

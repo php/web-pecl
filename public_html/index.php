@@ -31,7 +31,7 @@ components.
 response_header();
 
 menu_link("Documentation", "/manual/");
-menu_link("Frequently Asked Questions", "faq.php");
+menu_link("Frequently Asked Questions", "/manual/en/faq.php");
 
 if (DEVBOX) {
     menu_link("Browse Packages", "packages.php");

@@ -215,7 +215,7 @@ function commonHeader($title) {
     echo delim();
     print_link('/support.php','SUPPORT',false,'class="menuBlack"');
     echo delim();
-    print_link('/faq.php','FAQ',false,'class="menuBlack"');
+    print_link('/manual/en/faq.php','FAQ',false,'class="menuBlack"');
       ?>&nbsp;<br />
       <?php spacer(2,2); ?><br />
     </td>

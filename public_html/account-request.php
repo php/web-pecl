@@ -170,6 +170,63 @@ in PEAR CVS, that this complies with the PEAR code standards before it is
 released.</p>
 
 <p>Bogus, incomplete or incorrect requests will be summarily denied.</p>
+
+<p>
+	<strong>Confirm your reason for a PEAR account:</strong>
+</p>
+
+<script language=\"JavaScript\" type=\"text/javascript\" defer=\"defer\">
+<!--
+	function reasonClick(option)
+	{
+		if (option == 'pkg') {
+			enableForm(true);
+
+			// Lose border
+			if (document.getElementById) {
+				document.getElementById('reason_table').style.border = '2px dashed green';
+			}
+		} else {
+			// Gain border
+			if (document.getElementById) {
+				document.getElementById('reason_table').style.border = '2px dashed red';
+			}
+
+			alert('You do not need an account - PLEASE DO NOT SUBMIT THE FORM');
+			enableForm(false);
+		}
+	}
+	
+	function enableForm(disabled)
+	{
+		for (var i=0; i<document.forms['request_form'].elements.length; i++) {
+			document.forms['request_form'].elements[i].disabled = !disabled;
+			//document.forms['request_form'].elements[i].style.backgroundColor = '#c0c0c0';
+		}
+	}
+	
+	enableForm(false);
+//-->
+</script>
+
+<table border=\"0\" style=\"border: 2px #ff0000 dashed; padding: 0px\" id=\"reason_table\">
+	<tr>
+		<td valign=\"top\"><input type=\"radio\" name=\"reason\" value=\"pkg\" id=\"reason_pkg\" onclick=\"reasonClick('pkg')\" /></td>
+		<td>
+			<label for=\"reason_pkg\">
+				You have announced a new PEAR package to the Pear-Dev mailing list, it's name has been OKed, and you
+				wish to register/upload a release to the pear website.
+			</label>
+		</td>
+	</tr>
+
+	<tr>
+		<td valign=\"top\"><input type=\"radio\" name=\"reason\" value=\"other\" id=\"reason_other\" onclick=\"reasonClick('other')\" /></td>
+		<td>
+			<label for=\"reason_other\">Other reason</label>
+		</td>
+	</tr>
+</table>
 ";
 
     if (isset($errorMsg)) {
@@ -182,7 +239,7 @@ released.</p>
     }
 
     $bb = new BorderBox("Request account", "90%", "", 2, true);
-    print "<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\">\n";
+    print "<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\" name=\"request_form\">\n";
     $bb->horizHeadRow("Username:", HTML_Form::returnText("handle", @$_POST['handle'], 12));
     $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", @$_POST['firstname']));
     $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", @$_POST['lastname']));
@@ -190,7 +247,7 @@ released.</p>
     $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", @$_POST['email']));
     $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", @$_POST['showemail']));
     $bb->horizHeadRow("Homepage", HTML_Form::returnText("homepage", @$_POST['homepage']));
-    $bb->horizHeadRow("Purpose of your PEAR account<br />(no account is needed for using PEAR, PEAR packages):", HTML_Form::returnTextarea("purpose", stripslashes(@$_POST['purpose'])));
+    $bb->horizHeadRow("Purpose of your PEAR account<br />(No account is needed for using PEAR or PEAR packages):", HTML_Form::returnTextarea("purpose", stripslashes(@$_POST['purpose'])));
     $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes(@$_POST['moreinfo'])));
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" />&nbsp;<input type=\"reset\" />");
@@ -199,7 +256,7 @@ released.</p>
 
     if ($jumpto) {
         print "<script language=\"JavaScript\">\n<!--\n";
-        print "document.forms[1].$jumpto.focus();\n";
+        print "if (!document.forms[1].$jumpto.disabled) document.forms[1].$jumpto.focus();\n";
         print "\n// -->\n</script>\n";
     }
 }

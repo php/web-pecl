@@ -175,7 +175,7 @@ do {
     $bb->end();
 ?>
 
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" name="account_form">
 <input type="hidden" name="cmd" value="" />
 <input type="hidden" name="uid" value="<?= $requser->handle ?>" />
 <table cellpadding="3" cellspacing="0" border="0" width="90%">
@@ -188,7 +188,29 @@ do {
   <td colspan="3">
    If dismissing an account request, enter the reason here
    (will be emailed to <?= $requser->email ?>):<br />
-   <textarea rows="3" cols="60" name="reason"></textarea>
+   <textarea rows="3" cols="60" name="reason"></textarea><br />
+
+   <!-- Some default reasons -->
+   <script language="JavaScript" type="text/javascript">
+   <!--
+   		function updateRejectReason(selectObj)
+		{
+			if (selectObj.selectedIndex != 0) {
+				document.forms['account_form'].reason.value = selectObj.options[selectObj.selectedIndex].value;
+			}
+			selectObj.selectedIndex = 0;
+		}
+   //-->
+   </script>
+
+   <select onchange="return updateRejectReason(this)">
+   		<option>Select reason...</option>
+   		<option value="You don't need a PEAR account to use PEAR or PEAR packages">You don't need a PEAR account to use PEAR or PEAR packages</option>
+		<option value="Please propose all new classes to the Pear-Dev mailing list first">Please propose all new classes to the Pear-Dev mailing list first</option>
+		<option value="Please send all bug fixes to the Pear-Dev mailing list">Please send all bug fixes to the Pear-Dev mailing list</option>
+		<option value="Please supply valid credentials, including your full name and a descriptive reason for an account">Please supply valid credentials, including your full name and a descriptive reason for an account</option>
+   </select>
+
   </td>
 </table>
 </form>

@@ -56,9 +56,7 @@ $sql = "SELECT p.id, p.name, p.summary
 $term = "%" . basename($pkg) . "%";
 $packages = $dbh->getAll($sql, array($term), DB_FETCHMODE_ASSOC);
 
-if (count($packages) == 1) {
-	localRedirect($pinfo_url . $packages[0]['name']);
-} elseif (count($packages) > 3) {
+if (count($packages) > 3) {
 	$packages = array($packages[0], $packages[1], $packages[2]);
 	$show_search_link = true;
 } else {
@@ -75,7 +73,7 @@ found on this server.</p>
 
 <?php if(is_array($packages)) { ?>
 	Searching the current list of packages for
-	<i><?php basename($_SERVER['REQUEST_URI']); ?></i> included the
+	<i><?php echo basename($_SERVER['REQUEST_URI']); ?></i> included the
 	following results:
 	
 	<ul>

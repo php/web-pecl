@@ -160,6 +160,8 @@ chmod +x $TARGET
 
 rm -rf $PTMP
 
+pear -D php_dir=$destdir -S
+
 echo
 echo "The 'pear' command has been successfully installed under $TARGET"
 echo "try it by typing '$TARGET' for help"

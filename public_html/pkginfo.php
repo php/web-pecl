@@ -93,13 +93,12 @@ response_header("Package :: $name");
     <th class="pack" bgcolor="#009933" width="20%">Description</th>
     <td><?php echo $description;?>&nbsp;</td>
 </tr>
-<!--
 <tr>
     <td colspan="2" align="right">
-    <?php print_link("/package-edit.php?id=" . @$_GET['pacid'], "Edit"); ?>
+    <?php print_link("/package-edit.php?id=" . @$_GET['pacid'], 
+            make_image("edit.gif", "Edit package information (Administrators only)")); ?>
     </td>
 </tr>
--->
 </table>
 
 <?php $bb->end(); ?>

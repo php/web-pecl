@@ -395,9 +395,9 @@ class note
     }
 
     // }}}
-    // {{{ +proto bool note::delete(int)
+    // {{{ +proto bool note::remove(int)
 
-    function delete($id)
+    function remove($id)
     {
         global $dbh;
         $id = (int)$id;
@@ -409,9 +409,9 @@ class note
     }
 
     // }}}
-    // {{{ +proto bool note::deleteAll(string, int)
+    // {{{ +proto bool note::removeAll(string, int)
 
-    function deleteAll($key, $value)
+    function removeAll($key, $value)
     {
         global $dbh;
         $res = $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
@@ -426,12 +426,12 @@ class note
 
 class user
 {
-    // {{{ *proto bool user::delete(string)
+    // {{{ *proto bool user::remove(string)
 
-    function delete($uid)
+    function remove($uid)
     {
         global $dbh;
-        note::deleteall("uid", $uid);
+        note::removeAll("uid", $uid);
         $dbh->query('DELETE FROM users WHERE handle = '. $dbh->quote($uid));
         return ($dbh->affectedRows() > 0);
     }
@@ -464,7 +464,7 @@ class user
             return false;
         }
         @$arr = unserialize($user->userinfo);
-        note::deleteall("uid", $uid);
+        note::removeAll("uid", $uid);
         $user->set('registered', 1);
         if (is_array($arr)) {
             $user->set('userinfo', $arr[1]);
@@ -484,11 +484,11 @@ class user
     // }}}
 }
 
-// {{{ +proto array testerror()
+// {{{ +proto string logintest()
 
 function testerror()
 {
-	return new PEAR_Error("this is a test error", -42);
+	return "ok";
 }
 
 // }}}

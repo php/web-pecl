@@ -63,7 +63,7 @@ do {
         }
         $users = array();
         foreach ($info['maintainers'] as $user) {
-            $users[$user['handle']] = $user['role'];
+            $users[strtolower($user['handle'])] = $user['role'];
         }
         $e = maintainer::updateAll($pacid, $users);
         if (PEAR::isError($e)) {

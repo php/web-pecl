@@ -325,6 +325,23 @@ if ($sth->numRows() == 0) {
 $bb->end();
 
 // }}}
+// {{{ Dependants
+
+$dependants = package::getDependants($name);
+
+if (count($dependants) > 0) {
+
+    echo "<br /><br />";
+    $bb = new BorderBox("Packages the depend on " . $name);
+
+    foreach ($dependants as $dep) {
+        $bb->plainRow(make_link("/package/" . $dep['p_name'], $dep['p_name']));
+    }
+
+    $bb->end();
+}
+
+// }}}
 // {{{ page footer
 
 response_footer();

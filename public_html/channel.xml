@@ -4,6 +4,7 @@ http://pear.php.net/dtd/channel-1.0.xsd">
  <name>pecl.php.net</name>
  <suggestedalias>pecl</suggestedalias>
  <summary>PHP Extension Community Library</summary>
+ <validatepackage version="1.0">PEAR_Validator_PECL</validatepackage>
  <servers>
   <primary>
    <xmlrpc>

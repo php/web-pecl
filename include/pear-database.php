@@ -724,13 +724,13 @@ function testerror()
 
 // {{{ mail_pear_admins()
 
-function mail_pear_admins($subject, $msg, $xhdr = '')
+function mail_pear_admins($subject = "PEAR Account Request", $msg, $xhdr = '')
 {
     global $dbh;
     $admins = $dbh->getCol("SELECT email FROM users WHERE admin = 1");
     if (is_array($admins)) {
         $rcpt = implode(", ", $admins);
-        return mail($rcpt, "PEAR Account Request", $msg, $xhdr);
+        return mail($rcpt, $subject, $msg, $xhdr);
     }
     return false;
 }

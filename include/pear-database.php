@@ -1460,7 +1460,7 @@ Package Info
 
 Related Links
 -------------
-Package home: http://pear.php.net/package-info.php?package=$pkginfo[package]
+Package home: http://pear.php.net/package/$pkginfo[package]
    Changelog: http://pear.php.net/package-changelog.php?package=$pkginfo[package]
     Download: http://pear.php.net/get/$upload
 

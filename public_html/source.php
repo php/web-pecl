@@ -34,8 +34,9 @@ if (empty($url)) {
     response_footer();
     exit;
 }
+$url = htmlentities($url);
 ?>
-<p>Source of: <?=strip_tags($url)?></p>
+<p>Source of: <?php echo $url; ?></p>
 
 <?php
 

@@ -181,11 +181,7 @@ function commonHeader($title) {
       <font color="#ffffff"><b>
         <?php echo strftime("%A, %B %d, %Y"); ?>
       </b>&nbsp;<br />
-<?php
-    if (isset($_COOKIE['pear_dev'])) {
-    print "pear_dev cookie set&nbsp;<br />";
-    }
-?>      </font>
+     </font>
     </td>
   </tr>
 

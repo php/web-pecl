@@ -18,15 +18,6 @@
    $Id$
 */
 
-if ($_SERVER['QUERY_STRING'] == 'devme') {
-    $duration = 86400 * 360;
-    setcookie('pear_dev', 'on', time() + $duration, '/');
-    $_COOKIE['pear_dev'] = 'on';
-} elseif ($_SERVER['QUERY_STRING'] == 'undevme') {
-    setcookie('pear_dev', '', time() - 3600, '/');
-    unset($_COOKIE['pear_dev']);
-}
-
 $SIDEBAR_DATA='
 <h3>What is PEAR?</h3>
 <p>

@@ -612,56 +612,55 @@ class release
 
 		if ($file !== null) {
 			$row = $dbh->getRow("SELECT fullpath, release, id FROM files ".
-								 "WHERE basename = '" . $file . "'");
+								 "WHERE basename = '" . $file . "'", DB_FETCHMODE_ASSOC);
 			if (PEAR::isError($row)) {
 				return $row;
 			} elseif ($row === null) {
                 return $this->raiseError("File '$file' not found");
             }
-            $path = $row[0];
-			$log_release = $path[1];
-			$log_file = $path[2];
+            $path = $row['fullpath'];
+			$log_release = $row['release'];
+			$log_file = $row['id'];
 			$basename = $file;
 		} elseif ($version == null) {
 			// Get the most recent version
 			$row = $dbh->getRow("SELECT id FROM releases ".
 								"WHERE package = $package_id ".
-								"ORDER BY releasedate DESC",
-								DB_FETCHMODE_ORDERED);
+								"ORDER BY releasedate DESC", DB_FETCHMODE_ASSOC);
 			if (PEAR::isError($row)) {
 				return $row;
 			}
-			$release_id = $row[0];
+			$release_id = $row['id'];
 		} elseif (release::isValidState($version)) {
 			// Get the most recent version with a given state
 			$row = $dbh->getRow("SELECT id FROM releases ".
 								"WHERE package = $package_id ".
 								"AND state = '$version' ".
 								"ORDER BY releasedate DESC",
-								DB_FETCHMODE_ORDERED);
+								DB_FETCHMODE_ASSOC);
 			if (PEAR::isError($row)) {
 				return $row;
 			}
-			$release_id = $row[0];
+			$release_id = $row['id'];
 		} else {
 			// Get a specific release
 			$row = $dbh->getRow("SELECT id FROM releases ".
 								"WHERE package = $package_id ".
 								"AND version = '$version'",
-								DB_FETCHMODE_ORDERED);
+								DB_FETCHMODE_ASSOC);
 			if (PEAR::isError($row)) {
 				return $row;
 			}
-			$release_id = $row[0];
+			$release_id = $row['id'];
 		}
 		if (!isset($path) && isset($release_id)) {
-			$sql = "SELECT fullpath, basename FROM files WHERE release = ".
+			$sql = "SELECT fullpath, basename, id FROM files WHERE release = ".
 				 $release_id;
 			$row = $dbh->getRow($sql, DB_FETCHMODE_ORDERED);
 			if (PEAR::isError($row)) {
 				return $row;
 			}
-			list($path, $basename) = $row;
+			list($path, $basename, $log_file) = $row;
 			if (empty($path) || !@is_file($path)) {
 				return PEAR::raiseError("release download:: no version information found");
 			}
@@ -674,6 +673,7 @@ class release
 			if (!isset($log_release)) {
 			    $log_release = $release_id;
 			}
+
 			release::logDownload($package_id, $log_release, $log_file);
 
 			return true;
@@ -696,20 +696,17 @@ class release
 
     function logDownload($package, $release_id, $file = null)
     {
-        return false; // XXX Fixme when table downloads becomes stable.
-                      //     Now logDownload doesn't work
-
         global $dbh;
 
         $id = $dbh->nextId("downloads");
 
-        $query = "INSERT INTO downloads VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO downloads (id, file, package, release, dl_when, dl_who, dl_host) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $sth = $dbh->prepare($query);
 
         if (DB::isError($sth)) {
             return false;
         }
-        // XXX Returns:  [nativecode=Column count doesn't match value count at row 1]
+
         $err = $dbh->execute($sth, array($id, $file, $package,
                                          $release_id, date("Y-m-d H:i:s"),
                                          $_SERVER['REMOTE_ADDR'],

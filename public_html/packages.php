@@ -212,6 +212,8 @@ if(count($catdata) > 0){
 		foreach ($packages as $key => $pkg) {
 			$extendedInfo['numReleases'] = $dbh->getOne('SELECT COUNT(*) FROM releases WHERE package = ' . $pkg['id']);
 			$extendedInfo['status']      = $dbh->getOne('SELECT state FROM releases WHERE package = ' . $pkg['id'] . ' ORDER BY id DESC LIMIT 1');
+			$extendedInfo['license']     = $dbh->getOne('SELECT license FROM packages WHERE id = ' . $pkg['id'] . ' ORDER BY id DESC LIMIT 1');
+			
 
 			// Make status coloured
 			switch ($extendedInfo['status']) {

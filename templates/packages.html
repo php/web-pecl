@@ -17,6 +17,14 @@
 //-->
 </script>
 
+<style type="text/css">
+<!--
+	.eInfo_label {
+		font-weight: bold;
+		font-size: 80%;
+	}
+// -->
+</style>
 
 <table border="0" width="100%">
     <tr>
@@ -102,7 +110,6 @@
 						<th class="pkgListHeader">#</td>
 						<th class="pkgListHeader"><nobr>Package name</nobr></td>
 						<th class="pkgListHeader">Description</td>
-						<th class="pkgListHeader">Status</td>
 						<td>&nbsp;</td>
 					</tr>
 				
@@ -111,7 +118,6 @@
 							<td valign="top"><?=$first++?></td>
 							<td valign="top"><a href="package-info.php?pacid=<?=$p['id']?>"><strong><?=$p['name']?></strong></td>
 							<td valign="top"><?=$p['summary']?></td>
-							<td valign="top"><?=$p['eInfo']['status']?></td>
 							<td valign="top">
 								<?if($_browser->is_ie5up):?>
 									<a href="#" onclick="toggleMoreInfo(<?=$p['id']?>); return false" onmouseover="window.status = 'View more info about <?=$p['name']?>'; return true" onmouseout="window.status = ''" title="View more info about <?=$p['name']?>">
@@ -138,8 +144,16 @@
 
 								<table border="0">
 									<tr>
-										<td>Number of releases:</td>
+										<td class="eInfo_label"><strong>Number of releases:</strong></td>
 										<td><?=$p['eInfo']['numReleases']?></td>
+										
+										<td class="eInfo_label"><strong>License type:</strong></td>
+										<td><?=$p['eInfo']['license']?></td>
+									</tr>
+									
+									<tr>
+										<td class="eInfo_label"><strong>Status:</strong></td>
+										<td><?=$p['eInfo']['status']?></td>
 									</tr>
 								</table>
 								

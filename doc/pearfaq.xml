@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.2 2001-08-16 01:18:21 alexmerz Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.3 2001-08-19 02:34:50 alexmerz Exp $ -->
 <!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "./dbxml/docbookx.dtd">
 
@@ -8,39 +8,77 @@
 <article class="faq">
 <artheader>
     <title>PEAR-Developer FAQ</title>
-    <date>$Date: 2001-08-16 01:18:21 $</date>
+    <date>$Date: 2001-08-19 02:34:50 $</date>
 </artheader>
 
 <qandaset>
     <qandaentry>
         <question>
             <para>
-                How to become a PEAR contributer?
+                How to become a PEAR contributer and/or CVS access to PEAR?
             </para>
         </question>
         <answer>
             <para>
-                ( by Author )
+                ( by Alexander Merz )
             </para>        
             <para>
-                the ANSWER is 42
+                The rules are the same like getting a PHP CVS account. This mean
+				you should do one of the following things to improve your
+				chances to get a CVS account.
+				<simplelist>
+					<member>
+						Send patches for existing PEAR classes.
+					</member>
+					<member>
+						Create and <emphasis>maintain</emphasis> a new class 
+						for PEAR.
+					</member>
+					<member>
+						Rewrite and <emphasis>maintain</emphasis> an existing 
+						class to match the PEAR Coding Standards.
+					</member>
+				</simplelist>
+				Requesting an account without having existing source code or 
+				public pre-work make no much sense.
             </para>
+			<para>
+				See also <ulink url="http://wwww.php.net/cvs-php.html">Using 
+				CVS for PHP Development</ulink>.
+			</para>
+			<para>
+				You should announce your intention of commiting new stuff to 
+				the PEAR-Dev Mailinglist. It's strongly recommended to 
+				subscribe to the list. See the
+				<ulink url="http://www.php.net/support.php">support page
+				</ulink> for subscribing.
+			</para>
         </answer>
     </qandaentry>
     
     <qandaentry>
         <question>
             <para>
-                How to contribute patches
+                How to contribute patches?
             </para>
         </question>
         <answer>
             <para>
-                ( by Author )
+                ( by Alexander Merz )
             </para>        
             <para>
-                the ANSWER is 42
-            </para>
+                The best possibility to contribute patches is to send them to 
+				PEAR-Dev mailinglist pear-dev@lists.php.net. Make sure your 
+				patch is based on a current CVS snapshot. Don't send the 
+				complete file(s). Use diff or the diff command of cvs and 
+				put or attach the output of diff to the mail.
+	        </para>
+			<para>
+				Another possibility is to send the patches directly to the
+				author(s) of the class. But sometimes the author isn't the 
+				maintainer, in vacation or have not access to cvs at the 
+				moment. So better use the mailinglist
+			</para>
         </answer>
     </qandaentry>    
     <qandaentry>
@@ -52,10 +90,17 @@
         </question>
         <answer>
             <para>
-                ( by Author )
+                ( by Alexander Merz )
             </para>        
             <para>
-                the ANSWER is 42
+                The mailing list software accepts only attachments of the 
+				content type "text/plain". OE creates the content type of a 
+				attachment by checking the file ending. So make sure that the 
+				diff output, if stored in a file, the file has an ending, 
+				which is assigned to a program like Notepad 
+				( plain-text editors ). So better copy&amp;paste the diff 
+				output into the mail isnstead of attaching them, or use another
+				email client.
             </para>
         </answer>
     </qandaentry>

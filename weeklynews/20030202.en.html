@@ -8,152 +8,151 @@
 <p>
  <i>
   <small>
-   by 
-   <a href="http://www.appelsiini.net/~tuupola/">Mika Tuupola</a> (tuupola@appelsiini.net), 
+   by
+   <a href="http://www.appelsiini.net/~tuupola/">Mika Tuupola</a> (tuupola@appelsiini.net),
    <a href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a> (paj@pearfr.org)
   </small>
  </i>
 </p>
 <p>
-<p>
- Starting this week, we introduce a new "Package of the week" section 
- in the PEAR weekly news. This week focuses on APD from 
+ Starting this week, we introduce a new "Package of the week" section
+ in the PEAR weekly news. This week focuses on APD from
  <a href="http://pear.php.net/account-info.php?handle=gschlossnagle">George Schlossnagle</a>,
  a full-featured profiler/debugger.
 </p>
 <p>
  It has been a moderately quiet week in the mailinglists. Consequently
- there has been more CVS traffic and more releases than usual. As a 
+ there has been more CVS traffic and more releases than usual. As a
  time of writing total number of new PEAR releases this week is 14.
 </p>
 <p>
  This weeks news include details on <a href="#3">error handling</a> in
- constructors, new <a href="#4">phpDocumentor features</a>, 
+ constructors, new <a href="#4">phpDocumentor features</a>,
  another <a href="#2">Mac OS X tutorial</a> and
  <a href="#5">seven new proposed packages</a>.
 </p>
 
-<hr>
+<hr />
  <!-- SECTION --><a name="1"></a>
 <h2>Package of the week</h2>
 <h3>George Schlossnagle's APD, a fullfeatured profiler/debugger</h3>
 <h3>Who's George Schlossnagle ?</h3>
 <p>
- George started working on UNIX systems 12 years ago, writing numerical 
- partial-differential analysis routines in FORTRAN.  He started playing 
- with the web 8 years ago and has been doing it professionally for 5 
- years.  He is currently a principal consultant at <a href="http://www.omniti.com/">OmniTI Computer 
- Consulting</a>, a technology consulting firm 
+ George started working on UNIX systems 12 years ago, writing numerical
+ partial-differential analysis routines in FORTRAN.  He started playing
+ with the web 8 years ago and has been doing it professionally for 5
+ years.  He is currently a principal consultant at <a href="http://www.omniti.com/">OmniTI Computer
+ Consulting</a>, a technology consulting firm
  specializing in building and managing scalable web and email systems.
 </p>
 <h3>What is the pros/cons of publishing your work under PEAR/PECL ?</h3>
  <p>
- I think my only regret about publishing apd under PECL is that I didn't 
- do so sooner.  From a code/version management standpoint I working in 
- PECL is equivalent to working on a locally manged project.  The PEAR 
- release management system makes rolling and pushing a new version 
- incredibly simple.   Also I see are increased visibility and interest 
- from the PHP community.  Finding out that  apd installed cleanly under 
- 4.3 via the PEAR installer (with no effort from me to make it do so), 
+ I think my only regret about publishing apd under PECL is that I didn't
+ do so sooner.  From a code/version management standpoint I working in
+ PECL is equivalent to working on a locally manged project.  The PEAR
+ release management system makes rolling and pushing a new version
+ incredibly simple.   Also I see are increased visibility and interest
+ from the PHP community.  Finding out that  apd installed cleanly under
+ 4.3 via the PEAR installer (with no effort from me to make it do so),
  was very cool.
  </p>
 <h3>What do you hope for the future of PEAR/PECL ?</h3>
 <p>
- I think PEAR and PECL are the future of php extension and package 
- management.  By decoupling PHP versions from extension versions, we can 
- hopefully increase the speed, quality and frequency of PHP releases.  I 
- would personally like to see an increase use of unit testing in PEAR 
- and PECL packages (my own packages being incredibly in need of this)  
- Adding unit tests should make refactoring easy and reduce developers 
- hesitation to improve other extensions/packages for fear of 
- unintentionally breaking things.  As unit testing in the php build 
- process continues to mature and more extensions are moved into PECL, I 
- hope to see an improvement in cross-version compatibility for many 
+ I think PEAR and PECL are the future of php extension and package
+ management.  By decoupling PHP versions from extension versions, we can
+ hopefully increase the speed, quality and frequency of PHP releases.  I
+ would personally like to see an increase use of unit testing in PEAR
+ and PECL packages (my own packages being incredibly in need of this)
+ Adding unit tests should make refactoring easy and reduce developers
+ hesitation to improve other extensions/packages for fear of
+ unintentionally breaking things.  As unit testing in the php build
+ process continues to mature and more extensions are moved into PECL, I
+ hope to see an improvement in cross-version compatibility for many
  PECL'd extensions.
 </p>
 <h3>APD, can you describe this package ?</h3>
 <p>
- apd is a zend_extension which adds profiling and debugging abilities to 
- the Zend Engine.   apd had humble beginnings.  My former colleague Dan 
- Cowgill was very frustrated with the lack of full backtrace capability 
- (this was back in 4.1 days, well before debug_backtrace() was 
- available.)  After the backtrace capabilities where added, it became 
- obvious that the engine we developed provided a excellent interface to 
+ apd is a zend_extension which adds profiling and debugging abilities to
+ the Zend Engine.   apd had humble beginnings.  My former colleague Dan
+ Cowgill was very frustrated with the lack of full backtrace capability
+ (this was back in 4.1 days, well before debug_backtrace() was
+ available.)  After the backtrace capabilities where added, it became
+ obvious that the engine we developed provided a excellent interface to
  generate profiling information for scripts.
  </p>
  <p>
- This profiling ability was incredibly valuable to the work I was doing 
- at that time, which involved performance tuning the production 
- environment for some sites with a million-line code base.  Without 
- profiling capabilities tuning scripts was largely a matter of guess 
- work.  With the pre-0.1 version of apd running, we were able to get 
+ This profiling ability was incredibly valuable to the work I was doing
+ at that time, which involved performance tuning the production
+ environment for some sites with a million-line code base.  Without
+ profiling capabilities tuning scripts was largely a matter of guess
+ work.  With the pre-0.1 version of apd running, we were able to get
  500% performance gains on a number of pages  within a day.
  </p>
  <p>
- Early after the initial release, Thies Arntzen made a feature request 
- that the profile information not be human readable text, but instead be 
- something similar to what the utility gprof can read.  It took a while, 
- but starting with version 0.3 'pprof' output became the standard 
- format, and a utility 'pprofp' was bundled to read the files.  This was 
- a big step, as it allowed for easy and robust post-trace processing 
- (displaying call graphs, ordering by a number of different execution 
+ Early after the initial release, Thies Arntzen made a feature request
+ that the profile information not be human readable text, but instead be
+ something similar to what the utility gprof can read.  It took a while,
+ but starting with version 0.3 'pprof' output became the standard
+ format, and a utility 'pprofp' was bundled to read the files.  This was
+ a big step, as it allowed for easy and robust post-trace processing
+ (displaying call graphs, ordering by a number of different execution
  time metrics, etc.)
  </p>
  <p>
- apd has a number of additional features as well.  Most notably is the 
- full interactive debugger support that Alan Knowles added.  This allows 
- an ide to do a step-by-step execution of a script, and has the ability 
- to not only display variables at every step, but to modify them as 
- well.  The only ide I know which supports this fully is Alan's 
- magnificent phpMole, which I would recommend to anyone interested in a 
+ APD has a number of additional features as well.  Most notably is the
+ full interactive debugger support that Alan Knowles added.  This allows
+ an ide to do a step-by-step execution of a script, and has the ability
+ to not only display variables at every step, but to modify them as
+ well.  The only ide I know which supports this fully is Alan's
+ magnificent phpMole, which I would recommend to anyone interested in a
  php ide.
  </p>
  <p>
- Some features which are seldom used, but cool nonetheless include the 
- rename_function() and override_function() functions, which allow you to 
- replace an existing function in the symbol table with one of your own 
- creation.  It would be nice to see functions similar to these 
- integrated into the Zend Engine.  Other features will likely we 
- deprecated over time.  The backtrace commands have been supplanted by 
- the debug_backtrace and debug_print_backtrace commands and the symbol 
+ Some features which are seldom used, but cool nonetheless include the
+ rename_function() and override_function() functions, which allow you to
+ replace an existing function in the symbol table with one of your own
+ creation.  It would be nice to see functions similar to these
+ integrated into the Zend Engine.  Other features will likely we
+ deprecated over time.  The backtrace commands have been supplanted by
+ the debug_backtrace and debug_print_backtrace commands and the symbol
  table introspection functions are not terribly useful.
 </p>
 <h3> What do you actually need from the community ?</h3>
 <p>
 One billion dollars... mwahaha!<br />
 
-Seriously though, when I started writing open source software in 1999, 
-I mistakenly thought that I could create a project and have people 
-flock to it to add features that I wanted.  That is simply not the way 
-it works.  In fact, I (like most open source programmers I know), spend 
-at least as much time implementing features that other people want as I 
-do implementing things that I am interested in personally.  My goal in 
-writing apd was primarily to create a tool that helped me in my job, 
-and next to help others executing similar tasks.  If apd helps people 
-write faster and better code, then this has been a successful project 
+Seriously though, when I started writing open source software in 1999,
+I mistakenly thought that I could create a project and have people
+flock to it to add features that I wanted.  That is simply not the way
+it works.  In fact, I (like most open source programmers I know), spend
+at least as much time implementing features that other people want as I
+do implementing things that I am interested in personally.  My goal in
+writing apd was primarily to create a tool that helped me in my job,
+and next to help others executing similar tasks.  If apd helps people
+write faster and better code, then this has been a successful project
 to me.<br/><br/>
 
-I would like to thank the apd user community for:<br/><br/>
+I would like to thank the apd user community for:<br /><br />
 
 
-<li />Consistently submitting good bug reports that make bug-fixing easy</li>
-<li />Being understanding when fixes take a while</li><br/>
+<li>Consistently submitting good bug reports that make bug-fixing easy</li>
+<li>Being understanding when fixes take a while</li><br />
 
 
-With that disclaimer, if people are interested, here is my personal 
-TODO list for apd, which I always accept help with:<br/><br/>
+With that disclaimer, if people are interested, here is my personal
+TODO list for apd, which I always accept help with:<br /><br />
 
 
-<li />Improving memory usage statistics.  I'm not sure if this is 
-possible, but it's a standing feature request and I am unhappy with the 
+<li>Improving memory usage statistics.  I'm not sure if this is
+possible, but it's a standing feature request and I am unhappy with the
 current implementation.</li>
-<li />A  full port to windows.  Markus Fischer did this in v0.1, but the 
+<li>A  full port to windows.  Markus Fischer did this in v0.1, but the
 profiling changes broke his work and I am not a windows programmer.</li>
-<li />Integrating the profiling information into an IDE.</li>
+<li>Integrating the profiling information into an IDE.</li>
 <br />
-Finally, it is always nice to hear about people's success stories.  At 
-PHP-Con 2002, I found out that Yahoo! was using apd internally for 
-script profiling.  What a boost!  Knowing that people are using the 
+Finally, it is always nice to hear about people's success stories.  At
+PHP-Con 2002, I found out that Yahoo! was using apd internally for
+script profiling.  What a boost!  Knowing that people are using the
 software and are happy with it makes it all worthwhile.
 </p>
 <br />
@@ -164,8 +163,8 @@ Thank's to George for this interview
 <p>
  The Mac OS X tutorial mentioned in a previous issue is now
  also published in
- <a href="http://www.macdevcenter.com/pub/a/mac/2003/01/21/pear_macosx.html">MacDevCenter</a>. 
- Since this site is part of 
+ <a href="http://www.macdevcenter.com/pub/a/mac/2003/01/21/pear_macosx.html">MacDevCenter</a>.
+ Since this site is part of
  <a href="http://www.oreillynet.com/">O'Reilly Network</a> PEAR will get
  nice coverage from this article.
 </p>
@@ -173,7 +172,7 @@ Thank's to George for this interview
 <hr>
 <p>
 If you come accross PEAR related article article feel free to
-send (<a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>) us the references 
+send (<a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>) us the references
 and they will be added to the weekly news.
 </p>
 
@@ -185,19 +184,19 @@ and they will be added to the weekly news.
 <h3>Error handling in constructors?</h3>
 <p>
  There was a short discussion on what is the recommended way of handling
- errors in constructors. The answer is really simple: Even though 
- it is possible to set $this to be an instance of PEAR_Error it is 
+ errors in constructors. The answer is really simple: Even though
+ it is possible to set $this to be an instance of PEAR_Error it is
  discouraged to use this undocumented feature. This behaviour will
  be changed in PHP5. A better aproach is to avoid all failing logic in
- constructor and use a separate method for calls which need to be 
+ constructor and use a separate method for calls which need to be
  able to return an error. A good example of such method would be
- any factory method. 
+ any factory method.
 </p>
 <!-- SECTION --><a name="4"></a>
 <h3>New phpDocumentor features</h3>
 <p>
- <a href="http://phpdocu.sourceforge.net/">phpDocumentor</a> 
- development team has implemented support for new 
+ <a href="http://phpdocu.sourceforge.net/">phpDocumentor</a>
+ development team has implemented support for new
  tags in their documentation tool. These include such tags as @source,
  @internal, @filesource, @example and @internal. For more info please
  see the <a href="http://phpdocu.sourceforge.net/Release-1.2.0beta2">release
@@ -247,20 +246,20 @@ and they will be added to the weekly news.
 <h3>SearchEngine_Mnogosearch</h3>
 <p>
  Bertrand Mansion proposed his SearchEngine_Mnogosearch package, which
- is a PHP frontend for the popular 
+ is a PHP frontend for the popular
  <a href="http://www.mnogosearch.org/">mnoGoSearch</a> searchengine.
 </p>
 
 <h2>Development</h2>
 <p>
   Active on CVS this week have been:
-  HTML_Template_Flexy, Cache_Lite, PECL::Radius, PEAR, DBA, 
+  HTML_Template_Flexy, Cache_Lite, PECL::Radius, PEAR, DBA,
   DBA_Relational, HTTP_Header, MDB, Net_SMTP, Mail, Log, File,
   I18N, SpreadSheet_Excel_Writer, MDB_QueryTool, Payment_Clieop,
-  PECL::bcompiler, Tree, DB_QueryTool, HTML_Template_Xipe, 
+  PECL::bcompiler, Tree, DB_QueryTool, HTML_Template_Xipe,
   DB_DataObject, HTML_QuickForm, PECL::imagick, Auth,
   SearchEngine_Mnogosearch, Net_URL, HTTP_Request and PECL::apd.
-   
+
 </p>
 
 </body>

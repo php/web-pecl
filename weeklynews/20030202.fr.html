@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- $Id$ -->
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+<p>
+ <i>
+  <small>
+   by
+   <a href="http://www.appelsiini.net/~tuupola/">Mika Tuupola</a> (tuupola@appelsiini.net),
+   <a href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a> (paj@pearfr.org),
+   <a href="http://pear.php.net/account-info.php?handle=arnaud">Arnaud Limbourg</a> (arnaud@limbourg.com),
+  </small>
+ </i>
+</p>
+<p>
+ D&egrave;s cette semaine, nous introduisons une nouvelle section appel&eacute;e
+ "Package de la semaine". APD de
+ <a href="http://pear.php.net/account-info.php?handle=gschlossnagle">George Schlossnagle</a> est
+ &agrave; l'honneur, il sagit d'un debugger/profiler tr&egrave;s complet.
+</p>
+<p>
+ La semaine a &eacute;t&eacute; mod&eacute;r&eacute;ment calme, avec comme
+ cons&eacute;quence d'avoir un traffic CVS important
+ et plus de sorties qu'habituellement. Au moment de la r&eacute;daction
+ 14 sorties ont pu &ecirc;tre constat&eacute;e.
+</p>
+<p>
+ Vous trouverez cette semaine des d&eacute;tails sur la <a href="#3">gestion des erreurs</a>
+ dans les constructeurs, les nouvelles fonctionnalit&eacute;es de
+ <a href="#4">phpDocumentor</a>, un nouveau  <a href="#2">tutoriel Mac OS X</a>,
+ ainsi que sept propositions de packages.
+</p>
+
+<hr>
+ <!-- SECTION --><a name="1"></a>
+<h2>Package de la semaine</h2>
+<h3>APD de George Schlossnagle, un profiler/debugger tr&egrave;s complet</h3>
+<h3>Qui est George Schlossnagle ?</h3>
+<p>
+ George a commenc&eacute; &agrave; travailler sur les syst&egrave;mes UNIX il
+ y a 12 ans, &eacute;crivant des fonctions d'analyses num&eacute;riques partielles-
+ diff&eacute;rencielle en FORTRAN. Ces d&eacute;buts avec le web ont commenc&eacute;s
+ il y a 8 ans et de mani&egrave; professionnelle il y a 5 ans. Il travaille
+ actuellement chez  <a href="http://www.omniti.com/">OmniTI Computer
+ Consulting</a>, une soci&eacute;t&eacute; de conseils technologiques
+ sp&eacute;cialis&eacute;e dans la mise en place  et la gestion de syst&egrave;mes
+ mails et web "scalable".
+</p>
+<h3>Quels sont les avantages et inconv&eacute;nients d'avoir publi&eacute; ton travail
+ dans PEAR/PECL ?</h3>
+ <p>
+ Je pense que mon seul regret &agrave; propos de la publication d'APD sous PECL
+ est de ne pas l'avoir fait plus t&ocirc;t. D'un point de vue de la gestion
+ du code ou des versions, travailler avec PECL est &eacute;quivalent &agrave; un
+ syst&egrave;me local. Le syst&egrave;me de release de PEAR rend la cr&eacute;ation
+ et la publication d'une nouvelle "release" incroyablement simple. Je vois aussi
+ une visibilit&eacute; et un int&eacute;r&ecirc;t croissants de la communaut&eacute;.
+ Ayant aussi trouv&eacute; que l'installation d'APD sous php 4.3 avec l'installeur
+ PEAR s'est faite proprement (sans effort de ma part pour que cel&agrave; se passe
+ ainsi).
+ </p>
+<h3>Qu'esp&egrave;res-tu pour le futur de PEAR/PECL ?</h3>
+<p>
+ Je pense que PEAR et PECL sont le futur de la gestion des packages et des extensions.
+ En s&eacute;parant les versions de PHP des versions des extensions, nous pouvons
+ envisager d'accroitre la vitesse, la qualit&eacute; et la fr&eacute;quence des
+ releases PHP. Personnellement, j'aimerais voir une augmentation de l'utilisation
+ des tests unitaires dans les packages PEAR et PECL (mes propres packages ayant
+ incroyablement besoin de &ccedil;la). Ajouter des tests unitaires devrait rendre
+ le "refactoring" (ndt: qqn a une traduction?) plus ais&eacute; et r&eacute;duirait
+ les h&eacute;sitations des d&eacute;velopeurs &agrave; am&eacute;liorer d'autres extensions/
+ packages par peur de cr&eacute; des dysfonctionnement de mani&egrave;re non
+ intentionnelle. Comme les tests unitaires dans la construction de php continuent &agrave;
+ m&ucirc;rir et que de plus en plus d'extensions migrent vers PECL, j'esp&egrave;re voir une
+ am&eacute;lioration de la compatibilit&eacute; entre plusieurs versions pour beaucoup
+ d'extension PECL.
+</p>
+<h3>APD, peux-tu d&eacute;crire ce package ?</h3>
+<p>
+ APD est une extension zend, laquelle ajoute des possibilit&eacute;s
+ de profiling et de debuggages au moteur Zend. APD a e&ucirc;t un d&eacute;but
+ humble. Mon ancien coll&egrave;gue Dan Cowgill &ecute;tait tr&egrave;s frustr&eacute;
+ par le manque de possibilit&eacute;s compl&egrave;te de backtrace (cel&agrave; se
+ passait durant la p&ecute;riode 4.1, avant que debug_backtrace() ne soit introduit).
+ Apr&egrave;s que le backtrace ait &ecute;t&ecute; ajout&ecute;, il est devenu
+ &eacute;vident que notre syst&egrave;me fournissait une excellente interface pour
+ g&eacute;n&eacute;rer des informations de profiling pour des scripts.
+ </p>
+ <p>
+ Le profiling s'est r&eacute;v&eacute;l&eacute; tr&eagrave;s pr&eacute;cieux dans mon travail de l'&eacute;poque
+ qui consistait &agrave; optimiser les performances d'un site web d'environ
+ un million de lignes de code. Sans possibilit&eacute; de faire du profiling
+ l'optimisation de scripts tenait plus du hasard qu'autre chose. Avec
+ la version pre-0.1 d'APD nous avons pu gagner 500% de rapidit&eacute; en plus
+ sur plusieurs scripts en un jour.
+ </p>
+ <p>
+ Apr&eagrave;s la premi&eagrave;re sortie Thies Arntzen demanda que les informations
+ de profiling ne soit pas du type lisibles par l'être humain, mais plutôt
+ d'un type similaire &agrave; celui utilis&eacute; par avec l'utilitaire gprof.
+ Cela pris un certain temps mais la version 0.3 a introduit le format
+ 'pprof' qui devint le format standard. L'utilitaire 'pprof' est fournit
+ afin de lire les fichiers au format pprof. Cela fut un grand pas et
+ permis de simplifier et rendre robuste l'&eacute;tude apr&eagrave;s-&eacute;xecution d'un
+ script (affichage de graphiques d'appels, trier selon diff&eacute;rents crit&eagrave;res
+ de temps d'&eacute;xecution, etc.).
+ </p>
+ <p>
+ APD dispose aussi de fonctionnalit&eacute;s additionnelles. La plus notable
+ est le debugger interactif ajout&eacute; par Alan Knowles. Cela permet
+ d'effectuer un &eacute;xecution pas &agrave; pas d'un script, permettant non-seulement
+ d'afficher les variables mais aussi de modifier leur valeur. Le seul EDI
+ que je connaisse int&eacute;grant cette fonctionnalit&eacute; est l'&eacute;diteur d'Alan
+ phpMole, que je recommande &agrave; quiconque est int&eacute;ress&eacute; par un &eacute;diteur php.
+ </p>
+ <p>
+ Quelques fonctionnalit&eacute;s sont rarement utilis&eacute;es mais sont tout de même
+ cool. Cela inclut les fonctions rename_function() et override_function()
+ qui vous autorise &agrave; remplacer une fonction existante dans la table des
+ symboles par l'une de vos cr&eacute;ations. Il serait souhaitable de voir ces
+ fonctions similaires int&eacute;gr&eacute;es dans le moteur Zend. D'autres
+ fonctionnalit&eacute;s seront surement rendues obsol&eagrave;tes avec le temps.
+ La commande backtrace &agrave; &eacute;t&eacute; supplant&eacute;e par la commande debug_backtrace
+ et debug_print_backtrace et les fonctions permettant d'&eacute;tudier la table
+ des symboles ne sont pas tellement utiles.
+</p>
+<h3>De quoi avez-vous besoin de la part de la communaut&eacute; ?</h3>
+<p>
+Un milliard de dollars... mouahaha!<br />
+
+S&eacute;rieusement, lorsque j'ai commenc&eacute; &agrave; &eacute;crire des logiciels open source
+en 1999 j'ai malheureusement cru que nombre de personnes joindrait le
+projet et ajouterais les fonctionnalit&eacute;s dont j'avais envie. Ca ne
+fonctionne tout simplement pas de cette fa&ccdil;on. En fait, je passe autant
+de temps &agrave; impl&eacute;menter les fontionnalit&eacute;s demand&eacute;es par d'autres personnes
+qu'&agrave; impl&eacute;menter celles qui m'int&eacute;ressent personnellement (cela se passe
+ainsi pour beaucoup de projets open-source &agrave; ma connaissance). Mon but
+premier avec APD &eacute;tait de cr&eacute;er un programme qui pouvait m'aider dans
+mon travail et d'autres ayant les mêmes besoins que moi. Si APD permet
+aux d&eacute;veloppeurs d'&eacute;crire du code plus rapide et de meilleure qualit&eacute;
+alors ce projet aura atteint son but &agrave; mon sens.
+<br /><br />
+
+J'aimerais remercier la communaut&eacute; des utilisateurs APD pour :
+<br /><br />
+
+
+<li />L'envoi de rapports de bugs coh&eacute;rents facilitant leurs corrections</li>
+<li />Etre compr&eacute;hensifs quand les corrections prennent du temps</li><br />
+
+Avec cette annonce voici ma liste de choses &agrave; faire pour APD, pour
+laquelle j'accepte toute aide :<br /><br />
+
+<li>Am&eacute;liorer les statistiques sur l'utilisation de la m&eacute;moire.
+Je ne sais pas si cela est possible mais c'est une demande assez ancienne
+et je ne suis pas satisfait de l'impl&eacute;mentation actuelle.</li>
+<li>Un portage sous Windows. Markus Fischer avait effectu&eacute; ce portage
+avec la version 0.1 mais les changements subs&eacute;quents ont cass&eacute;s
+sont travail et je ne suis pas un programmeur Windows.</li>
+<li />Int&eacute;gration des informations de profiling dans un EDI.</li>
+<br />
+Enfin, il est toujours appr&eacute;ciable d'entendre les succ&eagrave;s d'autres
+personnes. A la conf&eacute;rence PHP-Con 2002, j'ai appris que Yahoo!
+utilisait APD en interne pour "profiler" les scripts. Quelle
+acc&eacute;l&eacute;rateur! Savoir que des gens utilisent le logiciel donne tout son
+sens &agrave; un tel projet.
+</p>
+<br />
+Merci &agrave; George pour cette interview.
+<h2>Dans la presse</h2>
+<!-- SECTION --><a name="2"></a>
+<h3>PEAR sur Mac OS X revisit&eacute;</h3>
+<p>
+ Le tutoriel indiqu&eacute; lors du pr&eacute;cedent num&eacute;ro est aussi publi&eacute;e sur le
+ <a href="http://www.macdevcenter.com/pub/a/mac/2003/01/21/pear_macosx.html">MacDevCenter</a>.
+ Ce site faisant partie  d'
+ <a href="http://www.oreillynet.com/">O'Reilly Network</a> PEAR aura
+ une bonne couverture gr&acirc;ce &agrave; cet article.
+</p>
+
+<hr>
+<p>
+Si jamais vous lisez un article sur PEAR n'h&eacute;sitez pas &agrave; nous en faire
+part, envoyer un message (sur <a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>)
+avec les r&eacute;f&eacute;rences et cela sera ajout&eacute; &agrave; la lettre hebdomadaire.
+</p>
+
+<hr>
+
+<h2>Trafic de la liste de diffusion PEAR-DEV</h2>
+
+<!-- SECTION --><a name="3"></a>
+<h3>Gestion des erreurs dans le constructeur?</h3>
+<p>
+ Une courte discussion &agrave; eu lieu sur la bonne fa&ccdil;on de g&eacute;rer les erreurs
+ dans le constructeur. La r&eacute;ponse est simple: même s'il est possible
+ d'affecter $this comme une instance de classe PEAR_Error il est
+ fortement d&eacute;courag&eacute; d'utiliser cette fonctionnalit&eacute; non-document&eacute;e.
+ Ce comportement sera modifi&eacute; dans PHP5. Une meilleure approche
+ consiste &agrave; &eacute;viter la logique d'&eacute;chec dans le constructeur et d'utiliser
+ une m&eacute;thode s&eacute;par&eacute;e pour les appeles n&eacute;cessitant le retour d'une erreur.
+ Un bon exemple d'une telle m&eacute;thode est le design pattern Fabrique
+ (ou "factory").
+</p>
+<!-- SECTION --><a name="4"></a>
+<h3>Nouvelles fonctionnalit&eacute;s pour phpDocumentor</h3>
+<p>
+ L'&eacute;quipe de d&eacute;veloppement de <a href="http://phpdocu.sourceforge.net/">phpDocumentor</a>
+ &agrave; impl&eacute;ment&eacute; le support de nouvelles balises. Cela inclue les balises
+ @source, @internal, @filesource, @example and @internal. Pour plus
+ d'informations veuillez lire les notes accompagnant la sortie de la
+ <a href="http://phpdocu.sourceforge.net/Release-1.2.0beta2">beta2</a>.
+</p>
+
+
+<h3>Bugs et Corrections</h3>
+<p>
+  Merci &agrave; ces personnes pour avoir trouv&eacute; et corrig&eacute; des bugs:
+  Ondrej Jombik, Andres Käver, Patrick O'Lone, Bruno Pedro and
+  Samuli Tuomola
+</p>
+<hr>
+
+<h2>Propositions et nouveaux packages</h2>
+<!-- SECTION --><a name="5"></a>
+<h3>MDB_QueryTool</h3>
+<p>
+ Lorenzo Alberton &agrave; port&eacute; DB_QueryTool de Wolfram Kriesing pour MDB.
+<p>
+<!-- SECTION --><a name="6"></a>
+<h3>Net_UserAgent_Mobile</h3>
+<p>
+ Kubo Atsuhiro &agrave; propos&eacute; Net_UserAgent_Mobile qui permet de r&eacute;cup&eacute;rer
+ les caract&eacute;ristiques d'affichage des keitai (t&eacute;l&eacute;phones portables).
+ Les syst&eagrave;mes support&eacute;s incluent NTT DoCoMo's i-mode, KDDI's EZweb and J-PHONE's J-Sky.
+</p>
+<!-- SECTION --><a name="7"></a>
+<h3>Auth_Container_POP3</h3>
+<p>
+ Yavor Shahpasov &agrave; propos&eacute; un nouveau container pour Auth permettant
+ de s'authentifier contre un serveur POP3.
+</p>
+
+<!-- SECTION --><a name="8"></a>
+<h3>Auth_RADIUS, Auth_Container_Radius, Crypt_CHAP</h3>
+<p>
+ Michael Bretterklieber, le mainteneur de PECL::radius, &agrave; propos&eacute;
+ plusieurs packages en rapport avec l'authentification. Auth_RADIUS
+ est un wrapper pour PECL::radius. Crypt_CHAP est utilis&eacute; pour la
+ g&eacute;n&eacute;ration de paquets CHAP pour les diff&eacute;rentes de CHAP.
+ Auth_Container_Radius est un nouveau container pour Auth.
+</p>
+<!-- SECTION --><a name="9"></a>
+<h3>SearchEngine_Mnogosearch</h3>
+<p>
+ Bertrand Mansion &agrave; propos&eacute; SearchEngine_Mnogosearch package, un
+ frontend pour le populaire moteur de recherche
+ <a href="http://www.mnogosearch.org/">mnoGoSearch</a>.
+</p>
+
+<h2>Development</h2>
+<p>
+  Ont &eacute;t&eacute; actif sur le CVS cette semaine :
+  HTML_Template_Flexy, Cache_Lite, PECL::Radius, PEAR, DBA,
+  DBA_Relational, HTTP_Header, MDB, Net_SMTP, Mail, Log, File,
+  I18N, SpreadSheet_Excel_Writer, MDB_QueryTool, Payment_Clieop,
+  PECL::bcompiler, Tree, DB_QueryTool, HTML_Template_Xipe,
+  DB_DataObject, HTML_QuickForm, PECL::imagick, Auth,
+  SearchEngine_Mnogosearch, Net_URL, HTTP_Request and PECL::apd.
+</p>
+
+</body>
+</html>

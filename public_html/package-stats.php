@@ -172,6 +172,11 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
             }
             
             $bb->end();
+
+			/**
+            * Print the graph
+            */
+			printf('<br /><img src="package-stats-graph.php?pid=%s&rid=%s" width="543" height="200" alt="">', $_GET['pid'], $_GET['rid']);
         }
 
     } else {

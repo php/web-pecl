@@ -1,5 +1,4 @@
 <?php
-
 auth_require();
 
 define('HTML_FORM_MAX_FILE_SIZE', 16 * 1024 * 1024); // 16 MB
@@ -51,7 +50,7 @@ do {
         PEAR::pushErrorHandling(PEAR_ERROR_PRINT, '<b>Warning: %s</b>');
         $pacid = package::info($info['package'], 'id');
         if (!checkUser($_SERVER['PHP_AUTH_USER'], $pacid)) {
-            display_error("You don't have permissions to upload this release"); break;
+            display_error("You don't have permissions to upload this release."); break;
         }
 
         $e = package::updateInfo($pacid, array(
@@ -60,7 +59,7 @@ do {
                                             'license'     => $info['release_license']
                                               ));
         if (PEAR::isError($e)) {
-            display_error("Couldn't update release info"); break;
+            display_error("Could not update release information."); break;
         }
         $users = array();
         foreach ($info['maintainers'] as $user) {
@@ -68,7 +67,7 @@ do {
         }
         $e = maintainer::updateAll($pacid, $users);
         if (PEAR::isError($e)) {
-            display_error("Could not update maintainers info"); break;
+            display_error("Could not update maintainer information."); break;
         }
         PEAR::popErrorHandling();
         $file = release::upload($info['package'], $info['version'], $info['release_state'],
@@ -85,7 +84,7 @@ do {
         PEAR::popErrorHandling();
         response_header("Release Upload Finished");
         print "The release of package `" . $info['package'] . "' version `" . $info['version'] . "' ";
-        print "was completed successfully and the marketing for it started.<br /><br />";
+        print "has been completed successfully and the promoting cycle for it has started.<br /><br />";
 
         print '<center>'.
               make_link("package-info.php?pacid=$pacid", 'Visit package home') .
@@ -160,7 +159,7 @@ if ($display_verification) {
     $util->validatePackageInfo($info, $errors, $warnings);
     if (count($errors)) {
         print '<h2>Fatal errors found:</h2>';
-        print '(you should correct your package.xml file before be able to continue)';
+        print '(You should correct your package.xml file before you are able to continue.)';
         print '<ul>';
         foreach ($errors as $error) {
             print "<li><b>$error</b></li>\n";
@@ -169,7 +168,7 @@ if ($display_verification) {
     }
     if (count($warnings)) {
         print '<h2>Recommendations</h2>';
-        print '(you may want to correct your package.xml file before continue)';
+        print '(You may want to correct your package.xml file before you continue.)';
         print '<ul>';
         foreach ($warnings as $warning) {
             print "<li>$warning</li>\n";

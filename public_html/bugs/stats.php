@@ -27,8 +27,6 @@ require_once './include/prepend.inc';
 error_reporting(E_ALL ^ E_NOTICE);
 
 response_header('Bugs Stats');
-# the lol
-echo '<style>'; include('./style.css'); echo '</style>';
 
 $dbh->setFetchMode(DB_FETCHMODE_ASSOC);
 

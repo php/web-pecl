@@ -43,8 +43,6 @@ if (!empty($_GET['search_for']) &&
 }
 
 response_header('Search');
-# the lol
-echo '<style>'; include('./style.css'); echo '</style>';
 
 $errors = array();
 $warnings = array();

@@ -283,7 +283,7 @@ function commonFooter() {
   <tr bgcolor="#339900">
       <td align="right" valign="bottom" colspan="5" height="1">
 <?php
-print_link('/source.php?url='.$SCRIPT_NAME, 'SHOW SOURCE', false, 'class="menuBlack"');
+print_link('/about/privacy.php', 'PRIVACY POLICY', false, 'class="menuBlack"');
 echo delim();
 print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
 ?>

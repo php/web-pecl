@@ -35,7 +35,7 @@ if (empty($url)) {
     exit;
 }
 ?>
-<p>Source of: <?php echo $url; ?></p>
+<p>Source of: <?=strip_tags($url)?></p>
 
 <?php
 

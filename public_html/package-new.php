@@ -38,7 +38,7 @@ do {
 	    'license'     => $license,
 	    'summary'     => $summary,
 	    'description' => $desc,
-	    'lead'        => $PHP_AUTH_USER,
+	    'lead'        => $auth_user->handle,
 	));
 	$dbh->popExpect();
 	if (DB::isError($pkg) && $pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
@@ -78,12 +78,12 @@ minimum.
 ";
 
     if (isset($errorMsg)) {
-	print "<TABLE>\n";
-	print " <TR>\n";
-	print "  <TD>&nbsp;</TD>\n";
-	print "  <TD><B>$errorMsg</B></TD>\n";
-	print " </TR>\n";
-	print "</TABLE>\n";
+	print "<table>\n";
+	print " <tr>\n";
+	print "  <td>&nbsp;</td>\n";
+	print "  <td><b>$errorMsg</b></td>\n";
+	print " </tr>\n";
+	print "</table>\n";
     }
 
     $categories = $dbh->getAssoc("SELECT id,name FROM categories");
@@ -99,9 +99,9 @@ minimum.
     $form->display();
 
     if ($jumpto) {
-	print "\n<SCRIPT LANGUAGE=\"JavaScript\">\n<!--\n";
+	print "\n<script language=\"JavaScript\">\n<!--\n";
 	print "document.forms[1].$jumpto.focus();\n";
-	print "// -->\n</SCRIPT>\n";
+	print "// -->\n</script>\n";
     }
 }
 
@@ -111,7 +111,7 @@ function display_error($msg)
 {
     global $errorMsg;
 
-    $errorMsg .= "<FONT COLOR=\"#CC0000\" SIZE=\"+1\">$msg</FONT><BR>\n";
+    $errorMsg .= "<font color=\"#cc0000\" size=\"+1\">$msg</font><br />\n";
 }
 
 ?>

@@ -21,6 +21,8 @@ TABLE_FILES=\
 	cvs_acl.sql \
 	cvs_groups.sql \
 	cvs_group_membership.sql \
+	downloads.sql \
+	files.sql \
 	package_acl.sql \
 	maintains.sql \
 	categories.sql \

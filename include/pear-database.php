@@ -315,24 +315,33 @@ class release
     // }}}
     // {{{ +proto bool release::upload(string, string, string, string, binary, string)
 
-    function upload($package, $version, $state, $relnotes, &$tarball, $md5sum)
+    function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
-        global $dbh, $auth_user;
+        global $dbh, $auth_user, $PHP_AUTH_USER;
 
-        // (2) verify that package exists
-        $test = $dbh->getOne("SELECT name FROM packages WHERE name = ?",
-                             array($package));
-		if (PEAR::isError($test)) {
-			return $test;
+		// (2) verify that package exists
+		if (preg_match('/^\d+$/', $package)) {
+			$package_id = $package;
+			$package = $dbh->getOne("SELECT name FROM packages ".
+									"WHERE id = ?", array($package));
+			if (PEAR::isError($package)) {
+				return $package;
+			}
+		} else {
+			$package_id = $dbh->getOne("SELECT id FROM packages ".
+									   "WHERE name = ?", array($package));
 		}
-        if (empty($test)) {
+		if (PEAR::isError($package_id)) {
+			return $package_id;
+		}
+        if (empty($package_id)) {
             return PEAR::raiseError("no such package: $package");
         }
 
         // (3) verify that version does not exist
         $test = $dbh->getOne("SELECT version FROM releases ".
                              "WHERE package = ? AND version = ?",
-                             array($package, $version));
+                             array($package_id, $version));
 		if (PEAR::isError($test)) {
 			return $test;
 		}
@@ -344,12 +353,9 @@ class release
         $tempfile = sprintf("%s/%s%s-%s.tgz",
                             PEAR_TARBALL_DIR, ".new.", $package, $version);
         $file = sprintf("%s/%s-%s.tgz", PEAR_TARBALL_DIR, $package, $version);
-        $fp = @fopen($tempfile, "w");
-        if (!$fp) {
-            return PEAR::raiseError("fopen failed: $php_errormsg");
+        if (!@copy($tarball, $tempfile)) {
+            return PEAR::raiseError("fopen($tempfile) failed: $php_errormsg");
         }
-        fwrite($fp, $distfile);
-        fclose($fp);
         // later: do lots of integrity checks on the tarball
         if (!@rename($tempfile, $file)) {
             return PEAR::raiseError("rename failed: $php_errormsg");
@@ -360,15 +366,32 @@ class release
         readfile($file);
         $data = ob_get_contents();
         ob_end_clean();
-        if (md5($data) != $md5sum) {
-            return PEAR::raiseError("bad md5 checksum");
+		$testsum = md5($data);
+        if ($testsum != $md5sum) {
+			$bytes = strlen($data);
+            return PEAR::raiseError("bad md5 checksum (checksum=$testsum ($bytes bytes: $data), specified=$md5sum)");
         }
 
         // Update releases table
-        $query = "INSERT INTO releases VALUES(?,?,?,?,?,?,?)";
+        $query = "INSERT INTO releases (id,package,version,state,doneby,".
+			 "releasedate,releasenotes) VALUES(?,?,?,?,?,?,?)";
         $sth = $dbh->prepare($query);
-        $dbh->execute($sth, array($package, $version, $auth_user->handle,
-                                  gmdate('Y-m-d H:i'), $relnotes, $md5sum, $file));
+		$release_id = $dbh->nextId("releases");
+        $dbh->execute($sth, array($release_id, $package_id, $version, $state,
+		                          $PHP_AUTH_USER, gmdate('Y-m-d H:i'),
+		                          $relnotes));
+		// Update files table
+		$query = "INSERT INTO files ".
+			 "(id,package,release,md5sum,basename,fullpath) ".
+			 "VALUES(?,?,?,?,?,?)";
+		$sth = $dbh->prepare($query);
+		$file_id = $dbh->nextId("files");
+		$ok = $dbh->execute($sth, array($file_id, $package_id, $release_id,
+		                                $md5sum, basename($file), $file));
+		if (PEAR::isError($ok)) {
+			$dbh->query("DELETE FROM releases WHERE id = $release_id");
+			@unlink($file);
+		}
         return true;
     }
 
@@ -568,5 +591,15 @@ class PEAR_Release extends DB_storage
 }
 
 // }}}
+
+if (!function_exists("md5_file")) {
+	function md5_file($filename) {
+		$fp = fopen($filename, "r");
+		if (is_resource($fp)) {
+			return md5(fread($fp, filesize($filename)));
+		}
+		return null;
+	}
+}
 
 ?>

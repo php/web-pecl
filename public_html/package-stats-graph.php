@@ -84,12 +84,14 @@
 	        }
 	    }
 
-	    // Create the bar pot
+	    // Create the bar plot
 	    $bplots[$rid] = new BarPlot(array_reverse(array_values($y_axis)));
 	    $bplots[$rid]->SetWidth(0.6);
 	    $bplots[$rid]->SetFillGradient("white", $colour, GRAD_HOR);
 	    //$bplot->setFillColor("#339900");
 	    $bplots[$rid]->SetColor("black");
+	    $bplots[$rid]->SetValueFormat("%d");
+        $bplots[$rid]->ShowValue();`
 	}
 
     $x_axis = array_reverse(array_values($x_axis));

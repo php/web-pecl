@@ -174,11 +174,11 @@ $bb->end();
 <?php
 $get_link = make_link("/get/$name", 'Download Latest');
 if ($version) {
-    $changelog_link = make_link("package-changelog.php?package=" .
+    $changelog_link = make_link("/package-changelog.php?package=" .
                                 $pkg['name'] . '&amp;release=' . $version,
                                 'ChangeLog');
 } else {
-    $changelog_link = make_link("package-changelog.php?package=" . $pkg['name'],
+    $changelog_link = make_link("/package-changelog.php?package=" . $pkg['name'],
                                 'ChangeLog');
 }
 $stats_link = make_link("/package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=" . $pkg['categoryid'],

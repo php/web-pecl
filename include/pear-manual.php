@@ -98,7 +98,7 @@ function makeBorderTOC($this) {
 }
 
 function navigationBar($title,$id,$loc) {
-    global $NEXT, $PREV, $tstamp;
+    global $NEXT, $PREV, $tstamp,$CHARSET;
 
     echo '<table border="0" width="620" bgcolor="#e0e0e0" cellpadding="0" cellspacing="4">';
 

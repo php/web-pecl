@@ -24,13 +24,11 @@
 # Usage: This script could be directly launched or can be passed
 # via lynx like this:
 #
-#  $ lynx -source http://pear.php.net/go-pear | php
+#  $ lynx -source go-pear.org | php
 #
-# On Windows go-pear uses stdin for user input, so you must download
-# go-pear first and then run it:
+# On Windows as of PHP 4.3.0 you can launch go-pear like this:
 #
-#  > php -r "readfile('http://pear.php.net/go-pear');" > go-pear
-#  > php go-pear
+#  > cli\php -n -r "include 'http://go-pear.org';"
 #
 # If using the CGI version of PHP, append the -q option to suppress
 # headers in the output.

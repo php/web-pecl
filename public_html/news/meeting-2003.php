@@ -32,8 +32,8 @@ stream from the meeting so that people that did not make it to the meeting in
 person can participate via web. Apart from that there will be the
 possibility to join the discussion via IRC.
 <br /><br />
-The current preliminary agenda is as follows:
-<ul>
+The agenda is as follows:
+<ol>
 <li>Quality vs. Quantity</li>
 <li>Should documentation be a requirement for new packages?
 (<?php print_link("/~mj/004-documentation.txt", "RfC"); ?>)</li>
@@ -46,7 +46,7 @@ The current preliminary agenda is as follows:
 <li>PHP 5</li>
 <li>PEAR CS (method naming conventions?)</li>
 <li>PEAR promotion</li>
-</ul>
+</ol>
 
 The following people will participate in person:<br />
 Sebastian Bergmann, Hartmut Holzgraefe, Jeroen Houben, 

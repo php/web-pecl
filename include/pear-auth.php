@@ -93,7 +93,13 @@ function auth_verify($user, $passwd)
         }
         // handle new-style MD5-encrypted passwords
         case 32: {
-            $crypted = md5($passwd);
+			// Check if the passwd is already md5()ed
+			if (preg_match('/^[a-z0-9]{32}$/', $passwd)) {
+				$crypted = $passwd;
+			} else {
+				$crypted = md5($passwd);
+			}
+            
             if ($crypted == @$auth_user->password) {
                 $ok = true;
             } else {

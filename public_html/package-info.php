@@ -223,11 +223,13 @@ if (!$relid) {
     } else {
         ?>
     <table border="0" cellspacing="0" cellpadding="3" width="100%">
+    <tr>
         <th align="left">Version</th>
         <th align="left">State</th>
         <th align="left">Release Date</th>
         <th align="left">Downloads</th>
-        <th></th>
+        <th>&nbsp;</th>
+    </tr>
 
     <?php
 

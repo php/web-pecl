@@ -41,12 +41,12 @@ $cache_time = 300;
  * This is the x axis labels. May change when
  * selectable dates is added.
  */
-for ($i=date('n'), $year=date('Y'); count(@$x_axis) < 12; $i--) {
-    if ($i == 0) {
-        $i = 12;
-        $year--;
-    }
-    $x_axis[$i] = date("M", mktime(0,0,0,$i,1,$year));
+$year   = date('Y') - 1;
+$month  = date('n') + 1;
+$x_axis = array();
+for ($i = 0; $i < 12; $i++) {
+    $time = mktime(0, 0, 0, $month + $i, 1, $year);
+    $x_axis[date('Ym', $time)] = date('M', $time);
 }
 
 /**
@@ -68,9 +68,10 @@ foreach ($releases as $release) {
         $y_axis[$key] = 0;
     }
 
-    $sql = sprintf("SELECT UNIX_TIMESTAMP(d.dl_when) AS date, COUNT(*) AS downloads
+    $sql = sprintf("SELECT YEAR(d.dl_when) AS dyear, MONTH(d.dl_when) AS dmonth, COUNT(*) AS downloads
 	                      FROM packages p, downloads d
 	                     WHERE d.package = p.id
+                           AND d.dl_when > (now() - INTERVAL 1 YEAR)
 	                       AND p.id = %s
 	                       %s
 	                  GROUP BY YEAR(d.dl_when), MONTH(d.dl_when)
@@ -80,12 +81,15 @@ foreach ($releases as $release) {
 
     if ($result = $dbh->query($sql)) {
         while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) {
-            $y_axis[date('n', $row['date'])] = $row['downloads'];
+            $key = sprintf('%04d%02d', $row['dyear'], $row['dmonth']);
+            if (isset($y_axis[$key])) {
+                $y_axis[$key] = $row['downloads'];
+            }
         }
     }
 
     // Create the bar plot
-    $bplots[$rid] = new BarPlot(array_reverse(array_values($y_axis)));
+    $bplots[$rid] = new BarPlot(array_values($y_axis));
     $bplots[$rid]->SetWidth(0.6);
     $bplots[$rid]->SetFillGradient("white", $colour, GRAD_HOR);
     //$bplot->setFillColor("#339900");
@@ -94,7 +98,7 @@ foreach ($releases as $release) {
     $bplots[$rid]->value->Show();
 }
 
-$x_axis = array_reverse(array_values($x_axis));
+$x_axis = array_values($x_axis);
 $bplots = array_values($bplots);
 
 /**

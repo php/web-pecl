@@ -80,22 +80,23 @@ do {
 	     "$moreinfo\n";
 	$xhdr = "From: PEAR Web Site <pear-dev@lists.php.net>";
 	foreach ($admins as $email) {
-	    $oks += mail($email, "PEAR Account Application", $msg, $xhdr);
+	    $oks += mail($email, "PEAR Account Request", $msg, $xhdr);
 	}
-	response_header("Account Application Submitted");
+	response_header("Account Request Submitted");
 	if ($oks != sizeof($admins)) {
 	    print "<H2>Possible Problem!</H2>\n";
-	    print "Your account application has been submitted, but there ".
+	    print "Your account request has been submitted, but there ".
 		"was problems mailing one or more administrators.  ".
 		"If you don't hear anything about your account in a few ".
 		"days, drop a mail about it to the <i>pear-dev</i> mailing ".
 		"list.";
 	} else {
-	    print "<H2>Account Application Submitted</H2>\n";
-	    print "Your account application has been submitted, it will ".
+	    print "<H2>Account Request Submitted</H2>\n";
+	    print "Your account request has been submitted, it will ".
 		"be reviewed by a human.  This may take from two minutes ".
 		"to several days, depending on how much time people have.  ".
-		"You will get an email when your account is open.";
+		"You will get an email when your account is open, or if ".
+		"your request was rejected for some reason.";
 	}
     }
 } while (0);
@@ -135,7 +136,7 @@ you would like to release through PEAR.
     $form->addTextarea("moreinfo",
 		       "More relevant information about you (optional)",
 		       null, $width, 3);
-    $form->addSubmit("submit", "Submit Application");
+    $form->addSubmit("submit", "Submit Request");
 
     $form->display();
 

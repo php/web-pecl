@@ -15,7 +15,7 @@ print "<!-- $REMOTE_ADDR -->\n";
 menu_link("Documentation", "http://php.net/manual/en/pear.php");
 
 if ($SERVER_NAME != "pear.php.net") {
-    menu_link("Apply for Account", "account-apply.php");
+    menu_link("Request a PEAR Account", "account-request.php");
     menu_link("Browse Packages", "packages.php");
     menu_link("Want to contribute?", "signup.php");
     menu_link("Upload Release", "release-upload.php");

@@ -194,7 +194,7 @@ $bb->end();
 <?php
 // Download link
 $get_link = make_link("/get/$name", 'Download Latest');
-$changelog_link = make_link("package-changelog.php?pacid=$pacid",
+$changelog_link = make_link("package-changelog.php?package=" . $pkg['name'],
                             'ChangeLog');
 
 // Package statistics
@@ -245,11 +245,11 @@ if (!$relid) {
                                    "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")<br />";
             }
             
-            $link_changelog = "[ " . make_link("/package-changelog.php?pacid=".
-                              "$pacid&release=" .
+            $link_changelog = "[ " . make_link("/package-changelog.php?package=" .
+                              $pkg['name'] . "&release=" .
                               $version, "Changelog")
                               . " ]";
-            $href_release = $_SERVER['PHP_SELF'] . "?pacid=$pacid&version=".
+            $href_release = $_SERVER['PHP_SELF'] . "?package=" . $pkg['name'] . "&version=".
                             urlencode($version);
 
             printf("  <td><a href=\"%s\">%s</a></td>" .

@@ -85,8 +85,7 @@ if (@sizeof($recent) > 0) {
             $desc .= '...';
         }
         $RSIDEBAR_DATA .= "<tr><td valign='top' class='compact'>";
-        $RSIDEBAR_DATA .= "<a href=\"package-info.php?pacid=$id&release=$version\">";
-//            $RSIDEBAR_DATA .= "$name $version</a><br /><font size=\"-1\" face=\"arial narrow,arial,helvetica,sans-serif\"><i>$releasedate:</i>$desc</font></td></tr>";
+        $RSIDEBAR_DATA .= "<a href=\"/" . $name . "\">";
         $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i> $desc</td></tr>";
     }
     $image = make_link("/rss.php", make_image("xml.gif", "RSS feed"));

@@ -146,7 +146,7 @@ $bb = new BorderBox("Package Information"); ?>
 </tr>
 <tr>
     <th class="pack" width="20%">Maintainers</th>
-    <td>
+    <td id="jabba">
         <table border="0" cellspacing="1" cellpadding="1" width="100%">
         <?php print $accounts;?>
         </table>
@@ -366,6 +366,26 @@ if ($sth->numRows() == 0) {
     print "      </dl>\n";
 }
 $bb->end();
+
+// Ho ho ho (I must be Santa Claws)
+?>
+
+<script language="JavaScript" type="text/javascript">
+<!--
+	function highlightMaintainers()
+	{
+		document.getElementById('jabba').style.border = '2px dashed red';
+		location.href="#"
+	}
+//-->
+</script>
+
+<p>&nbsp;</p>
+<div style="width: 90%; border: 1px dashed black">
+	<h2 align="center">Did this package help you?</h2>
+	<p align="center"><a href="javascript: highlightMaintainers()">Consider a gift...</a></p>
+</div>
+<?php
 
 // }}}
 // {{{ page footer

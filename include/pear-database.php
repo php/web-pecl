@@ -55,6 +55,7 @@ To get all leaf nodes:
 
  */
 function visit_node(&$tree, $node, &$cnt, $debug) {
+	// XXX this stuff seriously needs to be reimplemented
 	static $pkg_visitno, $cat_visitno;
     if (empty($pkg_visitno) || empty($node)) {
         $pkg_visitno = 1;
@@ -163,6 +164,9 @@ function renumber_visitations($debug = false)
 }
 
 // }}}
+
+// {{{ add_category()
+
 /*
 $data = array(
     'name'   => 'category name',
@@ -191,9 +195,14 @@ function add_category($data)
     if (DB::isError($err)) {
         return $err;
     }
-    return renumber_visitations();
+	$err = renumber_visitations();
+	if (PEAR::isError($err)) {
+		return $err;
+	}
+	return $id;
 }
 
+// }}}
 // {{{ add_package()
 
 // add a package, return new package id or PEAR error
@@ -207,11 +216,15 @@ function add_package($data)
     if (empty($license)) {
         $license = "PEAR License";
     }
+	if (!empty($category) && (int)$category == 0) {
+		$category = $dbh->getOne("SELECT id FROM categories WHERE name = ?",
+								 array($category));
+	}
     if (empty($category)) {
-        return PEAR::raiseError("add_package: no `category' field");
-    }
+        return PEAR::raiseError("add_package: invalid `category' field");
+	}
     if (empty($name)) {
-        return PEAR::raiseError("add_package: no `name' field");
+        return PEAR::raiseError("add_package: invalid `name' field");
     }
     $query = "INSERT INTO packages (id,name,category,license,summary,description) VALUES(?,?,?,?,?,?)";
     $id = $dbh->nextId("packages");
@@ -232,6 +245,7 @@ function add_package($data)
 }
 
 // }}}
+// {{{ add_maintainer()
 
 function add_maintainer($package, $user, $role)
 {
@@ -247,6 +261,8 @@ function add_maintainer($package, $user, $role)
     }
     return DB_OK;
 }
+
+// }}}
 
 // {{{ get_recent_releases()
 

@@ -260,7 +260,7 @@ class package
             $info['releases'] =
                  $dbh->getAssoc($rel_sql, false, array($info['packageid']),
                  DB_FETCHMODE_ASSOC);
-            $rels = array_keys($info['releases']);
+            $rels = sizeof($info['releases'])?array_keys($info['releases']):array('');
             $info['stable'] = $rels[0];
             $info['notes'] =
                  $dbh->getAssoc($notes_sql, false, array($info['packageid']),
@@ -708,7 +708,7 @@ class release
     function getDateRange($start,$end)
     {
         global $dbh;
-        
+
         $recent = array();
         if (!is_numeric($start)) {
             return $recent;
@@ -732,7 +732,7 @@ class release
                                 "WHERE packages.id = releases.package ".
                                 "AND releases.releasedate > '{$start_f}' AND releases.releasedate < '{$end_f}'".
                                 "ORDER BY releases.releasedate DESC",0,50);
-         
+
         while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
             $recent[] = $row;
         }
@@ -865,7 +865,7 @@ class release
             @unlink($file);
             return $ok;
         };
-        
+
         // Update Cache
         include_once 'xmlrpc-cache.php';
         XMLRPC_Cache::remove('package.listAll', array(false));

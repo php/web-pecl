@@ -260,6 +260,9 @@ Eris Free Net</a>.
     <li><a href="http://conf.php.net/pres/index.php?p=slides%2Fpear&id=pear">A presentation</a> by Stig Bakken,
     who is leading PEAR development, at ApacheCon 2001 on PEAR.</li>
 
+    <li><a href="http://talks.php.net/show/sdphp_using_tools">An introduction to pear</a> by Jesus M. Castagnetto,
+    a short talk in their local PHP usergroup about setup, phpdocumentor and PEAR usage</li>
+
     <li><a href="http://conf.php.net/pear2">An updated presentation</a> by Jon Parise,
     a PEAR contributor, from the O'Reilly Open Source Convention 2001.</li>
 

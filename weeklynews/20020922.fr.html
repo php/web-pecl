@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+  <body>
+      
+<p><i><small>par&nbsp; Pierre-Alain Joye (pajoye@pearfr.org)</small></i></p>
+      
+<p>La liste f&ucirc;t tr&egrave;s anim&eacute;es cette semaine, signe d'un
+retour &agrave; un rythme soutenu des mises &agrave; jours, ajouts et autres
+corrections sur pear. Les sujets &eacute;taient tr&egrave;s vari&eacute;s,
+du d&eacute;sormais classique 'convention de nomage' et 'coding standart'
+en passant par le syst&egrave;me de traduction automatique ou peardoc. A
+signaler le travail accompli cette semaine par Sebastian Bergmann etKristian
+K&ouml;hntopp sur XML_Transfomer qui nous vaut aujourd'hui la sortie d'une
+nouvelle versoin stable.&nbsp;  Cette semaine a vu pas moins de quatres versions
+stables, ce qui est en soit une excellente nouvelle, ainsi qu'une version
+Beta.<br>
+  </p>
+   
+<hr>   
+<h2>Nouvelles sorties</h2>
+      
+<h3>Stable</h3>
+      
+<ul>
+   <li><b>HTTP_Request</b>&nbsp; - Fournit &nbsp;une API simple pour cr&eacute;er
+de requ&ecirc;tes HTTP (GET/POST/HEAD/TRACE/PUT/DELETE, Basic authentication,
+Proxy,<br>
+ Proxy Authentication etc.&nbsp;)</li>
+   <li><b>Net_Log</b> - Fournit une syst&egrave;me d'abstraction pour les
+log, supportant le mode console, fichiers, syslog, SQL, mail et mcal.</li>
+  <li><b>Var_Dump</b>&nbsp; - Fournit un moyen simple de dumper les informations
+concernant une variable.</li>
+   <li>  <b>XML_Transformer</b>&nbsp; - Transformation XML en php, XML vers
+XML sans avoir besoin de XSLT </li>
+           
+</ul>
+<h3>Beta</h3>
+<ul>
+  <li><b>Mail_Queue</b> - Une classe pour g&eacute;rer les queues de mails.<br>
+ </li>
+</ul>
+      
+<h3></h3>
+<ul>
+      
+</ul>
+      
+<hr>   
+<h2>PEAR-DEV headlines</h2>
+<h3>PEAR web et gestionnaire de packages</h3>
+L'&eacute;quipe du site de pear travaille actuellement d'arrache-pied pour
+r&eacute;gler les derniers d&eacute;tails ou probl&egrave;mes li&eacute;s
+au site et &agrave; la gestion des packages. Afin de les aider &agrave; nous
+fournir un outils le plus stable et pratique possible, ils ont besoins de
+retours d'exp&eacute;riences de la part des utilisateurs. Si vous utilisez
+le site de pear ou le gestionnaire de packages, nous vous recommandons de
+leur faire part de vos &eacute;ventuelles remarques ou probl&egrave;mes aux
+moyens des <a href="http://pear.php.net/support.php">listes de diffusions
+peardev ou peargeneral</a> ou via le <a href="http://bugs.php.net/">syst&egrave;me
+de gestion des bugs</a>. Nous vous remercions d'avance de vos contributions.<br>
+<br>
+Pour rappel, la version Beta du site est visible en activant le cookie 'devme',
+voici le lien le permettant : http://pear.php.net/?devme<br>
+<h3>MDB - descriptions, retours et contributions</h3>
+Durant cette semaine, j'ai remarqu&eacute; que les fonctionnalit&eacute;es
+du package sont peu ou mal connues, c'est pourquoi j'ai demand&eacute; &agrave;
+son auteur (Lukas Smith) de r&eacute;diger un descriptif des diff&eacute;rences
+entre PEAR::DB et PEAR::MDB :<br>
+<br>
+** Diff&eacute;rences entre  <a
+ href="http://pear.php.net/package-info.php?package=DB">PEAR DB</a> et <a
+ href="http://pear.php.net/package-info.php?pacid=54">PEAR MDB</a><br>
+Ce deux packages fournisser une API tr&egrave;s similaire poour toutes les
+SDBDs (ainsi les utilisateurs de PEAR DB seront en terrain connu). Cependant,
+PEAR MDB va plus beaucoup plus loin que PEAR DB en terme d'abstraction de
+SGDBs. A c&ocirc;t&eacute; de l'&eacute;mulation des s&eacute;quences, il
+fournit aussi des abstractions des types de donn&eacute;es (par exemple,
+toutes les base de donn&eacute;es ne stockent pas les timestamp de la m&ecirc;me
+fa&ccedil;on) aussi bien que la cr&eacute;ation,&nbsp;modifications ou suppressions
+d'indexes, de tables et de bases de donn&eacute;es. Un atout majeur est le
+syst&egrave;me ind&eacute;pendant des SGBDs de gestion du sch&egrave;ma de
+la base. Cel&agrave; signifie que vous n'avez pas &agrave; cr&eacute;er et
+maintenir des sch&egrave;mas pour chaque SGDD que vous voulez supportez.
+Le manager MDB peut modifier une base si le sch&egrave;ma correspondant a
+&eacute;t&eacute; modifi&eacute;. PEAR MDB b&eacute;n&eacute;ficie de l'<a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=100793507904834&amp;w=2">exp&eacute;rience</a>
+qui a &eacute;t&eacute; acquise durant le d&eacute;velopement de PEAR DB
+et est, actuellement, aussi rapide que PEAR DB.<br>
+<br>
+** Remarques<br>
+Actuellement, PEAR MDB ne supporte pas autant de gestionnaires que PEAR DB,
+ceci provenant du simple fait que PEAR MDB est plus r&eacute;cent et, il&nbsp;
+ne doit pas &ecirc;tre consid&eacute;r&eacute; comme &eacute;tant aussi stable
+que ce dernier. Cette situation peut &ecirc;tre r&eacute;solue par l'ajout
+de nouveaux drivers. Toutes aides sera grandement appr&eacute;ci&eacute;.
+Vous pouvez consulter le fichier <a
+ href="http://cvs.php.net/co.php/pear/MDB/Readme.txt?r=1.27">Readme.txt</a>
+pour de plus amples informations.<br>
+<br>
+Je me permets de revenir sur les remarques, Lukas manque cruellement de retours
+d'exp&eacute;riences, ceci &eacute;tant un point essentiel afin d'arriver
+rapidement &agrave; un outils stable et performant.<br>
+Lukas est &agrave; la recherche de personnes voulant contribuer &agrave;
+MDB par la cr&eacute;ation de nouveaux drivers, actuellement les besoins
+prioritaires sont SqlServer et Oracle, vous pouvez contacter Lukas Smith
+via la liste de diffusion <a href="http://pear.php.net/support.php">peardev</a>
+ou depuis la page de <a
+ href="http://pear.php.net/package-info.php?pacid=54">MDB</a>.<br>
+<br>
+<h3>Documentation PEAR, version japonaise</h3>
+Yasuo Ohgaki a d&eacute;marr&eacute; cette semaine la traduction de la documentaion
+PEAR en japonais. Nous pouvons que saluer cette initiative.<br>
+<h3>Pear Weekly News relay&eacute; par la newsletter de nexen.net</h3>
+Merci &agrave; Damien Seguy de relayer la Pear Weekly News sur la newsletter
+de Nexen.net, je profite que vous pouvez diffuser ces nouvelles dans vos
+listes ou sites respectifs, pour toutes questions, vous pouvez nous contacter
+sur la mailing-liste peardev.<br>
+<br>
+<h2>PEAR-DEV traffic</h2>
+      
+<h3>PEAR Licence FAQ disponible</h3>
+La liste des licences conseill&eacute;es est disponible, vous pouvez actuellement
+la consulter dans la <a
+ href="http://pear.php.net/manual/en/faq.licenses.php">FAQ PEAR</a>.<br>
+   
+<h3>PHP source code beautifier</h3>
+Jens Bierkandt &nbsp;a propos&eacute; d'ajout&eacute; son module de mise
+en forme de sources &agrave; PEAR. Qui n'a jamais 'perdu' des heures &agrave;
+reformater un code illible ? Ce module pourrait &ecirc;tre la solution, en
+voici les principales fonctionnalit&eacute;s :<br>
+<ul>
+  <li>Indentation automatique de sources PHP en se basant sur un nombre d'espaces
+donn&eacute;s</li>
+  <li>Nouvelles lignes automatiquement ajout&eacute;es si n&eacute;cessaire</li>
+  <li>inclus les options pour rendre le source conforme aux styles C ou PEAR</li>
+</ul>
+Il devrait &ecirc;tre disponible rapidement sur le cvs de pear.<br>
+   
+<h3>Inline::C en php ?</h3>
+George Schlossnagle a propos&eacute; de fournir la possibilit&eacute; d'ajouter
+la fonctionnalit&eacute; bien connu du monde perl Inline::C, sans n&eacute;cessairement
+r&eacute;inventer la roue. Le but &eacute;tant de pouvoir l'utiliser de cette
+mani&egrave;re :<br>
+<pre>&lt;?pseudocode<br>$function_def = &lt;&lt;&lt;EOF<br>php_function(times){<br>&nbsp;&nbsp;&nbsp; int i,j;<br>&nbsp;&nbsp;&nbsp; return if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &amp;i,&amp;j) = FAILURE)<br>	RETURN_LONG(i*j);<br>}<br>EOF<br>Inline_C($function_def);<br>times(2,2);<br>?&gt;</pre>
+Inline_C prendrait &nbsp;le block de code C, y ajoute les informations n&eacute;cessaires
+pour &nbsp;en faire un module, apr&egrave;s compilation le binaire serait
+mise en cache et charg&eacute; via dl().<br>
+<br>
+Georges est donc &agrave; la recherche d'informations sur des fonctionnalit&eacute;s
+similaires existantes, si vous connaissez une extension fournissant ce genre
+de fonctionnalit&eacute;es, vous pouvez le contacter via peardev. Le message
+original publi&eacute; sur <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=103238864123854&amp;w=2">peardev</a>.
+<h3>Standarts de noms et recommendations<br>
+</h3>
+Mika Tuupola propos&acirc;t d'ajouter quelques recommendations quand &agrave;
+l'utilisation de noms de m&eacute;thode constructeurs et factory (<a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=103246883300565&amp;w=2">la
+discussion</a>).<br>
+       
+<h3>I18N et syst&egrave;me de traduction</h3>
+Wojciech Zieli&ntilde;ski a rappel&eacute; sa <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=103251856705918&amp;w=2">proposition</a>
+de package de traduction automatique, ce qui a soulev&eacute; la n&eacute;cessit&eacute;
+de dispos&eacute; de ce type de modules. Actuellement Wolgang &nbsp;Kriesing
+travaille d&eacute;j&agrave; sur ce type de modules via le package I18N disponible
+actuellement uniquement sur le cvs de PEAR. Si les traductions automatiques
+ou l'internalisation font partis de vos probl&egrave;matiques ou si vous
+d&eacute;sirez les aider, vous pouvez les contacter via peardev.<br>
+James E. Flemer propos&acirc;t un module d'interface web permettant &agrave;
+des traducteurs de cr&eacute;er/maintenir des catalogues gettext (<a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=103186684103620&amp;w=2">annonce</a>).<br>
+      
+<h3>Bugs and Fixes</h3>
+  Merci &agrave; ces personnes pour avoir signal&eacute; des bugs et/ou fournit
+ des patches: Nigel Armstrong, Adam Morton, Rob, Richard Heyes.
+<hr>    
+<h2>Nouveau package ou propositions</h2>
+      
+<h3>DB_Grid</h3>
+Yavor Shahpasov a <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=103244097930054&amp;w=2">propos&eacute;</a>
+son module de binding dynamiques entre une base de donn&eacute;es et un tableau,
+html ou texte. A noter qu'il y a d&eacute;j&agrave; e&ucirc;t des discussions
+sur le besoin d'un module GRID dans pear, cette fois sera peut-&ecirc;tre
+la bonne :-).<br>
+       
+<h3>File_Repository </h3>
+Mike McCallister a <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;m=103245937821765&amp;w=2">propos&eacute;</a>
+son module de gestion de fichiers, prenant toute son importance sur de gros
+volumes de fichiers. En effet, nous avons constat&eacute; que les performances
+des syst&egrave;mes de fichiers traditionnels tombent rapidement d&egrave;s
+que la quantit&eacute; de fichiers se trouvant dans le m&ecirc;me dossier
+est important. Ce module se propose donc comme une alternative viable et
+tr&egrave;s utiles. Les fonctionnalit&eacute;s sont tr&egrave;s int&eacute;ressantes,
+vous pouvez les consulter en d&eacute;tails dans le message d'annonce.<br>
+        
+<h3>Spread API</h3>
+George Schlossnagle <a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;w=2&amp;r=1&amp;s=spread+api&amp;q=b">signala</a><a
+ href="http://marc.theaimsgroup.com/?l=pear-dev&amp;w=2&amp;r=1&amp;s=spread+api&amp;q=b">t</a>
+son intention d'ajouter son interface spread pour php &agrave; PEAR. Spread
+est un syst&egrave;me haute performance d'&eacute;change de messages r&eacute;sistant
+aux erreurs, que ce soit en r&eacute;seaux internes ou externes, plus d'informations
+sur le site de <a href="http://www.spread.org">spread</a>. L'interface php
+peut &ecirc;tre t&eacute;l&eacute;charg&eacute; depuis http://www.omniti.com/~george/php_spread/php_spread-1.1.tar.gz.<br>
+<br>
+<h3>Audio extension</h3>
+Tony Leake nous propose d'ajouter &nbsp;son extension Audio a PECL. Celle-ci
+permet &agrave; PHP d'&ecirc;tre utilis&eacute; pour des applications d'enregistrements
+audio avanc&eacute;s comme du multi piste par exemple. Plus d'informations
+sont disponible sur le site de l'auteur, <a
+ href="http://www.webwise-data.co.uk/php_audio/php_audio_extension.html">http://www.webwise-data.co.uk/php_audio/php_audio_extension.html</a>.<br>
+<br>
+<hr>    
+<h2>D&eacute;velopement</h2>
+  Actifs cette semaine sur le CVS: &nbsp;Log, LiveUser, Python, XML_Transformer,
+HTTP_Request, Documentation japonaise, DB_DataObject, DBA, HTML_QuickForm,
+Net_Ping, Tree, Net_DNS, Net_Whois, Crypt_RC4, HTTP_WebDav, MDB, peardoc/FAQ,
+Mail_Queue.     
+<h3>Nouvelle documentation et mises &agrave; jour</h3>
+Les changements sont maintenant visibles sur pear.php.net.<br>
+  <br>
+ <br>
+</body>
+</html>

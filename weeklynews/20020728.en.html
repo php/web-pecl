@@ -4,7 +4,7 @@
 <p>
 Considering the summer holidays, PEAR has had another extremely busy week
 with 10 stable releases, 4 beta releases, and discussions ranging from PEAR in Gentoo, new categories,
-a new Manual, and a powered by PEAR icon.
+a new manual, and a powered by PEAR icon.
  
 
 <hr>
@@ -13,12 +13,12 @@ a new Manual, and a powered by PEAR icon.
 
 <h3>Stable</h3>
 <b>Log</b> A framework for Logging to files, syslog,SQL and more, 
-<b>HTML_Table</b>  for building HTML tables,
-<b>HTML_TreeMenu</b>  for creating HTML Trees for navigation, 
+<b>HTML_Table</b> for building HTML tables,
+<b>HTML_TreeMenu</b> for creating HTML Trees for navigation, 
 <b>Net_POP3</b> for accessing POP3 mailboxes,
 <b> Net_Sieve</b> to talk to timsieved servers, 
 <b>Net_URL</b> for parsing URLS, Pager for doing tabbed pages, 
-<b>Mail_Mime </b>for manipulating Mime messages, 
+<b>Mail_Mime</b> for manipulating Mime messages, 
 <b>HTTP_Request</b> for posting and getting data from web servers, 
 <b>File_SearchReplace</b> for finding and replacing data within files, and Mail the class to send emails.
 
@@ -35,20 +35,20 @@ bcompiler</b> - a php bytecode compiler (at present only for classes),
 <h3>PEAR and Gentoo</h3>
 <p>
 Gentoo have added some PEAR packages to their portage tree (their package
-installation system). The list of available packages can be read at :<a href="http://www.gentoo.org/packages/dev-php/index.html">Gentoo dev-php</a>.
+installation system). The list of available packages can be read at <a href="http://www.gentoo.org/packages/dev-php/index.html">Gentoo dev-php</a>.
  
 
 
 <h3>New Categories PHP, Template</h3>
 <p>Following the introduction of bcompiler,
-It was suggested that a new Category PHP would be useful, and could contain
-packages like PHPDoc, PHPUnit, and bcompiler, as they are all packages, and
+it was suggested that a new category &quot;PHP&quot; would be useful, and could contain
+packages like PHPDoc, PHPUnit, and bcompiler, as they are all packages and
 modules that deal with PHP parsing, compiling etc. It was generally accepted
-that this was a reasonable idea. The other suggestion of a Template Category,
+that this was a reasonable idea. The other suggestion of a Template category,
 for packages like HTML_Template_IT, Template_Flexy, Template_Smart, drew
 some discussion, as it was pointed out that these Template classes, (which
 currently reside under HTML), could be used for other types of Files (eg.
-XML, Email, RTF etc.). the current voting stood as 2-3 for and 1 against.<br>
+XML, Email, RTF etc.). The current voting stood as 2-3 for and 1 against.<br>
 
 
 <h3>Weekly news and HTML</h3>
@@ -65,35 +65,36 @@ can be made available.
 <p>It was agreed that for the time being <a href="http://smarty.php.net">Smarty</a>
 would be made available as a PEAR package (even though it does not confirm
 to the PEAR standards), and only minor changes would be made to ensure it
-worked smoothly with the pear installer.
+worked smoothly with the PEAR installer.
 
 <h3>PEAR Movements </h3>
-<p>Stig continued to move the non essential parts of PEAR out of the php distribution
-(which will eventually only contain enough to get the pear packager up and
-going). Net_SMTP, Net_Curl, Mail are now in the main pear cvs directory
-(only package files will be distributed with PHP-4.3, due for QA testing
+<p>Stig continued to move the non essential parts of PEAR out of the PHP distribution
+(which will eventually only contain enough to get the PEAR packager up and
+going). Net_SMTP, Net_Curl, Mail are now in the main PEAR CVS directory
+(only package files will be distributed with PHP 4.3.0, due for QA testing
 soon).
 
 <h3>Changing Databases in DB and MDB, and ODBC cursors</h3>
-<p>The question was raised about how to switch databases when using pear's Database 
+<p>The question was raised about how to switch databases when using PEAR's database 
 abstraction layer, after some discussion the current suggestion is to use
 
 <pre>$db-&gt;disconnect();<br>$db = DB::connect($new_dsn);</pre>
-<p>This is the recommended way, as not all database back ends (at the php level),
+<p>This is the recommended way, as not all database backends (at the PHP level),
 can support switching databases, however anyone who wants to implement a solution
 that provides switching (for databases that support it), and disconnecting
-(for those that dint), is welcome to send patches. Lukas commented that he
+(for those that do not) is welcome to send patches. Lukas commented that he
 believed MDB should handle it ok.
 <p>In a related mater, Tomas indicated that he will be adding ODBC cursor support to the dsn format for example.
 <pre>odbc://user:pass@ds?cursor_type=SQL_CUR_USE_ODBC</pre>
 
 
 <h3>Developers Guide and PEARdoc2</h3>
-<p>Martin Jansen added a new developers guide has been added to the PEAR Manual,
-to help answer those developer Questions that crop up often - like
-how do I write a package file and why is there is a coding standard...Meanwhile
-Alexander completed his revision of the pear manual, making it more modular,
-and easier to extend, expect to see a brand new manual online very soon.
+<p>Martin Jansen added a new developers guide to the PEAR Manual,
+to help answer those developer questions that crop up often - like
+&quot;How do I write a package file?&quot; and &quot;Why is there is a
+coding standard?&quot;. Meanwhile Alexander completed his revision of
+the PEAR manual, making it more modular, and easier to extend, expect
+to see a brand new manual online very soon.
 
 
 <h3>DB_Pager returning constant results&nbsp;</h3>
@@ -110,25 +111,26 @@ that developers should be careful about displaying error messages with passwords
 in.
 
 <h3>Passing by reference</h3>
-<p>For those not following PHP-DEV, two interesting articles where mentioned
-regarding speed of&nbsp; passing by reference, - unlike C, php is actually
+<p>For those not following php-dev@lists.php.net, two interesting articles were mentioned
+regarding speed of passing by reference, - unlike C, PHP is actually
 slower when passing (strings and integers) by reference, so be a little careful
-using this feature on packages that need to be performance tuned. References
-:[<a href="http://www.zend.com/zend/art/ref-count.php">http://www.zend.com/zend/art/ref-count.php</a>] and [<a href="http://phplens.com/lens/php-book/optimizing-debugging-php.php">http://phplens.com/lens/php-book/optimizing-debugging-php.php</a>]
+using this feature on packages that need to be performance tuned. References:
+[<a href="http://www.zend.com/zend/art/ref-count.php">http://www.zend.com/zend/art/ref-count.php</a>] and [<a href="http://phplens.com/lens/php-book/optimizing-debugging-php.php">http://phplens.com/lens/php-book/optimizing-debugging-php.php</a>]
 
 
 
 <h3>Open office and Abiword for writing docbook</h3>
 <p>It was mentioned that <a href="http://www.openoffice.org">Open office</a> was considering adding a docbook editing mode, and <a href="http://www.abiword.org">abiword</a>
 could export to docbook, however neither of these are 'fully working solutions',
-and at present the best bet is still emacs, vim or a text editor or <a href="http://www.softquad.com/">XMetal</a> for windows users, 
+and at present the best bet is still emacs, vim or a alternative text editor or
+<a href="http://www.softquad.com/">XMetal</a> for windows users, 
 suggested reading for authors is the phpdoc how-to available at &nbsp;<a href="http://cvs.php.net/co.php/phpdoc/howto/howto.html.tar.gz">http://cvs.php.net/co.php/phpdoc/howto/howto.html.tar.gz</a> 
 
 
 <h3>PEAR Snapshots</h3>
-<p>It was asked if a snapshot of all pear packages could be made available.
-In general, however the pear community doesn't really see the value in doing
-this (due to the large size that pear will probably end up), however if somebody
+<p>It was asked if a snapshot of all PEAR packages could be made available.
+In general, however the PEAR community doesn't really see the value in doing
+this (due to the large size that PEAR will probably end up), however if somebody
 wishes to make their own snapshots, they are welcome. As a result however
 it was planned to add 
 <pre>pear upgrade-all </pre>
@@ -136,7 +138,7 @@ it was planned to add
 
 
 <h3>Powered by PEAR</h3>
-<img src="http://pear.php.net/gifs/pear-power.gif" alt="powered by pear" width="88" height="31" hspace="10" align="left">
+<img src="/gifs/pear-power.gif" alt="powered by pear" width="88" height="31" hspace="10" align="left">
 Colin Viebrock added a new powered by PEAR icon to use on your PEAR powered sites, you can download it from 
 <a href="http://pear.php.net/gifs/pear-power.gif">http://pear.php.net/gifs/pear-power.gif</a>
 
@@ -153,18 +155,17 @@ Colin Viebrock added a new powered by PEAR icon to use on your PEAR powered site
 <h3>Cache_Lite - SpeedyGonzales's Caching.</h3>
 
 <p>Marty Fabien Proposed a cut down version of the Cache class, which focused
-on Performance (in a single class), NFS safety and Block Caching. After much
+on performance (in a single class), NFS safety and block caching. After much
 discussion over the naming (including suggestions like Cache_Fast, Cache_Simple,
-Cache_HighTraffic, Cache_RoadRunner,&nbsp; Cache_SpeedyGonzales and&nbsp; Cache_BeepBeep),
+Cache_HighTraffic, Cache_RoadRunner, Cache_SpeedyGonzales and Cache_BeepBeep),
 Cache_Lite was settled on. It was noted that accelerators like Zends, PHPAcelerator
 and APC would also make a considerable difference if you are going for speed/performance. 
 
 <hr>
 <h2>Development </h2>
 
-
-Active this week in CVS: MDB, The Pear manual and FAQ, PECL::soap, DB, HTML_Table,XML_CSSML,PHPDoc,Mail,
-HTML_Javascript, Auth_HTTP, PECL::bcompiler, HTML_QuickForm, Config, Log,Auth,
+Active this week in CVS: MDB, The PEAR manual and FAQ, PECL::soap, DB, HTML_Table,XML_CSSML,PHPDoc,Mail,
+HTML_Javascript, Auth_HTTP, PECL::bcompiler, HTML_QuickForm, Config, Log, Auth,
 PEAR_FrontEnd_Gtk, XML_RPC, Net_NNTP.
 
 

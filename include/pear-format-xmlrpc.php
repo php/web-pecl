@@ -10,6 +10,37 @@ function pear_xmlrpc_error($error) {
 
 // }}}
 
+function response_header($title) {}
+function response_footer() {}
+function report_error($error) {
+    $response = "<?xml version='1.0' encoding='iso-8859-1' ?>
+<methodResponse>
+<fault>
+ <value>
+  <struct>
+   <member>
+    <name>faultString</name>
+    <value>
+     <string>$error</string>
+    </value>
+   </member>
+   <member>
+    <name>faultCode</name>
+    <value>
+     <int>-1</int>
+    </value>
+   </member>
+  </struct>
+ </value>
+</fault>
+</methodResponse>
+";
+    header("Content-length: " . strlen($response));
+    header("Content-type: text/xml");
+    print $response;
+	
+}
+
 // {{{ xu_query_http_post()
 
 /* generic function to call an http server with post method */

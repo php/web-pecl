@@ -3,6 +3,8 @@ response_header("FAQ");
 
 echo "<h1>PEAR Frequently Asked Questions</h1>";
 
+$ID = 0;
+
 function startElement($parser, $elementName, $elementAttributes)
 {
 
@@ -14,9 +16,9 @@ function startElement($parser, $elementName, $elementAttributes)
         case "qandaset" :
             echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\">";
             break;
-            
+
         case "question" :
-            echo "<tr><td bgcolor=\"#cccccc\"><h3>";
+            echo "<tr><td bgcolor=\"#cccccc\"><a name=\"faq-".$GLOBALS['ID']++."\"><h3>";
             break;
 
         case "answer" :
@@ -66,6 +68,9 @@ function startElement($parser, $elementName, $elementAttributes)
             }
             break;            
 
+        case "break" :
+            echo "<br/>";
+            break;
     }
 
 }

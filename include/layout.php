@@ -158,7 +158,7 @@ function print_link($url, $linktext=false, $target=false, $extras=false) {
 //
 
 function commonHeader($title) {
-    global $SIDEBAR_DATA, $HTTP_SERVER_VARS;
+    global $SIDEBAR_DATA, $HTTP_SERVER_VARS, $ONLOAD, $auth_user;
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -168,8 +168,11 @@ function commonHeader($title) {
  <link rel="stylesheet" href="/style.css" />
 </head>
 
-<body
-	topmargin="0" leftmargin="0"
+<body <?php
+    if (!empty($GLOBALS['ONLOAD'])) {
+        print "onload=\"$GLOBALS[ONLOAD]\"";
+    }
+?>	topmargin="0" leftmargin="0"
 	marginheight="0" marginwidth="0"
         background="/gifs/beta_bg.gif"
         bgcolor="#ffffff"
@@ -188,7 +191,7 @@ function commonHeader($title) {
         <?php echo strftime("%A, %B %d, %Y"); ?>
       </b>&nbsp;<br />
 <?php
-    if (isset($GLOBALS['HTTP_COOKIE_VARS']['pear_dev'])) {
+    if (isset($_COOKIE['pear_dev'])) {
     print "pear_dev cookie set&nbsp;<br />";
     }
 ?>      </font>
@@ -199,13 +202,13 @@ function commonHeader($title) {
     <td align="right" valign="bottom">
       <?php
 
-    if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER'])) {
-        print '<span class="menuWhite">logged in as ';
-        print strtoupper($HTTP_SERVER_VARS['PHP_AUTH_USER']);
-        print '&nbsp;</span><br />';
-        print_link('/logout.php?showmsg=1', 'LOGOUT', false, 'class="menuBlack"');
-    } else {
+    if (empty($_COOKIE['PEAR_USER'])) {
         print_link('/login.php', 'LOGIN', false, 'class="menuBlack"');
+    } else {
+        print '<span class="menuWhite">logged in as ';
+        print strtoupper($_COOKIE['PEAR_USER']);
+        print '&nbsp;</span><br />';
+        print_link('/?logout=1', 'LOGOUT', false, 'class="menuBlack"');
     }
     echo delim();
     print_link('/manual/', 'DOCS', false, 'class="menuBlack"');

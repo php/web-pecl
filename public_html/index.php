@@ -10,10 +10,14 @@ if ($_SERVER['QUERY_STRING'] == 'devme') {
     unset($_COOKIE['pear_dev']);
 }
 if (!empty($_GET['logout'])) {
-    setcookie('PEAR_USER', '', 0, '/');
-    setcookie('PEAR_PW', '', 0, '/');
-    unset($_COOKIE['PEAR_USER']);
-    unset($_COOKIE['PEAR_PW']);
+    if (isset($_COOKIE['PEAR_USER'])) {
+        setcookie('PEAR_USER', '', 0, '/');
+        unset($_COOKIE['PEAR_USER']);
+    }
+    if (isset($_COOKIE['PEAR_PW'])) {
+        setcookie('PEAR_PW', '', 0, '/');
+        unset($_COOKIE['PEAR_PW']);
+    }
 }
 
 

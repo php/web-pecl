@@ -125,7 +125,7 @@ Uploading new releases is restricted to each package's lead developer(s).
 ";
 
     // Remove that code when release-upload also create new packages
-    if (!checkUser($_SERVER['PHP_AUTH_USER'])) {
+    if (!checkUser($auth_user->handle)) {
         display_error("You are not registered as lead developer for any packages.");
     }
 

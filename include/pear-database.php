@@ -467,7 +467,7 @@ class maintainer
         }
         $sth = $dbh->query($query);
         if (DB::isError($sth)) {
-            return sth;
+            return $sth;
         }
         while ($row = $sth->fetchRow()) {
             $rows[] = $row[0];
@@ -476,6 +476,7 @@ class maintainer
     }
 
     // }}}
+    // {{{  proto bool   maintainer::isValidRole(string)
 
     function isValidRole($role)
     {
@@ -486,12 +487,17 @@ class maintainer
         return in_array($role, $roles);
     }
 
+    // }}}
+    // {{{  proto
     function drop($pkgid, $user)
     {
         global $dbh;
         $sql = "DELETE FROM maintains WHERE package = ? AND handle = ?";
         return $dbh->query($sql, array($pkgid, $user));
     }
+
+    // }}}
+    // {{{ +proto bool   maintainer::updateAll(int, array)
 
     /**
     * Update user and roles of a package
@@ -503,7 +509,16 @@ class maintainer
     */
     function updateAll($pkgid, $users)
     {
-        global $dbh;
+        // Only admins and leads can do this.
+        global $dbh, $auth_user;
+        if (empty($auth_user->admin)) {
+            $aq = "SELECT role FROM maintains WHERE handle = ? package = ?";
+            $test = $dbh->getRow($aq, array($auth_user->handle, $pkgid),
+                                 DB_FETCHMODE_ORDERED);
+            if (empty($test) || $test[0] != 'lead') {
+                auth_reject(true);
+            }
+        }
         $sql = "SELECT handle, role FROM maintains WHERE package = ?";
         $old = $dbh->getAssoc($sql, false, array($pkgid));
         $old_users = array_keys($old);
@@ -536,6 +551,8 @@ class maintainer
         }
         return true;
     }
+
+    // }}}
 }
 
 class release
@@ -546,15 +563,16 @@ class release
     {
         global $dbh;
         $sth = $dbh->limitQuery("SELECT packages.id AS id, ".
-                           "packages.name AS name, ".
-                           "packages.summary AS summary, ".
-                           "releases.version AS version, ".
-                           "releases.releasedate AS releasedate, ".
-                           "releases.releasenotes AS releasenotes, ".
-                           "releases.doneby AS doneby ".
-                           "FROM packages, releases ".
-                           "WHERE packages.id = releases.package ".
-                           "ORDER BY releases.releasedate DESC", 0, $n);
+                                "packages.name AS name, ".
+                                "packages.summary AS summary, ".
+                                "releases.version AS version, ".
+                                "releases.releasedate AS releasedate, ".
+                                "releases.releasenotes AS releasenotes, ".
+                                "releases.doneby AS doneby, ".
+                                "releases.state AS state ".
+                                "FROM packages, releases ".
+                                "WHERE packages.id = releases.package ".
+                                "ORDER BY releases.releasedate DESC", 0, $n);
         $recent = array();
         // XXX Fixme when DB gets limited getAll()
         while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {

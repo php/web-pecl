@@ -20,6 +20,14 @@ installed in /usr/share/pear):
  Alias /package /usr/local/www/pearweb/public_html/package-info.php
  Alias /user    /usr/local/www/pearweb/public_html/account-info.php
 
+ RewriteEngine On
+ RewriteRule   /download-docs.php    /manual/index.php
+
+ #
+ # Rewriting rules for the RSS feeds
+ #
+ RewriteRule   /feeds/(.+)\.rss$ /feeds/feeds.php?type=$1
+
  <Location /get>
   ForceType application/x-httpd-php
  </Location>

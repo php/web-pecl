@@ -91,7 +91,7 @@ Packages have to adhere to the versioning scheme (all BC breaks require
 a major version upgrade). There is no stable version below 1.0.
 BC breaks below version 1.0 are allowed.<br />
 An archive zone for deprecated package, aka "Siberia" should be created. This
-will also make it clear that PECL is NOT Sibiria.
+will also make it clear that PECL is NOT Siberia.
 </p>
 
 </li>

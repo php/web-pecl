@@ -1623,6 +1623,15 @@ class user
     }
 
     // }}}
+    // {{{ listAll()
+
+    function listAll()
+    {
+        global $dbh;
+        return $dbh->getAll("SELECT * FROM users ORDER BY handle",
+                            null, DB_FETCHMODE_ASSOC);
+    }
+
 }
 
 class statistics

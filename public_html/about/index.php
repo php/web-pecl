@@ -17,38 +17,28 @@
    +----------------------------------------------------------------------+
    $Id$
 */
-response_header("Syndication feeds");
+response_header("About this site");
 ?>
 
-<h1>Syndication feeds</h1>
+<h1>About this site</h1>
 
-<h2>RSS</h2>
+<p>This site has been created and is maintained by a number of people,
+which are listed on the <?php echo make_link("/credits.php", "credits page"); ?>.
+If you would like to contact them, you can write to
+<?php echo make_mailto_link("pear-webmaster@php.net"); ?>.</p>
 
-<p>We have a number of <?php echo make_link("http://web.resource.org/rss/1.0/", "RSS"); ?> 
-feeds available for your viewing pleasure:</p>
+<p>It has been built with <?php echo make_link("http://httpd.apache.org/", "Apache"); ?>,
+<?php echo make_link("http://php.net/", "PHP"); ?>,
+<?php echo make_link("http://www.mysql.com/", "MySQL"); ?> and some
+(as you might have guessed) PEAR packages. Additionally we have started
+to use a set of utility classes. We call it
+<?php echo make_link("damblan.php", "Damblan"); ?>. The source code of
+the website is
+<?php echo make_link("http://cvs.php.net/cvs.php/pearweb", "available via CVS"); ?>.
+</p>
 
-<ul>
-  <li><?php echo make_link("/rss/latest.rss"); ?>: The latest 10 releases</li>
-  <li>Feeds per category:
-    <ul>
-      <li><?php echo make_link("/rss/cat_authentication.rss"); ?>: Authentication</li>
-      <li><?php echo make_link("/rss/cat_benchmarking.rss"); ?>: Benchmarking</li>
-      <li>For all other categories, the same scheme as shown above applies</li>
-    </ul>
-  </li>
-  <li>Feeds per package:
-    <ul>
-      <li><?php echo make_link("/rss/pkg_auth.rss"); ?>: Auth</li>
-      <li><?php echo make_link("/rss/pkg_mail_mime.rss"); ?>: Mail_Mime</li>
-      <li>For all other packages, the same scheme as shown above applies</li>
-    </ul>
-  </li>
-</ul>
-
-<p>If you have questions or suggestions about the RSS service, please
-contact the <?php echo make_mailto_link("pear-webmaster@php.net", "webmasters"); ?>.</p>
+<p>Read the <?php echo make_link("privacy.php", "privacy policy"); ?>.</p>
 
 <?php
 response_footer();
 ?>
-

@@ -114,9 +114,9 @@ function renumber_visitations($id, $parent)
 
 function version_compare_firstelem($a, $b)
 {
-	reset($a);
-	$elem = key($a);
-	return version_compare($a[$elem], $b[$elem]);
+    reset($a);
+    $elem = key($a);
+    return version_compare($a[$elem], $b[$elem]);
 }
 
 // These classes correspond to tables and methods define operations on
@@ -236,46 +236,46 @@ class package
         } else {
             $what = "name";
         }
-		$pkg_sql = "SELECT p.id AS packageid, p.name AS name, ".
-			 "c.id AS categoryid, c.name AS category, ".
-			 "p.stablerelease AS stable, p.license AS license, ".
-			 "p.summary AS summary, ".
-			 "p.description AS description".
-			 " FROM packages p, categories c ".
-			 "WHERE c.id = p.category AND p.{$what} = ?";
-		$rel_sql = "SELECT version, id, doneby, license, summary, ".
-			 "description, releasedate, releasenotes, state ".
-			 "FROM releases WHERE package = ?";
-		$notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
-		if ($field === null) {
-			$info =
-				 $dbh->getRow($pkg_sql, array($pkg), DB_FETCHMODE_ASSOC);
-			$info['releases'] =
-				 $dbh->getAssoc($rel_sql, false, array($info['packageid']),
-				                DB_FETCHMODE_ASSOC);
-			$info['notes'] =
-				 $dbh->getAssoc($notes_sql, false, array($info['packageid']),
-				                DB_FETCHMODE_ASSOC);
-		} else {
-			// get a single field
-			if ($field == 'releases' || $field == 'notes') {
-				if ($what == "name") {
-					$pid = $dbh->getOne("SELECT id FROM packages ".
-										"WHERE name = ?", array($pkg));
-				} else {
-					$pid = $pkg;
-				}
-				if ($field == 'releases') {
-					$info = $dbh->getAssoc($rel_sql, false, array($pid),
-					                       DB_FETCHMODE_ASSOC);
-				} elseif ($field == 'notes') {
-					$info = $dbh->getAssoc($notes_sql, false, array($pid),
-					                       DB_FETCHMODE_ASSOC);
-				}
-			} elseif ($field == 'category') {
-				$sql = "SELECT c.name FROM categories c, packages p ".
-					 "WHERE c.id = p.category AND p.$what = ?";
-				$info = $dbh->getAssoc($sql, false, array($pkg));
+$pkg_sql = "SELECT p.id AS packageid, p.name AS name, ".
+ "c.id AS categoryid, c.name AS category, ".
+ "p.stablerelease AS stable, p.license AS license, ".
+ "p.summary AS summary, ".
+ "p.description AS description".
+ " FROM packages p, categories c ".
+ "WHERE c.id = p.category AND p.{$what} = ?";
+$rel_sql = "SELECT version, id, doneby, license, summary, ".
+ "description, releasedate, releasenotes, state ".
+ "FROM releases WHERE package = ?";
+$notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
+if ($field === null) {
+$info =
+ $dbh->getRow($pkg_sql, array($pkg), DB_FETCHMODE_ASSOC);
+$info['releases'] =
+ $dbh->getAssoc($rel_sql, false, array($info['packageid']),
+                DB_FETCHMODE_ASSOC);
+$info['notes'] =
+ $dbh->getAssoc($notes_sql, false, array($info['packageid']),
+                DB_FETCHMODE_ASSOC);
+} else {
+// get a single field
+if ($field == 'releases' || $field == 'notes') {
+if ($what == "name") {
+$pid = $dbh->getOne("SELECT id FROM packages ".
+"WHERE name = ?", array($pkg));
+} else {
+$pid = $pkg;
+}
+if ($field == 'releases') {
+$info = $dbh->getAssoc($rel_sql, false, array($pid),
+                       DB_FETCHMODE_ASSOC);
+} elseif ($field == 'notes') {
+$info = $dbh->getAssoc($notes_sql, false, array($pid),
+                       DB_FETCHMODE_ASSOC);
+}
+} elseif ($field == 'category') {
+$sql = "SELECT c.name FROM categories c, packages p ".
+ "WHERE c.id = p.category AND p.$what = ?";
+$info = $dbh->getAssoc($sql, false, array($pkg));
             } elseif ($field == 'description') {
                 $sql = "SELECT description FROM packages WHERE $what = ?";
                 $info = $dbh->query($sql, array($pkg));
@@ -286,18 +286,18 @@ class package
                         AND p.$what = ?
                         AND m.handle = u.handle";
                 $info = $dbh->getAll($sql, array($pkg), DB_FETCHMODE_ASSOC);
-			} else {
-				if ($field == 'categoryid') {
-					$dbfield = 'category';
-				} elseif ($field == 'packageid') {
-					$dbfield = 'id';
-				} else {
-					$dbfield = $field;
-				}
-				$sql = "SELECT $dbfield FROM packages WHERE $what = ?";
-				$info = $dbh->getOne($sql, array($pkg));
-			}
-		}
+} else {
+if ($field == 'categoryid') {
+$dbfield = 'category';
+} elseif ($field == 'packageid') {
+$dbfield = 'id';
+} else {
+$dbfield = $field;
+}
+$sql = "SELECT $dbfield FROM packages WHERE $what = ?";
+$info = $dbh->getOne($sql, array($pkg));
+}
+}
         return $info;
     }
 
@@ -308,32 +308,32 @@ class package
     {
         global $dbh;
         $packageinfo = $dbh->getAssoc(
-			"SELECT p.name, p.id AS packageid, ".
-			"c.id AS categoryid, c.name AS category, ".
-			"p.license AS license, ".
-			"p.summary AS summary, ".
-			"p.description AS description, ".
-			"m.handle AS lead ".
-			" FROM packages p, categories c, maintains m ".
-			"WHERE c.id = p.category ".
-			"  AND p.id = m.package ".
-			"  AND m.role = 'lead' ".
-			"ORDER BY p.name", false, null, DB_FETCHMODE_ASSOC);
-		$stablereleases = $dbh->getAssoc(
-			"SELECT p.name, r.version AS stable ".
-			"FROM packages p, releases r ".
-			"WHERE p.id = r.package AND r.state = 'stable'");
-		foreach ($stablereleases as $pkg => $stable) {
-			$packageinfo[$pkg]['stable'] = $stable;
-		}
-		if ($released_only) {
-			foreach ($packageinfo as $pkg => $info) {
-				if (!isset($stablereleases[$pkg])) {
-					unset($packageinfo[$pkg]);
-				}
-			}
-		}
-		return $packageinfo;
+"SELECT p.name, p.id AS packageid, ".
+"c.id AS categoryid, c.name AS category, ".
+"p.license AS license, ".
+"p.summary AS summary, ".
+"p.description AS description, ".
+"m.handle AS lead ".
+" FROM packages p, categories c, maintains m ".
+"WHERE c.id = p.category ".
+"  AND p.id = m.package ".
+"  AND m.role = 'lead' ".
+"ORDER BY p.name", false, null, DB_FETCHMODE_ASSOC);
+$stablereleases = $dbh->getAssoc(
+"SELECT p.name, r.version AS stable ".
+"FROM packages p, releases r ".
+"WHERE p.id = r.package AND r.state = 'stable'");
+foreach ($stablereleases as $pkg => $stable) {
+$packageinfo[$pkg]['stable'] = $stable;
+}
+if ($released_only) {
+foreach ($packageinfo as $pkg => $info) {
+if (!isset($stablereleases[$pkg])) {
+unset($packageinfo[$pkg]);
+}
+}
+}
+return $packageinfo;
     }
 
     // }}}
@@ -342,63 +342,63 @@ class package
     function listLatestReleases($state = '')
     {
         global $dbh;
-		$query =
-			 "SELECT ".
-			 "p.name AS package, ".
-			 "r.version AS version, ".
-			 "r.state AS state, ".
-			 "f.fullpath AS fullpath ".
-			 "FROM packages p, releases r, files f ".
-			 "WHERE p.id = r.package ".
-			 "AND f.package = p.id ".
-			 "AND f.release = r.id ";
-		if (release::isValidState($state)) {
-			$query .= "AND r.state = '$state' ";
-		}
-		$query .= "ORDER BY p.name";
-		$sortfunc = "version_compare_firstelem";
-		$res = $dbh->getAssoc($query, false, null, DB_FETCHMODE_ASSOC, true);
-		foreach ($res as $pkg => $ver) {
-			if (sizeof($ver) > 1) {
-				usort($ver, $sortfunc);
-			}
-			$res[$pkg] = array_pop($ver);
-			$res[$pkg]['filesize'] = (int)@filesize($res[$pkg]['fullpath']);
-			unset($res[$pkg]['fullpath']);
-		}
-		return $res;
+$query =
+ "SELECT ".
+ "p.name AS package, ".
+ "r.version AS version, ".
+ "r.state AS state, ".
+ "f.fullpath AS fullpath ".
+ "FROM packages p, releases r, files f ".
+ "WHERE p.id = r.package ".
+ "AND f.package = p.id ".
+ "AND f.release = r.id ";
+if (release::isValidState($state)) {
+$query .= "AND r.state = '$state' ";
+}
+$query .= "ORDER BY p.name";
+$sortfunc = "version_compare_firstelem";
+$res = $dbh->getAssoc($query, false, null, DB_FETCHMODE_ASSOC, true);
+foreach ($res as $pkg => $ver) {
+if (sizeof($ver) > 1) {
+usort($ver, $sortfunc);
+}
+$res[$pkg] = array_pop($ver);
+$res[$pkg]['filesize'] = (int)@filesize($res[$pkg]['fullpath']);
+unset($res[$pkg]['fullpath']);
+}
+return $res;
     }
 
     // }}}
-	// {{{  proto struct package::listUpgrades(struct)
+    // {{{  proto struct package::listUpgrades(struct)
 
-	function listUpgrades($currently_installed)
+function listUpgrades($currently_installed)
     {
-		global $dbh;
-		if (sizeof($currently_installed) == 0) {
-			return array();
-		}
-		$query = "SELECT ".
-			 "p.name AS package, ".
-			 "r.id AS releaseid, ".
-			 "r.package AS packageid, ".
-			 "r.version AS version, ".
-			 "r.state AS state, ".
-			 "r.doneby AS doneby, ".
-			 "r.license AS license, ".
-			 "r.summary AS summary, ".
-			 "r.description AS description, ".
-			 "r.releasedate AS releasedate, ".
-			 "r.releasenotes AS releasenotes ".
-			 "FROM releases r, packages p WHERE r.package = p.id AND (";
-		$conditions = array();
-		foreach ($currently_installed as $package => $info) {
-			extract($info); // state, version
-			$conditions[] = "(package = '$package' AND state = '$state')";
-		}
-		$query .= implode(" OR ", $conditions) . ")";
-		return $dbh->getAssoc($query, false, null, DB_FETCHMODE_ASSOC);
-	}
+global $dbh;
+if (sizeof($currently_installed) == 0) {
+return array();
+}
+$query = "SELECT ".
+ "p.name AS package, ".
+ "r.id AS releaseid, ".
+ "r.package AS packageid, ".
+ "r.version AS version, ".
+ "r.state AS state, ".
+ "r.doneby AS doneby, ".
+ "r.license AS license, ".
+ "r.summary AS summary, ".
+ "r.description AS description, ".
+ "r.releasedate AS releasedate, ".
+ "r.releasenotes AS releasenotes ".
+ "FROM releases r, packages p WHERE r.package = p.id AND (";
+$conditions = array();
+foreach ($currently_installed as $package => $info) {
+extract($info); // state, version
+$conditions[] = "(package = '$package' AND state = '$state')";
+}
+$query .= implode(" OR ", $conditions) . ")";
+return $dbh->getAssoc($query, false, null, DB_FETCHMODE_ASSOC);
+}
 
     // }}}
 }
@@ -480,11 +480,11 @@ class release
 
     function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
-		$ref = release::validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum);
-		if (PEAR::isError($ref)) {
-			return $ref;
-		}
-		return release::confirmUpload($ref);
+$ref = release::validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum);
+if (PEAR::isError($ref)) {
+return $ref;
+}
+return release::confirmUpload($ref);
     }
 
     // }}}
@@ -518,9 +518,9 @@ class release
             return PEAR::raiseError("writing $tempfile failed: $php_errormsg");
         }
 
-		if (!isset($package_id)) {
-			return PEAR::raiseError("bad upload: package_id missing");
-		}
+if (!isset($package_id)) {
+return PEAR::raiseError("bad upload: package_id missing");
+}
 
         // later: do lots of integrity checks on the tarball
         if (!@rename($tempfile, $file)) {
@@ -534,21 +534,21 @@ class release
             return PEAR::raiseError("bad md5 checksum (checksum=$testsum ($bytes bytes: $data), specified=$md5sum)");
         }
 
-		$info = array("package_id" => $package_id,
-					  "version" => $version,
-					  "state" => $state,
-					  "relnotes" => $relnotes,
-					  "md5sum" => $md5sum,
-		              "file" => $file);
+$info = array("package_id" => $package_id,
+  "version" => $version,
+  "state" => $state,
+  "relnotes" => $relnotes,
+  "md5sum" => $md5sum,
+              "file" => $file);
         $infofile = sprintf("%s/%s%s-%s",
                             PEAR_TARBALL_DIR, ".info.", $package, $version);
-		$fp = @fopen($infofile, "w");
-		if (!is_resource($fp)) {
+$fp = @fopen($infofile, "w");
+if (!is_resource($fp)) {
             return PEAR::raiseError("writing $infofile failed: $php_errormsg");
-		}
-		fwrite($fp, serialize($info));
-		fclose($fp);
-		return $infofile;
+}
+fwrite($fp, serialize($info));
+fclose($fp);
+return $infofile;
     }
 
     // }}}
@@ -557,13 +557,13 @@ class release
     function confirmUpload($upload_ref)
     {
         global $dbh, $PHP_AUTH_USER;
-		$fp = @fopen($upload_ref, "r");
-		if (!is_resource($fp)) {
+$fp = @fopen($upload_ref, "r");
+if (!is_resource($fp)) {
             return PEAR::raiseError("invalid upload reference: $upload_ref");
-		}
-		$info = unserialize(fread($fp, filesize($upload_ref)));
-		extract($info);
-		@unlink($upload_ref);
+}
+$info = unserialize(fread($fp, filesize($upload_ref)));
+extract($info);
+@unlink($upload_ref);
 
         // Update releases table
         $query = "INSERT INTO releases (id,package,version,state,doneby,".
@@ -594,13 +594,13 @@ class release
 
     function dismissUpload($upload_ref)
     {
-		return (bool)@unlink($upload_ref);
+return (bool)@unlink($upload_ref);
     }
 
     // }}}
     // {{{        void release::HTTPdownload(string, [string], [string])
 
-	// not for xmlrpc export
+// not for xmlrpc export
     function HTTPdownload($package, $version = null, $file = null)
     {
         global $dbh;
@@ -612,61 +612,61 @@ class release
             return $package_id;
         }
 
-		if ($file !== null) {
-			$row = $dbh->getRow("SELECT fullpath, release, id FROM files ".
-								 "WHERE basename = '" . $file . "'", DB_FETCHMODE_ASSOC);
-			if (PEAR::isError($row)) {
-				return $row;
-			} elseif ($row === null) {
+if ($file !== null) {
+$row = $dbh->getRow("SELECT fullpath, release, id FROM files ".
+ "WHERE basename = '" . $file . "'", DB_FETCHMODE_ASSOC);
+if (PEAR::isError($row)) {
+return $row;
+} elseif ($row === null) {
                 return $this->raiseError("File '$file' not found");
             }
             $path = $row['fullpath'];
-			$log_release = $row['release'];
-			$log_file = $row['id'];
-			$basename = $file;
-		} elseif ($version == null) {
-			// Get the most recent version
-			$row = $dbh->getRow("SELECT id FROM releases ".
-								"WHERE package = $package_id ".
-								"ORDER BY releasedate DESC", DB_FETCHMODE_ASSOC);
-			if (PEAR::isError($row)) {
-				return $row;
-			}
-			$release_id = $row['id'];
-		} elseif (release::isValidState($version)) {
-			// Get the most recent version with a given state
-			$row = $dbh->getRow("SELECT id FROM releases ".
-								"WHERE package = $package_id ".
-								"AND state = '$version' ".
-								"ORDER BY releasedate DESC",
-								DB_FETCHMODE_ASSOC);
-			if (PEAR::isError($row)) {
-				return $row;
-			}
-			$release_id = $row['id'];
-		} else {
-			// Get a specific release
-			$row = $dbh->getRow("SELECT id FROM releases ".
-								"WHERE package = $package_id ".
-								"AND version = '$version'",
-								DB_FETCHMODE_ASSOC);
-			if (PEAR::isError($row)) {
-				return $row;
-			}
-			$release_id = $row['id'];
-		}
-		if (!isset($path) && isset($release_id)) {
-			$sql = "SELECT fullpath, basename, id FROM files WHERE release = ".
-				 $release_id;
-			$row = $dbh->getRow($sql, DB_FETCHMODE_ORDERED);
-			if (PEAR::isError($row)) {
-				return $row;
-			}
-			list($path, $basename, $log_file) = $row;
-			if (empty($path) || !@is_file($path)) {
-				return PEAR::raiseError("release download:: no version information found");
-			}
-		}
+$log_release = $row['release'];
+$log_file = $row['id'];
+$basename = $file;
+} elseif ($version == null) {
+// Get the most recent version
+$row = $dbh->getRow("SELECT id FROM releases ".
+"WHERE package = $package_id ".
+"ORDER BY releasedate DESC", DB_FETCHMODE_ASSOC);
+if (PEAR::isError($row)) {
+return $row;
+}
+$release_id = $row['id'];
+} elseif (release::isValidState($version)) {
+// Get the most recent version with a given state
+$row = $dbh->getRow("SELECT id FROM releases ".
+"WHERE package = $package_id ".
+"AND state = '$version' ".
+"ORDER BY releasedate DESC",
+DB_FETCHMODE_ASSOC);
+if (PEAR::isError($row)) {
+return $row;
+}
+$release_id = $row['id'];
+} else {
+// Get a specific release
+$row = $dbh->getRow("SELECT id FROM releases ".
+"WHERE package = $package_id ".
+"AND version = '$version'",
+DB_FETCHMODE_ASSOC);
+if (PEAR::isError($row)) {
+return $row;
+}
+$release_id = $row['id'];
+}
+if (!isset($path) && isset($release_id)) {
+$sql = "SELECT fullpath, basename, id FROM files WHERE release = ".
+ $release_id;
+$row = $dbh->getRow($sql, DB_FETCHMODE_ORDERED);
+if (PEAR::isError($row)) {
+return $row;
+}
+list($path, $basename, $log_file) = $row;
+if (empty($path) || !@is_file($path)) {
+return PEAR::raiseError("release download:: no version information found");
+}
+}
         if (isset($path)) {
             if (!isset($log_release)) {
                 $log_release = $release_id;
@@ -679,19 +679,19 @@ class release
             readfile($path);
 
             return true;
-		}
-		header('HTTP/1.0 404 Not Found');
-		print 'File not found';
+}
+header('HTTP/1.0 404 Not Found');
+print 'File not found';
     }
 
     // }}}
-	// {{{  proto bool release::isValidState(string)
+    // {{{  proto bool release::isValidState(string)
 
-	function isValidState($state)
+function isValidState($state)
     {
-		static $states = array('devel', 'snapshot', 'alpha', 'beta', 'stable');
-		return in_array($state, $states);
-	}
+static $states = array('devel', 'snapshot', 'alpha', 'beta', 'stable');
+return in_array($state, $states);
+}
 
     // }}}
     // {{{ NOEXPORT    release::logDownload(integer, string, string)
@@ -731,7 +731,7 @@ class release
     */
     function promote($pkginfo, $upload)
     {
-		return;
+return;
         $pacid   = package::info($pkginfo['package'], 'packageid');
         $authors = package::info($pkginfo['package'], 'authors');
         $txt_authors = '';

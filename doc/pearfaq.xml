@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.20 2001-11-12 22:57:13 alexmerz Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.21 2001-11-16 09:53:35 alexmerz Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
-          "./dbxml/docbookx.dtd">
+          "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-11-12 22:57:13 $</date>
-  <version>$Revision: 1.20 $</version>
+  <date>$Date: 2001-11-16 09:53:35 $</date>
+  <version>$Revision: 1.21 $</version>
  </artheader>
 
  <qandaset>
@@ -162,6 +162,20 @@
     </para>
    </answer>
   </qandaentry>
+  <qandaentry>
+   <question title="I have written a PHP module in C. What are the rules 
+   of including those in PEAR?" />
+   <answer>
+    <author name="Stig Bakken"/>
+    <para>
+     If you just want to make a simple extension, put it in
+     pear/PECL/<extname> (that is where extensions from php4/ext/<extname>
+     will be moved). If you want to write an extension following PEAR's
+     function/class naming, put it in pear/FOO_Bar or whatever the right
+     name is.
+    </para>
+   </answer>
+  </qandaentry>  
   <qandaentry>
    <question title="Why is PEAR seperated into pear/ and php4/pear/?" />
    <answer>

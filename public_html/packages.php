@@ -37,8 +37,8 @@ while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC) === DB_OK) {
     extract($row);
     if ($leftvisit && $rightvisit) {
         $lv = $leftvisit + 1;
-        $num = $dbh->getOne("SELECT COUNT(name) FROM packages WHERE leftvisit".
-                            " BETWEEN $lv AND $rightvisit");
+        $num = ($rightvisit - $leftvisit - 1) / 2;
+        //$num = $dbh->getOne("SELECT COUNT(name) FROM packages WHERE leftvisit BETWEEN $lv AND $rightvisit");
     } else {
         $num = 0;
     }

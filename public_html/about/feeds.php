@@ -17,38 +17,15 @@
    +----------------------------------------------------------------------+
    $Id$
 */
-response_header("Syndication feeds");
+
+require_once "Damblan/RSS.php";
+
+if (empty($_GET['type'])) {
+    require_once "Damblan/Site.php";
+    $site = &Damblan_Site::factory();
+    $site->error404("");
+    exit();
+}
+
+Damblan_RSS::printFeed($_GET['type']);
 ?>
-
-<h1>Syndication feeds</h1>
-
-<h2>RSS</h2>
-
-<p>We have a number of <?php echo make_link("http://web.resource.org/rss/1.0/", "RSS"); ?> 
-feeds available for your viewing pleasure:</p>
-
-<ul>
-  <li><?php echo make_link("/rss/latest.rss"); ?>: The latest 10 releases</li>
-  <li>Feeds per category:
-    <ul>
-      <li><?php echo make_link("/rss/cat_authentication.rss"); ?>: Authentication</li>
-      <li><?php echo make_link("/rss/cat_benchmarking.rss"); ?>: Benchmarking</li>
-      <li>For all other categories, the same scheme as shown above applies</li>
-    </ul>
-  </li>
-  <li>Feeds per package:
-    <ul>
-      <li><?php echo make_link("/rss/pkg_auth.rss"); ?>: Auth</li>
-      <li><?php echo make_link("/rss/pkg_mail_mime.rss"); ?>: Mail_Mime</li>
-      <li>For all other packages, the same scheme as shown above applies</li>
-    </ul>
-  </li>
-</ul>
-
-<p>If you have questions or suggestions about the RSS service, please
-contact the <?php echo make_mailto_link("pear-webmaster@php.net", "webmasters"); ?>.</p>
-
-<?php
-response_footer();
-?>
-

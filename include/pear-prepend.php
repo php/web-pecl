@@ -24,6 +24,7 @@ require_once "pear-config.php";
 require_once "pear-auth.php";
 require_once "pear-database.php";
 require_once "pear-manual.php";
+require_once "browser.php";
 
 error_reporting(E_ALL);
 
@@ -107,4 +108,7 @@ if (!function_exists('file_get_contents')) {
         return $data;
     }
 }
+
+$_browser = &new browser();
+
 ?>

@@ -55,26 +55,26 @@ function validate($entity, $field, $value /* , $oldvalue, $object */) {
 Some useful "visitation model" tricks:
 
 To find the number of child elements:
-(right - left - 1) / 2
+ (right - left - 1) / 2
 
 To find the number of child elements (including self):
-(right - left + 1) / 2
+ (right - left + 1) / 2
 
 To get all child nodes:
 
-SELECT * FROM table WHERE left > <self.left> AND left < <self.right>
+ SELECT * FROM table WHERE left > <self.left> AND left < <self.right>
 
 
 To get all child nodes, including self:
 
-SELECT * FROM table WHERE left BETWEEN <self.left> AND <self.right>
-"ORDER BY left" gives tree view
+ SELECT * FROM table WHERE left BETWEEN <self.left> AND <self.right>
+ "ORDER BY left" gives tree view
 
 To get all leaf nodes:
 
-SELECT * FROM table WHERE right-1 = left;
+ SELECT * FROM table WHERE right-1 = left;
 
-*/
+ */
 
 function renumber_visitations($id, $parent)
 {

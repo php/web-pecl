@@ -3,7 +3,7 @@
           "/home/ssb/cvs/php/phpdoc/dbxml/docbookx.dtd">
 <article id="pear">
  <artheader>
-  <title>PEAR: PHP Extension and Add-on Repository</title>
+  <title>PEAR: PHP Extension and Application Repository</title>
   <authorgroup>
    <author>
     <firstname>Stig</firstname>
@@ -20,8 +20,8 @@
   </releaseinfo>
   <revhistory>
    <revision>
-    <revnumber>$Revision: 1.5 $</revnumber>
-    <date>$Date: 2000-07-17 22:54:39 $</date>
+    <revnumber>$Revision: 1.6 $</revnumber>
+    <date>$Date: 2000-07-28 21:04:44 $</date>
     <authorinitials>$Author: ssb $</authorinitials>
    </revision>
   </revhistory>

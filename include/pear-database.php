@@ -1088,6 +1088,32 @@ class release
         $file_id = $dbh->nextId("files");
         $ok = $dbh->execute($sth, array($file_id, $package_id, $release_id,
                                         $md5sum, basename($file), $file));
+
+        // Update dependency table
+        $query = "INSERT INTO deps " .
+            "(package, release, type, relation, version, name) " .
+            "VALUES (?,?,?,?,?,?)";
+        $sth = $dbh->prepare($query);
+
+        /**
+         * The dependencies are only accessible via the package
+         * definition. Because of this we need to instantiate
+         * a PEAR_Common object here.
+         */
+        $common = new PEAR_Common();
+        $pkg_info = $common->InfoFromTgzFile($info['file']);
+
+        foreach ($pkg_info as $key => $value) {
+            if ($key == "release_deps") {
+                foreach ($value as $dep) {
+                    $dbh->execute($sth, array($package_id, $release_id,
+                                              @$dep['type'], @$dep['rel'],
+                                              @$dep['version'], @$dep['name'])
+                                  );
+                }
+            }
+        }
+
         if (PEAR::isError($ok)) {
             $dbh->query("DELETE FROM releases WHERE id = $release_id");
             @unlink($file);

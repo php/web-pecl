@@ -684,6 +684,43 @@ class release
     }
 
     // }}}
+    // {{{  proto array  release::getDateRange(int,int)
+
+    function getDateRange($start,$end)
+    {
+        global $dbh;
+        
+        $recent = array();
+        if (!is_numeric($start)) {
+            return $recent;
+        }
+        if (!is_numeric($end)) {
+            return $recent;
+        }
+        $start_f = date('Y-m-d 00:00:00',$start);
+        $end_f = date('Y-m-d 00:00:00',$end);
+        // limited to 50 to stop overkill on the server!
+        $sth = $dbh->limitQuery("SELECT packages.id AS id, ".
+                                "packages.name AS name, ".
+                                "packages.summary AS summary, ".
+                                "packages.description AS description, ".
+                                "releases.version AS version, ".
+                                "releases.releasedate AS releasedate, ".
+                                "releases.releasenotes AS releasenotes, ".
+                                "releases.doneby AS doneby, ".
+                                "releases.state AS state ".
+                                "FROM packages, releases ".
+                                "WHERE packages.id = releases.package ".
+                                "AND releases.releasedate > '{$start_f}' AND releases.releasedate < '{$end_f}'".
+                                "ORDER BY releases.releasedate DESC",0,50);
+         
+        while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
+            $recent[] = $row;
+        }
+        return $recent;
+    }
+
+    // }}}
     // {{{ +proto string release::upload(string, string, string, string, binary, string)
 
     function upload($package, $version, $state, $relnotes, $tarball, $md5sum)

@@ -43,11 +43,11 @@ function response_header($title = 'The PHP Extension and Application Repository'
         if (!empty($auth_user)) {
             if (!empty($auth_user->registered)) {
                 global $user_menu;
-                $SIDEBAR_DATA .= draw_navigation($user_menu, 'User Actions:');
+                $SIDEBAR_DATA .= draw_navigation($user_menu, 'Developers:');
             }
             if (!empty($auth_user->admin)) {
                 global $admin_menu;
-                $SIDEBAR_DATA .= draw_navigation($admin_menu, 'Admin Actions:');
+                $SIDEBAR_DATA .= draw_navigation($admin_menu, 'Administrators:');
             }
         }
     }
@@ -57,10 +57,10 @@ function response_header($title = 'The PHP Extension and Application Repository'
 function &draw_navigation($data, $menu_title='')
 {
     global $PHP_SELF;
-    $html = "<br /><br />\n";
+    $html = "<br />\n";
     if (!empty($menu_title)) {
         $html .= "<b>$menu_title</b>\n";
-        $html .= "<br /><br />\n";
+        $html .= "<br />\n";
     }
 
     foreach ($data as $url => $tit) {

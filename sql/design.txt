@@ -31,7 +31,7 @@ Distribution
 	A package _distribution_ is the officially supported way of
 	installing a package automatically.  The distribution is a
 	gzip-compressed tar file with a file called "package.xml"
-	within it describing the package.  See hte "XML DESCRIPTION
+	within it describing the package.  See the "XML DESCRIPTION
 	FILE FORMAT" section below for more details.
 
 	There are two types of distributions: source distributions and

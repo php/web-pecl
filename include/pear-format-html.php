@@ -266,14 +266,6 @@ class BorderBox {
     }
 }
 
-function html_table_border(&$tableobj, $width = "100%")
-{
-    $border = new HTML_Table('border="0" cellpadding="0" cellspacing="1" '.
-                             "width=\"{$width}\"");
-    $border->addRow(array($tableobj->toHtml()), 'bgcolor="#000000"');
-    print $border->toHtml();
-}
-
 /**
 * prints "urhere" menu bar
 * Top Level :: XML :: XML_RPC

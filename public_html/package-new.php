@@ -46,7 +46,7 @@ do {
             }
         }
 
-        if (!preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $name)) {
+        if (!preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $_POST['name'])) {
             display_error("Invalid package name.  PEAR package names must start ".
                           "with a capital letter and contain only letters, ".
                           "digits and underscores.  PECL package names must be ".
@@ -56,23 +56,23 @@ do {
 
         $dbh->expectError(DB_ERROR_ALREADY_EXISTS);
         $pkg = package::add(array(
-                                  'name'        => $name,
-                                  'category'    => $category,
-                                  'license'     => $license,
-                                  'summary'     => $summary,
-                                  'description' => $desc,
-                                  'homepage'    => $homepage,
+                                  'name'        => $_POST['name'],
+                                  'category'    => $_POST['category'],
+                                  'license'     => $_POST['license'],
+                                  'summary'     => $_POST['summary'],
+                                  'description' => $_POST['desc'],
+                                  'homepage'    => $_POST['homepage'],
                                   'lead'        => $auth_user->handle
                                   ));
         $dbh->popExpect();
         if (DB::isError($pkg) && $pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
-            error_handler("The `$name' package already exists!",
+            error_handler("The `" . $_POST['name'] . "' package already exists!",
                           "Package already exists");
             exit;
         }
         $display_form = false;
         response_header("Package Registered");
-        print "The package `$name' has been registered in PEAR.<br />\n";
+        print "The package `" . $_POST['name'] . "' has been registered in PEAR.<br />\n";
         print "You have been assigned as lead developer.<br />\n";
     }
 } while (false);

@@ -204,10 +204,6 @@ Eris Free Net</a>.
 <h4>Tutorials about some PEAR packages in German:</h4>
 
 <ul>
-    <li>Tutorial about a lot of PEAR packages
-    <a href="http://www.tu-chemnitz.de/~meal/php/peardoc/index.html">http://www.tu-chemnitz.de/~meal/php/peardoc/index.html</a>
-    </li>
-
     <li>IT[X]:
     <a href="http://www.ulf-wendel.de/projekte/itx/index.php">http://www.ulf-wendel.de/projekte/itx/index.php</a>
     </li>

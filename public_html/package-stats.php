@@ -286,7 +286,6 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
 	$total_maintainers = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT m.handle) FROM maintains m, packages p WHERE m.package = p.id AND p.category = %d", $_GET['cid']));
 	$total_releases    = $dbh->getOne(sprintf("SELECT COUNT(*) FROM package_stats WHERE cid = %d", $_GET['cid']));
 	$total_categories  = $dbh->getOne(sprintf("SELECT COUNT(*) FROM categories WHERE parent = %d", $_GET['cid']));
-    $total_downloads   = $dbh->getOne(sprintf("SELECT COUNT(*) FROM downloads WHERE parent = %d", $_GET['cid']));
 
 	// Query to get package list from package_stats_table
 	$query = sprintf("SELECT dl_number, package, release, pid, rid, cid FROM package_stats WHERE cid = %s ORDER BY dl_number DESC", $_GET['cid']);
@@ -325,10 +324,11 @@ if (@!$_GET['pid']) {
 		<td width="25%">Total Categories:</td>
 		<td width="25%" align="center" bgcolor="#cccccc"><?=$total_categories?></td>
 	</tr>
-    <tr>
-        <td width="25%">Total Downloads:</td>
-        <td width="25%" align="center" bgcolor="#cccccc"><?=$total_downloads?></td>
-   </tr>
+    <?php
+    if(!empty($_GET['cid']) {
+    echo "<tr>\n<td width="25%">\nTotal Downloads:</td>\n<td width="25%" align="center" bgcolor=\"#cccccc\">$total_downloads</td>\n</td>\n"
+   }
+   ?>
 </table>
 	<?php
 	$bb->end();

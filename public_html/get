@@ -24,21 +24,21 @@ error_reporting(0);
 
 function error_404($obj) {
     header('HTTP/1.0 404 Not Found');
-	if (is_object($obj)) {
-		echo $obj->getMessage();
-		if (DEVBOX) {
-			echo ' ' . $obj->getDebugInfo();
-		}
-	} else {
-		print $obj;
-	}
+    if (is_object($obj)) {
+        echo $obj->getMessage();
+        if (DEVBOX) {
+            echo ' ' . $obj->getDebugInfo();
+        }
+    } else {
+        print $obj;
+    }
     exit;
 }
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'error_404');
 
 // This is needed to be able to test the downloads with "wget"
-// ot the pear installer
+// or the pear installer
 if (empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 }
@@ -54,22 +54,22 @@ if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], array('1', 'yes'
     $uncompress = false;
 }
 switch (sizeof($opts)) {
-	case 2: {
-		if (preg_match('/^([a-zA-Z0-9_]+)-(.*)\.(tar|tgz)$/', $opts[1], $matches)) {
-			list(, $package, $version) = $matches;
-			$ok = release::HTTPdownload($package, $version, $opts[1], $uncompress);
-		} else {
-			$ok = release::HTTPdownload($opts[1], null, null, $uncompress);
-		}
-		break;
-	}
-	case 3: {
-		$ok = release::HTTPdownload($opts[1], $opts[2], null, $uncompress);
-		break;
-	}
-	default: {
-		$ok = false;
-	}
+    case 2: {
+        if (preg_match('/^([a-zA-Z0-9_]+)-(.*)\.(tar|tgz)$/', $opts[1], $matches)) {
+            list(, $package, $version) = $matches;
+            $ok = release::HTTPdownload($package, $version, $opts[1], $uncompress);
+        } else {
+            $ok = release::HTTPdownload($opts[1], null, null, $uncompress);
+        }
+        break;
+    }
+    case 3: {
+        $ok = release::HTTPdownload($opts[1], $opts[2], null, $uncompress);
+        break;
+    }
+    default: {
+        $ok = false;
+    }
 }
 
 ?>

@@ -19,6 +19,7 @@
 */
 
 auth_require(true);
+require_once "pear-admin.php";
 
 if (!empty($_GET['phpinfo'])) {
     phpinfo();

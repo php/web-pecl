@@ -45,29 +45,6 @@ if (empty($format)) {
 
 include_once "pear-format-$format.php";
 
-/**
- * Interface to uptime
- *
- * Tell how long the system has been running.
- *
- * @return string
- */
-function uptime()
-{
-    $result = exec("uptime");
-
-    $elements = split(" ", $result);
-
-    foreach ($elements as $key => $value) {
-        if ($value == "up") {
-            $uptime = $elements[$key+1] . " " . str_replace(",", "", $elements[$key+2]);
-            break;
-        }
-    }
-
-    return $uptime;
-}
-
 function get($name)
 {
     if (!empty($_GET[$name])) {
@@ -125,6 +102,5 @@ session_start();
 /**
 * Browser detection
 */
-	$_browser = &new browser();
-
+$_browser = &new browser();
 ?>

@@ -139,8 +139,7 @@ will be used with the following changes:
 Platform support:
 <ul>
   <li>
-    MacOS X is not a widely used platform yet, if someone can provide
-    us an access to a machine running OS X, we can improve OS X support;
+    If someone can provide  us an access to a machine running OS X, we can improve OS X support;
     it will then probably work as nicely as on *NIX.
   </li>
   <li>

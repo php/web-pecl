@@ -35,7 +35,7 @@ class Damblan_RSS {
      *
      * @access public
      * @param  string Type
-     * @return object Instance of Damblan_RSS_* or PEAR_Error
+     * @return mixed  String or PEAR_Error
      */
     function getFeed($type) {
         if ($type != "latest") {
@@ -70,7 +70,7 @@ class Damblan_RSS {
                 Damblan_RSS_Cache::write($cache, $rss_obj->toString());
             }
 
-            return $rss_obj;
+            return $rss_obj->toString();
         } else {
             PEAR::raiseError("The requested URL " . $_SERVER['REQUEST_URI'] . " was not found on this server.");
         }
@@ -91,12 +91,7 @@ class Damblan_RSS {
         } else {
             header("Content-Type: text/xml");
             print "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n";
-            
-            if (is_object($ret)) {
-                print $ret->toString();
-            } else {
-                print $ret;
-            }
+            print $ret;
         }
     }
 }

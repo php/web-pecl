@@ -47,7 +47,7 @@ if (!function_exists("getText")) {
 function show_languages($visitlang = "") {
     $available_langs = array(
         'en' => 'English',
-   //     'fr' => 'French',
+        'fr' => 'French',
         'de' => 'German'
     );
     echo getText("View In"). ' :: ';
@@ -95,7 +95,7 @@ function show_latest($lang) {
         //echo "LOOL FOR $lang" . date("Ymd",$week);
         if (@file_exists(dirname(__FILE__) . "/../weeklynews/".date("Ymd",$week). ".{$lang}.html")) {
             show_news($lang,date("Ymd",$week));
-            return;
+            return TRUE;
         }
     }
    
@@ -188,7 +188,8 @@ if (preg_match("/^\/weeklynews.php\/([a-z]{2})/",$_SERVER['REQUEST_URI'],$args))
     // #TODO - can somebody fix this it just doesnt work on my test machine!
     $lang_maps = array( 
         "en" => "en_US",
-        "de" => "de"
+        "de" => "de",
+        "fr" => "fr"
     );
     $show_lang = $args[1];
     $locale = $lang_maps[$args[1]];
@@ -221,7 +222,9 @@ if ($show_latest && preg_match("/^\/weeklynews.php\/([a-z]{2})\/archives\.html$/
 if ($show_archives) {
     show_news_menu();
 } elseif ($show_latest) {
-    show_latest($show_lang);
+    if (!show_latest($show_lang)) {
+        show_news_menu();
+    }
 } else {
     show_news($args[1],$args[2]);
 }

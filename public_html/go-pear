@@ -1,5 +1,4 @@
-<?php //; echo; echo "YOU NEED TO RUN THIS SCRIPT WITH PHP NOW!"; echo; echo "Try this: lynx -source http://pear.php.net/go-pear | php -q"; echo; exit
-// -*- PHP -*-
+<?php //; echo; echo "YOU NEED TO RUN THIS SCRIPT WITH PHP NOW!"; echo; echo "Try this: lynx -source http://pear.php.net/go-pear | php -q"; echo; exit # -*- PHP -*-
 # +----------------------------------------------------------------------+
 # | PHP Version 4                                                        |
 # +----------------------------------------------------------------------+
@@ -23,32 +22,19 @@
 # (the PEAR package installer)
 #
 # Usage: This script could be directly launched or can be passed
-# via lynx so:
-# $ lynx -source http://pear.php.net/go-pear | php
+# via lynx like this:
 #
-# From Rev5 please see the pearweb CVS module at cvs.php.net
+#  $ lynx -source http://pear.php.net/go-pear | php
 #
-# Rev4 2002-04-27:
+# Or on Windows:
 #
-#       - Moved from http://pear.php.net/~cox/go-pear to
-#	  http://pear.php.net/go-pear
-#	- Adapt the @prefix@ to the new @bindir@ (patch by Naoki Shima)
-#	- Actually make the "pear" cmd file executable when a relative
-#	  path is selected
+#  > php-cli -r 'readfile("http://pear.php.net/go-pear");' | php-cli
 #
-# Rev3 2002-03-26:
+# If using the CGI version of PHP, append the -q option to suppress
+# headers in the output.
 #
-#	- Made the script more portable to able to run in other Unix
-#	  platforms (contributed by Piotr Klaban <makler+pear@man.torun.pl>).
-#	  Tested on Linux, Solaris and FreeBSD.
-#
-# Rev2 2002-03-25:
-#
-#	- Added initial informative message
-#	- Added the ability to download all the files under php4/pear module
-#	- The user can now select where to place the 'pear' cmd
-#
-# Rev1 2002-03-24: Initial
+
+while (ob_get_level() > 0) ob_end_flush();
 
 if (!function_exists("version_compare")) {
     die(

@@ -379,7 +379,7 @@ if (@!$_GET['pid']) {
 	    } else {
 	        $lastPackage = $row['package'];
 	        $row['package'] = "<a href=\"package-info.php?package=" .
-	                            $info['name'] . "\">" .
+	                            $row['package'] . "\">" .
 	                            $row['package'] . "</a>\n";
 	    }
 

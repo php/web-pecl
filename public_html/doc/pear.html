@@ -1,11 +1,14 @@
 <HTML
 ><HEAD
 ><TITLE
->PEAR: PHP Extension and Add-on Repository</TITLE
+>PEAR: PHP Extension and Application Repository</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.44"></HEAD
+CONTENT="Modular DocBook HTML Stylesheet Version 1.52"><META
+NAME="HTTP_EQUIV"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
 ><BODY
+CLASS="article"
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
 LINK="#0000FF"
@@ -19,11 +22,20 @@ CLASS="TITLEPAGE"
 CLASS="title"
 ><A
 NAME="AEN2"
->PEAR: PHP Extension and Add-on Repository</A
+>PEAR: PHP Extension and Application Repository</A
 ></H1
+><DIV
+CLASS="authorgroup"
+><A
+NAME="AEN4"
+></A
 ><H3
 CLASS="author"
->Stig Bakken</H3
+><A
+NAME="AEN5"
+>Stig Bakken</A
+></H3
+></DIV
 ><SPAN
 CLASS="releaseinfo"
 >&#13;   
@@ -63,7 +75,12 @@ COLSPAN="3"
 ></DIV
 ><HR></DIV
 ><P
->PEAR is dedicated to Malin Bakken, born 1999-11-21.</P
+>PEAR is dedicated to <A
+HREF="http://www.pvv.org/~ssb/malin/bilder/mi/twain001.jpg"
+TARGET="_top"
+>Malin Bakken</A
+>, born
+  1999-11-21.</P
 ><DIV
 CLASS="section"
 ><HR><H1
@@ -122,8 +139,7 @@ CLASS="note"
 >Note: </B
 >
       It is important that your files do not output anything, so watch
-      those extra linefeeds at the end of the files (no more than
-      one!)
+      those linefeeds at the end of files (no more than one!)
      </P
 ></BLOCKQUOTE
 ></DIV
@@ -279,9 +295,8 @@ WIDTH="100%"
 ><TD
 ><PRE
 CLASS="programlisting"
->  1&nbsp;
-  2&nbsp;Header("Last-Modified: " . HTTP::Date(getlastmod()));
-  3&nbsp;</PRE
+>&#13;Header("Last-Modified: " . HTTP::Date(getlastmod()));
+</PRE
 ></TD
 ></TR
 ></TABLE
@@ -313,7 +328,7 @@ CLASS="section"
 ><HR><H2
 CLASS="section"
 ><A
-NAME="AEN63"
+NAME="pear-variables"
 >Variable Names</A
 ></H2
 ><P
@@ -337,15 +352,14 @@ WIDTH="100%"
 ><TD
 ><PRE
 CLASS="programlisting"
->  1&nbsp;
-  2&nbsp;&#60;?php
-  3&nbsp;
-  4&nbsp;$Gah_Zonk_errorcodes = array( -1 =&#62; "This error",
-  5&nbsp;                              -2 =&#62; "That error" );
-  6&nbsp;$_Gah_Zonk_cache = array();
-  7&nbsp;
-  8&nbsp;?&#62;
-  9&nbsp;</PRE
+>&#13;&#60;?php
+
+$Gah_Zonk_errorcodes = array( -1 =&#62; "This error",
+                              -2 =&#62; "That error" );
+$_Gah_Zonk_cache = array();
+
+?&#62;
+</PRE
 ></TD
 ></TR
 ></TABLE
@@ -376,6 +390,136 @@ CLASS="function"
     to always provide a way of telling whether something went wrong
     and what, be it as simple as returning an error code, or something
     more fancy.
+   </P
+><P
+>&#13;    Fortunately, PEAR a general mechanism for reporting errors.  An
+    error is "raised" by creating an error object that may be used as
+    the return value of a function/method.  I say "may be used"
+    because PEAR errors have several modes of operation: simply
+    returning an object with more information, printing the error (and
+    optionally exit), call PHP's internal error handling functions, or
+    invoke a callback function.
+   </P
+><P
+>&#13;    Use the PEAR::isError() function to determine whether a returned
+    value is a PEAR error.
+   </P
+><P
+>&#13;    The following example makes an error wrapper around PHP's built-in
+    <B
+CLASS="function"
+>fsockopen()</B
+> function following PEAR
+    conventions.
+    <TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+CLASS="EXAMPLE"
+><TR
+><TD
+><DIV
+CLASS="example"
+><P
+><B
+>Example 1. PEAR error example 1</B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="programlisting"
+>&#13;&#60;?php
+
+// PEAR_Error is defined in PEAR.php
+require_once 'PEAR.php';
+
+function myfsockopen($host, $port) {
+    $fp = @fsockopen($host, $port, &#38;$errno, &#38;$errstr, 10);
+    if (!$fp) {
+        return new PEAR_Error($errstr, $errno, PEAR_ERROR_RETURN, null,
+                              "$host:$port");
+    }
+    return $fp;
+}
+
+$sock = myfsockopen("www.php.net", 80);
+if (PEAR::isError($sock)) {
+    print "&#60;B&#62;Error: ".$sock-&#62;getMessage()."&#60;/B&#62;\n";
+}
+
+?&#62;
+</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+>
+   </P
+><P
+>&#13;    You can customize the error handling by subclassing
+    <TT
+CLASS="classname"
+>PEAR_Error</TT
+> and adding your own stuff on top
+    of that, <B
+CLASS="function"
+>PEAR::isError()</B
+> will return true for
+    any object that is an instance of
+    <TT
+CLASS="classname"
+>PEAR_Error</TT
+> or a class inheriting it.
+   </P
+><P
+>&#13;    Some PEAR classes already do this, such as the DB error class,
+    <TT
+CLASS="classname"
+>DB_Error</TT
+>:
+    <TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+CLASS="EXAMPLE"
+><TR
+><TD
+><DIV
+CLASS="example"
+><P
+><B
+>Example 2. DB_Error example</B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="programlisting"
+>&#13;&#60;?php
+
+
+?&#62;
+</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+>
    </P
 ></DIV
 ><DIV
@@ -414,12 +558,11 @@ WIDTH="100%"
 ><TD
 ><PRE
 CLASS="programlisting"
->  1&nbsp;
-  2&nbsp;// If magic_quotes_gpc is enabled, remove those slashes.
-  3&nbsp;if (ini_get("magic_quotes_gpc")) {
-  4&nbsp;    $arg = stripslashes($arg);
-  5&nbsp;}
-  6&nbsp;</PRE
+>&#13;// If magic_quotes_gpc is enabled, remove those slashes.
+if (ini_get("magic_quotes_gpc")) {
+    $arg = stripslashes($arg);
+}
+</PRE
 ></TD
 ></TR
 ></TABLE
@@ -524,7 +667,7 @@ CLASS="EXAMPLE"
 CLASS="example"
 ><P
 ><B
->Example 1. file1.php</B
+>Example 3. file1.php</B
 ></P
 ><TABLE
 BORDER="0"
@@ -534,9 +677,8 @@ WIDTH="100%"
 ><TD
 ><PRE
 CLASS="programlisting"
->  1&nbsp;
-  2&nbsp;&#60;?php $myglobal = 42; ?&#62;
-  3&nbsp;</PRE
+>&#13;&#60;?php $myglobal = 42; ?&#62;
+</PRE
 ></TD
 ></TR
 ></TABLE
@@ -558,7 +700,7 @@ CLASS="EXAMPLE"
 CLASS="example"
 ><P
 ><B
->Example 2. file2.php</B
+>Example 4. file2.php</B
 ></P
 ><TABLE
 BORDER="0"
@@ -568,19 +710,18 @@ WIDTH="100%"
 ><TD
 ><PRE
 CLASS="programlisting"
->  1&nbsp;
-  2&nbsp;&#60;?php
-  3&nbsp;
-  4&nbsp;class Foo {
-  5&nbsp;    function Foo($arg) {
-  6&nbsp;        if ($arg == 42) {
-  7&nbsp;            include("file1.php");
-  8&nbsp;        }
-  9&nbsp;    }
- 10&nbsp;}
- 11&nbsp;
- 12&nbsp;?&#62;
- 13&nbsp;</PRE
+>&#13;&#60;?php
+
+class Foo {
+    function Foo($arg) {
+        if ($arg == 42) {
+            include("file1.php");
+        }
+    }
+}
+
+?&#62;
+</PRE
 ></TD
 ></TR
 ></TABLE
@@ -600,6 +741,45 @@ CLASS="classname"
 >Foo</TT
 > class's constructor
      function, not as a global variable.
+    </P
+><P
+>&#13;     The correct/portable way to do this in
+     <TT
+CLASS="filename"
+>file1.php</TT
+> is:
+     <TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+CLASS="EXAMPLE"
+><TR
+><TD
+><DIV
+CLASS="example"
+><P
+><B
+>Example 5. Correct file1.php</B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="programlisting"
+>&#13;&#60;?php $GLOBALS['myglobal'] = 42; ?&#62;
+</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+>
     </P
 ></DIV
 ></DIV

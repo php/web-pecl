@@ -20,15 +20,15 @@
   </releaseinfo>
   <revhistory>
    <revision>
-    <revnumber>$Revision: 1.7 $</revnumber>
-    <date>$Date: 2000-08-01 11:00:35 $</date>
+    <revnumber>$Revision: 1.8 $</revnumber>
+    <date>$Date: 2000-12-04 17:49:34 $</date>
     <authorinitials>$Author: ssb $</authorinitials>
    </revision>
   </revhistory>
  </artheader>
  
  <simpara>PEAR is dedicated to <ulink
- url="http://www.pvv.org/~ssb/malin/">Malin Bakken</ulink>, born
+ url="http://www.pvv.org/~ssb/malin/bilder/mi/twain001.jpg">Malin Bakken</ulink>, born
   1999-11-21.</simpara>
 
  <section id="pear-whatis">
@@ -177,7 +177,7 @@ Header("Last-Modified: " . HTTP::Date(getlastmod()));
    </section>
   </section>
 
-  <section>
+  <section id="pear-variables">
    <title>Variable Names</title>
    <simpara>
     Global variables visible to the user should be prefixed with the
@@ -212,6 +212,69 @@ $_Gah_Zonk_cache = array();
     and what, be it as simple as returning an error code, or something
     more fancy.
    </simpara>
+   <simpara>
+    Fortunately, PEAR a general mechanism for reporting errors.  An
+    error is "raised" by creating an error object that may be used as
+    the return value of a function/method.  I say "may be used"
+    because PEAR errors have several modes of operation: simply
+    returning an object with more information, printing the error (and
+    optionally exit), call PHP's internal error handling functions, or
+    invoke a callback function.
+   </simpara>
+   <simpara>
+    Use the PEAR::isError() function to determine whether a returned
+    value is a PEAR error.
+   </simpara>
+   <para>
+    The following example makes an error wrapper around PHP's built-in
+    <function>fsockopen</function> function following PEAR
+    conventions.
+    <example>
+     <title>PEAR error example 1</title>
+     <programlisting role="html">
+&lt;?php
+
+// PEAR_Error is defined in PEAR.php
+require_once 'PEAR.php';
+
+function myfsockopen($host, $port) {
+    $fp = @fsockopen($host, $port, &$errno, &$errstr, 10);
+    if (!$fp) {
+        return new PEAR_Error($errstr, $errno, PEAR_ERROR_RETURN, null,
+                              "$host:$port");
+    }
+    return $fp;
+}
+
+$sock = myfsockopen("www.php.net", 80);
+if (PEAR::isError($sock)) {
+    print "&lt;B&gt;Error: ".$sock->getMessage()."&lt;/B&gt;\n";
+}
+
+?&gt;
+</programlisting>
+    </example>
+   </para>
+   <para>
+    You can customize the error handling by subclassing
+    <classname>PEAR_Error</classname> and adding your own stuff on top
+    of that, <function>PEAR::isError</function> will return true for
+    any object that is an instance of
+    <classname>PEAR_Error</classname> or a class inheriting it.
+   </para>
+   <para>
+    Some PEAR classes already do this, such as the DB error class,
+    <classname>DB_Error</classname>:
+    <example>
+     <title>DB_Error example</title>
+     <programlisting role="html">
+&lt;?php
+
+
+?&gt;
+</programlisting>
+    </example>
+   </para>
   </section>
 
   <section id="pear-options">
@@ -307,6 +370,16 @@ class Foo {
      function, not as a global variable.
     </simpara>
     
+    <para>
+     The correct/portable way to do this in
+     <filename>file1.php</filename> is:
+     <example>
+      <title>Correct file1.php</title>
+      <programlisting role="html">
+&lt;?php $GLOBALS['myglobal'] = 42; ?&gt;
+</programlisting>
+     </example>
+    </para>
    </section>
 
   </section>

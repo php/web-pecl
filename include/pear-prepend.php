@@ -75,4 +75,15 @@ if (!empty($_COOKIE['PEAR_USER']) && !@auth_verify($_COOKIE['PEAR_USER'], $_COOK
     auth_reject(null, "Invalid username ($__user) or password <a href=\"/?logout=1\">[logout]</a>");
 }
 
+if (!function_exists('file_get_contents')) {
+    function file_get_contents($file, $use_include_path = false) {
+        if (!$fp = fopen($file, 'r', $use_include_path)) {
+            return false;
+        }
+        $data = fread($fp, filesize($file));
+        fclose($fp);
+        return $data;
+    }
+}
+
 ?>

@@ -1,43 +1,53 @@
-<BODY>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title></title></head><body>
 <small><i>by Alan Knowles alan_k@php.net</i></small>
-<P>
-Welcome to the first edition of the PEAR weekly news, hopefully the first of many!. The idea is to keep up to date with new pear packages, and developments on the PEAR mailing lists. 
-<BR>
+<p> Welcome to the first edition of the PEAR weekly news, hopefully the first
+of many!. The idea is to keep up to date with new pear packages, and developments
+on the PEAR mailing lists.  <br>
 
-<BR>
-Features for this week include, first release of the config package, updates to DB, the Database Abstration Layer, and beta release of XML_svg2image and the Pearified Metabase Database Abstraction layer - MDB. 
-<BR>
+<br> Features for this week include, first release of the config package,
+updates to DB, the Database Abstration Layer, and beta release of XML_svg2image
+and the Pearified Metabase Database Abstraction layer - MDB.  <br>
 
-<BR>
-Most Notebly an updated PEAR Installer is availalable to test : take a look a the manual for instrucitons <A HREF="http://pear.php.net/manual/en/installation.getting.php">http://pear.php.net/manual/en/installation.getting.php</A>
+<br>
+Most Notebly an updated PEAR Installer is availalable to test : take a look a the manual for instrucitons <a href="http://pear.php.net/manual/en/installation.getting.php">http://pear.php.net/manual/en/installation.getting.php</a>
 
-<BR>
+<br>
 
-<H2>PEAR-DEV traffic </H2>
+</p><h2>PEAR-DEV traffic </h2>
 
-<H3>User Authenticaiton </H3>
+<h3>User Authenticaiton </h3>  A common theme returned in the form of an
+API for user registration and authenticatoin, while this has been discussed
+before, the general consensus was that it would be difficult to produce a
+generic API that would suit all applicaitons . However there is alot of interesting
+reference material in the discussion, and pointers to developing something
+around LDAP or similar.  <br>
 
-A common theme returned in the form of an API for user registration and authenticatoin, while this has been discussed before, the general consensus was that it would be difficult to produce a generic API that would suit all applicaitons . However there is alot of interesting reference material in the discussion, and pointers to developing something around LDAP or similar. 
-<BR>
+<h3>Pear Packages </h3>  Alexander brought up the idea for distributing applications
+using the pear package manager, didnt recieve much response, but it is something
+that has been discussed on #pear, and all the members involved in the package
+manager are keen to see it happen, as soon as the packager is working reliably
+on windows and unix for the current PEAR packages  <br>
 
-<H3>Pear Packages </H3>
+<h3>Caching On XMLRPC </h3>  To improve the performance of the installers
+Christian Dickmann has been adding a small simple caching layer to the pear
+xmlrpc site.  <br>
 
-Alexander brought up the idea for distributing applications using the pear package manager, didnt recieve much response, but it is something that has been discussed on #pear, and all the members involved in the package manager are keen to see it happen, as soon as the packager is working reliably on windows and unix for the current PEAR packages 
-<BR>
+<h3>Pear Log and Windows/Unix differences </h3>  After a few experiments
+it was discovered that Windows and Unix have different Syslog error codes,
+which affected the PEAR:Log class, the intention was to stop using the system
+defines, and use a PEAR_LOG_* set.  <br>
+<h3>Pear Weekly News </h3>
+After some discussion about implementation for the weekly news, a simple
+file based news system was used, however the offer is open to anybody if
+they wish to use the pear 'notes' database table to implement a database
+version. - The initial code for PWN supports mutli-language, and auto publishing
+on a Sunday.<br>
+<br>
+<br>
 
-<H3>Caching On XMLRPC </H3>
+<hr>
 
-To improve the performance of the installers Christian Dickmann has been adding a small simple caching layer to the pear xmlrpc site. 
-<BR>
+<h2>Development </h2>
 
-<H3>Pear Log and Windows/Unix differences </H3>
-
-After a few experiments it was discovered that Windows and Unix have different Syslog error codes, which affected the PEAR:Log class, the intention was to stop using the system defines, and use a PEAR_LOG_* set. 
-<BR>
-
-<HR>
-
-<H2>Development </H2>
-
-Active on CVS this week has been Pager, HTML_Tree_Menu, PEAR_Frontend_Web, MDB, DB, DB_DBA, HTML_Quickform
-</BODY>
+Active on CVS this week has been Pager, HTML_Tree_Menu, PEAR_Frontend_Web, MDB, DB, DB_DBA, HTML_Quickform,Tree, Image_Transform<br>
+</body></html>

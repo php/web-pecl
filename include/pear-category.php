@@ -30,13 +30,18 @@ function initialize_categories_menu () {
         $dbh = DB::connect('mysql://pear:pear@localhost/pear');
     }
 
-    $sth = $dbh->query('SELECT id, name, parent FROM categories ORDER BY id');
+    $sth = $dbh->query('SELECT id, name, parent, cat_left, cat_right
+                        FROM categories ORDER BY name');
 
     while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
         extract($row);
         settype($parent, 'integer');
         $tree[$parent]['children'][] = $id;
         $tree[$id]['parent'] = $parent;
+        $subcats = ($cat_right - $cat_left - 1) / 2;
+        if ($subcats > 0) {
+            $name = "$name ($subcats)";
+        }
         $tree[$id]['name']   = $name;
     }
     $tree[0]['name'] = 'Categories';

@@ -2,7 +2,7 @@
 // manage categories
 
 auth_require(true);
-response_header("PEAR :: Packages");
+response_header("PEAR :: Category Manager");
 include_once '../include/pear-category.php';
 
 // expected url vars: catid (category id)
@@ -12,7 +12,6 @@ $catid = (isset($catid)) ? (int) $catid : null;
 if (empty($catid)) {
     $name   = 'Top Level';
     $parent = 0;
-    $category_title = "Package Browser: Top Level Categories";
 } else {
     if (isset($insert)) {
         $data = array(
@@ -23,12 +22,12 @@ if (empty($catid)) {
     } elseif (isset($remove)) {
         // XXXX TODO: implement remove categories
     }
-    // XXXX TODO extract the full category path with visitations
     $row = $dbh->getRow("SELECT name, parent FROM categories
                          WHERE id = $catid", DB_FETCHMODE_ASSOC);
     extract($row);
 }
 ?>
+<form action="<?php echo $GLOBALS['PHP_SELF'] . "?catid=$catid&insert=1"; ?>" method="post">
 <table border="0" cellpadding="2" cellspacing="1" width="100%">
 <tr>
     <td rowspan="3" width="30%"><?php print get_categories_menu('tree');?></td>
@@ -36,14 +35,22 @@ if (empty($catid)) {
     </td>
 </tr>
 </tr>
-    <td><b>Insert a new sub-category in: <?php print $name; ?></b><br/><br/>
-    <form action="<?php echo $GLOBALS['PHP_SELF'] . "?catid=$catid&insert=1"; ?>" method="post">
-    Name: <input type="text" name="catname" size="20"><br>
-    Summary: <input type="text" name="catdesc" size="30">
-    <input type="submit" name="action" value="Insert">
-    </form>
-    <p>
-    </p>
+    <td><b>Insert a new sub-category under: <?php print $name; ?></b><br/><br/>
+
+    <table border="0" width="100%">
+    <tr>
+        <td>Name:</td>
+        <td><input type="text" name="catname" size="15"></td>
+    </tr>
+    <tr>
+         <td>Summary:</td>
+         <td><input type="text" name="catdesc" size="40"></td>
+    </tr>
+    <tr>
+        <td align="center" colspan="2"><input type="submit" name="action" value="Insert"></td>
+    </tr>
+    </table>
+
     </td>
 </tr>
 </tr>
@@ -52,6 +59,7 @@ if (empty($catid)) {
     </td>
 </tr>
 </table>
+</form>
 <?php
 response_footer();
 ?>

@@ -19,9 +19,7 @@
 */
  
 
-require_once 'Date.php' ;
-
-
+ 
 
 /*
 * 
@@ -74,8 +72,7 @@ function show_news_menu() {
 }
 
 function show_news($lang,$date) {
-    $week = new Date( $date . "000000");
-    $end= $week->getTime();
+    $end =  mktime (0,0,0,substr($date,4,2)  ,substr($date,6,2),substr($date,0,4));
     $start =  mktime(0,0,0,date("m",$end)  ,date("d",$end)-7,date("Y",$end));
     
     response_header("PEAR Weekly News - ". $week->format("%d %B %Y") );

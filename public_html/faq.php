@@ -168,7 +168,7 @@ function characterData($parser, $data)
 }
 
 if (getenv("SERVER_NAME") != "pear.php.net") {
-    $filename = "/var/www/pearweb/doc/pearfaq.xml";
+    $filename = "../doc/pearfaq.xml";
 } else {
     $filename = "/usr/local/www/pearweb/doc/pearfaq.xml";
 }

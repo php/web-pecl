@@ -20,7 +20,7 @@
 
 response_header("Documentation");
 
-$languages = array("en" => "English", "de" => "German", "it" => "Italian", "ru" => "Russian");
+$languages = array("en" => "English", "de" => "German", "it" => "Italian", "nl" => "Dutch", "ru" => "Russian");
 ?>
 
 <h1>Documentation</h1>

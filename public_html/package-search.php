@@ -101,7 +101,7 @@ if(!empty($_GET)) {
     if (($numrows = $result->numRows()) > 0) { 
 
         // Paging
-        include_once('Pager.php');
+        include_once('Pager/Pager.php');
         $params['itemData'] = range(0, $numrows - 1);
         $pager =& new Pager($params);
         list($from, $to) = $pager->getOffsetByPageId();

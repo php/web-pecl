@@ -495,7 +495,7 @@ class release
         global $dbh, $auth_user, $PHP_AUTH_USER;
         // (2) verify that package exists
         $package_id = package::info($package, 'id');
-        if (PEAR::isError($package_id)) {
+        if (PEAR::isError($package_id) || empty($package_id)) {
             return PEAR::raiseError("package `$package' must be registered first");
         }
 
@@ -517,17 +517,18 @@ class release
         if (!@copy($tarball, $tempfile)) {
             return PEAR::raiseError("writing $tempfile failed: $php_errormsg");
         }
+
+		if (!isset($package_id)) {
+			return PEAR::raiseError("bad upload: package_id missing");
+		}
+
         // later: do lots of integrity checks on the tarball
         if (!@rename($tempfile, $file)) {
             return PEAR::raiseError("rename failed: $php_errormsg");
         }
 
         // (5) verify MD5 checksum
-        ob_start();
-        readfile($file);
-        $data = ob_get_contents();
-        ob_end_clean();
-        $testsum = md5($data);
+        $testsum = md5_file($file);
         if ($testsum != $md5sum) {
             $bytes = strlen($data);
             return PEAR::raiseError("bad md5 checksum (checksum=$testsum ($bytes bytes: $data), specified=$md5sum)");
@@ -583,6 +584,7 @@ class release
         if (PEAR::isError($ok)) {
             $dbh->query("DELETE FROM releases WHERE id = $release_id");
             @unlink($file);
+            return $ok;
         }
         return $file;
     }
@@ -729,6 +731,7 @@ class release
     */
     function promote($pkginfo, $upload)
     {
+		return;
         $pacid   = package::info($pkginfo['package'], 'packageid');
         $authors = package::info($pkginfo['package'], 'authors');
         $txt_authors = '';

@@ -215,7 +215,7 @@ if (!$relid) {
             $downloads_html = '';
             foreach ($downloads[$r['version']] as $dl) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
-                                   "$dl[basename]</a> (".sprintf("%.2f",filesize($dl['basename'])/1024.0).")<br />";
+                                   "$dl[basename]</a> (".sprintf("%.1fkB",filesize($dl['fullpath'])/1024.0).")<br />";
             }
             
             $link_changelog = "[ " . make_link("/package-changelog.php?pacid=".

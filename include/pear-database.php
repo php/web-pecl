@@ -564,19 +564,20 @@ class release
 
         $id = $dbh->nextId("downloads");
 
-        $query = sprintf("INSERT INTO downloads (id, file, package, release, dl_when, dl_who, dl_host) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                         $id,
-                         $file,
-                         $package,
-                         $release_id,
-                         date("Y-m-d H:i:s"),
-                         $_SERVER['REMOTE_ADDR'],
-                         gethostbyaddr($_SERVER['REMOTE_ADDR'])
-                         );
-
-        $sth = $dbh->query($query);
+        $query = "INSERT INTO downloads VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sth = $dbh->prepare($query);
 
         if (DB::isError($sth)) {
+            return false;
+        }
+
+        $err = $dbh->execute($sth, array($id, $file, $package,
+                                         $release_id, date("Y-m-d H:i:s"),
+                                         $_SERVER['REMOTE_ADDR'],
+                                         gethostbyaddr($_SERVER['REMOTE_ADDR'])
+                                        ));
+
+        if (DB::isError($err)) {
             return false;
         } else {
             return true;

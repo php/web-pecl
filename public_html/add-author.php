@@ -2,7 +2,7 @@
 
 require_once "HTML/Form.php";
 
-authRequire(1);
+auth_require(1);
 
 $display_form = true;
 

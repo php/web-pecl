@@ -473,7 +473,7 @@ function show_version_options($current, $default = '')
  */
 function show_types($current, $show_any, $default = '')
 {
-    global $site;
+    global $site, $dbh;
     static $bug_items;
 
     if (!isset($bug_items)) {
@@ -483,8 +483,9 @@ function show_types($current, $show_any, $default = '')
         $bug_items['PEPr']          = '&nbsp;&nbsp;&nbsp;PEPr';
         $bug_items['Documentation'] = 'Documentation';
 
-        $list = package::listAll(false);
-        foreach ($list as $name => $data) {
+        $sql = "SELECT name FROM packages WHERE package_type = '$site'";
+        $list = $dbh->getCol($sql);
+        foreach ($list as $name) {
             $bug_items[$name] = $name;
         }
     }

@@ -57,7 +57,7 @@ echo "<?xml version=\"1.0\"?>\n";
 $releases = release::getRecent($limit);
 foreach ($releases as $release) {
     echo "  <item>\n";
-    echo "    <title>" . $release['name'] . "</title>\n";
+    echo "    <title>" . $release['name'] . " " . $release['version'] . "</title>\n";
     echo "    <pubDate>" . $release['releasedate'] . "</pubDate>\n";
     printf("    <link>http://pear.php.net/package-info.php?pacid=%s&amp;release=%s</link>\n",
            $release['id'],

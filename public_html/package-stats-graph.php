@@ -134,7 +134,7 @@
     $graph->xaxis->SetTickLabels($x_axis);
 
     // Add a spacing between the bars and the top of the graph
-    $graph->yaxis->setGrace(15);
+    $graph->yaxis->scale->setGrace(15);
 
 	// Add the grouped or single bar chartplot
 	if (count($bplots) > 1) {

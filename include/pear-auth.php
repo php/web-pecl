@@ -48,7 +48,7 @@ function auth_reject($realm = null, $message = null, $refresh = false)
         print " </tr>\n";
         print " <tr>\n";
         print "  <td>&nbsp;</td>\n";
-        print "  <td><input type=\"checkbox\" name=\"PEAR_PERSIST\" value=\"on\"> Remember username and password.</td>\n";
+        print "  <td><input type=\"checkbox\" name=\"PEAR_PERSIST\" value=\"on\" id=\"pear_persist_chckbx\"> <label for=\"pear_persist_chckbx\">Remember username and password.</label></td>\n";
         print " </tr>\n";
         print " <tr>\n";
         print "  <td>&nbsp;</td>\n";

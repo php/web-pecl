@@ -14,6 +14,11 @@ if ($HTTP_SERVER_VARS['QUERY_STRING'] == 'devme') {
 $SIDEBAR_DATA='
 <h3>What is PEAR?</h3>
 <p>
+&quot;The fleshy pome, or fruit, of a rosaceous tree (Pyrus
+communis), cultivated in many varieties in temperate
+climates.&quot;
+</p>
+<p>
 
 PEAR is a framework and distribution system for reusable PHP
 components.

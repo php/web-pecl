@@ -5,9 +5,6 @@
  * $Id$
  */
 
-// XXX: This interface does *not* delete the release files on the
-//      harddisk yet!
-
 auth_require(true);
 
 require_once "HTML/Form.php";
@@ -52,6 +49,30 @@ if (!isset($_POST['confirm'])) {
                     "packages" => "id");
 
     echo "<pre>\n";
+
+    $file_rm = 0;
+
+    $query = "SELECT p.name, r.version FROM packages p, releases r
+                WHERE p.id = r.package AND r.package = '" . $_GET['id'] . "'";
+
+    $row = $dbh->getAll($query);
+
+    foreach ($row as $value) {
+        $file = sprintf("%s/%s-%s.tgz",
+                        PEAR_TARBALL_DIR,
+                        $value[0],
+                        $value[1]);
+
+        
+        if (@unlink($file)) {
+            echo "Deleting release archive \"" . $file . "\"\n";            
+            $file_rm++;
+        } else {
+            echo "<font color=\"#ff0000\">Unable to delete file " . $file . "</font>\n";
+        }
+    }
+
+    echo "\n" . $file_rm . " file(s) deleted\n\n";
 
     foreach ($tables as $table => $field) {
         $query = sprintf("DELETE FROM %s WHERE %s = '%s'",

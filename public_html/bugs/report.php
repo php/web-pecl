@@ -172,19 +172,21 @@ you can scroll down and click the submit button to really enter the details into
 			}
             */
 
+			$mid = sprintf("bug-%d-%08x@pecl.php.net", $cid, time());
+
 			// Set extra-headers
 			$extra_headers = "From: $protected_email\n";
-			$extra_headers.= "X-PHP-Bug: $cid\n";
-			$extra_headers.= "X-PHP-Version: "  . stripslashes($in['php_version']) . "\n";
-			$extra_headers.= "X-PHP-Category: " . stripslashes($in['bug_type'])    . "\n";
-			$extra_headers.= "X-PHP-OS: "       . stripslashes($in['php_os'])      . "\n";
-			$extra_headers.= "X-PHP-Status: Open\n";
-			$extra_headers.= "Message-ID: <bug-$cid@pecl.php.net>";
+			$extra_headers.= "X-PECL-Bug: $cid\n";
+			$extra_headers.= "X-PECL-PHP-Version: "  . stripslashes($in['php_version']) . "\n";
+			$extra_headers.= "X-PECL-PHP-Category: " . stripslashes($in['bug_type'])    . "\n";
+			$extra_headers.= "X-PECL-PHP-OS: "       . stripslashes($in['php_os'])      . "\n";
+			$extra_headers.= "X-PECL-PHP-Status: Open\n";
+			$extra_headers.= "Message-ID: <$mid>";
 
             // mail to package developers
-            mail($mailto, "#$cid [NEW]: $sdesc", $ascii_report."1\n-- \n$dev_extra", $extra_headers);
+            mail($mailto, "[PECL-BUG] #$cid [NEW]: $sdesc", $ascii_report."1\n-- \n$dev_extra", $extra_headers);
             // mail to reporter
-            mail($email, "Bug #$cid: $sdesc", $ascii_report."2\n", "From: PECL Bug Database <$mailfrom>\nX-PHP-Bug: $cid\nMessage-ID: <bug-$cid@pecl.php.net>");
+            mail($email, "Bug #$cid: $sdesc", $ascii_report."2\n", "From: PECL Bug Database <$mailfrom>\nX-PHP-Bug: $cid\nMessage-ID: <$mid>");
             header("Location: bug.php?id=$cid&thanks=4");
             exit;
         }

@@ -17,9 +17,9 @@ if ($HTTP_SERVER_VARS['SERVER_NAME'] != 'pear.php.net' || isset($HTTP_COOKIE_VAR
 
 if (empty($format)) {
     if (basename($PHP_SELF) == "xmlrpc.php") {
-	$format = "xmlrpc";
+        $format = "xmlrpc";
     } else {
-	$format = "html";
+        $format = "html";
     }
 }
 

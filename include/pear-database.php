@@ -725,7 +725,7 @@ END;
         $from = '"PEAR announce" <pear-dev@lists.php.net>';
         $subject = "[new web release] $release";
         // XXX Don't send emails for local PEAR web instalations
-        if ($HTTP_SERVER_VARS['SERVER_NAME'] == 'pear.php.net') {
+        if ($_SERVER['SERVER_NAME'] == 'pear.php.net') {
             mail($to, $subject, $txtanounce, "FROM: $from");
         }
     }

@@ -188,17 +188,6 @@ $bb->end();
 <table border="0" cellspacing="3" cellpadding="3" height="48" width="100%" align="center">
 <tr>
 <?php
-
-// CVS link
-if (@is_dir(PHP_CVS_REPO_DIR . "/$name")) {
-    $cvs_link = "[ " . make_link("http://cvs.php.net/cvs.php/pear/$name",
-                                 'View Source Code in CVS', 'top')
-    . " ] ";
-    // XXX if "version" is set, add a release tag to the cvs link
-} else {
-    $cvs_link = '&nbsp;';
-}
-
 // Download link
 $get_link = make_link("/get/$name", 'Download Latest');
 $changelog_link = make_link("package-changelog.php?pacid=$pacid",
@@ -211,8 +200,8 @@ $stats_link = "package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=" . $pkg['c
     <td width="50%" align="center">[ <?php print $changelog_link;?> ]</td>
 </tr>
 <tr>
-    <td width="50%" align="center"><nobr><?php print $cvs_link;?></nobr></td>
     <td width="50%" align="center"><nobr>[ <a href="<?php echo $stats_link; ?>">View package statistics</a> ]</nobr></td>
+    <td width="50%" align="center">&nbsp;</td>
 </tr>
 </table>
 

@@ -78,40 +78,39 @@ are searchable.
 <?php
 
   // array of lists (list, name, short desc., moderated, archive, digest, newsgroup)
-  $mailing_lists = Array(
+  $mailing_lists = array(
 
     'PEAR mailinglists',
 
-    Array (
+    array (
       'pear-general', 'PEAR general list',
       'A list for users of PEAR',
       false, true, true, "php.pear.general"
     ),
 
-    Array (
+    array (
       'pear-dev', 'PEAR developers list',
       'A list for developers of PEAR',
       false, true, true, "php.pear.dev"
     ),
 
-    Array (
+    array (
       'pear-cvs', 'PEAR CVS list',
       'All the commits of the cvs PEAR code repository are posted to this list automatically',
       false, true, true, "php.pear.cvs"
     ),
 
-    Array (
+    array (
       'pecl-cvs', 'PECL CVS list',
       'All the commits of the cvs PECL code repository are posted to this list automatically',
       false, false, false, "php.pecl.cvs"
     ),
 
-    Array (
+    array (
       'pear-doc', 'PEAR documentation list',
       'A list for discussing topics related to the PEAR documentation.',
-      false, false, false, "php.pear.doc"
+      false, false, true, "php.pear.doc"
     )
-
   );
 ?>
 <form method="POST" action="http://pear.php.net/support.php">

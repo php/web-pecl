@@ -19,6 +19,8 @@
 
 TABLE_FILES=\
 	cvs_acl.sql \
+	cvs_groups.sql \
+	cvs_group_membership.sql \
 	package_acl.sql \
 	maintains.sql \
 	categories.sql \
@@ -109,3 +111,5 @@ users.res:
 notes.res: packages.res users.res
 categories.res:
 cvs_acl.res: users.res
+cvs_groups.res:
+cvs_group_membership.res: users.res cvs_groups.res

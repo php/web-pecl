@@ -57,6 +57,7 @@ do {
         $dbh->expectError(DB_ERROR_ALREADY_EXISTS);
         $pkg = package::add(array(
                                   'name'        => $_POST['name'],
+                                  'type'        => $_POST['type'],
                                   'category'    => $_POST['category'],
                                   'license'     => $_POST['license'],
                                   'summary'     => $_POST['summary'],
@@ -122,6 +123,9 @@ minimum.
     $cats = $form->returnSelect("category", $categories, get("category"), 1,
                                 "--Select Category--");
     $bb->horizHeadRow("Category", $cats);
+    $types = $form->returnSelect("type", array("pear" => "PEAR", "pecl" => "PECL"), get("type"), 1,
+                                 "--Select Type--");
+    $bb->horizHeadRow("Type", $types . "<small>(Unless you really know what you are doing, you should select PEAR here)</small>");
     $bb->horizHeadRow("Summary", $form->returnText("summary", get("summary"), $width));
     $bb->horizHeadRow("Full description", $form->returnTextarea("desc", get("desc"), $width, 3));
     $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 20));

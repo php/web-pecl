@@ -57,6 +57,7 @@ if (empty($pacid) || !isset($pkg['name'])) {
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 $name        = $pkg['name'];
+$type        = $pkg['type'];
 $summary     = stripslashes($pkg['summary']);
 $license     = $pkg['license'];
 $description = stripslashes($pkg['description']);
@@ -112,6 +113,10 @@ print "<h2 align=\"center\">$name";
 if ($version) {
     print " $version";
 }
+if ($type == "pecl") {
+    print " (PECL)";
+}
+
 print "</h2>\n";
 
 // }}}
@@ -145,6 +150,15 @@ if (!empty($homepage)) {
     print "<tr>\n";
     print "    <th class=\"pack\" width=\"20%\">Homepage</th>\n";
     print "     <td valign=\"top\">".make_link($homepage)."</td>\n";
+    print "</tr>\n";
+}
+
+if ($type == "pecl") {
+    print "<tr>\n";
+    print "    <th class=\"pack\" width=\"20%\">PECL package</th>\n";
+    print "     <td valign=\"top\">";
+    print "     That package is part of " . make_link("/manual/en/introduction.php#about-pecl", "PECL") . ".";
+    print "     </td>\n";
     print "</tr>\n";
 }
 

@@ -164,7 +164,7 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
         /**
         * Print the graph
         */
-        printf('<br /><img src="package-stats-graph.php?pid=%s&releases=%s_339900" name="stats_graph" width="543" height="200" alt="">', $_GET['pid'], (int)$_GET['rid']);
+        printf('<br /><img src="package-stats-graph.php?pid=%s&releases=%s_339900" name="stats_graph" width="543" height="200" alt="">', $_GET['pid'], isset($_GET['rid']) ? (int)$_GET['rid'] : '');
     
     /**
     * Print the graph control stuff

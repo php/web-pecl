@@ -19,16 +19,17 @@
 # $Id$
 #
 # Automatically download all the files needed to run the "pear" command
-# (the PEAR package installer)
+# (the PEAR package installer).  Requires PHP 4.1.0 or newer.
 #
 # Usage: This script could be directly launched or can be passed
 # via lynx like this:
 #
 #  $ lynx -source http://pear.php.net/go-pear | php
 #
-# Or on Windows:
+# On Windows go-pear uses stdin for user input, so you must download
+# go-pear first and then run:
 #
-#  > php-cli -r 'readfile("http://pear.php.net/go-pear");' | php-cli
+#  > php-cli go-pear
 #
 # If using the CGI version of PHP, append the -q option to suppress
 # headers in the output.

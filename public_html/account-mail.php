@@ -6,10 +6,10 @@
  */
 
 /**
- * Redirect to the accounts list if no ID was specified
+ * Redirect to the accounts list if no handle was specified
  */
 if (!isset($_GET['handle'])) {
-    localRedirect('/');
+    localRedirect('/accounts.php');
 } else {
     $handle = $_GET['handle'];
     $message = '';

@@ -25,6 +25,15 @@
  * http://pear.php.net/Mail_Mime
  */
 
+/**
+ * Requesting something like /~foobar will redirect to the account
+ * information page of the user "foobar".
+ */
+if ($_SERVER['REDIRECT_URL']{1} == '~') {
+    $user = substr($_SERVER['REDIRECT_URL'], 2);
+    localRedirect("/account-info.php?handle=" . urlencode($user));
+}
+
 $pkg = strtr($_SERVER['REDIRECT_URL'], "-","_");
 $pinfo_url = '/package-info.php?package=';
 

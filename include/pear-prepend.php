@@ -1,23 +1,9 @@
 <?php
 
-define('PEAR_CRED_DOWNLOAD', 0);
-define('PEAR_CRED_UPLOAD', 1);
-define('PEAR_CRED_ADMIN', 2);
+require_once "DB.php";
+require_once "DB/storage.php";
 
-/*
-function use($package)
-{
-    global $USED_PACKAGES;
-    if ($USED_PACKAGES[$package]) {
-	return;
-    }
-    if (@include($package . '.php')) {
-	$USED_PACKAGES[$package] = true;
-    } else {
-	die("Unable to load package \"$package\"!");
-    }
-}
-*/
+$DSN = "mysql://pear@localhost/pear";
 
 function pageHeader($title = "PEAR: PHP Extension and Add-on Repository",
 		    $style = false)
@@ -44,57 +30,25 @@ function pageFooter($style = false)
     print "</BODY></HTML>\n";
 }
 
-function formMultipleInputRow($data) {
-    reset($data);
-    while (list($var, $title) = each($data)) {
-	global $$var;
-	formInputRow($title, $var, $$var);
+function validate($entity, $field, $value) {
+    switch ("$entity/$field") {
+	case "authors/handle":
+	    if (!preg_match('/^[a-z][a-z0-9]+$/i', $value)) {
+		return false;
+	    }
+	    break;
+	case "authors/name":
+	    if (!$value) {
+		return false;
+	    }
+	    break;
+	case "authors/email":
+	    if (!preg_match('/[a-z0-9_\.\+%]@[a-z0-9\.]+\.[a-z]+$', $email)) {
+		return false;
+	    }
+	    break;
     }
-}
-
-function formInputCell($name, $default = '', $size = 20) {
-    print "  <TD><INPUT NAME=\"$name\" VALUE=\"$default\" SIZE=\"$size\"></TD>\n";
-}
-
-function formInputRow($title, $name, $default = '', $size = 20) {
-    print " <TR>\n";
-    print "  <TH ALIGN=\"right\">$title</TH>";
-    formInputCell($name, $default, $size);
-    print " </TR>\n";
-}
-
-function formCheckbox($name, $default = false) {
-    print "<INPUT TYPE=\"checkbox\" NAME=\"$name\"";
-    if ($default && $default != 'off') {
-	print " CHECKED";
-    }
-    print ">";
-}
-
-function formCheckboxCell($name, $default = false) {
-    print "  <TD>";
-    formCheckbox($name, $default);
-    print "</TD>\n";
-}
-
-function formCheckboxRow($title, $name, $default = false) {
-    print " <TR>\n";
-    print "  <TH ALIGN=\"right\">$title</TH>";
-    formCheckboxCell($name, $default);
-    print " </TR>\n";
-}
-
-function formSubmit($title = 'Submit Changes') {
-    print "<INPUT TYPE=\"submit\" VALUE=\"$title\">";
-}
-
-function formSubmitRow($title = 'Submit Changes') {
-    print " <TR>\n";
-    print "  <TD>&nbsp</TD>\n";
-    print "  <TD>";
-    formSubmit($title);
-    print "</TD>\n";
-    print " </TR>\n";
+    return true;
 }
 
 function invalidHandle($handle) {
@@ -125,27 +79,52 @@ function invalidHomepage($homepage) {
     return 'invalid URL';
 }
 
-class Author {
-    var $handle, $password, $name, $email, $homepage, $created,
-	$homepage, $modified, $createdby, $showemail, $registered,
-	$credentials, $authorinfo;
-    function Author() {
-	
+class Author extends DB_storage
+{
+    function Author(&$dbh, $handle = false) {
+	$this->DB_storage("authors", "handle", &$dbh);
+	if ($handle) {
+	    $this->setup($handle);
+	}
     }
 }
 
-function add_author(&$dbh, $handle, $name, $email, $homepage, $createdby,
-		    $showemail, $credentials, $authorinfo)
+function authReject($realm, $login_file = false)
 {
-    $query = 'INSERT INTO authors (handle,password,name,email,homepage,'.
-	'created,modified,createdby,showemail,registered,credentials,'.
-	'authorinfo) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)';
-    $stmt = $dbh->prepare($query);
-    // XXX not finished
-    return $dbh->execute($stmt, array($handle, $passwd, $name, $email,
-				      $homepage, $created, $modified,
-				      $modifiedy, $showemail, $registered,
-				      $credentials, $authorinfo));
+    Header("HTTP/1.0 401 Unauthorized");
+    Header("WWW-authenticate: basic realm=\"$realm\"");
+    if ($login_file) {
+	include($login_file);
+    } else {
+	print "access denied";
+    }
+    exit;
+}
+
+function authRequire($level = 0)
+{
+    global $PHP_AUTH_USER, $PHP_AUTH_PW, $DSN, $dbh, $authorObject;
+
+    $authorObject = new Author(&$dbh, strtoupper($PHP_AUTH_USER));
+    if (DB::isError($authorObject) || md5($PHP_AUTH_PW) != $authorObject->password) {
+	if ($level > 0) {
+	    authReject("PEAR administrator");
+	} else {
+	    authReject("PEAR maintainer");
+	}
+    }
+}
+
+if (!is_object($dbh)) {
+    $dbh = DB::connect($DSN);
+}
+if (DB::isError($dbh)) {
+    pageHeader("Database Error");
+    print "DB::connect error: ";
+    print DB::errorMessage($dbh);
+    print "<BR>\n";
+    pageFooter();
+    exit;
 }
 
 ?>

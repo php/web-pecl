@@ -10,22 +10,24 @@
     <surname>Bakken</surname>
    </author>
   </authorgroup>
+  <releaseinfo>
+   <comment>
+    This document is incomplete.  For now it only contains a brief
+    description of PEAR and "Coding Rules and Guidelines".  The rules
+    and guidelines are initial suggestions, and are open for
+    discussion.
+   </comment>
+  </releaseinfo>
   <revhistory>
    <revision>
-    <revnumber>$Revision: 1.4 $</revnumber>
-    <date>$Date: 2000-02-28 16:18:47 $</date>
+    <revnumber>$Revision: 1.5 $</revnumber>
+    <date>$Date: 2000-07-17 22:54:39 $</date>
     <authorinitials>$Author: ssb $</authorinitials>
    </revision>
   </revhistory>
  </artheader>
  
  <simpara>PEAR is dedicated to Malin Bakken, born 1999-11-21.</simpara>
-
- <simpara>
-  This document is incomplete.  For now it only contains a brief
-  description of PEAR and "Coding Rules and Guidelines".  The rules
-  and guidelines are initial suggestions, and are open for discussion.
- </simpara>
 
  <section id="pear-whatis">
   <title>What is PEAR?</title>
@@ -48,7 +50,7 @@
   <title>Coding Rules and Guidelines</title>
   <simpara>
    This section describes some rules that are meant to make PEAR code
-   available to as many users as possible.  If you plan to contribute
+   available to as many users as possible.  If you want to contribute
    to PEAR, please read this section carefully and follow these rules,
    or someone will yell at you. :-)
   </simpara>
@@ -56,12 +58,16 @@
   <section id="pear-names">
    <title>Naming Conventions</title>
 
-   <simpara>
+   <para>
     Use the extension <filename role="extension">.php</filename> for
-    all files with PHP code (files that when included don't output
-    anything, but only define variables, constants, functions or
-    classes).
-   </simpara>
+    all files with PHP code.
+    <note>
+     <simpara>
+      It is important that your files do not output anything, so watch
+      those linefeeds at the end of files (no more than one!)
+     </simpara>
+    </note>
+   </para>
 
    <para>
     A related set of one or more classes and functions in PEAR are
@@ -75,8 +81,7 @@
     this structure maps 1:1 down to the file system, it is
     conceptually not a filesystem structure.  The structure is based
     on the developer's view when writing code, which is the parameters
-    to "use" or "import" (PEAR is currently using "include" though).
-    An example:
+    to <function role="statement">use</function>.  An example:
     <informalexample>
      <literallayout>DB
     DB/common
@@ -94,56 +99,126 @@ HTML
     filesystem structure, as explained above.  So there.
    </para>
 
-   <section id="pear-funcnames">
-    <title>Function and Method Names</title>
+   <section id="pear-pkgnames">
+    <title>Package Names</title>
     <simpara>
-     Functions (not methods), should be named with underscores, like
-     this: <function>my_function</function>.  Methods should be named
-     with initial lower-case studlycaps like this:
-     <function>myFunction</function>.
+     The definition of a package in PEAR is file defining one "public"
+     class and possible several "private" ones.  Although PHP doesn't
+     have the notion of public classes, PEAR uses this concept.  A
+     public class is a class that is available to other packages or
+     the user, a private class is a class that is internal to that
+     package, and that the PHP programmer will normally not deal with
+     directly.
     </simpara>
+    <simpara>
+     All PEAR package files should use the suffix <filename
+     role="suffix">.php</filename>.  The class name is the file name
+     without the <filename role="suffix">.php</filename> suffix.
+    </simpara>
+    <para>
+     For example, the package <systemitem
+     role="package">DB/mysql</systemitem> would have its code in a
+     file called <filename>mysql.php</filename> in a directory called
+     <filename>DB</filename> in a directory in PHP's include path.
+    </para>
    </section>
 
    <section id="pear-classnames">
     <title>Class Names</title>
     <para>
-     Class names are not as straightforward.  PEAR should never have
-     name conflicts among its classes (and preferably ditto for
-     functions, but that can be solved using static methods in
-     classes).  Since PHP doesn't have packages or name spaces yet, we
-     need to "brute force" it.  The solution is currently not too
-     pretty, maybe it serves as inspiration for the Zend authors to
-     implement name spaces :-).
+     PEAR classes should never have name conflicts.  Since PHP doesn't
+     have packages or name spaces yet, it is necessary to enforce a
+     class naming convention that provides a "poor man's name spaces".
+     Hopefully this will serve as an inspiration for the Zend authors
+     to implement name spaces :-).
     </para>
     <para>
      The basic class name rule is to use the package name and
-     substitute slashes with underscores.  The package "DB/mysql" has
-     its code in the file "DB/mysql.php" and defines a class called
-     "DB_mysql".
+     substitute slashes with underscores.  The package <systemitem
+     role="package">DB/mysql</systemitem> has its code in the file
+     <filename>DB/mysql.php</filename> and defines a class called
+     <classname>DB_mysql</classname>.
     </para>
+   </section>
+
+   <section id="pear-functions">
+    <title>Functions</title>
+    <simpara>
+     At this time, PEAR does not support plain functions.  The reason
+     for this is that we want to avoid name space problems where
+     different packages define functions with the same name.  One
+     solution could be prefixing each function's name with its package
+     name, but then encapsulating the functions in classes is better.
+    </simpara>
+    <simpara>
+     When PHP gets support for namespaces (some time _after_ the 4.0
+     release), PEAR will support plain functions.
+    </simpara>
+    <para>
+     If you have a function you want to make available in a PEAR
+     package, make a class based on the package name (Foo/Bar -&gt;
+     Foo_Bar), and add the function as a method there.  Example:
+     <informalexample>
+      <programlisting>
+Header("Last-Modified: " . HTTP::Date(getlastmod()));
+</programlisting>
+     </informalexample>
+    </para>
+   </section>
+
+   <section id="pear-funcnames">
+    <title>Method Names</title>
+    <simpara>
+     Methods should be named with initial lower-case studlycaps like
+     this: <function>myFunction</function>.
+    </simpara>
    </section>
   </section>
 
-  <section id="pear-errors">
-   <title>Returning Errors</title>
+  <section>
+   <title>Variable Names</title>
    <simpara>
-    Your code should <emphasis>never</emphasis> use
-    <function>exit</function> or <function>die</function> if it
-    encounters an error.  This would make developers using your code
-    unable to catch these errors, handle them or even display their
-    own error message.  As far as possible, use some way of giving
-    errors back to the caller, even if it is just a boolean return
-    value.
+    Global variables visible to the user should be prefixed with the
+    package name with "/" substituted with "_" (like for class names)
+    and an underscore.  If you need global variables that are not to
+    be "visible" to the user, prefix the whole thing with an
+    underscore.
+   </simpara>
+   <para>
+    Example (let's say this package is Gah/Zonk):
+    <informalexample>
+     <programlisting>
+&lt?php
+
+$Gah_Zonk_errorcodes = array( -1 => "This error",
+                              -2 => "That error" );
+$_Gah_Zonk_cache = array();
+
+?>
+</programlisting>
+    </informalexample>
+   </para>
+  </section>
+
+  <section id="pear-errors">
+   <title>Errors</title>
+   <simpara>
+    Never use <function>exit</function> or <function>die</function> if
+    your PEAR package encounters an error.  Doing this generally makes
+    peoples lives miserable when they try handling errors nicely.  Try
+    to always provide a way of telling whether something went wrong
+    and what, be it as simple as returning an error code, or something
+    more fancy.
    </simpara>
   </section>
 
   <section id="pear-options">
-   <title>Depending on Optional Features</title>
+   <title>Optional PHP Features</title>
    <simpara>
-    PEAR code is meant to be useable with all (reasonable)
-    configurations of PHP.  Since PHP is very configurable and many of
-    its features are optional, this requires extra attention from you
-    as a PEAR author to make sure that your code works with different
+    PEAR code should be useable with all (reasonable) configurations
+    of PHP.  Since PHP is very configurable and many of its features
+    are optional, this requires extra attention from you as a PEAR
+    author to make sure that your code works with different
     configurations.
    </simpara>
    <para>

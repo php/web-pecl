@@ -1,7 +1,5 @@
 <?php
 
-use("DB");
-
 pageHeader("PEAR: List packages");
 
 $dbh = DB::Connect("mysql://pear@localhost/pear");

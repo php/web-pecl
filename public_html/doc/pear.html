@@ -24,6 +24,10 @@ NAME="AEN2"
 ><H3
 CLASS="author"
 >Stig Bakken</H3
+><SPAN
+CLASS="releaseinfo"
+>&#13;   
+  <BR></SPAN
 ><DIV
 CLASS="revhistory"
 ><TABLE
@@ -60,11 +64,6 @@ COLSPAN="3"
 ><HR></DIV
 ><P
 >PEAR is dedicated to Malin Bakken, born 1999-11-21.</P
-><P
->&#13;  This document is incomplete.  For now it only contains a brief
-  description of PEAR and "Coding Rules and Guidelines".  The rules
-  and guidelines are initial suggestions, and are open for discussion.
- </P
 ><DIV
 CLASS="section"
 ><HR><H1
@@ -96,7 +95,7 @@ NAME="pear-rules"
 ></H1
 ><P
 >&#13;   This section describes some rules that are meant to make PEAR code
-   available to as many users as possible.  If you plan to contribute
+   available to as many users as possible.  If you want to contribute
    to PEAR, please read this section carefully and follow these rules,
    or someone will yell at you. :-)
   </P
@@ -113,9 +112,22 @@ NAME="pear-names"
 CLASS="filename"
 >.php</TT
 > for
-    all files with PHP code (files that when included don't output
-    anything, but only define variables, constants, functions or
-    classes).
+    all files with PHP code.
+    <DIV
+CLASS="note"
+><BLOCKQUOTE
+CLASS="note"
+><P
+><B
+>Note: </B
+>
+      It is important that your files do not output anything, so watch
+      those extra linefeeds at the end of the files (no more than
+      one!)
+     </P
+></BLOCKQUOTE
+></DIV
+>
    </P
 ><P
 >&#13;    A related set of one or more classes and functions in PEAR are
@@ -128,8 +140,10 @@ CLASS="filename"
     this structure maps 1:1 down to the file system, it is
     conceptually not a filesystem structure.  The structure is based
     on the developer's view when writing code, which is the parameters
-    to "use" or "import" (PEAR is currently using "include" though).
-    An example:
+    to <B
+CLASS="function"
+>use</B
+>.  An example:
     <DIV
 CLASS="informalexample"
 ><P
@@ -162,20 +176,41 @@ CLASS="section"
 ><HR><H3
 CLASS="section"
 ><A
-NAME="pear-funcnames"
->Function and Method Names</A
+NAME="pear-pkgnames"
+>Package Names</A
 ></H3
 ><P
->&#13;     Functions (not methods), should be named with underscores, like
-     this: <TT
-CLASS="function"
->my_function</TT
->.  Methods should be named
-     with initial lower-case studlycaps like this:
+>&#13;     The definition of a package in PEAR is file defining one "public"
+     class and possible several "private" ones.  Although PHP doesn't
+     have the notion of public classes, PEAR uses this concept.  A
+     public class is a class that is available to other packages or
+     the user, a private class is a class that is internal to that
+     package, and that the PHP programmer will normally not deal with
+     directly.
+    </P
+><P
+>&#13;     All PEAR package files should use the suffix <TT
+CLASS="filename"
+>.php</TT
+>.  The class name is the file name
+     without the <TT
+CLASS="filename"
+>.php</TT
+> suffix.
+    </P
+><P
+>&#13;     For example, the package <SPAN
+CLASS="systemitem"
+>DB/mysql</SPAN
+> would have its code in a
+     file called <TT
+CLASS="filename"
+>mysql.php</TT
+> in a directory called
      <TT
-CLASS="function"
->myFunction</TT
->.
+CLASS="filename"
+>DB</TT
+> in a directory in PHP's include path.
     </P
 ></DIV
 ><DIV
@@ -187,19 +222,89 @@ NAME="pear-classnames"
 >Class Names</A
 ></H3
 ><P
->&#13;     Class names are not as straightforward.  PEAR should never have
-     name conflicts among its classes (and preferably ditto for
-     functions, but that can be solved using static methods in
-     classes).  Since PHP doesn't have packages or name spaces yet, we
-     need to "brute force" it.  The solution is currently not too
-     pretty, maybe it serves as inspiration for the Zend authors to
-     implement name spaces :-).
+>&#13;     PEAR classes should never have name conflicts.  Since PHP doesn't
+     have packages or name spaces yet, it is necessary to enforce a
+     class naming convention that provides a "poor man's name spaces".
+     Hopefully this will serve as an inspiration for the Zend authors
+     to implement name spaces :-).
     </P
 ><P
 >&#13;     The basic class name rule is to use the package name and
-     substitute slashes with underscores.  The package "DB/mysql" has
-     its code in the file "DB/mysql.php" and defines a class called
-     "DB_mysql".
+     substitute slashes with underscores.  The package <SPAN
+CLASS="systemitem"
+>DB/mysql</SPAN
+> has its code in the file
+     <TT
+CLASS="filename"
+>DB/mysql.php</TT
+> and defines a class called
+     <TT
+CLASS="classname"
+>DB_mysql</TT
+>.
+    </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="pear-functions"
+>Functions</A
+></H3
+><P
+>&#13;     At this time, PEAR does not support plain functions.  The reason
+     for this is that we want to avoid name space problems where
+     different packages define functions with the same name.  One
+     solution could be prefixing each function's name with its package
+     name, but then encapsulating the functions in classes is better.
+    </P
+><P
+>&#13;     When PHP gets support for namespaces (some time _after_ the 4.0
+     release), PEAR will support plain functions.
+    </P
+><P
+>&#13;     If you have a function you want to make available in a PEAR
+     package, make a class based on the package name (Foo/Bar -&#62;
+     Foo_Bar), and add the function as a method there.  Example:
+     <DIV
+CLASS="informalexample"
+><P
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="programlisting"
+>  1&nbsp;
+  2&nbsp;Header("Last-Modified: " . HTTP::Date(getlastmod()));
+  3&nbsp;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+>
+    </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="pear-funcnames"
+>Method Names</A
+></H3
+><P
+>&#13;     Methods should be named with initial lower-case studlycaps like
+     this: <B
+CLASS="function"
+>myFunction()</B
+>.
     </P
 ></DIV
 ></DIV
@@ -208,26 +313,69 @@ CLASS="section"
 ><HR><H2
 CLASS="section"
 ><A
-NAME="pear-errors"
->Returning Errors</A
+NAME="AEN63"
+>Variable Names</A
 ></H2
 ><P
->&#13;    Your code should <I
-CLASS="emphasis"
->never</I
-> use
-    <TT
+>&#13;    Global variables visible to the user should be prefixed with the
+    package name with "/" substituted with "_" (like for class names)
+    and an underscore.  If you need global variables that are not to
+    be "visible" to the user, prefix the whole thing with an
+    underscore.
+   </P
+><P
+>&#13;    Example (let's say this package is Gah/Zonk):
+    <DIV
+CLASS="informalexample"
+><P
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="programlisting"
+>  1&nbsp;
+  2&nbsp;&#60;?php
+  3&nbsp;
+  4&nbsp;$Gah_Zonk_errorcodes = array( -1 =&#62; "This error",
+  5&nbsp;                              -2 =&#62; "That error" );
+  6&nbsp;$_Gah_Zonk_cache = array();
+  7&nbsp;
+  8&nbsp;?&#62;
+  9&nbsp;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+>
+   </P
+></DIV
+><DIV
+CLASS="section"
+><HR><H2
+CLASS="section"
+><A
+NAME="pear-errors"
+>Errors</A
+></H2
+><P
+>&#13;    Never use <B
 CLASS="function"
->exit</TT
-> or <TT
+>exit()</B
+> or <B
 CLASS="function"
->die</TT
-> if it
-    encounters an error.  This would make developers using your code
-    unable to catch these errors, handle them or even display their
-    own error message.  As far as possible, use some way of giving
-    errors back to the caller, even if it is just a boolean return
-    value.
+>die()</B
+> if
+    your PEAR package encounters an error.  Doing this generally makes
+    peoples lives miserable when they try handling errors nicely.  Try
+    to always provide a way of telling whether something went wrong
+    and what, be it as simple as returning an error code, or something
+    more fancy.
    </P
 ></DIV
 ><DIV
@@ -236,13 +384,13 @@ CLASS="section"
 CLASS="section"
 ><A
 NAME="pear-options"
->Depending on Optional Features</A
+>Optional PHP Features</A
 ></H2
 ><P
->&#13;    PEAR code is meant to be useable with all (reasonable)
-    configurations of PHP.  Since PHP is very configurable and many of
-    its features are optional, this requires extra attention from you
-    as a PEAR author to make sure that your code works with different
+>&#13;    PEAR code should be useable with all (reasonable) configurations
+    of PHP.  Since PHP is very configurable and many of its features
+    are optional, this requires extra attention from you as a PEAR
+    author to make sure that your code works with different
     configurations.
    </P
 ><P
@@ -258,13 +406,23 @@ CLASS="parameter"
 CLASS="informalexample"
 ><P
 ></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="programlisting"
->&#13;// If magic_quotes_gpc is enabled, remove those slashes.
-if (ini_get("magic_quotes_gpc")) {
-    $arg = stripslashes($arg);
-}
-</PRE
+>  1&nbsp;
+  2&nbsp;// If magic_quotes_gpc is enabled, remove those slashes.
+  3&nbsp;if (ini_get("magic_quotes_gpc")) {
+  4&nbsp;    $arg = stripslashes($arg);
+  5&nbsp;}
+  6&nbsp;</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ></DIV
@@ -354,40 +512,82 @@ CLASS="varname"
      within a function.  The included file will inherit the calling
      code's scope:
 
-     <DIV
+     <TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+CLASS="EXAMPLE"
+><TR
+><TD
+><DIV
 CLASS="example"
 ><P
 ><B
 >Example 1. file1.php</B
 ></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="programlisting"
->&#13;&#60;?php $myglobal = 42; ?&#62;
-</PRE
+>  1&nbsp;
+  2&nbsp;&#60;?php $myglobal = 42; ?&#62;
+  3&nbsp;</PRE
+></TD
+></TR
+></TABLE
 ></DIV
+></TD
+></TR
+></TABLE
 >
 
-     <DIV
+     <TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+CLASS="EXAMPLE"
+><TR
+><TD
+><DIV
 CLASS="example"
 ><P
 ><B
 >Example 2. file2.php</B
 ></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="programlisting"
->&#13;&#60;?php
-
-class Foo {
-    function Foo($arg) {
-        if ($arg == 42) {
-            include("file1.php");
-        }
-    }
-}
-
-?&#62;
-</PRE
+>  1&nbsp;
+  2&nbsp;&#60;?php
+  3&nbsp;
+  4&nbsp;class Foo {
+  5&nbsp;    function Foo($arg) {
+  6&nbsp;        if ($arg == 42) {
+  7&nbsp;            include("file1.php");
+  8&nbsp;        }
+  9&nbsp;    }
+ 10&nbsp;}
+ 11&nbsp;
+ 12&nbsp;?&#62;
+ 13&nbsp;</PRE
+></TD
+></TR
+></TABLE
 ></DIV
+></TD
+></TR
+></TABLE
 >
     </P
 ><P

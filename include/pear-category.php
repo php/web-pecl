@@ -1,6 +1,6 @@
 <?php
-require 'HTML/Menu.php';
-
+//require 'HTML/Menu.php';
+require '/home/cox/web-include/Menu.php'; // XXX Put this class in the right place
 /*
 Transform the tree of categories in an assoc array
 valid for the Menu Class

@@ -9,6 +9,8 @@ p {
 
 th.pack {
     color: #FFFFFF;
+    background: #009933;
+    text-align: right;
 }
 
 th.others {

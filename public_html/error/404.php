@@ -18,7 +18,7 @@ $packages = $dbh->getAll($sql = sprintf("SELECT p.id, p.name, p.summary
                                        ORDER BY p.name", basename($_SERVER['REDIRECT_URL'])), DB_FETCHMODE_ASSOC);
 
 if (count($packages) == 1) {
-	redirect($pinfo_url . $packages[0]['id']);
+	localRedirect($pinfo_url . $packages[0]['id']);
 
 } elseif (count($packages) > 3) {
 	$packages = array($packages[0], $packages[1], $packages[2]);

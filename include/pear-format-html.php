@@ -286,11 +286,38 @@ function html_category_urhere($id, $link_lastest = false)
     print $html;
 }
 
-function localRedirect($file)
+/**
+* Returns an absolute URL using Net_URL
+*
+* @param  string $url All/part of a url
+* @return string      Full url
+*/
+function getURL($url)
 {
-    $location = "http://" . $GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST'] . "/" . $file;
-    header("Location: " . $location);
+	include_once('Net/URL.php');
+	$obj = new Net_URL($url);
+	return $obj->getURL();
 }
+
+/**
+* Redirects to the given full or partial URL.
+* will turn the given url into an absolute url
+* using the above getURL() function. This function
+* does not return.
+*
+* @param string $url Full/partial url to redirect to
+*/
+function localRedirect($url)
+{
+	header('Location: ' . getURL($url));
+	exit;
+}
+
+#function localRedirect($file)
+#{
+#    $location = "http://" . $GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST'] . "/" . $file;
+#    header("Location: " . $location);
+#}
 
 function displayed_user_email($user)
 {

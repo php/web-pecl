@@ -21,10 +21,6 @@ installed in /usr/share/pear):
   ForceType application/x-httpd-php
  </Location>
 
- <Location /go>
-  ForceType application/x-httpd-php
- </Location>
- 
  <Location /manual>
   ErrorDocument 404 /error/404-manual.php
  </Location>

@@ -175,38 +175,38 @@ class category
 
     /*
     $data = array(
-    	'name'   => 'category name',
-    	'desc'   => 'category description',
-    	'parent' => 'category parent id'
-    	);
+        'name'   => 'category name',
+        'desc'   => 'category description',
+        'parent' => 'category parent id'
+        );
     */
     function add($data)
     {
-		global $dbh;
-		$name = $data['name'];
-		if (empty($name)) {
-			return PEAR::raiseError('no name given');
-		}
-		$desc   = (empty($data['desc'])) ? 'none' : $data['desc'];
-		$parent = (empty($data['parent'])) ? null : $data['parent'];
+        global $dbh;
+        $name = $data['name'];
+        if (empty($name)) {
+            return PEAR::raiseError('no name given');
+        }
+        $desc   = (empty($data['desc'])) ? 'none' : $data['desc'];
+        $parent = (empty($data['parent'])) ? null : $data['parent'];
 
-		$sql = 'INSERT INTO categories (id, name, description, parent)'.
-			 'VALUES (?, ?, ?, ?)';
-		$id  = $dbh->nextId('categories');
-		$sth = $dbh->prepare($sql);
-		if (DB::isError($sth)) {
-			return $sth;
-		}
-		$err = $dbh->execute($sth, array($id, $name, $desc, $parent));
-		if (DB::isError($err)) {
-			return $err;
-		}
-		$err = renumber_visitations();
-		if (PEAR::isError($err)) {
-			return $err;
-		}
-		return $id;
-	}
+        $sql = 'INSERT INTO categories (id, name, description, parent)'.
+             'VALUES (?, ?, ?, ?)';
+        $id  = $dbh->nextId('categories');
+        $sth = $dbh->prepare($sql);
+        if (DB::isError($sth)) {
+            return $sth;
+        }
+        $err = $dbh->execute($sth, array($id, $name, $desc, $parent));
+        if (DB::isError($err)) {
+            return $err;
+        }
+        $err = renumber_visitations();
+        if (PEAR::isError($err)) {
+            return $err;
+        }
+        return $id;
+    }
 
     // }}}
 }
@@ -218,91 +218,91 @@ class package
     // add a package, return new package id or PEAR error
     function add($data)
     {
-		global $dbh;
-		// name, category
-		// license, summary, description
-		// lead
-		extract($data);
-		if (empty($license)) {
-			$license = "PEAR License";
-		}
-		if (!empty($category) && (int)$category == 0) {
-			$category = $dbh->getOne("SELECT id FROM categories WHERE name = ?",
-									 array($category));
-		}
-		if (empty($category)) {
-			return PEAR::raiseError("package::add: invalid `category' field");
-		}
-		if (empty($name)) {
-			return PEAR::raiseError("package::add: invalid `name' field");
-		}
-		$query = "INSERT INTO packages (id,name,category,license,summary,description) VALUES(?,?,?,?,?,?)";
-		$id = $dbh->nextId("packages");
-		if (DB::isError($sth = $dbh->prepare($query))) {
-			return $sth;
-		}
-		$err = $dbh->execute($sth, array($id, $name, $category, $license, $summary, $description));
-		if (DB::isError($err)) {
-			return $err;
-		}
-		if (isset($lead) && DB::isError($err = maintainer::add($id, $lead, 'lead'))) {
-			return $err;
-		}
-		if (DB::isError($err = renumber_visitations())) {
-			return $err;
-		}
-		return $id;
-	}
+        global $dbh;
+        // name, category
+        // license, summary, description
+        // lead
+        extract($data);
+        if (empty($license)) {
+            $license = "PEAR License";
+        }
+        if (!empty($category) && (int)$category == 0) {
+            $category = $dbh->getOne("SELECT id FROM categories WHERE name = ?",
+                                     array($category));
+        }
+        if (empty($category)) {
+            return PEAR::raiseError("package::add: invalid `category' field");
+        }
+        if (empty($name)) {
+            return PEAR::raiseError("package::add: invalid `name' field");
+        }
+        $query = "INSERT INTO packages (id,name,category,license,summary,description) VALUES(?,?,?,?,?,?)";
+        $id = $dbh->nextId("packages");
+        if (DB::isError($sth = $dbh->prepare($query))) {
+            return $sth;
+        }
+        $err = $dbh->execute($sth, array($id, $name, $category, $license, $summary, $description));
+        if (DB::isError($err)) {
+            return $err;
+        }
+        if (isset($lead) && DB::isError($err = maintainer::add($id, $lead, 'lead'))) {
+            return $err;
+        }
+        if (DB::isError($err = renumber_visitations())) {
+            return $err;
+        }
+        return $id;
+    }
 
     // }}}
-	// {{{ API struct package::info(string|int)
+    // {{{ API struct package::info(string|int)
 
     function info($pkg)
     {
-		global $dbh;
-		if ($pkg === (string)((int)$pkg)) {
-			$what = "id";
-		} else {
-			$what = "name";
-		}
-		$info =
-			 $dbh->getRow("SELECT p.id AS packageid, p.name AS name, ".
-						  "c.id AS categoryid, c.name AS category, ".
-						  "p.stablerelease AS stable, p.license AS license, ".
-						  "p.summary AS summary, ".
-						  "p.description AS description".
-						  " FROM packages p, categories c ".
-						  "WHERE c.id = p.category AND p.{$what} = ?",
-						  array($pkg), DB_FETCHMODE_ASSOC);
-		$info['releases'] =
-			 $dbh->getAssoc("SELECT version, id, doneby, license, summary, ".
-							"description, releasedate, releasenotes, maturity ".
-							"FROM releases WHERE package = ?", false,
-							array($info['packageid']));
-		$info['notes'] =
-			 $dbh->getAssoc("SELECT id, nby, ntime, note FROM notes ".
-							"WHERE pid = ?", false, array($info['packageid']));
-		return $info;
-	}
+        global $dbh;
+        if ($pkg === (string)((int)$pkg)) {
+            $what = "id";
+        } else {
+            $what = "name";
+        }
+        $info =
+             $dbh->getRow("SELECT p.id AS packageid, p.name AS name, ".
+                          "c.id AS categoryid, c.name AS category, ".
+                          "p.stablerelease AS stable, p.license AS license, ".
+                          "p.summary AS summary, ".
+                          "p.description AS description".
+                          " FROM packages p, categories c ".
+                          "WHERE c.id = p.category AND p.{$what} = ?",
+                          array($pkg), DB_FETCHMODE_ASSOC);
+        $info['releases'] =
+             $dbh->getAssoc("SELECT version, id, doneby, license, summary, ".
+                            "description, releasedate, releasenotes, maturity ".
+                            "FROM releases WHERE package = ?", false,
+                            array($info['packageid']));
+        $info['notes'] =
+             $dbh->getAssoc("SELECT id, nby, ntime, note FROM notes ".
+                            "WHERE pid = ?", false, array($info['packageid']));
+        return $info;
+    }
 
     // }}}
-	// {{{ API struct package::listAll()
+    // {{{ API struct package::listAll()
 
-	function listAll($name, $params, $appdata)
-	{
-		global $dbh;
-		return $dbh->getAssoc("SELECT p.id AS packageid, p.name AS name, ".
-							  "c.id AS categoryid, c.name AS category, ".
-							  "p.stablerelease AS stable, ".
-							  "p.license AS license, ".
-							  "p.summary AS summary, ".
-							  "p.description AS description".
-							  " FROM packages p, categories c ".
-							  "WHERE c.id = p.category ".
-							  "ORDER BY p.name");
-	}
+    function listAll($name, $params, $appdata)
+    {
+        global $dbh;
+        return $dbh->getAssoc("SELECT p.id AS packageid, p.name AS name, ".
+                              "c.id AS categoryid, c.name AS category, ".
+                              "p.stablerelease AS stable, ".
+                              "p.license AS license, ".
+                              "p.summary AS summary, ".
+                              "p.description AS description".
+                              " FROM packages p, categories c ".
+                              "WHERE c.id = p.category ".
+                              "ORDER BY p.name");
+    }
 
-	// }}}
+    // }}}
 }
 
 class maintainer
@@ -311,99 +311,99 @@ class maintainer
 
     function add($package, $user, $role)
     {
-		global $dbh;
-		$query = "INSERT INTO maintains VALUES(?,?,?)";
-		$sth = $dbh->prepare($query);
-		if (DB::isError($sth)) {
-			return $sth;
-		}
-		$err = $dbh->execute($sth, array($user, $package, $role));
-		if (DB::isError($err)) {
-			return $err;
-		}
-		return true;
-	}
+        global $dbh;
+        $query = "INSERT INTO maintains VALUES(?,?,?)";
+        $sth = $dbh->prepare($query);
+        if (DB::isError($sth)) {
+            return $sth;
+        }
+        $err = $dbh->execute($sth, array($user, $package, $role));
+        if (DB::isError($err)) {
+            return $err;
+        }
+        return true;
+    }
 
     // }}}
 }
 
 class release
 {
-	// {{{ API array release::getRecent([int])
+    // {{{ API array release::getRecent([int])
 
-	function getRecent($n = 5)
+    function getRecent($n = 5)
     {
-		global $dbh;
-		$sth = $dbh->query("SELECT packages.name AS name, ".
-						   "packages.summary AS summary, ".
-						   "releases.version AS version, ".
-						   "releases.releasedate AS releasedate, ".
-						   "releases.releasenotes AS releasenotes, ".
-						   "releases.doneby AS doneby ".
-						   "FROM packages, releases ".
-						   "WHERE packages.name = releases.package ".
-						   "ORDER BY releases.releasedate DESC");
-		$recent = array();
-		// XXX FIXME when DB gets rowlimit support
-		while ($n-- > 0 && ($err = $sth->fetchInto($row, DB_FETCHMODE_ASSOC)) === DB_OK) {
-			$recent[] = $row;
-		}
-		return $recent;
-	}
+        global $dbh;
+        $sth = $dbh->query("SELECT packages.name AS name, ".
+                           "packages.summary AS summary, ".
+                           "releases.version AS version, ".
+                           "releases.releasedate AS releasedate, ".
+                           "releases.releasenotes AS releasenotes, ".
+                           "releases.doneby AS doneby ".
+                           "FROM packages, releases ".
+                           "WHERE packages.name = releases.package ".
+                           "ORDER BY releases.releasedate DESC");
+        $recent = array();
+        // XXX FIXME when DB gets rowlimit support
+        while ($n-- > 0 && ($err = $sth->fetchInto($row, DB_FETCHMODE_ASSOC)) === DB_OK) {
+            $recent[] = $row;
+        }
+        return $recent;
+    }
 
     // }}}
     // {{{ API bool release::upload(string, string, string, binary, string)
 
-	function upload($package, $version, $relnotes, &$tarball, $md5sum)
-	{
-		global $dbh, $auth_user;
+    function upload($package, $version, $relnotes, &$tarball, $md5sum)
+    {
+        global $dbh, $auth_user;
 
-		// (2) verify that package exists
-		$test = $dbh->getOne("SELECT name FROM packages WHERE name = ?",
-							 array($package));
-		if (empty($test)) {
-			return PEAR::raiseError("no such package: $package");
-		}
+        // (2) verify that package exists
+        $test = $dbh->getOne("SELECT name FROM packages WHERE name = ?",
+                             array($package));
+        if (empty($test)) {
+            return PEAR::raiseError("no such package: $package");
+        }
 
-		// (3) verify that version does not exist
-		$test = $dbh->getOne("SELECT version FROM releases ".
-							 "WHERE package = ? AND version = ?",
-							 array($package, $version));
-		if ($test) {
-			return PEAR::raiseError("already exists: $package $version");
-		}
+        // (3) verify that version does not exist
+        $test = $dbh->getOne("SELECT version FROM releases ".
+                             "WHERE package = ? AND version = ?",
+                             array($package, $version));
+        if ($test) {
+            return PEAR::raiseError("already exists: $package $version");
+        }
 
-		// (4) store tar ball to temp file
-		$tempfile = sprintf("%s/%s%s-%s.tgz",
-							PEAR_TARBALL_DIR, ".new.", $package, $version);
-		$file = sprintf("%s/%s-%s.tgz", PEAR_TARBALL_DIR, $package, $version);
-		$fp = @fopen($tempfile, "w");
-		if (!$fp) {
-			return PEAR::raiseError("fopen failed: $php_errormsg");
-		}
-		fwrite($fp, $distfile);
-		fclose($fp);
-		// later: do lots of integrity checks on the tarball
-		if (!@rename($tempfile, $file)) {
-			return PEAR::raiseError("rename failed: $php_errormsg");
-		}
+        // (4) store tar ball to temp file
+        $tempfile = sprintf("%s/%s%s-%s.tgz",
+                            PEAR_TARBALL_DIR, ".new.", $package, $version);
+        $file = sprintf("%s/%s-%s.tgz", PEAR_TARBALL_DIR, $package, $version);
+        $fp = @fopen($tempfile, "w");
+        if (!$fp) {
+            return PEAR::raiseError("fopen failed: $php_errormsg");
+        }
+        fwrite($fp, $distfile);
+        fclose($fp);
+        // later: do lots of integrity checks on the tarball
+        if (!@rename($tempfile, $file)) {
+            return PEAR::raiseError("rename failed: $php_errormsg");
+        }
 
-		// (5) verify MD5 checksum
-		ob_start();
-		readfile($file);
-		$data = ob_get_contents();
-		ob_end_clean();
-		if (md5($data) != $md5sum) {
-			return PEAR::raiseError("bad md5 checksum");
-		}
+        // (5) verify MD5 checksum
+        ob_start();
+        readfile($file);
+        $data = ob_get_contents();
+        ob_end_clean();
+        if (md5($data) != $md5sum) {
+            return PEAR::raiseError("bad md5 checksum");
+        }
 
-		// Update releases table
-		$query = "INSERT INTO releases VALUES(?,?,?,?,?,?,?)";
-		$sth = $dbh->prepare($query);
-		$dbh->execute($sth, array($package, $version, $auth_user->handle,
-		                          gmdate('Y-m-d H:i'), $relnotes, $md5sum, $file));
-		return true;
-	}
+        // Update releases table
+        $query = "INSERT INTO releases VALUES(?,?,?,?,?,?,?)";
+        $sth = $dbh->prepare($query);
+        $dbh->execute($sth, array($package, $version, $auth_user->handle,
+                                  gmdate('Y-m-d H:i'), $relnotes, $md5sum, $file));
+        return true;
+    }
 
     // }}}
 }
@@ -414,32 +414,32 @@ class note
 
     function add($key, $value, $note)
     {
-		global $dbh, $PHP_AUTH_USER;
-		$nby = $PHP_AUTH_USER;
-		$nid = $dbh->nextId("notes");
-		$stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
-							  "VALUES(?,?,?,?,?)");
-		$res = $dbh->execute($stmt, array($nid, $value, $nby,
-		                     gmdate('Y-m-d H:i'), $note));
-		if (DB::isError($res)) {
-			return $res;
-		}
-		return true;
-	}
+        global $dbh, $PHP_AUTH_USER;
+        $nby = $PHP_AUTH_USER;
+        $nid = $dbh->nextId("notes");
+        $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
+                              "VALUES(?,?,?,?,?)");
+        $res = $dbh->execute($stmt, array($nid, $value, $nby,
+                             gmdate('Y-m-d H:i'), $note));
+        if (DB::isError($res)) {
+            return $res;
+        }
+        return true;
+    }
 
     // }}}
     // {{{ API bool note::delete(int)
 
     function delete($id)
     {
-		global $dbh;
-		$id = (int)$id;
-		$res = $dbh->query("DELETE FROM notes WHERE id = $id");
-		if (DB::isError($res)) {
-			return $res;
-		}
-		return true;
-	}
+        global $dbh;
+        $id = (int)$id;
+        $res = $dbh->query("DELETE FROM notes WHERE id = $id");
+        if (DB::isError($res)) {
+            return $res;
+        }
+        return true;
+    }
 
     // }}}
     // {{{ API bool note::deleteAll(string, int)
@@ -447,12 +447,12 @@ class note
     function deleteAll($key, $value)
     {
         global $dbh;
-		$res = $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
-		if (DB::isError($res)) {
-			return $res;
-		}
-		return true;
-	}
+        $res = $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
+        if (DB::isError($res)) {
+            return $res;
+        }
+        return true;
+    }
 
     // }}}
 }
@@ -463,56 +463,56 @@ class user
 
     function delete($uid)
     {
-		global $dbh;
-		note::deleteall("uid", $uid);
-		$dbh->query('DELETE FROM users WHERE handle = '. $dbh->quote($uid));
-		return ($dbh->affectedRows() > 0);
-	}
+        global $dbh;
+        note::deleteall("uid", $uid);
+        $dbh->query('DELETE FROM users WHERE handle = '. $dbh->quote($uid));
+        return ($dbh->affectedRows() > 0);
+    }
 
     // }}}
     // {{{ API bool user::rejectRequest(string, string)
 
     function rejectRequest($uid, $reason)
     {
-		global $PHP_AUTH_USER, $dbh;
-		list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
-									array($uid));
-		note::add("uid", $uid, "Account rejected: $reason");
-		$msg = "Your PEAR account request was rejected by $PHP_AUTH_USER:\n".
-			 "$reason\n";
-		$xhdr = "From: $PHP_AUTH_USER@php.net";
-		mail($email, "Your PEAR Account Request", $msg, $xhdr);
-		return true;
-	}
+        global $PHP_AUTH_USER, $dbh;
+        list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
+                                    array($uid));
+        note::add("uid", $uid, "Account rejected: $reason");
+        $msg = "Your PEAR account request was rejected by $PHP_AUTH_USER:\n".
+             "$reason\n";
+        $xhdr = "From: $PHP_AUTH_USER@php.net";
+        mail($email, "Your PEAR Account Request", $msg, $xhdr);
+        return true;
+    }
 
     // }}}
     // {{{ API bool user::activate(string)
 
     function activate($uid)
     {
-		global $PHP_AUTH_USER, $dbh;
+        global $PHP_AUTH_USER, $dbh;
 
-		$user =& new PEAR_User($dbh, $uid);
-		if (@$user->registered) {
-			return false;
-		}
-		@$arr = unserialize($user->userinfo);
-		note::deleteall("uid", $uid);
-		$user->set('registered', 1);
-		if (is_array($arr)) {
-			$user->set('userinfo', $arr[1]);
-		}
-		$user->set('created', gmdate('Y-m-d H:i'));
-		$user->set('createdby', $PHP_AUTH_USER);
-		$user->store();
-		note::add("uid", $uid, "Account opened");
-		$msg = "Your PEAR account request has been opened.\n".
-			 "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
-			 "the top-right menu.\n";
-		$xhdr = "From: $PHP_AUTH_USER@php.net";
-		mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
-		return true;
-	}
+        $user =& new PEAR_User($dbh, $uid);
+        if (@$user->registered) {
+            return false;
+        }
+        @$arr = unserialize($user->userinfo);
+        note::deleteall("uid", $uid);
+        $user->set('registered', 1);
+        if (is_array($arr)) {
+            $user->set('userinfo', $arr[1]);
+        }
+        $user->set('created', gmdate('Y-m-d H:i'));
+        $user->set('createdby', $PHP_AUTH_USER);
+        $user->store();
+        note::add("uid", $uid, "Account opened");
+        $msg = "Your PEAR account request has been opened.\n".
+             "To log in, go to http://pear.php.net/ and click on \"login\" in\n".
+             "the top-right menu.\n";
+        $xhdr = "From: $PHP_AUTH_USER@php.net";
+        mail($user->email, "Your PEAR Account Request", $msg, $xhdr);
+        return true;
+    }
 
     // }}}
 }
@@ -521,7 +521,7 @@ class user
 
 function echotest($str)
 {
-	return "Echo: $str";
+    return "Echo: $str";
 }
 
 // }}}

@@ -1,15 +1,26 @@
 <?php
+/**
+ * Details about PEAR authors
+ *
+ * $Id$
+ */
+
+/**
+ * Redirect to the authors list if no ID was specified
+ */
+if (!isset($HTTP_GET_VARS['handle'])) {
+    localRedirect("/authors.php");
+} else {
+    $handle = $HTTP_GET_VARS['handle'];
+}
 
 response_header("Author information");
 
-$handle = $HTTP_GET_VARS['handle'];
-if (empty($handle)) {
-    PEAR::raiseError("No author information found!");
-}
-
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
+
 $row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 AND handle = ?",
 					array($handle));
+
 if ($row === null) {
     PEAR::raiseError("No author information found!");
 }

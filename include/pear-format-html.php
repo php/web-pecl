@@ -188,4 +188,10 @@ function html_category_urhere($id, $name=null)
     }
     print "$html<br /><br />";
 }
+
+function localRedirect($file)
+{
+    $location = "http://" . $GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST'] . "/" . $file;
+    header("Location: " . $location);
+}
 ?>

@@ -18,6 +18,7 @@
    $Id$
 */
 
+require_once "pear-database.php";
 require_once "Damblan/RSS/Common.php";
 
 /**
@@ -36,7 +37,7 @@ class Damblan_RSS_Latest extends Damblan_RSS_Common {
         $this->setTitle("PEAR: Latest releases");
         $this->setDescription("The latest releases in PEAR.");
 
-        $items = $this->getRecent("latest", "");
+        $items = release::getRecent();
         $this->__addItems($items);
     }
 }

@@ -131,26 +131,5 @@ class Damblan_RSS_Common {
     function toString() {
         return $this->_root->get();
     }
-
-    function getRecent($type, $value, $n = 10) {
-        switch ($type) {
-        case "latest" :
-            require_once "pear-database.php";
-            return release::getRecent($n);
-            break;
-
-        case "category" :
-            require_once "pear-database.php";
-            return category::getRecent($n, $value);
-            break;
-
-        case "package" :
-            require_once "pear-database.php";
-            return package::getRecent($n, $value);
-            break;
-        }
-
-        return PEAR::raiseError("The requested URL " . $_SERVER['REQUEST_URI'] . " was not found on this server.");
-    }
 }
 ?>

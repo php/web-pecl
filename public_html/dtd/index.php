@@ -37,7 +37,7 @@ response_header("Document Type Definitions");
   <a href="/manual/en/developers.packagedef.php">in the manual</a>.
   <br /><br />A <a href="/dtd/package-1.0.xsd">
   <acronym title="XML Schema Definition">XSD</acronym> file</a> is
-  available as well.
+  available as well. (Slightly outdated)
   </td>
 </tr>
 </table>

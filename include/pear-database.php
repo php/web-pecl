@@ -422,7 +422,7 @@ class note
     // }}}
     // {{{ note::deleteAll()
 
-    function note::deleteall($key, $value)
+    function deleteall($key, $value)
     {
         global $dbh;
 		return $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));

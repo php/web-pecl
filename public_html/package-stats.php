@@ -30,7 +30,10 @@ response_header("Package statistics");
 <!--
 function reloadMe()
 {
-    var newLocation = '<?php echo $_SERVER['PHP_SELF']; ?>?pid='
+    var newLocation = '<?php echo $_SERVER['PHP_SELF']; ?>?'
+                      + 'cid='
+                      + document.forms[1].cid.value
+                      + '&pid='
                       + document.forms[1].pid.value
                       + '&rid='
                       + document.forms[1].rid.value;
@@ -44,10 +47,13 @@ function reloadMe()
 <?php
 /** Get packages for the user */
 if (User::isAdmin($_SERVER['PHP_AUTH_USER'])) {
-    $query = "SELECT * FROM packages ORDER BY name";
+    $query = "SELECT * FROM packages"
+             . ((isset($_GET['cid']) && $_GET['cid'] != "") ? " WHERE category = '" . $_GET['cid'] . "'" : "")
+             . " ORDER BY name";
 } else {
     $query = "SELECT p.* FROM packages p, mantains m WHERE p.id = m.package"
              . " AND m.handle = '" . $_SERVER['PHP_AUTH_USER'] . "'"
+             . ((isset($_GET['cid']) && $_GET['cid'] != "") ? " AND category = '" . $_GET['cid'] . "'" : "")
              . " ORDER BY p.name";
 }
 
@@ -64,22 +70,42 @@ echo "<form action=\"package-stats.php\" method=\"get\">\n";
 echo "<table>\n";
 echo "<tr>\n";
 echo "  <td>\n";
-echo "  <select name=\"pid\" onchange=\"javascript:reloadMe();\">\n";
-echo "    <option>Select package ...</option>\n";
+echo "  <select name=\"cid\" onchange=\"javascript:reloadMe();\">\n";
+echo "    <option>Select category ...</option>\n";
 
-foreach ($packages as $value => $name) {
-    if (isset($_GET['pid']) && $_GET['pid'] == $value) {
-        echo "    <option value=\"" . $value . "\" selected>" . $name . "</option>\n";
+foreach (category::listAll() as $value) {
+    if (isset($_GET['cid']) && $_GET['cid'] == $value['id']) {
+        echo "    <option value=\"" . $value['id'] . "\" selected>" . $value['name'] . "</option>\n";
     } else {
-        echo "    <option value=\"" . $value . "\">" . $name . "</option>\n";
+        echo "    <option value=\"" . $value['id'] . "\">" . $value['name'] . "</option>\n";
     }    
 }
 
-echo "</select>\n";
+echo "  </select>\n";
 echo "  </td>\n";
+echo "  <td>\n";
+
+if (isset($_GET['cid']) && $_GET['cid'] != "") {
+    echo "  <select name=\"pid\" onchange=\"javascript:reloadMe();\">\n";
+    echo "    <option>Select package ...</option>\n";
+
+    foreach ($packages as $value => $name) {
+        if (isset($_GET['pid']) && $_GET['pid'] == $value) {
+            echo "    <option value=\"" . $value . "\" selected>" . $name . "</option>\n";
+        } else {
+            echo "    <option value=\"" . $value . "\">" . $name . "</option>\n";
+        }    
+    }
+
+    echo "</select>\n";
+} else {
+    echo "<input type=\"hidden\" name=\"pid\" value=\"\" />\n";
+}
+
+echo "  </td>\n";
+echo "  <td>\n";
 
 if (isset($_GET['pid']) && $_GET['pid'] != "") {
-    echo "  <td>\n";
     echo "  <select onchange=\"javascript:reloadMe();\" name=\"rid\" size=\"1\">\n";
     echo "  <option>Select release ...</option>\n";
     echo "  <option>All releases</option>\n";
@@ -96,11 +122,11 @@ if (isset($_GET['pid']) && $_GET['pid'] != "") {
     }
 
     echo "  </select>\n";
-    echo "  </td>\n";
 } else {
-    echo "<input type=\"hidden\" name=\"rid\" value=\"\">\n";
+    echo "<input type=\"hidden\" name=\"rid\" value=\"\" />\n";
 }
 
+echo "  </td>\n";
 
 echo "</tr>\n";
 echo "<tr>\n";
@@ -111,7 +137,7 @@ echo "</form>\n";
 
 $bb->end();
 
-if (isset($_GET['pid'])) {
+if (isset($_GET['pid']) && $_GET['pid'] != "") {
 
     if (User::isAdmin($_SERVER['PHP_AUTH_USER']) || 
         maintainer::get($_GET['pid']) == $_SERVER['PHP_AUTH_USER'])

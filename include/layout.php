@@ -167,7 +167,6 @@ function commonHeader($title) {
  <title>PEAR :: <?php echo $title; ?></title>
  <link rel="shortcut icon" href="/gifs/favicon.ico" />
  <link rel="stylesheet" href="/style.css" />
- <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
  <meta name="description" content="This is the homepage of the PHP PEAR project." />
  <?php // XXX: Add more keywords here. ?>
  <meta name="keywords" content="PEAR, PECL, PHP, PHP Extension and Application Repository, Code, download" />

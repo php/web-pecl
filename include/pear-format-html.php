@@ -1,4 +1,6 @@
 <?php
+/* Send charset */
+header("Content-Type: text/html; charset=iso-8859-1");
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 

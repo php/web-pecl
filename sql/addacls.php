@@ -2,11 +2,10 @@
 
 require_once "DB.php";
 
-PEAR::setErrorHandling(PEAR_ERROR_DIE, "%s\n");
-$dbh = DB::connect("mysql://pear:pear@localhost/pear");
-
 $acl_paths = array();
 $acl_users = array();
+$group_members = array();
+$group_comment = array();
 
 $op = ini_get("include_path");
 ini_set("include_path", ".:../../CVSROOT:/repository/CVSROOT");
@@ -17,10 +16,10 @@ ini_set("include_path", $op);
 if (is_resource($m4)) {
 	while ($line = fgets($m4, 10240)) {
 		if (preg_match("/^define\(`([^']+)'\s*,\s*`([^']+)'\)/", $line, $m)) {
-			list(,$group,$members) = $m;
-			print "$group ($comment): ";
-			print sizeof(preg_split('/\s*,\s*/', $members));
-			print " members\n";
+			list(,$group,$members_str) = $m;
+			$group_members[$group] = preg_split('/\s*,\s*/', $members_str);
+			$group_comment[$group] = $comment;
+			$comment = '';
 		} elseif (preg_match('/^dnl\s*(.*)\s*$/', $line, $m)) {
 			$comment = $m[1];
 		}
@@ -29,6 +28,27 @@ if (is_resource($m4)) {
 } else {
 	print "not a resource: \$m4\n";
 }
+
+$gh1 = $dbh->prepare("INSERT INTO cvs_groups (groupname,description) ".
+					 "VALUES(?,?)");
+$gh2 = $dbh->prepare("INSERT INTO cvs_group_membership (groupname,".
+					 "username,granted_when,granted_by) VALUES(?,?,?,?)");
+$dupes = 0;
+foreach ($group_comment as $group => $comment) {
+	$dbh->execute($gh1, array($group, $comment));
+	$members = $group_members[$group];
+	foreach ($members as $member) {
+		$dbh->expectError(DB_ERROR_ALREADY_EXISTS);
+		$err = $dbh->execute($gh2, array($group, $member, $now, $me));
+		if (PEAR::isError($err) && $err->getCode() == DB_ERROR_ALREADY_EXISTS)
+			$dupes++;
+		$dbh->popExpect();
+	}
+	print "$group ($comment): ";
+	print sizeof($members);
+	print " members added\n";
+}
+print "$dupes duplicate memberships\n";
 
 if (is_resource($avail)) {
 	while ($line = fgets($avail, 10240)) {
@@ -47,12 +67,12 @@ if (is_resource($avail)) {
 	}
 	fclose($avail);
 	print "Setting up CVS ACLs...";
-	$sth = $dbh->prepare("INSERT INTO cvs_acl (username,path,access) ".
-						 "VALUES(?,?,?)");
+	$sth = $dbh->prepare("INSERT INTO cvs_acl (username,usertype,path,access)".
+						 " VALUES(?,?,?,?)");
 	$ent = 0;
 	foreach ($acl_paths as $path => $acldata) {
 		foreach ($acldata as $user => $foo) {
-			$dbh->execute($sth, array($user, $path, 1));
+			$dbh->execute($sth, array($user, 'user', $path, 1));
 			$ent++;
 		}
 	}

@@ -72,8 +72,6 @@ $sth = $dbh->prepare("INSERT INTO users ".
 		     "(handle,password,name,email,registered,showemail," .
 		     "created,createdby,admin)".
 		     " VALUES(?,?,?,?,1,1,?,?,?)");
-$me = getenv("USER");
-$now = gmdate("Y-m-d H:i:s");
 $users_added = 0;
 foreach ($users as $username => $info) {
 	$user = $username;

@@ -1537,6 +1537,17 @@ class user
     }
 
     // }}}
+    // {{{  proto bool   user::listAdmins()
+
+    function listAdmins()
+    {
+        global $dbh;
+
+        $query = "SELECT email FROM users WHERE admin = 1";
+        return $dbh->getCol($query);
+    }
+
+    // }}}
     // {{{ +proto bool   user::exists(string)
 
     function exists($handle)

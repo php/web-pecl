@@ -194,7 +194,6 @@ function commonHeader($title) {
     }
 ?>	topmargin="0" leftmargin="0"
 	marginheight="0" marginwidth="0"
-        background="/gifs/beta_bg.gif"
         bgcolor="#ffffff"
         text="#000000"
         link="#006600"

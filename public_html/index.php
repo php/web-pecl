@@ -19,6 +19,7 @@
 */
 
 ini_set('y2k_compliance', 'on');
+
 if ($_SERVER['QUERY_STRING'] == 'devme') {
     $duration = 86400 * 360;
     setcookie('pear_dev', 'on', time() + $duration, '/');
@@ -40,42 +41,58 @@ climates.&quot;
 PEAR is a framework and distribution system for reusable PHP
 components.
 
+See the <a href="/manual/en/faq.php">FAQ</a> and <a
+href="/manual/">manual</a> for more information.
+
 <br />
 -';
 
 response_header();
 
+?>
+<h1>PEAR Out of Beta!</h1>
+
+<div style="margin-left:2em;margin-right:2em">
+The PEAR development team is proud to announce that PEAR finally is
+out of its long beta period.  As of PHP 4.3, the PEAR installer is
+installed by default.  Unix support is considered stable, while
+Windows and Darwin are still of beta-quality.
+<br /><br />
+Good luck, and thanks to all of you for your patience!<br />
+<a href="account-info.php?handle=ssb">Stig Bakken &lt;stig&#64;php.net&gt;</a>
+</div>
+
+<?php
+
+echo hdelim();
 menu_link("Documentation", "/manual/");
 menu_link("Frequently Asked Questions", "/manual/en/faq.php");
 menu_link("Weekly News", "/weeklynews.php");
-
-if (DEVBOX) {
-    menu_link("Browse Packages", "packages.php");
-    menu_link("Search Packages", "package-search.php");
-    menu_link("Request PEAR Account", "account-request.php");
-    echo hdelim();
-    echo "<h3>Available when logged in:</h3>";
-    menu_link("New Package", "package-new.php");
-    menu_link("Upload Release", "release-upload.php");
-    menu_link("Administrators", "admin.php");
-    $recent = release::getRecent();
-    if (@sizeof($recent) > 0) {
-        $RSIDEBAR_DATA = "<h3>Recent Releases</h3>\n";
-        $RSIDEBAR_DATA .= "<table>";
-        foreach ($recent as $release) {
-            extract($release);
-            $releasedate = substr($releasedate, 0, 10);
-            $desc = substr($releasenotes, 0, 40);
-            if (strlen($releasenotes) > 40) {
-                $desc .= '...';
-            }
-            $RSIDEBAR_DATA .= "<tr><td valign='top' class='compact'>";
-            $RSIDEBAR_DATA .= "<a href=\"package-info.php?pacid=$id&release=$version\">";
-//            $RSIDEBAR_DATA .= "$name $version</a><br /><font size=\"-1\" face=\"arial narrow,arial,helvetica,sans-serif\"><i>$releasedate:</i>$desc</font></td></tr>";
-            $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i> $desc</td></tr>";
+menu_link("Browse Packages", "packages.php");
+menu_link("Search Packages", "package-search.php");
+menu_link("Request PEAR Account", "account-request.php");
+echo hdelim();
+echo "<h3>Available when logged in:</h3>";
+menu_link("New Package", "package-new.php");
+menu_link("Upload Release", "release-upload.php");
+menu_link("Administrators", "admin.php");
+$recent = release::getRecent();
+if (@sizeof($recent) > 0) {
+    $RSIDEBAR_DATA = "<h3>Recent Releases</h3>\n";
+    $RSIDEBAR_DATA .= "<table>";
+    foreach ($recent as $release) {
+        extract($release);
+        $releasedate = substr($releasedate, 0, 10);
+        $desc = substr($releasenotes, 0, 40);
+        if (strlen($releasenotes) > 40) {
+            $desc .= '...';
         }
-        $RSIDEBAR_DATA .= "</table>\n";
+        $RSIDEBAR_DATA .= "<tr><td valign='top' class='compact'>";
+        $RSIDEBAR_DATA .= "<a href=\"package-info.php?pacid=$id&release=$version\">";
+//            $RSIDEBAR_DATA .= "$name $version</a><br /><font size=\"-1\" face=\"arial narrow,arial,helvetica,sans-serif\"><i>$releasedate:</i>$desc</font></td></tr>";
+        $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i> $desc</td></tr>";
     }
+    $RSIDEBAR_DATA .= "</table>\n";
 }
 
 response_footer();

@@ -60,7 +60,7 @@ function response_header($title = 'The PHP Extension and Application Repository'
     $rts = rtrim($SIDEBAR_DATA);
     if (substr($rts, -1) == '-') {
         $SIDEBAR_DATA = substr($rts, 0, -1);
-    } elseif (DEVBOX) {  // For now only show bar on dev boxes
+    } else {
         global $main_menu, $auth_user;
         $SIDEBAR_DATA .= draw_navigation($main_menu);
         init_auth_user();

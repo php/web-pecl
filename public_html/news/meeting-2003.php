@@ -70,11 +70,11 @@ members of the PEAR community may therefore be unable to directly
 communicate with the meeting. I would therefore suggest to newer
 members to write down their ideas as a well thought out RfC and post
 it to the <a href="mailto:pear-dev@lists.php.net">mailinglist</a>
-or send it to <a href="mailto:smith@backendmedia.com">me</a> directly.
+or send it to <a href="mailto:lsmith@php.net">me</a> directly.
 That way we can more easily incorporate their ideas into the meeting.
 <br /><br />
 Please mail all comments to either <a href="mailto:pear-dev@lists.php.net">pear-dev@lists.php.net</a>
-or <a href="mailto:smith@backendmedia.com">Lukas Smith</a>.
+or <a href="mailto:lsmith@php.net">Lukas Smith</a>.
 <br /><br />
 On behalf of the PEAR developers: Lukas Smith.
 </div>

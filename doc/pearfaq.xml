@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!-- $Id: pearfaq.xml,v 1.16 2001-10-07 10:16:30 mj Exp $ -->
+<!-- $Id: pearfaq.xml,v 1.17 2001-10-14 02:50:00 alexmerz Exp $ -->
 <!DOCTYPE article PUBLIC "-//Norman Walsh//DTD DocBk XML V1.7//EN"
           "../../phpdoc/dbxml/docbookx.dtd">
 
 <article class="faq">
  <artheader>
   <title>PEAR-Developer FAQ</title>
-  <date>$Date: 2001-10-07 10:16:30 $</date>
-  <version>$Revision: 1.16 $</version>
+  <date>$Date: 2001-10-14 02:50:00 $</date>
+  <version>$Revision: 1.17 $</version>
  </artheader>
 
  <qandaset>
@@ -235,11 +235,40 @@
     </answer>
   </qandaentry>
   <qandaentry>
-   <question title="Are different packages with similar features allowed?" />
+   <question title="Are different packages or classes with similar features 
+   allowed?" />
    <answer>
-    <author name=""/>
+    <author name="Alexander Merz"/>
     <para>
-     There is no answer yet.
+        There is no problem with competitive packages, but we want to avoid
+        pollution with 10 template classes, 7 different mail classes, and 3
+        different layers for databases doing the same only with different 
+        function names. 
+    </para>
+    <para>
+        First of all, do a reality check: Why I want to commit a new package?
+        Really bad answers are <quote>To see my name in PEAR</quote> or  
+        <quote>I didn't understand the API of the existing class</quote>.
+    </para>
+    <para>        
+        Often a good reason for a new class is, that you are missing a function, 
+        behaviour or speed in an existing implementation. In this case, you 
+        should take a look on this class, if it possible to extend this class. 
+        If not, then you have a good reason to commit a new class. <quote>If
+        not</quote> means, it isn't possible to add the required functionality 
+        without changing the basics of this class.
+    </para>
+    <para>
+        If you write a new class, try the keep API-compatible with existing 
+        classes as far as possible! Isn't it possible to keep the class 
+        compatible himself, try to create a wrapper class to keep compatible. 
+        Don't care, if this wrapper needs a lot of time or memory, a wrapper 
+        class have to keep compatibility and made migration easier only.
+    </para>
+    <para>
+        Committing an competitive class have to be announced on the <ulink
+        url="http://pear.php.net/support.php">PEAR-Dev-Mailinglist!</ulink>
+    </para>     
     </para>
    </answer>
   </qandaentry>

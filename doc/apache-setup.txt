@@ -14,7 +14,13 @@ installed in /usr/share/pear):
  php_flag register_globals On
  php_flag allow_call_time_pass_reference On
 
+ ErrorDocument 404 /error/404.php
+
  <Location /get>
   ForceType application/x-httpd-php
+ </Location>
+ 
+ <Location /manual>
+  ErrorDocument 404 /error/404-manual.php
  </Location>
 </VirtualHost>

@@ -27,6 +27,7 @@ components.
 response_header();
 
 menu_link("Documentation", "http://php.net/manual/en/pear.php");
+menu_link("Frequently Asked Questions", "faq.php");
 
 if (DEVBOX) {
     menu_link("Request PEAR Account", "account-request.php");

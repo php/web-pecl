@@ -349,7 +349,7 @@ class release
     function getRecent($n = 5)
     {
         global $dbh;
-        $sth = $dbh->query("SELECT packages.id AS id, ".
+        $sth = $dbh->limitQuery("SELECT packages.id AS id, ".
                            "packages.name AS name, ".
                            "packages.summary AS summary, ".
                            "releases.version AS version, ".
@@ -357,11 +357,11 @@ class release
                            "releases.releasenotes AS releasenotes, ".
                            "releases.doneby AS doneby ".
                            "FROM packages, releases ".
-                           "WHERE packages.name = releases.package ".
-                           "ORDER BY releases.releasedate DESC");
+                           "WHERE packages.id = releases.id ".
+                           "ORDER BY releases.releasedate DESC", 0, $n);
         $recent = array();
-        // XXX FIXME when DB gets rowlimit support
-        while ($n-- > 0 && ($err = $sth->fetchInto($row, DB_FETCHMODE_ASSOC)) === DB_OK) {
+        // XXX Fixme when DB gets limited getAll()
+        while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
             $recent[] = $row;
         }
         return $recent;

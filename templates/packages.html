@@ -1,0 +1,163 @@
+<script language="JavaScript" type="text/javascript">
+<!--
+	function toggleMoreInfo(packageID, rowNode)
+	{
+		if (!document.getElementById) {
+			location.href = 'http://pearweb/package-info.php?pacid=' + packageID;
+			return;
+		}
+
+		var rowLayer = document.getElementById('moreInfo_' + packageID);
+		var rowSpacerLayer = document.getElementById('moreInfo_' + packageID + '_spacer');
+		
+		newDisplay = rowLayer.style.display == 'none' ? 'inline' : 'none';
+		rowLayer.style.display       = newDisplay;
+		rowSpacerLayer.style.display = newDisplay;
+	}
+//-->
+</script>
+
+
+<table border="0" width="100%">
+    <tr>
+        <th valign="top" align="left">
+            Contents of :: <?html_category_urhere($catpid, false)?>
+        </th>
+        <td valign="top" align="right">
+            <?=$showempty_link?>
+        </td>
+    </tr>
+</table>
+
+<?if($nrow):?>
+	<?=$table->toHtml()?>
+<?endif?>
+
+<?if($catpid):?>
+
+	<br />
+
+	<?if($subCategories):?>
+		Sub-categories: <?=$subCategories?><br /><br />
+	<?endif?>
+
+	<style type="text/css">
+	<!--
+	th.pkgListHeader {
+		background-color: #cccccc;
+	}
+	
+	td.tableHeader {
+		background-color: #cccccc;
+		border-bottom: 1px solid black;
+		font-weight: bold;
+	}
+	
+	td.moreInfo {
+		background-color: #f0f0f0;
+		border: 1px dashed #c0c0c0;
+		position: relative;
+	}
+	
+	.closeButton {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		font-family: Marlett;
+		fonzt-size: 80%;
+		background-color: #c0c0c0;
+		border: 2px outset white;
+		width: 1px;
+		height: 1px;
+		cursor: pointer;
+		cursor: hand;
+	}
+	
+	.moreInfoText {
+		font-size: 80%;
+		font-weight: bold;
+		font-family: Verdana;
+	}
+	// -->
+	</style>
+
+	<table border="0" style="border: solid 1px black" cellspacing="0" cellpadding="0">
+		<tr>
+			<td>
+				<table border="0" width="100%" cellspacing="0">
+					<tr class="tableHeader">
+						<td class="tableHeader" width="50" align="left">&nbsp;<?=$prev?></td>
+						<td class="tableHeader" align="center">Packages (<?=$first?> - <?=$last?> of <?=$total?>)</td>
+						<td class="tableHeader" width="50" align="right"><?=$next?>&nbsp;</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<table border="0" id="packageList">
+					<tr>
+						<th class="pkgListHeader">#</td>
+						<th class="pkgListHeader"><nobr>Package name</nobr></td>
+						<th class="pkgListHeader">Description</td>
+						<th class="pkgListHeader">Status</td>
+						<td>&nbsp;</td>
+					</tr>
+				
+					<?foreach($packages as $p):?>
+						<tr>
+							<td valign="top"><?=$first++?></td>
+							<td valign="top"><a href="package-info.php?pacid=<?=$p['id']?>"><strong><?=$p['name']?></strong></td>
+							<td valign="top"><?=$p['summary']?></td>
+							<td valign="top"><?=$p['eInfo']['status']?></td>
+							<td valign="top">
+								<a href="#" onclick="toggleMoreInfo(<?=$p['id']?>); return false" onmouseover="window.status = 'View more info about <?=$p['name']?>'; return true" onmouseout="window.status = ''" title="View more info about <?=$p['name']?>">
+									<img src="gifs/moreinfo.gif" border="0" />
+								</a>
+							</td>
+						</tr>
+						
+						<!--
+						<tr <?if($_browser->is_ie5up):?> style="display: <?=$defaultMoreInfoVis?>" <?endif?> id="moreInfo_<?=$p['id']?>">
+							<td>&nbsp;</td>
+							<td colspan="3" class="moreInfo">
+								<div style="background-color: #dddddd; border-bottom: 1px dashed #c0c0c0; position: absolute; top: 0px; left: 0px; width: 100%">
+									<div class="closeButton" onclick="toggleMoreInfo(<?=$p['id']?>)">r</div>
+									<span class="moreInfoText">More information</span>
+								</div>
+								<br>
+
+								<table border="0">
+									<tr>
+										<td>Number of releases:</td>
+										<td><?=$p['eInfo']['numReleases']?></td>
+									</tr>
+								</table>
+								
+								
+							</td>
+							<td>&nbsp;</td>
+						</tr>
+
+						<tr <?if($_browser->is_ie5up):?> style="display: <?=$defaultMoreInfoVis?>" <?endif?> id="moreInfo_<?=$p['id']?>_spacer"><td colspan="5">&nbsp;</td></tr>
+						-->
+					<?endforeach?>
+				</table>
+			</td>
+		</tr>
+	</table>
+<?endif?>
+
+<br />
+
+<p align="center">
+	<?if(!$catpid):?>
+		Total number of packages: <?=$totalpackages?><br />
+		<?make_link('/package-stats.php', 'View package statistics')?>
+	<?else:?>
+		<a href="/package-stats.php?cid=<?=$catpid?>">Statistics for category "<?=$catname?>"</a>
+	<?endif?>
+</p>
+
+<?response_footer()?>

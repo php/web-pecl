@@ -13,7 +13,7 @@
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
-   | Authors:                                                             |
+   | Authors: Richard Heyes                                               |
    +----------------------------------------------------------------------+
    $Id$
 */
@@ -21,9 +21,14 @@
 /**
 * TODO
 * o Number of packages in brackets does not include packages in subcategories
+* o Make headers in package list clickable for ordering
 */
 
-require 'HTML/Table.php';
+$template_dir = dirname(dirname(__FILE__)) . '/templates/';
+
+require_once('HTML/Table.php');
+require_once('Pager/Pager.php');
+require_once('Net/URL.php');
 
 /**
 * Returns an appropriate query string
@@ -41,6 +46,18 @@ function getQueryString($catpid, $catname, $showempty = false){
 
     return '?'.implode('&', $querystring);
 }
+
+/**
+* Check for the hide/show all extended info boxes
+*/
+	if (!empty($_GET['hideMoreInfo'])) {
+		setcookie('hideMoreInfo', '1', time() + (86400 * 7));
+		localRedirect('packages.php' . getQueryString(@$_GET['catpid'], @$_GET['catname']));
+
+	} elseif (!empty($_GET['showMoreInfo'])) {
+		setcookie('hideMoreInfo', '-1', time() + (86400 * 7));
+		localRedirect('packages.php' . getQueryString(@$_GET['catpid'], @$_GET['catname']));
+	}
 
 /**
 * Check input variables
@@ -160,55 +177,92 @@ if(count($catdata) > 0){
 }
 
 /**
-* Print the urhere text, showempty link
-* and the categories
-*/
-echo '<table border="0" width="100%"><tr><th valign="top" align="left">Contents of :: ';
-html_category_urhere($catpid, false);
-echo '</th><td valign="top" align="right">'.$showempty_link.'</td></tr>';
-//	echo '<tr><td colspan="2">Looking for something specific? Try the <a href="package-search.php">package search</a>.</td></tr>';
-print '</table>';
-
-/**
 * Begin code for showing packages if we
 * aren't at the top level.
 */
-if (!empty($catpid)) {
-    $nrow = 0;
-    // Subcategories list
-    $more = ($showempty) ? 0 : 1;
-    $subcats = $dbh->getAll("SELECT id, name, summary FROM categories WHERE ".
-                            "parent = $catpid AND npackages >= $more", DB_FETCHMODE_ASSOC);
-    if (count($subcats) > 0) {
-        $sub_links = array();
-        foreach ($subcats as $subcat) {
-            $sub_links[] = '<b><a href="'.$_SERVER['PHP_SELF'].'?catpid='.$subcat['id'].'&catname='.
-                            urlencode($subcat['name']).'" title="'.htmlspecialchars($subcat['summary']).'">'.$subcat['name'].'</a></b>';
-        }
-        print '<br />Sub-categories: ' . implode(', ', $sub_links) . '<br />';
-    }
+	if (!empty($catpid)) {
+	    $nrow = 0;
+	    // Subcategories list
+	    $minPackages = ($showempty) ? 0 : 1;
+	    $subcats = $dbh->getAll("SELECT id, name, summary FROM categories WHERE " .
+	                            "parent = $catpid AND npackages >= $minPackages", DB_FETCHMODE_ASSOC);
+	    if (count($subcats) > 0) {
+	        foreach ($subcats as $subcat) {
+				$subCategories[] = sprintf('<b><a href="%s?catpid=%d&catname=%s" title="%s">%s</a></b>',
+				                           $_SERVER['PHP_SELF'],
+									       $subcat['id'],
+									       urlencode($subcat['name']),
+									       htmlspecialchars($subcat['summary']),
+									       $subcat['name']);
+	        }
+			$subCategories = implode(', ', $subCategories);
+	    }
+	
+	    // Package list
+	    $packages = $dbh->getAll("SELECT id, name, summary, license FROM packages WHERE category=$catpid ORDER BY name");
+		
+		// Paging
+		$total = count($packages);
+		$pager = new Pager(array('totalItems' => $total, 'perPage' => 15));
+		list($first, $last) = $pager->getOffsetByPageId();
+		list($prev, $pages, $next) = $pager->getLinks('<nobr><img src="gifs/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</nobr>', '<nobr>Next<img src="gifs/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></nobr>');
 
-    // Package list
-    $sth = $dbh->query("SELECT id, name, summary FROM packages WHERE category=$catpid ORDER BY name");
-    print "<dl>\n";
-    while ($sth->fetchInto($row)) {
-        extract($row);
-        print " <dt><a href=\"package-info.php?pacid=$id\">$name</a></dt>\n";
-        print " <dd>$summary</dd>\n";
-        print " <br /><br />\n";
-    }
-}
+		$packages = array_slice($packages, $first - 1, 15);
+		
+		foreach ($packages as $key => $pkg) {
+			$extendedInfo['numReleases'] = $dbh->getOne('SELECT COUNT(*) FROM releases WHERE package = ' . $pkg['id']);
+			$extendedInfo['status']      = $dbh->getOne('SELECT state FROM releases WHERE package = ' . $pkg['id'] . ' ORDER BY id DESC LIMIT 1');
 
-echo $nrow != 0 ? $table->toHtml() : '';
-$sth->free();
+			// Make status coloured
+			switch ($extendedInfo['status']) {
+				case 'stable':
+					$extendedInfo['status'] = '<span style="color: #006600">Stable</span>';
+					break;
 
-//Print total number of packages or a link to category stats
-if(!$catpid) {
-    echo "<br /><br />\nTotal number of packages: " . $totalpackages;
-    echo "<br />" . make_link('/package-stats.php', 'View package statistics');
-} else {
-    echo "<br /><br />\n<a href=\"/package-stats.php?cid=$catpid\">Statistics for category &quot;$catname&quot;</a>";
-}
+				case 'beta':
+					$extendedInfo['status'] = '<span style="color: #ffc705">Beta</span>';
+					break;
+				
+				case 'alpha':
+					$extendedInfo['status'] = '<span style="color: #ff0000">Alpha</span>';
+					break;
+			}
 
-response_footer();
+			$packages[$key]['eInfo'] = $extendedInfo;
+		}
+
+		/**
+        * More info visibility
+        */		
+		if (@$_COOKIE['hideMoreInfo'] == '1') {
+			$defaultMoreInfoVis = 'none';
+
+		} elseif (@$_COOKIE['hideMoreInfo'] == '-1') {
+			$defaultMoreInfoVis = 'inline';
+
+		} elseif ($_browser->is_ie5up) {
+			$defaultMoreInfoVis = 'none';
+
+		} else {
+			$defaultMoreInfoVis = 'inline';
+		}
+	}
+
+/**
+* Build URLs for hide/show all links
+*/
+	$url = new Net_URL();
+	$url->addQueryString('hideMoreInfo', '1');
+	$hideMoreInfoLink = $url->getURL();
+	
+	$url->removeQueryString('hideMoreInfo');
+	$url->addQueryString('showMoreInfo', '1');
+	$showMoreInfoLink = $url->getURL();
+
+/**
+* Template
+*/
+	error_reporting(E_ALL & ~E_NOTICE);
+	include($template_dir . 'packages.html');
+
 ?>

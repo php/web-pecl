@@ -163,9 +163,6 @@ if (!empty($catpid)) {
         foreach ($subcats as $subcat) {
             $sub_links[] = '<b><a href="'.$_SERVER['PHP_SELF'].'?catpid='.$subcat['id'].'&catname='.
                             urlencode($subcat['name']).'" title="'.htmlspecialchars($subcat['summary']).'">'.$subcat['name'].'</a></b>';
-            if (sizeof($sub_links) >= $max_sub_links) {
-                break;
-            }
         }
         print '<br />Sub-categories: ' . implode(', ', $sub_links) . '<br />';
     }

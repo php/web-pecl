@@ -202,7 +202,7 @@ function commonHeader($title) {
 		print_link('/login.php', 'LOGIN', false, 'class="menuBlack"');
 	}
 	echo delim();
-	print_link('http://php.net/manual/en/pear.php', 'DOCS', false, 'class="menuBlack"');
+	print_link('/manual/', 'DOCS', false, 'class="menuBlack"');
 	echo delim();
 	print_link('/support.php','SUPPORT',false,'class="menuBlack"');
 	echo delim();

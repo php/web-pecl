@@ -129,16 +129,30 @@ function version_compare_firstelem($a, $b)
 // each.  They are packaged into classes for easier xmlrpc
 // integration.
 
+/**
+ * Class to handle categories
+ *
+ * @class   category
+ * @package pearweb
+ * @author  Stig S. Bakken <ssb@fast.no>
+ * @author  Tomas V.V. Cox <cox@php.net>
+ * @author  Martin Jansen <mj@php.net>
+ */
 class category
 {
     // {{{ *proto int    category::add(struct)
 
-    /*
-    $data = array(
-        'name'   => 'category name',
-        'desc'   => 'category description',
-        'parent' => 'category parent id'
-        );
+    /**
+     * Add new category
+     *
+     *    $data = array(
+     *        'name'   => 'category name',
+     *        'desc'   => 'category description',
+     *        'parent' => 'category parent id'
+     *        );
+     *
+     * @param array
+     * @return mixed ID of the category or PEAR error object
     */
     function add($data)
     {
@@ -167,6 +181,11 @@ class category
     // }}}
     // {{{  proto array  category::listAll()
 
+    /**
+     * List all categories
+     *
+     * @return array
+     */
     function listAll()
     {
         global $dbh;
@@ -177,11 +196,25 @@ class category
     // }}}
 }
 
+/**
+ * Class to handle packages
+ *
+ * @class   package
+ * @package pearweb
+ * @author  Stig S. Bakken <ssb@fast.no>
+ * @author  Tomas V.V. Cox <cox@php.net>
+ * @author  Martin Jansen <mj@php.net>
+ */
 class package
 {
     // {{{ *proto int    package::add(struct)
 
-    // add a package, return new package id or PEAR error
+    /**
+     * Add new package
+     *
+     * @param array
+     * @return mixed ID of new package or PEAR error object
+     */
     function add($data)
     {
         global $dbh;
@@ -208,8 +241,8 @@ class package
         if (DB::isError($err)) {
             return $err;
         }
-        $sql = "update categories set npackages = npackages + 1
-                where id = $category";
+        $sql = "UPDATE categories SET npackages = npackages + 1
+                WHERE id = $category";
         if (DB::isError($err = $dbh->query($sql))) {
             return $err;
         }
@@ -230,6 +263,14 @@ class package
 
     // {{{  proto struct package::info(string|int, [string])
 
+    /**
+     * Get package information
+     *
+     * @static
+     * @param  mixed  Name of the package or it's ID
+     * @param  string Single field to fetch
+     * @return mixed
+     */
     function info($pkg, $field = null)
     {
         global $dbh;
@@ -330,6 +371,13 @@ class package
     // }}}
     // {{{  proto struct package::listAll([bool])
 
+    /**
+     * List all packages
+     *
+     * @static
+     * @param boolean Only list releases packages?
+     * @return array
+     */
     function listAll($released_only = true)
     {
         global $dbh;
@@ -425,6 +473,13 @@ class package
     // }}}
     // {{{  proto struct package::listLatestReleases([string])
 
+    /**
+     * List latest releases
+     *
+     * @static
+     * @param  string Only list release with specific state (Optional)
+     * @return array
+     */
     function listLatestReleases($state = '')
     {
         global $dbh;
@@ -466,6 +521,13 @@ class package
     // }}}
     // {{{  proto struct package::listUpgrades(struct)
 
+    /**
+     * List available upgrades
+     *
+     * @static
+     * @param array Array containing the currently installed packages
+     * @return array
+     */
     function listUpgrades($currently_installed)
     {
         global $dbh;
@@ -536,10 +598,28 @@ class package
     // }}}
 }
 
+/**
+ * Class to handle maintainers
+ *
+ * @class   maintainer
+ * @package pearweb
+ * @author  Stig S. Bakken <ssb@fast.no>
+ * @author  Tomas V.V. Cox <cox@php.net>
+ * @author  Martin Jansen <mj@php.net>
+ */
 class maintainer
 {
     // {{{ +proto int    maintainer::add(int|string, string, string)
 
+    /**
+     * Add new maintainer
+     *
+     * @static
+     * @param  mixed  Name of the package or it's ID
+     * @param  string Handle of the user
+     * @param  string Role of the user
+     * @return mixed True or PEAR error object
+     */
     function add($package, $user, $role)
     {
         global $dbh, $auth_user;
@@ -565,6 +645,14 @@ class maintainer
     // }}}
     // {{{  proto struct maintainer::get(int|string, [bool])
 
+    /**
+     * Get maintainer(s) for package
+     *
+     * @static
+     * @param  mixed Name of the package or it's ID
+     * @param  boolean Only return lead maintainers?
+     * @return array
+     */
     function get($package, $lead = false)
     {
         global $dbh;
@@ -581,6 +669,13 @@ class maintainer
     // }}}
     // {{{  proto struct maintainer::getByUser(string)
 
+    /**
+     * Get the roles of a specific user
+     *
+     * @static
+     * @param  string Handle of the user
+     * @return array
+     */
     function getByUser($user)
     {
         global $dbh;
@@ -591,6 +686,13 @@ class maintainer
     // }}}
     // {{{  proto bool   maintainer::isValidRole(string)
 
+    /**
+     * Check if role is valid
+     *
+     * @static
+     * @param string Name of the role
+     * @return boolean
+     */
     function isValidRole($role)
     {
         static $roles;
@@ -603,6 +705,14 @@ class maintainer
     // }}}
     // {{{ +proto bool   maintainer::remove(int|string, string)
 
+    /**
+     * Remove user from package
+     *
+     * @static
+     * @param  mixed Name of the package or it's ID
+     * @param  string Handle of the user
+     * @return True or PEAR error object
+     */
     function remove($package, $user)
     {
         global $dbh, $auth_user;
@@ -622,6 +732,7 @@ class maintainer
     /**
      * Update user and roles of a package
      *
+     * @static
      * @param int $pkgid The package id to update
      * @param array $users Assoc array containing the list of users
      *                     in the form: '<user>' => '<role>'
@@ -684,10 +795,26 @@ class maintainer
     // }}}
 }
 
+/**
+ * Class to handle releases
+ *
+ * @class   release
+ * @package pearweb
+ * @author  Stig S. Bakken <ssb@fast.no>
+ * @author  Tomas V.V. Cox <cox@php.net>
+ * @author  Martin Jansen <mj@php.net>
+ */
 class release
 {
     // {{{  proto array  release::getRecent([int])
 
+    /**
+     * Get recent releases
+     *
+     * @static
+     * @param  integer Number of releases to return
+     * @return array
+     */
     function getRecent($n = 5)
     {
         global $dbh;
@@ -713,6 +840,14 @@ class release
     // }}}
     // {{{  proto array  release::getDateRange(int,int)
 
+    /**
+     * Get release in a specific time range
+     *
+     * @static
+     * @param integer Timestamp of start date
+     * @param integer Timestamp of end date
+     * @return array
+     */
     function getDateRange($start,$end)
     {
         global $dbh;
@@ -750,6 +885,17 @@ class release
     // }}}
     // {{{ +proto string release::upload(string, string, string, string, binary, string)
 
+    /**
+     * Upload new release
+     *
+     * @static
+     * @param string Name of the package
+     * @param string Version string
+     * @param string State of the release
+     * @param string Release notes
+     * @param string Filename of the release tarball
+     * @param string MD5 checksum of the tarball
+     */
     function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
         global $auth_user;
@@ -767,6 +913,17 @@ class release
     // }}}
     // {{{ +proto string release::validateUpload(string, string, string, string, binary, string)
 
+    /**
+     * Determine if uploaded file is a valid release
+     *
+     * @param string Name of the package
+     * @param string Version string
+     * @param string State of the release
+     * @param string Release notes
+     * @param string Filename of the release tarball
+     * @param string MD5 checksum of the tarball
+     * @return mixed
+     */
     function validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
         global $dbh, $auth_user;
@@ -836,6 +993,13 @@ class release
     // }}}
     // {{{ +proto bool   release::confirmUpload(string)
 
+    /**
+     * Confirm release upload
+     *
+     * @static
+     * @param string Reference to upload file (?)
+     * @return boolean
+     */
     function confirmUpload($upload_ref)
     {
         global $dbh, $auth_user;
@@ -886,6 +1050,12 @@ class release
     // }}}
     // {{{ +proto bool   release::dismissUpload(string)
 
+    /**
+     * Dismiss release upload
+     *
+     * @param string
+     * @return boolean
+     */
     function dismissUpload($upload_ref)
     {
         return (bool)@unlink($upload_ref);
@@ -894,7 +1064,17 @@ class release
     // }}}
     // {{{ NOEXPORT      release::HTTPdownload(string, [string], [string], [bool])
 
-    // not for xmlrpc export
+    /**
+     * Download release via HTTP
+     *
+     * Not for xmlrpc export!
+     *
+     * @param string Name of the package
+     * @param string Version string
+     * @param string Filename
+     * @param boolean Uncompress file before downloading?
+     * @return mixed
+     */
     function HTTPdownload($package, $version = null, $file = null, $uncompress = false)
     {
         global $dbh;
@@ -994,6 +1174,13 @@ class release
     // }}}
     // {{{  proto bool   release::isValidState(string)
 
+    /**
+     * Determine if release state is valid
+     *
+     * @static
+     * @param string State
+     * @return boolean
+     */
     function isValidState($state)
     {
         static $states = array('devel', 'snapshot', 'alpha', 'beta', 'stable');
@@ -1003,6 +1190,12 @@ class release
     // }}}
     // {{{  proto array  release::betterStates(string)
 
+    /**
+     * ???
+     *
+     * @param string Release state
+     * @return boolean
+     */
     function betterStates($state)
     {
         static $states = array('devel', 'snapshot', 'alpha', 'beta', 'stable');
@@ -1016,6 +1209,14 @@ class release
     // }}}
     // {{{ NOEXPORT      release::logDownload(integer, string, string)
 
+    /**
+     * Log release download
+     *
+     * @param integer ID of the package
+     * @param string Version string of the release
+     * @param string Filename
+     * @return boolean
+     */
     function logDownload($package, $release_id, $file = null)
     {
         global $dbh;
@@ -1046,8 +1247,11 @@ class release
     // {{{ +proto string release::promote(array, string)
 
     /**
-     * $pkginfo array comming from PEAR_common::inforFromDescFile('package.xml')
-     * $upload file name of the new uploaded release
+     * Promote new release
+     *
+     * @param array Coming from PEAR_common::infoFromDescFile('package.xml')
+     * @param string Filename of the new uploaded release
+     * @return void
      */
     function promote($pkginfo, $upload)
     {
@@ -1096,6 +1300,13 @@ END;
     // }}}
     // {{{ NOEXPORT      release::remove(int, int)
 
+    /**
+     * Remove release
+     *
+     * @param integer ID of the package
+     * @param integer ID of the release
+     * @return boolean
+     */
     function remove($package, $release)
     {
         global $dbh, $auth_user;
@@ -1141,6 +1352,16 @@ END;
     // }}}
 }
 
+
+/**
+ * Class to handle notes
+ *
+ * @class   note
+ * @package pearweb
+ * @author  Stig S. Bakken <ssb@fast.no>
+ * @author  Tomas V.V. Cox <cox@php.net>
+ * @author  Martin Jansen <mj@php.net>
+ */
 class note
 {
     // {{{ +proto bool   note::add(string, int, string)

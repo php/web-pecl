@@ -415,8 +415,8 @@ class package
         if (PEAR::isError($package_id) || empty($package_id)) {
             return PEAR::raiseError("package `$package' must be registered first");
         }
-        // XXX (cox) what about 'name' & 'license'?
-        $allowed = array('summary', 'description', 'category');
+        // XXX (cox) what about 'name'?
+        $allowed = array('license', 'summary', 'description', 'category');
         $fields = $prep = array();
         foreach($allowed as $a) {
             if (isset($data[$a])) {

@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>x</title>
+</head>
+<body>
+    
+<p><i><small>von Alan Knowles (alan_k@php.net) (&uuml;bersetzt von Alexander Merz alexmerz(atphp.net)</small></i></p>
+    
+<p>
+Kurz und b&uuml;ndig: Diese Woche war recht wenig los - im Vordergrund stand die &Auml;nderung
+des Include-Aufrufs f&uuml;r PEAR-Dateien. Dazu drei 3 neue Releases - ein 'stable' und zwei 'beta'.
+</p>
+    
+<hr>  
+
+<h2>Neue Releases</h2>
+    
+<h3>Stable</h3>
+    
+<ul>
+    <li>
+		<b>Date</b> - 
+		Befehlssatz zum Umgang mit Datumsangaben unabhängig vom Unix-Timestamp				
+	</li>
+</ul>
+
+
+<h3>Beta</h3>
+  
+<ul>
+  <li>
+  	<b>spread</b>  - 
+		PHP-Erweiterung zur Benutzung des spread-Protokolls <<a href="http://www.spread.org">www.spread.org</a>>
+	<li>
+	<b>APD</b>  - 
+		ein Debugger und Profiler als PHP-Erweiterung 	
+	</li>
+</ul>
+         
+<hr> 
+
+<h2>PEAR-DEV Meldungen</h2>
+    
+<h3>HTML_Select, ein Satz standardisierter Select-Boxen</h3>
+
+<p>
+Die Diskussion um HTML_Select setzte sich fort. Ziel ist die Bereitstellung
+einer Reihe von Auswahl-Mem&uuml;s f&uuml;r L&auml;nder, Staaten etc. Heftig
+diskutiert wurde, wie diese in das HTML-Package integriert werden k&ouml;nnen.
+</p>
+
+
+<h3>PEAR-Pfade in require_once mit dirname(__FILE__)</h3>
+<p>
+Lukas Smith brachte erneut die Diskussion um die Form des Einschlie&szlig;ens von
+PEAR-Dateien auf. Innerhalb require_once sollte man dirname(__FILE__) benutzen, statt auf den 
+inlude_path in der pear.ini zu vertrauen. Diese Frage ist ist eng verkn&uuml;pft mit PEAR-Include-Problemen
+bei Web-Hostern. Ausserdem d&uuml;rfte dies eine kleinen Geschwindigkeitsvorteil bringen - auch wenn er nur gering ist;
+PHP mu&szlig; dann nicht den kompletten include_path durchsuchen.
+Die Diskussion ist noch nicht abgeschlo&szlig;en.
+</p>
+
+<h3>MDB-Dateistruktur</h3>
+<p>
+Lukas geht ein weiteres Problem auf seiner ToDo-Liste an: die MDB-Dateien
+der PEAR-Dateistruktur anzupassen.
+</p>
+
+<hr>   
+<h2>Neue and vorgeschlagene Packages</h2>
+    
+<h3>Apache_LogParser</h3> 
+<p>
+Sagi Bashari Package erzeugt Statistiken aus Log-Dateien des Apache-Webservers.
+Es ist nicht auf Apache bechr&auml;nkt - z.B. der Squid-Proxy-Server erzeugt Log-Daten im 
+selben Format.
+</p>
+ 
+<hr>  
+  
+<h2>Entwicklung</h2>
+<p>  
+CVS-Aktivit&auml;ten fanden diese Woche bei
+ Date, DBA, DB_Relational, MDB, PECL::apd,
+PECL::bcompiler, PECL:python, PECL::spread und  XML_XSLT_Wrapper
+statt. 
+Dazu noch einige kleine Commits f&uuml;r peardoc2, das &uuml;berarbeitete PEAR-Handbuch.</p>
+</body>
+</html>

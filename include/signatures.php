@@ -20,6 +20,14 @@
 
 // {{{ parse_signatures_from_file()
 
+/*
+Legend for needed perms to execute methods:
+
++         => valid user
+*         => admin
+<nothing> => all
+
+*/
 function parse_signatures_from_file($file, &$signatures, $out_format = "signatures")
 {
     $cache_file = PEAR_TMPDIR . '/' . basename($file) . '.' . $out_format;

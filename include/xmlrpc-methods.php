@@ -1,50 +1,49 @@
 <?php // -*- C++ -*-
 
-$pear_xmlrpc_methods = array();
+require_once "signatures.php";
 
-// {{{ xmlrpc method: package.new
+$xmlrpc_method_index = parse_signatures_from_file("../include/pear-database.php", "index");
 
-$pear_xmlrpc_methods[] = "package.new";
-
-function pear_xmlrpc_package_add($name, $params, $appdata)
+function pear_register_xmlrpc_methods($xs)
 {
-    $ret = package::add($params[0]);
-    if (PEAR::isError($ret)) {
-        return false;
+    global $xmlrpc_method_index;
+    foreach ($xmlrpc_method_index as $method => $foo) {
+        error_log("registering $method");
+        xmlrpc_server_register_method($xs, $method, "pear_xmlrpc_dispatcher");
     }
-    return true;
 }
 
-// }}}
-
-// {{{ xmlrpc method: package.info
-
-$pear_xmlrpc_methods[] = "package.info";
-
-function pear_xmlrpc_package_info($name, $params, $appdata)
+function pear_xmlrpc_dispatcher($method_name, $params, $appdata)
 {
-    global $dbh;
-    return pacakge::info($params[0]);
+    global $xmlrpc_method_index;
+    error_log("pear_xmlrpc_dispatcher: $method_name called");
+    if (empty($xmlrpc_method_index[$method_name])) {
+        error_log("unknown method: $method_name");
+        return false; // XXX FAULT
+    }
+    $type_key = "";
+    for ($i = 0; $i < sizeof($params); $i++) {
+        if ($i > 0) {
+            $type_key .= ",";
+        }
+        $type_key .= xmlrpc_get_type($params[$i]);
+    }
+    if (!isset($xmlrpc_method_index[$method_name][$type_key])) {
+        error_log("no signature found for $method_name($type_key)");
+        return false; // XXX FAULT
+    }
+    $function = $xmlrpc_method_index[$method_name][$type_key];
+    if (strstr($function, "::")) {
+        list($class, $method) = explode("::", $function);
+        $ret = call_user_method_array($method, $class, $params);
+    } else {
+        $ret = call_user_func_array($function, $params);
+    }
+    ob_start();
+    var_dump($ret);
+    error_log("$method_name returned ".ob_get_contents());
+    ob_end_clean();
+    return $ret;
 }
-
-// }}}
-
-// {{{ xmlrpc method: package.list
-
-$pear_xmlrpc_methods[] = "package.list";
-
-function pear_xmlrpc_package_list($name, $params, $appdata)
-{
-    global $dbh;
-    return $dbh->getAssoc("SELECT p.id AS packageid, p.name AS name, ".
-                          "c.id AS categoryid, c.name AS category, ".
-                          "p.stablerelease AS stable, p.license AS license, ".
-                          "p.summary AS summary, p.description AS description".
-                          " FROM packages p, categories c ".
-                          "WHERE c.id = p.category ".
-                          "ORDER BY p.name");
-}
-
-// }}}
 
 ?>

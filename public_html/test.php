@@ -1,19 +1,20 @@
 <?php
 
-ini_set("include_path",
-	ini_get("include_path") . ":/home/ssb/src/Smarty-1.4.3");
-include_once "Smarty.class.php";
-$s = new Smarty;
-$s->compile_check = true;
-$s->debugging     = false;
-$s->template_dir  = "../templates";
-$s->compile_dir   = "../templates_c";
-$s->cache_dir     = "../cache";
-$s->config_dir    = "../configs";
-$s->register_function("page", "smarty_page_start");
-$s->register_function("endpage", "smarty_page_end");
-$s->register_function("box", "smarty_border_box_start");
-$s->register_function("endbox", "smarty_border_box_end");
-$s->display('test.tpl');
+require_once "signatures.php";
+
+$signatures = parse_signatures_from_file("../include/pear-database.php", "index");
+print "<pre>";
+//var_dump($signatures);
+print "</pre>\n";
+
+class foo {
+	function bar($str) {
+		return "bing: $str";
+	}
+}
+
+$params = array("gazonk");
+$func = "foo";
+var_dump(@call_user_method_array("bar", $func, $params));
 
 ?>

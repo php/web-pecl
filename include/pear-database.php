@@ -160,7 +160,7 @@ function renumber_visitations($debug = false)
         }
         $dbh->query($query);
     }
-    return DB_OK;
+    return true;
 }
 
 // }}}
@@ -171,7 +171,7 @@ function renumber_visitations($debug = false)
 
 class category
 {
-    // {{{ category::add()
+    // {{{ API int category::add(struct)
 
     /*
     $data = array(
@@ -213,7 +213,7 @@ class category
 
 class package
 {
-    // {{{ package::add()
+    // {{{ API int package::add(struct)
 
     // add a package, return new package id or PEAR error
     function add($data)
@@ -255,7 +255,7 @@ class package
 	}
 
     // }}}
-	// {{{ package::info()
+	// {{{ API struct package::info(string|int)
 
     function info($pkg)
     {
@@ -286,11 +286,28 @@ class package
 	}
 
     // }}}
+	// {{{ API struct package::listAll()
+
+	function listAll($name, $params, $appdata)
+	{
+		global $dbh;
+		return $dbh->getAssoc("SELECT p.id AS packageid, p.name AS name, ".
+							  "c.id AS categoryid, c.name AS category, ".
+							  "p.stablerelease AS stable, ".
+							  "p.license AS license, ".
+							  "p.summary AS summary, ".
+							  "p.description AS description".
+							  " FROM packages p, categories c ".
+							  "WHERE c.id = p.category ".
+							  "ORDER BY p.name");
+	}
+
+	// }}}
 }
 
 class maintainer
 {
-    // {{{ maintainer::add()
+    // {{{ API int maintainer::add(int, string, string)
 
     function add($package, $user, $role)
     {
@@ -304,7 +321,7 @@ class maintainer
 		if (DB::isError($err)) {
 			return $err;
 		}
-		return DB_OK;
+		return true;
 	}
 
     // }}}
@@ -312,7 +329,7 @@ class maintainer
 
 class release
 {
-	// {{{ release::getRecent()
+	// {{{ API array release::getRecent([int])
 
 	function getRecent($n = 5)
     {
@@ -335,28 +352,25 @@ class release
 	}
 
     // }}}
-    // {{{ release::upload()
+    // {{{ API bool release::upload(string, string, string, binary, string)
 
 	function upload($package, $version, $relnotes, &$tarball, $md5sum)
 	{
-		global $_return_value; // used by XML-RPC backend
 		global $dbh, $auth_user;
 
 		// (2) verify that package exists
 		$test = $dbh->getOne("SELECT name FROM packages WHERE name = ?",
 							 array($package));
-		if (isset($_return_value)) return $_return_value;
 		if (empty($test)) {
-			return "no such package: $package";
+			return PEAR::raiseError("no such package: $package");
 		}
 
 		// (3) verify that version does not exist
 		$test = $dbh->getOne("SELECT version FROM releases ".
 							 "WHERE package = ? AND version = ?",
 							 array($package, $version));
-		if (isset($_return_value)) return $_return_value;
 		if ($test) {
-			return "already exists: $package $version";
+			return PEAR::raiseError("already exists: $package $version");
 		}
 
 		// (4) store tar ball to temp file
@@ -365,13 +379,13 @@ class release
 		$file = sprintf("%s/%s-%s.tgz", PEAR_TARBALL_DIR, $package, $version);
 		$fp = @fopen($tempfile, "w");
 		if (!$fp) {
-			return "fopen failed: $php_errormsg";
+			return PEAR::raiseError("fopen failed: $php_errormsg");
 		}
 		fwrite($fp, $distfile);
 		fclose($fp);
 		// later: do lots of integrity checks on the tarball
 		if (!@rename($tempfile, $file)) {
-			return "rename failed: $php_errormsg";
+			return PEAR::raiseError("rename failed: $php_errormsg");
 		}
 
 		// (5) verify MD5 checksum
@@ -380,7 +394,7 @@ class release
 		$data = ob_get_contents();
 		ob_end_clean();
 		if (md5($data) != $md5sum) {
-			return "bad md5 checksum";
+			return PEAR::raiseError("bad md5 checksum");
 		}
 
 		// Update releases table
@@ -388,7 +402,7 @@ class release
 		$sth = $dbh->prepare($query);
 		$dbh->execute($sth, array($package, $version, $auth_user->handle,
 		                          gmdate('Y-m-d H:i'), $relnotes, $md5sum, $file));
-		if (isset($_return_value)) return $_return_value;
+		return true;
 	}
 
     // }}}
@@ -396,7 +410,7 @@ class release
 
 class note
 {
-    // {{{ note::add()
+    // {{{ API bool note::add(string, int, string)
 
     function add($key, $value, $note)
     {
@@ -405,27 +419,39 @@ class note
 		$nid = $dbh->nextId("notes");
 		$stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
 							  "VALUES(?,?,?,?,?)");
-		return $dbh->execute($stmt, array($nid, $value, $nby,
+		$res = $dbh->execute($stmt, array($nid, $value, $nby,
 		                     gmdate('Y-m-d H:i'), $note));
+		if (DB::isError($res)) {
+			return $res;
+		}
+		return true;
 	}
 
     // }}}
-    // {{{ note::delete()
+    // {{{ API bool note::delete(int)
 
     function delete($id)
     {
 		global $dbh;
 		$id = (int)$id;
-		return $dbh->query("DELETE FROM notes WHERE id = $id");
+		$res = $dbh->query("DELETE FROM notes WHERE id = $id");
+		if (DB::isError($res)) {
+			return $res;
+		}
+		return true;
 	}
 
     // }}}
-    // {{{ note::deleteAll()
+    // {{{ API bool note::deleteAll(string, int)
 
-    function deleteall($key, $value)
+    function deleteAll($key, $value)
     {
         global $dbh;
-		return $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
+		$res = $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
+		if (DB::isError($res)) {
+			return $res;
+		}
+		return true;
 	}
 
     // }}}
@@ -433,7 +459,7 @@ class note
 
 class user
 {
-    // {{{ user::delete()
+    // {{{ API bool user::delete(string)
 
     function delete($uid)
     {
@@ -444,9 +470,9 @@ class user
 	}
 
     // }}}
-    // {{{ user::rejectRequest()
+    // {{{ API bool user::rejectRequest(string, string)
 
-    function rejectrequest($uid, $reason)
+    function rejectRequest($uid, $reason)
     {
 		global $PHP_AUTH_USER, $dbh;
 		list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
@@ -460,7 +486,7 @@ class user
 	}
 
     // }}}
-    // {{{ user::activate()
+    // {{{ API bool user::activate(string)
 
     function activate($uid)
     {
@@ -490,6 +516,15 @@ class user
 
     // }}}
 }
+
+// {{{ API string echotest(string)
+
+function echotest($str)
+{
+	return "Echo: $str";
+}
+
+// }}}
 
 // {{{ mail_pear_admins()
 

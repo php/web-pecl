@@ -7,22 +7,15 @@ if (empty($debug)) {
 } else {
 	$request_body = "<?xml version='1.0' ?>
 <methodCall>
- <methodName>package.new</methodName>
- <params>
-  <param>
-   <value><string>{$query}</string></value>
-  </param>
- </params>
+ <methodName>test</methodName>
+ <params/>
 </methodCall>
 ";
 }
 
 $xs = xmlrpc_server_create();
 
-foreach ($pear_xmlrpc_methods as $method) {
-    $handler = "pear_xmlrpc_".strtr($method, '.', '_');
-    xmlrpc_server_register_method($xs, $method, $handler);
-}
+pear_register_xmlrpc_methods($xs);
 
 xmlrpc_server_register_method($xs, "test", "pear_xmlrpc_test");
 

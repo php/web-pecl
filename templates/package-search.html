@@ -363,22 +363,25 @@
 //-->
 </script>
 
-<br /><br />
-
 <?if($numrows):?>
+<br /><br />
     <?$bb = new Borderbox($title_html)?>
-    <?foreach($search_results as $row):?>
-        <dt><a href="package-info.php?package=<?=$row['raw_name']?>"><?=$row['name']?></a></dt>
-        <dd><?=$row['summary']?></dd>
-        <br /><br />
-    <?endforeach?>
-    <?$bb->end()?>
+<table border="0" cellpadding="2" cellspacing="2">
 
+    <?foreach($search_results as $row):?>
+        <tr>
+            <td><a href="package-info.php?package=<?=$row['raw_name']?>"><?=$row['name']?></a></td>
+            <td><?=$row['summary']?></td>
+        </tr>
+    <?endforeach?>
+
+</table>
+
+    <?$bb->end()?>
 <?elseif($numrows === 0):?>
 
-    <p>
-        <strong>No results found</strong>
-    </p>
+    <p><b>No results found</b></p>
+
 <?endif?>
 
 <?response_footer()?>

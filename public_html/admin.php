@@ -223,7 +223,9 @@ do {
             foreach ($requests as $handle => $data) {
                 list($name, $note) = $data;
                 $rejected = (preg_match("/^Account rejected:/", $note));
-
+                if ($rejected) {
+                    continue;
+                }
                 $bb->plainRow($name,
                               $handle,
                               ($rejected ? "rejected" : "<font color=\"#FF0000\">open</font>"),

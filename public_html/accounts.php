@@ -64,7 +64,7 @@ foreach ($firstletters as $fl) {
 			   $_SERVER['PHP_SELF'], $fl, strtoupper($fl));
 	}		   
 }
-print '</td><td rowspan="2">';
+print '</td><td rowspan="2" align="right">';
 print '<form><input type="button" onclick="';
 $gourl = "http://" . $HTTP_SERVER_VARS['SERVER_NAME'];
 if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80) {

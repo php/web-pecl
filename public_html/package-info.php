@@ -33,10 +33,11 @@ if (!empty($pacid)) {
     $pkg = package::info($pacid);
 }
 
-$relid = 0;
+// If only the release version is given, find the correct release id.
+$relid = null;
 if (isset($_GET['version']) && empty($_GET['relid'])) {
-    foreach ($pkg['releases'] as $version => $release) {
-        if ($version == $_GET['version']) {
+    foreach ($pkg['releases'] as $ver => $release) {
+        if ($ver == $_GET['version']) {
             $relid = $release['id'];
             break;
         }

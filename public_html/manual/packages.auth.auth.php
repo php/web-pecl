@@ -2,13 +2,14 @@
 sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
-  'prev' => array('packages.auth.php', 'Auth'),
-  'next' => array('packages.net_checkip.php', ''),
-  'up'   => array('packages.auth.php', 'Auth'),
+  'prev' => array('packages.auth.php', 'Authentication'),
+  'next' => array('packages.auth.auth_http.php', 'Auth_HTTP'),
+  'up'   => array('packages.auth.php', 'Authentication'),
   'toc'  => array(
     array('packages.auth.php#packages.Auth', ''),
     array('packages.auth.php#AEN417', ''),
-    array('packages.auth.auth.php', 'Auth'))));
+    array('packages.auth.auth.php', 'Auth'),
+    array('packages.auth.auth_http.php', 'Auth_HTTP'))));
 manualHeader('Auth','packages.auth.auth.php');
 ?><H1
 ><A
@@ -92,7 +93,7 @@ WIDTH="100%"
 ><TD
 ><PRE
 CLASS="programlisting"
->&#13;require_once "Auth.php";
+>&#13;require_once "Auth/Auth.php";
 
 function myOutput($username, $status)
 {
@@ -121,6 +122,73 @@ if ($a-&#62;getAuth()) {
 ></TD
 ></TR
 ></TABLE
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+CLASS="EXAMPLE"
+><TR
+><TD
+><DIV
+CLASS="example"
+><A
+NAME="AEN439"
+></A
+><P
+><B
+>Example 2. Using different DB parameters</B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="programlisting"
+>&#13;require_once "Auth/Auth.php";
+
+function myOutput($username, $status)
+{
+    ...  /** See example 1 for the full listing */
+}
+
+$params = array(
+            "dsn" =&#62; "mysql://martin:test@localhost/auth",
+            "table" =&#62; "myAuth",
+            "usernamecol" =&#62; "myUserColumn",
+            "passwordcol" =&#62; "myPasswordColumn"
+            );
+
+$a = new Auth("DB", $params, "myOutput");
+
+$a-&#62;start();
+
+if ($a-&#62;getAuth()) {
+    echo "You have been authenticated successfully.";
+}
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+><P
+>&#13;    This example shows you, how you can specifiy alternative
+    names for the database table and the column names. In our
+    example, we use the table myAuth, select the username from
+    the field myUserColumn and the password from the field
+    myPasswordColumn. The Default values for this fields are
+    auth, username and password.
+   </P
+><P
+>&#13;    This feature is necessary if you want to use PEAR::Auth
+    with a database layout that is different from the one,
+    PEAR::Auth uses by default.
+   </P
 ></DIV
 ><DIV
 CLASS="refsect1"
@@ -132,7 +200,7 @@ NAME="packages.Auth.Auth.start"
 ><DIV
 CLASS="funcsynopsis"
 ><A
-NAME="AEN441"
+NAME="AEN446"
 ></A
 ><P
 ></P
@@ -163,7 +231,7 @@ NAME="packages.Auth.Auth.getAuth"
 ><DIV
 CLASS="funcsynopsis"
 ><A
-NAME="AEN449"
+NAME="AEN454"
 ></A
 ><P
 ></P

@@ -7,7 +7,7 @@ setupNavigation(array(
   'up'   => array('contributing-howto.php', 'How to contribute to PEAR'),
   'toc'  => array(
     array('contributing-howto.php#contributing-howto', ''),
-    array('contributing-howto.php#AEN529', ''),
+    array('contributing-howto.php#AEN559', ''),
     array('contributing-howto.php#contributing-introduction', 'Introduction'),
     array('contributing-requirements.php', 'Requirements'),
     array('contributing-introducing.php', 'Introducing your code'))));

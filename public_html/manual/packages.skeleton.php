@@ -19,7 +19,7 @@ CLASS="TITLEPAGE"
 ><H1
 CLASS="title"
 ><A
-NAME="AEN561"
+NAME="AEN591"
 >Skeleton for creating PEAR docbook documentation</A
 ></H1
 ><HR></DIV

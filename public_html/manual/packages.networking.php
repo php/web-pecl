@@ -2,32 +2,31 @@
 sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
-  'prev' => array('packages.php', 'PEAR Packages'),
-  'next' => array('packages.auth.auth.php', 'Auth'),
+  'prev' => array('packages.auth.auth_http.php', 'Auth_HTTP'),
+  'next' => array('packages.networking.net_checkip.php', 'Net_CheckIP'),
   'up'   => array('packages.php', 'PEAR Packages'),
   'toc'  => array(
     array('packages.php#packages', ''),
     array('packages.auth.php', 'Authentication'),
     array('packages.networking.php', 'Networking'))));
-manualHeader('Authentication','packages.auth.php');
+manualHeader('Networking','packages.networking.php');
 ?><DIV
 CLASS="reference"
 ><A
-NAME="packages.Auth"
+NAME="packages.Networking"
 ></A
 ><DIV
 CLASS="TITLEPAGE"
 ><H1
 CLASS="title"
->II. Authentication</H1
+>III. Networking</H1
 ><DIV
 CLASS="PARTINTRO"
 ><A
-NAME="AEN417"
+NAME="AEN484"
 ></A
 ><P
->&#13;   The PEAR::Auth package helps you to create PHP based
-   authentication systems.
+>&#13;    Networking utilities.
   </P
 ></DIV
 ><DIV
@@ -39,27 +38,27 @@ CLASS="TOC"
 ></DT
 ><DT
 ><A
-HREF="packages.auth.auth.php"
+HREF="packages.networking.net_checkip.php"
 ><B
 CLASS="classname"
->Auth</B
+>Net_CheckIP</B
 ></A
 > &#8212; 
-    PHP based authentication systems.
+    Validation of IPv4 adresses
    </DT
 ><DT
 ><A
-HREF="packages.auth.auth_http.php"
+HREF="packages.networking.net_portscan.php"
 ><B
 CLASS="classname"
->Auth_HTTP</B
+>Net_Portscan</B
 ></A
 > &#8212; 
-    HTTP authentication with PHP.
+    Portscanner utilities.
    </DT
 ></DL
 ></DIV
 ></DIV
 ></DIV
-><?php manualFooter('Authentication','packages.auth.php');
+><?php manualFooter('Networking','packages.networking.php');
 ?>

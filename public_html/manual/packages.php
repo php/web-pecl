@@ -3,7 +3,7 @@ sendManualHeaders('ISO-8859-1','en');
 setupNavigation(array(
   'home' => array('index.php', 'PEAR Manual'),
   'prev' => array('class.pear-error.php', 'PEAR_Error'),
-  'next' => array('packages.auth.php', 'Auth'),
+  'next' => array('packages.auth.php', 'Authentication'),
   'up'   => array('index.php', 'PEAR Manual'),
   'toc'  => array(
     array('index.php#manual', ''),
@@ -35,17 +35,12 @@ CLASS="TOC"
 ><DT
 >II. <A
 HREF="packages.auth.php"
->Auth</A
-></DT
-><DT
-><A
-HREF="packages.net_checkip.php"
->Net_CheckIP: Validation of IPv4 adresses</A
+>Authentication</A
 ></DT
 ><DT
 >III. <A
-HREF="packages.net_portscan.php"
->Net_Portscan</A
+HREF="packages.networking.php"
+>Networking</A
 ></DT
 ></DL
 ></DIV

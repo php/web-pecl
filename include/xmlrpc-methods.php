@@ -42,7 +42,7 @@ function pear_xmlrpc_dispatcher($method_name, $params, $appdata)
 {
     global $xmlrpc_method_index;
     if (empty($xmlrpc_method_index["index"][$method_name])) {
-        error_log("pear xmlrpc unknown method: $method_name");
+        error_log("pear xmlrpc: unknown method: $method_name");
         return false; // XXX FAULT
     }
     $type_key = "";
@@ -50,17 +50,25 @@ function pear_xmlrpc_dispatcher($method_name, $params, $appdata)
         if ($i > 0) {
             $type_key .= ",";
         }
-        $type_key .= xmlrpc_get_type($params[$i]);
+        $tmp = xmlrpc_get_type($params[$i]);
+        if ($tmp == 'boolean') {
+            $type_key .= 'bool';
+        } else {
+            $type_key .= $tmp;
+        }
     }
     if (!isset($xmlrpc_method_index["index"][$method_name][$type_key])) {
-        error_log("pear xmlrpc no signature found for $method_name($type_key)");
-        return false; // XXX FAULT
+        error_log("pear xmlrpc: no signature found for $method_name($type_key)");
+        PEAR::raiseError("no signature found for $method_name($type_key)", -1,
+                         PEAR_ERROR_TRIGGER, E_USER_WARNING, $userinfo);
+        return false;
     }
 	$auth = $xmlrpc_method_index["auth"][$method_name];
 	if ($auth != "all") {
 		auth_require($auth == "admin");
 	}
     $function = $xmlrpc_method_index["index"][$method_name][$type_key];
+    error_log("pearweb xmlrpc: calling $function", 0);
     if (strstr($function, "::")) {
         list($class, $method) = explode("::", $function);
         // XXX deprecated syntax

@@ -64,6 +64,7 @@ $category    = $pkg['category'];
 $homepage    = $pkg['homepage'];
 $pacid       = $pkg['packageid'];
 $cvs_link    = $pkg['cvs_link'];
+$doc_link    = $pkg['doc_link'];
 
 // Accounts data
 $sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role".
@@ -191,11 +192,16 @@ $stats_link = make_link("/package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=
 <tr>
 <td align="center">
 <?php
-if ($cvs_link) {
+if (!empty($cvs_link)) {
     print '[ ' . make_link($cvs_link, 'CVS Web', 'top') . ' ]';
 }
 print '&nbsp;</td>';
 print '<td align="center">[ ' . make_link('/bugs/search.php?cmd=display&status=Open&bug_type[]='.$pkg['name'], 'Package Bugs') . ' ]</td>';
+if (!empty($doc_link)) {
+    print '<td align="center">[ ' . make_link($doc_link, "View documentation") . ' ]</td>';
+} else {
+    print '<td />';
+}
 ?>
 </tr>
 </table>

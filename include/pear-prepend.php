@@ -33,7 +33,6 @@ error_reporting(E_ALL);
 
 if ($_SERVER['SERVER_NAME'] != 'pear.php.net' || isset($_COOKIE['pear_dev'])) {
     define('DEVBOX', true);
-    include_once "pear-debug.php";
 } else {
     define('DEVBOX', false);
 }

@@ -340,7 +340,7 @@ class package
             "FROM packages p, releases r ".
             "WHERE p.id = r.package".
             ($released_only ? " AND r.state = 'stable' " : "").
-            "ORDER BY r.releasedate DESC ", false, null, DB_FETCHMODE_ASSOC);
+            "ORDER BY r.releasedate ASC ", false, null, DB_FETCHMODE_ASSOC);
         $deps = $dbh->getAll(
             "SELECT package, release , type, relation, version, name ".
             "FROM deps", null, DB_FETCHMODE_ASSOC);

@@ -103,9 +103,9 @@ do {
 
 if ($display_form) {
 
-    response_header("Apply for Account");
+    response_header("Request Account");
 
-    print "<H1>Apply for Account</H1>
+    print "<H1>Request Account</H1>
 
 Please note that you <b>not</b> need an account for
 <b>downloading</b>.<br> You only need an account if you have a package

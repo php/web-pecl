@@ -6,8 +6,8 @@ require_once 'layout.php';
 
 $GLOBALS['main_menu'] = array(
     'index.php'           => 'Home',
-    'http://php.net/manual/en/pear.php' => 'Documentation',
-    'faq.php'             => 'Pear FAQ',
+    '/manual/index.php' => 'Documentation',
+    'faq.php'             => 'PEAR FAQ',
     'packages.php'        => 'Browse Packages',
     'authors.php'         => 'Browse Authors',
     'account-request.php' => 'Request Account'

@@ -26,7 +26,7 @@ components.
 
 response_header();
 
-menu_link("Documentation", "http://php.net/manual/en/pear.php");
+menu_link("Documentation", "/manual/");
 menu_link("Frequently Asked Questions", "faq.php");
 
 if (DEVBOX) {

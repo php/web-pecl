@@ -29,7 +29,7 @@ do {
             }
             $tmpsize = $file->getProp('size');
         } elseif ($file->isMissing()) {
-            display_error("No file uploaded"); break;
+            display_error("No file has been uploaded."); break;
         } elseif ($file->isError()) {
             display_error($file->errorMsg()); break;
         }
@@ -41,7 +41,7 @@ do {
     } elseif (isset($verify)) {
         $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
         if (!@is_file($distfile)) {
-            display_error("No verified file found"); break;
+            display_error("No verified file found."); break;
         }
         include_once "PEAR/Common.php";
         $util =& new PEAR_Common;
@@ -98,7 +98,8 @@ do {
         if (@is_file($distfile)) {
             @unlink($distfile);
         }
-        header("Location: $PHP_SELF"); exit;
+        header("Location: ". $_SERVER['PHP_SELF']); // XXX Better use HTTP::redirect() here.
+        exit;
     }
 } while (false);
 
@@ -175,7 +176,7 @@ if ($display_verification) {
         }
         print "</ul>";
     }
-    $form =& new HTML_Form($PHP_SELF, "POST");
+    $form =& new HTML_Form($_SERVER['PHP_SELF'], "POST");
     $form->addHidden('distfile', $tmpfile);
     // Don't show the next step button when errors found
     if (!count($errors)) {

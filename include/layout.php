@@ -201,8 +201,9 @@ function commonHeader($title) {
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br></td></tr>
 
   <tr bgcolor="#006633">
-      <td align="right" valign="top" colspan="2"><font color="#ffffff">
+      <td align="right" valign="top" colspan="2">
         <form method="POST" action="/search.php">
+        <font color="#ffffff">
         <small>search for</small>
 <INPUT CLASS="small" TYPE="text" NAME="pattern" VALUE="<? echo htmlspecialchars($prevsearch) ?>" SIZE="30">
 <small>in the</small>
@@ -217,7 +218,7 @@ function commonHeader($title) {
 </SELECT>
 <?	echo make_submit('small_submit_white.gif', 'search', 'bottom');
       ?>&nbsp;<br>
-     </form></font></td>
+     </font></form></td>
   </tr>
 
   <tr bgcolor="#003300"><td colspan="2"><?php spacer(1,1);?><br></td></tr>
@@ -263,8 +264,7 @@ function commonFooter() {
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="#003300"><td><?php spacer(1,1);?><br></td></tr>
-  <tr bgcolor="#009933">
-    <form method="GET" action="/mirrors.php" onsubmit="return gotomirror(this);">
+  <tr bgcolor="#009933">    
       <td align="right" valign="bottom">
       <script language="javascript" type="text/javascript">
       <!--
@@ -277,6 +277,7 @@ function commonFooter() {
         }
       //-->
       </script>
+      <form method="GET" action="/mirrors.php" onsubmit="return gotomirror(this);">
       <input type="hidden" name="REDIRECT" value="1">
       <?php
 	# TODO: should send current url above, so we can redirect to
@@ -302,8 +303,8 @@ function commonFooter() {
 	echo "</select> ";
 	echo make_submit('small_submit_black.gif', 'go', 'bottom' );
       ?>&nbsp;<br>
-      </td>
-    </form>
+      </form>
+      </td>    
   </tr>
   <tr bgcolor="#003300"><td><?php spacer(1,1); ?><br></td></tr>
 </table>

@@ -31,7 +31,7 @@ Now to the use-cases:
     2. gets email when account is open
     3. proceed to use-case 2
 
-2. Programmer wants to register his new "Money_Fast" package:
+(done) 2. Programmer wants to register his new "Money_Fast" package:
     1. registers his project with the name space "Money:Fast"[1].  It
        is the programmer's responsibility to put the package in the
        right place
@@ -45,7 +45,7 @@ Now to the use-cases:
        published" list on  pear.php.net, a notice goes to the
        pear-announce mailing list, freshmeat.net etc.
 
-4. User wants to install the latest version of "Money_Fast" (1.2):
+(done) 4. User wants to install the latest version of "Money_Fast" (1.2):
     1. user runs "pear install-latest Money_Fast", which downloads
        Money_Fast-1.2.tgz and installs it.  alternative approaches:
        * "pear shell", "install-latest Money_Fast"

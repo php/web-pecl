@@ -17,6 +17,9 @@ installed in /usr/share/pear):
 
  ErrorDocument 404 /error/404.php
 
+ Alias /package /usr/local/www/pearweb/public_html/package-info.php
+ Alias /user    /usr/local/www/pearweb/public_html/account-info.php
+
  <Location /get>
   ForceType application/x-httpd-php
  </Location>

@@ -196,7 +196,7 @@ function manualHeader($title,$id="") {
         }
     }
 
-    commonHeader('Manual: '.$title);
+    response_header('Manual: '.$title);
         # create links to plain html and other languages
     if (!$HTDIG) {
         navigationBar($title, $id, "top");
@@ -209,6 +209,6 @@ function manualFooter($title,$id="") {
         navigationBar($title, $id, "bottom");
     }
 
-    commonFooter();
+    response_footer();
 }
 ?>

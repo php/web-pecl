@@ -19,7 +19,6 @@ function makeBorderTOC($this) {
 	global $NEXT, $PREV, $UP, $HOME, $TOC, $DOCUMENT_ROOT;
 	global $SIDEBAR_DATA, $LANG;
 
-	
 	$SIDEBAR_DATA = '<form method="get" action="/manual-lookup.php">' .
 	$SIDEBAR_DATA.= '<table border="0" cellpadding="4" cellspacing="0">';
 
@@ -28,21 +27,21 @@ function makeBorderTOC($this) {
 		'<input type="hidden" name="lang" value="' . $LANG . '">' .
 		'lookup: <input type="text" class="small" name="function" size="10"> ' .
 		make_submit('small_submit_white.gif', 'lookup', 'bottom') .
-		'<br></small></td></tr>';
+		'<br /></small></td></tr>';
 
 	$SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
     */
 
 	$SIDEBAR_DATA.= '<tr valign="top"><td>' . 
 		make_link('./', make_image('caret-t.gif', $HOME[1]) . $HOME[1] ) . 
-		'<br></td></tr>';
+		'<br /></td></tr>';
 
 	$SIDEBAR_DATA.= '<tr bgcolor="#cccccc"><td></td></tr>';
 
 	if (($HOME[1] != $UP[1]) && $UP[1]) {
 		$SIDEBAR_DATA.= '<tr valign="top"><td>' . 
 			make_link($UP[0], make_image('caret-u.gif', $UP[1]) . $UP[1] ) . 
-			'<br></td></tr>';
+			'<br /></td></tr>';
 	}
 
 	$SIDEBAR_DATA.= '<tr valign="top"><td><small>';
@@ -56,12 +55,10 @@ function makeBorderTOC($this) {
 		if ($title == $this) {
 			$img = 'box-1.gif';
 		}
-		if ($UP[0] == 'funcref.php') {
-			$title = eregi_replace(" functions\$", "", $title);
-		}
+
 		$SIDEBAR_DATA .= '&nbsp;' . 
 			make_link($url, make_image($img, $title) . $title ) . 
-			'<br>';
+			'<br />';
 	}
 
 	$SIDEBAR_DATA.= '</small></td></tr>';
@@ -86,25 +83,25 @@ function navigationBar($title,$id,$loc) {
 
 	echo '<tr><td>';
 	if ($PREV[1]) {
-		echo make_link( $PREV[0] , make_image('caret-l.gif', 'previous') . $PREV[1] ) ;
+		print_link( $PREV[0] , make_image('caret-l.gif', 'previous') . $PREV[1] ) ;
 	}
-	echo '<br></td>';
+	echo '<br /></td>';
 
 	echo '<td align="right">';
 	if ($NEXT[1]) {
-		echo make_link( $NEXT[0] , $NEXT[1] . make_image('caret-r.gif', 'next') ) ;
+		print_link( $NEXT[0] , $NEXT[1] . make_image('caret-r.gif', 'next') ) ;
 	}
-	echo '<br></td>';
+	echo '<br /></td>';
 	echo '</tr>';
 
 	echo '<tr bgcolor="#cccccc"><td colspan="2">';
 	spacer(1,1);
-	echo '<br></td></tr>';
+	echo '<br /></td></tr>';
 
 	if ($loc != 'bottom') {
 		global $LANGUAGES;
 		$links = array();
-		foreach($LANGUAGES as $code=>$name) {
+		foreach($LANGUAGES as $code => $name) {
 			if (file_exists("../$code/$id")) {
 				$links[] = make_link("../$code/$id", $name);
 			}
@@ -123,148 +120,12 @@ function navigationBar($title,$id,$loc) {
 	    echo '<td valign="top" align="left"><small>'
 	         . make_link("/download-docs.php", "Download Documentation")
 	        . '</small</td>';
-	    echo '<td align="right"><small>Last updated: '.$tstamp.'<br>';
+	    echo '<td align="right"><small>Last updated: '.$tstamp.'<br />';
     }
 
 	echo '</small></td></tr>';
 	echo "</table>\n";
 
-}
-
-
-function makeEntry($date,$name,$blurb,$id=0) {
-    global $MAGIC_COOKIE;
-?>
-<tr valign="top">
-<td bgcolor="#e0e0e0" colspan="2">
-<?php
-    if ($id) { echo '<a name="#' . $id . '"></a>'; }
-?>
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-<tr valign="top"><td>
-<?php
-    $name = htmlspecialchars($name);
-    if ($name && $name != "php-general@lists.php.net" && $name != "user@example.com") {
-        if (ereg("(.+)@(.+)\.(.+)",$name)) {
-            echo "<a href=\"mailto:".$name."\">".$name."</a><br>\n";
-        } else {
-            echo "<b>".$name."</b><br>\n";
-        }
-    }
-    echo date("d-M-Y h:i",$date);
-?>
-</td>
-<td align="right">
-<?php
-if (isset($MAGIC_COOKIE) && $id) {
-	print_popup_link('http://master.php.net/manage/user-notes.php?action=edit+' . $id,
-		make_image('notes-edit.gif', 'edit note'),
-		'admin',
-                'scrollbars=no,width=650,height=400'
-	);
-	echo '&nbsp';
-	print_popup_link('http://master.php.net/manage/user-notes.php?action=reject+' . $id,
-		make_image('notes-reject.gif', 'reject note'),
-		'admin',
-                'scrollbars=no,width=300,height=200'
-	);
-	echo '&nbsp';
-	print_popup_link('http://master.php.net/manage/user-notes.php?action=delete+' . $id,
-		make_image('notes-delete.gif', 'delete note'),
-		'admin',
-                'scrollbars=no,width=300,height=200'
-	);
-}
-?>
-<br></td>
-</tr>
-<tr bgcolor="#f0f0f0"><td colspan="2">
-<?php echo clean_note($blurb); ?><br>
-</td></tr>
-</table>
-</td>
-</tr>
-<?php
-};
-
-function manualGetUserNotes($title, $id) {
-	global $MYSITE, $DOCUMENT_ROOT;
-	$notes = array();
-	$hash = substr(md5($id),0,16);
-	$notes_file = "$DOCUMENT_ROOT/backend/notes/".substr($hash,0,2)."/$hash";
-	if ($fp = @fopen($notes_file,"r")) {
-		while (!feof($fp)) {
-			$line = chop(fgets($fp,8096));
-			if ($line == "") continue;
-			list($id,$sect,$rate,$ts,$user,$note) = explode("|",$line);
-			$notes[] = array(
-				"id" => $id,
-				"sect" => $sect,
-				"rate" => $rate,
-				"xwhen" => $ts,
-				"user" => $user,
-				"note" => base64_decode($note)
-			);
-		}
-		fclose($fp);
-	}
-	return $notes;
-}
-
-function manualUserNotes($title, $id) {
-	global $LANG, $MYSITE;
-	$cur = substr(dirname($_SERVER['PHP_SELF']),-2);
-	if($cur=='al') $cur='en';
-
-	# don't want .php at the end of the id.
-	if (substr($id,-4) == '.php') $id = substr($id,0,-4);
-
-	echo "<table border=\"0\" cellpadding=\"4\" cellspacing=\"0\" width=\"100%\">\n";
-
-	$notes = manualGetUserNotes($title, $id);
-
-	$back_url = 'http://' . $_SERVER['SERVER_NAME'] . 
-		(($_SERVER['SERVER_PORT'] == 80) ? '' : ':'.$_SERVER['SERVER_PORT'] ) . 
-		$_SERVER['PHP_SELF'];
-
-	echo "<tr bgcolor=\"#d0d0d0\" valign=\"top\">\n";
-	echo "<td><small>User Contributed Notes<br></small><b>$title</b><br></td>\n";
-	echo "<td align=\"right\">";
-	print_link('/manual/add-note.php?sect='.$id.'&redirect='.$back_url,
-		make_image('notes-add.gif','add a note')
-	);      
-	echo "&nbsp;";
-	print_link('/manual/about-notes.php',
-		make_image('notes-about.gif', 'about notes')
-	);
-	echo "<br></td>\n";
-	echo "</tr>\n";
-
-	if (sizeof($notes) == 0) {
-  	  echo '<tr valign="top">';
-			echo '<td bgcolor="#e0e0e0" colspan="2">';
-			echo 'There are no user contributed notes for this page.';
-			echo '<br></td></tr>';
-	} else {
-		foreach($notes as $note) {
-			makeEntry($note['xwhen'], $note['user'], $note['note'], $note['id'] );
-		}
-
-                echo "<tr bgcolor=\"#d0d0d0\" valign=\"top\">\n";
-		echo "<td colspan=\"2\" align=\"right\">\n";
-                print_link('/manual/add-note.php?sect='.$id.'&redirect='.$back_url,
-                        make_image('notes-add.gif','add a note')
-                );      
-		echo "&nbsp;";
-                print_link('/manual/about-notes.php',
-                        make_image('notes-about.gif', 'about notes')
-                );
-		echo "<br></td>\n";
-		echo "</tr>\n";
-
-	}
-
-	echo "</table><br><br>\n";
 }
 
 function sendManualHeaders($charset,$lang) {
@@ -323,11 +184,9 @@ function manualHeader($title,$id="") {
 function manualFooter($title,$id="") {
 	global $HTDIG;
 	if (!$HTDIG) {
-		// manualUserNotes($title,$id);
 		navigationBar($title, $id, "bottom");
-	}
+    }
 
-	commonFooter();
-
+    commonFooter();
 }
 ?>

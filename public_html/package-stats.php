@@ -161,17 +161,20 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
                 (isset($_GET['rid']) ? $_GET['rid'] : ''));
 
         foreach ($release_statistics as $key => $value) {
+	    echo "<!-- \n";
+		var_export($value);
+		echo "\n -->\n";
             $version = make_link('/package/' . $info['name'] .
-                '/download/' . $value['release'], $value['release']);
+                '/download/' . $value['release'], $value['version']);
             echo ' <tr>';
             echo '  <td>' . $version . "</td>\n";
-            echo '  <td>' . number_format($value['dl_number'], 0, '.', ',');
+            echo '  <td>' . number_format($value['total'], 0, '.', ',');
             echo "  </td>\n";
             echo '  <td>';
-            echo make_utc_date(strtotime($value['releasedate']), 'Y-m-d');
+            echo make_utc_date(strtotime($value['release']), 'Y-m-d');
             echo "  </td>\n";
             echo '  <td>';
-            echo make_utc_date(strtotime($value['last_dl']));
+            echo make_utc_date(strtotime($value['last_download']));
             echo "  </td>\n";
             echo " </tr>\n";
         }

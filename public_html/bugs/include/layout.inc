@@ -71,3 +71,4 @@ function sect_to_file($string) {
         else if(is_file($struct)) return $struct;
         else return "$string.php";
 }
+?>

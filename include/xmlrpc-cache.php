@@ -34,7 +34,11 @@
             $id = $this->cache->generateID(array($method, $args));
             
             if ($maxAge != null) {
-                $time = filemtime($this->cache->container->getFilename($id, 'default'));
+                $filename = $this->cache->container->getFilename($id, 'default');
+                if (!file_exists($filename)) {
+                    return null;
+                };
+                $time = filemtime($filename);
                 if ($maxAge > $time) {
                     return "";
                 };

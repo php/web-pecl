@@ -215,6 +215,11 @@ class package
     // }}}
     // {{{ *proto struct package::info(string|int, [string])
 
+    /**
+    * Implemented $field values:
+    * releases, notes, category, description, authors, categoryid,
+    * packageid, authors
+    */
     function info($pkg, $field = null)
     {
         global $dbh;
@@ -263,6 +268,16 @@ class package
 				$sql = "SELECT c.name FROM categories c, packages p ".
 					 "WHERE c.id = p.category AND p.$what = ?";
 				$info = $dbh->getAssoc($sql, false, array($pkg));
+            } elseif ($field == 'description') {
+                $sql = "SELECT description FROM packages WHERE $what = ?";
+                $info = $dbh->query($sql, array($pkg));
+            } elseif ($field == 'authors') {
+                $sql = "SELECT u.handle, u.name, u.email, u.showemail, m.role
+                        FROM maintains m, users u, packages p
+                        WHERE m.package = p.id
+                        AND p.$what = ?
+                        AND m.handle = u.handle";
+                $info = $dbh->getAll($sql, array($pkg), DB_FETCHMODE_ASSOC);
 			} else {
 				if ($field == 'categoryid') {
 					$dbfield = 'category';
@@ -665,6 +680,53 @@ class release
     }
 
     // }}}
+    // {{{ +proto string release::promote(array, string)
+
+    /**
+    * $pkginfo array comming from PEAR_common::inforFromDescFile('package.xml')
+    * $upload file name of the new uploaded release
+    */
+    function promote($pkginfo, $upload)
+    {
+        $pacid   = package::info($pkginfo['package'], 'packageid');
+        $authors = package::info($pkginfo['package'], 'authors');
+        $txt_authors = '';
+        foreach ($authors as $a) {
+            $txt_authors .= $a['name'];
+            if ($a['showemail']) {
+                $txt_authors .= " <{$a['email']}>";
+            }
+            $txt_authors .= " ({$a['role']})\n";
+        }
+        $upload = basename($upload);
+        $release = "{$pkginfo['package']}-{$pkginfo['version']} ({$pkginfo['release_state']})";
+        $txtanounce =<<<END
+New PEAR package $release released at http://pear.php.net
+
+Release notes
+-------------
+{$pkginfo['release_notes']}
+
+Package Info
+-------------
+{$pkginfo['description']}
+
+Related Links
+-------------
+Package home: http://pear.php.net/package-info.php?pacid=$pacid
+   Changelog: http://pear.php.net/package-changelog.php?pacid=$pacid
+    Download: http://pear.php.net/get/$upload
+
+Authors
+-------------
+$txt_authors
+END;
+        $to   = '"PEAR general list" <pear-general@lists.php.net>';
+        $to = '<cox@localhost>';
+        $from = '"PEAR announce" <pear-dev@lists.php.net>';
+        $subject = "[new web release] $release";
+        mail($to, $subject, $txtanounce, "FROM: $from");
+    }
 }
 
 class note

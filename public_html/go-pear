@@ -33,6 +33,9 @@
 #  > php-cli -r 'readfile("http://pear.php.net/go-pear");' > go-pear
 #  > php-cli go-pear
 #
+# If using the CGI version of PHP, append the -q option to suppress
+# headers in the output.
+#
 # You can now use go-pear via a webbrowser, thanks to Christian Dickmann. It is
 # still beta codes, but feel free to test it:
 # 1.: Download the go-pear script by using the "Save target as ..." function
@@ -49,8 +52,7 @@
 #
 # 5.: Protect the Web Frontend directory and the go-pear script with a password.
 # Use .htaccess on Apache webservers for example.
-# If using the CGI version of PHP, append the -q option to suppress
-# headers in the output.
+#
 #
 
 set_time_limit(0);
@@ -66,9 +68,23 @@ define('WINDOWS', (substr(PHP_OS, 0, 3) == 'WIN'));
 define('GO_PEAR_VER', '0.2.2');
 
 define('WIN32GUI', !WEBINSTALLER && WINDOWS && php_sapi_name()== 'cli' && which('cscript'));
-if(WIN32GUI){
-    echo "Uses cscript GetFolder.\n";
+
+
+/*
+    See bug #23069
+*/
+if ( WEBINSTALLER && WINDOWS ) {
+    $php_sapi_name = win32DetectPHPSAPI();
+    if($php_sapi_name=='cgi'){
+    $msg = nl2br("
+Sorry! The PEAR installer actually does not work on Windows platform using CGI and Apache.
+Please install the module SAPI (see http://www.php.net/manual/en/install.apache.php for the
+instructions) or use the CLI (cli\php.exe) in the console.
+");
+        displayHTML('error', $msg);
+    }
 }
+
 if (WEBINSTALLER && isset($_GET['action']) && $_GET['action'] == 'img' && isset($_GET['img'])) {
 	switch ($_GET['img'])
 	{
@@ -128,7 +144,7 @@ $pfc_packages = array(
 $config_desc = array(
     'prefix' => 'Installation prefix',
     'bin_dir' => 'Binaries directory',
-    'php_dir' => 'PHP code directory',
+    'php_dir' => 'PHP code directory ($php_dir)',
     'doc_dir' => 'Documentation base directory',
     'data_dir' => 'Data base directory',
     'test_dir' => 'Tests base directory',
@@ -156,6 +172,23 @@ detect_install_dirs();
 
 if (WEBINSTALLER) {
 	@session_start();
+
+    /*
+        See bug #23069
+    */
+    if ( WINDOWS ) {
+        $php_sapi_name = win32DetectPHPSAPI();
+        if($php_sapi_name=='cgi'){
+            $msg = "
+    Sorry! The PEAR installer actually does not work on Windows platform using CGI and Apache.
+    Please install the module SAPI (see http://www.php.net/manual/en/install.apache.php for the
+    instructions) or use the CLI (cli\php.exe) in the console.
+    ";
+            displayHTML('error', $msg);
+            exit();
+        }
+    }
+
 	if (!isset($_SESSION['go-pear']) || isset($_GET['restart'])) {
 		$sep = WINDOWS ? "\\" : '/';
 		$_SESSION['go-pear'] = array(
@@ -178,6 +211,8 @@ if (WEBINSTALLER) {
 	};
 	if (!isset($_GET['step'])) {
 		$_GET['step'] = 'Welcome';
+        /* clean up old sessions datas */
+        session_destroy();
 	};
 	if ($_GET['step'] == 'install') {
 		$_SESSION['go-pear']['http_proxy'] = strip_magic_quotes($_POST['proxy']['host']).':'.strip_magic_quotes($_POST['proxy']['port']);
@@ -185,22 +220,33 @@ if (WEBINSTALLER) {
 			$_SESSION['go-pear']['http_proxy'] = '';
 		};
 
+        $www_errors = array();
 		foreach($_POST['config'] as $key => $value) {
 			$_POST['config'][$key] = strip_magic_quotes($value);
-		};
+            if($key!='cache_ttl'){
+                if( ereg(' ', $_POST['config'][$key]) ) {
+                    $www_errors[$key] = 'Spaces are not allowed in pathes. Please choose another path.';
+                } elseif ( empty($_POST['config'][$key]) ) {
+                    $www_errors[$key] = 'Please fill this path, you can use $prefix, $php_dir or a full path.';
+                }
+            }
+        }
+
+        if( sizeof($www_errors)>0){
+            $_GET['step'] = 'config';
+        }
+
 		$_SESSION['go-pear']['config'] = $_POST['config'];
 		$_SESSION['go-pear']['install_pfc'] = (isset($_POST['install_pfc']) && $_POST['install_pfc'] == 'on');
         $_SESSION['go-pear']['DHTML'] = !($_POST['BCmode'] == "on");
-	};
+	}
+
 	$http_proxy = $_SESSION['go-pear']['http_proxy'];
 	foreach($_SESSION['go-pear']['config'] as $var => $value) {
 		$$var = $value;
 	};
 	$install_pfc = $_SESSION['go-pear']['install_pfc'];
 };
-
-
-
 
 if (!WEBINSTALLER) {
 	$tty = WINDOWS ? @fopen('\con', 'r') : @fopen('/dev/tty', 'r');
@@ -235,10 +281,10 @@ If you wish to abort, press Control-C now, or press Enter to continue: ";
 	}
 };
 
-
 $origpwd = getcwd();
 
 $config_vars = array_keys($config_desc);
+
 // make indices run from 1...
 array_unshift($config_vars, "");
 unset($config_vars[0]);
@@ -250,21 +296,27 @@ end($config_vars);
 $last = key($config_vars);
 
 if (WEBINSTALLER) {
-    if (isset($_SESSION['go-pear']['DHTML']) && $_SESSION['go-pear']['DHTML'] == true && $_GET['step'] == 'install') {
-        $_GET['step'] = 'preinstall';
-    };
-	if ($_GET['step'] != 'install' && $_GET['step'] != 'install-progress') {
-		displayHTML($_GET['step']);
-		exit;
-	};
-    if ($_GET['step'] == 'install-progress') {
-        displayHTMLHeader();
-        echo "Starting installation ...<br/>";
-    };
-	ob_start();
-};
+    if ( sizeof($www_errors)<1 ) {
+        if (isset($_SESSION['go-pear']['DHTML']) && $_SESSION['go-pear']['DHTML'] == true && $_GET['step'] == 'install') {
+            $_GET['step'] = 'preinstall';
+        };
+        if ($_GET['step'] != 'install' && $_GET['step'] != 'install-progress') {
+            displayHTML($_GET['step']);
+            exit;
+        };
+        if ($_GET['step'] == 'install-progress') {
+            displayHTMLHeader();
+            echo "Starting installation ...<br/>";
+        };
+        ob_start();
+    } else {
+        displayHTML('config');
+        exit();
+    }
+}
 
 $progress = 0;
+
 /*
  * Checks PHP SAPI version under windows/CLI
  */
@@ -291,10 +343,67 @@ recommand to use it.
 We found php.exe under $php_bin, it uses an unknown SAPI. PEAR commandline
 tool has not been tested with it, if you have a CLI (or CGI) php.exe available,
 we strongly recommand to use it.
+
 ";
             }
     }
 }
+
+
+
+####
+# Temp stuff
+####
+
+$foo = tmp_dir();
+$ptmp = tempnam($foo, 'gope');
+if(WINDOWS){
+    $ptmp = str_replace($foo,'',$ptmp);
+    $foo=str_replace("\\\\",'/',$foo);
+    $s = substr($ptmp,0,1);
+    if($s=="\\" || $s=='/' ){
+        $ptmp = $foo.'/'.substr($ptmp,1);
+    } else {
+        $ptmp = $foo.'/'.$ptmp;
+    }
+}
+
+rm_rf($ptmp);
+mkdir_p($ptmp, 0700);
+$ok = @chdir($ptmp);
+
+// If for some reason the user has no rights to access to
+// the standard tempdir, we assume that he has the right
+// to access his prefix and choose $prefix/tmp as tempdir
+if (!$ok) {
+	print "System's Tempdir failed, trying to use \$prefix/tmp ...";
+	$res = mkdir_p($prefix.'/tmp');
+	if (!$res) {
+		bail('mkdir '.$prefix.'/tmp'.' ... failed');
+	}
+	$ptmp = tempnam($prefix.'/tmp', 'gope');
+
+	rm_rf($ptmp);
+	mkdir_p($ptmp, 0700);
+	$ok = @chdir($ptmp);
+
+	if (!$ok) { // This should not happen, really ;)
+		bail('chdir '.$ptmp.' ... failed');
+	}
+
+	print "ok\n";
+
+	// Adjust TEMPDIR envvars
+	if (!isset($_ENV)) {
+		$_ENV = array();
+	};
+	$_ENV['TMPDIR'] = $_ENV['TEMP'] = $prefix.'/tmp';
+};
+
+
+
+
+
 
 while (!WEBINSTALLER) {
     print "
@@ -315,7 +424,7 @@ accept these locations.
     if ( empty($tmp) ) {
         if( WINDOWS && !$php_bin_set ){
             echo "**ERROR**
-Please, specify the php.exe path.
+Please, enter the php.exe path.
 
 ";
         } else {
@@ -343,17 +452,19 @@ Please, specify the php.exe path.
                 $php_bin_sapi = win32DetectPHPSAPI();
                 if($php_bin_sapi=='cgi'){
             print "
-*NOTICE*
-We found php.exe under $php_bin, it uses a $php_bin_sapi SAPI. PEAR commandline
-tool works well with it, if you have a CLI php.exe available, we
-recommand to use it.
+******************************************************************************
+NOTICE! We found php.exe under $php_bin, it uses a $php_bin_sapi SAPI.
+PEAR commandline tool works well with it.
+If you have a CLI php.exe available, we recommand to use it.
+
 ";
                 } elseif ($php_bin_sapi=='unknown') {
             print "
-*WARNING*
-We found php.exe under $php_bin, it uses an $php_bin_sapi SAPI. PEAR commandline
-tool has not been tested with it, if you have a CLI (or CGI) php.exe available,
-we strongly recommand to use it.
+******************************************************************************
+WARNING! We found php.exe under $php_bin, it uses an $php_bin_sapi SAPI.
+PEAR commandline tool has not been tested with it.
+If you have a CLI (or CGI) php.exe available, we strongly recommand to use it.
+
 ";
                 }
                 echo "php.exe (sapi: $php_bin_sapi) found.\n\n";
@@ -409,55 +520,6 @@ if (!WEBINSTALLER) {
 	print "\n";
 };
 
-####
-# Temp stuff
-####
-
-$foo = tmp_dir();
-$ptmp = tempnam($foo, 'gope');
-if(WINDOWS){
-    $ptmp = str_replace($foo,'',$ptmp);
-    $foo=str_replace("\\\\",'/',$foo);
-    $s = substr($ptmp,0,1);
-    if($s=="\\" || $s=='/' ){
-        $ptmp = $foo.'/'.substr($ptmp,1);
-    } else {
-        $ptmp = $foo.'/'.$ptmp;
-    }
-}
-
-rm_rf($ptmp);
-mkdir_p($ptmp, 0700);
-$ok = @chdir($ptmp);
-
-// If for some reason the user has no rights to access to
-// the standard tempdir, we assume that he has the right
-// to access his prefix and choose $prefix/tmp as tempdir
-if (!$ok) {
-	print "System's Tempdir failed, trying to use \$prefix/tmp ...";
-	$res = mkdir_p($prefix.'/tmp');
-	if (!$res) {
-		bail('mkdir '.$prefix.'/tmp'.' ... failed');
-	};
-	$ptmp = tempnam($prefix.'/tmp', 'gope');
-
-
-	rm_rf($ptmp);
-	mkdir_p($ptmp, 0700);
-	$ok = @chdir($ptmp);
-
-	if (!$ok) { // This should not happen, really ;)
-		bail('chdir '.$ptmp.' ... failed');
-	};
-
-	print "ok\n";
-
-	// Adjust TEMPDIR envvars
-	if (!isset($_ENV)) {
-		$_ENV = array();
-	};
-	$_ENV['TMPDIR'] = $_ENV['TEMP'] = $prefix.'/tmp';
-};
 
 ####
 # Download
@@ -642,11 +704,18 @@ foreach ($tarball as $pkg => $src) {
     displayHTMLProgress($progress += round(29 / count($tarball)));
 }
 
+// Little cleanup, this will be fixed in PEAR later
+if ( WINDOWS ) {
+    @unlink($bin_dir.DIRECTORY_SEPARATOR.'.tmppear');
+}
+
 displayHTMLProgress($progress = 99);
 
 // Base installation finished
 
 ini_restore("include_path");
+
+
 if (!WEBINSTALLER) {
 	$sep = WINDOWS ? ';' : ':';
 	$include_path = explode($sep, ini_get('include_path'));
@@ -654,42 +723,39 @@ if (!WEBINSTALLER) {
 	    print "
 ******************************************************************************
 WARNING!  The include_path defined in the currently used php.ini does not
-contain the PEAR PHP directory you just specified.  If the specified
-directory is also not in the include_path used by your scripts, you
-will have problems getting any PEAR packages working.
+contain the PEAR PHP directory you just specified:
+<$php_dir>
+If the specified directory is also not in the include_path used by
+your scripts, you will have problems getting any PEAR packages working.
 ";
-	    if (WINDOWS) {
-	        print "
+
+        if ( $php_ini = getPhpiniPath() ) {
+            print "\n\nWould you like to alter php.ini <$php_ini>? [Y/n] : ";
+            $alter_phpini = !stristr(fgets($tty, 1024), "n");
+            if( $alter_phpini ) {
+                alterPhpIni($php_ini);
+            } else {
+                if (WINDOWS) {
+                    print "
 Please look over your php.ini file to make sure
 $php_dir is in your include_path.";
-	    } else {
-	        print "
+                } else {
+                    print "
 I will add a workaround for this in the 'pear' command to make sure
 the installer works, but please look over your php.ini or Apache
 configuration to make sure $php_dir is in your include_path.
 ";
-	    }
-	    if (WINDOWS) {
-            // on Windows, we can be pretty sure that there is a php.ini
-            // file somewhere
-            do {
-                $php_ini = PHP_CONFIG_FILE_PATH . DIRECTORY_SEPARATOR . 'php.ini';
-                if (@file_exists($php_ini)) break;
-                $php_ini = 'c:\winnt\php.ini';
-                if (@file_exists($php_ini)) break;
-                $php_ini = 'c:\windows\php.ini';
-            } while (false);
-	    } else {
-            $php_ini = PHP_CONFIG_FILE_PATH . DIRECTORY_SEPARATOR . 'php.ini';
-	    }
+                }
+
+            }
+        }
+
 	    print "
 Current include path           : ".ini_get('include_path')."
 Configured directory           : $php_dir
 Currently used php.ini (guess) : $php_ini
 ";
-        if(WINDOWS){
-            win32CreateRegEnv();
-        }
+
 		print "Press Enter to continue: ";
 	    fgets($tty, 1024);
 
@@ -721,6 +787,10 @@ Currently used php.ini (guess) : $php_ini
 	    }
 	}
 
+    if (WINDOWS && !WEBINSTALLER) {
+        win32CreateRegEnv();
+    }
+
 	$pear_cmd = $bin_dir . DIRECTORY_SEPARATOR . 'pear';
 
 	// check that the installed pear and the one in tha path are the same (if any)
@@ -751,6 +821,7 @@ Currently used php.ini (guess) : $php_ini
 ** '$bin_dir' to your PATH environment variable.
 
 ";
+
 	}
 
 	print "Run it without parameters to see the available actions, try 'pear list'
@@ -765,8 +836,8 @@ For more information about PEAR, see:
 Thanks for using go-pear!
 
 ";
-}
 
+}
 
 if (WEBINSTALLER) {
 	print "Writing WebFrontend file ... ";
@@ -1144,6 +1215,7 @@ function detect_install_dirs($_prefix = null) {
 }
 
 // }}}
+// {{{ displayHTMLHeader
 
 function displayHTMLHeader()
 {
@@ -1219,6 +1291,9 @@ function displayHTMLHeader()
 	}
 
 	.green {
+	    color: #006600;
+	}
+	.red {
 	    color: #006600;
 	}
 
@@ -1357,6 +1432,9 @@ function displayHTMLHeader()
 	<?php
 }
 
+// }}}
+// {{{ displayHTML
+
 function displayHTML($page = 'Welcome', $data = array())
 {
 	global $pfc_packages;
@@ -1461,6 +1539,7 @@ function displayHTML($page = 'Welcome', $data = array())
 			<a href="<?php echo basename(__FILE__); ?>?step=config" class="green">Next &gt;&gt;</a>
 			<?php
 		} elseif ($page == 'config') {
+
 			list($proxy_host, $proxy_port) = explode(':', $GLOBALS['http_proxy']);
 			?>
 			<form action="<?php echo basename(__FILE__);?>?step=install" method="post">
@@ -1485,6 +1564,22 @@ function displayHTML($page = 'Welcome', $data = array())
 			</table>
 			<TABLE border="0">
 			<?php
+                // Display error messages
+                if(isset($GLOBALS['www_errors']) && sizeof($GLOBALS['www_errors']) ) {
+                    $www_errors = $GLOBALS['www_errors'];
+                    echo "<tr><td>";
+                    echo '<span class="red">ERROR(S):</span>';
+                    echo "</td></tr>";
+                    foreach($www_errors as $n => $var) {
+                        echo "<tr><td>";
+                        echo '<span class="red">'.$GLOBALS['config_desc'][$n].': </span>';
+                        echo "</td><td>";
+                        echo '<span class="red">'.$www_errors[$n].'</span>';
+                        echo "<br>\n";
+                        echo "</td></tr>\n";
+                    }
+                }
+
 				foreach($GLOBALS['config_vars'] as $n => $var) {
 					printf('<tr><td>%d. %s</td><td><input type="text" name="config[%s]" value="%s"></td></tr>',
 						$n,
@@ -1708,6 +1803,9 @@ function displayHTML($page = 'Welcome', $data = array())
     displayHTMLFooter();
 }
 
+// }}}
+// {{{ displayHTMLFooter
+
 function displayHTMLFooter()
 {
     ?>
@@ -1716,13 +1814,16 @@ function displayHTMLFooter()
 	<?php
 };
 
+// }}}
+// {{{ displayHTMLInstallationSummary
+
 function displayHTMLInstallationSummary($data = '')
 {
 			$next     = NULL;
 			$prefix   = dirname($GLOBALS['webfrontend_file']);
 			$doc_root = strip_magic_quotes($_SERVER['DOCUMENT_ROOT']);
 			$file_dir = dirname(__FILE__);
-			if (WINDOWS) {
+			if ( WINDOWS ) {
 				$prefix   = str_replace('/', '\\', strtolower($prefix));
 				$doc_root = str_replace('/', '\\', strtolower($doc_root));
 				$file_dir = str_replace('/', '\\', strtolower($file_dir));
@@ -1791,6 +1892,9 @@ function displayHTMLInstallationSummary($data = '')
 				};
 };
 
+// }}}
+// {{{ strip_magic_quotes
+
 function strip_magic_quotes($value)
 {
 	if (ini_get('magic_quotes_gpc')) {
@@ -1798,6 +1902,9 @@ function strip_magic_quotes($value)
 	}
 	return $value;
 };
+
+// }}}
+// {{{ showImage
 
 function showImage($img)
 {
@@ -1819,6 +1926,9 @@ function showImage($img)
 	Header('Content-Type: image/'.$images[$img]['type']);
 	echo base64_decode($images[$img]['data']);
 };
+
+// }}}
+// {{{ displayHTMLProgress
 
 function displayHTMLProgress($progress)
 {
@@ -1852,6 +1962,9 @@ function displayHTMLProgress($progress)
     ob_start();
 };
 
+// }}}
+// {{{ displayHTMLDownloadProgress
+
 function displayHTMLDownloadProgress($progress)
 {
     if (!(WEBINSTALLER && isset($_SESSION['go-pear']['DHTML']) && $_SESSION['go-pear']['DHTML'])) {
@@ -1866,6 +1979,9 @@ function displayHTMLDownloadProgress($progress)
     echo $msg;
 };
 
+// }}}
+// {{{ displayHTMLSetDownload
+
 function displayHTMLSetDownload($file)
 {
     if (!(WEBINSTALLER && isset($_SESSION['go-pear']['DHTML']) && $_SESSION['go-pear']['DHTML'])) {
@@ -1879,6 +1995,9 @@ function displayHTMLSetDownload($file)
     ob_start();
     echo $msg;
 };
+
+// }}}
+// {{{ win32BrowseForFolder
 
 /*
  * Create a vbs script to browse the getfolder dialog, called
@@ -1920,6 +2039,7 @@ End If
 ';
     if( !$wshSaved){
         $cscript = $ptmp.DIRECTORY_SEPARATOR."bf.vbs";
+        echo "CSCRIPT: ".$cscript."\n\n\n\n";
         $fh = fopen($cscript,"wb+");
         fwrite($fh,$wsh_browserfolder,strlen($wsh_browserfolder));
         fclose($fh);
@@ -1934,6 +2054,9 @@ End If
     }
     return $arPath[0];
 }
+
+// }}}
+// {{{ win32CreateRegEnv
 
 /*
  * Generates a registry addOn for Win32 platform
@@ -1969,6 +2092,9 @@ Double-click this file to add it to the current user registry.
     }
 }
 
+// }}}
+// {{{ win32DetectPHPSAPI
+
 /*
  * Try to detect the kind of SAPI used by the
  * the given php.exe.
@@ -1992,6 +2118,9 @@ function win32DetectPHPSAPI()
     }
 }
 
+// }}}
+// {{{ getPhpiniPath
+
 /*
  * Get the php.ini file used with the current
  * process or with the given php.exe
@@ -2007,13 +2136,36 @@ function getPhpiniPath()
     if( $pathIni && is_file($pathIni) ){
         return $pathIni;
     }
+
+    // Oh well, we can keep this too :)
+    // I dunno if get_cfg_var() is safe on every OS
+    if (WINDOWS) {
+        // on Windows, we can be pretty sure that there is a php.ini
+        // file somewhere
+        do {
+            $php_ini = PHP_CONFIG_FILE_PATH . DIRECTORY_SEPARATOR . 'php.ini';
+            if ( @file_exists($php_ini) ) break;
+            $php_ini = 'c:\winnt\php.ini';
+            if ( @file_exists($php_ini) ) break;
+            $php_ini = 'c:\windows\php.ini';
+        } while (false);
+    } else {
+        $php_ini = PHP_CONFIG_FILE_PATH . DIRECTORY_SEPARATOR . 'php.ini';
+    }
+
+    if( @is_file($php_ini) ){
+        return $php_ini;
+    }
+
+    // We re running in hackz&troubles :)
     ob_implicit_flush(false);
     ob_start();
     phpinfo(INFO_GENERAL);
     $strInfo = ob_get_contents ();
     ob_end_clean();
     ob_implicit_flush(true);
-    if( php_sapi_name() != 'cli' ){//$ini_path = $ini_arr[1]) );
+
+    if ( php_sapi_name() != 'cli' ) {
         $strInfo = strip_tags($strInfo,'<td>');
         $arrayInfo  = explode("</td>", $strInfo );
         $cli = false;
@@ -2021,8 +2173,9 @@ function getPhpiniPath()
         $arrayInfo = explode("\n",$strInfo);
         $cli = true;
     }
+
     foreach($arrayInfo as $val){
-        if( strpos($val,"php.ini") ){
+        if ( strpos($val,"php.ini") ) {
             if($cli){
                 list(,$pathIni) = explode('=>',$val);
             } else {
@@ -2034,33 +2187,45 @@ function getPhpiniPath()
             }
         }
     }
+
     return false;
 }
 
+// }}}
+// {{{ alterPhpIni
+
 /*
- * Not used yet, will add the support later
  * Not optimized, but seems to work, if some nice
- * peardev will test it before we active it :)
+ * peardev will test it? :)
  *
  * @Author Pierre-Alain Joye <paj@pearfr.org>
  */
-function alterPhpIni($php_ini)
+function alterPhpIni($pathIni='')
 {
+    global $php_dir, $prefix;
+
+    $iniSep = WINDOWS?';':':';
+
+    if( $pathIni=='' ){
+        $pathIni =  getphpinipath();
+    }
+
     $arrayIni = file($pathIni);
     $i=0;
     $found=0;
-    // do we have many include_path?
-    foreach( $arrayIni as $iniLine ) {
-        if( preg_match("/^include_path/",trim($iniLine)) ){
+
+    // Looks for each active include_path directives
+    foreach ( $arrayIni as $iniLine ) {
+        $iniLine = trim($iniLine);
+        $iniLine = str_replace(array("\n","\r"),array(),$iniLine);
+        if( preg_match("/^include_path/",$iniLine) ){
             $foundAt[] = $i;
             $found++;
         }
         $i++;
     }
 
-    if($found){
-        $iniSep = WINDOWS?';':':';
-
+    if ( $found ) {
         $includeLine = $arrayIni[$foundAt[0]];
         list(,$currentPath)=explode('=',$includeLine);
 
@@ -2074,37 +2239,68 @@ function alterPhpIni($php_ini)
             $newPath[0] = '.';
             $newPath[1] = $php_dir;
             array_shift($arrayPath);
-            print_r($arrayPath);
         } else {
             $newPath[0] = $php_dir;
         }
 
-        foreach( $arrayPath as $path){
+        foreach( $arrayPath as $path ){
             $newPath[]= $path;
         }
+    } else {
+        $newPath[0] = '.';
+        $newPath[1] = $php_dir;
 
-        $newInclude = 'include_path="'.implode($iniSep,$newPath).'"';
+    }
+    $nl = WINDOWS?"\r\n":"\n";
+    $includepath = 'include_path="'.implode($iniSep,$newPath).'"';
+    $newInclude =   "$nl$nl;***** Added by go-pear$nl".
+                    $includepath.
+                    $nl."*****".
+                    $nl.$nl;
 
-        // force the use of the 1st found
-        $arrayIni[$foundAt[0]] =  $newInclude;
+    $arrayIni[$foundAt[0]] =  $newInclude;
 
-        for( $i=1; $i<$found; $i++){
-            $arrayIni[$foundAt[$i]]=';'.trim($arrayIni[$foundAt[$i]]);
-        }
-        foreach($foundAt as $key){
-            echo $arrayIni[$key]."\n";
-        }
+    for( $i=1; $i<$found; $i++){
+        $arrayIni[$foundAt[$i]]=';'.trim($arrayIni[$foundAt[$i]]);
+    }
 
-        $newIni = implode("\n",$arrayIni);
-        $pathIni = "ooh/test.ini";
-        if ($fh = @fopen($pathIni, "w+") ){
+    $newIni = implode("",$arrayIni);
+    if ( !($fh = @fopen($pathIni, "wb+")) ){
+        $prefixIni = $prefix.DIRECTORY_SEPARATOR."php.ini-gopear";
+        $fh = fopen($prefixIni, "wb+");
+        if ( !$fh ) {
+            echo
+"
+******************************************************************************
+WARNING!  I cannot write to $pathIni nor in $prefix/php.ini-gopear. Please
+modify manually your php.ini by adding:
+
+$includepath
+
+";
+            return false;
+        } else {
             fwrite($fh, $newIni, strlen($newIni));
             fclose($fh);
-            readfile($pathIni);
-        } else {
-            echo "cannot write php.ini\n";
-        }
-    }
-}
+            echo
+"
+******************************************************************************
+WARNING!  I cannot write to $pathIni, but I succesfully created a php.ini
+under <$prefix/php.ini-gopear>. Please replace the file <$pathIni> with
+<$prefixIni> or modify your php.ini by adding:
 
+$includepath
+
+";
+
+        }
+    } else {
+        fwrite($fh, $newIni, strlen($newIni));
+        fclose($fh);
+        echo "
+php.ini <$pathIni> include_path updated.
+";
+    }
+    return true;
+}
 ?>

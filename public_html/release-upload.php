@@ -34,6 +34,7 @@ do {
         } elseif ($file->isError()) {
             display_error($file->errorMsg()); break;
         }
+
         $display_form = false;
         $display_verification = true;
 
@@ -155,9 +156,32 @@ if ($display_verification) {
     // XXX this will leave files in PEAR_UPLOAD_TMPDIR if users don't
     // complete the next screen.  Janitor cron job recommended!
     $info = $util->infoFromTgzFile(PEAR_UPLOAD_TMPDIR . "/$tmpfile");
+    // packge.xml conformance
+    $util->validatePackageInfo($info, $errors, $warnings);
+    if (count($errors)) {
+        print '<h2>Fatal errors found:</h2>';
+        print '(you should correct your package.xml file before be able to continue)';
+        print '<ul>';
+        foreach ($errors as $error) {
+            print "<li><b>$error</b></li>\n";
+        }
+        print "</ul>";
+    }
+    if (count($warnings)) {
+        print '<h2>Recommendations</h2>';
+        print '(you may want to correct your package.xml file before continue)';
+        print '<ul>';
+        foreach ($warnings as $warning) {
+            print "<li>$warning</li>\n";
+        }
+        print "</ul>";
+    }
     $form =& new HTML_Form($PHP_SELF, "POST");
     $form->addHidden('distfile', $tmpfile);
-    $form->addSubmit('verify', 'Verify Release');
+    // Don't show the next step button when errors found
+    if (!count($errors)) {
+        $form->addSubmit('verify', 'Verify Release');
+    }
     $form->addSubmit('cancel', 'Cancel');
 
     // XXX ADD MASSIVE SANITY CHECKS HERE

@@ -748,32 +748,6 @@ Currently used php.ini (guess) : $php_ini
 
 		print "Press Enter to continue: ";
 	    fgets($tty, 1024);
-
-	    if (!WINDOWS) {
-	        print 'Fixing installer include_path.........';
-	        $pear_cmd = "$bin_dir/pear";
-	        $tmpfile = "$bin_dir/.tmp.pear";
-	        $fp = @fopen($pear_cmd, "r");
-	        $wp = @fopen($tmpfile, "w");
-	        if ($fp && $wp) {
-	            $hashbang = rtrim(fgets($fp, 1024));
-	            if (!strstr($hashbang, "include_path=")) {
-	                $hashbang .= "d include_path=$php_dir";
-	            }
-	            fwrite($wp, "$hashbang\n");
-	            while ($data = fread($fp, 2048)) {
-	                fwrite($wp, $data);
-	            }
-	            fclose($fp);
-	            fclose($wp);
-	            $perms = fileperms($pear_cmd);
-	            rename($tmpfile, $pear_cmd);
-	            chmod($pear_cmd, $perms);
-	            print "ok\n";
-	        } else {
-	            print "failed\n";
-	            print "Make sure you update your php.ini!\n\n";
-	        }
 	    }
 	}
 

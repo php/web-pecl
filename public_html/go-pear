@@ -712,7 +712,19 @@ ini_restore("include_path");
 if (!WEBINSTALLER) {
 	$sep = WINDOWS ? ';' : ':';
 	$include_path = explode($sep, ini_get('include_path'));
-	if (!in_array($php_dir, $include_path)) {
+    if (WINDOWS) {
+        $found = false;
+        $t = strtolower($php_dir);
+        foreach($include_path as $path) {
+            if ($t==strtolower($path)) {
+                $found = true;
+                break;
+            }
+        }
+    } else {
+        $found = in_array($php_dir, $include_path);
+    }
+	if (!$found) {
 	    print "
 ******************************************************************************
 WARNING!  The include_path defined in the currently used php.ini does not
@@ -802,7 +814,14 @@ Thanks for using go-pear!
 if (WEBINSTALLER) {
 	print "Writing WebFrontend file ... ";
    	@unlink($webfrontend_file); //Delete old one
-   	$fp = fopen($webfrontend_file, 'w');
+    copy ( $doc_dir.DIRECTORY_SEPARATOR.
+            'PEAR_Frontend_Web'.DIRECTORY_SEPARATOR.
+            'docs'.DIRECTORY_SEPARATOR.
+            'example.php',
+            $webfrontend_file
+        );
+   	//$fp = fopen($webfrontend_file, 'w');
+    if(false)
    	if (!$fp) {
    		print "failed\n";
    	} else {
@@ -811,7 +830,7 @@ if (WEBINSTALLER) {
    			require_once('PEAR.php');
    			\$pear_user_config = '".$prefix."/pear.conf';
     		\$useDHTML         = true;
-   			require_once('PEAR/WEBINSTALLER.php');
+   			require_once('PEAR/WebInstaller.php');
    			?".'>';
 		fwrite($fp, $php_file);
 		fclose($fp);

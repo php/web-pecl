@@ -20,7 +20,8 @@ $GLOBALS['user_menu'] = array(
 
 $GLOBALS['admin_menu'] = array(
     '/admin.php'            => 'Account Requests',
-    '/category-manager.php' => 'Manage Categories'
+    '/category-manager.php' => 'Manage Categories',
+    '/accounts.php'         => 'Browse Accounts'
 );
 
 $GLOBALS['_style'] = '';

@@ -94,6 +94,63 @@ function &get_recent_releases($n = 5) {
     return $recent;
 }
 
+
+function release_upload($package, $version, $relnotes, &$tarball, $md5sum)
+{
+    global $_return_value; // used by XML-RPC backend
+    global $dbh, $auth_user;
+
+    // (2) verify that package exists
+    $test = $dbh->getOne("SELECT name FROM packages WHERE name = ?",
+                         array($package));
+    if (isset($_return_value)) return $_return_value;
+    if (empty($test)) {
+        return "no such package: $package";
+    }
+
+    // (3) verify that version does not exist
+    $test = $dbh->getOne("SELECT version FROM releases ".
+                         "WHERE package = ? AND version = ?",
+                         array($package, $version));
+    if (isset($_return_value)) return $_return_value;
+    if ($test) {
+        return "already exists: $package $version";
+    }
+
+    // (4) store tar ball to temp file
+    $tempfile = sprintf("%s/%s%s-%s.tgz",
+                        PEAR_TARBALL_DIR, ".new.", $package, $version);
+    $file = sprintf("%s/%s-%s.tgz", PEAR_TARBALL_DIR, $package, $version);
+    $fp = @fopen($tempfile, "w");
+    if (!$fp) {
+        return "fopen failed: $php_errormsg";
+    }
+    fwrite($fp, $distfile);
+    fclose($fp);
+    // later: do lots of integrity checks on the tarball
+    if (!@rename($tempfile, $file)) {
+        return "rename failed: $php_errormsg";
+    }
+
+    // (5) verify MD5 checksum
+    ob_start();
+    readfile($file);
+    $data = ob_get_contents();
+    ob_end_clean();
+    if (md5($data) != $md5sum) {
+        return "bad md5 checksum";
+    }
+
+    // Update releases table
+    $query = "INSERT INTO releases VALUES(?,?,?,?,?,?,?)";
+    $sth = $dbh->prepare($query);
+    $dbh->execute($sth, array($package, $version, $auth_user->handle,
+                              gmdate('Y-m-d H:i'), $relnotes, $md5sum,
+                              $file));
+    if (isset($_return_value)) return $_return_value;
+    
+}
+
 function invalidHandle($handle) {
     if (preg_match('/^[a-z]+-?[a-z]+$/i', $handle)) {
 	return false;

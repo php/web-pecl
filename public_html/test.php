@@ -1,6 +1,6 @@
 <?php
 
-require_once "xmlrpc.inc";
+require_once "XML/RPC.php";
 
 response_header("XML-RPC test");
 
@@ -9,13 +9,18 @@ readfile("/home/ssb/cvs/php/pear/HTTP/HTTP-1.0.tgz");
 $data = ob_get_contents();
 ob_end_clean();
 
-$f = new xmlrpcmsg('release.upload',
-		   array(new xmlrpcval("HTTP", $xmlrpcString),
-			 new xmlrpcval("1.0", $xmlrpcString),
-			 new xmlrpcval("Initial release", $xmlrpcString),
-			 new xmlrpcval($data, $xmlrpcBase64),
-			 new xmlrpcval(md5($data), $xmlrpcString)));
-$c = new xmlrpc_client("/xmlrpc.php", "pear.localdomain", 80);
+$f = new XML_RPC_Message('release.upload',
+                         array(new XML_RPC_Value("HTTP",
+                                                 $XML_RPC_String),
+                               new XML_RPC_Value("1.0",
+                                                 $XML_RPC_String),
+                               new XML_RPC_Value("Initial release",
+                                                 $XML_RPC_String),
+                               new XML_RPC_Value($data,
+                                                 $XML_RPC_Base64),
+                               new XML_RPC_Value(md5($data),
+                                                 $XML_RPC_String)));
+$c = new XML_RPC_Client("/xmlrpc.php", "pear.localdomain", 80);
 $c->setCredentials("ssb", "bing");
 $c->setDebug(1);
 $r=$c->send($f);

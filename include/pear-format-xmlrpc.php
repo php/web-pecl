@@ -1,7 +1,7 @@
 <?php
 
-require_once "xmlrpc.inc";
-require_once "xmlrpcs.inc";
+require_once "XML/RPC.php";
+require_once "XML/RPC/Server.php";
 
 $GLOBALS['_return_value'] = null;
 
@@ -28,23 +28,23 @@ function menu_link($text, $url) {
 }
 
 function &xmlrpc_error($str) {
-    global $xmlrpcerruser;
-    $error = new xmlrpcresp(0, $xmlrpcerruser, $str);
+    global $XML_RPC_erruser;
+    $error = new XML_RPC_Response(0, $XML_RPC_erruser, $str);
     return $error;
 }
 
 function report_error($error)
 {
-    global $_return_value, $xmlrpcerruser;
+    global $_return_value, $XML_RPC_erruser;
     if (PEAR::isError($error)) {
         $error = $error->getMessage();
     }
-    $_return_value = new xmlrpcresp(0, $xmlrpcerruser, $error);
+    $_return_value = new XML_RPC_Response(0, $XML_RPC_erruser, $error);
 }
 
 function error_handler($errobj)
 {
-    global $_return_value, $xmlrpcerruser;
+    global $_return_value, $XML_RPC_erruser;
     if (PEAR::isError($errobj)) {
         $msg = $errobj->getMessage();
         $info = $errobj->getUserInfo();

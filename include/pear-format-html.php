@@ -2,6 +2,16 @@
 
 require_once 'layout.php';
 
+$GLOBALS['main_menu'] = array(
+    "index.php" => "Home",
+    "http://php.net/manual/en/pear.php" => "Documentation",
+    "account-request.php" => "Request Account",
+    "package-new.php" => "New Package",
+    "admin.php" => "Administrators",
+    "packages.php" => "Browse Packages",
+    "release-upload.php" => "Upload Release",
+);
+
 $GLOBALS['_style'] = '';
 
 function smarty_func_page_start($params)
@@ -23,12 +33,29 @@ function smarty_func_page_end($params)
 
 function response_header($title = 'The PHP Extension and Application Repository', $style = false)
 {
-    global $_style, $_header_done;
+    global $_style, $_header_done, $SIDEBAR_DATA;
     if ($_header_done) {
         return;
     }
     $_header_done = true;
     $_style = $style;
+    $rts = rtrim($SIDEBAR_DATA);
+    if (substr($rts, -1) == '-') {
+	$SIDEBAR_DATA = substr($rts, 0, -1);
+    } else {
+	global $main_menu, $PHP_SELF;
+	$SIDEBAR_DATA .= "<br /><br />\n";
+	$me = basename($PHP_SELF);
+	foreach ($main_menu as $url => $title) {
+	    $tt = str_replace(" ", "&nbsp;", $title);
+	    if ($url == $me) {
+		$SIDEBAR_DATA .= "<b>&gt;&gt;$tt&lt;&lt;</b><br />\n";
+	    } else {
+		$SIDEBAR_DATA .= "&nbsp;&nbsp;&nbsp;<a href=\"$url\">$tt</a><br />\n";
+	    }
+	}
+	$SIDEBAR_DATA .= "<br /><br />\n";
+    }
 
     commonHeader($title);
 }
@@ -130,6 +157,9 @@ function smarty_func_border_box_end($params)
 
 function border_box_start($title, $width = "90%", $indent = "")
 {
+    if (is_array($title)) {
+	$title = implode("</th><th>", $title);
+    }
     print "$indent<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"$width\">\n";
     print "$indent <tr>\n";
     print "$indent  <td bgcolor=\"#000000\">\n";

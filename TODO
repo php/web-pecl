@@ -6,8 +6,7 @@ SHORT TERM:
 ** server side: using package.info method
 
 * "pear upload"
-** Archive_Tar method for returning contents of a single file
-** client side:
+** client side: implement xml-rpc client
 
 * "pear configure" to make ~/.pearrc:
 ** pear.php.net username/password

@@ -385,7 +385,8 @@ Press Enter to continue: ";
         $wp = @fopen($tmpfile, "w");
         if ($fp && $wp) {
             $hashbang = rtrim(fgets($fp, 1024));
-            if (!strstr($hashbang, "include_path=")) {
+            if (substr($hashbang, 0, 9) != "#!/bin/sh" &&
+                !strstr($hashbang, "include_path=")) {
                 $hashbang .= "d include_path=$php_dir";
             }
             fwrite($wp, "$hashbang\n");

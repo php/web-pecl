@@ -101,11 +101,15 @@ function navigationBar($title,$id,$loc) {
 	spacer(1,1);
 	echo '<br></td></tr>';
 
-	echo '<tr>';
-	echo '<td valign="top" align="left"><small>'
-	     . make_link("/download-docs.php", "Download Documentation")
-	     . '</small</td>';
-	echo '<td align="right"><small>Last updated: '.$tstamp.'<br>';
+	if ($loc == 'bottom') {
+	    echo '<tr>';
+	    echo '<td valign="top" align="left"><small>'
+	         . make_link("/download-docs.php", "Download Documentation")
+	        . '</small</td>';
+	    echo '<td align="right"><small>Last updated: '.$tstamp.'<br>';
+    } else {
+        echo '<tr><td colspan="2" align="right"><small>Last updated: '.$tstamp.'</td></tr>';
+    }
 
 	if ($loc != 'bottom') {
 		global $LANGUAGES;

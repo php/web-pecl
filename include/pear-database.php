@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001 The PHP Group                                     |
+   | Copyright (c) 2001-2003 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -1595,6 +1595,10 @@ class user
         if ($role == 'any') {
             return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? '.
                                 'AND package = ?', array($user, $package_id));
+        }
+        if (is_array($role)) {
+            return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? AND package = ? '.
+                                'AND role IN ("?")', array($user, $package_id, implode('","', $role)));
         }
         return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? AND package = ? '.
                             'AND role = ?', array($user, $package_id, $role));

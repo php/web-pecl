@@ -730,6 +730,50 @@ END;
             mail($to, $subject, $txtanounce, "FROM: $from");
         }
     }
+
+    // {{{ remove
+
+    function remove($package, $release)
+    {
+        // XXX: Also delete logged downloads.
+
+        global $dbh;
+
+        $success = true;
+
+        // get files that have to be removed
+        $query = sprintf("SELECT fullpath FROM files WHERE package = '%s' AND release = '%s'",
+                         $package,
+                         $release);
+
+        $sth = $dbh->query($query);
+
+        while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+            if (!@unlink($row['fullpath'])) {
+                $success = false;
+            }
+        }
+
+        $query = sprintf("DELETE FROM fullpath WHERE package = '%s' AND release = '%s'",
+                         $package,
+                         $release
+                         );
+        $sth = $dbh->query($query);
+
+        $query = sprintf("DELETE FROM releases WHERE package = '%s' AND id = '%s'",
+                         $package,
+                         $release
+                         );
+        $sth = $dbh->query($query);
+
+        if (PEAR::isError($sth)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // }}}
 }
 
 class note

@@ -109,7 +109,11 @@ echo -n "Do you also want to install the common PEAR files? [Y/n] : "
 read installall < /dev/tty
 files="/"
 if [ `echo $installall | grep -i 'n'` ]; then
-	files="/scripts/pear.in /Archive/Tar.php /Console/Getopt.php /PEAR.php /System.php /PEAR"
+	files="/scripts/pear.in /Archive/Tar.php /Console/Getopt.php /PEAR.php \
+		   /System.php /PEAR /OS /package-Archive_Tar.xml \
+		   /package-Console_Getopt.xml /package-PEAR.xml \
+		   /packages/XML_RPC-1.0.2.tar /package.dtd"
+	installall="n"
 fi
 
 ####
@@ -153,14 +157,31 @@ echo "done!"
 ####
 
 prefix=`echo $prefix | perl -pe 's#\/#\x5c\/#g;'`
-cat $pearin | perl -pe "s#\@prefix@#$prefix\/bin#" > $TARGET
-
-cd $origpwd
+cat $pearin | perl -pe "s#\@prefix@#$prefix#" > $TARGET
 chmod +x $TARGET
 
-rm -rf $PTMP
+####
+# Install needed packages and finish the registration
+####
 
-pear -D php_dir=$destdir -S
+PEAR="php -C -d include_path=$PTMP/php4/pear -f $TARGET -- "
+$PEAR -D php_dir=$destdir -S
+$PEAR -r install php4/pear/package-Archive_Tar.xml
+$PEAR -r install php4/pear/package-Console_Getopt.xml
+$PEAR -r install php4/pear/package-PEAR.xml
+$PEAR install -s php4/pear/packages/XML_RPC-1.0.2.tar
+if [ "$installall" != "n" ]; then
+	for i in "php4/pear/packages/*"; do
+		$PEAR -s install $i
+	done
+fi
+
+####
+# Clean up and finish
+####
+
+cd $origpwd
+rm -rf $PTMP
 
 echo
 echo "The 'pear' command has been successfully installed under $TARGET"

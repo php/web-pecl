@@ -355,13 +355,8 @@ function mail_pear_admins($subject, $msg, $xhdr = '')
     global $dbh;
     $admins = $dbh->getCol("SELECT email FROM users WHERE admin = 1");
     if (is_array($admins)) {
-        $oks = 0;
-        foreach ($admins as $email) {
-            $oks += mail($email, "PEAR Account Request", $msg, $xhdr);
-        }
-        if ($oks == sizeof($admins)) {
-            return true;
-        }
+	$rcpt = implode(", ", $admins);
+	return mail($rcpt, "PEAR Account Request", $msg, $xhdr);
     }
     return false;
 }

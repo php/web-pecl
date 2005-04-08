@@ -1,10 +1,12 @@
-<?response_header("Package search")?>
+<?php
+$extra_styles[] = '/javascript/calendar/dynCalendar.css';
+response_header('Package Search');
+?>
 
-<h1>Package search</h1>
+<h1>Package Search</h1>
 
 <script type="text/javascript" language="javascript" src="javascript/calendar/browserSniffer.js"></script>
 <script type="text/javascript" language="javascript" src="javascript/calendar/dynCalendar.js"></script>
-<link rel="stylesheet" href="javascript/calendar/dynCalendar.css" media="screen" type="text/css" />
 
 <script type="text/javascript" language="javascript">
 <!--
@@ -12,7 +14,7 @@
     date_updated_released_on     = false;
     date_updated_released_before = false;
     date_updated_released_since  = false;
-    
+
     released_on_disabled     = false;
     released_before_disabled = false;
     released_since_disabled  = false;
@@ -24,29 +26,29 @@
     {
         searchForm = document.forms['search_form'];
 
-        if (<?=(int)isset($numrows)?>) {
+        if (<?php echo (int)isset($numrows); ?>) {
             location.href = 'package-search.php';
 
         } else {
             date_updated_released_on     = false;
             date_updated_released_before = false;
             date_updated_released_since  = false;
-    
+
             /**
             * Re-enable date dropdowns
             */
             searchForm.released_before_year.disabled  = false;
             searchForm.released_before_month.disabled = false;
             searchForm.released_before_day.disabled   = false;
-    
+
             searchForm.released_since_year.disabled  = false;
             searchForm.released_since_month.disabled = false;
             searchForm.released_since_day.disabled   = false;
-    
+
             searchForm.released_on_year.disabled  = false;
             searchForm.released_on_month.disabled = false;
             searchForm.released_on_day.disabled   = false;
-    
+
             released_on_disabled     = false;
             released_before_disabled = false;
             released_since_disabled  = false;
@@ -104,21 +106,21 @@
     */
     function setReleaseDropdowns()
     {
-        if (<?=(int)$set_released_on?>) {
-            setDateFromCalendar_released_on('<?php echo (int)$_GET['released_on_day']?>', '<?php echo (int)$_GET['released_on_month']; ?>', '<?php echo (int)$_GET['released_on_year']; ?>');
+        if (<?php echo (int)$set_released_on; ?>) {
+            setDateFromCalendar_released_on('<?php echo  (int) $_GET['released_on_day']  ?>', '<?php echo   (int)($_GET['released_on_month']); ?>', '<?php  echo (int) $_GET['released_on_year']; ?>');
         } else {
-            if (<?=(int)$set_released_before?>) {
-                setDateFromCalendar_released_before('<?php echo (int)$_GET['released_before_day']; ?>', '<?php echo (int)$_GET['released_before_month']; ?>', '<?php echo (int)$_GET['released_before_year']; ?>');
+            if (<?php echo (int)$set_released_before?>) {
+                setDateFromCalendar_released_before('<?php echo (int) $_GET['released_before_day']; ?>', '<?php echo (int)$_GET['released_before_month']; ?>', '<?php echo (int) $_GET['released_before_year']; ?>');
             }
-    
-            if (<?=(int)$set_released_since?>) {
-                setDateFromCalendar_released_since('<?php echo (int)$_GET['released_since_day']; ?>', '<?php echo (int)$_GET['released_since_month']; ?>', '<?php echo (int)$_GET['released_since_year']; ?>');
+
+            if (<?php echo (int)$set_released_since; ?>) {
+                setDateFromCalendar_released_since('<?php echo (int)$_GET['released_since_day']; ?>', '<?php echo (int) $_GET['released_since_month']; ?>', '<?php echo (int)$_GET['released_since_year']; ?>');
             }
         }
     }
 
     /**
-    * Function to disable date dropdowns when the 
+    * Function to disable date dropdowns when the
     * others are selected.
     */
     function disableDateOptions(prefix)
@@ -180,7 +182,6 @@
         } else {
             disableDateOptions(prefix);
         }
-
         yearElement  = searchForm.elements[prefix + '_year'].value = (year == '0' ? '' : year);
         monthElement = searchForm.elements[prefix + '_month'].value = (month == '0' ? '' : month);
         dayElement   = searchForm.elements[prefix + '_day'].value = (date == '0' ? '' : date);
@@ -210,149 +211,170 @@
             alert('Cannot combine Released On and Released Before or Since!');
             return false;
         }
-        
+
         document.forms['search_form'].submitButton.value    = 'Sending request...';
         document.forms['search_form'].submitButton.disabled = true;
+    }
+
+    function addEngine()
+    {
+        if ((typeof window.sidebar == "object") && (typeof window.sidebar.addSearchEngine == "function"))
+        {
+            window.sidebar.addSearchEngine(
+                "http://<?php echo PEAR_CHANNELNAME; ?>/sidebar/pear.src",    /* engine URL */
+                "http://<?php echo PEAR_CHANNELNAME; ?>/sidebar/pear.gif",    /* icon URL */
+                "PEAR",                                    /* engine name */
+                "Web" );                                   /* category name */
+        }
+        else
+        {
+            alert("Mozilla M15 or later is required to add a search engine.");
+        }
     }
 
 // -->
 </script>
 
+<p>
+<small>Add PEAR Package Search to Mozilla Search
+ tab <a href="javascript:addEngine()">here</a>!</small>
+</p>
 
 <!-- This class prints stuff as part of it's constructor. -->
-<?$bb = new Borderbox("Search options")?>
 
-<form action="<?=$_SERVER['PHP_SELF']?>" method="get" name="search_form" onsubmit="validate_form()">
-<table border="0">
-    <tr>
-        <td>Package name:</td>
-        <td valign="middle">
-               <?php $form->displayText('pkg_name', htmlspecialchars(@$_GET['pkg_name']), 0, 0, 'accesskey="c"'); ?>
-        </td>
-        <td>
-            Match:
-            <input type="radio" name="bool" value="AND" id="bool_and" <?=$bool_and_checked?> />
-            <label for="bool_and">All words</label>
-            <input type="radio" name="bool" value="OR" id="bool_or" <?=$bool_or_checked?> />
-            <label for="bool_or">Any word</label>
-        </td>
-    </tr>
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get" name="search_form" onsubmit="validate_form()">
 
-    <tr>
-        <td>Maintainer:</td>
-        <td colspan="2">
-            <input name="pkg_maintainer" type="text" value="<?php echo htmlspecialcars($_GET['pkg_maintainer']); ?>" />
-            <select onchange="document.forms['search_form'].pkg_maintainer.value = this.options[this.selectedIndex].value; this.selectedIndex = 0">
-                <option value="">Select user...</option>
-                <?foreach($users as $u):?>
-                    <option value="<?=$u['handle']?>"><?=$u['name']?></option>
-                <?endforeach?>
-            </select>
-        </td>
-    </tr>
+<table class="form-holder" cellspacing="1">
+ <caption class="form-caption">Search Options</caption>
+ <tr>
+  <th class="form-label_left">Pa<span class="accesskey">c</span>kage Name:</th>
+  <td class="form-input">
+   <?php $form->displayText('pkg_name', htmlspecialchars(@$_GET['pkg_name']), 0, 0, 'accesskey="c"'); ?>
+   <br />
+   <small>
+    Match:
+    <input type="radio" name="bool" value="AND" id="bool_and" <?php echo $bool_and_checked; ?> />
+    <label for="bool_and">All words</label>
+    <input type="radio" name="bool" value="OR" id="bool_or" <?php echo $bool_or_checked; ?> />
+    <label for="bool_or">Any word</label>
+   </small>
+  </td>
+ </tr>
 
-    <tr>
-        <td valign="top">Category:</td>
-        <td>
-            <select name="pkg_category" style="width: 100%">
-                <option value=""></option>
-                <?foreach($category_rows as $c):?>
-                    <option value="<?=$c['id']?>" <?=$c['selected']?>><?=$c['name']?></option>
-                <?endforeach?>
-            </select>
-        </td>
-        <td>&nbsp;</td>
-    </tr>
+ <tr>
+  <th class="form-label_left">Maintainer:</th>
+  <td class="form-input">
+   <input name="pkg_maintainer" type="text" value="<?php echo htmlspecialchars($_GET['pkg_maintainer']); ?>" />
+   <select onchange="document.forms['search_form'].pkg_maintainer.value = this.options[this.selectedIndex].value; this.selectedIndex = 0">
+    <option value="">Select user...</option>
+    <?php foreach($users as $u):?>
+     <option value="<?php echo $u['handle']; ?>"><?php echo $u['name']; ?></option>
+    <?php endforeach?>
+   </select>
+  </td>
+ </tr>
 
-    <tr><td colspan="3">&nbsp;</td></tr>
+ <tr>
+  <th class="form-label_left">Category:</th>
+  <td class="form-input">
+   <select name="pkg_category">
+    <option value=""></option>
+    <?php foreach($category_rows as $c):?>
+     <option value="<?php echo $c['id']; ?>" <?php echo $c['selected']; ?>><?php echo $c['name']; ?></option>
+    <?php endforeach?>
+   </select>
+  </td>
+ </tr>
 
-    <tr>
-        <td colspan="3"><strong>With a release:</strong></td>
-    </tr>
+ <tr><td class="form-input" colspan="2">&nbsp;</td></tr>
 
-    <tr>
-        <td>On:</td>
-        <td colspan="2">
-            <input type="text" name="released_on_year" value="" size="5" onkeyup="update_date('released_on', 'year')" />
-            <select name="released_on_month" onchange="update_date('released_on', 'month')">
-                <option value=""></option>
-                <?foreach($months as $num => $text):?>
-                    <option value="<?=$num?>"><?=$text?></option>
-                <?endforeach?>
-            </select>
-            <select name="released_on_day" onchange="update_date('released_on', 'day')">
-                <option value=""></option>
-                <?foreach(range(1, 31) as $value):?>
-                    <option value="<?=$value?>"><?=$value?></option>
-                <?endforeach?>
-            </select>
-            <script language="JavaScript" type="text/javascript">
-            <!--
-                calendarReleasedOn = new dynCalendar('calendarReleasedOn', 'setDateFromCalendar_released_on', 'gifs/');
-            //-->
-            </script>
-        </td>
-    </tr>
-    
-    <tr>
-        <td>Before:</td>
-        <td colspan="2">
-            <input type="text" name="released_before_year" value="" size="5" onkeyup="update_date('released_before', 'year')">
-            <select name="released_before_month" onchange="update_date('released_before', 'month')" />
-                <option value=""></option>
-                <?foreach($months as $num => $text):?>
-                    <option value="<?=$num?>"><?=$text?></option>
-                <?endforeach?>
-            </select>
-            <select name="released_before_day" onchange="update_date('released_before', 'day')">
-                <option value=""></option>
-                <?foreach(range(1, 31) as $value):?>
-                    <option value="<?=$value?>"><?=$value?></option>
-                <?endforeach?>
-            </select>
-            <script language="JavaScript" type="text/javascript">
-            <!--
-                calendarReleasedBefore = new dynCalendar('calendarReleasedBefore', 'setDateFromCalendar_released_before', 'gifs/');
-            //-->
-            </script>
-        </td>
-    </tr>
-    
-    <tr>
-        <td>Since:</td>
-        <td colspan="2">
-            <input type="text" name="released_since_year" value="" size="5" onkeyup="update_date('released_since', 'year')">
-            <select name="released_since_month" onchange="update_date('released_since', 'month')">
-                <option value=""></option>
-                <?foreach($months as $num => $text):?>
-                    <option value="<?=$num?>"><?=$text?></option>
-                <?endforeach?>
-            </select>
-            <select name="released_since_day" onchange="update_date('released_since', 'day')">
-                <option value=""></option>
-                <?foreach(range(1, 31) as $value):?>
-                    <option value="<?=$value?>"><?=$value?></option>
-                <?endforeach?>
-            </select>
-            <script language="JavaScript" type="text/javascript">
-            <!--
-                calendarReleasedSince = new dynCalendar('calendarReleasedSince', 'setDateFromCalendar_released_since', 'gifs/');
-            //-->
-            </script>
-        </td>
-    </tr>
-    
-    
-    <tr>
-        <td>&nbsp;</td>
-        <td colspan="2">
-            <input type="reset" value="Clear" onclick="return form_reset()" />
-            <input type="submit" name="submitButton" value="Search" />
-        </td>
-    </tr>
+ <tr>
+  <th class="form-label_left" colspan="2">With a release...</th>
+ </tr>
+
+ <tr>
+  <th class="form-label_left">On:</th>
+  <td class="form-input">
+   <input type="text" name="released_on_year" value="" size="5" onkeyup="update_date('released_on', 'year')" />
+   <select name="released_on_month" onchange="update_date('released_on', 'month')">
+    <option value=""></option>
+    <?php foreach($months as $num => $text):?>
+     <option value="<?php echo $num; ?>"><?php echo $text; ?></option>
+    <?php endforeach?>
+   </select>
+   <select name="released_on_day" onchange="update_date('released_on', 'day')">
+    <option value=""></option>
+    <?php foreach(range(1, 31) as $value):?>
+     <option value="<?php echo $value; ?>"><?php echo $value; ?></option>
+    <?php endforeach?>
+   </select>
+   <script language="JavaScript" type="text/javascript">
+    <!--
+     calendarReleasedOn = new dynCalendar('calendarReleasedOn', 'setDateFromCalendar_released_on', 'gifs/');
+    //-->
+   </script>
+  </td>
+ </tr>
+
+ <tr>
+  <th class="form-label_left">Before:</th>
+  <td class="form-input">
+   <input type="text" name="released_before_year" value="" size="5" onkeyup="update_date('released_before', 'year')" />
+   <select name="released_before_month" onchange="update_date('released_before', 'month')">
+    <option value=""></option>
+    <?php foreach($months as $num => $text):?>
+     <option value="<?php echo $num; ?>"><?php echo $text; ?></option>
+    <?php endforeach?>
+   </select>
+   <select name="released_before_day" onchange="update_date('released_before', 'day')">
+    <option value=""></option>
+    <?php foreach(range(1, 31) as $value):?>
+     <option value="<?php echo $value; ?>"><?php echo $value; ?></option>
+    <?php endforeach?>
+   </select>
+   <script language="JavaScript" type="text/javascript">
+    <!--
+     calendarReleasedBefore = new dynCalendar('calendarReleasedBefore', 'setDateFromCalendar_released_before', 'gifs/');
+    //-->
+   </script>
+  </td>
+ </tr>
+
+ <tr>
+  <th class="form-label_left">Since:</th>
+  <td class="form-input">
+   <input type="text" name="released_since_year" value="" size="5" onkeyup="update_date('released_since', 'year')" />
+   <select name="released_since_month" onchange="update_date('released_since', 'month')">
+    <option value=""></option>
+    <?php foreach($months as $num => $text):?>
+     <option value="<?php echo $num; ?>"><?php echo $text; ?></option>
+    <?php endforeach?>
+   </select>
+   <select name="released_since_day" onchange="update_date('released_since', 'day')">
+    <option value=""></option>
+    <?php foreach(range(1, 31) as $value):?>
+     <option value="<?php echo $value; ?>"><?php echo $value;?></option>
+    <?php endforeach?>
+   </select>
+   <script language="JavaScript" type="text/javascript">
+   <!--
+    calendarReleasedSince = new dynCalendar('calendarReleasedSince', 'setDateFromCalendar_released_since', 'gifs/');
+   //-->
+   </script>
+  </td>
+ </tr>
+
+ <tr>
+  <th class="form-label_left">&nbsp;</th>
+  <td class="form-input">
+   <input type="submit" name="submitButton" value="Search" />
+   <input type="reset" value="Clear" onclick="return form_reset()" />
+  </td>
+ </tr>
 </table>
+
 </form>
-<?$bb->end()?>
+
 
 <script language="JavaScript" type="text/javascript">
 <!--
@@ -363,25 +385,29 @@
 //-->
 </script>
 
-<?if($numrows):?>
+<?php if($numrows):?>
 <br /><br />
-    <?$bb = new Borderbox($title_html)?>
+    <?php $bb = new Borderbox($title_html)?>
+
 <table border="0" cellpadding="2" cellspacing="2">
-
-    <?foreach($search_results as $row):?>
+<!-- resultListStart -->
+    <?php foreach($search_results as $row):?>
         <tr>
-            <td><a href="/package/<?=$row['raw_name']?>"><?=$row['name']?></a></td>
-            <td><?=$row['summary']?></td>
+            <td>
+                <!-- resultItemStart --><a href="/package/<?php echo $row['raw_name']; ?>"><?php echo $row['name']; ?></a><!-- resultItemEnd -->
+            </td>
+            <td><?php echo $row['summary']; ?></td>
         </tr>
-    <?endforeach?>
 
+    <?php endforeach?>
+<!-- resultListEnd -->
 </table>
 
-    <?$bb->end()?>
-<?elseif($numrows === 0):?>
+    <?php $bb->end()?>
+<?php elseif($numrows === 0):?>
 
     <p><b>No results found</b></p>
 
-<?endif?>
+<?php endif?>
 
-<?response_footer()?>
+<?php response_footer(); ?>

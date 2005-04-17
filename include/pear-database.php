@@ -1773,6 +1773,11 @@ class release
         $cache->remove('package.listAll', array(false, false, true));
         $cache->remove('package.listAll', array(false, false, false));
 
+        $cache->remove('package.listAll', array(true, true, true));
+        $cache->remove('package.listAll', array(true, true, false));
+        $cache->remove('package.listAll', array(true, false, true));
+        $cache->remove('package.listAll', array(true, false, false));
+
         // make sure pear is also removed
         $cache->remove('package.info', array($package, null));
         $cache->remove('package.info', array($package, array(null, null, true)));

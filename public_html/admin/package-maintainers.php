@@ -172,10 +172,10 @@ if (empty($id)) {
         $info = user::info($handle, "name");   // XXX: This sucks
         printf('<option value="%s||%s">%s (%s, %s)</option>',
                $handle,
-               $role,
+               $role['role'],
                $info['name'],
                $handle,
-               $role
+               $role['role']
                );
     }
     echo '  </select>';

@@ -1091,7 +1091,7 @@ class package
             "r.state AS state " .
             "FROM packages p, releases r " .
             "WHERE p.id = r.package " .
-            "AND p.package_type = 'pecl' AND p.approved = 1" . 
+            "AND p.package_type = 'pecl' AND p.approved = 1 " . 
             "AND p.name = '" . $package . "'" .
             "ORDER BY r.releasedate DESC";
 

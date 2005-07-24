@@ -85,7 +85,7 @@ class Damblan_RSS {
      * @return void
      */
     function printFeed($type) {
-        $ret =& Damblan_RSS::getFeed($type);
+        $ret = Damblan_RSS::getFeed($type);
 
         if (PEAR::isError($ret)) {
             PEAR::raiseError($ret);

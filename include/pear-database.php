@@ -844,6 +844,9 @@ class package
                     }
                 }
                 $packageinfo[$pkg]['state']  = $stable['state'];
+                if (isset($packageinfo[$pkg]['unstable']) && !$packageinfo[$pkg]['stable']) {
+                    $packageinfo[$pkg]['stable'] = $packageinfo[$pkg]['unstable'];
+                }
             }
         }
         $var = !$stable_only ? 'allreleases' : 'stablereleases';

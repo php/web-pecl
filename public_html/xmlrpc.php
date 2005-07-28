@@ -92,9 +92,12 @@ header('Content-type: text/xml');
 header('Content-length: '.strlen($response));
 print $response;
 
+if (!defined('E_STRICT')) {
+    define('E_STRICT', 2048);
+}
 function xmlrpc_error_handler($errno, $errmsg, $file, $line, $vars)
 {
-    if (error_reporting() == 0) {
+    if (error_reporting() == 0 || $errno == E_STRICT) {
         return;
     }
     static $errortype = array (

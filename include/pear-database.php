@@ -2434,7 +2434,7 @@ class statistics
     {
         global $dbh;
 
-        $query = "SELECT r.version, d.release, COUNT(d.id) AS total,"
+        $query = "SELECT r.releasedate, r.version, d.release, COUNT(d.id) AS total,"
                  . " MAX(d.dl_when) AS last_download,"
                  . " MIN(d.dl_when) AS first_download"
                  . " FROM downloads d, releases r"

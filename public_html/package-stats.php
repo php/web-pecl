@@ -164,7 +164,6 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 <?php
         $release_statistics = statistics::release($_GET['pid'],
                 (isset($_GET['rid']) ? $_GET['rid'] : ''));
-
         foreach ($release_statistics as $key => $value) {
 	    echo "<!-- \n";
 		var_export($value);
@@ -176,7 +175,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
             echo '  <td>' . number_format($value['total'], 0, '.', ',');
             echo "  </td>\n";
             echo '  <td>';
-            echo make_utc_date(strtotime($value['release']), 'Y-m-d');
+            echo make_utc_date(strtotime($value['releasedate']), 'Y-m-d');
             echo "  </td>\n";
             echo '  <td>';
             echo make_utc_date(strtotime($value['last_download']));

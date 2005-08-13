@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001-2003 The PHP Group                                |
+   | Copyright (c) 2001-2005 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -48,35 +48,33 @@ function validate($entity, $field, $value /* , $oldvalue, $object */) {
 }
 
 // }}}
-
 // {{{ renumber_visitations()
 
-/*
-
-Some useful "visitation model" tricks:
-
-To find the number of child elements:
- (right - left - 1) / 2
-
-To find the number of child elements (including self):
- (right - left + 1) / 2
-
-To get all child nodes:
-
- SELECT * FROM table WHERE left > <self.left> AND left < <self.right>
-
-
-To get all child nodes, including self:
-
- SELECT * FROM table WHERE left BETWEEN <self.left> AND <self.right>
- "ORDER BY left" gives tree view
-
-To get all leaf nodes:
-
- SELECT * FROM table WHERE right-1 = left;
-
+/**
+ *
+ *
+ * Some useful "visitation model" tricks:
+ *
+ * To find the number of child elements:
+ *  (right - left - 1) / 2
+ *
+ * To find the number of child elements (including self):
+ *  (right - left + 1) / 2
+ *
+ * To get all child nodes:
+ *
+ *  SELECT * FROM table WHERE left > <self.left> AND left < <self.right>
+ *
+ *
+ * To get all child nodes, including self:
+ *
+ *  SELECT * FROM table WHERE left BETWEEN <self.left> AND <self.right>
+ *  "ORDER BY left" gives tree view
+ *
+ * To get all leaf nodes:
+ *
+ *  SELECT * FROM table WHERE right-1 = left;
  */
-
 function renumber_visitations($id, $parent = null)
 {
     global $dbh;
@@ -113,7 +111,6 @@ function renumber_visitations($id, $parent = null)
 }
 
 // }}}
-
 // {{{ version_compare_firstelem()
 
 function version_compare_firstelem($a, $b)
@@ -154,7 +151,7 @@ class category
      *
      * @param array
      * @return mixed ID of the category or PEAR error object
-    */
+     */
     function add($data)
     {
         global $dbh;
@@ -176,6 +173,7 @@ class category
         if (PEAR::isError($err)) {
             return $err;
         }
+        $GLOBALS['pear_rest']->saveCategoryREST($name);
         return $id;
     }
 
@@ -231,6 +229,7 @@ class category
         // Update any child categories
         $GLOBALS['dbh']->query(sprintf('UPDATE categories SET parent = %s WHERE parent = %d', ($parentID ? $parentID : 'NULL'), $id));
 
+        $GLOBALS['pear_rest']->deleteCategoryREST($name);
         return true;
     }
 
@@ -327,13 +326,13 @@ class package
      */
     function add($data)
     {
-        global $dbh;
+        global $dbh, $pear_rest;
         // name, category
         // license, summary, description
         // lead
         extract($data);
         if (empty($license)) {
-            $license = "PEAR License";
+            $license = "PHP License";
         }
         if (!empty($category) && (int)$category == 0) {
             $category = $dbh->getOne("SELECT id FROM categories WHERE name = ?",
@@ -357,15 +356,17 @@ class package
         if (DB::isError($err = $dbh->query($sql))) {
             return $err;
         }
+        $pear_rest->savePackageREST($name);
         if (isset($lead) && DB::isError($err = maintainer::add($id, $lead, 'lead'))) {
             return $err;
         }
+        $pear_rest->saveAllPackagesREST();
 
         return $id;
     }
 
     // }}}
-    // {{{ proto array package::getDownloadURL(struct, [string], [string], [string]) API 1.0
+    // {{{ proto array package::getDownloadURL(struct, [string], [string]) API 1.1
 
     /**
      * Get a download URL, or an array containing the latest version and its
@@ -382,13 +383,11 @@ class package
      *                ['bundle' => specific bundle to retrieve,]
      *              )
      * @param string preferred_state configuration value
-     * @param string user IP address, used to retrieve the closest mirror
-     *               (not implemented)
-     * @param string preferred mirror
-     *               (not implemented)
+     * @param string|false installed version of this package
      * @return bool|array
      */
-    function getDownloadURL($packageinfo, $prefstate = 'stable', $loc = null, $mirror = null)
+    function getDownloadURL($packageinfo, $prefstate = 'stable',
+                            $installed = false)
     {
         if (!isset($packageinfo['package'])) {
             return PEAR::raiseError('getDownloadURL parameter $packageinfo must ' .
@@ -419,6 +418,9 @@ class package
         $found = false;
         $release = false;
         foreach ($info as $ver => $release) {
+            if ($installed && version_compare($ver, $installed, '<')) {
+                continue;
+            }
             if (isset($state)) {
                 if ($release['state'] == $state) {
                     $found = true;
@@ -494,7 +496,7 @@ class package
     }
 
     // }}}
-    // {{{ proto array package::getDepDownloadURL(string, struct, struct, [string], [string], [string]) API 1.0
+    // {{{ proto array package::getDepDownloadURL(string, struct, struct, [string], [string]) API 1.1
 
     /**
      * Get a download URL for a dependency, or an array containing the
@@ -506,15 +508,11 @@ class package
      * @param array dependency information
      * @param array dependent package information
      * @param string preferred state
-     * @param string version_compare() relation to use for checking version
-     * @param string user IP address, used to retrieve the closest mirror
-     *               (not implemented)
-     * @param string preferred mirror
-     *               (not implemented)
+     * @param string installed version of this dependency
      * @return bool|array
      */
     function getDepDownloadURL($xsdversion, $dependency, $deppackage,
-                               $prefstate = 'stable', $loc = null, $mirror = null)
+                               $prefstate = 'stable', $installed = false)
     {
         $info = package::info($dependency['name'], 'releases', true);
         if (!count($info)) {
@@ -529,7 +527,7 @@ class package
         $min = $max = $recommended = false;
         if ($xsdversion == '1.0') {
             $pinfo['package'] = $dependency['name'];
-            $pinfo['channel'] = 'pear.php.net';
+            $pinfo['channel'] = 'pear.php.net'; // this is always true - don't change this
             switch ($dependency['rel']) {
                 case 'ge' :
                     $min = $dependency['version'];
@@ -571,6 +569,7 @@ class package
         $found = false;
         $release = false;
         foreach ($info as $ver => $release) {
+	    
             if (in_array($ver, $exclude)) { // skip excluded versions
                 continue;
             }
@@ -600,6 +599,9 @@ class package
                 continue;
             }
             if ($max && version_compare($ver, $max, 'gt')) { // skip too new versions
+                continue;
+            }
+            if ($installed && version_compare($ver, $installed, '<')) {
                 continue;
             }
             if (in_array($release['state'], $states)) { // if in the preferred state...
@@ -838,7 +840,8 @@ class package
                         $packageinfo[$pkg]['stable'] = $stable['stable'];
                     }
                 } else {
-                    if (version_compare($packageinfo[$pkg]['unstable'], $stable['stable'], '<')) {
+                    if (!isset($packageinfo[$pkg]['unstable']) ||
+                          version_compare($packageinfo[$pkg]['unstable'], $stable['stable'], '<')) {
                         // only change it if the version number is newer
                         $packageinfo[$pkg]['unstable'] = $stable['stable'];
                     }
@@ -853,7 +856,7 @@ class package
         foreach(array_keys($packageinfo) as $pkg) {
             $_deps = array();
             foreach($deps as $dep) {
-                if (isset($packageinfo[$pkg]['packageid']) && $dep['package'] == $packageinfo[$pkg]['packageid']
+                if ($dep['package'] == $packageinfo[$pkg]['packageid']
                     && isset($$var[$pkg])
                     && $dep['release'] == $$var[$pkg]['rid'])
                 {
@@ -1047,6 +1050,8 @@ class package
         }
         $sql = 'UPDATE packages SET ' . implode(', ', $fields) .
                " WHERE id=$package_id";
+        $row = package::info($pkgid, 'name');
+        $GLOBALS['pear_rest']->savePackageREST($row);
         return $dbh->query($sql, $prep);
     }
 
@@ -1169,7 +1174,7 @@ class maintainer
      */
     function add($package, $user, $role, $active = 1)
     {
-        global $dbh, $auth_user;
+        global $dbh, $auth_user, $pear_rest;
 
         if (!user::exists($user)) {
             return PEAR::raiseError("User $user does not exist");
@@ -1182,6 +1187,8 @@ class maintainer
         if (DB::isError($err)) {
             return $err;
         }
+        $packagename = package::info($package, 'name');
+        $pear_rest->savePackageMaintainerREST($packagename);
         return true;
     }
 
@@ -1608,6 +1615,8 @@ class release
      */
     function confirmUpload($package, $version, $state, $relnotes, $md5sum, $package_id, $file)
     {
+        require_once "PEAR/Common.php";
+
         global $dbh, $auth_user, $_PEAR_Common_dependency_types,
                $_PEAR_Common_dependency_relations;
 
@@ -1761,6 +1770,9 @@ class release
         // Update Cache
         include_once 'xmlrpc-cache.php';
         $cache = new XMLRPC_Cache;
+        $GLOBALS['pear_rest']->saveReleaseREST($file, $packagexml, $pkg_info, $auth_user->handle,
+            $release_id);
+        $GLOBALS['pear_rest']->saveAllReleasesREST($package);
         // gotta clear all the permutations
         $cache->remove('package.listAll', array(false));
         $cache->remove('package.listAll', array(true));
@@ -1820,6 +1832,9 @@ class release
     function HTTPdownload($package, $version = null, $file = null, $uncompress = false)
     {
         global $dbh;
+
+        require_once "HTTP.php";
+
         $package_id = package::info($package, 'packageid', true);
 
         if (!$package_id) {
@@ -2170,11 +2185,16 @@ Authors
                          );
         $sth = $dbh->query($query);
 
+        $pname = package::info($package, 'name');
+        $version = $dbh->getOne('SELECT version from releases WHERE package = ? and id = ?',
+            array($package, $release));
+        $GLOBALS['pear_rest']->deleteReleaseREST($pname, $version);
         $query = sprintf("DELETE FROM releases WHERE package = '%s' AND id = '%s'",
                          $package,
                          $release
                          );
         $sth = $dbh->query($query);
+        $GLOBALS['pear_rest']->saveAllReleasesREST($pname);
 
         if (PEAR::isError($sth)) {
             return false;
@@ -2255,6 +2275,7 @@ class user
     {
         global $dbh;
         note::removeAll("uid", $uid);
+        $GLOBALS['pear_rest']->deleteMaintainerREST($uid);
         $dbh->query('DELETE FROM users WHERE handle = '. $dbh->quote($uid));
         return ($dbh->affectedRows() > 0);
     }
@@ -2297,6 +2318,7 @@ class user
         $user->set('createdby', $_COOKIE['PEAR_USER']);
         $user->store();
         note::add("uid", $uid, "Account opened");
+        $GLOBALS['pear_rest']->saveMaintainerREST($user->handle);
         $msg = "Your PECL/PEAR account request has been opened.\n".
              "To log in, go to http://pecl.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";
@@ -2407,7 +2429,239 @@ class user
     }
 
     // }}}
+    // {{{ add()
 
+    /**
+     * Add a new user account
+     *
+     * During most of this method's operation, PEAR's error handling
+     * is set to PEAR_ERROR_RETURN.
+     *
+     * But, during the DB_storage::set() phase error handling is set to
+     * PEAR_ERROR_CALLBACK the report_warning() function.  So, if an
+     * error happens a warning message is printed AND the incomplete
+     * user information is removed.
+     *
+     * @param array $data  Information about the user
+     *
+     * @return mixed  true if there are no problems, false if sending the
+     *                email failed, 'set error' if DB_storage::set() failed
+     *                or an array of error messages for other problems
+     *
+     * @access public
+     */
+    function add(&$data)
+    {
+        global $dbh;
+
+        PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
+        $errors = array();
+
+        $required = array(
+            'handle'     => 'Username',
+            'firstname'  => 'First Name',
+            'lastname'   => 'Last Name',
+            'email'      => 'Email address',
+            'purpose'    => 'Intended purpose',
+        );
+
+        $name = $data['firstname'] . " " . $data['lastname'];
+
+        foreach ($required as $field => $desc) {
+            if (empty($data[$field])) {
+                $data['jumpto'] = $field;
+                $errors[] = 'Please enter ' . $desc;
+            }
+        }
+
+        if (!preg_match(PEAR_COMMON_USER_NAME_REGEX, $data['handle'])) {
+            $errors[] = 'Username must start with a letter and contain'
+                      . ' only letters and digits';
+        }
+
+        // Basic name validation
+
+        // First- and lastname must be longer than 1 character
+        if (strlen($data['firstname']) == 1) {
+            $errors[] = 'Your firstname appears to be too short.';
+        }
+        if (strlen($data['lastname']) == 1) {
+            $errors[] = 'Your lastname appears to be too short.';
+        }
+
+        // Firstname and lastname must start with an uppercase letter
+        if (!preg_match("/^[A-Z]/", $data['firstname'])) {
+            $errors[] = 'Your firstname must begin with an uppercase letter';
+        }
+        if (!preg_match("/^[A-Z]/", $data['lastname'])) {
+            $errors[] = 'Your lastname must begin with an uppercase letter';
+        }
+
+        // No names with only uppercase letters
+        if ($data['firstname'] === strtoupper($data['firstname'])) {
+            $errors[] = 'Your firstname must not consist of only uppercase letters.';
+        }
+        if ($data['lastname'] === strtoupper($data['lastname'])) {
+            $errors[] = 'Your lastname must not consist of only uppercase letters.';
+        }
+
+        if ($data['password'] != $data['password2']) {
+            $data['password'] = $data['password2'] = "";
+            $data['jumpto'] = "password";
+            $errors[] = 'Passwords did not match';
+        }
+
+        if (!$data['password']) {
+            $data['jumpto'] = "password";
+            $errors[] = 'Empty passwords not allowed';
+        }
+
+        $handle = strtolower($data['handle']);
+        $obj =& new PEAR_User($dbh, $handle);
+
+        if (isset($obj->created)) {
+            $data['jumpto'] = "handle";
+            $errors[] = 'Sorry, that username is already taken';
+        }
+
+        if ($errors) {
+            $data['display_form'] = true;
+            return $errors;
+        }
+
+        $err = $obj->insert($handle);
+
+        if (DB::isError($err)) {
+            if ($err->getCode() == DB_ERROR_CONSTRAINT) {
+                $data['display_form'] = true;
+                $data['jumpto'] = 'handle';
+                $errors[] = 'Sorry, that username is already taken';
+            } else {
+                $data['display_form'] = false;
+                $errors[] = $err;
+            }
+            return $errors;
+        }
+
+        $data['display_form'] = false;
+        $md5pw = md5($data['password']);
+        $showemail = @(bool)$data['showemail'];
+        // hack to temporarily embed the "purpose" in
+        // the user's "userinfo" column
+        $userinfo = serialize(array($data['purpose'], $data['moreinfo']));
+        $set_vars = array('name' => $name,
+                          'email' => $data['email'],
+                          'homepage' => $data['homepage'],
+                          'showemail' => $showemail,
+                          'password' => $md5pw,
+                          'registered' => 0,
+                          'userinfo' => $userinfo);
+
+        PEAR::pushErrorHandling(PEAR_ERROR_CALLBACK, 'report_warning');
+        foreach ($set_vars as $var => $value) {
+            $err = $obj->set($var, $value);
+            if (PEAR::isError($err)) {
+                user::remove($data['handle']);
+                return 'set error';
+            }
+        }
+        PEAR::popErrorHandling();
+
+        $msg = "Requested from:   {$_SERVER['REMOTE_ADDR']}\n".
+               "Username:         {$handle}\n".
+               "Real Name:        {$name}\n".
+               (isset($data['showemail']) ? "Email:            {$data['email']}\n" : "") .
+               "Purpose:\n".
+               "{$data['purpose']}\n\n".
+               "To handle: http://{$_SERVER['SERVER_NAME']}/admin/?acreq={$handle}\n";
+
+        if ($data['moreinfo']) {
+            $msg .= "\nMore info:\n{$data['moreinfo']}\n";
+        }
+
+        $xhdr = "From: $name <{$data['email']}>\nMessage-Id: <account-request-{$handle}@" .
+            PEAR_CHANNELNAME . ">\n";
+        // $xhdr .= "\nBCC: pear-group@php.net";
+        $subject = "PEAR Account Request: {$handle}";
+
+        if (DEVBOX == false) {
+            if (PEAR_CHANNELNAME == 'pear.php.net') {
+                $ok = @mail('pear-group@php.net', $subject, $msg, $xhdr,
+                            '-f pear-sys@php.net');
+            }
+        } else {
+            $ok = true;
+        }
+
+        PEAR::popErrorHandling();
+
+        return $ok;
+    }
+
+    // }}}
+    // {{{ update
+
+    /**
+     * Update user information
+     *
+     * @access public
+     * @param  array User information
+     * @return object Instance of PEAR_User
+     */
+    function update($data) {
+        global $dbh;
+
+        $fields = array("name", "email", "homepage", "showemail", "userinfo", "pgpkeyid", "wishlist");
+
+        $user =& new PEAR_User($dbh, $data['handle']);
+        foreach ($data as $key => $value) {
+            if (!in_array($key, $fields)) {
+                continue;
+            }
+            $user->set($key, $value);
+        }
+        $user->store();
+
+        return $user;
+    }
+
+    // }}}
+    // {{{ getRecentReleases(string, [int])
+
+    /**
+     * Get recent releases for the given user
+     *
+     * @access public
+     * @param  string Handle of the user
+     * @param  int    Number of releases (default is 10)
+     * @return array
+     */
+    function getRecentReleases($handle, $n = 10)
+    {
+        global $dbh;
+        $recent = array();
+
+        $query = "SELECT p.id AS id, " .
+            "p.name AS name, " .
+            "p.summary AS summary, " .
+            "r.version AS version, " .
+            "r.releasedate AS releasedate, " .
+            "r.releasenotes AS releasenotes, " .
+            "r.doneby AS doneby, " .
+            "r.state AS state " .
+            "FROM packages p, releases r, maintains m " .
+            "WHERE p.package_type = 'pear' AND p.id = r.package " .
+            "AND p.id = m.package AND m.handle = '" . $handle . "' " .
+            "ORDER BY r.releasedate DESC";
+
+        $sth = $dbh->limitQuery($query, 0, $n);
+        while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
+            $recent[] = $row;
+        }
+        return $recent;
+    }
+
+    // }}}
 }
 
 class statistics

@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001-2003 The PHP Group                                |
+   | Copyright (c) 2001-2005 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -17,13 +17,7 @@
    +----------------------------------------------------------------------+
    $Id$
 */
-
-require_once "DB.php";
-require_once "DB/storage.php";
 require_once "pear-config.php";
-require_once "pear-auth.php";
-require_once "pear-database.php";
-require_once "browser.php";
 
 if (substr($_SERVER['PHP_SELF'], 0, 7) == '/manual') {
     require_once "pear-manual.php";
@@ -34,8 +28,11 @@ error_reporting(E_ALL);
 if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
     define('DEVBOX', true);
 } else {
+    error_reporting(E_ALL ^ E_NOTICE);
     define('DEVBOX', false);
 }
+
+require_once "PEAR.php";
 
 if (empty($format)) {
     if (basename($_SERVER['PHP_SELF']) == "xmlrpc.php") {
@@ -46,6 +43,12 @@ if (empty($format)) {
 }
 
 include_once "pear-format-$format.php";
+
+include_once "DB.php";
+include_once "DB/storage.php";
+include_once "pear-auth.php";
+include_once "pear-database.php";
+include_once "pear-rest.php";
 
 function get($name)
 {
@@ -59,10 +62,23 @@ function get($name)
 }
     
 if (empty($dbh)) {
-    $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => false));
+    $options = array(
+        'persistent' => false,
+        'portability' => DB_PORTABILITY_ALL,
+    );
+    $dbh =& DB::connect(PEAR_DATABASE_DSN, $options);
+}
+if (!isset($pear_rest)) {
+    if (!DEVBOX) {
+        $pear_rest = new pear_rest('/var/lib/peclweb/rest');
+    } else {
+        $pear_rest = new pear_rest(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'public_html' .
+            DIRECTORY_SEPARATOR . 'rest');
+    }
 }
 
-$LAST_UPDATED = date("D M d H:i:s Y T", filectime($_SERVER['SCRIPT_FILENAME']));
+$tmp = filectime($_SERVER['SCRIPT_FILENAME']);
+$LAST_UPDATED = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';
 
 if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
     auth_logout();
@@ -92,10 +108,20 @@ if (!function_exists('file_get_contents')) {
     }
 }
 
+if (!function_exists('file_put_contents')) {
+    function file_put_contents($fname, $contents)
+    {
+        $fp = fopen($fname, 'wb');
+        fwrite($fp, $contents);
+        fclose($fp);
+    }
+}
+
 session_start();
 
 /**
 * Browser detection
 */
+require_once "browser.php";
 $_browser = &new browser();
 ?>

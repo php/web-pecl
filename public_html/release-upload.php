@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001-2003 The PHP Group                                |
+   | Copyright (c) 2001-2005 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -23,6 +23,8 @@ auth_require('pear.dev');
 define('HTML_FORM_MAX_FILE_SIZE', 16 * 1024 * 1024); // 16 MB
 define('HTML_FORM_TH_ATTR', 'class="form-label_left"');
 define('HTML_FORM_TD_ATTR', 'class="form-input"');
+
+$script_name = htmlspecialchars($_SERVER['SCRIPT_NAME']);
 
 require_once 'HTML/Form.php';
 
@@ -127,6 +129,7 @@ do {
                     $errors[] = $e->getMessage();
                     break;
                 }
+                $pear_rest->savePackageMaintainerREST($info->getPackage());
                 $file = release::upload($info->getPackage(), $info->getVersion(),
                                         $info->getState(), $info->getNotes(),
                                         $distfile, md5_file($distfile));
@@ -249,7 +252,7 @@ Uploading new releases is restricted to each package's lead developer(s).
 </p>
 MSG;
 
-    $form =& new HTML_Form($_SERVER['PHP_SELF'], 'post', '', '',
+    $form =& new HTML_Form($script_name, 'post', '', '',
             'multipart/form-data');
     $form->addFile('distfile',
             '<label for="f" accesskey="i">D<span class="accesskey">i</span>'
@@ -293,6 +296,7 @@ if ($display_verification) {
             $warnings[] = 'Your package uses package.xml 1.0.  With the release of PEAR 1.4.0 stable, '
                 . 'PECL packages will require package.xml 2.0 and channel name "pecl.php.net"';
         }
+        // this next switch may never be used, but is here in case it turns out to be a good move
         switch ($info->getPackageType()) {
             case 'extsrc' :
                 $type = 'Extension Source package';
@@ -316,7 +320,7 @@ if ($display_verification) {
                      . 'You must correct your package.xml file:');
         report_error($warnings, 'warnings', 'RECOMMENDATIONS:<br />'
                      . 'You may want to correct your package.xml file:');
-        $form =& new HTML_Form($_SERVER['PHP_SELF'], 'post');
+        $form =& new HTML_Form($script_name, 'post');
         $form->addPlaintext('Package:', $info->getPackage());
         $form->addPlaintext('Version:', $info->getVersion());
         $form->addPlaintext('Summary:', htmlspecialchars($info->getSummary()));
@@ -353,7 +357,7 @@ if ($display_verification) {
             }
         }
     
-        $form =& new HTML_Form($_SERVER['PHP_SELF'], 'post');
+        $form =& new HTML_Form($script_name, 'post');
         $form->addPlaintext('Package:', $info['package']);
         $form->addPlaintext('Version:', $info['version']);
         $form->addPlaintext('Summary:', htmlspecialchars($info['summary']));

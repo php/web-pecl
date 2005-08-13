@@ -28,6 +28,8 @@ if (isset($_GET['pid'])) {
     $id = 0;
 }
 
+$self = htmlspecialchars($_SERVER['PHP_SELF']);
+
 // Select package first
 if (empty($id)) {
     auth_require(true);
@@ -43,7 +45,7 @@ if (empty($id)) {
 
     $bb = new BorderBox("Select package");
 
-    $form = new HTML_Form($_SERVER['PHP_SELF']);
+    $form = new HTML_Form($self);
     $form->addSelect("pid", "Package:", $values);
     $form->addSubmit();
     $form->display();
@@ -66,6 +68,8 @@ if (empty($id)) {
         list($handle, $role) = explode("||", $maintainer);
         $new_list[$handle] = $role;
     }
+    $package = $dbh->getOne('SELECT name FROM packages WHERE id=?', array($id));
+
 
     // Perform databases operations
     $query = "SELECT role FROM maintains WHERE handle = ? AND package = ?";
@@ -109,9 +113,10 @@ if (empty($id)) {
         }
     }
 
-    $url = $_SERVER['PHP_SELF'];
+    $pear_rest->savePackageMaintainerREST($package);
+    $url = $self;
     if (!empty($_GET['pid'])) {
-        $url .= "?pid=" . $_GET['pid'];
+        $url .= "?pid=" . urlencode(strip_tags($_GET['pid']));
     }
     echo '<br /><b>Done</b><br />';
     echo '<a href="' . $url . '">Back</a>';
@@ -126,7 +131,7 @@ if (empty($id)) {
     $bb = new BorderBox("Manage maintainers", "100%");
 
     echo '<script src="/javascript/package-maintainers.js" type="text/javascript"></script>';
-    echo '<form onSubmit="beforeSubmit()" name="form" method="get" action="' . $_SERVER['PHP_SELF'] . '">';
+    echo '<form onSubmit="beforeSubmit()" name="form" method="get" action="' . $self . '">';
     echo '<input type="hidden" name="update" value="yes" />';
     echo '<input type="hidden" name="pid" value="' . $id . '" />';
     echo '<table border="0" cellpadding="0" cellspacing="4" border="0" width="100%">';
@@ -155,13 +160,13 @@ if (empty($id)) {
     echo '  </td>';
 
     echo '  <td>';
-    echo '  <input type="submit" onClick="addMaintainer(); return false" name="add" value="Add as" />';
+    echo '  <input type="button" onClick="addMaintainer(); return false" name="add" value="Add as" />';
     echo '  <select name="role" size="1">';
     echo '    <option value="lead">lead</option>';
     echo '    <option value="developer">developer</option>';
     echo '    <option value="helper">helper</option>';
     echo '  </select><br /><br />';
-    echo '  <input type="submit" onClick="removeMaintainer(); return false" name="remove" value="Remove" />';
+    echo '  <input type="button" onClick="removeMaintainer(); return false" name="remove" value="Remove" />';
     echo '  </td>';
 
     echo '  <td>';

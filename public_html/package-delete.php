@@ -3,7 +3,7 @@
    +----------------------------------------------------------------------+
    | PEAR Web site version 1.0                                            |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2001-2003 The PHP Group                                |
+   | Copyright (c) 2001-2005 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -22,20 +22,18 @@
  * Interface to delete a package.
  */
 
-auth_require(true);
+response_header('Delete Package');
+echo '<h1>Delete Package</h1>';
 
 require_once "HTML/Form.php";
 
-response_header("Delete package");
-echo "<h1>Delete package</h1>";
-
 if (!isset($_GET['id'])) {
-    PEAR::raiseError("No package ID specified.");
+    report_error('No package ID specified.');
     response_footer();
-    exit();
+    exit;
 }
 
-$form = new HTML_Form($_SERVER['PHP_SELF'] . "?id=" . $_GET['id'], "POST");
+$form = new HTML_Form("/package-delete.php?id=" . $_GET['id'], "POST");
 
 if (!isset($_POST['confirm'])) {
 
@@ -92,6 +90,7 @@ if (!isset($_POST['confirm'])) {
     echo "\n" . $file_rm . " file(s) deleted\n\n";
 
     $catid = package::info($_GET['id'], 'categoryid');
+    $packagename = package::info($_GET['id'], 'name');
     $dbh->query("UPDATE categories SET npackages = npackages-1 WHERE id=$catid");
 
     foreach ($tables as $table => $field) {
@@ -107,6 +106,7 @@ if (!isset($_POST['confirm'])) {
         echo "<b>" . $dbh->affectedRows() . "</b> rows affected.\n";
     }
 
+    $pear_rest->deletePackageREST($packagename);
     echo "</pre>\nPackage " . $_GET['id'] . " has been deleted.\n";
 
 } else if ($_POST['confirm'] == "no") {

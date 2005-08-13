@@ -60,6 +60,7 @@ if (isset($_SERVER['PHP_CVS_REPO_DIR'])) {
 }
 
 define('PEAR_COMMON_USER_NAME_REGEX', '/^[a-z][a-z0-9]+$/i');
+define('PEAR_CHANNELNAME', 'pecl.php.net');
 
 define('DAMBLAN_RSS_CACHE_DIR', PEAR_TMPDIR . '/rss_cache');
 define('DAMBLAN_RSS_CACHE_TIME', 1800);

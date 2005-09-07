@@ -1770,9 +1770,9 @@ class release
         // Update Cache
         include_once 'xmlrpc-cache.php';
         $cache = new XMLRPC_Cache;
+        $GLOBALS['pear_rest']->saveAllReleasesREST($package);
         $GLOBALS['pear_rest']->saveReleaseREST($file, $packagexml, $pkg_info, $auth_user->handle,
             $release_id);
-        $GLOBALS['pear_rest']->saveAllReleasesREST($package);
         // gotta clear all the permutations
         $cache->remove('package.listAll', array(false));
         $cache->remove('package.listAll', array(true));
@@ -2188,13 +2188,13 @@ Authors
         $pname = package::info($package, 'name');
         $version = $dbh->getOne('SELECT version from releases WHERE package = ? and id = ?',
             array($package, $release));
-        $GLOBALS['pear_rest']->deleteReleaseREST($pname, $version);
         $query = sprintf("DELETE FROM releases WHERE package = '%s' AND id = '%s'",
                          $package,
                          $release
                          );
         $sth = $dbh->query($query);
         $GLOBALS['pear_rest']->saveAllReleasesREST($pname);
+        $GLOBALS['pear_rest']->deleteReleaseREST($pname, $version);
 
         if (PEAR::isError($sth)) {
             return false;

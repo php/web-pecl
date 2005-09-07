@@ -24,7 +24,7 @@ class pear_rest
             System::mkdir(array('-p', $cdir . DIRECTORY_SEPARATOR . urlencode($category['name'])));
             @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']), 0777);
         }
-        $info = '<?xml version="1.0"?>
+        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
 <c xmlns="http://pear.php.net/dtd/rest.category"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.category
     http://pear.php.net/dtd/rest.category.xsd">
@@ -38,7 +38,7 @@ class pear_rest
             DIRECTORY_SEPARATOR . 'info.xml', $info);
         @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']) .
             DIRECTORY_SEPARATOR . 'info.xml', 0666);
-        $list = '<?xml version="1.0"?>
+        $list = '<?xml version="1.0" encoding="iso-8859-1" ?>
 <l xmlns="http://pear.php.net/dtd/rest.categorypackages"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackages
     http://pear.php.net/dtd/rest.categorypackages.xsd">
@@ -81,7 +81,7 @@ class pear_rest
             @chmod($pdir, 0777);
         }
 
-        $info = '<?xml version="1.0" ?>
+        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
 <a xmlns="http://pear.php.net/dtd/rest.allpackages"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allpackages
     http://pear.php.net/dtd/rest.allpackages.xsd">
@@ -137,7 +137,7 @@ class pear_rest
         } else {
             $deprecated = '';
         }
-        $info = '<?xml version="1.0"?>
+        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
 <p xmlns="http://pear.php.net/dtd/rest.package"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.package
     http://pear.php.net/dtd/rest.package.xsd">
@@ -191,7 +191,7 @@ class pear_rest
             System::rm(array('-r', $rdir . DIRECTORY_SEPARATOR . strtolower($package)));
             return;
         }
-        $info = '<?xml version="1.0"?>
+        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
 <a xmlns="http://pear.php.net/dtd/rest.allreleases"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allreleases
     http://pear.php.net/dtd/rest.allreleases.xsd">
@@ -319,7 +319,7 @@ class pear_rest
 
         $releasedate = $dbh->getOne('SELECT releasedate FROM releases WHERE id = ?',
             array($id));
-        $info = '<?xml version="1.0"?>
+        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
 <r xmlns="http://pear.php.net/dtd/rest.release"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.release
     http://pear.php.net/dtd/rest.release.xsd">
@@ -379,7 +379,7 @@ class pear_rest
                 System::mkdir(array('-p', $pdir . DIRECTORY_SEPARATOR . strtolower($package)));
                 @chmod($pdir . DIRECTORY_SEPARATOR . strtolower($package), 0777);
             }
-            $info = '<?xml version="1.0"?>
+            $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
 <m xmlns="http://pear.php.net/dtd/rest.packagemaintainers"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.packagemaintainers
     http://pear.php.net/dtd/rest.packagemaintainers.xsd">
@@ -424,7 +424,7 @@ class pear_rest
         } else {
             $uri = '';
         }
-        $info = '<?xml version="1.0"?>
+        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
 <m xmlns="http://pear.php.net/dtd/rest.maintainer"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.maintainer
     http://pear.php.net/dtd/rest.maintainer.xsd">

@@ -186,9 +186,9 @@ class pear_rest
             System::mkdir(array('-p', $rdir));
             @chmod($rdir, 0777);
         }
-        // start from scratch, so that any pulled releases have their REST deleted
-        System::rm(array('-r', $rdir . DIRECTORY_SEPARATOR . strtolower($package)));
         if (!$releases || !count($releases)) {
+            // start from scratch, so that any pulled releases have their REST deleted
+            System::rm(array('-r', $rdir . DIRECTORY_SEPARATOR . strtolower($package)));
             return;
         }
         $info = '<?xml version="1.0"?>

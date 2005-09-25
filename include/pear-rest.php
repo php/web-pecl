@@ -24,21 +24,24 @@ class pear_rest
             System::mkdir(array('-p', $cdir . DIRECTORY_SEPARATOR . urlencode($category['name'])));
             @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']), 0777);
         }
-        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
+        $category['description'] = htmlspecialchars($category['description']);
+        $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <c xmlns="http://pear.php.net/dtd/rest.category"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.category
     http://pear.php.net/dtd/rest.category.xsd">
  <n>' . htmlspecialchars($category['name']) . '</n>
  <c>' . PEAR_CHANNELNAME . '</c>
  <a>' . htmlspecialchars($category['name']) . '</a>
- <d>' . htmlentities($category['description']) . '</d>
+ <d>' . (version_compare(phpversion(), '5.0.0', 'lt') ?
+            utf8_encode($category['description']) :
+            $category['description']) . '</d>
 </c>';
         // category info
         file_put_contents($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']) .
             DIRECTORY_SEPARATOR . 'info.xml', $info);
         @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']) .
             DIRECTORY_SEPARATOR . 'info.xml', 0666);
-        $list = '<?xml version="1.0" encoding="iso-8859-1" ?>
+        $list = '<?xml version="1.0" encoding="UTF-8" ?>
 <l xmlns="http://pear.php.net/dtd/rest.categorypackages"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackages
     http://pear.php.net/dtd/rest.categorypackages.xsd">
@@ -81,7 +84,7 @@ class pear_rest
             @chmod($pdir, 0777);
         }
 
-        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
+        $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <a xmlns="http://pear.php.net/dtd/rest.allpackages"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allpackages
     http://pear.php.net/dtd/rest.allpackages.xsd">
@@ -137,7 +140,9 @@ class pear_rest
         } else {
             $deprecated = '';
         }
-        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
+        $package['summary'] = htmlspecialchars($package['summary']);
+        $package['description'] = htmlspecialchars($package['description']);
+        $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <p xmlns="http://pear.php.net/dtd/rest.package"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.package
     http://pear.php.net/dtd/rest.package.xsd">
@@ -146,8 +151,12 @@ class pear_rest
  <ca xlink:href="' . $extra . 'c/' . htmlspecialchars(urlencode($catinfo)) . '">' .
         htmlspecialchars($catinfo) . '</ca>
  <l>' . $package['license'] . '</l>
- <s>' . htmlentities(trim($package['summary'])) . '</s>
- <d>' . htmlentities(trim($package['description'])) . '</d>
+ <s>' . (version_compare(phpversion(), '5.0.0', 'lt') ?
+            utf8_encode($package['summary']) :
+            $package['summary']) . '</s>
+ <d>' . (version_compare(phpversion(), '5.0.0', 'lt') ?
+            utf8_encode($package['description']) :
+            $package['description']) . '</d>
  <r xlink:href="' . $extra . 'r/' . strtolower($package['name']) . '"/>' . $parent . $deprecated . '
 </p>';
         // package information
@@ -191,7 +200,7 @@ class pear_rest
             System::rm(array('-r', $rdir . DIRECTORY_SEPARATOR . strtolower($package)));
             return;
         }
-        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
+        $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <a xmlns="http://pear.php.net/dtd/rest.allreleases"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allreleases
     http://pear.php.net/dtd/rest.allreleases.xsd">
@@ -242,8 +251,9 @@ class pear_rest
             if ($release['state'] == 'alpha' && !isset($alpha)) {
                 $alpha = $release['version'];
             }
-            $info .= ' <r><v>' . $release['version'] . '</v><s>' . $release['state'] . '</s></r>
-' . $extra;
+            $info .= ' <r><v>' . $release['version'] . '</v><s>' . $release['state'] . '</s>'
+                 . $extra . '</r>
+';
         }
         $info .= '</a>';
         if (!is_dir($rdir . DIRECTORY_SEPARATOR . strtolower($package))) {
@@ -319,7 +329,7 @@ class pear_rest
 
         $releasedate = $dbh->getOne('SELECT releasedate FROM releases WHERE id = ?',
             array($id));
-        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
+        $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <r xmlns="http://pear.php.net/dtd/rest.release"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.release
     http://pear.php.net/dtd/rest.release.xsd">
@@ -329,10 +339,16 @@ class pear_rest
  <st>' . $pkgobj->getState() . '</st>
  <l>' . $pkgobj->getLicense() . '</l>
  <m>' . $releasedby . '</m>
- <s>' . htmlentities($pkgobj->getSummary()) . '</s>
- <d>' . htmlentities($pkgobj->getDescription()) . '</d>
+ <s>' . (version_compare(phpversion(), '5.0.0', 'lt') ?
+            utf8_encode(htmlspecialchars($pkgobj->getSummary())) :
+            htmlspecialchars($pkgobj->getSummary())) . '</s>
+ <d>' . (version_compare(phpversion(), '5.0.0', 'lt') ?
+            utf8_encode(htmlspecialchars($pkgobj->getDescription())) :
+            htmlspecialchars($pkgobj->getDescription())) . '</d>
  <da>' . $releasedate . '</da>
- <n>' . htmlentities($pkgobj->getNotes()) . '</n>
+ <n>' . (version_compare(phpversion(), '5.0.0', 'lt') ?
+            utf8_encode(htmlspecialchars($pkgobj->getNotes())) :
+            htmlspecialchars($pkgobj->getNotes())) . '</n>
  <f>' . filesize($filepath) . '</f>
  <g>http://' . PEAR_CHANNELNAME . '/get/' . $package . '-' . $pkgobj->getVersion() . '</g>
  <x xlink:href="package.' . $pkgobj->getVersion() . '.xml"/>
@@ -379,7 +395,7 @@ class pear_rest
                 System::mkdir(array('-p', $pdir . DIRECTORY_SEPARATOR . strtolower($package)));
                 @chmod($pdir . DIRECTORY_SEPARATOR . strtolower($package), 0777);
             }
-            $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
+            $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <m xmlns="http://pear.php.net/dtd/rest.packagemaintainers"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.packagemaintainers
     http://pear.php.net/dtd/rest.packagemaintainers.xsd">
@@ -424,12 +440,15 @@ class pear_rest
         } else {
             $uri = '';
         }
-        $info = '<?xml version="1.0" encoding="iso-8859-1" ?>
+        $maintainer['name'] = htmlspecialchars($maintainer['name']);
+        $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <m xmlns="http://pear.php.net/dtd/rest.maintainer"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.maintainer
     http://pear.php.net/dtd/rest.maintainer.xsd">
  <h>' . $maintainer['handle'] . '</h>
- <n>' . htmlentities($maintainer['name']) . '</n>
+ <n>' . (version_compare(phpversion(), '5.0.0', 'lt') ?
+            utf8_encode($maintainer['name']) :
+            $maintainer['name']) . '</n>
 ' . $uri . '</m>';
         // package information
         file_put_contents($mdir . DIRECTORY_SEPARATOR . $maintainer['handle'] .

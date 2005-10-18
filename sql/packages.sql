@@ -6,7 +6,7 @@ CREATE TABLE packages (
        category       INTEGER, -- REFERENCES categories(id),
        stablerelease  VARCHAR(20),
        develrelease   VARCHAR(20),
-       license        VARCHAR(20),
+       license        VARCHAR(50),
        summary	      TEXT,
        description    TEXT,
        homepage       VARCHAR(255),

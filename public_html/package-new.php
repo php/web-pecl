@@ -130,15 +130,15 @@ people agree with you.
 
     $bb = new BorderBox("Register package", "100%", "", 2, true);
 
-    $bb->horizHeadRow("Package Name", $form->returnText("name", get("name"), 20));
-    $bb->horizHeadRow("License", $form->returnText("license", get("license"), 20));
+    $bb->horizHeadRow("Package Name", $form->returnText("name", get("name"), 20, 80));
+    $bb->horizHeadRow("License", $form->returnText("license", get("license"), 20, 50));
     $cats = $form->returnSelect("category", $categories, get("category"), 1,
                                 "--Select Category--");
     $bb->horizHeadRow("Category", $cats);
     $bb->horizHeadRow("Summary", $form->returnText("summary", get("summary"), $width));
     $bb->horizHeadRow("Full description", $form->returnTextarea("desc", get("desc"), $width, 3));
-    $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 40));
-    $bb->horizHeadRow("CVS Web Url", $form->returnText("cvs_link", get("cvs_link"), 40) .
+    $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 40, 255));
+    $bb->horizHeadRow("CVS Web Url", $form->returnText("cvs_link", get("cvs_link"), 40, 255) .
                                      '<br /><small>For example: http://cvs.php.net/cvs.php/pecl/PDO</small>');
     $bb->fullRow($form->returnSubmit("Submit Request", "submit"));
     $bb->end();

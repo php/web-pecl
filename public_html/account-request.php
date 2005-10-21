@@ -32,148 +32,171 @@ $display_form = true;
 $width = 60;
 $errorMsg = "";
 $jumpto = "handle";
+if (isset($_POST['submit'])) {
 
-do {
-    if (isset($_POST['submit'])) {
-        $required = array("handle"    => "your desired username",
-                          "firstname" => "your first name",
-						  "lastname"  => "your last name",
-                          "email"     => "your email address",
-                          "purpose"   => "the purpose of your PECL account");
+    $fields  = array(
+                    'handle',
+                    'firstname',
+                    'lastname',
+                    'email',
+                    'purpose',
+                    'password',
+                    'password2',
+                    'email',
+                    'moreinfo',
+                    'homepage'
+                    );
 
-		$name = $_POST['firstname'] . " " . $_POST['lastname'];
-
-        foreach ($required as $field => $desc) {
-            if (empty($$field)) {
-                display_error("Please enter $desc!");
-                $jumpto = $field;
-                break 2;
-            }
-        }
-
-        if (!preg_match(PEAR_COMMON_USER_NAME_REGEX, $handle)) {
-            display_error("Username must start with a letter and contain only letters and digits.");
-            break;
-        }
-
-        if ($password != $password2) {
-            display_error("Passwords did not match");
-            $password = $password2 = "";
-            $jumpto = "password";
-            break;
-        }
-
-        if (!$password) {
-            display_error("Empty passwords not allowed");
-            $jumpto = "password";
-            break;
-        }
-
-	PEAR::setErrorHandling(PEAR_ERROR_RETURN);
-
-        $handle = strtolower($handle);
-        $obj =& new PEAR_User($dbh, $handle);
-
-        if (isset($obj->created)) {
-            display_error("Sorry, that username is already taken");
-            $jumpto = "handle";
-            break;
-        }
-
-        $err = $obj->insert($handle);
-
-        if (DB::isError($err)) {
-            display_error("$handle: " . DB::errorMessage($err));
-            $jumpto = "handle";
-            break;
-        }
-
-        $display_form = false;
-        $md5pw = md5($password);
-        $showemail = @(bool)$showemail;
-	$needcvs = @(bool)$needcvs;
-        // hack to temporarily embed the "purpose" in
-        // the user's "userinfo" column
-        $userinfo = serialize(array($purpose, $moreinfo));
-        $set_vars = array('name' => $name,
-                          'email' => $email,
-                          'homepage' => $homepage,
-                          'showemail' => $showemail,
-                          'password' => $md5pw,
-                          'registered' => 0,
-                          'userinfo' => $userinfo);
-        $errors = 0;
-        foreach ($set_vars as $var => $value) {
-            $err = $obj->set($var, $value);
-            if (PEAR::isError($err)) {
-                print "Failed setting $var: ";
-                print $err->getMessage();
-                print "<br />\n";
-                $errors++;
-            }
-        }
-        if ($errors > 0) {
-            break;
-        }
-
-        $msg = "Requested from:   {$_SERVER['REMOTE_ADDR']}\n".
-               "Username:         {$handle}\n".
-               "Real Name:        {$name}\n".
-               "Email:            {$email}".
-               (@$showemail ? " (show address)" : " (hide address)") . "\n".
-               "Need CVS Account: " . (@$needcvs ? "yes" : "no") . "\n".
-               "Purpose:\n".
-               "$purpose\n\n".
-               "To handle: http://{$SERVER_NAME}/admin/?acreq={$handle}\n";
-
-        if ($moreinfo) {
-            $msg .= "\nMore info:\n$moreinfo\n";
-        }
-
-        $xhdr = "From: $name <$email>";
-        $subject = "PECL Account Request: {$handle}";
-        $ok = mail("pecl-dev@lists.php.net", $subject, $msg, $xhdr, "-f pear-sys@php.net");
-        response_header("Account Request Submitted");
-
-        if ($ok) {
-            print "<h2>Account Request Submitted</h2>\n";
-            print "Your account request has been submitted, it will ".
-                  "be reviewed by a human shortly.  This may take from two ".
-                  "minutes to several days, depending on how much time people ".
-                  "have.  ".
-                  "You will get an email when your account is open, or if ".
-                  "your request was rejected for some reason.";
-        } else {
-            print "<h2>Possible Problem!</h2>\n";
-            print "Your account request has been submitted, but there ".
-                  "were problems mailing one or more administrators.  ".
-                  "If you don't hear anything about your account in a few ".
-                  "days, please drop a mail about it to the <i>pecl-dev</i> ".
-                  "mailing list.";
-        }
-
-	/* Now do the CVS stuff */
-	if ($needcvs) {
-		$error = posttohost(
-			'http://master.php.net/entry/cvs-account.php',
-			array(
-				"username" => $handle,
-				"name"     => $name,
-				"email"    => $email,
-				"passwd"   => $password,
-				"note"     => $purpose
-			)
-		);
-		if ($error) {
-			print "<h2>Problem submitting CVS account request</h2>\n";
-			print "<p class=\"error\">$error</p>\n";
-		}
-	}
-
-        print "<br />Click the top-left PECL logo to go back to the front page.\n";
+    foreach ($fields as $field) {
+        $$field = isset($_POST[$field]) ? htmlspecialchars(strip_tags($_POST[$field])) : null;
     }
-} while (0);
 
+    do {
+
+            $required = array("handle"    => "your desired username",
+                              "firstname" => "your first name",
+                              "lastname"  => "your last name",
+                              "email"     => "your email address",
+                              "purpose"   => "the purpose of your PECL account");
+
+            $name = $_POST['firstname'] . " " . $_POST['lastname'];
+
+            foreach ($required as $field => $desc) {
+                if (empty($_POST[$field])) {
+                    display_error("Please enter $desc!");
+                    $jumpto = $field;
+                    break 2;
+                }
+            }
+
+            if (!preg_match(PEAR_COMMON_USER_NAME_REGEX, $handle)) {
+                display_error("Username must start with a letter and contain only letters and digits.");
+                break;
+            }
+
+            if ($password != $password2) {
+                display_error("Passwords did not match");
+                $password = $password2 = "";
+                $jumpto = "password";
+                break;
+            }
+
+            if (!$password) {
+                display_error("Empty passwords not allowed");
+                $jumpto = "password";
+                break;
+            }
+
+            PEAR::setErrorHandling(PEAR_ERROR_RETURN);
+
+            $handle = strtolower($handle);
+
+            $obj =& new PEAR_User($dbh, $handle);
+
+            if (isset($obj->created)) {
+                display_error("Sorry, that username is already taken");
+                $jumpto = "handle";
+                break;
+            }
+
+            $err = $obj->insert($handle);
+
+            if (DB::isError($err)) {
+                display_error("$handle: " . DB::errorMessage($err));
+                $jumpto = "handle";
+                break;
+            }
+
+
+            $display_form = false;
+            $md5pw = md5($password);
+            $showemail = @(bool)$showemail;
+
+            $needcvs = @(bool)$needcvs;
+
+            // hack to temporarily embed the "purpose" in
+            // the user's "userinfo" column
+            $userinfo = serialize(array($purpose, $moreinfo));
+            $set_vars = array('name' => $name,
+                              'email' => $email,
+                              'homepage' => $homepage,
+                              'showemail' => $showemail,
+                              'password' => $md5pw,
+                              'registered' => 0,
+                              'userinfo' => $userinfo);
+            $errors = 0;
+            foreach ($set_vars as $var => $value) {
+                $err = $obj->set($var, $value);
+                if (PEAR::isError($err)) {
+                    print "Failed setting $var: ";
+                    print $err->getMessage();
+                    print "<br />\n";
+                    $errors++;
+                }
+            }
+            if ($errors > 0) {
+                break;
+            }
+
+            $msg = "Requested from:   {$_SERVER['REMOTE_ADDR']}\n".
+                   "Username:         {$handle}\n".
+                   "Real Name:        {$name}\n".
+                   "Email:            {$email}".
+                   (@$showemail ? " (show address)" : " (hide address)") . "\n".
+                   "Need CVS Account: " . (@$needcvs ? "yes" : "no") . "\n".
+                   "Purpose:\n".
+                   "$purpose\n\n".
+                   "To handle: http://" . PEAR_CHANNELNAME . "/admin/?acreq={$handle}\n";
+
+            if ($moreinfo) {
+                $msg .= "\nMore info:\n$moreinfo\n";
+            }
+
+            $xhdr = "From: $name <$email>";
+            $subject = "PECL Account Request: {$handle}";
+            $ok = mail("pecl-dev@lists.php.net", $subject, $msg, $xhdr, "-f pear-sys@php.net");
+            response_header("Account Request Submitted");
+
+            if ($ok) {
+                print "<h2>Account Request Submitted</h2>\n";
+                print "Your account request has been submitted, it will ".
+                      "be reviewed by a human shortly.  This may take from two ".
+                      "minutes to several days, depending on how much time people ".
+                      "have.  ".
+                      "You will get an email when your account is open, or if ".
+                      "your request was rejected for some reason.";
+            } else {
+                print "<h2>Possible Problem!</h2>\n";
+                print "Your account request has been submitted, but there ".
+                      "were problems mailing one or more administrators.  ".
+                      "If you don't hear anything about your account in a few ".
+                      "days, please drop a mail about it to the <i>pecl-dev</i> ".
+                      "mailing list.";
+            }
+
+            /* Now do the CVS stuff */
+            if ($needcvs) {
+                $error = posttohost(
+                    'http://master.php.net/entry/cvs-account.php',
+                    array(
+                        "username" => $handle,
+                        "name"     => $name,
+                        "email"    => $email,
+                        "passwd"   => $password,
+                        "note"     => $purpose
+                    )
+                );
+
+                if ($error) {
+                    print "<h2>Problem submitting CVS account request</h2>\n";
+                    print "<p class=\"error\">$error</p>\n";
+                }
+            }
+
+            print "<br />Click the top-left PECL logo to go back to the front page.\n";
+
+    } while (0);
+}
 if ($display_form) {
 
     response_header("Request Account");
@@ -232,7 +255,7 @@ $opl_link.</p>
 			enableForm(false);
 		}
 	}
-	
+
 	function enableForm(disabled)
 	{
 		for (var i=0; i<document.forms['request_form'].elements.length; i++) {
@@ -240,7 +263,7 @@ $opl_link.</p>
 			//document.forms['request_form'].elements[i].style.backgroundColor = '#c0c0c0';
 		}
 	}
-	
+
 	enableForm(false);
 //-->
 </script>

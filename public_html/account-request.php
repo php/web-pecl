@@ -44,7 +44,8 @@ if (isset($_POST['submit'])) {
                     'password2',
                     'email',
                     'moreinfo',
-                    'homepage'
+                    'homepage',
+                    'needcvs'
                     );
 
     foreach ($fields as $field) {

@@ -79,7 +79,14 @@ switch ($command) {
                 response_footer();
                 exit();
             }
+
             $user_data_post[$k] = htmlspecialchars($_POST[$k]);
+
+            if ($k == 'userinfo' && strlen($user_data_post[$k]) > '255') {
+                report_error('User information exceeds the allowed length (255 chars).');
+                response_footer();
+                exit();
+            }
         }
 
         $user = user::update($user_data_post);
@@ -179,7 +186,8 @@ $form->addText('pgpkeyid', 'PGP Key ID:'
         . '<p class="cell_note">(Without leading 0x)</p>',
         $row['pgpkeyid'], 40, 20);
 $form->addTextarea('userinfo',
-        'Additional User Information:',
+        'Additional User Information:'
+        . '<p class="cell_note">(limited to 255 chars)</p>',
         $row['userinfo'], 40, 5, null);
 $form->addTextarea('cvs_acl',
         'CVS Access:',

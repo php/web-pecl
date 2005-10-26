@@ -19,6 +19,8 @@
 */
 
 response_header("Accounts");
+$offset = isset($_GET['offset']) ? (int) $_GET['offset'] : null;
+$letter = isset($_GET['letter']) ? strip_tags($_GET['letter']) : null;
 
 $page_size = 20;
 

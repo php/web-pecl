@@ -25,6 +25,8 @@ if (!empty($_GET['phpinfo'])) {
     exit();
 }
 
+$acreq = isset($_GET['acreq']) ? strip_tags(htmlspecialchars($_GET['acreq'])) : null;
+
 $SIDEBAR_DATA='
 This is the PEAR administration page.<br />
 <noscript><p>

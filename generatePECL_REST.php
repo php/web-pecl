@@ -105,6 +105,7 @@ foreach (package::listAll(false, false, false) as $package => $info) {
                 array($blah['id']));
             if (!$fileinfo) {
                 echo "     Skipping INVALID Version $version (corrupt in database!)\n";
+                continue;
             }
             $tar = &new Archive_Tar($fileinfo);
             if ($pxml = $tar->extractInString('package2.xml')) {

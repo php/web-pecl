@@ -7,12 +7,59 @@
 /**
  * Useful files to have
  */
-if (isset($_SERVER['argv']) && $_SERVER['argv'][1] == 'pecl') {
-    $_SERVER['SERVER_NAME'] = 'pecl.php.net';
-}
 set_include_path(dirname(__FILE__) . '/include' . PATH_SEPARATOR . get_include_path());
 ob_start();
-@require_once 'pear-prepend.php';
+require_once "pear-config.php";
+if ($_SERVER['SERVER_NAME'] != PEAR_CHANNELNAME) {
+    error_reporting(E_ALL);
+    define('DEVBOX', true);
+} else {
+    error_reporting(E_ALL ^ E_NOTICE);
+    define('DEVBOX', false);
+}
+
+require_once "PEAR.php";
+
+include_once "pear-database.php";
+include_once "pear-rest.php";
+if (!isset($pear_rest)) {
+    if (isset($_SERVER['argv']) && $_SERVER['argv'][1] == 'pecl') {
+        $pear_rest = new pear_rest('/var/lib/peclweb/rest');
+    } else {
+        $pear_rest = new pear_rest(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'public_html' .
+            DIRECTORY_SEPARATOR . 'rest');
+    }
+}
+
+if (!function_exists('file_get_contents')) {
+    function file_get_contents($file, $use_include_path = false) {
+        if (!$fp = fopen($file, 'r', $use_include_path)) {
+            return false;
+        }
+        $data = fread($fp, filesize($file));
+        fclose($fp);
+        return $data;
+    }
+}
+
+if (!function_exists('file_put_contents')) {
+    function file_put_contents($fname, $contents)
+    {
+        $fp = fopen($fname, 'wb');
+        fwrite($fp, $contents);
+        fclose($fp);
+    }
+}
+include_once "DB.php";
+include_once "DB/storage.php";
+
+if (empty($dbh)) {
+    $options = array(
+        'persistent' => false,
+        'portability' => DB_PORTABILITY_ALL,
+    );
+    $dbh =& DB::connect(PEAR_DATABASE_DSN, $options);
+}
 ob_end_clean();
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 require_once 'System.php';
@@ -25,6 +72,7 @@ foreach (category::listAll() as $category) {
     $pear_rest->saveCategoryREST($category['name']);
     echo "done\n";
 }
+$pear_rest->saveAllCategoriesREST();
 echo "Generating Maintainer REST...\n";
 $maintainers = $dbh->getAll('SELECT * FROM users', array(), DB_FETCHMODE_ASSOC);
 foreach ($maintainers as $maintainer) {
@@ -32,6 +80,9 @@ foreach ($maintainers as $maintainer) {
     $pear_rest->saveMaintainerREST($maintainer['handle']);
     echo "done\n";
 }
+echo "Generating All Maintainers REST...\n";
+$pear_rest->saveAllMaintainersREST();
+echo "done\n";
 echo "Generating Package REST...\n";
 $pear_rest->saveAllPackagesREST();
 require_once 'Archive/Tar.php';
@@ -71,5 +122,11 @@ foreach (package::listAll(false, false, false) as $package => $info) {
     } else {
         echo "  done\n";
     }
+}
+echo "Generating Category Package REST...\n";
+foreach (category::listAll() as $category) {
+    echo "  $category[name]...";
+    $pear_rest->savePackagesCategoryREST($category['name']);
+    echo "done\n";
 }
 ?>

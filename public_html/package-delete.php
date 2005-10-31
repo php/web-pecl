@@ -90,6 +90,7 @@ if (!isset($_POST['confirm'])) {
     echo "\n" . $file_rm . " file(s) deleted\n\n";
 
     $catid = package::info($_GET['id'], 'categoryid');
+    $catname = package::info($_GET['id'], 'category');
     $packagename = package::info($_GET['id'], 'name');
     $dbh->query("UPDATE categories SET npackages = npackages-1 WHERE id=$catid");
 
@@ -107,6 +108,7 @@ if (!isset($_POST['confirm'])) {
     }
 
     $pear_rest->deletePackageREST($packagename);
+    $pear_rest->savePackagesCategoryREST($catname);
     echo "</pre>\nPackage " . $_GET['id'] . " has been deleted.\n";
 
 } else if ($_POST['confirm'] == "no") {

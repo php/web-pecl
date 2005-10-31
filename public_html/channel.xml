@@ -19,6 +19,7 @@ http://pear.php.net/dtd/channel-1.0.xsd">
    </xmlrpc>
    <rest>
     <baseurl type="REST1.0">http://pecl.php.net/rest/</baseurl>
+    <baseurl type="REST1.1">http://pecl.php.net/rest/</baseurl>
    </rest>
   </primary>
  </servers>

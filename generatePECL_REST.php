@@ -103,6 +103,9 @@ foreach (package::listAll(false, false, false) as $package => $info) {
         foreach ($releases as $version => $blah) {
             $fileinfo = $dbh->getOne('SELECT fullpath FROM files WHERE release = ?',
                 array($blah['id']));
+            if (!$fileinfo) {
+                echo "     Skipping INVALID Version $version (corrupt in database!)\n";
+            }
             $tar = &new Archive_Tar($fileinfo);
             if ($pxml = $tar->extractInString('package2.xml')) {
             } elseif ($pxml = $tar->extractInString('package.xml'));

@@ -361,7 +361,7 @@ if (isset($_GET['cmd']) && $_GET['cmd'] == 'display') {
                 }
             }
 
-            $link = $_SERVER['PHP_SELF'] .
+            $link = htmlspecialchars($_SERVER['PHP_SELF']) .
                     '?cmd=display' .
                     $package_name_string  .
                     $package_nname_string .
@@ -439,7 +439,7 @@ display_bug_error($errors);
 display_bug_error($warnings, 'warnings', 'WARNING:');
 
 ?>
-<form id="asearch" method="get" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+<form id="asearch" method="get" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
 <table id="primary" width="100%">
 <tr valign="top">
   <th>Find bugs</th>

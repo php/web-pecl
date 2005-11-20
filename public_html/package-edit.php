@@ -129,7 +129,7 @@ if (empty($row['name'])) {
 $bb = new Borderbox("Edit package information");
 ?>
 
-<form action="<?php echo $_SERVER['PHP_SELF']?>?id=<?php echo $_GET['id']; ?>" method="POST">
+<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>?id=<?php echo (int)$_GET['id']; ?>" method="POST">
 <table border="0">
 <tr>
     <td>Package name:</td>
@@ -213,8 +213,8 @@ foreach ($row['releases'] as $version => $release) {
     echo "  <td>" . $release['releasedate'] . "</td>\n";
     echo "  <td>\n";
 
-    $url = $_SERVER['PHP_SELF'] . "?id=" .
-                     $_GET['id'] . "&release=" .
+    $url = htmlspecialchars($_SERVER['PHP_SELF']) . "?id=" .
+                     (int)$_GET['id'] . "&release=" .
                      $release['id'] . "&action=release_remove";
     $msg = "Are you sure that you want to delete the release?";
 

@@ -308,7 +308,7 @@ if (!package_exists($_REQUEST['package'])) {
 ?>
 
 <form method="post"
- action="<?php echo $_SERVER['PHP_SELF'] . '?package='
+ action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . '?package='
  . $_REQUEST['package']; ?>">
 <table class="form-holder" cellspacing="1">
  <tr>
@@ -342,7 +342,7 @@ if (!package_exists($_REQUEST['package'])) {
 
     if (!empty($_REQUEST['package'])) {
         echo '<input type="hidden" name="in[package_name]" value="';
-        echo $_REQUEST['package'] . '" />' . $_REQUEST['package'];
+        echo htmlspecialchars($_REQUEST['package']) . '" />' . htmlspecialchars($_REQUEST['package']);
         if ($_REQUEST['package'] == 'Bug System') {
             echo '<p><strong>WARNING: You are saying the <em>package';
             echo ' affected</em> is the &quot;Bug System.&quot; This';

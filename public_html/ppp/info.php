@@ -71,7 +71,7 @@ if (0) {
 ?>
 Alternatively you can use the following form:</p>
 
-<p><form method="post" action"<?php echo $_SERVER['PHP_SELF']; ?>">
+<p><form method="post" action"<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 <input type="hidden" name="send" value="yes" />
 <input type="hidden" name="id" value="<?php echo $id; ?>" />
 <?php

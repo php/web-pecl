@@ -126,7 +126,7 @@ people agree with you.
     $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");
     $form =& new HTML_Form($_SERVER['PHP_SELF'], "POST");
 
-    print "<form method=\"post\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n";
+    print "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\">\n";
 
     $bb = new BorderBox("Register package", "100%", "", 2, true);
 

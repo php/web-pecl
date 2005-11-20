@@ -118,8 +118,8 @@ if ($edit == 1 && isset($delete_comment)) {
         delete_comment($id, $delete_comment);
         $addon = '&thanks=1';
     }
-    localRedirect($_SERVER['PHP_SELF'] . "?id=$id&edit=1$addon");
-    exit();
+    localRedirect(htmlspecialchars($_SERVER['PHP_SELF']) . "?id=$id&edit=1$addon");
+
 }
 
 // handle any updates, displaying errors if there were any
@@ -139,7 +139,7 @@ if ($_POST['in'] && $edit == 3) {
 
     // Don't allow comments by the original report submitter
     if (rinse($_POST['in']['commentemail']) == $bug['email']) {
-        localRedirect($_SERVER['PHP_SELF'] . "?id=$id&edit=2");
+        localRedirect(htmlspecialchars($_SERVER['PHP_SELF']) . "?id=$id&edit=2");
         exit();
     }
 
@@ -315,7 +315,7 @@ if ($_POST['in'] && $edit == 3) {
 if ($_POST['in']) {
     if (!$errors) {
         mail_bug_updates($bug, $_POST['in'], $from, $ncomment, $edit);
-        localRedirect($_SERVER['PHP_SELF'] . "?id=$id&thanks=$edit");
+        localRedirect(htmlspecialchars($_SERVER['PHP_SELF']) . "?id=$id&thanks=$edit");
         exit;
     }
 }
@@ -440,7 +440,7 @@ if ($edit == 1 || $edit == 2) {
     ?>
 
     <form id="update" action=
-     "<?php echo $_SERVER['PHP_SELF'] . '?id=' . $id . '&amp;edit=' . $edit ?>"
+     "<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $id . '&amp;edit=' . $edit ?>"
      method="post">
 
     <?php
@@ -471,7 +471,7 @@ if ($edit == 1 || $edit == 2) {
                 Welcome back! If you're the original bug submitter, here's
                 where you can edit the bug or add additional notes. If this
                 is not your bug, you can <a href=
-                "<?php echo "{$_SERVER['PHP_SELF']}?id=$id&amp;edit=3" ?>"
+                "<?php echo htmlspecialchars($_SERVER['PHP_SELF'])."?id=$id&amp;edit=3" ?>"
                 >add a comment by following this link</a>. If this is your
                 bug, but you forgot your password, <a
                 href="bug-pwd-finder.php">you can retrieve your password
@@ -528,10 +528,10 @@ if ($edit == 1 || $edit == 2) {
 
                     Welcome! If you don't have a CVS account, you can't do
                     anything here. You can <a href=
-                    "<?php echo "{$_SERVER['PHP_SELF']}?id=$id&amp;edit=3" ?>"
+                    "<?php echo htmlspecialchars($_SERVER['PHP_SELF'])."?id=$id&amp;edit=3" ?>"
                     >add a comment by following this link</a> or if you
                     reported this bug, you can <a href=
-                    "<?php echo "{$_SERVER['PHP_SELF']}?id=$id&amp;edit=2" ?>"
+                    "<?php echo htmlspecialchars($_SERVER['PHP_SELF'])."?id=$id&amp;edit=2" ?>"
                     >edit this bug over here</a>.
 
                     <?php
@@ -692,7 +692,7 @@ if ($edit == 1 || $edit == 2) {
 if ($edit == 3) {
     ?>
 
-    <form id="comment" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+    <form id="comment" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
 
     <?php
     if (!$_POST['in']) {
@@ -706,7 +706,7 @@ if ($edit == 3) {
          <?php
          if (canvote()) {
              echo ' &mdash; but make sure to <a href="';
-             echo $_SERVER['PHP_SELF'] . '?id=' . $id . '">vote on the bug</a>';
+             echo htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $id . '">vote on the bug</a>';
          }
          ?>!
 
@@ -834,7 +834,7 @@ function output_note($com_id, $ts, $email, $comment, $showemail = 1, $handle = n
     } else {
         echo spam_protect(htmlspecialchars($email))."</strong>\n";
     }
-    echo ($edit == 1 && $com_id !== 0 && in_array($user, $trusted_developers)) ? "<a href=\"{$_SERVER['PHP_SELF']}?id=$id&amp;edit=1&amp;delete_comment=$com_id\">[delete]</a>\n" : '';
+    echo ($edit == 1 && $com_id !== 0 && in_array($user, $trusted_developers)) ? "<a href=\"".htmlspecialchars($_SERVER['PHP_SELF'])."?id=$id&amp;edit=1&amp;delete_comment=$com_id\">[delete]</a>\n" : '';
     echo '<pre class="note">';
     echo make_ticket_links(addlinks(
                            preg_replace("/(\r?\n){3,}/",
@@ -859,7 +859,7 @@ function control($num, $desc)
         echo $desc;
     } else {
         echo '">';
-        echo '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $GLOBALS['id'];
+        echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $GLOBALS['id'];
         echo ($num ? "&amp;edit=$num" : '');
         echo '">' . $desc . '</a>';
     }

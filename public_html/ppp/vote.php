@@ -55,7 +55,7 @@ if ($printForm == true) {
 positive vote. If you do not want it to be part of PEAR, you have to
 give it a negative vote.</p>
 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 <input type="hidden" name="id" value="<?php echo $id; ?>" />
 
 <?php

@@ -90,7 +90,7 @@ and the password will be mailed to the email address specified
 in the bug report.
 </p>
 
-<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form method="get" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 <p><b>Bug Report ID:</b> #<input type="text" size="20" name="bug_id">
 <input type="submit" value="Send"></p>
 </form>

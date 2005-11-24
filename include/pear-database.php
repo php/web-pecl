@@ -2352,7 +2352,7 @@ class user
         $user->store();
         note::add("uid", $uid, "Account opened");
         $GLOBALS['pear_rest']->saveMaintainerREST($user->handle);
-        $GLOBALS['pear_rest']->saveAllmaintainerREST();
+        $GLOBALS['pear_rest']->saveAllmaintainersREST();
         $msg = "Your PECL/PEAR account request has been opened.\n".
              "To log in, go to http://pecl.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";

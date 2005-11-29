@@ -66,7 +66,9 @@ if (empty($dbh)) {
         'persistent' => false,
         'portability' => DB_PORTABILITY_ALL,
     );
+    $GLOBALS['_NODB'] = true;
     $dbh =& DB::connect(PEAR_DATABASE_DSN, $options);
+    $GLOBALS['_NODB'] = false;
 }
 if (!isset($pear_rest)) {
     if (!DEVBOX) {

@@ -392,20 +392,20 @@ function show_state_options($state, $user_mode = 0, $default = '')
  */
 function show_reason_types($current = '', $expanded = 0)
 {
-	if ($expanded) {
+    if ($expanded) {
         echo '<option value=""></option>' . "\n";
     }
-	while (list($k,$v) = each($GLOBALS['RESOLVE_REASONS'])) {
-		echo '<option value="' . $k . '"';
+    while (list($k,$v) = each($GLOBALS['RESOLVE_REASONS'])) {
+        echo '<option value="' . $k . '"';
         if ($current==$k) {
             echo ' selected="selected"';
         }
-		echo ">$v[desc]";
+        echo ">$v[desc]";
         if ($expanded) {
             echo " ($v[status])";
         }
         echo "</option>\n";
-	}
+    }
 }
 
 /**
@@ -445,6 +445,8 @@ function show_version_options($current, $default = '')
         '5.0.1',
         '5.0.0',
         '5_0 CVS-'.date('Y-m-d'),
+        '5.1.0',
+        '5.1.1',
         '5_1 CVS-'.date('Y-m-d'),
         'HEAD CVS-'.date('Y-m-d'),
         'Irrelevant'

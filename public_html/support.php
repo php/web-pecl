@@ -83,14 +83,14 @@ complete your request.
   );
 ?>
 <p>
-There are <?php echo count($mailing_lists)-1; ?> PECL-related mailing 
+There are <?php echo count($mailing_lists)-1; ?> PECL-related mailing
 lists available. Most of them have archives available, and they are
-also available as newsgroups on our 
+also available as newsgroups on our
 <a href="news://news.php.net">news server</a>. The archives are
 searchable.
 </p>
 
-<form method="POST" action="http://pecl.php.net/support.php">
+<form method="post" action="/support.php">
 <p>
 <table cellpadding="5" cellspacing="1">
 <?php
@@ -112,7 +112,7 @@ while ( list(, $listinfo) = each($mailing_lists)) {
         echo '<tr align="center" bgcolor="#e0e0e0">';
         echo '<td align="left"><b>' . $listinfo[1] . '</b><br /><small>'. $listinfo[2] . '</small></td>';
         echo '<td>' . ($listinfo[3] ? 'yes' : 'no') . '</td>';
-        echo '<td>' . ($listinfo[4] ? make_link("http://marc.theaimsgroup.com/?l=".$listinfo[0], 'yes') : 'n/a') . '</td>';
+        echo '<td>' . ($listinfo[4] ? make_link("http://beeblex.com/search.php?s=l%3A".$listinfo[0].'o=1', 'yes') : 'n/a') . '</td>';
         echo '<td>' . ($listinfo[6] ? ( make_link("news://news.php.net/".$listinfo[6], 'yes')
                                         . ' ' . make_link("http://news.php.net/group.php?group=" . $listinfo[6], 'http') )
                                        : 'n/a') . '</td>';
@@ -179,9 +179,9 @@ Eris Free Net</a>.
     <li><a href="http://www.phpconcept.net/articles/article.en.php?id=1">Configure WinCVS for PEAR/PECL</a> by Vincent Blavet</li>
     <li><a href="http://talks.php.net/show/vancouver-ext/">Extention Writing (PHP 4/PHP 5), January 22nd, 2004. Vancouver, Canada</a>
     by Derick Rethans</li>
-    <li><a href="http://talks.php.net/show/extending-php-apachecon2003">Writing a PHP Extension (PHP 4), Apachecon 
+    <li><a href="http://talks.php.net/show/extending-php-apachecon2003">Writing a PHP Extension (PHP 4), Apachecon
     November 19, 2003. Las Vegas, NV</a> by Jim Winstead</li>
-	 <li><a href="http://www.php.net/~wez/extending-php.pdf">Extending PHP: a 3 hour tutorial, PHP{Con West, Santa Clara, October 2003 (PDF)</a> by Wez Furlong</li>
+     <li><a href="http://www.php.net/~wez/extending-php.pdf">Extending PHP: a 3 hour tutorial, PHP{Con West, Santa Clara, October 2003 (PDF)</a> by Wez Furlong</li>
     <li><a href="http://www.derickrethans.nl/ze-ext/talk.html">Zend and Extending PHP (PHP 4), PHP Forum 2002
     Paris, France - December 10, 2002</a> by Derick Rethans</li>
 </ul>
@@ -199,10 +199,10 @@ Eris Free Net</a>.
 <?php
 
 $icons = Array(
-	'pecl-power.gif'	=> 'Powered by PECL, GIF format',
-	'pecl-power.png'	=> 'Powered by PECL, PNG format',
-	'pecl-icon.gif'		=> '32x32 PECL icon, GIF format',
-	'pecl-icon.png'		=> '32x32 PECL icon, PNG format',
+    'pecl-power.gif'    => 'Powered by PECL, GIF format',
+    'pecl-power.png'    => 'Powered by PECL, PNG format',
+    'pecl-icon.gif'     => '32x32 PECL icon, GIF format',
+    'pecl-icon.png'     => '32x32 PECL icon, PNG format',
 );
 
 echo '<table cellpadding="5" cellspacing="1">';

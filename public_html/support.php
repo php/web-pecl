@@ -112,7 +112,7 @@ while ( list(, $listinfo) = each($mailing_lists)) {
         echo '<tr align="center" bgcolor="#e0e0e0">';
         echo '<td align="left"><b>' . $listinfo[1] . '</b><br /><small>'. $listinfo[2] . '</small></td>';
         echo '<td>' . ($listinfo[3] ? 'yes' : 'no') . '</td>';
-        echo '<td>' . ($listinfo[4] ? make_link("http://beeblex.com/search.php?s=l%3A".$listinfo[0].'o=1', 'yes') : 'n/a') . '</td>';
+        echo '<td>' . ($listinfo[4] ? make_link("http://beeblex.com/search.php?s=l%3Aphp.".str_replace('-', '.', $listinfo[0]).'&amp;o=1', 'yes') : 'n/a') . '</td>';
         echo '<td>' . ($listinfo[6] ? ( make_link("news://news.php.net/".$listinfo[6], 'yes')
                                         . ' ' . make_link("http://news.php.net/group.php?group=" . $listinfo[6], 'http') )
                                        : 'n/a') . '</td>';

@@ -176,6 +176,7 @@ Eris Free Net</a>.
 <ul>
     <li><a href="http://cvs.php.net/cvs.php/php-src/CODING_STANDARDS">PECL/PHP Coding Standards</a>
     <li><a href="http://cvs.php.net/cvs.php/ZendEngine2/OBJECTS2_HOWTO">PHP5/ZendEngine 2 Object internals</a>
+    <li><a href="http://talks.somabo.de/#20051018">PHP Extension Development -- Integrating with Existing Systems, Zend/PHP Conference, Tue, 18th October 2005, San Francisco, USA</a> by Marcus B&ouml;rger</li>
     <li><a href="http://www.phpconcept.net/articles/article.en.php?id=1">Configure WinCVS for PEAR/PECL</a> by Vincent Blavet</li>
     <li><a href="http://talks.php.net/show/vancouver-ext/">Extention Writing (PHP 4/PHP 5), January 22nd, 2004. Vancouver, Canada</a>
     by Derick Rethans</li>

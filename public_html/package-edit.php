@@ -73,7 +73,8 @@ if (isset($_POST['submit'])) {
 
     $query = 'UPDATE packages SET name = ?, license = ?,
               summary = ?, description = ?, category = ?,
-              homepage = ?, package_type = ?, cvs_link = ?
+              homepage = ?, package_type = ?, cvs_link = ?,
+              doc_link = ?
               WHERE id = ?';
 
     $qparams = array(
@@ -85,6 +86,7 @@ if (isset($_POST['submit'])) {
                   $_POST['homepage'],
                   $_POST['type'],
                   $_POST['cvs_link'],
+                  $_POST['doc_link'],
                   $_GET['id']
                 );
 
@@ -179,6 +181,12 @@ $form->displaySelect("category", $rows, $row['categoryid']);
     <td>Homepage:</td>
     <td valign="middle">
     <?php $form->displayText("homepage", $row['homepage'], 30); ?>
+    </td>
+</tr>
+<tr>
+    <td>Documentation:</td>
+    <td valign="middle">
+    <?php $form->displayText("doc_link", $row['doc_link'], 30); ?>
     </td>
 </tr>
 <tr>

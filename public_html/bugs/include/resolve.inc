@@ -81,6 +81,20 @@ Once you have generated a backtrace, please submit it to this bug
 report and change the status back to "Open". Thank you for helping
 us make PECL better.',
   ),
+  'needtrace' => array(
+    'status' => 'Feedback',
+    'desc' => 'Need backtrace',
+    'message' =>
+'Thank you for this bug report. To properly diagnose the problem, we
+need a backtrace to see what is happening behind the scenes. To
+find out how to generate a backtrace, please read
+http://bugs.php.net/bugs-generating-backtrace.php for *NIX and
+http://bugs.php.net/bugs-generating-backtrace-win32.php for Win32
+
+Once you have generated a backtrace, please submit it to this bug
+report and change the status back to "Open". Thank you for helping
+us make PHP better.',
+  ),
   'oldversion' => array(
     'status' => 'Bogus',
     'desc' => 'Try newer package version',

@@ -2687,7 +2687,6 @@ class user
             "WHERE p.package_type = 'pecl' AND p.id = r.package " .
             "AND p.id = m.package AND m.handle = '" . $handle . "' " .
             "ORDER BY r.releasedate DESC";
-print_r($query);
         $sth = $dbh->limitQuery($query, 0, $n);
         while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
             $recent[] = $row;

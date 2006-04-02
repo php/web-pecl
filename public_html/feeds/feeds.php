@@ -52,7 +52,7 @@ EOT;
                 $url = $item['link'];
             }
 
-            if (!empty($version)) {
+            if (!empty($item['version'])) {
                 $title = $item['name'] . ' ' . $item['version'];
             } else {
                 $title = $item['name'];

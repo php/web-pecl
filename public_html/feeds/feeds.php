@@ -109,13 +109,18 @@ if (!empty($url_redirect)) {
     $type = $elems[0];
     $argument = htmlentities(strip_tags(str_replace($type . '_', '', $uri)));
 }
+if (PEAR_CHANNELNAME=='pecl.php.net') {
+    $channel_base = "PECL";
+} else {
+    $channel_base = "PEAR";
+}
 
 switch ($type) {
     case 'latest':
         include_once 'pear-database.php';
         $items = release::getRecent(10);
-        $channel_title = 'PEAR: Latest releases';
-        $channel_description = 'The latest releases in PEAR.';
+        $channel_title = $channel_base . ': Latest releases';
+        $channel_description = 'The latest releases in ' . $channel_base . '.';
         break;
 
     case 'user':
@@ -125,8 +130,8 @@ switch ($type) {
         }
 
         $name = user::info($user, "name");
-        $channel_title = "PEAR: Latest releases for " . $user;
-        $channel_description = "The latest releases for the PEAR developer " . $user . " (" . $name['name'] . ")";
+        $channel_title = $channel_base . ": Latest releases for " . $user;
+        $channel_description = "The latest releases for the developer " . $user . " (" . $name['name'] . ")";
         $items = user::getRecentReleases($user);
         break;
 
@@ -149,7 +154,7 @@ switch ($type) {
             rss_bailout();
         }
 
-        $channel_title = "PEAR: Latest releases in category " . $category;
+        $channel_title = $channel_base . ": Latest releases in category " . $category;
         $channel_description = "The latest releases in the category " . $category;
 
         $items = category::getRecent(10, $category);

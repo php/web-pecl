@@ -445,6 +445,7 @@ function show_version_options($current, $default = '')
         '5.0.1',
         '5.0.0',
         '5_0 CVS-'.date('Y-m-d'),
+        '5.1.2',
         '5.1.1',
         '5.1.0',
         '5_1 CVS-'.date('Y-m-d'),

@@ -22,7 +22,7 @@ response_header("News");
 
 echo "<h1>PECL news</h1>";
 
-echo "<h2><a name=\"2003\" />Year 2003</h2>";
+echo "<h2><a name=\"2003\"></a>Year 2003</h2>";
 echo "<ul>";
 echo "<li>" . make_link("http://news.php.net/article.php?group=php.pecl.dev&article=5", "Call for PHP Extension authors") . " (September)</li>";
 echo "</ul>";

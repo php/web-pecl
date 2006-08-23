@@ -33,7 +33,7 @@ response_header("Support");
   <li><a href="#icons">PECL Icons</a></li>
 </ul>
 
-<a name="lists" /><h3>Mailing Lists</h3>
+<a name="lists"></a><h3>Mailing Lists</h3>
 
 <?php
 if (isset($maillist)) {
@@ -161,7 +161,7 @@ Eris Free Net</a>.
 
 <div class="listing">
 
-<a name="tutorials" /><h3>PECL Tutorials</h3>
+<a name="tutorials"></a><h3>PECL Tutorials</h3>
 <h4>PECL Tutorials sites</h4>
 <ul>
     <li><a href="http://www.devnewz.com/2002/0909.html">
@@ -172,7 +172,7 @@ Eris Free Net</a>.
 
 </ul>
 
-<a name="resources" /><h3>PECL resources</h3>
+<a name="resources"></a><h3>PECL resources</h3>
 <ul>
     <li><a href="http://cvs.php.net/cvs.php/php-src/CODING_STANDARDS">PECL/PHP Coding Standards</a>
     <li><a href="http://cvs.php.net/cvs.php/ZendEngine2/OBJECTS2_HOWTO">PHP5/ZendEngine 2 Object internals</a>
@@ -189,7 +189,7 @@ Eris Free Net</a>.
 
 </div>
 
-<a name="icons" /><h3>Powered By PECL</h3>
+<a name="icons"></a><h3>Powered By PECL</h3>
 
 <p>
     What programming tool would be complete without a set of

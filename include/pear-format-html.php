@@ -114,7 +114,7 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
 ?>
 >
 <div>
- <a id="TOP" />
+ <a id="TOP"></a>
 </div>
 
 <!-- START HEADER -->

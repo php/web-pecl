@@ -343,7 +343,7 @@ hr {
 
 code, pre, tt {
     font-family: "andale mono", "monotype.com", "courier new", courier, monospace;
-    font-size: 100%;
+    font-size: 0.9em;
 }
 
 pre.php {

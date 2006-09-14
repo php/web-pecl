@@ -456,7 +456,7 @@ function show_version_options($current, $default = '')
         '5.1.1',
         '5.1.0',
         '5_1 CVS-'.date('Y-m-d'),
-        '5.2.0 RC3',
+        '5.2.0 RC4',
         '5_2 CVS-'.date('Y-m-d'),
         'HEAD CVS-'.date('Y-m-d'),
         'Irrelevant'

@@ -483,7 +483,7 @@ display_bug_error($warnings, 'warnings', 'WARNING:');
 
 <table style="font-size: 100%;">
 <tr valign="top">
-  <th><label for="category" accesskey="c">Pa<span class="accesskey">c</span>kge</label></th>
+  <th><label for="category" accesskey="c">Pa<span class="accesskey">c</span>kage</label></th>
   <td style="white-space: nowrap">Return bugs for these <b>packages</b></td>
   <td><select id="category" name="package_name[]" multiple="multiple" size="6"><?php show_types($package_name,2);?></select></td>
 </tr>

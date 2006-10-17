@@ -68,16 +68,17 @@ foreach ($releases as $release) {
         $y_axis[$key] = 0;
     }
 
-    $sql = sprintf("SELECT YEAR(d.dl_when) AS dyear, MONTH(d.dl_when) AS dmonth, COUNT(*) AS downloads
-	                      FROM packages p, downloads d
-	                     WHERE d.package = p.id
-                           AND d.dl_when > (now() - INTERVAL 1 YEAR)
-	                       AND p.id = %s
-	                       %s
-	                  GROUP BY YEAR(d.dl_when), MONTH(d.dl_when)
-	                  ORDER BY YEAR(d.dl_when) DESC, MONTH(d.dl_when) DESC",
+    $sql = sprintf("SELECT YEAR(yearmonth) AS dyear, MONTH(yearmonth) AS dmonth, SUM(downloads) AS downloads
+                        FROM aggregated_package_stats a, releases r
+                        WHERE a.package_id = %s
+                            AND r.id = a.release_id
+                            AND r.package = a.package_id
+                            AND yearmonth > (now() - INTERVAL 1 YEAR)
+                            %s
+                        GROUP BY dyear, dmonth
+                        ORDER BY dyear DESC, dmonth DESC",
                    $_GET['pid'],
-                   $release_clause = $rid > 0 ? 'AND d.release = ' . $rid : '');
+                   $release_clause = $rid > 0 ? 'AND a.release_id = ' . $rid : '');
 
     if ($result = $dbh->query($sql)) {
         while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) {

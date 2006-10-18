@@ -330,7 +330,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
  */
 } else {
 
-	$total_packages    = number_format($dbh->getOne('SELECT COUNT(DISTINCT id) FROM packages'), 0, '.', ',');
+	$total_packages    = number_format($dbh->getOne('SELECT COUNT(id) FROM packages WHERE package_type="pecl"'), 0, '.', ',');
 	$total_maintainers = number_format($dbh->getOne('SELECT COUNT(DISTINCT handle) FROM maintains'), 0, '.', ',');
 	$total_releases    = number_format($dbh->getOne('SELECT COUNT(*) FROM releases'), 0, '.', ',');
 	$total_categories  = number_format($dbh->getOne('SELECT COUNT(*) FROM categories'), 0, '.', ',');

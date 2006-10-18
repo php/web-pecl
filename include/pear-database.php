@@ -2747,22 +2747,16 @@ class statistics
     {
         global $dbh;
 
-        $query = "SELECT r.releasedate, r.version, d.release, COUNT(d.id) AS total,"
-                 . " MAX(d.dl_when) AS last_download,"
-                 . " MIN(d.dl_when) AS first_download"
-                 . " FROM downloads d, releases r"
-                 . " WHERE d.package = '" . $id . "'"
-                 . " AND d.release = r.id"
-                 . ($rid != "" ? " AND d.release = '" . $rid . "'" : "")
-                 . " GROUP BY d.release";
-
-        $rows = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
-
-        if (DB::isError($rows)) {
-            return PEAR::raiseError($rows->getMessage());
-        } else {
-            return $rows;
+         $query = 'SELECT s.release, s.dl_number, s.last_dl, r.releasedate '
+            . 'FROM package_stats AS s '
+            . 'LEFT JOIN releases AS r ON (s.rid = r.id) '
+            . "WHERE pid = " . (int)$id;
+        if (!empty($rid)) {
+            $query .= " AND rid = " . (int)$rid;
         }
+        $query .= " GROUP BY rid ORDER BY rid DESC";
+
+        return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
     }
 
     // }}}

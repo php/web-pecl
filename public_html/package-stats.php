@@ -335,7 +335,8 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 	$total_releases    = number_format($dbh->getOne('SELECT COUNT(*) FROM releases r, packages p
 	                   WHERE r.package = p.id AND p.package_type="pecl"'), 0, '.', ',');
 	$total_categories  = number_format($dbh->getOne('SELECT COUNT(*) FROM categories'), 0, '.', ',');
-    $total_downloads   = number_format($dbh->getOne('SELECT SUM(dl_number) FROM package_stats'), 0, '.', ',');
+    $total_downloads   = number_format($dbh->getOne('SELECT SUM(dl_number) FROM package_stats, packages p
+                       WHERE package_stats.pid = p.id AND p.package_type="pecl"'), 0, '.', ',');
 	$query             = "SELECT sum(ps.dl_number) as dl_number, ps.package, ps.pid, ps.rid, ps.cid 
 	                      FROM package_stats ps, packages p
 	                      WHERE p.id = ps.pid AND p.package_type = 'pecl'

@@ -60,6 +60,10 @@ if (!empty($_GET['releases'])) {
     $releases = explode(',', $_GET['releases']);
 }
 
+if (!isset($releases) || !is_array($releases)) {
+    exit;
+}
+
 foreach ($releases as $release) {
     $y_axis = array();
     list($rid, $colour) = explode('_', $release);
@@ -70,14 +74,14 @@ foreach ($releases as $release) {
 
     $sql = sprintf("SELECT YEAR(yearmonth) AS dyear, MONTH(yearmonth) AS dmonth, SUM(downloads) AS downloads
                         FROM aggregated_package_stats a, releases r
-                        WHERE a.package_id = %s
+                        WHERE a.package_id = %d
                             AND r.id = a.release_id
                             AND r.package = a.package_id
                             AND yearmonth > (now() - INTERVAL 1 YEAR)
                             %s
                         GROUP BY dyear, dmonth
                         ORDER BY dyear DESC, dmonth DESC",
-                   $_GET['pid'],
+                   (int) $_GET['pid'],
                    $release_clause = $rid > 0 ? 'AND a.release_id = ' . $rid : '');
 
     if ($result = $dbh->query($sql)) {

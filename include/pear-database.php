@@ -13,9 +13,10 @@
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
-   | Authors: Stig Sæther Bakken <ssb@fast.no>                            |
+   | Authors: Stig Bakken <ssb@fast.no>                                   |
    |          Tomas V.V.Cox <cox@php.net>                                 |
    |          Martin Jansen <mj@php.net>                                  |
+   |          Gregory Beaver <cellog@php.net>                             |
    +----------------------------------------------------------------------+
    $Id$
 */
@@ -2012,30 +2013,61 @@ class release
      * @param integer ID of the package
      * @param integer ID of the release
      * @param string Filename
-     * @return boolean
      */
     function logDownload($package, $release_id, $file = null)
     {
         global $dbh;
 
-        $id = $dbh->nextId("downloads");
+        $dbh->query('UPDATE aggregated_package_stats
+            SET downloads=downloads+1
+            WHERE
+                package_id=? AND
+                release_id=? AND
+                yearmonth="' . date('Y-m-01') . '"',
+            array($package, $release_id));
+        if ($dbh->affectedRows() == 0) {
+    		$dbh->query('INSERT INTO aggregated_package_stats
+    			(package_id, release_id, yearmonth, downloads)
+    			VALUES(?,?,?,1)',
+    			array($package, $release_id, date('Y-m-01')));
+        }
 
-        $query = "INSERT INTO downloads (id, file, package, release, dl_when, dl_who, dl_host) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        $err = $dbh->query($query, array($id, (int)$file, $package,
-                                         $release_id, date("Y-m-d H:i:s"),
-                                         $_SERVER['REMOTE_ADDR'],
-                                         gethostbyaddr($_SERVER['REMOTE_ADDR'])
-                                         ));
+//      This method can be used when we have MySQL 4.1,
+//      30% efficiency gain at least over previous method
+//		$dbh->query('INSERT INTO aggregated_package_stats
+//			(package_id, release_id, yearmonth, downloads)
+//			VALUES(?,?,?,1)
+//			ON DUPLICATE KEY UPDATE downloads=downloads+1',
+//			array($package, $release_id, date('Y-m-01')));
 
         // {{{ Update package_stats table
 
-        // Check if an entry for the release already exists
-        $query = "SELECT COUNT(pid) FROM package_stats WHERE pid = ? AND rid = ?";
-        $exists = $dbh->getOne($query, array($package, $release_id));
+//      This method can be used when we have MySQL 4.1,
+//      30% efficiency gain at least over previous method
+//        $query = 'INSERT INTO package_stats
+//        			 (dl_number, package, release, pid, rid, cid, last_dl)
+//               	     VALUES (1, ?, ?, ?, ?, ?, ?)
+//               	     ON DUPLICATE KEY UPDATE
+//               	     	dl_number=dl_number+1,
+//               	     	last_dl = "' . date('Y-m-d H:i:s') . '"';
+//
+//        $dbh->query($query, array($pkg_info['name'],
+//                                  $version,
+//                                  $package,
+//                                  $release_id,
+//                                  $pkg_info['categoryid'],
+//                                  date('Y-m-d H:i:s')
+//                                  )
+//                    );
 
-        if ($exists == 0) {
-            $pkg_info = package::info($package, null, true);
+        $query = 'UPDATE package_stats '
+            . ' SET dl_number = dl_number + 1,'
+            . " last_dl = '" . date('Y-m-d H:i:s') . "'"
+            . ' WHERE pid = ? AND rid = ?';
+        $dbh->query($query, array($package, $release_id));
+
+        if ($dbh->affectedRows() == 0) {
+            $pkg_info = package::info($package, null);
 
             $query = 'SELECT version FROM releases'
                    . ' WHERE package = ? AND id = ?';
@@ -2058,12 +2090,6 @@ class release
                                       date('Y-m-d H:i:s')
                                       )
                         );
-        } else {
-            $query = 'UPDATE package_stats '
-                   . ' SET dl_number = dl_number + 1,'
-                   . " last_dl = '" . date('Y-m-d H:i:s') . "'"
-                   . ' WHERE pid = ? AND rid = ?';
-            $dbh->query($query, array($package, $release_id));
         }
 
         // }}}

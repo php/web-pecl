@@ -82,7 +82,7 @@ foreach ($releases as $release) {
                         GROUP BY dyear, dmonth
                         ORDER BY dyear DESC, dmonth DESC",
                    (int) $_GET['pid'],
-                   $release_clause = $rid > 0 ? 'AND a.release_id = ' . $rid : '');
+                   $release_clause = $rid > 0 ? 'AND a.release_id = ' . (int) $rid : '');
 
     if ($result = $dbh->query($sql)) {
         while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) {

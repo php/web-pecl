@@ -265,107 +265,64 @@ MSG;
 
 
 if ($display_verification) {
-    include_once 'PEAR/Common.php';
+    include_once 'PEAR/PackageFile.php';
+    include_once 'PEAR/Config.php';
 
     response_header('Upload New Release :: Verify');
 
-    $util =& new PEAR_Common;
-
-    // XXX this will leave files in PEAR_UPLOAD_TMPDIR if users don't
-    // complete the next screen.  Janitor cron job recommended!
-    $info = $util->infoFromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile);
-    if (class_exists('PEAR_PackageFile')) {
-        unset($util); // for memory reasons;
-        $config = &PEAR_Config::singleton();
-        $pkg = &new PEAR_PackageFile($config);
-        $info = &$pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
-        $errors = $warnings = array();
-        if (PEAR::isError($info)) {
-            if (is_array($info->getUserInfo())) {
-                foreach ($info->getUserInfo() as $err) {
-                    if ($err['level'] == 'error') {
-                        $errors[] = $err['message'];
-                    } else {
-                        $warnings[] = $err['message'];
-                    }
+    $config = &PEAR_Config::singleton();
+    $pkg = &new PEAR_PackageFile($config);
+    $info = &$pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
+    $errors = $warnings = array();
+    if (PEAR::isError($info)) {
+        if (is_array($info->getUserInfo())) {
+            foreach ($info->getUserInfo() as $err) {
+                if ($err['level'] == 'error') {
+                    $errors[] = $err['message'];
+                } else {
+                    $warnings[] = $err['message'];
                 }
             }
-            $errors[] = $info->getMessage();
         }
-        if ($info->getChannel() != 'pecl.php.net') {
-            $warnings[] = 'Your package uses package.xml 1.0.  With the release of PEAR 1.4.0 stable, '
-                . 'PECL packages will require package.xml 2.0 and channel name "pecl.php.net"';
-        }
-        // this next switch may never be used, but is here in case it turns out to be a good move
-        switch ($info->getPackageType()) {
-            case 'extsrc' :
-                $type = 'Extension Source package';
-            break;
-            case 'extbin' :
-                $type = 'Extension Binary package';
-            break;
-            case 'php' :
-                $type = 'PHP package';
-                if ($info->getPackagexmlVersion() == '1.0') {
-                    $warnings[] = 'package.xml 1.0 cannot distinguish between different release ' .
-                        'types';
-                }
-            break;
-            default :
-                $errors[] = 'Release type ' . $info->getPackageType() . ' is not ' .
-                    'supported at pecl.php.net, only Extension releases are supported.  ' .
-                    'pear.php.net supports php packages';
-        }
-        report_error($errors, 'errors','ERRORS:<br />'
-                     . 'You must correct your package.xml file:');
-        report_error($warnings, 'warnings', 'RECOMMENDATIONS:<br />'
-                     . 'You may want to correct your package.xml file:');
-        $form =& new HTML_Form($script_name, 'post');
-        $form->addPlaintext('Package:', $info->getPackage());
-        $form->addPlaintext('Version:', $info->getVersion());
-        $form->addPlaintext('Summary:', htmlspecialchars($info->getSummary()));
-        $form->addPlaintext('Description:', nl2br(htmlspecialchars($info->getDescription())));
-        $form->addPlaintext('Release State:', $info->getState());
-        $form->addPlaintext('Release Date:', $info->getDate());
-        $form->addPlaintext('Release Notes:', nl2br(htmlspecialchars($info->getNotes())));
-        $form->addPlaintext('Package Type:', $type);
-    } else {
-    
-        // packge.xml conformance
-        $errors   = array();
-        $warnings = array();
-    
-        $util->validatePackageInfo($info, $errors, $warnings);
-    
-        // XXX ADD MASSIVE SANITY CHECKS HERE
-        
-        report_error($errors, 'errors','ERRORS:<br />'
-                     . 'You must correct your package.xml file:');
-        report_error($warnings, 'warnings', 'RECOMMENDATIONS:<br />'
-                     . 'You may want to correct your package.xml file:');
-    
-        $check = array(
-            'summary',
-            'description',
-            'release_state',
-            'release_date',
-            'releases_notes',
-        );
-        foreach ($check as $key) {
-            if (!isset($info[$key])) {
-                $info[$key] = 'n/a';
-            }
-        }
-    
-        $form =& new HTML_Form($script_name, 'post');
-        $form->addPlaintext('Package:', $info['package']);
-        $form->addPlaintext('Version:', $info['version']);
-        $form->addPlaintext('Summary:', htmlspecialchars($info['summary']));
-        $form->addPlaintext('Description:', nl2br(htmlspecialchars($info['description'])));
-        $form->addPlaintext('Release State:', $info['release_state']);
-        $form->addPlaintext('Release Date:', $info['release_date']);
-        $form->addPlaintext('Release Notes:', nl2br(htmlspecialchars($info['release_notes'])));
+        $errors[] = $info->getMessage();
     }
+    if ($info->getChannel() != 'pecl.php.net') {
+        $warnings[] = 'Your package uses package.xml 1.0.  With the release of PEAR 1.4.0 stable, '
+            . 'PECL packages will require package.xml 2.0 and channel name "pecl.php.net"';
+    }
+    // this next switch may never be used, but is here in case it turns out to be a good move
+    switch ($info->getPackageType()) {
+        case 'extsrc' :
+            $type = 'Extension Source package';
+        break;
+        case 'extbin' :
+            $type = 'Extension Binary package';
+        break;
+        case 'php' :
+            $type = 'PHP package';
+            if ($info->getPackagexmlVersion() == '1.0') {
+                $warnings[] = 'package.xml 1.0 cannot distinguish between different release ' .
+                    'types';
+            }
+        break;
+        default :
+            $errors[] = 'Release type ' . $info->getPackageType() . ' is not ' .
+                'supported at pecl.php.net, only Extension releases are supported.  ' .
+                'pear.php.net supports php packages';
+    }
+    report_error($errors, 'errors','ERRORS:<br />'
+                 . 'You must correct your package.xml file:');
+    report_error($warnings, 'warnings', 'RECOMMENDATIONS:<br />'
+                 . 'You may want to correct your package.xml file:');
+    $form =& new HTML_Form($script_name, 'post');
+    $form->addPlaintext('Package:', $info->getPackage());
+    $form->addPlaintext('Version:', $info->getVersion());
+    $form->addPlaintext('Summary:', htmlspecialchars($info->getSummary()));
+    $form->addPlaintext('Description:', nl2br(htmlspecialchars($info->getDescription())));
+    $form->addPlaintext('Release State:', $info->getState());
+    $form->addPlaintext('Release Date:', $info->getDate());
+    $form->addPlaintext('Release Notes:', nl2br(htmlspecialchars($info->getNotes())));
+    $form->addPlaintext('Package Type:', $type);
 
     // Don't show the next step button when errors found
     if (!count($errors)) {

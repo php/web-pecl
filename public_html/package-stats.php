@@ -110,6 +110,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
     $query = "SELECT id, version FROM releases WHERE package = '" . $_GET['pid'] . "'";
     $rows = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
 
+    usort($rows, create_function('$a,$b', 'return version_compare($b[\'version\'],$a[\'version\']);'));
     foreach ($rows as $row) {
         $selected = '';
         if (isset($_GET['rid']) && $_GET['rid'] == $row['id']) {
@@ -188,7 +189,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         /*
          * Print the graph
          */
-        printf('<br /><img src="package-stats-graph.php?pid=%s&amp;releases=%s_339900" name="stats_graph" width="543" height="200" alt="" />',
+        printf('<br /><img src="package-stats-graph.php?pid=%s&releases=%s_339900" name="stats_graph" width="543" height="200" alt="" />',
                $_GET['pid'],
                isset($_GET['rid']) ? (int)$_GET['rid'] : ''
                );

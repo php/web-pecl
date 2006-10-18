@@ -186,7 +186,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         /*
          * Print the graph
          */
-        printf('<br /><img src="package-stats-graph.php?pid=%s&amp;releases=%s_339900" name="stats_graph" width="543" height="200" alt="" />',
+        printf('<br /><img src="package-stats-graph.php?pid=%s&releases=%s_339900" name="stats_graph" width="543" height="200" alt="" />',
                $_GET['pid'],
                isset($_GET['rid']) ? (int)$_GET['rid'] : ''
                );
@@ -248,7 +248,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
                 }
             }
             graphForm.update.value = 'Updating...';
-            document.images['stats_graph'].src = 'package-stats-graph.php?pid=<?php echo $_GET['pid']; ?>&amp;releases=' + releases_qs;
+            document.images['stats_graph'].src = 'package-stats-graph.php?pid=<?php echo $_GET['pid']; ?>&releases=' + releases_qs;
             graphForm.update.value = 'Update graph';
 
         } else {

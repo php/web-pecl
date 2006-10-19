@@ -318,7 +318,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 	$total_categories  = $dbh->getOne(sprintf("SELECT COUNT(*) FROM categories WHERE parent = %d", $_GET['cid']));
 
 	// Query to get package list from package_stats_table
-	$query = sprintf("SELECT SUM(ps.dl_number), ps.package, ps.release, ps.pid, ps.rid, ps.cid 
+	$query = sprintf("SELECT SUM(ps.dl_number) AS dl_number, ps.package, ps.release, ps.pid, ps.rid, ps.cid 
 	                  FROM package_stats ps, packages p 
 	                  WHERE p.package_type = 'pecl' AND p.id = ps.pid AND
 	                  p.category = %s GROUP BY ps.pid ORDER BY ps.dl_number DESC",

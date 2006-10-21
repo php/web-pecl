@@ -298,7 +298,7 @@ class category
             "r.state AS state " .
             "FROM packages p, releases r, categories c " .
             "WHERE p.id = r.package " .
-            "AND p.package_type = 'pecl' " . 
+            "AND p.package_type = 'pecl' " .
             "AND p.category = c.id AND c.name = '" . $category . "'" .
             "ORDER BY r.releasedate DESC";
 
@@ -464,9 +464,9 @@ class package
             }
         }
         if ($found) {
-            return 
+            return
                 array('version' => $ver,
-                      'info' => package::getPackageFile($packageinfo['package'], $ver), 
+                      'info' => package::getPackageFile($packageinfo['package'], $ver),
                       'url' => 'http://' . $_SERVER['SERVER_NAME'] . '/get/' .
                                $package . '-' . $ver);
         } else {
@@ -594,7 +594,7 @@ class package
         $found = false;
         $release = false;
         foreach ($info as $ver => $release) {
-	    
+
             if (in_array($ver, $exclude)) { // skip excluded versions
                 continue;
             }
@@ -637,7 +637,7 @@ class package
         if ($found) {
             return
                 array('version' => $ver,
-                      'info' => package::getPackageFile($dependency['name'], $ver), 
+                      'info' => package::getPackageFile($dependency['name'], $ver),
                       'url' => 'http://' . $_SERVER['SERVER_NAME'] . '/get/' .
                                $pinfo['package'] . '-' . $ver);
         } else {
@@ -698,7 +698,7 @@ class package
              "WHERE package = ? ".
              "ORDER BY releasedate DESC";
         $notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
-        $deps_sql = "SELECT type, relation, version, name, release, optional
+        $deps_sql = "SELECT type, relation, version, `name`, `release`, optional
                      FROM deps
                      WHERE package = ? ORDER BY optional ASC";
         if ($field === null) {
@@ -815,7 +815,7 @@ class package
     function listAll($released_only = true, $stable_only = true, $include_pear = false)
     {
         global $dbh;
-        
+
         $package_type = '';
         if (!$include_pear) {
             $package_type = "p.package_type = 'pecl' AND p.approved = 1 AND ";
@@ -932,7 +932,7 @@ class package
 
         $query = "SELECT
                       p.id AS pid, p.name, r.id AS rid, r.version, r.state
-                  FROM packages p, releases r 
+                  FROM packages p, releases r
                   WHERE p.package_type = 'pecl' AND p.approved = 1 AND p.id = r.package
                   ORDER BY p.name, r.version DESC";
         $sth = $dbh->query($query);
@@ -1126,7 +1126,7 @@ class package
             "r.state AS state " .
             "FROM packages p, releases r " .
             "WHERE p.id = r.package " .
-            "AND p.package_type = 'pecl' AND p.approved = 1 " . 
+            "AND p.package_type = 'pecl' AND p.approved = 1 " .
             "AND p.name = '" . $package . "'" .
             "ORDER BY r.releasedate DESC";
 
@@ -1720,13 +1720,13 @@ class release
         if (is_array($storedeps)) {
             foreach ($storedeps as $dep) {
                 $prob = array();
-    
+
                 if (empty($dep['type']) ||
                     !in_array($dep['type'], $_PEAR_Common_dependency_types))
                 {
                     $prob[] = 'type';
                 }
-    
+
                 if (empty($dep['name'])) {
                     /*
                      * NOTE from pajoye in ver 1.166:
@@ -1749,13 +1749,13 @@ class release
                         $dep['name'] = 'PEAR Installer';
                     }
                 }
-    
+
                 if (empty($dep['rel']) ||
                     !in_array($dep['rel'], $_PEAR_Common_dependency_relations))
                 {
                     $prob[] = 'rel';
                 }
-    
+
                 if (empty($dep['optional'])) {
                     $optional = 0;
                 } else {
@@ -1768,7 +1768,7 @@ class release
                         $optional = 0;
                     }
                 }
-    
+
                 if (count($prob)) {
                     $res = PEAR::raiseError('The following attribute(s) ' .
                             'were missing or need proper values: ' .
@@ -1784,7 +1784,7 @@ class release
                                 $dep['name'],
                                 $optional));
                 }
-    
+
                 if (PEAR::isError($res)) {
                     $dbh->query('DELETE FROM deps WHERE ' .
                                 "release = $release_id");
@@ -1811,10 +1811,10 @@ class release
 
         $cache->remove('package.listAll', array(false, true));
         $cache->remove('package.listAll', array(false, false));
-        
+
         $cache->remove('package.listAll', array(true, true));
         $cache->remove('package.listAll', array(true, false));
-        
+
         $cache->remove('package.listAll', array(false, true, true));
         $cache->remove('package.listAll', array(false, true, false));
         $cache->remove('package.listAll', array(false, false, true));
@@ -1870,9 +1870,14 @@ class release
         $package_id = package::info($package, 'packageid', true);
 
         if (!$package_id) {
-            return PEAR::raiseError("release download:: package '".htmlspecialchars($package).
+            $package_id = $dbh->getOne('SELECT package_id FROM package_aliases WHERE alias_name=' . $dbh->quoteSmart($package));
+            if (!$package_id) {
+                return PEAR::raiseError("release download:: package '".htmlspecialchars($package).
                                     "' does not exist");
-        } elseif (PEAR::isError($package_id)) {
+            }
+        }
+
+        if (PEAR::isError($package_id)) {
             return $package_id;
         }
 
@@ -1929,14 +1934,14 @@ class release
             $release_id = $row['id'];
         }
         if (!isset($path) && isset($release_id)) {
-            $sql = "SELECT fullpath, basename, id FROM files WHERE release = ".
+            $sql = "SELECT fullpath, basename, `id` FROM files WHERE `release` = ".
                  $release_id;
             $row = $dbh->getRow($sql, DB_FETCHMODE_ORDERED);
             if (PEAR::isError($row)) {
                 return $row;
             }
             list($path, $basename, $log_file) = $row;
-            if (empty($path) || !@is_file($path)) {
+            if (empty($path) || (!@is_file(PEAR_TARBALL_DIR . '/' . $basename) && !@is_file($path))) {
                 return PEAR::raiseError("release download:: no version information found");
             }
         }

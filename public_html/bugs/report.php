@@ -29,9 +29,18 @@ require_once './include/prepend.inc';
  */
 require_once './include/cvs-auth.inc';
 
+/**
+ * Numeral Captcha Class
+ */
+require_once './include/NumeralCaptcha.php';
+
 error_reporting(E_ALL ^ E_NOTICE);
 $errors              = array();
 $ok_to_submit_report = false;
+/**
+ * Instantiate the numeral captcha object.
+ */
+$numeralCaptcha = new NumeralCaptcha();
 
 if (isset($_POST['save']) && isset($_POST['pw'])) {
     // non-developers don't have $user set
@@ -40,7 +49,27 @@ if (isset($_POST['save']) && isset($_POST['pw'])) {
 }
 
 if (isset($_POST['in'])) {
-	 if (!($errors = incoming_details_are_valid($_POST['in'], 1))) {
+    $errors = incoming_details_are_valid($_POST['in'], 1, ($auth_user && $auth_user->registered));
+
+    // captcha is not necessary if the user is logged in
+    if ($auth_user && $auth_user->registered) {
+        if (isset($_SESSION['answer'])) {
+            unset($_SESSION['answer']);
+        }
+    }
+
+    /**
+     * Check if session answer is set, then compare
+     * it with the post captcha value. If it's not
+     * the same, then it's an incorrect password.
+     */
+    if (isset($_SESSION['answer']) && strlen(trim($_SESSION['answer'])) > 0) {
+        if ($_POST['captcha'] != $_SESSION['answer']) {
+            $errors[] = 'Incorrect Captcha';
+        }
+    }
+
+    if (!$errors) {
 
         /*
          * When user submits a report, do a search and display
@@ -64,18 +93,18 @@ if (isset($_POST['in'])) {
                 $where_clause = "WHERE package_name != 'Feature/Change Request'";
             }
 
-			list($sql_search, $ignored) = format_search_string($sdesc);
+            list($sql_search, $ignored) = format_search_string($sdesc);
 
-			$where_clause .= $sql_search;
+            $where_clause .= $sql_search;
 
-			$query = "SELECT * from bugdb $where_clause LIMIT 5";
+            $query = "SELECT * from bugdb $where_clause LIMIT 5";
 
             $res =& $dbh->query($query);
 
             if ($res->numRows() == 0) {
                 $ok_to_submit_report = 1;
             } else {
-				response_header('Report - Confirm');
+                response_header("Report - Confirm");
 
 ?>
 <p>
@@ -121,7 +150,7 @@ if (isset($_POST['in'])) {
                     $bug_url = "/bugs/bug.php?id=$row[id]&amp;edit=2";
 
                     echo " <tr>\n";
-                    echo '  <td colspan="2"><a href="' . $bug_url . '">Bug #';
+                    echo '  <td colspan="2"><strong>' . $row['package_name'] . '</strong> : <a href="' . $bug_url . '">Bug #';
                     echo $row['id'] . ': ' . htmlspecialchars($row['sdesc']);
                     echo "</a></td>\n";
                     echo " </tr>\n";
@@ -163,26 +192,33 @@ if (isset($_POST['in'])) {
                 $fdesc .= $_POST['in']['actres'] . "\n";
             }
 
+            $reporter_name = isset($_POST['in']['reporter_name']) ? htmlspecialchars(strip_tags($_POST['in']['reporter_name'])) : '';
+
             $query = 'INSERT INTO bugdb (' .
                      ' package_name,' .
                      ' bug_type,' .
                      ' email,' .
                      ' sdesc,' .
                      ' ldesc,' .
+                     ' package_version,' .
                      ' php_version,' .
                      ' php_os,' .
                      ' status, ts1,' .
-                     ' passwd' .
+                     ' passwd,' .
+                     ' reporter_name' .
                      ') VALUES (' .
                      " '" . escapeSQL($_POST['in']['package_name']) . "'," .
                      " '" . escapeSQL($_POST['in']['bug_type']) . "'," .
                      " '" . escapeSQL($_POST['in']['email']) . "'," .
                      " '" . escapeSQL($_POST['in']['sdesc']) . "'," .
                      " '" . escapeSQL($fdesc) . "'," .
+                     " '" . escapeSQL($_POST['in']['package_version']) . "'," .
                      " '" . escapeSQL($_POST['in']['php_version']) . "'," .
                      " '" . escapeSQL($_POST['in']['php_os']) . "'," .
                      " 'Open', NOW(), " .
-                     " '" . escapeSQL($_POST['in']['passwd']) . "')";
+                     " '" . escapeSQL($_POST['in']['passwd']) . "'," .
+                     " '" . escapeSQL($reporter_name) . "')";
+
 
             $dbh->query($query);
 
@@ -195,6 +231,7 @@ if (isset($_POST['in'])) {
             $report .= 'From:             ' . spam_protect(rinse($_POST['in']['email']),
                                                            'text') . "\n";
             $report .= 'Operating system: ' . rinse($_POST['in']['php_os']) . "\n";
+            $report .= 'Package version:  ' . rinse($_POST['in']['package_version']) . "\n";
             $report .= 'PHP version:      ' . rinse($_POST['in']['php_version']) . "\n";
             $report .= 'Package:          ' . $_POST['in']['package_name'] . "\n";
             $report .= 'Bug Type:         ' . $_POST['in']['bug_type'] . "\n";
@@ -212,35 +249,33 @@ if (isset($_POST['in'])) {
             $email = rinse($_POST['in']['email']);
             $protected_email  = '"' . spam_protect($email, 'text') . '"';
             $protected_email .= '<' . $mailfrom . '>';
+/*
+            // provide shortcut URLS for "quick bug fixes"
+             $dev_extra = '';
+             $maxkeysize = 0;
+             foreach ($RESOLVE_REASONS as $v) {
+                 if (!$v['webonly']) {
+                     $actkeysize = strlen($v['desc']) + 1;
+                     $maxkeysize = (($maxkeysize < $actkeysize) ? $actkeysize : $maxkeysize);
+                 }
+             }
+             foreach ($RESOLVE_REASONS as $k => $v) {
+                 if (!$v['webonly'])
+                     $dev_extra .= str_pad($v['desc'] . ":", $maxkeysize) .
+                         " http://bugs.php.net/fix.php?id=$cid&r=$k\n";
+            }
+*/
 
-			// provide shortcut URLS for "quick bug fixes"
-			/*
-			$dev_extra = "";
-			$maxkeysize = 0;
-			foreach ($RESOLVE_REASONS as $v) {
-				if (!$v['webonly']) {
-					$actkeysize = strlen($v['desc']) + 1;
-					$maxkeysize = (($maxkeysize < $actkeysize) ? $actkeysize : $maxkeysize);
-				}
-			}
-			foreach ($RESOLVE_REASONS as $k => $v) {
-				if (!$v['webonly'])
-					$dev_extra .= str_pad($v['desc'] . ":", $maxkeysize) .
-						" http://bugs.php.net/fix.php?id=$cid&r=$k\n";
-			}
-            */
-
-			$mid = sprintf("bug-%d-%08x@pecl.php.net", $cid, time());
-
-			// Set extra-headers
-			$extra_headers = "From: $protected_email\n";
-			$extra_headers.= "X-PECL-Bug: $cid\n";
-            $extra_headers .= 'X-PECL-PHP-Type: '     . rinse($_POST['in']['bug_type']) . "\n";
-            $extra_headers .= 'X-PECL-PHP-Version: '  . rinse($_POST['in']['php_version']) . "\n";
-            $extra_headers .= 'X-PECL-PHP-Category: ' . rinse($_POST['in']['package_name']) . "\n";
-            $extra_headers .= 'X-PECL-PHP-OS: '       . rinse($_POST['in']['php_os']) . "\n";
-			$extra_headers.= "X-PECL-PHP-Status: Open\n";
-			$extra_headers.= "Message-ID: <$mid>";
+            $extra_headers  = 'From: '           . $protected_email . "\n";
+            $extra_headers .= 'X-PHP-BugTracker: PEARbug' . "\n";
+            $extra_headers .= 'X-PHP-Bug: '      . $cid . "\n";
+            $extra_headers .= 'X-PHP-Type: '     . rinse($_POST['in']['bug_type']) . "\n";
+            $extra_headers .= 'X-PHP-PackageVersion: '  . rinse($_POST['in']['package_version']) . "\n";
+            $extra_headers .= 'X-PHP-Version: '  . rinse($_POST['in']['php_version']) . "\n";
+            $extra_headers .= 'X-PHP-Category: ' . rinse($_POST['in']['package_name']) . "\n";
+            $extra_headers .= 'X-PHP-OS: '       . rinse($_POST['in']['php_os']) . "\n";
+            $extra_headers .= 'X-PHP-Status: Open' . "\n";
+            $extra_headers .= 'Message-ID: <bug-' . $cid . '@'.$site.'.php.net>';
 
             $type = @$types[$_POST['in']['bug_type']];
 
@@ -248,14 +283,14 @@ if (isset($_POST['in'])) {
                 // mail to package developers
                 @mail($mailto, "[$siteBig-BUG] $type #$cid [NEW]: $sdesc",
                       $ascii_report . "1\n-- \n$dev_extra", $extra_headers,
-                      '-fpear-sys@php.net');
+                      '-f bounce-no-user@php.net');
                 // mail to reporter
                 @mail($email, "[$siteBig-BUG] $type #$cid: $sdesc",
                       $ascii_report . "2\n",
                       "From: $siteBig Bug Database <$mailfrom>\n" .
                       "X-PHP-Bug: $cid\n" .
-                      "Message-ID: <$mid>",
-                      '-fpear-sys@php.net');
+                      "Message-ID: <bug-$cid@$site.php.net>",
+                      '-f bounce-no-user@php.net');
             }
             localRedirect('bug.php?id=' . $cid . '&thanks=4');
             exit;
@@ -268,14 +303,15 @@ if (isset($_POST['in'])) {
 }  // end of if input
 
 if (!package_exists($_REQUEST['package'])) {
-    $errors[] = 'Package &quot;' . $_REQUEST['package'] . '&quot; does not exist.';
+    $errors[] = 'Package "' . clean($_REQUEST['package']) . '" does not exist.';
     response_header("Report - Invalid bug type");
     display_bug_error($errors);
 } else {
     if (!isset($_POST['in'])) {
         response_header('Report - New');
-        show_bugs_menu($_REQUEST['package']);
-?>
+        show_bugs_menu(clean($_REQUEST['package']));
+
+        ?>
 
 <p>
  Before you report a bug, make sure to search for similar bugs using the
@@ -309,8 +345,30 @@ if (!package_exists($_REQUEST['package'])) {
 
 <form method="post"
  action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . '?package='
- . $_REQUEST['package']; ?>">
+ . clean($_REQUEST['package']); ?>">
 <table class="form-holder" cellspacing="1">
+ <tr>
+  <th class="form-label_left">
+   Your <span class="accesskey">n</span>ame:
+  </th>
+  <td class="form-input">
+<?php
+    if ($auth_user && $auth_user->registered) {
+?>
+   <?php echo clean($auth_user->name); ?>
+   <input type="hidden" size="20" maxlength="40" name="in[reporter_name]"
+    value="<?php echo clean($auth_user->name); ?>" accesskey="n" />
+<?php
+    } else {
+?>
+   <input type="text" size="20" maxlength="40" name="in[reporter_name]"
+    value="<?php echo clean($_POST['in']['reporter_name']); ?>" accesskey="n" />
+<?php
+   }
+?>
+  </td>
+ </tr>
+
  <tr>
   <th class="form-label_left">
    Y<span class="accesskey">o</span>ur email address:
@@ -318,8 +376,19 @@ if (!package_exists($_REQUEST['package'])) {
   <td class="form-input">
    <input type="hidden" name="in[did_luser_search]"
     value="<?php echo $_POST['in']['did_luser_search'] ? 1 : 0; ?>" />
+<?php
+if ($auth_user && $auth_user->registered) {
+?>
+   <input type="text" size="20" maxlength="40" name="in[email]"
+    value="<?php echo ($auth_user->showemail) ? $auth_user->email : ($auth_user->handle . '@php.net'); ?>" accesskey="o" />
+<?php
+} else {
+?>
    <input type="text" size="20" maxlength="40" name="in[email]"
     value="<?php echo clean($_POST['in']['email']); ?>" accesskey="o" />
+<?php
+}
+?>
   </td>
  </tr>
  <tr>
@@ -332,6 +401,17 @@ if (!package_exists($_REQUEST['package'])) {
    </select>
   </td>
  </tr>
+ <?php if (!in_array(clean($_REQUEST['package']), $pseudo_pkgs, true)): ?>
+ <tr>
+  <th class="form-label_left">
+   Package version:
+  </th>
+  <td class="form-input">
+   <?php echo show_package_version_options(clean($_REQUEST['package']),
+        clean($_POST['in']['package_version'])); ?>
+  </td>
+ </tr>
+ <?php endif; ?>
  <tr>
   <th class="form-label_left">
    Package affected:
@@ -342,7 +422,7 @@ if (!package_exists($_REQUEST['package'])) {
 
     if (!empty($_REQUEST['package'])) {
         echo '<input type="hidden" name="in[package_name]" value="';
-        echo htmlspecialchars($_REQUEST['package']) . '" />' . htmlspecialchars($_REQUEST['package']);
+        echo clean($_REQUEST['package']) . '" />' . clean($_REQUEST['package']);
         if ($_REQUEST['package'] == 'Bug System') {
             echo '<p><strong>WARNING: You are saying the <em>package';
             echo ' affected</em> is the &quot;Bug System.&quot; This';
@@ -354,7 +434,7 @@ if (!package_exists($_REQUEST['package'])) {
         }
     } else {
         echo '<select name="in[package_name]">' . "\n";
-        show_types(null, 0, $_REQUEST['package']);
+        show_types(null, 0, clean($_REQUEST['package']));
         echo '</select>';
     }
 
@@ -381,6 +461,13 @@ if (!package_exists($_REQUEST['package'])) {
     value="<?php echo clean($_POST['in']['php_os']); ?>" />
   </td>
  </tr>
+ <?php if (!$auth_user): ?>
+ <tr>
+  <th>Solve the problem : <?php print $numeralCaptcha->getOperation(); ?> = ?</th>
+  <td class="form-input"><input type="text" name="captcha" /></td>
+ </tr>
+ <?php $_SESSION['answer'] = $numeralCaptcha->getAnswer(); ?>
+ <?php endif; // if (!$auth_user): ?>
  <tr>
   <th class="form-label_left">
    Summary:
@@ -390,6 +477,9 @@ if (!package_exists($_REQUEST['package'])) {
     value="<?php echo clean($_POST['in']['sdesc']); ?>" />
   </td>
  </tr>
+<?php
+if (!($auth_user && $auth_user->registered)) {
+?>
  <tr>
   <th class="form-label_left">
    Password:
@@ -404,6 +494,9 @@ if (!package_exists($_REQUEST['package'])) {
    </p>
   </td>
  </tr>
+<?php
+}
+?>
  <tr>
   <th class="form-label_left">
    Note:

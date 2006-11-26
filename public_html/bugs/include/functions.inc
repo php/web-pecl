@@ -50,6 +50,7 @@ $tla = array(
 $types = array(
     'Bug'                     => 'Bug',
     'Feature/Change Request'  => 'Req',
+    'Documentation Problem'   => 'Doc',
 );
 
 // Used in show_state_options()
@@ -305,7 +306,7 @@ function show_limit_options($limit = 30)
 /**
  * Prints bug type <option>'s for use in a <select>
  *
- * Options include "Bug" and "Feature/Change Request."
+ * Options include "Bug", "Documentation Problem" and "Feature/Change Request."
  *
  * @param string $current  bug's current type
  * @param bool   $all      whether or not 'All' should be an option
@@ -392,15 +393,15 @@ function show_state_options($state, $user_mode = 0, $default = '')
  */
 function show_reason_types($current = '', $expanded = 0)
 {
-    if ($expanded) {
+	if ($expanded) {
         echo '<option value=""></option>' . "\n";
     }
-    while (list($k,$v) = each($GLOBALS['RESOLVE_REASONS'])) {
-        echo '<option value="' . $k . '"';
+	while (list($k,$v) = each($GLOBALS['RESOLVE_REASONS'])) {
+		echo '<option value="' . $k . '"';
         if ($current==$k) {
             echo ' selected="selected"';
         }
-        echo ">$v[desc]";
+		echo ">$v[desc]";
         if ($expanded) {
             echo " ($v[status])";
         }
@@ -408,6 +409,68 @@ function show_reason_types($current = '', $expanded = 0)
     }
 }
 
+function show_package_version_options($package, $current)
+{
+    global $pseudo_pkgs, $dbh;
+    if (in_array($package, $pseudo_pkgs, true)) {
+        echo '<input type="text" size="20" maxlength="100" name="in[package_version]"
+    value="' . clean($current) . '" />';
+        return;
+    }
+    $pid = $dbh->getOne('SELECT id from packages where name = ?', array($package));
+    if (!$pid) {
+        echo '<input type="text" size="20" maxlength="100" name="in[package_version]"
+    value="' . clean($current) . '" />';
+        return;
+    }
+    $candidates = $dbh->getAll('
+        SELECT releases.version, releases.state
+            FROM releases, packages
+            WHERE packages.name = ? and releases.package = packages.id ORDER BY releases.releasedate DESC', array($package));
+    $newest = count($candidates) ? $candidates[0] : false;
+    if ($newest) {
+        $stable = null;
+        if ($candidates[0][1] != 'stable') {
+            foreach ($candidates as $ver) {
+                if ($ver[0] == $newest[0] || $ver[1] != 'stable') {
+                    continue;
+                }
+                $stable = $ver;
+                break;
+            }
+        }
+        if (isset($stable)) {
+            $versions = array($newest, $stable);
+        } else {
+            $versions = array($newest);
+        }
+    }
+    echo '<select name="in[package_version]">' . "\n";
+    echo '<option value="">--Please Select--</option>' . "\n";
+    $use = 0;
+
+    if (count($versions) == 0) {
+        $versions = array(1 => 1);
+    }
+
+    while (list(,$v) = each($versions)) {
+        echo '<option';
+        if ($current == $v[0]) {
+            echo ' selected="selected"';
+        }
+        echo ' value = "' . $v[0] . '">' . $v[0] . ' (' . $v[1] . ")</option>\n";
+        if ($current == $v[0]) {
+            $use++;
+        }
+    }
+    if (!$use && $current) {
+        echo '<option selected="selected">' . $current . "</option>\n";
+    } else {
+        echo '<option>CVS</option>' . "\n";
+    }
+    echo '<option value="earlier">Earlier? Upgrade first!</option>' . "\n";
+    echo "</select>\n";
+}
 /**
  * Prints PHP version number <option>'s for use in a <select> list
  *
@@ -419,12 +482,12 @@ function show_reason_types($current = '', $expanded = 0)
 function show_version_options($current, $default = '')
 {
     $versions = array(
+        '4_4 CVS-' . date('Y-m-d'),
         '4.4.4',
         '4.4.3',
         '4.4.2',
         '4.4.1',
         '4.4.0',
-        '4_4 CVS-'.date('Y-m-d'),
         '4.3.11',
         '4.3.10',
         '4.3.9',
@@ -437,17 +500,9 @@ function show_version_options($current, $default = '')
         '4.3.2',
         '4.3.1',
         '4.3.0',
-        '4.2.2',
-        '4.2.1',
-        '4.2.0',
-        '4_3 CVS-'.date('Y-m-d'),
-        '5.0.5',
-        '5.0.4',
-        '5.0.3',
-        '5.0.2',
-        '5.0.1',
-        '5.0.0',
-        '5_0 CVS-'.date('Y-m-d'),
+        '4_3 CVS-' . date('Y-m-d'),
+        '5_2 CVS-' . date('Y-m-d'),
+        '5.2.0 RC4',
         '5.1.6',
         '5.1.5',
         '5.1.4',
@@ -455,10 +510,15 @@ function show_version_options($current, $default = '')
         '5.1.2',
         '5.1.1',
         '5.1.0',
-        '5_1 CVS-'.date('Y-m-d'),
-        '5.2.0 RC4',
-        '5_2 CVS-'.date('Y-m-d'),
-        'HEAD CVS-'.date('Y-m-d'),
+        '5_1 CVS-' . date('Y-m-d'),
+        '5.0.5',
+        '5.0.4',
+        '5.0.3',
+        '5.0.2',
+        '5.0.1',
+        '5.0.0',
+        '5_0 CVS-'.date('Y-m-d').' (dev)',
+        '5_1 CVS-'.date('Y-m-d').' (dev)',
         'Irrelevant'
     );
     $use = 0;
@@ -626,7 +686,7 @@ function display_bug_success($in)
  *
  * @return void
  */
-function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1)
+function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1, $id)
 {
     global $tla, $types, $site, $siteBig;
 
@@ -634,7 +694,7 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1)
     $headers = array();
 
     /* Default addresses */
-    list($mailto,$mailfrom) = get_package_mail(oneof($in['package_name'],$bug['package_name']));
+    list($mailto,$mailfrom, $Bcc) = get_package_mail(oneof($in['package_name'],$bug['package_name']), $id);
 
     /* Get rid of slashes in bug status */
     $bug['status'] = rinse($bug['status']);
@@ -642,18 +702,18 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1)
     $headers[] = array(" ID", $bug['id']);
 
     switch ($edit) {
-    case 3:
-        $from = spam_protect(rinse($in['commentemail']), 'text');
-        $headers[] = array(" Comment by", $from);
-        $from = "\"$from\" <$mailfrom>";
-        break;
-    case 2:
-        $from = spam_protect(txfield('email'), 'text');
-        $headers[] = array(" User updated by", $from);
-        $from = "\"$from\" <$mailfrom>";
-        break;
-    default:
-        $headers[] = array(" Updated by", $from);
+        case 3:
+            $from = spam_protect(rinse($in['commentemail']), 'text');
+            $headers[] = array(" Comment by", $from);
+            $from = "\"$from\" <$mailfrom>";
+            break;
+        case 2:
+            $from = spam_protect(txfield('email'), 'text');
+            $headers[] = array(" User updated by", $from);
+            $from = "\"$from\" <$mailfrom>";
+            break;
+        default:
+            $headers[] = array(" Updated by", $from);
     }
 
     if (changed('sdesc')) {
@@ -671,9 +731,11 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1)
 
     $fields = array(
         'status'       => 'Status',
+        'id'           => 'Id',
         'bug_type'     => 'Type',
         'package_name' => 'Package',
         'php_os'       => 'Operating System',
+        'package_version'  => 'Package Version',
         'php_version'  => 'PHP Version',
         'assign'       => 'Assigned To'
     );
@@ -759,9 +821,11 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1)
                   "[$siteBig-BUG] " . rinse($subj) . txfield('sdesc'),
                   $user_text,
                   "From: $siteBig Bug Database <$mailfrom>\n".
+                  "Bcc: $Bcc\n" .
                   "X-PHP-Bug: $bug[id]\n".
                   "In-Reply-To: <bug-$bug[id]@$site.php.net>",
                   "-fbounces-ignored@php.net");
+
             # but we go ahead and let the default sender get used for the list
             @mail($mailto,
                   "[$siteBig-BUG] " . rinse($subj) . txfield('sdesc'),
@@ -769,13 +833,14 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1)
                   "From: $from\n".
                   "X-PHP-Bug: $bug[id]\n".
                   "X-PHP-Type: "       . rinse((($edit != 3) ? $in['bug_type']     : $bug['bug_type']))    . "\n" .
+                  "X-PHP-PackageVersion: "    . rinse((($edit != 3) ? $in['package_version']  : $bug['package_version'])) . "\n" .
                   "X-PHP-Version: "    . rinse((($edit != 3) ? $in['php_version']  : $bug['php_version'])) . "\n" .
                   "X-PHP-Category: "   . rinse((($edit != 3) ? $in['package_name'] : $bug['package_name']))    . "\n" .
                   "X-PHP-OS: "         . rinse((($edit != 3) ? $in['php_os']       : $bug['php_os']))      . "\n" .
                   "X-PHP-Status: "     . rinse($new_status) . "\n" .
                   "X-PHP-Old-Status: " . rinse($old_status) . "\n" .
                   "In-Reply-To: <bug-$bug[id]@$site.php.net>",
-                  "-fpear-sys@php.net");
+                  "-f bounce-no-user@php.net");
         }
     }
 
@@ -797,7 +862,7 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1)
                   "From: $from\n".
                   "X-PHP-Bug: $bug[id]\n".
                   "In-Reply-To: <bug-$bug[id]@$site.php.net>",
-                  "-fpear-sys@php.net");
+                  "-f bounce-no-user@php.net");
         }
     }
 }
@@ -906,7 +971,7 @@ function package_exists($type)
  *
  * @return void
  */
-function incoming_details_are_valid($in, $initial = 0)
+function incoming_details_are_valid($in, $initial = 0, $logged = false)
 {
     global $bug, $dbh, $types;
 
@@ -927,6 +992,10 @@ function incoming_details_are_valid($in, $initial = 0)
         $errors[] = 'Please select a valid PHP version. If your PHP version is too old, please upgrade first and see if the problem has not already been fixed.';
     }
 
+    if (isset($in['package_version']) && $in['package_version'] == 'earlier') {
+        $errors[] = 'Please select a valid Package version. If your Package version is too old, please upgrade first and see if the problem has not already been fixed.';
+    }
+
     if (!array_key_exists($in['bug_type'], $types)) {
         $errors[] = 'Please select a valid bug type.';
     }
@@ -943,9 +1012,9 @@ function incoming_details_are_valid($in, $initial = 0)
         $errors[] = 'You must supply a long description of the bug you are reporting.';
     }
 
-    if ($initial && empty($in['passwd'])) {
-        $errors[] = 'You must supply a password for this bug report.';
-    }
+    if (!$logged && $initial && empty($in['passwd'])) {
+       $errors[] = 'You must supply a password for this bug report.';
+   }
 
     return $errors;
 }
@@ -957,11 +1026,11 @@ function incoming_details_are_valid($in, $initial = 0)
  *
  * @return array  an array of eamil addresses
  */
-function get_package_mail($package_name)
+function get_package_mail($package_name, $bug_id=false)
 {
-    global $site, $bugEmail;
-    // XXX Change to pecl-bugs when it gets opened
-    //$to[] = "pecl-dev@lists.php.net";
+    global $site, $bugEmail, $dbh;
+    // XXX Change to pear-bugs when it gets opened
+    //$to[] = "pear-dev@lists.php.net";
 
     switch ($package_name) {
         case 'Bug System':
@@ -976,6 +1045,9 @@ function get_package_mail($package_name)
 
     $to = array();
     foreach ($maintainers as $data) {
+        if (!$data['active']) {
+            continue;
+        }
         $to[] = $data['email'];
     }
 
@@ -1054,7 +1126,7 @@ function show_bugs_menu($pkgname, $status = null)
         }
         if (in_array($value, $pseudo_pkgs)) {
             $home = false;
-            $pkgname[$key] = strtr($value, ' ', '+');
+            $pkgname[$key] = htmlspecialchars(strtr($value, ' ', '+'));
         }
     }
     $pkgs = 'package_name[]=' . implode('&amp;package_name[]=', $pkgname);

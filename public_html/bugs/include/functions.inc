@@ -975,6 +975,13 @@ function incoming_details_are_valid($in, $initial = 0, $logged = false)
 {
     global $bug, $dbh, $types;
 
+    if (!empty($in['sdesc'] && strcasecmp($in['sdesc'],'None')) == 0) {
+		exit('.');
+	}
+    if (!empty($in['php_os'] && strcasecmp($in['php_os'],'None')) == 0) {
+		exit('.');
+	}
+
     $errors = array();
     if (empty ($in['package_name']) || $in['package_name'] == 'none') {
         $errors[] = 'Please select an appropriate bug type.';

@@ -686,10 +686,13 @@ function display_bug_success($in)
  *
  * @return void
  */
-function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1, $id)
+function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1, $id=-1)
 {
     global $tla, $types, $site, $siteBig;
 
+    if ($id < 0) {
+        return;
+    }
     $text = array();
     $headers = array();
 

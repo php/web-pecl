@@ -20,7 +20,7 @@ class pear_rest
 
         $categories = category::listAll();
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
-<a xmlns="http://pear.php.net/dtd/rest.allcategories"
+<a xmlns="http://pear.php.net/dtd/rest.allcategories" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allcategories
     http://pear.php.net/dtd/rest.allcategories.xsd">
 <ch>' . PEAR_CHANNELNAME . '</ch>
@@ -57,7 +57,7 @@ class pear_rest
         }
         $category['description'] = htmlspecialchars($category['description']);
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
-<c xmlns="http://pear.php.net/dtd/rest.category"
+<c xmlns="http://pear.php.net/dtd/rest.category" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.category
     http://pear.php.net/dtd/rest.category.xsd">
  <n>' . htmlspecialchars($category['name']) . '</n>
@@ -73,7 +73,7 @@ class pear_rest
         @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']) .
             DIRECTORY_SEPARATOR . 'info.xml', 0666);
         $list = '<?xml version="1.0" encoding="UTF-8" ?>
-<l xmlns="http://pear.php.net/dtd/rest.categorypackages"
+<l xmlns="http://pear.php.net/dtd/rest.categorypackages" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackages
     http://pear.php.net/dtd/rest.categorypackages.xsd">
 ';
@@ -106,7 +106,7 @@ class pear_rest
         $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
         $packages = category::listPackages($category);
         $fullpackageinfo = '<?xml version="1.0" encoding="UTF-8" ?>
-<f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo"
+<f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackageinfo
     http://pear.php.net/dtd/rest.categorypackageinfo.xsd">
 ';
@@ -177,7 +177,7 @@ class pear_rest
         }
 
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
-<a xmlns="http://pear.php.net/dtd/rest.allpackages"
+<a xmlns="http://pear.php.net/dtd/rest.allpackages" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allpackages
     http://pear.php.net/dtd/rest.allpackages.xsd">
 <c>' . PEAR_CHANNELNAME . '</c>
@@ -195,7 +195,7 @@ class pear_rest
     function _getPackageRESTProlog()
     {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" .
-"<p xmlns=\"http://pear.php.net/dtd/rest.package\"" .
+"<p xmlns=\"http://pear.php.net/dtd/rest.package\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\"" .
 "    xsi:schemaLocation=\"http://pear.php.net/dtd/rest.package" .
 '    http://pear.php.net/dtd/rest.package.xsd">';
     }
@@ -280,7 +280,7 @@ class pear_rest
     function _getAllReleasesRESTProlog($package)
     {
         return '<?xml version="1.0" encoding="UTF-8" ?>' . "\n" .
-'<a xmlns="http://pear.php.net/dtd/rest.allreleases"' . "\n" .
+'<a xmlns="http://pear.php.net/dtd/rest.allreleases" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"' . "\n" .
 '    xsi:schemaLocation="http://pear.php.net/dtd/rest.allreleases' . "\n" .
 '    http://pear.php.net/dtd/rest.allreleases.xsd">' . "\n" .
 ' <p>' . $package . '</p>' . "\n" .
@@ -431,7 +431,7 @@ class pear_rest
         $releasedate = $dbh->getOne('SELECT releasedate FROM releases WHERE id = ?',
             array($id));
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
-<r xmlns="http://pear.php.net/dtd/rest.release"
+<r xmlns="http://pear.php.net/dtd/rest.release" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.release
     http://pear.php.net/dtd/rest.release.xsd">
  <p xlink:href="' . $extra . 'p/' . strtolower($package) . '">' . $package . '</p>
@@ -497,7 +497,7 @@ class pear_rest
                 @chmod($pdir . DIRECTORY_SEPARATOR . strtolower($package), 0777);
             }
             $info = '<?xml version="1.0" encoding="UTF-8" ?>
-<m xmlns="http://pear.php.net/dtd/rest.packagemaintainers"
+<m xmlns="http://pear.php.net/dtd/rest.packagemaintainers" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.packagemaintainers
     http://pear.php.net/dtd/rest.packagemaintainers.xsd">
  <p>' . $package . '</p>
@@ -543,7 +543,7 @@ class pear_rest
         }
         $maintainer['name'] = htmlspecialchars($maintainer['name']);
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
-<m xmlns="http://pear.php.net/dtd/rest.maintainer"
+<m xmlns="http://pear.php.net/dtd/rest.maintainer" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.maintainer
     http://pear.php.net/dtd/rest.maintainer.xsd">
  <h>' . $maintainer['handle'] . '</h>
@@ -562,7 +562,7 @@ class pear_rest
     {
         $maintainers = user::listAll();
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
-<m xmlns="http://pear.php.net/dtd/rest.allmaintainers"
+<m xmlns="http://pear.php.net/dtd/rest.allmaintainers" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allmaintainers
     http://pear.php.net/dtd/rest.allmaintainers.xsd">' . "\n";
         // package information

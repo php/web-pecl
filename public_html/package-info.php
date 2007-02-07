@@ -97,7 +97,7 @@ while ($row = $sth->fetchRow()) {
 if (!$relid) {
     $downloads = array();
 
-    $sth = $dbh->query("SELECT f.id AS id, f.release AS release,".
+    $sth = $dbh->query("SELECT f.id AS `id`, f.release AS `release`,".
                        " f.platform AS platform, f.format AS format,".
                        " f.md5sum AS md5sum, f.basename AS basename,".
                        " f.fullpath AS fullpath, r.version AS version".
@@ -288,7 +288,8 @@ if ($sth->numRows() == 0) {
         'ge' => '>=', */
         );
     $dep_type_desc = array(
-        'pkg'    => 'PEAR Package',
+        'pkg'         => 'PEAR Package',
+        'pkg_pecl'    => 'PECL Package',
         'ext'    => 'PHP Extension',
         'php'    => 'PHP Version',
         'prog'   => 'Program',
@@ -317,8 +318,14 @@ if ($sth->numRows() == 0) {
         if (count($deps) > 0) {
             foreach ($deps as $row) {
                 // Print link if it's a PEAR package and it's in the db
-                if ($row['type'] == 'pkg' AND $pid = $dbh->getOne(sprintf("SELECT id FROM packages WHERE name = '%s'", $row['name']))) {
-                    $row['name'] = sprintf('<a href="/package/%s">%s</a>', $row['name'], $row['name']);
+                if ($row['type'] == 'pkg') {
+                    $pkg = $dbh->getRow(sprintf("SELECT id, package_type FROM packages WHERE name = '%s'", $row['name']));
+                    if ($pkg['package_type'] == 'pecl') {
+                        $row['type'] = 'pkg_pecl';
+                        $row['name'] = sprintf('<a href="/package/%s">%s</a>', $row['name'], $row['name']);
+                    } else {
+                        $row['name'] = sprintf('<a href="http://pear.php.net/package/%s">%s</a>', $row['name'], $row['name']);
+                    }
                 }
 
                 if (isset($rel_trans[$row['relation']])) {

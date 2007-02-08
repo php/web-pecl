@@ -324,7 +324,11 @@ if ($sth->numRows() == 0) {
                         $row['type'] = 'pkg_pecl';
                         $row['name'] = sprintf('<a href="/package/%s">%s</a>', $row['name'], $row['name']);
                     } else {
-                        $row['name'] = sprintf('<a href="http://pear.php.net/package/%s">%s</a>', $row['name'], $row['name']);
+                        if ($row['name'] == 'PEAR Installer') {
+                            $row['name'] = '<a href="http://pear.php.net/package/PEAR">PEAR Installer</a>';
+                        } else {
+                            $row['name'] = sprintf('<a href="http://pear.php.net/package/%s">%s</a>', $row['name'], $row['name']);
+                        }
                     }
                 }
 

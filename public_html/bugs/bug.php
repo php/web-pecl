@@ -314,7 +314,7 @@ if ($_POST['in'] && $edit == 3) {
 
 if ($_POST['in']) {
     if (!$errors) {
-        mail_bug_updates($bug, $_POST['in'], $from, $ncomment, $edit);
+        mail_bug_updates($bug, $_POST['in'], $from, $ncomment, $edit, $id);
         localRedirect(htmlspecialchars($_SERVER['PHP_SELF']) . "?id=$id&thanks=$edit");
         exit;
     }

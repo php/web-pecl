@@ -28,7 +28,7 @@ if (isset($_GET['pid'])) {
     $id = 0;
 }
 
-$self = htmlspecialchars($_SERVER['PHP_SELF']);
+$self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 
 // Select package first
 if (empty($id)) {

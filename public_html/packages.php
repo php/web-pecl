@@ -25,7 +25,7 @@
 */
 
 $template_dir = dirname(dirname(__FILE__)) . '/templates/';
-$script_name = htmlspecialchars($_SERVER['SCRIPT_NAME']);
+$script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
 
 require_once('HTML/Table.php');
@@ -103,7 +103,7 @@ $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 if ($catpid) {
     $catname = $dbh->getOne('SELECT name FROM categories WHERE id=' . $catpid);
-    $category_title = "Package Browser :: " . htmlspecialchars($catname);
+    $category_title = "Package Browser :: " . htmlspecialchars($catname, ENT_QUOTES);
 } else {
     $category_title = 'Package Browser :: Top Level';
 }
@@ -154,7 +154,7 @@ while ($sth->fetchInto($row)) {
     if (isset($subcats[$id])) {
         foreach ($subcats[$id] as $subcat) {
             $sub_links[] = '<b><a href="'. $script_name .'?catpid='.$subcat['id'].'&amp;catname='.
-                            urlencode($subcat['name']).'" title="'.htmlspecialchars($subcat['summary']).'">'.$subcat['name'].'</a></b>';
+                            urlencode($subcat['name']).'" title="'.htmlspecialchars($subcat['summary'], ENT_QUOTES).'">'.$subcat['name'].'</a></b>';
             if (sizeof($sub_links) >= $max_sub_links) {
                 break;
             }
@@ -164,7 +164,7 @@ while ($sth->fetchInto($row)) {
     if (isset($subpkgs[$id])) {
         foreach ($subpkgs[$id] as $subpkg) {
             $sub_links[] = '<a href="/package/' . $subpkg['name'] .'" title="'.
-                            htmlspecialchars($subpkg['summary']).'">'.$subpkg['name'].'</a>';
+                            htmlspecialchars($subpkg['summary'], ENT_QUOTES).'">'.$subpkg['name'].'</a>';
             if (sizeof($sub_links) >= $max_sub_links) {
                 break;
             }
@@ -217,7 +217,7 @@ if (!empty($catpid)) {
                                        $script_name,
                                        $subcat['id'],
                                        urlencode($subcat['name']),
-                                       htmlspecialchars($subcat['summary']),
+                                       htmlspecialchars($subcat['summary'], ENT_QUOTES),
                                        $subcat['name']);
         }
         $subCategories = implode(', ', $subCategories);

@@ -32,26 +32,25 @@ $display_form = true;
 $width = 60;
 $errorMsg = "";
 $jumpto = "handle";
+
+$fields  = array('handle',
+                 'firstname',
+                 'lastname',
+                 'email',
+                 'purpose',
+                 'password',
+                 'password2',
+                 'email',
+                 'moreinfo',
+                 'homepage',
+                 'needcvs', 
+                 'showemail');
+
+foreach ($fields as $field) {
+    $$field = isset($_POST[$field]) ? htmlspecialchars(strip_tags($_POST[$field]),ENT_QUOTES) : null;
+}
+
 if (isset($_POST['submit'])) {
-
-    $fields  = array(
-                    'handle',
-                    'firstname',
-                    'lastname',
-                    'email',
-                    'purpose',
-                    'password',
-                    'password2',
-                    'email',
-                    'moreinfo',
-                    'homepage',
-                    'needcvs'
-                    );
-
-    foreach ($fields as $field) {
-        $$field = isset($_POST[$field]) ? htmlspecialchars(strip_tags($_POST[$field])) : null;
-    }
-
     do {
 
             $required = array("handle"    => "your desired username",
@@ -60,7 +59,7 @@ if (isset($_POST['submit'])) {
                               "email"     => "your email address",
                               "purpose"   => "the purpose of your PECL account");
 
-            $name = $_POST['firstname'] . " " . $_POST['lastname'];
+            $name = $firstname . " " . $lastname;
 
             foreach ($required as $field => $desc) {
                 if (empty($_POST[$field])) {
@@ -300,17 +299,17 @@ $opl_link.</p>
 
     print "<form action=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\" method=\"post\" name=\"request_form\">\n";
     $bb = new BorderBox("Request account", "90%", "", 2, true);
-    $bb->horizHeadRow("Username:", HTML_Form::returnText("handle", @$_POST['handle'], 12));
-    $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", @$_POST['firstname']));
-    $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", @$_POST['lastname']));
+    $bb->horizHeadRow("Username:", HTML_Form::returnText("handle", $handle, 12));
+    $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", $firstname));
+    $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", $lastname));
     $bb->horizHeadRow("Password:", HTML_Form::returnPassword("password", null, 10) . "   Again: " . HTML_Form::returnPassword("password2", null, 10));
-    $bb->horizHeadRow("Need a CVS account?", HTML_Form::returnCheckbox("needcvs", @$_POST['needcvs']));
+    $bb->horizHeadRow("Need a CVS account?", HTML_Form::returnCheckbox("needcvs", $needcvs));
 
-    $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", @$_POST['email']));
-    $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", @$_POST['showemail']));
-    $bb->horizHeadRow("Homepage", HTML_Form::returnText("homepage", @$_POST['homepage']));
-    $bb->horizHeadRow("Purpose of your PECL account<br />(No account is needed for using PECL or PECL packages):", HTML_Form::returnTextarea("purpose", stripslashes(@$_POST['purpose'])));
-    $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes(@$_POST['moreinfo'])));
+    $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", $email));
+    $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", $showemail));
+    $bb->horizHeadRow("Homepage", HTML_Form::returnText("homepage", $homepage));
+    $bb->horizHeadRow("Purpose of your PECL account<br />(No account is needed for using PECL or PECL packages):", HTML_Form::returnTextarea("purpose", stripslashes($purpose)));
+    $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes($moreinfo)));
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" />&nbsp;<input type=\"reset\" />");
     $bb->end();

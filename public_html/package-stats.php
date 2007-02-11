@@ -30,7 +30,7 @@ response_header('Package Statistics');
 <!--
 function reloadMe()
 {
-    var newLocation = '<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?'
+    var newLocation = '<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>?'
                       + 'cid='
                       + document.forms[1].cid.value
                       + '&pid='

@@ -34,8 +34,8 @@ $jumpto = "name";
 /* May seem like overkill, but the prepended get() function checks both GET and POST */
 $valid_args = array('submit', 'name','category','license','summary','desc','homepage','cvs_link');
 foreach($valid_args as $arg) {
-        if(isset($_POST[$arg])) $_POST[$arg] = htmlspecialchars($_POST[$arg]);
-        if(isset($_GET[$arg])) $_GET[$arg] = htmlspecialchars($GET[$arg]);
+        if(isset($_POST[$arg])) $_POST[$arg] = htmlspecialchars($_POST[$arg], ENT_QUOTES);
+        if(isset($_GET[$arg])) $_GET[$arg] = htmlspecialchars($GET[$arg], ENT_QUOTES);
 }
 
 $submit = isset($_POST['submit']) ? true : false;
@@ -84,13 +84,13 @@ do {
                                   ));
         $dbh->popExpect();
         if (DB::isError($pkg) && $pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
-            error_handler("The `" . $_POST['name'] . "' package already exists!",
+            error_handler("The `" . htmlspecialchars($_POST['name'],ENT_QUOTES) . "' package already exists!",
                           "Package already exists");
             exit;
         }
         $display_form = false;
         response_header("Package Registered");
-        print "The package `" . $_POST['name'] . "' has been registered in PECL.<br />\n";
+        print "The package `" . htmlspecialchars($_POST['name'], ENT_QUOTES) . "' has been registered in PECL.<br />\n";
         print "You have been assigned as lead developer.<br />\n";
     }
 } while (false);
@@ -124,9 +124,9 @@ people agree with you.
     }
 
     $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");
-    $form =& new HTML_Form($_SERVER['PHP_SELF'], "POST");
+    $form =& new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES), "POST");
 
-    print "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\">\n";
+    print "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "\">\n";
 
     $bb = new BorderBox("Register package", "100%", "", 2, true);
 

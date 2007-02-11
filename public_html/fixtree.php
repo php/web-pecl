@@ -22,7 +22,7 @@ auth_require(true);
 header("Content-type: text/plain");
 $dbh->setErrorHandling(PEAR_ERROR_DIE);
 
-print htmlspecialchars($REQUEST_URI)."\n\n";
+print htmlspecialchars($REQUEST_URI, ENT_QUOTES)."\n\n";
 
 renumber_visitations(true);
 

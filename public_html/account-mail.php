@@ -49,7 +49,7 @@ function printForm($data = array())
     }
 
     $bb = new BorderBox('Send email');
-    $form = new HTML_Form($_SERVER['PHP_SELF'] . '?handle=' . $_GET['handle'], 'post', 'contact');
+    $form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . '?handle=' . htmlspecialchars($_GET['handle'], ENT_QUOTES), 'post', 'contact');
 
     $form->addText('name', 'Your name:', $data['name'], 30);
     $form->addText('email', 'EMail address:', $data['email'], 30);

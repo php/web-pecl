@@ -78,7 +78,7 @@ do {
         $dbh->popExpect();
         if (DB::isError($pkg)) {
             if ($pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
-                error_handler("The `" . $_POST['name'] . "' package already exists!",
+                error_handler("The `" . htmlspecialchars($_POST['name'], ENT_QUOTES) . "' package already exists!",
                               "Package already exists");
             } else {
                 error_handler("Registering the package failed.");
@@ -88,7 +88,7 @@ do {
 
         $display_form = false;
         response_header("Package Proposed");
-        print "The package `" . $_POST['name'] . "' has been proposed in PEAR.<br />\n";
+        print "The package `" . htmlspecialchars($_POST['name'], ENT_QUOTES) . "' has been proposed in PEAR.<br />\n";
         print "<a href=\"index.php\">Back</a>";
     }
 } while (false);
@@ -120,7 +120,7 @@ if ($display_form) {
     }
 
     $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");
-    $form =& new HTML_Form($_SERVER['PHP_SELF'], "POST");
+    $form =& new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES), "POST");
 
     $bb = new BorderBox("Propose package", "100%");
     $form->addText("name", "Package Name", null, 20);

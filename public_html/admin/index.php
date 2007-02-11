@@ -25,7 +25,7 @@ if (!empty($_GET['phpinfo'])) {
     exit();
 }
 
-$acreq = isset($_GET['acreq']) ? strip_tags(htmlspecialchars($_GET['acreq'])) : null;
+$acreq = isset($_GET['acreq']) ? strip_tags(htmlspecialchars($_GET['acreq'], ENT_QUOTES)) : null;
 
 $SIDEBAR_DATA='
 This is the PEAR administration page.<br />
@@ -144,19 +144,19 @@ do {
         }
         list($purpose, $moreinfo) = @unserialize($requser->userinfo);
 
-        $bb = new BorderBox("Account request from " . htmlspecialchars($requser->name)
-		  	. "&lt;" . htmlspecialchars($requser->email) . "&gt;", "100%", "", 2, true);
-        $bb->horizHeadRow("Requested username:", htmlspecialchars($requser->handle));
-        $bb->horizHeadRow("Realname:", htmlspecialchars($requser->name));
-        $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . htmlspecialchars($requser->email) . "\">" .
-		  		htmlspecialchars($requser->email) . "</a>");
-        $bb->horizHeadRow("MD5-encrypted password:", htmlspecialchars($requser->password));
-        $bb->horizHeadRow("Purpose of account:", htmlspecialchars($purpose));
-        $bb->horizHeadRow("More information:", htmlspecialchars($moreinfo));
+        $bb = new BorderBox("Account request from " . htmlspecialchars($requser->name, ENT_QUOTES)
+		  	. "&lt;" . htmlspecialchars($requser->email, ENT_QUOTES) . "&gt;", "100%", "", 2, true);
+        $bb->horizHeadRow("Requested username:", htmlspecialchars($requser->handle, ENT_QUOTES));
+        $bb->horizHeadRow("Realname:", htmlspecialchars($requser->name, ENT_QUOTES));
+        $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . htmlspecialchars($requser->email, ENT_QUOTES) . "\">" .
+		  		htmlspecialchars($requser->email, ENT_QUOTES) . "</a>");
+        $bb->horizHeadRow("MD5-encrypted password:", htmlspecialchars($requser->password, ENT_QUOTES));
+        $bb->horizHeadRow("Purpose of account:", htmlspecialchars($purpose, ENT_QUOTES));
+        $bb->horizHeadRow("More information:", htmlspecialchars($moreinfo, ENT_QUOTES));
         $bb->end();
 
 	    print "<br />\n";
-	    $bb = new BorderBox("Notes for user " . htmlspecialchars($requser->handle));
+	    $bb = new BorderBox("Notes for user " . htmlspecialchars($requser->handle, ENT_QUOTES));
 	    $notes = $dbh->getAssoc("SELECT id,nby,UNIX_TIMESTAMP(ntime) AS ntime,note FROM notes ".
 	                "WHERE uid = ? ORDER BY ntime", true,
 	                array($requser->handle));
@@ -169,12 +169,12 @@ do {
 	            print "$i  <td>\n";
 	            print "$i   <b>$nby " . date('H:i jS F Y', $ntime) . ":</b>";
 	            if ($nby == $_COOKIE['PEAR_USER']) {
-	                $url = htmlspecialchars($_SERVER['PHP_SELF']) . "?acreq=$acreq&cmd=Delete+note&id=$nid";
+	                $url = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$acreq&cmd=Delete+note&id=$nid";
 	                $msg = "Are you sure you want to delete this note?";
 	                print "[<a href=\"javascript:confirmed_goto('$url', '$msg')\">delete your note</a>]";
 	            }
 	            print "<br />\n";
-	            print "$i   ".htmlspecialchars($note)."\n";
+	            print "$i   ".htmlspecialchars($note, ENT_QUOTES)."\n";
 	            print "$i  </td>\n";
 	            print "$i </tr>\n";
 	            print "$i <tr><td>&nbsp;</td></tr>\n";
@@ -183,7 +183,7 @@ do {
 	    } else {
 	        print "No notes.";
 	    }
-	    print "$i<form action=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\" method=\"POST\">\n";
+	    print "$i<form action=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "\" method=\"POST\">\n";
 	    print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
 	    print "$i <tr>\n";
 	    print "$i  <td>\n";
@@ -201,7 +201,7 @@ do {
 	    $bb->end();
 ?>
 
-<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" name="account_form">
+<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" method="POST" name="account_form">
 <input type="hidden" name="cmd" value="" />
 <input type="hidden" name="uid" value="<?= $requser->handle ?>" />
 <table cellpadding="3" cellspacing="0" border="0" width="90%">
@@ -302,7 +302,7 @@ do {
 			}
         //-->
         </script>
-		<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" name="mass_reject_form" method="post">
+		<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" name="mass_reject_form" method="post">
 		<input type="hidden" value="" name="cmd"/>
 		<?php
         $bb = new BorderBox("Account Requests", "100%", "", 6, true);
@@ -332,7 +332,7 @@ do {
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $handle),
 							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $account_purpose),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', ($rejected ? "rejected" : "<font color=\"#c00000\"><strong>Outstanding</strong></font>")),
-                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', "<a onmousedown=\"event.cancelBubble = true\" href=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "?acreq=$handle\">" . make_image("edit.gif") . "</a>")
+                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', "<a onmousedown=\"event.cancelBubble = true\" href=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$handle\">" . make_image("edit.gif") . "</a>")
                               );
             }
 

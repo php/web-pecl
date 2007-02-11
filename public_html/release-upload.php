@@ -24,7 +24,7 @@ define('HTML_FORM_MAX_FILE_SIZE', 16 * 1024 * 1024); // 16 MB
 define('HTML_FORM_TH_ATTR', 'class="form-label_left"');
 define('HTML_FORM_TD_ATTR', 'class="form-input"');
 
-$script_name = htmlspecialchars($_SERVER['SCRIPT_NAME']);
+$script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
 require_once 'HTML/Form.php';
 
@@ -317,11 +317,11 @@ if ($display_verification) {
     $form =& new HTML_Form($script_name, 'post');
     $form->addPlaintext('Package:', $info->getPackage());
     $form->addPlaintext('Version:', $info->getVersion());
-    $form->addPlaintext('Summary:', htmlspecialchars($info->getSummary()));
-    $form->addPlaintext('Description:', nl2br(htmlspecialchars($info->getDescription())));
+    $form->addPlaintext('Summary:', htmlspecialchars($info->getSummary(), ENT_QUOTES));
+    $form->addPlaintext('Description:', nl2br(htmlspecialchars($info->getDescription(), ENT_QUOTES)));
     $form->addPlaintext('Release State:', $info->getState());
     $form->addPlaintext('Release Date:', $info->getDate());
-    $form->addPlaintext('Release Notes:', nl2br(htmlspecialchars($info->getNotes())));
+    $form->addPlaintext('Release Notes:', nl2br(htmlspecialchars($info->getNotes(), ENT_QUOTES)));
     $form->addPlaintext('Package Type:', $type);
 
     // Don't show the next step button when errors found

@@ -58,7 +58,7 @@ if (!$admin && !$user) {
 }
 
 if (isset($_POST['command']) && strlen($_POST['command'] < 32)) {
-    $command = htmlspecialchars($_POST['command']);
+    $command = htmlspecialchars($_POST['command'], ENT_QUOTES);
 } else {
     $command = 'display';
 }
@@ -80,7 +80,7 @@ switch ($command) {
                 exit();
             }
 
-            $user_data_post[$k] = htmlspecialchars($_POST[$k]);
+            $user_data_post[$k] = htmlspecialchars($_POST[$k], ENT_QUOTES);
 
             if ($k == 'userinfo' && strlen($user_data_post[$k]) > '255') {
                 report_error('User information exceeds the allowed length (255 chars).');
@@ -170,7 +170,7 @@ if ($row === null) {
 }
 
 
-$form = new HTML_Form(htmlspecialchars($_SERVER['SCRIPT_NAME']), 'post');
+$form = new HTML_Form(htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES), 'post');
 
 $form->addText('name', '<span class="accesskey">N</span>ame:',
         $row['name'], 40, null, 'accesskey="n"');
@@ -203,7 +203,7 @@ $form->display('class="form-holder" style="margin-bottom: 2em;"'
 print '<a name="password"></a>' . "\n";
 print '<h2>&raquo; Manage your password</h2>' . "\n";
 
-$form = new HTML_Form(htmlspecialchars($_SERVER['SCRIPT_NAME']), 'post');
+$form = new HTML_Form(htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES), 'post');
 $form->addPlaintext('<span class="accesskey">O</span>ld Password:',
         $form->returnPassword('password_old', '', 40, 0,
                               'accesskey="o"'));

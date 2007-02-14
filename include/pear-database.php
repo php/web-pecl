@@ -700,7 +700,7 @@ class package
         $notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
         $deps_sql = "SELECT type, relation, version, `name`, `release`, optional
                      FROM deps
-                     WHERE package = ? ORDER BY optional ASC";
+                     WHERE `package` = ? ORDER BY `optional` ASC";
         if ($field === null) {
             $info =
                  $dbh->getRow($pkg_sql, array($pkg), DB_FETCHMODE_ASSOC);
@@ -752,7 +752,7 @@ class package
                 $sql = "SELECT description FROM packages p WHERE " . $package_type . " p.{$what} = ?";
                 $info = $dbh->query($sql, array($pkg));
             } elseif ($field == 'authors') {
-                $sql = "SELECT u.handle, u.name, u.email, u.showemail, m.role
+                $sql = "SELECT u.handle, u.name, u.email, u.showemail, m.active, m.role
                         FROM maintains m, users u, packages p
                         WHERE " . $package_type ." m.package = p.id
                         AND p.$what = ?

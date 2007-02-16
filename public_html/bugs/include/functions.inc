@@ -482,7 +482,10 @@ function show_package_version_options($package, $current)
 function show_version_options($current, $default = '')
 {
     $versions = array(
+        '5.2.1',
+		'4.4.5',
         '4_4 CVS-' . date('Y-m-d'),
+		'4.4.5',
         '4.4.4',
         '4.4.3',
         '4.4.2',
@@ -502,7 +505,7 @@ function show_version_options($current, $default = '')
         '4.3.0',
         '4_3 CVS-' . date('Y-m-d'),
         '5_2 CVS-' . date('Y-m-d'),
-        '5.2.1RC4',
+        '5.2.1',
         '5.2.0',
         '5.1.6',
         '5.1.5',
@@ -697,9 +700,18 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1, $id=-1)
     $text = array();
     $headers = array();
 
+
     /* Default addresses */
     list($mailto,$mailfrom, $Bcc) = get_package_mail(oneof($in['package_name'],$bug['package_name']), $id);
-
+    if ($user == 'pajoye') {
+        echo "<pre>";
+        print_r($mailfrom);
+        print_r("\n");
+        print_r($Bcc);
+        print_r("\n");
+        print_r($mailto);
+        echo "</pre>";
+    }
     /* Get rid of slashes in bug status */
     $bug['status'] = rinse($bug['status']);
 
@@ -1040,6 +1052,8 @@ function incoming_details_are_valid($in, $initial = 0, $logged = false)
 function get_package_mail($package_name, $bug_id=false)
 {
     global $site, $bugEmail, $dbh;
+    global $user;
+
     // XXX Change to pear-bugs when it gets opened
     //$to[] = "pear-dev@lists.php.net";
 
@@ -1053,7 +1067,11 @@ function get_package_mail($package_name, $bug_id=false)
     }
 
     $maintainers = package::info($package_name, 'authors');
-
+    if ($user == 'pajoye') {
+    echo "<pre>";
+    print_r($maintainers);
+    echo "</pre>";
+    }
     $to = array();
     foreach ($maintainers as $data) {
         if (!$data['active']) {

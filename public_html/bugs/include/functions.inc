@@ -703,15 +703,6 @@ function mail_bug_updates($bug, $in, $from, $ncomment, $edit = 1, $id=-1)
 
     /* Default addresses */
     list($mailto,$mailfrom, $Bcc) = get_package_mail(oneof($in['package_name'],$bug['package_name']), $id);
-    if ($user == 'pajoye') {
-        echo "<pre>";
-        print_r($mailfrom);
-        print_r("\n");
-        print_r($Bcc);
-        print_r("\n");
-        print_r($mailto);
-        echo "</pre>";
-    }
     /* Get rid of slashes in bug status */
     $bug['status'] = rinse($bug['status']);
 
@@ -1067,11 +1058,6 @@ function get_package_mail($package_name, $bug_id=false)
     }
 
     $maintainers = package::info($package_name, 'authors');
-    if ($user == 'pajoye') {
-    echo "<pre>";
-    print_r($maintainers);
-    echo "</pre>";
-    }
     $to = array();
     foreach ($maintainers as $data) {
         if (!$data['active']) {

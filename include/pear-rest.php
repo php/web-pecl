@@ -181,6 +181,7 @@ class pear_rest
 
     function saveAllPackagesREST()
     {
+        require_once 'System.php';
         $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
         if (!is_dir($pdir)) {
             System::mkdir(array('-p', $pdir));

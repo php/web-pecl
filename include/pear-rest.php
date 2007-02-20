@@ -85,7 +85,7 @@ class pear_rest
 ';
         $query = "SELECT p.name AS name " .
             "FROM packages p, categories c " .
-            "WHERE p.package_type = 'pear' " .
+            "WHERE p.package_type = 'pecl' " .
             "AND p.category = c.id AND c.name = ? AND p.approved = 1";
 
         $sth = $dbh->getAll($query, array($category['name']), DB_FETCHMODE_ASSOC);

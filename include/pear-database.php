@@ -692,6 +692,7 @@ class package
              "p.doc_link as doc_link".
              " FROM packages p, categories c ".
              "WHERE " . $package_type . " c.id = p.category AND p.{$what} = ?";
+
         $rel_sql = "SELECT version, id, doneby, license, summary, ".
              "description, releasedate, releasenotes, state " . //, packagexmlversion ".
              "FROM releases ".
@@ -702,8 +703,8 @@ class package
                      FROM deps
                      WHERE `package` = ? ORDER BY `optional` ASC";
         if ($field === null) {
-            $info =
-                 $dbh->getRow($pkg_sql, array($pkg), DB_FETCHMODE_ASSOC);
+            $info = $dbh->getRow($pkg_sql, array($pkg), DB_FETCHMODE_ASSOC);
+
             $info['releases'] =
                  $dbh->getAssoc($rel_sql, false, array($info['packageid']),
                  DB_FETCHMODE_ASSOC);
@@ -737,13 +738,16 @@ class package
                 } else {
                     $pid = $pkg;
                 }
+
                 if ($field == 'releases') {
+
                     $info = $dbh->getAssoc($rel_sql, false, array($pid),
                     DB_FETCHMODE_ASSOC);
                 } elseif ($field == 'notes') {
                     $info = $dbh->getAssoc($notes_sql, false, array($pid),
                     DB_FETCHMODE_ASSOC);
                 }
+
             } elseif ($field == 'category') {
                 $sql = "SELECT c.name FROM categories c, packages p ".
                      "WHERE c.id = p.category AND " . $package_type . " p.{$what} = ?";
@@ -804,6 +808,26 @@ class package
     // {{{  proto struct package::listAll([bool], [bool], [bool]) API 1.0
 
     /**
+     * Lists the IDs and names of all approved PEAR packages
+     *
+     * Returns an associative array where the key of each element is
+     * a package ID, while the value is the name of the corresponding
+     * package.
+     *
+     * @static
+     * @return array
+     */
+    function listAllNames()
+    {
+        global $dbh;
+
+        return $dbh->getAssoc("SELECT id, name FROM packages WHERE package_type = 'pecl' ORDER BY name");
+    }
+
+    // }}}
+    // {{{  proto struct package::listAll([bool], [bool], [bool]) API 1.0
+
+    /**
      * List all packages
      *
      * @static
@@ -821,6 +845,7 @@ class package
             $package_type = "p.package_type = 'pecl' AND p.approved = 1 AND ";
         }
 
+
         $packageinfo = $dbh->getAssoc("SELECT p.name, p.id AS packageid, ".
             "c.id AS categoryid, c.name AS category, ".
             "p.license AS license, ".
@@ -833,12 +858,14 @@ class package
             "  AND p.id = m.package ".
             "  AND m.role = 'lead' ".
             "ORDER BY p.name", false, null, DB_FETCHMODE_ASSOC);
+
         $allreleases = $dbh->getAssoc(
             "SELECT p.name, r.id AS rid, r.version AS stable, r.state AS state ".
             "FROM packages p, releases r ".
             "WHERE " . $package_type .
             "p.id = r.package ".
             "ORDER BY r.releasedate ASC ", false, null, DB_FETCHMODE_ASSOC);
+
         $stablereleases = $dbh->getAssoc(
             "SELECT p.name, r.id AS rid, r.version AS stable, r.state AS state ".
             "FROM packages p, releases r ".
@@ -846,9 +873,12 @@ class package
             "p.id = r.package ".
             ($released_only ? "AND r.state = 'stable' " : "").
             "ORDER BY r.releasedate ASC ", false, null, DB_FETCHMODE_ASSOC);
+
+
         $deps = $dbh->getAll(
-            "SELECT package, release , type, relation, version, name ".
+            "SELECT package, `release` , type, relation, version, name ".
             "FROM deps", null, DB_FETCHMODE_ASSOC);
+
         foreach ($packageinfo as $pkg => $info) {
             $packageinfo[$pkg]['stable'] = false;
         }

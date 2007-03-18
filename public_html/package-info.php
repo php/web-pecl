@@ -27,14 +27,14 @@ $site = new Damblan_URL;
 $params = array("package|pacid" => "", "version" => "");
 $site->getElements($params);
 
-$pacid = $params['package|pacid'];
+$pacid = (int)$params['package|pacid'];
 
 // Package data
 if (!empty($pacid)) {
     $pkg = package::info($pacid);
 }
 
-$version = $params['version'];
+$version = htmlspecialchars($params['version'], ENT_QUOTES);
 $relid = null;
 if (!empty($version)) {
     foreach ($pkg['releases'] as $ver => $release) {

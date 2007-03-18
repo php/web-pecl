@@ -27,7 +27,7 @@ $site = new Damblan_URL;
 $params = array("package|pacid" => "", "version" => "");
 $site->getElements($params);
 
-$pacid = (int)$params['package|pacid'];
+$pacid = htmlspecialchars($params['package|pacid'],ENT_QUOTES);
 
 // Package data
 if (!empty($pacid)) {

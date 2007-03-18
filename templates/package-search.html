@@ -236,14 +236,14 @@ response_header('Package Search');
 </script>
 <!-- This class prints stuff as part of it's constructor. -->
 
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get" name="search_form" onsubmit="validate_form()">
+<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES); ?>" method="get" name="search_form" onsubmit="validate_form()">
 
 <table class="form-holder" cellspacing="1">
  <caption class="form-caption">Search Options</caption>
  <tr>
   <th class="form-label_left">Pa<span class="accesskey">c</span>kage Name:</th>
   <td class="form-input">
-   <?php $form->displayText('pkg_name', htmlspecialchars(@$_GET['pkg_name']), 0, 0, 'accesskey="c"'); ?>
+   <?php $form->displayText('pkg_name', htmlspecialchars(@$_GET['pkg_name'], ENT_QUOTES), 0, 0, 'accesskey="c"'); ?>
    <br />
    <small>
     Match:
@@ -258,7 +258,7 @@ response_header('Package Search');
  <tr>
   <th class="form-label_left">Maintainer:</th>
   <td class="form-input">
-   <input name="pkg_maintainer" type="text" value="<?php echo htmlspecialchars($_GET['pkg_maintainer']); ?>" />
+   <input name="pkg_maintainer" type="text" value="<?php echo htmlspecialchars($_GET['pkg_maintainer'], ENT_QUOTES); ?>" />
    <select onchange="document.forms['search_form'].pkg_maintainer.value = this.options[this.selectedIndex].value; this.selectedIndex = 0">
     <option value="">Select user...</option>
     <?php foreach($users as $u):?>

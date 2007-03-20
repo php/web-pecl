@@ -154,7 +154,7 @@ if (isset($_POST['submit'])) {
 
             $xhdr = "From: $name <$email>";
             $subject = "PECL Account Request: {$handle}";
-            $ok = mail("pecl-dev@lists.php.net", $subject, $msg, $xhdr, "-f pear-sys@php.net");
+            $ok = mail("pecl-dev@lists.php.net", $subject, $msg, $xhdr, "-f bounces-ignored@php.net");
             response_header("Account Request Submitted");
 
             if ($ok) {

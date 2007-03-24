@@ -14,6 +14,7 @@
 // Directories. Must be updated to reflect your installation
 //------------------------------------------------------------------------
 
+error_reporting(E_ALL & ~E_NOTICE);
 // The full absolute name of directory to be used as a cache. This directory MUST
 // be readable and writable for PHP. Must end with '/'
 DEFINE("CACHE_DIR", "/tmp/");
@@ -329,9 +330,9 @@ else {
 //Check if there were any warnings, perhaps some wrong includes by the
 //user
 //
-if( isset($GLOBALS['php_errormsg']) ) {
-    JpGraphError::Raise("<b>General PHP error:</b><br>".$GLOBALS['php_errormsg']);
-}
+//if( isset($GLOBALS['php_errormsg']) ) {
+//    JpGraphError::Raise("<b>General PHP error:</b><br>".$GLOBALS['php_errormsg']);
+//}
 
 //
 // Check what version of the GD library is being used

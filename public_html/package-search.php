@@ -172,7 +172,7 @@ if (!empty($_GET)) {
         // Paging
         include_once('Pager/Pager.php');
         $params['itemData'] = range(0, $numrows - 1);
-        $pager = &new Pager($params);
+        $pager = Pager::factory($params);
         list($from, $to) = $pager->getOffsetByPageId();
         $links = $pager->getLinks('<img src="gifs/prev.gif" border="0" alt="&lt;&lt;" width="10" height="10">Prev', 'Next<img src="gifs/next.gif" border="0" alt="&gt;&gt;" width="10" height="10">');
     

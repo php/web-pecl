@@ -117,7 +117,8 @@ $package_rel  = !empty($_GET['rid']) ? $dbh->getOne('SELECT version FROM release
  */
 if (!DEVBOX) {
     // Send some caching headers to prevent unnecessary requests
-    header('Last-Modified: ' . date('r', md5($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'])));
+    header('ETag: ' . md5($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']));
+    header('Last-Modified: ' . date('c'));
     header('Expires: ' . date('r', time() + $cache_time));
     header('Cache-Control: public, max-age=' . $cache_time);
     header('Pragma: cache');

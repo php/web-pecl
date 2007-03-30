@@ -2319,6 +2319,10 @@ class note
         if (empty($author)) {
             $author = $_COOKIE['PEAR_USER'];
         }
+        if (!in_array($key, array('uid', 'rid', 'cid', 'pid'), true)) {
+            // bad hackers not allowed
+            $key = 'uid';
+        }
         $nid = $dbh->nextId("notes");
         $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
                               "VALUES(?,?,?,?,?)");

@@ -2797,6 +2797,25 @@ class statistics
 
         return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
     }
+    
+    // }}}
+    // {{{ activeRelease()
+
+    function activeRelease($id, $rid = "")
+    {
+        global $dbh;
+
+         $query = 'SELECT s.release, SUM(s.dl_number) AS dl_number, MAX(s.last_dl) AS last_dl, MIN(r.releasedate) AS releasedate '
+            . 'FROM package_stats AS s '
+            . 'LEFT JOIN releases AS r ON (s.rid = r.id) '
+            . "WHERE pid = " . (int)$id;
+        if (!empty($rid)) {
+            $query .= " AND rid = " . (int)$rid;
+        }
+        $query .= " GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY s.release  DESC";
+
+        return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
+    }
 
     // }}}
 }

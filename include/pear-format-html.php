@@ -558,8 +558,8 @@ function html_category_urhere($id, $link_lastest = false)
 */
 function getURL($url)
 {
-	include_once 'Net/URL.php';
-	$obj = new Net_URL($url);
+	include_once 'Net/URL2.php';
+	$obj = new Net_URL2($url);
 	return $obj->getURL();
 }
 

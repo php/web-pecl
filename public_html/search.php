@@ -44,7 +44,7 @@ switch ($HTTP_POST_VARS['search_in']) {
          * We forward the query to the mailing list archive
          * at marc.thaimsgroup.com
          */
-        $location = "http://marc.theaimsgroup.com/";
+        $location = "http://marc.info/";
         $query = "l=".$HTTP_POST_VARS['search_in']."&w=2&r=1&q=b&s=".urlencode($HTTP_POST_VARS['search_string']);
         header("Location: ".$location."?".$query);
         

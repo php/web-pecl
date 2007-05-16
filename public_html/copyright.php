@@ -22,7 +22,7 @@ response_header("Copyright and License");
   
 ?>
 
-<h2>Copyright and Licence</h2>
+<h2>Copyright and License</h2>
 
 <h2>PHP License</h2>
 

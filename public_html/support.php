@@ -112,7 +112,7 @@ while ( list(, $listinfo) = each($mailing_lists)) {
         echo '<tr align="center" bgcolor="#e0e0e0">';
         echo '<td align="left"><b>' . $listinfo[1] . '</b><br /><small>'. $listinfo[2] . '</small></td>';
         echo '<td>' . ($listinfo[3] ? 'yes' : 'no') . '</td>';
-        echo '<td>' . ($listinfo[4] ? make_link("http://beeblex.com/search.php?s=l%3Aphp.".str_replace('-', '.', $listinfo[0]).'&amp;o=1', 'yes') : 'n/a') . '</td>';
+        echo '<td>' . ($listinfo[4] ? make_link("http://marc.info/?l=" . $listinfo[0], 'yes') : 'n/a') . '</td>';
         echo '<td>' . ($listinfo[6] ? ( make_link("news://news.php.net/".$listinfo[6], 'yes')
                                         . ' ' . make_link("http://news.php.net/group.php?group=" . $listinfo[6], 'http') )
                                        : 'n/a') . '</td>';
@@ -150,7 +150,7 @@ ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here</a>.
 </p>
 
 <p>
-If you have questions concering this website, you can contact
+If you have questions concerning this website, you can contact
 <a href="mailto:peclweb@php.net">peclweb@php.net</a>.
 </p>
 
@@ -178,7 +178,7 @@ Eris Free Net</a>.
     <li><a href="http://cvs.php.net/cvs.php/ZendEngine2/OBJECTS2_HOWTO">PHP5/ZendEngine 2 Object internals</a>
     <li><a href="http://talks.somabo.de/#20051018">PHP Extension Development -- Integrating with Existing Systems, Zend/PHP Conference, Tue, 18th October 2005, San Francisco, USA</a> by Marcus B&ouml;rger</li>
     <li><a href="http://www.phpconcept.net/articles/article.en.php?id=1">Configure WinCVS for PEAR/PECL</a> by Vincent Blavet</li>
-    <li><a href="http://talks.php.net/show/vancouver-ext/">Extention Writing (PHP 4/PHP 5), January 22nd, 2004. Vancouver, Canada</a>
+    <li><a href="http://talks.php.net/show/vancouver-ext/">Extension Writing (PHP 4/PHP 5), January 22nd, 2004. Vancouver, Canada</a>
     by Derick Rethans</li>
     <li><a href="http://talks.php.net/show/extending-php-apachecon2003">Writing a PHP Extension (PHP 4), Apachecon
     November 19, 2003. Las Vegas, NV</a> by Jim Winstead</li>

@@ -34,7 +34,7 @@ If you would like to contact them, you can write to
 to use a set of utility classes. We call it
 <?php echo make_link("damblan.php", "Damblan"); ?>. The source code of
 the website is
-<?php echo make_link("http://cvs.php.net/cvs.php/pearweb", "available via CVS"); ?>.
+<?php echo make_link("http://cvs.php.net/viewvc.cgi/pearweb/", "available via CVS"); ?>.
 </p>
 
 <p>Read the <?php echo make_link("privacy.php", "privacy policy"); ?>.</p>

@@ -201,9 +201,9 @@ if ($display_form) {
 
     response_header("Request Account");
 
-    $cs_link = make_link('http://cvs.php.net/co.php/php-src/CODING_STANDARDS', 'PHP Coding Standards');
+    $cs_link = make_link('http://cvs.php.net/viewvc.cgi/php-src/CODING_STANDARDS', 'PHP Coding Standards');
     $lic_link = make_link('http://www.php.net/license/3_0.txt', 'PHP License 3.0');
-	$dochowto_link = make_link('http://php.net/manual/howto/index.html', 'Documentation HOWTO');
+    $dochowto_link = make_link('http://doc.php.net/php/dochowto/', 'Documentation HOWTO');
     $opl_link = make_link('http://php.net/manual/en/opl.license.php', 'Open Publication License');
 
     print "<h1>Publishing in PECL</h1>
@@ -225,7 +225,7 @@ extension.  We also encourage you to use the $cs_link for your code, as it will
 help the QA team help you to maintain your extension. Although documentation
 for extensions is not required, it does make alot of sense if potential users
 know how to use your extension, see $dochowto_link for information on how to
-document your extension. Sumbitted documentation will always be under the
+document your extension. Submitted documentation will always be under the
 $opl_link.</p>
 
 <p>Bogus, incomplete or incorrect requests will be summarily denied.</p>

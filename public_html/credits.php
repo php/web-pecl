@@ -22,26 +22,17 @@ response_header('Credits');
 ?>
 
 <h2>Credits</h2>
-
-<h3>PEAR website team</h3>
-
-<ul>
-  <li><?php echo user_link("ssb"); ?></li>
-  <li><?php echo user_link("cox"); ?></li>
-  <li><?php echo user_link("mj"); ?></li>
-  <li><?php echo user_link("cmv"); ?></li>
-  <li><?php echo user_link("richard");?></li>
-</ul>
-
-<h3>PEAR documentation team</h3>
-
-<ul>
-  <li><?php echo user_link("cox"); ?></li>
-  <li><?php echo user_link("mj"); ?></li>
-  <li><?php echo user_link("alexmerz"); ?></li>
-</ul>
-
-<small>(All in alphabetic order)</small>
+<p>
+ All credit goes to everyone who has submitted and/or commented on a bug 
+ report, written documentation, submitted a user note, created and/or 
+ maintained a PECL extension, worked on this website, been involved with the 
+ mailing lists or IRC, worked on PHP internals, PEAR, and much much more. 
+ Basically, the credit goes to everyone who has helped make PHP better 
+ because everything here is tied together. Specific names are available 
+ within each PECL package but there are also the countless number of people 
+ who work on this project every day, people who spend large amounts of 
+ available free time to help make PHP the best it can be.
+</p>
 
 <?php
 response_footer();

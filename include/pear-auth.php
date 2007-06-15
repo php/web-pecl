@@ -161,7 +161,11 @@ function auth_check($atom)
     if (!isset($karma)) {
         $karma = new Damblan_Karma($dbh);
     }
-    return $karma->has($auth_user->handle, $atom);
+    $a = $karma->has($auth_user->handle, $atom);
+    if (PEAR::isError($a)) {
+        return false;
+    }
+    return $a;
 }
 
 function auth_require($admin = false)

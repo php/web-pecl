@@ -50,7 +50,8 @@ if (isset($maillist)) {
         switch ($maillist) {
             default:
             mail("$maillist-$request-$sub@lists.php.net", "Website Subscription",
-                "This was a request generated from the form at http://pecl.php.net/support.php.", "From: $email\r\n");
+                "This was a request generated from the form at http://pecl.php.net/support.php.", "From: $email\r\n",
+				"-fnoreply@php.net");
             break;
         }
 ?>

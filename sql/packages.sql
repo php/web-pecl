@@ -12,6 +12,7 @@ CREATE TABLE packages (
        homepage       VARCHAR(255),
        doc_link       VARCHAR(255),
        cvs_link       VARCHAR(255),
+       bug_link       VARCHAR(255),
        PRIMARY KEY(id),
        UNIQUE INDEX(name),
        INDEX(category)

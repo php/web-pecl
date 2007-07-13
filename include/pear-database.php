@@ -689,7 +689,8 @@ class package
              "p.stablerelease AS stable, p.license AS license, ".
              "p.summary AS summary, p.homepage AS homepage, ".
              "p.description AS description, p.cvs_link AS cvs_link, ".
-             "p.doc_link as doc_link".
+             "p.doc_link as doc_link, ".
+             "p.bug_link as bug_link".
              " FROM packages p, categories c ".
              "WHERE " . $package_type . " c.id = p.category AND p.{$what} = ?";
 

@@ -589,13 +589,19 @@ function get_license_link($license = "")
     switch ($license) {
 
         case 'PHP License':
-        case 'PHP 2.02':
-            $link = 'http://www.php.net/license/2_02.txt';
+        case 'PHP 3.01':
+        case 'PHP License 3.01':
+            $link = 'http://www.php.net/license/3_01.txt';
             break;
 
-        case 'GPL':
-        case 'GNU General Public License':
-            $link = 'http://www.gnu.org/licenses/gpl.html';
+        case 'PHP 3.0':
+        case 'PHP License 3.0':
+            $link = 'http://www.php.net/license/3_0.txt';
+            break;
+	
+        case 'PHP 2.02':
+        case 'PHP License 2.02':
+            $link = 'http://www.php.net/license/2_02.txt';
             break;
 
         case 'LGPL':

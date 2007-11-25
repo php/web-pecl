@@ -195,7 +195,7 @@ $stats_link = make_link("/package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=
 <td align="center">
 <?php
 if (!empty($cvs_link)) {
-    print '[ ' . make_link($cvs_link, 'CVS Web', 'top') . ' ]';
+    print '[ ' . make_link($cvs_link, 'Browse Source', 'top') . ' ]';
 }
 print '&nbsp;</td>';
 

@@ -38,8 +38,8 @@ feeds available for your viewing pleasure:</p>
   </li>
   <li>Feeds per package:
     <ul>
-      <li><?php echo make_link("/feeds/pkg_auth.rss"); ?>: Auth</li>
-      <li><?php echo make_link("/feeds/pkg_mail_mime.rss"); ?>: Mail_Mime</li>
+      <li><?php echo make_link("/feeds/pkg_apc.rss"); ?>: APC</li>
+      <li><?php echo make_link("/feeds/pkg_phar.rss"); ?>: phar</li>
       <li>For all other packages, the same scheme as shown above applies</li>
     </ul>
   </li>

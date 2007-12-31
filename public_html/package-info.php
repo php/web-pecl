@@ -179,13 +179,13 @@ $get_link = make_link("/get/$name", 'Download Latest');
 if ($version) {
     $changelog_link = make_link("/package-changelog.php?package=" .
                                 $pkg['name'] . '&amp;release=' . $version,
-                                'ChangeLog');
+                                'Changelog');
 } else {
     $changelog_link = make_link("/package-changelog.php?package=" . $pkg['name'],
-                                'ChangeLog');
+                                'Changelog');
 }
 $stats_link = make_link("/package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=" . $pkg['categoryid'],
-                        "View package statistics");
+                        "View Statistics");
 ?>
     <td align="center">[ <?php print $get_link; ?> ]</td>
     <td align="center">[ <?php print $changelog_link; ?> ]</td>
@@ -205,7 +205,7 @@ if (!empty($bug_link)) {
     print '<td align="center">[ ' . make_bug_link($pkg['name']) . ' ]</td>';
 }
 if (!empty($doc_link)) {
-    print '<td align="center">[ ' . make_link($doc_link, "View documentation") . ' ]</td>';
+    print '<td align="center">[ ' . make_link($doc_link, "View Documentation") . ' ]</td>';
 } else {
     print '<td />';
 }

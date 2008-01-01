@@ -108,7 +108,7 @@ PHP version from http://www.php.net/downloads.php
 If you are able to reproduce the bug with one of the latest
 versions of PHP, please change the PHP version on this bug report
 to the version you tested and change the status back to "Open".
-Again, thank you for your continued support of PEAR.'
+Again, thank you for your continued support of PECL.'
   ),
   'support' => array(
     'status' => 'Bogus',
@@ -116,7 +116,7 @@ Again, thank you for your continued support of PEAR.'
     'message' =>
 'Sorry, but your problem does not imply a bug in PECL itself.  For a
 list of more appropriate places to ask for help using PECL, please
-visit http://pecl.php.net/support/ as this bug system is not the
+visit http://pecl.php.net/support.php as this bug system is not the
 appropriate forum for asking support questions. 
 
 Thank you for your interest in PECL.',

@@ -138,6 +138,25 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
+            /* Now do the CVS stuff */
+            if ($needcvs) {
+                $error = posttohost(
+                    'http://master.php.net/entry/cvs-account.php',
+                    array(
+                        "username" => $handle,
+                        "name"     => $name,
+                        "email"    => $email,
+                        "passwd"   => $password,
+                        "note"     => $purpose
+                    )
+                );
+
+                if ($error) {
+                    display_error("Problem submitting the CVS account request: $error");
+                    break;
+                }
+            }
+
             $msg = "Requested from:   {$_SERVER['REMOTE_ADDR']}\n".
                    "Username:         {$handle}\n".
                    "Real Name:        {$name}\n".
@@ -172,25 +191,6 @@ if (isset($_POST['submit'])) {
                       "If you don't hear anything about your account in a few ".
                       "days, please drop a mail about it to the <i>pecl-dev</i> ".
                       "mailing list.";
-            }
-
-            /* Now do the CVS stuff */
-            if ($needcvs) {
-                $error = posttohost(
-                    'http://master.php.net/entry/cvs-account.php',
-                    array(
-                        "username" => $handle,
-                        "name"     => $name,
-                        "email"    => $email,
-                        "passwd"   => $password,
-                        "note"     => $purpose
-                    )
-                );
-
-                if ($error) {
-                    print "<h2>Problem submitting CVS account request</h2>\n";
-                    print "<p class=\"error\">$error</p>\n";
-                }
             }
 
             print "<br />Click the top-left PECL logo to go back to the front page.\n";

@@ -36,33 +36,6 @@ response_header("Support");
 <a name="lists"></a><h3>Mailing Lists</h3>
 
 <?php
-if (isset($maillist)) {
-    # should really grab some email validating routine and use it here.
-    if (empty($email) || $email == 'user@example.com') {
-        echo "You forgot to specify an email address to be added to the list.  ";
-        echo "Go back and try again.";
-    } else {
-        $request = strtolower($action);
-                if ($request != "subscribe" && $request != "unsubscribe") {
-                    $request = "subscribe";
-                }
-        $sub = str_replace("@", "=", $email);
-        switch ($maillist) {
-            default:
-            mail("$maillist-$request-$sub@lists.php.net", "Website Subscription",
-                "This was a request generated from the form at http://pecl.php.net/support.php.", "From: $email\r\n",
-				"-fnoreply@php.net");
-            break;
-        }
-?>
-<p>
-A request has been entered into the mailing list processing queue. You
-should receive an email at <?php echo $email;?> shortly describing how to
-complete your request.
-</p>
-<?php
-    }
-} else {
 
   // array of lists (list, name, short desc., moderated, archive, digest, newsgroup)
   $mailing_lists = array(
@@ -91,8 +64,6 @@ also available as newsgroups on our
 searchable.
 </p>
 
-<form method="post" action="/support.php">
-<p>
 <table cellpadding="5" cellspacing="1">
 <?php
 
@@ -117,8 +88,8 @@ while ( list(, $listinfo) = each($mailing_lists)) {
         echo '<td>' . ($listinfo[6] ? ( make_link("news://news.php.net/".$listinfo[6], 'yes')
                                         . ' ' . make_link("http://news.php.net/group.php?group=" . $listinfo[6], 'http') )
                                        : 'n/a') . '</td>';
-        echo '<td><input name="maillist" type="radio" value="' . $listinfo[0] . '" /></td>';
-        echo '<td>' . ($listinfo[5] ? '<input name="maillist" type="radio" value="'.$listinfo[0].'-digest" />' : 'n/a' ) . '</td>';
+        echo '<td>' . $listinfo[0] . '</td>';
+        echo '<td>' . ($listinfo[5] ? 'available' : 'n/a' ) . '</td>';
         echo '</tr>' . "\n";
 
     }
@@ -128,26 +99,20 @@ while ( list(, $listinfo) = each($mailing_lists)) {
 </table>
 </p>
 
-<p align="center">
-<b>Email:</b>
-<input type=text name="email" width=40 value="user@example.com" />
-<input type=submit name="action" value="Subscribe" />
-<input type=submit name="action" value="Unsubscribe" />
-</p>
-
-</form>
-
-<p>
-You will be sent a confirmation mail at the address you wish to
-be subscribed or unsubscribed, and only added to the list after
-following the directions in that mail.
-</p>
+<h3>Subscribing and Unsubscribing</h3>
 
 <p>
 There are a variety of commands you can use to modify your subscription.
 Either send a message to pecl-<tt>whatever</tt>@lists.php.net (as in,
 pecl-dev@lists.php.net) or you can view the commands for
 ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here</a>.
+</p>
+
+<p>
+For example, to subscribe to pecl-dev, send an email to pecl-dev-subscribe@lists.php.net and
+you will be sent a confirmation mail that explains how to proceed with the subscription 
+process.  And to instead receive digested (daily) pecl-dev email, use pecl-dev-digest-subscribe@lists.php.net.
+Similarly, use unsubscribe instead of subscribe to do the exact opposite.
 </p>
 
 <p>
@@ -230,6 +195,6 @@ echo '</table>';
 echo '<p><b>Note:</b> Please do not just include these icons directly but
         download them and save them locally in order to keep HTTP traffic
         low.</p>';
-}
+
 response_footer();
 ?>

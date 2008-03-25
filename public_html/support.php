@@ -133,9 +133,6 @@ Eris Free Net</a>.
     <li><a href="http://www.devnewz.com/2002/0909.html">
      Developing custom PHP extensions (PHP4)</a> By DevNewz.com</li>
 
-    <li><a href="http://bugs.tutorbuddy.com/phpcpp/phpcpp/">
-    Using C++ with PHP (PHP4)</a> By J. Smith</li>
-
 </ul>
 
 <a name="resources"></a><h3>PECL resources</h3>

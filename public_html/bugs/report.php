@@ -323,7 +323,7 @@ if (!package_exists($_REQUEST['package'])) {
 <p>
  If you aren't sure that what you're about to report is a bug, you should
  ask for help using one of the means for support
- <a href="/support/">listed here</a>.
+ <a href="/support.php">listed here</a>.
 </p>
 
 <p>

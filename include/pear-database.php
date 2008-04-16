@@ -2182,7 +2182,7 @@ END;
         $to   = '"PECL developers list" <pecl-dev@lists.php.net>';
         $from = '"PECL Announce" <pecl-dev@lists.php.net>';
         $subject = "[ANNOUNCEMENT] $release Released.";
-        mail($to, $subject, $txtanounce, "From: $from", "-f bounces-ignored@php.net");
+        mail($to, $subject, $txtanounce, "From: $from", "-f bounce-no-user@php.net");
     }
 
     // }}}
@@ -2236,7 +2236,7 @@ Authors
         $to   = '"PECL developers list" <pecl-dev@lists.php.net>';
         $from = '"PECL Announce" <pecl-dev@lists.php.net>';
         $subject = "[ANNOUNCEMENT] $release Released.";
-        mail($to, $subject, $txtanounce, "From: $from", "-f bounces-ignored@php.net");
+        mail($to, $subject, $txtanounce, "From: $from", "-f bounce-no-user@php.net");
     }
 
     // }}}
@@ -2391,7 +2391,7 @@ class user
         $msg = "Your PECL account request was rejected by " . $_COOKIE['PEAR_USER'] . ":\n".
              "$reason\n";
         $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
-        mail($email, "Your PECL Account Request", $msg, $xhdr, "-f bounces-ignored@php.net");
+        mail($email, "Your PECL Account Request", $msg, $xhdr, "-f bounce-no-user@php.net");
         return true;
     }
 
@@ -2423,7 +2423,7 @@ class user
              "To log in, go to http://pecl.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";
         $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
-        mail($user->email, "Your PECL Account Request", $msg, $xhdr, "-f bounces-ignored@php.net");
+        mail($user->email, "Your PECL Account Request", $msg, $xhdr, "-f bounce-no-user@php.net");
         return true;
     }
 
@@ -2687,7 +2687,7 @@ class user
         if (DEVBOX == false) {
             if (PEAR_CHANNELNAME == 'pear.php.net') {
                 $ok = @mail('pear-group@php.net', $subject, $msg, $xhdr,
-                            '-f bounces-ignored@php.net');
+                            '-f bounce-no-user@php.net');
             }
         } else {
             $ok = true;
@@ -2846,7 +2846,7 @@ function mail_pear_admins($subject = "PEAR Account Request", $msg, $xhdr = '')
             }
         }
         $rcpt = implode(", ", $rcpt);
-        return mail($rcpt, $subject, $msg, $xhdr, "-f bounces-ignored@php.net");
+        return mail($rcpt, $subject, $msg, $xhdr, "-f bounce-no-user@php.net");
     }
     return false;
 }

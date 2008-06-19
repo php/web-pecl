@@ -13,6 +13,11 @@ CREATE TABLE packages (
        doc_link       VARCHAR(255),
        cvs_link       VARCHAR(255),
        bug_link       VARCHAR(255),
+       wiki_link       VARCHAR(255),
+       unmaintained tinyint(1) NOT NULL default '0',
+       newpk_id int(11) default NULL,
+       nnewpackagename varchar(100) default NULL,
+       newchannel varchar(255) default NULL,
        PRIMARY KEY(id),
        UNIQUE INDEX(name),
        INDEX(category)

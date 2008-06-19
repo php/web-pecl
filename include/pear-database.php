@@ -690,7 +690,10 @@ class package
              "p.summary AS summary, p.homepage AS homepage, ".
              "p.description AS description, p.cvs_link AS cvs_link, ".
              "p.doc_link as doc_link, ".
-             "p.bug_link as bug_link".
+             "p.bug_link as bug_link, ".
+             "p.unmaintained as unmaintained, ".
+             "p.newpackagename as new_package, ".
+             "p.newchannel as new_channel".
              " FROM packages p, categories c ".
              "WHERE " . $package_type . " c.id = p.category AND p.{$what} = ?";
 

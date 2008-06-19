@@ -74,8 +74,27 @@ if (isset($_POST['submit'])) {
     $query = 'UPDATE packages SET name = ?, license = ?,
               summary = ?, description = ?, category = ?,
               homepage = ?, package_type = ?, cvs_link = ?,
-              doc_link = ?, bug_link = ?
+              doc_link = ?, bug_link = ?, unmaintained = ?,
+              newpackagename = ?, newchannel = ?
               WHERE id = ?';
+
+		if (!empty($_POST['newpk_id'])) {
+			$_POST['new_channel'] = 'pecl.php.net';
+			$_POST['new_package'] = $dbh->getOne('SELECT name from packages WHERE id = ?',
+					array($_POST['newpk_id']));
+			if (!$_POST['new_package']) {
+				$_POST['new_channel'] = $_POST['newpk_id'] = null;
+			}
+		} else {
+			if ($_POST['new_channel'] == 'pecl.php.net') {
+				$_POST['newpk_id'] = $dbh->getOne('SELECT id from packages WHERE name = ?',
+						array($_POST['new_package']));
+				if (!$_POST['newpk_id']) {
+					$_POST['new_channel'] = $_POST['new_package'] = null;
+				}
+			}
+		}
+
 
     $qparams = array(
                   $_POST['name'],
@@ -88,6 +107,9 @@ if (isset($_POST['submit'])) {
                   $_POST['cvs_link'],
                   $_POST['doc_link'],
                   $_POST['bug_link'],
+                  (isset($_POST['unmaintained']) ? 1 : 0),
+                  $_POST['new_package'],
+                  $_POST['new_channel'],
                   $_GET['id']
                 );
 
@@ -199,8 +221,46 @@ $form->displaySelect("category", $rows, (int)$row['categoryid']);
     <td>Bug tracker Url:</td>
     <td valign="middle">
     <?php $form->displayText("bug_link", $row['bug_link'], 30); ?>
+    </td>    
+</tr>
+<tr>
+    <td>Unmaintained package?</td>
+    <td valign="middle">
+        <?php $form->displayCheckbox('unmaintained', ($row['unmaintained'] == 1)) ?>
     </td>
 </tr>
+<tr>
+    <td>Superseded by:</td>
+    <td valign="middle">
+<?php
+$sth = $dbh->query('SELECT name FROM packages WHERE package_type="pecl" ORDER BY name');
+
+$rows = array('' => 'Select package');
+while ($package = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+    $rows[$package['name']] = $package['name'];
+}
+
+$form->displaySelect("new_package", $rows, htmlspecialchars($row['new_package']));
+?>
+    </td>
+</tr>
+<!-- to be enabled later, link to the wiki.php.net package page -->
+<!--
+<tr>
+    <td>Wiki:</td>
+    <td valign="middle">
+    <?php $form->displayText("wiki_link", htmlspecialchars($row['wiki_link'], 30)); ?> 
+    </td>    
+</tr>
+-->
+<tr>
+    <td>New Home Link (if moved out of pecl):</td>
+    <td valign="middle">
+    <?php $form->displayText("new_channel", htmlspecialchars($row['new_channel'], 30)); ?> 
+New Package Name:     <?php $form->displayText("new_package", htmlspecialchars($row['new_package'], 50)); ?>
+    </td>    
+</tr>
+
 <tr>
     <td>&nbsp;</td>
     <td><input type="submit" name="submit" value="Save changes" />&nbsp;

@@ -66,16 +66,22 @@ if (empty($pacid) || !isset($pkg['name'])) {
 
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
-$name        = $pkg['name'];
-$summary     = stripslashes($pkg['summary']);
-$license     = $pkg['license'];
-$description = stripslashes($pkg['description']);
-$category    = $pkg['category'];
-$homepage    = $pkg['homepage'];
-$pacid       = $pkg['packageid'];
-$cvs_link    = $pkg['cvs_link'];
-$doc_link    = $pkg['doc_link'];
-$bug_link    = $pkg['bug_link'];
+$name         = $pkg['name'];
+$summary      = stripslashes($pkg['summary']);
+$license      = $pkg['license'];
+$description  = stripslashes($pkg['description']);
+$category     = $pkg['category'];
+$homepage     = $pkg['homepage'];
+$pacid        = $pkg['packageid'];
+$cvs_link     = $pkg['cvs_link'];
+$doc_link     = $pkg['doc_link'];
+$bug_link     = $pkg['bug_link'];
+$unmaintained = ($pkg['unmaintained'] ? 'Y' : 'N');
+$superseded   = ((bool) $pkg['new_package']  ? 'Y' : 'N');
+$moved_out  = (!empty($pkg['new_channel'])  ? TRUE : FALSE);
+if ($moved_out) {
+	$superseded = 'Y';
+}
 
 // Accounts data
 $sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role".
@@ -127,6 +133,51 @@ if ($version) {
 
 print "</h2>\n";
 
+// }}}
+// {{{ Supeseded checks
+$dec_messages = array(
+    'abandoned'    => 'This package is not maintained anymore and has been superseded.',
+    'superseded'   => 'This package has been superseded, but is still maintained for bugs and security fixes.',
+    'unmaintained' => 'This package is not maintained, if you would like to take over please go to <a href="#">this page</a>.'
+);
+
+$dec_table = array(
+    'abandoned'    => array('superseded' => 'Y', 'unmaintained' => 'Y'),
+    'superseded'   => array('superseded' => 'Y', 'unmaintained' => 'N'),
+    'unmaintained' => array('superseded' => 'N', 'unmaintained' => 'Y'),
+);
+
+$apply_rule = null;
+foreach ($dec_table as $rule => $conditions) {
+    $match = true;
+    foreach ($conditions as $condition => $value) {
+        if ($$condition != $value) {
+            $match = false;
+            break;
+        }
+    }
+    if ($match) {
+        $apply_rule = $rule;
+    }
+}
+
+if (!is_null($apply_rule) && isset($dec_messages[$apply_rule])) {
+    $str  = '<div class="warnings">';
+    $str .= $dec_messages[$apply_rule];
+
+		if ($pkg['new_channel'] == PEAR_CHANNELNAME) {
+			$str .= '  Use <a href="/package/' . $pkg['new_package'] .
+				'">' . htmlspecialchars($pkg['new_package']) . '</a> instead.';
+		} elseif ($pkg['new_channel']) {
+			$str .= '  Package has moved to channel <a href="' . $pkg['new_channel'] .
+				'">' . htmlspecialchars($pkg['new_channel']) . '</a>, package ' .
+				$pkg['new_package'] . '.';
+		}
+
+    $str .= '</div>';
+    echo $str;
+}
+    
 // }}}
 // {{{ "Package Information" box
 

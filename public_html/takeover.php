@@ -33,28 +33,31 @@ the necessary steps for this to happen.</p>
 <li>
 <p>The first thing is to inform the <a href=
 "mailto:pecl-dev@lists.php.net" target="_top">PECL Developers 
-mailing list</a> about your intention. If you have not been
-involved in PECL prior to that, it is a good idea to write a few
+mailing list</a> about your intention. If you have not been 
+involved in PECL previously, it is a good idea to write a few 
 words about you and your motivations.</p>
 <p>Providing patches and tests may also help</p>
 </li>
 <li>
-<p>The PECL admins will then state whether you can take over the
-package or not, eventually explaining why. You can then <a href=
-"http://pecl.php.net/account-request.php" target="_top">apply for
-an account</a> for the PECL website unless you already have one.
-The PECL admins will have to grant this account, and afterwards 
-will assign you as the new lead maintainer for the package.</p>
+<p>
+The PECL admins will then state whether you can take over the 
+package or not along with an explanation of the decision. You can 
+then <a href= "http://pecl.php.net/account-request.php"
+target="_top">apply for an account</a> for the PECL website
+unless you already have one. The PECL admins will have to grant
+your account request and afterwards they will assign you as 
+the new lead maintainer for the package.</p>
 </li>
 <li>
-<p>If the sources of the package are kept in the PHP CVS
-repository, you will also need an account for this. You can sign up
-for it on the <a href="http://www.php.net/cvs-php.php" target=
+<p>
+If the sources of the package are kept in the PHP CVS repository,
+you will also need an account for this. You can sign up for it
+on the <a href="http://www.php.net/cvs-php.php" target=
 "_top">PHP website</a>. Please mention in the purpose field of the
-request form that the PECL admins has told you to get an account,
+request form that the PECL admins have told you to get an account, 
 so that your request can be processed faster. CVS accounts are
-managed by the PHP Group, so PECL unfortunately has only limited
-influence on this process.</p>
+managed by the PHP Group, so PECL unfortunately has only limited 
+influence on this proces</p>
 <div class="note">
 <blockquote class="note">
 <p><b>Note:</b> If you already have a CVS account for <tt class=

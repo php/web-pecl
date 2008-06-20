@@ -138,7 +138,7 @@ print "</h2>\n";
 $dec_messages = array(
     'abandoned'    => 'This package is not maintained anymore and has been superseded.',
     'superseded'   => 'This package has been superseded, but is still maintained for bugs and security fixes.',
-    'unmaintained' => 'This package is not maintained, if you would like to take over please go to <a href="#">this page</a>.'
+    'unmaintained' => 'This package is not maintained, if you would like to take over please go to <a href="/takeover.php">this page</a>.'
 );
 
 $dec_table = array(

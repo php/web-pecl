@@ -18,6 +18,7 @@ CREATE TABLE packages (
        newpk_id int(11) default NULL,
        newpackagename varchar(100) default NULL,
        newchannel varchar(255) default NULL,
+       approved tinyint(1) NOT NULL default '0',
        PRIMARY KEY(id),
        UNIQUE INDEX(name),
        INDEX(category)

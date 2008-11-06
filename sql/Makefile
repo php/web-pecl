@@ -18,22 +18,24 @@
 #
 
 TABLE_FILES=\
+	aggregated_package_stats.sql \
+	bugs.sql \
 	cvs_acl.sql \
 	cvs_groups.sql \
 	cvs_group_membership.sql \
-	downloads.sql \
 	files.sql \
+	karma.sql \
 	package_acl.sql \
 	maintains.sql \
 	categories.sql \
 	packages.sql \
 	package_stats.sql \
-	provides.sql \
+	package_aliases.sql \
+	package_proposals.sql \
 	releases.sql \
 	deps.sql \
 	notes.sql \
-	users.sql \
-#	state_order.sql
+	users.sql 
 SQL_TYPE=mysql
 SQL_USER=pear
 SQL_PW=pear

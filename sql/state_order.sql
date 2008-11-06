@@ -1,7 +1,14 @@
-CREATE TABLE state_order (
-       state     VARCHAR(10) NOT NULL,
-       order     INTEGER NOT NULL,
-       PRIMARY KEY(state)
+--
+-- Table structure for table `state_order`
+--
+
+DROP TABLE IF EXISTS `state_order`;
+
+CREATE TABLE `state_order` (
+  `state` varchar(10) NOT NULL default '',
+  `orderno` int(11) default NULL,
+  PRIMARY KEY  (`state`),
+  INDEX (`orderno`)
 );
 
 INSERT INTO state_order VALUES('stable', 0);

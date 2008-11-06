@@ -44,6 +44,7 @@ foreach (explode("\n", $packages) as $line) {
         $catid = $catmap[$category];
     }
     package::add(array('name'     => $name,
+                      'type'     => 'pear',
                       'license'  => 'PEAR License',
                       'description' => '',
                       'summary'  => $summary,

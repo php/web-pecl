@@ -1,6 +1,11 @@
-CREATE TABLE cvs_groups (
-    groupname       VARCHAR(20) NOT NULL,
-    description	    VARCHAR(250) NOT NULL,
+--
+-- Table structure for table `cvs_groups`
+--
 
-    UNIQUE INDEX(groupname)
+DROP TABLE IF EXISTS `cvs_groups`;
+
+CREATE TABLE `cvs_groups` (
+  `groupname` varchar(20) NOT NULL default '',
+  `description` varchar(250) NOT NULL default '',
+  UNIQUE INDEX (`groupname`)
 );

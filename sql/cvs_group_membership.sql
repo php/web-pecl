@@ -1,8 +1,13 @@
-CREATE TABLE cvs_group_membership (
-    groupname       VARCHAR(20) NOT NULL REFERENCES cvs_groups(name),
-    username        VARCHAR(20) NOT NULL REFERENCES users(handle),
-    granted_when    DATETIME,
-    granted_by	    VARCHAR(20) NOT NULL REFERENCES users(handle),    
+--
+-- Table structure for table `cvs_group_membership`
+--
 
-    UNIQUE INDEX(groupname, username)
+DROP TABLE IF EXISTS `cvs_group_membership`;
+
+CREATE TABLE `cvs_group_membership` (
+  `groupname` varchar(20) NOT NULL default '',
+  `username` varchar(20) NOT NULL default '',
+  `granted_when` datetime default NULL,
+  `granted_by` varchar(20) NOT NULL default '',
+  UNIQUE INDEX (`groupname`,`username`)
 );

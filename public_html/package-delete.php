@@ -22,6 +22,8 @@
  * Interface to delete a package.
  */
 
+auth_require();
+
 response_header('Delete Package');
 echo '<h1>Delete Package</h1>';
 

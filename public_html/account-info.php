@@ -83,7 +83,7 @@ if ($row['wishlist'] != "") {
 }
 
 if ($row['admin'] == 1) {
-	$bb->fullRow("$row[name] is a PEAR administrator.");
+	$bb->fullRow("$row[name] is a PECL administrator.");
 }
 
 $query = "SELECT p.id, p.name, m.role

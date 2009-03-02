@@ -52,7 +52,7 @@ $admin = $auth_user->isAdmin();
 $user  = $auth_user->is($handle);
 
 if (!$admin && !$user) {
-    PEAR::raiseError("Only the user himself or PEAR administrators can edit the account information.");
+    PEAR::raiseError("Only the user or PECL administrators may edit account information.");
     response_footer();
     exit();
 }

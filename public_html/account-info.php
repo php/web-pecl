@@ -63,6 +63,12 @@ if ($row['showemail'] != 0) {
     $bb->horizHeadRow("Email:", "<a href=\"/account-mail.php?handle=" . $handle . "\">".str_replace(array("@", "."), array(" at ", " dot "), $row['email'])."</a>");
 }
 if ($row['homepage'] != "") {
+	
+	$url = parse_url($row['homepage']);
+	if (empty($url['scheme'])) {
+		$row['homepage'] = 'http://' . $row['homepage'];
+	}
+	
 	$bb->horizHeadRow("Homepage:",
 					  "<a href=\"$row[homepage]\" target=\"_blank\">".
 					  "$row[homepage]</a></td>\n");

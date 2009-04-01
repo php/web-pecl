@@ -192,6 +192,12 @@ if (isset($_POST['in'])) {
                 $fdesc .= $_POST['in']['actres'] . "\n";
             }
 
+            // Quick-fix to prevent drug-spam
+            if(stristr($fdesc,'phentermine') || stristr($fdesc,'DIAZEPAM')) {
+              response_header("Report - Go Away!");
+              exit;
+            }
+
             $reporter_name = isset($_POST['in']['reporter_name']) ? htmlspecialchars(strip_tags($_POST['in']['reporter_name'])) : '';
 
             $query = 'INSERT INTO bugdb (' .
@@ -225,7 +231,7 @@ if (isset($_POST['in'])) {
 /*
  * Need to move the insert ID determination to DB eventually...
  */
-            $cid = mysql_insert_id();;
+            $cid = mysql_insert_id();
 
             $report  = '';
             $report .= 'From:             ' . spam_protect(rinse($_POST['in']['email']),

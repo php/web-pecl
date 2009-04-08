@@ -193,7 +193,7 @@ if (isset($_POST['in'])) {
             }
 
             // Quick-fix to prevent drug-spam
-            if(stristr($fdesc,'phentermine') || stristr($fdesc,'DIAZEPAM')) {
+            if(stristr($fdesc,'phentermine') || stristr($fdesc,'DIAZEPAM') || stristr($fdesc,'dietwwwtablets') || stristr($fdesc,'cheapwwwaccutane')) {
               response_header("Report - Go Away!");
               exit;
             }

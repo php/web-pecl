@@ -201,37 +201,73 @@ if ($display_form) {
 
     response_header("Request Account");
 
-    $cs_link = make_link('http://cvs.php.net/viewvc.cgi/php-src/CODING_STANDARDS', 'PHP Coding Standards');
-    $lic_link = make_link('http://www.php.net/license/3_0.txt', 'PHP License 3.0');
-    $dochowto_link = make_link('http://doc.php.net/php/dochowto/', 'Documentation HOWTO');
-    $opl_link = make_link('http://php.net/manual/en/opl.license.php', 'Open Publication License');
+    $cs_link        = make_link('http://cvs.php.net/viewvc.cgi/php-src/CODING_STANDARDS', 'PHP Coding Standards');
+    $lic_link_pecl  = make_link('http://www.php.net/license/3_01.txt', 'PHP License 3.01');
+    $lic_link_doc   = make_link('http://www.php.net/manual/en/cc.license.php', 'Creative Commons Attribution License');
+    $doc_howto_pecl = make_link('http://wiki.php.net/doc/howto/pecldocs', 'PECL Docs Howto');
 
     print "<h1>Publishing in PECL</h1>
 
-<p>If you have written your own PHP extension and would like to list it in our
-directory, or use our hosting facilities, or help look after existing extensions,
-you need to apply for a PECL account.</p>
-
-<p>You do <b>not</b> need an account if you want to download, install and/or
-use PECL packages.</p>
-
-<p>Before filling out this form, please make yourself known on the
-<i>pecl-dev@lists.php.net</i> mailing list. PECL extensions around GPL'ed
-libraries will not be accepted, and extensions around LGPL'ed libraries are
-strongly discouraged. LGPL'ed libraries as required by extensions may not be
-bundled into PECL either.  We strongly encourage contributors to choose the
-$lic_link for their extensions to avoid trouble for the end-user of the
-extension.  We also encourage you to use the $cs_link for your code, as it will
-help the QA team help you to maintain your extension. Although documentation
-for extensions is not required, it does make alot of sense if potential users
-know how to use your extension, see $dochowto_link for information on how to
-document your extension. Submitted documentation will always be under the
-$opl_link.</p>
-
-<p>Bogus, incomplete or incorrect requests will be summarily denied.</p>
+<p>
+ A few reasons why you might apply for a PECL account:
+</p>
+<ul>
+ <li>You have written a PHP extension and would like it listed within the PECL directory</li>
+ <li>You would like to use php.net for version control and hosting</li>
+ <li>You would like to help maintain a current PECL extension</li>
+</ul>
+<p>
 
 <p>
-	<strong>Confirm your reason for a PECL account:</strong>
+ You do <b>not</b> need an account if you want to download, install and/or use PECL packages.
+</p>
+
+<p>
+ Before filling out this form, you must write the public <i>pecl-dev@lists.php.net</i> mailing list and:
+</p>
+<ul>
+ <li>Introduce yourself</li>
+ <li>Introduce your new extension or the extension you would like to help maintain</li>
+ <li>Link to the code, if applicable</li>
+</ul>
+
+<p>
+ Also, here is a list of suggestions:
+</p>
+<ul>
+ <li>
+  We strongly encourage contributors to choose the $lic_link_pecl for their extensions,
+  in order to avoid possible troubles for end-users of the extension. Other solid
+  options are BSD and Apache type licenses.
+ </li>
+ <li>
+  We strongly encourage you to use the $cs_link for your code, as it will help
+  the QA team (and others) help maintain the extension.
+ </li>
+ <li>
+  We strongly encourage you to commit documentation for the extension, as it will
+  make the extension more visible (in the official PHP manual) and also teach
+  users how to use it. See the $doc_howto_pecl for more information.
+  Submitted documentation will always be under the $lic_link_doc.
+ </li>
+ <li>
+  Note: wrappers for GPL libraries will not be accepted, and extensions for LGPL
+  libraries are strongly discouraged.
+ </li>
+</ul>
+
+<p>
+ And after submitting the form:
+</p>
+<ul>
+ <li>
+  If approved, you will also <a href='http://php.net/cvs-php.php'>apply for a CVS account</a>
+  in order to commit the code to the php.net CVS repository.
+ </li>
+</ul>
+
+<p>
+ <strong>Please confirm the reason for this PECL account request:</strong>
 </p>
 
 <script language=\"JavaScript\" type=\"text/javascript\" defer=\"defer\">

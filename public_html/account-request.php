@@ -287,7 +287,7 @@ if ($display_form) {
 				document.getElementById('reason_table').style.border = '2px dashed red';
 			}
 
-			alert('You do not need an account - PLEASE DO NOT SUBMIT THE FORM');
+			alert('Reminder: please only request a PECL account if you will maintain a PECL extension, and have followed the guidelines above.');
 			enableForm(false);
 		}
 	}
@@ -309,8 +309,8 @@ if ($display_form) {
 		<td valign=\"top\"><input type=\"radio\" name=\"reason\" value=\"pkg\" id=\"reason_pkg\" onclick=\"reasonClick('pkg')\" /></td>
 		<td>
 			<label for=\"reason_pkg\">
-				You have announced a new PECL package to the PECL-Dev mailing list, it's name has been OKed, and you
-				wish to register/upload a release to the pecl website.
+				I have already discussed the topic of maintaining and/or adding a PECL extension on the
+				pecl-dev@lists.php.net mailing list, and we determined it's time for me to have a PECL account.
 			</label>
 		</td>
 	</tr>
@@ -318,7 +318,7 @@ if ($display_form) {
 	<tr>
 		<td valign=\"top\"><input type=\"radio\" name=\"reason\" value=\"other\" id=\"reason_other\" onclick=\"reasonClick('other')\" /></td>
 		<td>
-			<label for=\"reason_other\">Other reason</label>
+			<label for=\"reason_other\">I desire this PECL account for another reason.</label>
 		</td>
 	</tr>
 </table>
@@ -334,7 +334,7 @@ if ($display_form) {
     }
 
     print "<form action=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\" method=\"post\" name=\"request_form\">\n";
-    $bb = new BorderBox("Request account", "90%", "", 2, true);
+    $bb = new BorderBox("Request a PECL account", "90%", "", 2, true);
     $bb->horizHeadRow("Username:", HTML_Form::returnText("handle", $handle, 12));
     $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", $firstname));
     $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", $lastname));

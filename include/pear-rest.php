@@ -27,8 +27,7 @@ class pear_rest
     http://pear.php.net/dtd/rest.allcategories.xsd">
 <ch>' . PEAR_CHANNELNAME . '</ch>
 ';
-        foreach (category::listAll() as $category)
-        {
+        foreach ($categories as $category) {
             $info .= ' <c xlink:href="' . $extra . 'c/' .
                 urlencode(urlencode($category['name'])) .
                 '/info.xml">' .
@@ -126,9 +125,9 @@ class pear_rest
             }
             $fullpackageinfo .= '<pi>
 ';
-            $fullpackageinfo .= str_replace($this->_getPackageRESTProlog(), '<p>',
-                file_get_contents($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']) .
-                    DIRECTORY_SEPARATOR . 'info.xml'));
+            $contents = file_get_contents($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']) .
+                    DIRECTORY_SEPARATOR . 'info.xml');
+            $fullpackageinfo .= '<p>' . substr($contents, strpos($contents, '<n>'));
             if (file_exists($rdir . DIRECTORY_SEPARATOR . strtolower($package['name']) .
                     DIRECTORY_SEPARATOR . 'allreleases.xml')) {
                 $fullpackageinfo .= str_replace(

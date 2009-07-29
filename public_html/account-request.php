@@ -43,7 +43,7 @@ $fields  = array('handle',
                  'email',
                  'moreinfo',
                  'homepage',
-                 'needcvs', 
+                 'needsvn', 
                  'showemail');
 
 foreach ($fields as $field) {
@@ -112,7 +112,7 @@ if (isset($_POST['submit'])) {
             $md5pw = md5($password);
             $showemail = @(bool)$showemail;
 
-            $needcvs = @(bool)$needcvs;
+            $needsvn = @(bool)$needsvn;
 
             // hack to temporarily embed the "purpose" in
             // the user's "userinfo" column
@@ -138,10 +138,10 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            /* Now do the CVS stuff */
-            if ($needcvs) {
+            /* Now do the SVN stuff */
+            if ($needsvn) {
                 $error = posttohost(
-                    'http://master.php.net/entry/cvs-account.php',
+                    'http://master.php.net/entry/svn-account.php',
                     array(
                         "username" => $handle,
                         "name"     => $name,
@@ -152,7 +152,7 @@ if (isset($_POST['submit'])) {
                 );
 
                 if ($error) {
-                    display_error("Problem submitting the CVS account request: $error");
+                    display_error("Problem submitting the SVN account request: $error");
                     break;
                 }
             }
@@ -162,7 +162,7 @@ if (isset($_POST['submit'])) {
                    "Real Name:        {$name}\n".
                    "Email:            {$email}".
                    (@$showemail ? " (show address)" : " (hide address)") . "\n".
-                   "Need CVS Account: " . (@$needcvs ? "yes" : "no") . "\n".
+                   "Need SVN Account: " . (@$needsvn ? "yes" : "no") . "\n".
                    "Purpose:\n".
                    "$purpose\n\n".
                    "To handle: http://" . PEAR_CHANNELNAME . "/admin/?acreq={$handle}\n";
@@ -201,7 +201,7 @@ if ($display_form) {
 
     response_header("Request Account");
 
-    $cs_link        = make_link('http://cvs.php.net/viewvc.cgi/php-src/CODING_STANDARDS', 'PHP Coding Standards');
+    $cs_link        = make_link('http://svn.php.net/viewvc/php/php-src/trunk/CODING_STANDARDS', 'PHP Coding Standards');
     $lic_link_pecl  = make_link('http://www.php.net/license/3_01.txt', 'PHP License 3.01');
     $lic_link_doc   = make_link('http://www.php.net/manual/en/cc.license.php', 'Creative Commons Attribution License');
     $doc_howto_pecl = make_link('http://wiki.php.net/doc/howto/pecldocs', 'PECL Docs Howto');
@@ -261,8 +261,8 @@ if ($display_form) {
 </p>
 <ul>
  <li>
-  If approved, you will also <a href='http://php.net/cvs-php.php'>apply for a CVS account</a>
-  in order to commit the code to the php.net CVS repository.
+  If approved, you will also <a href='http://php.net/svn-php.php'>apply for a SVN account</a>
+  in order to commit the code to the php.net SVN repository.
  </li>
 </ul>
 
@@ -339,7 +339,7 @@ if ($display_form) {
     $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", $firstname));
     $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", $lastname));
     $bb->horizHeadRow("Password:", HTML_Form::returnPassword("password", null, 10) . "   Again: " . HTML_Form::returnPassword("password2", null, 10));
-    $bb->horizHeadRow("Need a CVS account?", HTML_Form::returnCheckbox("needcvs", $needcvs));
+    $bb->horizHeadRow("Need a SVN account?", HTML_Form::returnCheckbox("needsvn", $needsvn));
 
     $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", $email));
     $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", $showemail));

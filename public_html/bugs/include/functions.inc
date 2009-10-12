@@ -466,7 +466,7 @@ function show_package_version_options($package, $current)
     if (!$use && $current) {
         echo '<option selected="selected">' . $current . "</option>\n";
     } else {
-        echo '<option>CVS</option>' . "\n";
+        echo '<option>SVN</option>' . "\n";
     }
     echo '<option value="earlier">Earlier? Upgrade first!</option>' . "\n";
     echo "</select>\n";
@@ -482,9 +482,9 @@ function show_package_version_options($package, $current)
 function show_version_options($current, $default = '')
 {
     $versions = array(
-        'HEAD CVS-'.date('Y-m-d').' (dev)',
-        '5_3 CVS-' .date('Y-m-d').' (dev)',
-        '5_2 CVS-' .date('Y-m-d').' (dev)',
+        'Trunk SVN-'.date('Y-m-d').' (dev)',
+        '5_3 SVN-' .date('Y-m-d').' (dev)',
+        '5_2 SVN-' .date('Y-m-d').' (dev)',
         '5.3.0RC4',
 		'5.2.10',
         '5.2.9',
@@ -511,7 +511,7 @@ function show_version_options($current, $default = '')
         '5.0.1',
         '5.0.0',
         'Irrelevant',
-        '4_4 CVS-' . date('Y-m-d'),
+        '4_4 SVN-' . date('Y-m-d'),
         '4.4.9',
         '4.4.8',
         '4.4.7',

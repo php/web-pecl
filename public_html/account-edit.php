@@ -32,7 +32,7 @@ if (isset($_GET['handle'])) {
     $handle = false;
 }
 
-if ($handle && !ereg('^[0-9a-z_]{3,20}$', $handle)) {
+if ($handle && !preg_match('@[0-9A-Za-z_]{3}@', $handle)) {
     response_header('Error:');
     report_error("No valid handle given!");
     response_footer();

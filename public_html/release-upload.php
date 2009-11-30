@@ -64,6 +64,13 @@ do {
             break;
         }
 
+        include_once 'PEAR/Common.php';
+        $util =& new PEAR_Common;
+        $info = $util->infoFromTgzFile($tmpfile);
+        if (version_compare($info->getPackageXmlVersion(), '2.0', '<')) {
+            $errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
+            break; 
+        }
         $display_form = false;
         $display_verification = true;
 

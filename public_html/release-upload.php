@@ -64,13 +64,30 @@ do {
             break;
         }
 
-        include_once 'PEAR/Common.php';
-        $util =& new PEAR_Common;
-        $info = $util->infoFromTgzFile($tmpfile);
+	$config = PEAR_Config::singleton();
+	$pkg = new PEAR_PackageFile($config);
+	$info = $pkg->fromTgzFile($file, PEAR_VALIDATE_NORMAL);
+	$errors = $warnings = array();
+
+	if (PEAR::isError($info)) {
+		if (is_array($info->getUserInfo())) {
+			foreach ($info->getUserInfo() as $err) {
+				if ($err['level'] == 'error') {
+					$errors[] = $err['message'];
+				} else {
+					$warnings[] = $err['message'];
+				}
+			}
+		}
+		$errors[] = $info->getMessage();
+		break;
+	}
+
         if (version_compare($info->getPackageXmlVersion(), '2.0', '<')) {
             $errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
             break; 
         }
+
         $display_form = false;
         $display_verification = true;
 

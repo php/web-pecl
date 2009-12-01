@@ -64,6 +64,9 @@ do {
             break;
         }
 
+	include_once 'PEAR/PackageFile.php';
+	include_once 'PEAR/Config.php';
+
 	$config = PEAR_Config::singleton();
 	$pkg = new PEAR_PackageFile($config);
 	$info = $pkg->fromTgzFile($file, PEAR_VALIDATE_NORMAL);

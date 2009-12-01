@@ -63,13 +63,12 @@ do {
             $errors[] = $file->errorMsg();
             break;
         }
-
 	include_once 'PEAR/PackageFile.php';
 	include_once 'PEAR/Config.php';
 
 	$config = PEAR_Config::singleton();
 	$pkg = new PEAR_PackageFile($config);
-	$info = $pkg->fromTgzFile($file, PEAR_VALIDATE_NORMAL);
+	$info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
 	$errors = $warnings = array();
 
 	if (PEAR::isError($info)) {
@@ -86,11 +85,10 @@ do {
 		break;
 	}
 
-        if (version_compare($info->getPackageXmlVersion(), '2.0', '<')) {
-            $errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
-            break; 
-        }
-
+	if (version_compare($info->getPackageXmlVersion(), '2.0', '<')) {
+		$errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
+		break; 
+	}
         $display_form = false;
         $display_verification = true;
 

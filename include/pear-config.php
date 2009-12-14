@@ -28,22 +28,29 @@ if (isset($_SERVER['PEAR_TMPDIR'])) {
     define('PEAR_UPLOAD_TMPDIR', '/var/tmp/pear/uploads');
 }
 
+/**
+ * The PEAR::DB DSN connection string
+ *
+ * To override default, set the value in $_ENV['PEAR_DATABASE_DSN']
+ * before this file is included.
+ */
 if (isset($_SERVER['PEAR_DATABASE_DSN'])) {
     define('PEAR_DATABASE_DSN', $_SERVER['PEAR_DATABASE_DSN']);
 } else {
+    define('PECL_DB_USER', 'pear');
+    define('PECL_DB_PASSWORD', 'pear');
+    define('PECL_DB_HOST', 'localhost');
+    define('PECL_DB_NAME', 'pear');
+
     if (function_exists('mysql_connect')) {
-        /**
-         * The PEAR::DB DSN connection string
-         *
-         * To override default, set the value in $_ENV['PEAR_DATABASE_DSN']
-         * before this file is included.
-         */
-        define('PEAR_DATABASE_DSN', 'mysql://pear:pear@localhost/pear'); 
+        $driver = 'mysql';
     } elseif (function_exists('mysqli_connect')) {
-        /** @ignore */
-        define('PEAR_DATABASE_DSN', 'mysqli://pear:pear@localhost/pear'); 
+        $driver = 'mysqli';
     }
+    define('PEAR_DATABASE_DSN', $driver . '://' . PECL_DB_USER . ':' . PECL_DB_PASSWORD. '@' . PECL_DB_HOST. '/' . PECL_DB_NAME); 
+    define('PECL_DB_DSN', 'mysql:host=' . PECL_DB_HOST . ';dbname=' . PECL_DB_NAME); 
 }
+
 if (isset($_SERVER['PEAR_AUTH_REALM'])) {
     define('PEAR_AUTH_REALM', $_SERVER['PEAR_AUTH_REALM']);
 } else {

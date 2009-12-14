@@ -24,7 +24,7 @@ IF (cvs_link REGEXP('cvs.php.net\/cvs.php(.*)'),
 where package_type='pecl' and cvs_link like '%cvs.php.net%';
 ";
 
-$dh = new PDO('mysql:host=' . PECL_DB_HOST . ';dbname=' . PECL_DB_NAME, PECL_DB_USER, PECL_DB_PASSWORD);
+$dh = new PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
 
 $res = $dh->query($sql_movetosvn);
 if (!$res) {

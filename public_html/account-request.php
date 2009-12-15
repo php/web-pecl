@@ -99,15 +99,6 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            $err = $obj->insert($handle);
-
-            if (DB::isError($err)) {
-                display_error("$handle: " . DB::errorMessage($err));
-                $jumpto = "handle";
-                break;
-            }
-
-
             $display_form = false;
             $md5pw = md5($password);
             $showemail = @(bool)$showemail;
@@ -117,23 +108,17 @@ if (isset($_POST['submit'])) {
             // hack to temporarily embed the "purpose" in
             // the user's "userinfo" column
             $userinfo = serialize(array($purpose, $moreinfo));
-            $set_vars = array('name' => $name,
-                              'email' => $email,
-                              'homepage' => $homepage,
-                              'showemail' => $showemail,
-                              'password' => $md5pw,
-                              'registered' => 0,
-                              'userinfo' => $userinfo);
-            $errors = 0;
-            foreach ($set_vars as $var => $value) {
-                $err = $obj->set($var, $value);
-                if (PEAR::isError($err)) {
-                    print "Failed setting $var: ";
-                    print $err->getMessage();
-                    print "<br />\n";
-                    $errors++;
-                }
+            $sth = $dbh->prepare("INSERT INTO users 
+                    (handle, name, email, password, registered, showemail, homepage, userinfo, from_site, active)
+                    VALUES(?, ?, ?, ?, 0, ?, ?, ?, 'pecl', 0)");
+            $res = $dbh->execute($sth, array($handle, $name, $email, $md5pw, $showemail, $homepage, $userinfo));
+
+            if (DB::isError($res)) {
+                display_error("$handle: " . DB::errorMessage($res));
+                $jumpto = "handle";
+                break;
             }
+
             if ($errors > 0) {
                 break;
             }
@@ -175,7 +160,6 @@ if (isset($_POST['submit'])) {
             $subject = "PECL Account Request: {$handle}";
             $ok = mail("pecl-dev@lists.php.net", $subject, $msg, $xhdr, "-f bounces-ignored@php.net");
             response_header("Account Request Submitted");
-
             if ($ok) {
                 print "<h2>Account Request Submitted</h2>\n";
                 print "Your account request has been submitted, it will ".

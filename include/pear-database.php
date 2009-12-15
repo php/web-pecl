@@ -2418,6 +2418,7 @@ class user
         }
         $user->set('created', gmdate('Y-m-d H:i'));
         $user->set('createdby', $_COOKIE['PEAR_USER']);
+        $user->set('registered', 1);
         $user->store();
         note::add("uid", $uid, "Account opened");
         $GLOBALS['pear_rest']->saveMaintainerREST($user->handle);

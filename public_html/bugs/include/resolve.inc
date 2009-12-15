@@ -22,35 +22,35 @@ $RESOLVE_REASONS = array(
 /*
   'trysnapshot4' => array(
     'status' => 'Feedback',
-    'desc' => 'Try a CVS snapshot (php4)',
+    'desc' => 'Try a SVN snapshot (php4)',
     'message' =>
-'Please try using this CVS snapshot:
+'Please try using this SVN snapshot:
 
   http://snaps.php.net/php4-STABLE-latest.tar.gz
  
 For Windows:
  
-  http://snaps.php.net/win32/php4-win32-STABLE-latest.zip',
+    http://windows.php.net/',
   ),
 
   'trysnapshot5' => array(
     'status' => 'Feedback',
-    'desc' => 'Try a CVS snapshot (php5)',
+    'desc' => 'Try a SVN snapshot (php5)',
     'message' =>
-'Please try using this CVS snapshot:
+'Please try using this SVN snapshot:
 
   http://snaps.php.net/php5-latest.tar.gz
  
 For Windows:
  
-  http://snaps.php.net/win32/php5-win32-latest.zip',
+  http://windows.php.net/',
   ),
 */
   'fixedcvs' => array(
     'status' => 'Closed',
-    'desc' => 'Fixed in CVS',
+    'desc' => 'Fixed in SVN',
     'message' =>
-'This bug has been fixed in CVS.
+'This bug has been fixed in SVN.
 
 In case this was a documentation problem, the fix will show up at the
 end of next Sunday (CET) on pecl.php.net.

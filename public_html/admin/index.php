@@ -203,7 +203,7 @@ do {
 
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" method="POST" name="account_form">
 <input type="hidden" name="cmd" value="" />
-<input type="hidden" name="uid" value="<?= $requser->handle ?>" />
+<input type="hidden" name="uid" value="<?php echo $requser->handle; ?>" />
 <table cellpadding="3" cellspacing="0" border="0" width="90%">
  <tr>
   <td align="center"><input type="button" value="Open Account" onclick="confirmed_submit(this, 'open this account')" /></td>
@@ -213,7 +213,7 @@ do {
  <tr>
   <td colspan="3">
    If dismissing an account request, enter the reason here
-   (will be emailed to <?= $requser->email ?>):<br />
+   (will be emailed to <?php echo $requser->email; ?>):<br />
    <textarea rows="3" cols="60" name="reason"></textarea><br />
 
     <select onchange="return updateRejectReason(this)">

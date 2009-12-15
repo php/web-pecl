@@ -76,7 +76,7 @@
 	categories = new Array();
 
 	<?foreach($categories as $c):?>
-categories[<?=$c['id']?>] = new Array('<?=$c['name']?>', '<?=$c['description']?>');
+categories[<?php echo $c['id']; ?>] = new Array('<?php echo $c['name']; ?>', '<?php echo $c['description']; ?>');
 	<?endforeach?>
 //-->
 </script>
@@ -115,7 +115,7 @@ categories[<?=$c['id']?>] = new Array('<?=$c['name']?>', '<?=$c['description']?>
 			</div>		
 		</td>
 		<td valign="top">
-			<span class="error"><?=@$message?></span>
+			<span class="error"><?php echo @$message; ?></span>
 
 			<form action="category-manager.php" name="category_form" method="post">
 			<input type="hidden" name="action" value="" />

@@ -262,6 +262,9 @@ if (!empty($doc_link)) {
 }
 ?>
 </tr>
+<tr>
+	<td align="center">[ <?php echo make_bug_link($pkg['name'], 'report', 'Report new bug'); ?> ]</td>
+</tr>
 </table>
 
 <br />

@@ -1169,8 +1169,7 @@ function show_bugs_menu($pkgname, $status = null)
             echo make_link('/package/' . $pkgname[0], 'Package home');
             echo delim();
         }
-        echo make_link('/bugs/report.php?package=' . $pkgname[0],
-                       'Report new bug');
+	echo make_bug_link($pkgname[0], 'report', 'Report new bug'); 
         echo delim();
     }
 

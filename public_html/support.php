@@ -49,8 +49,8 @@ response_header("Support");
     ),
 
     array (
-      'pecl-cvs', 'PECL CVS list',
-      'All the commits of the cvs PECL code repository are posted to this list automatically',
+      'pecl-svn', 'PECL SVN list',
+      'All the commits of the svn PECL code repository are posted to this list automatically',
       false, true, false, "php.pecl.cvs"
     ),
 

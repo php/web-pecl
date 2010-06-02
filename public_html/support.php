@@ -129,12 +129,6 @@ Eris Free Net</a>.
 
 <a name="tutorials"></a><h3>PECL Tutorials</h3>
 <h4>PECL Tutorials sites</h4>
-<ul>
-    <li><a href="http://www.devnewz.com/2002/0909.html">
-     Developing custom PHP extensions (PHP4)</a> By DevNewz.com</li>
-
-</ul>
-
 <a name="resources"></a><h3>PECL resources</h3>
 <ul>
     <li><a href="http://cvs.php.net/cvs.php/php-src/CODING_STANDARDS">PECL/PHP Coding Standards</a>

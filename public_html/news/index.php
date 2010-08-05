@@ -22,6 +22,23 @@ response_header("News");
 
 echo "<h1>PECL news</h1>";
 
+echo "<h2><a name=\"recent_releases\"></a>Recent Releases</h2>";
+echo "<ul>";
+
+$recent = release::getRecent();
+foreach ($recent as $release) {
+    $releasedate = make_utc_date(strtotime($release['releasedate']), 'Y-m-d');
+    $desc = htmlentities(substr($release['releasenotes'], 0, 200));
+    if (strlen($release['releasenotes']) > 200) {
+        $desc .= ' ...';
+    }
+
+    echo "<li><a href=\"/package/" . $package['name'] . "/\">";
+    echo "$package[name] $package[version] ($package[state])</a><br /><i>$releasedate:</i> $desc</li>";
+}
+
+echo "</ul>\n<a href=\"/feeds/\">Syndicate this</a>";
+
 echo "<h2><a name=\"2003\"></a>Year 2003</h2>";
 echo "<ul>";
 echo "<li>" . make_link("http://news.php.net/article.php?group=php.pecl.dev&article=5", "Call for PHP Extension authors") . " (September)</li>";

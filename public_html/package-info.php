@@ -263,7 +263,7 @@ if (!empty($doc_link)) {
 ?>
 </tr>
 <?php
-if (!empty($bug_link)) {
+if (empty($bug_link)) {
 ?>
 <tr>
 	<td align="center">[ <?php echo make_bug_link($pkg['name'], 'report', 'Report new bug'); ?> ]</td>

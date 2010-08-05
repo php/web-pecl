@@ -33,8 +33,8 @@ foreach ($recent as $release) {
         $desc .= ' ...';
     }
 
-    echo "<li><a href=\"/package/" . $package['name'] . "/\">";
-    echo "$package[name] $package[version] ($package[state])</a><br /><i>$releasedate:</i> $desc</li>";
+    echo "<li><a href=\"/package/" . $release['name'] . "/\">";
+    echo "$release[name] $release[version] ($release[state])</a><br /><i>$releasedate:</i> $desc</li>";
 }
 
 echo "</ul>\n<a href=\"/feeds/\">Syndicate this</a>";

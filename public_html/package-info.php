@@ -199,7 +199,7 @@ if ($relid) {
             continue;
         }
 
-        $bb->horizHeadRow("Release notes<br />Version" . $version, nl2br($release['releasenotes']));
+        $bb->horizHeadRow("Release notes<br />Version " . $version . "<br />(" . $release['state'] . ")", nl2br($release['releasenotes']));
         break;
     }
 }

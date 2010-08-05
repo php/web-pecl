@@ -2817,7 +2817,7 @@ class statistics
         if (!empty($rid)) {
             $query .= " AND rid = " . (int)$rid;
         }
-        $query .= " GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY s.release  DESC";
+        $query .= " GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY r.releasedate DESC";
 
         return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
     }

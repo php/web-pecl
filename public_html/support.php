@@ -58,7 +58,7 @@ response_header("Support");
 ?>
 <p>
 There are <?php echo count($mailing_lists)-1; ?> PECL-related mailing
-lists available. Most of them have archives available, and they are
+lists available. Both of them have archives available, and they are
 also available as newsgroups on our
 <a href="news://news.php.net">news server</a>. The archives are
 searchable.

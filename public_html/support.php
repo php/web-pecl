@@ -127,21 +127,14 @@ Eris Free Net</a>.
 
 <div class="listing">
 
-<a name="tutorials"></a><h3>PECL Tutorials</h3>
-<h4>PECL Tutorials sites</h4>
 <a name="resources"></a><h3>PECL resources</h3>
 <ul>
-    <li><a href="http://svn.php.net/viewvc/php/php-src/trunk/CODING_STANDARDS">PECL/PHP Coding Standards</a>
-    <li><a href="http://svn.php.net/viewvc/php/php-src/trunk/Zend/OBJECTS2_HOWTO">PHP5/ZendEngine 2 Object internals</a>
-    <li><a href="http://talks.somabo.de/#20051018">PHP Extension Development -- Integrating with Existing Systems, Zend/PHP Conference, Tue, 18th October 2005, San Francisco, USA</a> by Marcus B&ouml;rger</li>
-    <li><a href="http://www.phpconcept.net/articles/article.en.php?id=1">Configure WinCVS for PEAR/PECL</a> by Vincent Blavet</li>
-    <li><a href="http://talks.php.net/show/vancouver-ext/">Extension Writing (PHP 4/PHP 5), January 22nd, 2004. Vancouver, Canada</a>
-    by Derick Rethans</li>
-    <li><a href="http://talks.php.net/show/extending-php-apachecon2003">Writing a PHP Extension (PHP 4), Apachecon
-    November 19, 2003. Las Vegas, NV</a> by Jim Winstead</li>
-     <li><a href="http://www.php.net/~wez/extending-php.pdf">Extending PHP: a 3 hour tutorial, PHP{Con West, Santa Clara, October 2003 (PDF)</a> by Wez Furlong</li>
-    <li><a href="http://www.derickrethans.nl/ze-ext/talk.html">Zend and Extending PHP (PHP 4), PHP Forum 2002
-    Paris, France - December 10, 2002</a> by Derick Rethans</li>
+    <li><a href="http://svn.php.net/viewvc/php/php-src/trunk/CODING_STANDARDS">PECL/PHP Coding Standards</a></li>
+    <li><a href="http://php.net/internals2">PHP Internals Documentation</a></li>
+    <li><a href="http://talks.somabo.de/200903_montreal_php_extension_writing.pdf">PHP Extension Writing, PHP Quebec 2009, Wed, 4th March 2009, Montreal, Canada</a> by Marcus B&ouml;rger</li>
+    <li><a href="http://svn.php.net/viewvc/php/php-src/trunk/README.PARAMETER_PARSING_API">Parameter Parsing API</a></li>
+    <li><a href="http://wiki.php.net/internals/engine">Different information about PHP internals not yet added to the documentation</a></li>
+    <li><a href="http://wiki.php.net/internals/windows">Windows specific instructions</a></li>
 </ul>
 
 </div>

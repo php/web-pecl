@@ -28,13 +28,13 @@ echo "<ul>";
 $recent = release::getRecent();
 foreach ($recent as $release) {
     $releasedate = make_utc_date(strtotime($release['releasedate']), 'Y-m-d');
-    $desc = htmlentities(substr($release['releasenotes'], 0, 200));
-    if (strlen($release['releasenotes']) > 200) {
-        $desc .= ' ...';
+    $desc = nl2br(htmlentities(substr($release['releasenotes'], 0, 400)));
+    if (strlen($release['releasenotes']) > 400) {
+        $desc .= ' <a href="/package/' . $release['name'] . '/' . $release['version'] . '">...</a>';
     }
 
     echo "<li><a href=\"/package/" . $release['name'] . "/\">";
-    echo "$release[name] $release[version] ($release[state])</a><br /><i>$releasedate:</i> $desc</li>";
+    echo "$release[name] $release[version] ($release[state])</a> <i>$releasedate</i><br/>$desc</li>";
 }
 
 echo "</ul>\n<a href=\"/feeds/\">Syndicate this</a>";

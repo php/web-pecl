@@ -35,7 +35,7 @@ For information on the PHP License (i.e. using the PHP language),
 
 <p>
 The code, text, PHP logo, and graphical elements on this website 
-and the mirror websites (the "Site") are Copyright &copy; 2001-2004
+and the mirror websites (the "Site") are Copyright &copy; 2001-2010
 The PHP Group.  All rights reserved.
 </p>
 

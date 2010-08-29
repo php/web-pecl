@@ -235,9 +235,14 @@ if ($display_form) {
   Submitted documentation will always be under the $lic_link_doc.
  </li>
  <li>
-  Note: wrappers for GPL libraries will not be accepted, and extensions for LGPL
-  libraries are strongly discouraged.
+  Note: wrappers for GPL (all versions) or LGPLv3 libraries will not be accepted.
+  Wrappers for libraries licensed under LGPLv2 are however allowed while being discouraged.
  </li>
+ <li>
+  Note: Wrappers for libraries with license fees or closed sources libraries without licenses fees
+  are allowed.
+ </li>
+
 </ul>
 
 <p>

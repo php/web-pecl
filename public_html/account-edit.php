@@ -190,7 +190,7 @@ $form->addTextarea('userinfo',
         . '<p class="cell_note">(limited to 255 chars)</p>',
         $row['userinfo'], 40, 5, null);
 $form->addTextarea('cvs_acl',
-        'CVS Access:',
+        'SVN Access:',
         $cvs_acl, 40, 5, null);
 $form->addSubmit('submit', 'Submit');
 $form->addHidden('handle', $handle);

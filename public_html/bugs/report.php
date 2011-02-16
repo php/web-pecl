@@ -193,9 +193,10 @@ if (isset($_POST['in'])) {
             }
 
             // Quick-fix to prevent drug-spam
-            if(stristr($fdesc,'phentermine') || stristr($fdesc,'DIAZEPAM') || stristr($fdesc,'dietwwwtablets') || stristr($fdesc,'cheapwwwaccutane')) {
-              response_header("Report - Go Away!");
-              exit;
+            $spam_words = array('phentermine','DIAZEPAM','dietwwwtablets','cheapwwwaccutane','viagra','levitra','rakattintva','kamagra','cialis','sildenafil','gravatar');
+            if(preg_match('/'.implode($spam_words,'|').'/i',$_POST['in']['sdesc'].$fdesc)) {
+                response_header("Report - Go Away!");
+                exit;
             }
 
             $reporter_name = isset($_POST['in']['reporter_name']) ? htmlspecialchars(strip_tags($_POST['in']['reporter_name'])) : '';

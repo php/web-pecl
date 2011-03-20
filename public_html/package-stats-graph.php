@@ -109,8 +109,8 @@ $bplots = array_values($bplots);
 /**
  * Get package name
  */
-$package_name = $dbh->getOne('SELECT name FROM packages WHERE id = ' . $_GET['pid']);
-$package_rel  = !empty($_GET['rid']) ? $dbh->getOne('SELECT version FROM releases WHERE id = ' . $_GET['rid']) : '';
+$package_name = $dbh->getOne('SELECT name FROM packages WHERE id = ' . (int)$_GET['pid']);
+$package_rel  = !empty($_GET['rid']) ? $dbh->getOne('SELECT version FROM releases WHERE id = ' . (int)$_GET['rid']) : '';
 
 /**
  * Go through setting up the graph

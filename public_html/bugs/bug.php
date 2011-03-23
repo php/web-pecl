@@ -68,7 +68,8 @@ if (!empty($_POST['pw'])) {
     $pw   = rinse($_COOKIE['PEAR_PW']);
 } elseif (isset($_COOKIE['MAGIC_COOKIE'])) {
     @list($user, $pw) = explode(':', base64_decode($_COOKIE['MAGIC_COOKIE']));
-    $user = rinse($user);
+	// FIXME: Disabled php.net login via magic cookie
+    $user = NULL;
     if ($pw === null) {
         $pw = '';
     }

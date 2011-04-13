@@ -220,7 +220,7 @@ do {
    		<option>Select reason...</option>
    		<option value="You don't need a PECL account to use PECL or PECL packages.">You don't need a PECL account to use PECL or PECL packages.</option>
 		<option value="Please propose all new packages to the mailing list pecl-dev@lists.php.net first.">Please propose all new packages to the mailing list pecl-dev@lists.php.net first.</option>
-		<option value="Please send all bug fixes to the mailing list pecl-dev@lists.php.net.">Please send all bug fixes to the mailing list pecl-dev@lists.php.net.</option>
+		<option value="Please send all bug fixes to the mailing list pecl-dev@lists.php.net and post a bug at the pecl.php.net package homepage.">Please send all bug fixes to the mailing list pecl-dev@lists.php.net.</option>
 		<option value="Please supply valid credentials, including your full name and a descriptive reason for an account.">Please supply valid credentials, including your full name and a descriptive reason for an account.</option>
    </select>
 

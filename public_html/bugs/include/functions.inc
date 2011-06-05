@@ -484,7 +484,7 @@ function show_version_options($current, $default = '')
     $versions = array(
         'Trunk SVN-'.date('Y-m-d').' (dev)',
         '5_3 SVN-' .date('Y-m-d').' (dev)',
-        '5_2 SVN-' .date('Y-m-d').' (dev)',
+        '5.3.6',
         '5.3.5',
         '5.3.4',
         '5.3.3',

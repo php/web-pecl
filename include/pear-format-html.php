@@ -160,8 +160,8 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
      <option value="packages">Packages</option>
      <option value="site">This site (using Google)</option>
      <option value="developers">Developers</option>
-     <option value="pear-dev">Developer mailing list</option>
-     <option value="pear-cvs">CVS commits mailing list</option>
+     <option value="pecl-dev">Developer mailing list</option>
+     <option value="pecl-cvs">SVN commits mailing list</option>
     </select>
     <input type="image" src="/gifs/small_submit_white.gif" alt="search" style="vertical-align: middle;" />&nbsp;<br />
     </p>

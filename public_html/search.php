@@ -18,7 +18,7 @@
    $Id$
 */
 
-if (!isset($HTTP_POST_VARS['search_in'])) {
+if (!isset($_POST['search_in'])) {
     response_header("Search");
     echo "<h2>Search</h2>\n";
     echo "<font color=\"#990000\"><b>Please use the search system via the search form above.</b></font>\n";
@@ -26,10 +26,10 @@ if (!isset($HTTP_POST_VARS['search_in'])) {
     exit();
 }
 
-switch ($HTTP_POST_VARS['search_in']) {
+switch ($_POST['search_in']) {
 
 	case "packages":
-		header('Location: /package-search.php?pkg_name='.urlencode($HTTP_POST_VARS['search_string']).'&bool=AND&submit=Search');
+		header('Location: /package-search.php?pkg_name='.urlencode($_POST['search_string']).'&bool=AND&submit=Search');
 		exit;
 		break;
 
@@ -45,7 +45,7 @@ switch ($HTTP_POST_VARS['search_in']) {
          * at marc.thaimsgroup.com
          */
         $location = "http://marc.info/";
-        $query = "l=".$HTTP_POST_VARS['search_in']."&w=2&r=1&q=b&s=".urlencode($HTTP_POST_VARS['search_string']);
+        $query = "l=".$_POST['search_in']."&w=2&r=1&q=b&s=".urlencode($_POST['search_string']);
         header("Location: ".$location."?".$query);
         
         break;

@@ -21,7 +21,7 @@
 exit;
 
 if (empty($what)) {
-	$what = basename($HTTP_SERVER_VARS['PATH_INFO']);
+	$what = basename($_SERVER['PATH_INFO']);
 }
 
 header("Content-type: text/plain");

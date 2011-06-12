@@ -5,7 +5,7 @@ require_once "DB.php";
 require_once "../include/pear-database.php";
 
 if(!ini_get('register_globals')){
-	extract($HTTP_SERVER_VARS);
+	extract($_SERVER);
 }
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "data_error_handler");

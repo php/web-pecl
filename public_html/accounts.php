@@ -84,9 +84,9 @@ foreach ($firstletters as $fl) {
 }
 print '</td><td rowspan="2" align="right">';
 print '<form><input type="button" onclick="';
-$gourl = "http://" . $HTTP_SERVER_VARS['SERVER_NAME'];
-if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80) {
-	$gourl .= ":".$HTTP_SERVER_VARS['SERVER_PORT'];
+$gourl = "http://" . $_SERVER['SERVER_NAME'];
+if ($_SERVER['SERVER_PORT'] != 80) {
+	$gourl .= ":".$_SERVER['SERVER_PORT'];
 }
 $gourl .= "/user/";
 print "u=prompt('Go to account:','');if(u)location.href='$gourl'+u;";

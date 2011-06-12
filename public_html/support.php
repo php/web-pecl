@@ -162,11 +162,11 @@ foreach ($icons as $file => $desc) {
     echo '<tr bgcolor="e0e0e0">';
     echo '<td>' . make_image($file,$desc) . '<br></td>';
     echo '<td>' . $desc . '<br><small>';
-    $size = @getimagesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
+    $size = @getimagesize($_SERVER['DOCUMENT_ROOT'].'/gifs/'.$file);
     if ($size) {
         echo $size[0] . ' x ' . $size[1] . ' pixels<br>';
     }
-    $size = @filesize($HTTP_SERVER_VARS['DOCUMENT_ROOT'].'/gifs/'.$file);
+    $size = @filesize($_SERVER['DOCUMENT_ROOT'].'/gifs/'.$file);
     if ($size) {
         echo $size . ' bytes<br>';
     }

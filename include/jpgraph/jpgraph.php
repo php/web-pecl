@@ -358,7 +358,7 @@ function sign($a) {if( $a>=0) return 1; else return -1;}
 // (top level), i.e it is safe to call this function
 // from a script that uses JpGraph
 function GenImgName() {
-    global $HTTP_SERVER_VARS;
+    global $_SERVER;
     $supported = imagetypes();
     if( $supported & IMG_PNG )
 	$img_format="png";
@@ -366,10 +366,10 @@ function GenImgName() {
 	$img_format="gif";
     elseif( $supported & IMG_JPG )
 	$img_format="jpeg";
-    if( !isset($HTTP_SERVER_VARS['PHP_SELF']) )
+    if( !isset($_SERVER['PHP_SELF']) )
 	JpGraphError::Raise(" Can't access PHP_SELF, PHP global variable. You can't run PHP from command line
 		if you want to use the 'auto' naming of cache or image files.");
-    $fname=basename($HTTP_SERVER_VARS['PHP_SELF']);
+    $fname=basename($_SERVER['PHP_SELF']);
     // Replace the ".php" extension with the image format extension
     return substr($fname,0,strlen($fname)-4).".".$img_format;
 }

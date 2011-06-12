@@ -358,7 +358,6 @@ function sign($a) {if( $a>=0) return 1; else return -1;}
 // (top level), i.e it is safe to call this function
 // from a script that uses JpGraph
 function GenImgName() {
-    global $_SERVER;
     $supported = imagetypes();
     if( $supported & IMG_PNG )
 	$img_format="png";

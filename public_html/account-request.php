@@ -19,7 +19,7 @@
 */
 
 require_once "HTML/Form.php";
-include 'posttohost.php';
+include '../include/posttohost.php';
 
 function display_error($msg)
 {
@@ -99,7 +99,6 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            $display_form = false;
             $md5pw = md5($password);
             $showemail = @(bool)$showemail;
 
@@ -114,7 +113,13 @@ if (isset($_POST['submit'])) {
             $res = $dbh->execute($sth, array($handle, $name, $email, $md5pw, $showemail, $homepage, $userinfo));
 
             if (DB::isError($res)) {
-                display_error("$handle: " . DB::errorMessage($res));
+                //constraint violation, only email and handle(username) is unique
+                if($res->getCode() == -3){
+                    display_error("Username or Email already taken");
+                }
+                else{
+                    display_error("$handle: " . DB::errorMessage($res));
+                }
                 $jumpto = "handle";
                 break;
             }
@@ -141,6 +146,8 @@ if (isset($_POST['submit'])) {
                     break;
                 }
             }
+
+            $display_form = false;
 
             $msg = "Requested from:   {$_SERVER['REMOTE_ADDR']}\n".
                    "Username:         {$handle}\n".

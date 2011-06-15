@@ -150,7 +150,6 @@ do {
         $bb->horizHeadRow("Realname:", htmlspecialchars($requser->name, ENT_QUOTES));
         $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . htmlspecialchars($requser->email, ENT_QUOTES) . "\">" .
 		  		htmlspecialchars($requser->email, ENT_QUOTES) . "</a>");
-        $bb->horizHeadRow("MD5-encrypted password:", htmlspecialchars($requser->password, ENT_QUOTES));
         $bb->horizHeadRow("Purpose of account:", htmlspecialchars($purpose, ENT_QUOTES));
         $bb->horizHeadRow("More information:", htmlspecialchars($moreinfo, ENT_QUOTES));
         $bb->end();

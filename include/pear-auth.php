@@ -131,7 +131,7 @@ function auth_verify($user, $passwd)
     }
     if ($ok) {
         $auth_user->_readonly = true;
-        return true;//auth_check("pear.user");
+        return auth_check("pear.user");
     }
     if ($error) {
         error_log("$error\n", 3, PEAR_TMPDIR . DIRECTORY_SEPARATOR . 'pear-errors.log');
@@ -149,6 +149,11 @@ function auth_check($atom)
     
     global $auth_user;
 
+    // admins are almighty
+    if (user::isAdmin($auth_user->handle)) {
+        return true;
+    }
+
     // Check for backwards compatibility
     if (is_bool($atom)) {
         if ($atom == true) {
@@ -156,6 +161,11 @@ function auth_check($atom)
         } else {
             $atom = "pear.dev";
         }
+    }
+
+    // every authenticated user has the pear.user and pear.dev karma
+    if (in_array($atom, array("pear.user", "pear.dev"))) {
+        return true;
     }
 
     if (!isset($karma)) {
@@ -178,17 +188,16 @@ function auth_require($admin = false)
     if (!auth_verify($user, $passwd)) {
         auth_reject(); // exits
     }
-/*
+
     $num = func_num_args();
     for ($i = 0; $i < $num; $i++) {
         $arg = func_get_arg($i);
         $res = auth_check($arg);
-
         if ($res == true) {
             return true;
         }
     }
-*/
+
     if ($res == false) {
         response_header("Insufficient Privileges");
         report_error("Insufficient Privileges");

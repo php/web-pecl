@@ -42,7 +42,7 @@ if (isset($_COOKIE['PEAR_USER']) && isset($_COOKIE['PEAR_PW'])) {
     }
 }
 
-if (auth_verify(@$_POST['PEAR_USER'], @$_POST['PEAR_PW'])) {
+if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_USER'], @$_POST['PEAR_PW'])) {
     if (!empty($_POST['PEAR_PERSIST'])) {
         $expire = 2147483647;
     } else {

@@ -32,11 +32,7 @@ if (!empty($_GET['search_for']) &&
     if (isset($_COOKIE['PEAR_USER'])) {
         $x = '&edit=1';
     } else {
-        if (isset($_COOKIE['MAGIC_COOKIE'])) {
-            $x = '&edit=2';
-        } else {
-            $x = '';
-        }
+        $x = '';
     }
     localRedirect('bug.php?id=' . $_GET['search_for'] . $x);
     exit;

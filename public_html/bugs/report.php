@@ -42,12 +42,6 @@ $ok_to_submit_report = false;
  */
 $numeralCaptcha = new NumeralCaptcha();
 
-if (isset($_POST['save']) && isset($_POST['pw'])) {
-    // non-developers don't have $user set
-    setcookie('MAGIC_COOKIE', base64_encode(':' . $_POST['pw']),
-              time() + 3600 * 24 * 12, '/', '.php.net');
-}
-
 if (isset($_POST['in'])) {
     $errors = incoming_details_are_valid($_POST['in'], 1, ($auth_user && $auth_user->registered));
 

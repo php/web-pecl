@@ -483,6 +483,7 @@ function show_version_options($current, $default = '')
 {
     $versions = array(
         'Trunk SVN-'.date('Y-m-d').' (dev)',
+        '5_4 SVN-' .date('Y-m-d').' (dev)',
         '5_3 SVN-' .date('Y-m-d').' (dev)',
         '5.3.6',
         '5.3.5',

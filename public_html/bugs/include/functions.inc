@@ -35,6 +35,7 @@ $bugEmail = 'pecl-dev@lists.php.net';
 $tla = array(
     'Open'        => 'Opn',
     'Bogus'       => 'Bgs',
+    'Spam'        => 'Spm',
     'Feedback'    => 'Fbk',
     'No Feedback' => 'NoF',
     'Wont fix'    => 'WFx',
@@ -71,6 +72,7 @@ $state_types =  array (
     'Stale'        => 0,
     'Fresh'        => 0,
     'Bogus'        => 2,
+    'Spam'         => 2,
     'All'          => 0
 );
 
@@ -366,7 +368,7 @@ function show_state_options($state, $user_mode = 0, $default = '')
         } else {
             echo "<option>$state</option>\n";
         }
-        if ($state != 'Bogus') {
+        if ($state != 'Bogus' && $state != 'Spam') {
             echo "<option>Closed</option>\n";
         }
     } else {

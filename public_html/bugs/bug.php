@@ -240,6 +240,11 @@ if ($_POST['in'] && $edit == 3) {
         strlen($ncomment) == 0)
     {
         $errors[] = "You must provide a comment when marking a bug 'Bogus'";
+    } elseif ((($_POST['in']['status'] == 'Spam' && $bug['status'] != 'Spam') ||
+          $RESOLVE_REASONS[$_POST['in']['resolve']]['status'] == 'Spam') &&
+        strlen($ncomment) == 0)
+    {
+        $errors[] = "You must provide a comment when marking a bug 'Spam'";
     } elseif ($_POST['in']['resolve']) {
         if (!$trytoforce &&
             $RESOLVE_REASONS[$_POST['in']['resolve']]['status'] == $bug['status'])
@@ -864,5 +869,5 @@ function canvote()
 {
     return false;
     global $bug;
-    return ($_GET['thanks'] != 4 && $_GET['thanks'] != 6 && $bug['status'] != 'Closed' && $bug['status'] != 'Bogus' && $bug['status'] != 'Duplicate');
+    return ($_GET['thanks'] != 4 && $_GET['thanks'] != 6 && $bug['status'] != 'Closed' && $bug['status'] != 'Bogus' && $bug['status'] != 'Spam' && $bug['status'] != 'Duplicate');
 }

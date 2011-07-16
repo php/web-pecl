@@ -52,6 +52,12 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
     setcookie('PEAR_PW', md5($_POST['PEAR_PW']), $expire, '/');
 
     /*
+     * Update users lastlogin
+     */
+    $query = 'UPDATE users SET lastlogin = NOW() WHERE handle = ?';
+    $dbh->query($query, array($_POST['PEAR_USER']));
+
+    /*
      * Update users password if it is held in the db
      * crypt()ed.
      */

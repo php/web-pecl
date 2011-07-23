@@ -94,7 +94,7 @@ switch ($command) {
         $old_acl = $dbh->getCol('SELECT path FROM cvs_acl '.
                                 'WHERE username = ' . "'$handle'" . ' AND access = 1', 0);
 
-        $new_acl = preg_split("/[\r\n]+/", trim($_POST['cvs_acl']));
+        $new_acl = preg_split("/[\r\n]+/", trim(strip_tags($_POST['cvs_acl'])));
 
         $lost_entries = array_diff($old_acl, $new_acl);
         $new_entries = array_diff($new_acl, $old_acl);

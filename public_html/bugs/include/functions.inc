@@ -82,9 +82,6 @@ $pseudo_pkgs = array(
     'Documentation',
     'Bug System',
 );
-if ($site == 'pear') {
-    $pseudo_pkgs[] = 'PEPr';
-}
 
 
 /*
@@ -559,7 +556,6 @@ function show_types($current, $show_any, $default = '')
         $bug_items = array();
         $bug_items['Web Site']      = 'Web Site';
         $bug_items['Bug System']    = '&nbsp;&nbsp;&nbsp;Bug System';
-        $bug_items['PEPr']          = '&nbsp;&nbsp;&nbsp;PEPr';
         $bug_items['Documentation'] = 'Documentation';
 
         $sql = "
@@ -1041,16 +1037,12 @@ function get_package_mail($package_name, $bug_id=false)
     global $site, $bugEmail, $dbh;
     global $user;
 
-    // XXX Change to pear-bugs when it gets opened
-    //$to[] = "pear-dev@lists.php.net";
-
     switch ($package_name) {
         case 'Bug System':
-        case 'PEPr':
         case 'Web Site':
-            return array('pear-webmaster@lists.php.net', 'pear-webmaster@lists.php.net');
+            return array('pecl-dev@lists.php.net', 'pecl-dev@lists.php.net');
         case 'Documentation':
-            return array('pear-doc@lists.php.net', 'pear-doc@lists.php.net');
+            return array('pecl-dev@lists.php.net', 'pecl-dev@lists.php.net');
     }
 
     $maintainers = package::info($package_name, 'authors');

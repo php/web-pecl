@@ -160,43 +160,6 @@ switch ($type) {
         $items = category::getRecent(10, $category);
         break;
 
-    case 'pepr':
-        if (PEAR_CHANNELNAME=='pecl.php.net') {
-            rss_bailout();
-        }
-
-        require_once "pepr/pepr.php";
-
-        if ($argument=='pepr') {
-            $channel_title = "PEPr: Latest proposals.";
-            $channel_description = "The latest PEPr proposals.";
-            $obj_items = proposal::getAll($dbh, NULL, 10);
-        } elseif (isset($proposalStatiMap[$argument])) {
-            $channel_title = "PEPr: Latest proposals with status " . $proposalStatiMap[$argument];
-            $channel_description = "The latest PEPr proposals with status " . $proposalStatiMap[$argument];
-            $obj_items = proposal::getAll($dbh, $argument, 10);
-        } elseif (substr($argument, 0, 6) == 'search') {
-            $searchString = substr($argument, 7);
-            $channel_title = "PEPr: Latest proposals containing " . $searchString;
-            $channel_description = "The latest PEPr proposals containing " . $searchString;
-            $obj_items = proposal::search($searchString);
-        } else {
-            rss_bailout();
-        }
-
-        $items = array();
-        foreach ($obj_items as $id => $item) {
-            $item = $item->toRSSArray();
-            $items[] = array(
-                    'name'         => $item['title'],
-                    'link'          => $item['link'],
-                    'releasenotes'   => $item['desc'],
-                    'releasedate'       => $item['date'],
-                    'version'       => ''
-                    );
-        }
-        break;
-
     case 'bugs':
         /* to be done, new bug system supports it */
         rss_bailout();

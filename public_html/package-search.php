@@ -150,7 +150,7 @@ if (!empty($_GET)) {
                           $release_join
                     WHERE p.id = m.package " . $where . "
                  AND p.package_type='pecl'
-                 ORDER BY p.name LIKE ".$dbh->quote('%'.$_GET['pkg_name'].'%').", p.name";
+                 ORDER BY p.name LIKE ".$dbh->quote('%'.$_GET['pkg_name'].'%')." DESC, p.name";
 
     $result = $dbh->query($sql);
 

@@ -96,7 +96,7 @@ if (!empty($_GET)) {
         for ($i=0; $i<count($searchwords); $i++) {
             $searchwords[$i] = sprintf("name LIKE %s", $dbh->quote('%' . $searchwords[$i] . '%'));
         }
-        $where[] = '(' . implode($bool, $searchwords) . ')';
+        $where[] = '((' . implode($bool, $searchwords) . ') OR (summary LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').') OR (description LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').'))';
     }
     
     // Build maintainer part of query

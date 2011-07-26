@@ -54,12 +54,6 @@ $months[11] = 'November';
 $months[12] = 'December';
 
 /**
-* Used for the Match: radio buttons
-*/
-$bool_and_checked = !isset($_GET['bool']) || $_GET['bool'] == "AND" ? 'checked="checked"' : '';
-$bool_or_checked  = @$_GET['bool'] == "OR" ? 'checked="checked"' : '';
-
-/**
 * Code to fetch the current category list
 */
 $category_rows = category::listAll();
@@ -88,15 +82,10 @@ for ($i=0; $i<count($users); $i++) {
 if (!empty($_GET)) {
     $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
     $where = array();
-    $bool  = @$_GET['bool'] == 'AND' ? ' AND ' : ' OR ';
-    
+
     // Build package name part of query
     if (!empty($_GET['pkg_name'])) {
-        $searchwords = preg_split('/\s+/', $_GET['pkg_name']);
-        for ($i=0; $i<count($searchwords); $i++) {
-            $searchwords[$i] = sprintf("name LIKE %s", $dbh->quote('%' . $searchwords[$i] . '%'));
-        }
-        $where[] = '((' . implode($bool, $searchwords) . ') OR (summary LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').') OR (description LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').'))';
+        $where[] = '(name LIKE'.$dbh->quote('%'.$_GET['pkg_name'].'%').' OR summary LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').' OR description LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').')';
     }
     
     // Build maintainer part of query
@@ -108,7 +97,7 @@ if (!empty($_GET)) {
     if (!empty($_GET['pkg_category'])) {
         $where[] = sprintf("category = %s", $dbh->quote($_GET['pkg_category']));
     }
-        
+
     /**
      * Any release date checking?
      */
@@ -152,7 +141,7 @@ if (!empty($_GET)) {
         
     // Compose query and execute
     $where  = !empty($where) ? 'AND '.implode(' AND ', $where) : '';
-    $sql    = "SELECT p.id,
+    $sql    = "SELECT DISTINCT p.id,
                           p.name,
                           p.category,
                           p.summary
@@ -161,8 +150,7 @@ if (!empty($_GET)) {
                           $release_join
                     WHERE p.id = m.package " . $where . "
                  AND p.package_type='pecl'
-                 GROUP BY p.id
-                 ORDER BY p.name";
+                 ORDER BY p.name LIKE ".$dbh->quote('%'.$_GET['pkg_name'].'%').", p.name";
 
     $result = $dbh->query($sql);
 

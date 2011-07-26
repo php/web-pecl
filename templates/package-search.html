@@ -244,14 +244,6 @@ response_header('Package Search');
   <th class="form-label_left">Sear<span class="accesskey">c</span>h for:</th>
   <td class="form-input">
    <?php $form->displayText('pkg_name', htmlspecialchars(@$_GET['pkg_name'], ENT_QUOTES), 0, 0, 'accesskey="c"'); ?>
-   <br />
-   <small>
-    Match:
-    <input type="radio" name="bool" value="AND" id="bool_and" <?php echo $bool_and_checked; ?> />
-    <label for="bool_and">All words</label>
-    <input type="radio" name="bool" value="OR" id="bool_or" <?php echo $bool_or_checked; ?> />
-    <label for="bool_or">Any word</label>
-   </small>
   </td>
  </tr>
 

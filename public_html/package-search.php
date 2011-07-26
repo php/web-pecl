@@ -85,7 +85,7 @@ if (!empty($_GET)) {
 
     // Build package name part of query
     if (!empty($_GET['pkg_name'])) {
-        $where[] = '(name LIKE'.$dbh->quote('%'.$_GET['pkg_name'].'%').' OR summary LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').' OR description LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').')';
+        $where[] = '(name LIKE'.$dbh->quote('%'.$_GET['pkg_name'].'%').' OR summary LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').')';
     }
     
     // Build maintainer part of query
@@ -186,16 +186,12 @@ if (!empty($_GET)) {
 
         while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC, $rownum++) AND $rownum <= $to) {
 			/**
-            * If name was searched on, highlight the search string
+            * If name or summary was searched on, highlight the search string
             */
-			$row['raw_name'] = $row['name'];
-			if (!empty($_GET['pkg_name']) || !empty($_GET['pkg_maintainer'])) {
-				if (!empty($_GET['pkg_name'])) {
-				    $words = preg_replace('/\s+/', '|', preg_quote($_GET['pkg_name']));
-				} else {
-				    $words = "";
-				}
-				$row['name'] = preg_replace('/(' . $words . ')/i', '<span style="background-color: #d5ffc1">\1</span>', $row['name']);
+			$row['raw_name']    = $row['name'];
+			if (!empty($_GET['pkg_name'])) {
+				$row['name']    = str_ireplace($_GET['pkg_name'], '<span style="background-color: #d5ffc1">'.$_GET['pkg_name'].'</span>', $row['name']);
+				$row['summary'] = str_ireplace($_GET['pkg_name'], '<span style="background-color: #d5ffc1">'.$_GET['pkg_name'].'</span>', $row['summary']);
 			}
 
             $search_results[] = $row;

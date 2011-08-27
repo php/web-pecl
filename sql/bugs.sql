@@ -23,6 +23,7 @@ CREATE TABLE `bugdb` (
   `reporter_name` varchar(80) default NULL,
   `handle` varchar(20) NOT NULL default '',
   `registered` tinyint(1) NOT NULL default '0',
+  `visitor_ip` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   INDEX (`php_version`(1)),
   INDEX (`duplicate_of`),
@@ -45,6 +46,7 @@ CREATE TABLE `bugdb_comments` (
   `comment` text NOT NULL,
   `reporter_name` varchar(80) default NULL,
   `handle` varchar(20) NOT NULL default '',
+  `visitor_ip` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   INDEX (`bug`,`id`,`ts`),
   FULLTEXT KEY `comment` (`comment`)

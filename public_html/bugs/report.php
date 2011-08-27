@@ -206,7 +206,8 @@ if (isset($_POST['in'])) {
                      ' php_os,' .
                      ' status, ts1,' .
                      ' passwd,' .
-                     ' reporter_name' .
+                     ' reporter_name,' .
+                     ' visitor_ip' .
                      ') VALUES (' .
                      " '" . escapeSQL($_POST['in']['package_name']) . "'," .
                      " '" . escapeSQL($_POST['in']['bug_type']) . "'," .
@@ -218,7 +219,8 @@ if (isset($_POST['in'])) {
                      " '" . escapeSQL($_POST['in']['php_os']) . "'," .
                      " 'Open', NOW(), " .
                      " '" . escapeSQL($_POST['in']['passwd']) . "'," .
-                     " '" . escapeSQL($reporter_name) . "')";
+                     " '" . escapeSQL($reporter_name) . "'," .
+                     " INET_ATON('" . escapeSQL($_SERVER['REMOTE_ADDR']) . "'))";
 
 
             $dbh->query($query);

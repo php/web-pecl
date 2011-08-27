@@ -154,11 +154,12 @@ if ($_POST['in'] && $edit == 3) {
 
     if (!$errors) {
         $query = 'INSERT INTO bugdb_comments' .
-                 ' (bug, email, ts, comment) VALUES (' .
+                 ' (bug, email, ts, comment, visitor_ip) VALUES (' .
                  " $id," .
                  " '" . escapeSQL($_POST['in']['commentemail']) . "'," .
                  ' NOW(),' .
-                 " '" . escapeSQL($ncomment) . "')";
+                 " '" . escapeSQL($ncomment) . "'," .
+                 " INET_ATON('" . escapeSQL($_SERVER['REMOTE_ADDR']) . "'))";
         $dbh->query($query);
     }
     $from = rinse($_POST['in']['commentemail']);
@@ -212,11 +213,12 @@ if ($_POST['in'] && $edit == 3) {
 
         if (!empty($ncomment)) {
             $query = 'INSERT INTO bugdb_comments' .
-                     ' (bug, email, ts, comment) VALUES (' .
+                     ' (bug, email, ts, comment, visitor_ip) VALUES (' .
                      " $id," .
                      " '" . escapeSQL($from) . "'," .
                      ' NOW(),' .
-                     " '" . escapeSQL($ncomment) . "')";
+                     " '" . escapeSQL($ncomment) . "'," .
+                     " INET_ATON('" . escapeSQL($_SERVER['REMOTE_ADDR']) . "'))";
             $dbh->query($query);
         }
     }
@@ -295,11 +297,12 @@ if ($_POST['in'] && $edit == 3) {
 
         if (!empty($ncomment)) {
             $query = 'INSERT INTO bugdb_comments' .
-                     ' (bug, email, ts, comment) VALUES (' .
+                     ' (bug, email, ts, comment, visitor_ip) VALUES (' .
                      " $id," .
                      " '" . escapeSQL($from) . "'," .
                      ' NOW(),' .
-                     " '" . escapeSQL($ncomment) . "')";
+                     " '" . escapeSQL($ncomment) . "'," .
+                     " INET_ATON('" . escapeSQL($_SERVER['REMOTE_ADDR']) . "'))";
             $dbh->query($query);
         }
     }

@@ -29,39 +29,30 @@ require_once './include/prepend.inc';
  */
 require_once './include/cvs-auth.inc';
 
-/**
- * Numeral Captcha Class
- */
-require_once './include/NumeralCaptcha.php';
-
 error_reporting(E_ALL ^ E_NOTICE);
 $errors              = array();
 $ok_to_submit_report = false;
-/**
- * Instantiate the numeral captcha object.
- */
-$numeralCaptcha = new NumeralCaptcha();
+
+// captcha is not necessary if the user is logged in
+if (!$auth_user || !$auth_user->registered) {
+	require_once './include/NumeralCaptcha.php';
+	$numeralCaptcha = new NumeralCaptcha();
+}
 
 if (isset($_POST['in'])) {
     $errors = incoming_details_are_valid($_POST['in'], 1, ($auth_user && $auth_user->registered));
 
     // captcha is not necessary if the user is logged in
-    if ($auth_user && $auth_user->registered) {
-        if (isset($_SESSION['answer'])) {
-            unset($_SESSION['answer']);
-        }
-    }
-
-    /**
-     * Check if session answer is set, then compare
-     * it with the post captcha value. If it's not
-     * the same, then it's an incorrect password.
-     */
-    if (isset($_SESSION['answer']) && strlen(trim($_SESSION['answer'])) > 0) {
-        if ($_POST['captcha'] != $_SESSION['answer']) {
-            $errors[] = 'Incorrect Captcha';
-        }
-    }
+	if (!$auth_user || !$auth_user->registered) {
+		/**
+		 * Check if session answer is set, then compare
+		 * it with the post captcha value. If it's not
+		 * the same, then it's an incorrect password.
+		 */
+		if (!isset($_SESSION['answer']) || $_POST['captcha'] != $_SESSION['answer']) {
+			$errors[] = 'Incorrect Captcha';
+		}
+	}
 
 	// known spammers can't have correct captcha, $SPAMMERS is defined in prepend.inc
 	if(array_search('Incorrect Captcha', $errors) === FALSE && in_array($_SERVER['REMOTE_ADDR'], $SPAMMERS)){

@@ -63,6 +63,11 @@ if (isset($_POST['in'])) {
         }
     }
 
+	// known spammers can't have correct captcha, $SPAMMERS is defined in prepend.inc
+	if(array_search('Incorrect Captcha', $errors) === FALSE && in_array($_SERVER['REMOTE_ADDR'], $SPAMMERS)){
+		$errors[] = 'Incorrect Captcha';
+	}
+
     if (!$errors) {
 
         /*

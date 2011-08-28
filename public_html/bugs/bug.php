@@ -126,6 +126,11 @@ if ($_POST['in'] && $edit == 3) {
         $errors[] = 'Incorrect CAPTCHA';
     }
 
+	// known spammers can't have correct captcha, $SPAMMERS is defined in prepend.inc
+	if(array_search('Incorrect CAPTCHA', $errors) === FALSE && in_array($_SERVER['REMOTE_ADDR'], $SPAMMERS)){
+		$errors[] = 'Incorrect CAPTCHA';
+	}
+
     if (!preg_match("/[.\\w+-]+@[.\\w-]+\\.\\w{2,}/i",
                     $_POST['in']['commentemail'])) {
         $errors[] = "You must provide a valid email address.";

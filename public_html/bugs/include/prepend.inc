@@ -27,3 +27,7 @@ require_once './include/functions.inc';
  * Obtain the $RESOLVE_REASONS array
  */
 require './include/resolve.inc';
+
+$SPAMMERS = array(
+	'109.230.220.240',
+);

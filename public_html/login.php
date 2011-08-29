@@ -33,13 +33,11 @@ if (!isset($_COOKIE['PHPSESSID']) &&
 /*
  * If they're already logged in, say so.
  */
-if (isset($_COOKIE['PEAR_USER']) && isset($_COOKIE['PEAR_PW'])) {
-    if (auth_verify($_COOKIE['PEAR_USER'], $_COOKIE['PEAR_PW'])) {
-        response_header('Login');
-        echo '<div class="warnings">You are already logged in.</div>';
-        response_footer();
-        exit;
-    }
+if (!empty($auth_user)) {
+	response_header('Login');
+	echo '<div class="warnings">You are already logged in.</div>';
+	response_footer();
+	exit;
 }
 
 if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_USER'], @$_POST['PEAR_PW'])) {
@@ -74,10 +72,7 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
     {
         localRedirect($_POST['PEAR_OLDURL']);
     } else {
-        response_header('Login');
-        report_success('Welcome.');
-        response_footer();
-        exit;
+	    localRedirect('index.php');
     }
 
     exit;

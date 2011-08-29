@@ -58,7 +58,7 @@ $GLOBALS['_style'] = '';
 
 function response_header($title = 'The PHP Extension Community Library', $style = false)
 {
-    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles;
+    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles, $auth_user;
     if ($_header_done) {
         return;
     }
@@ -70,7 +70,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
     if (substr($rts, -1) == '-') {
         $SIDEBAR_DATA = substr($rts, 0, -1);
     } else {
-        global $main_menu, $docu_menu, $downloads_menu, $auth_user;
+        global $main_menu, $docu_menu, $downloads_menu;
         $SIDEBAR_DATA .= draw_navigation($main_menu);
         $SIDEBAR_DATA .= draw_navigation($docu_menu, 'Documentation:');
         $SIDEBAR_DATA .= draw_navigation($downloads_menu, 'Downloads:');
@@ -128,14 +128,14 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
   <td class="head-menu">
       <?php
 
-    if (empty($_COOKIE['PEAR_USER'])) {
+    if (empty($auth_user)) {
         print_link('/login.php', 'Login', false, 'class="menuBlack"');
     } else {
         print '<small class="menuWhite">';
-        print 'Logged in as ' . strtoupper($_COOKIE['PEAR_USER']) . ' (';
-        print '<a class="menuWhite" href="/user/' . $_COOKIE['PEAR_USER'] . '">Info</a> | ';
-        print '<a class="menuWhite" href="/account-edit.php?handle=' . $_COOKIE['PEAR_USER'] . '">Profile</a> | ';
-        print '<a class="menuWhite" href="/bugs/search.php?handle=' . $_COOKIE['PEAR_USER'] . '&amp;cmd=display">Bugs</a>';
+        print 'Logged in as ' . strtoupper($auth_user->handle) . ' (';
+        print '<a class="menuWhite" href="/user/' . $auth_user->handle . '">Info</a> | ';
+        print '<a class="menuWhite" href="/account-edit.php?handle=' . $auth_user->handle . '">Profile</a> | ';
+        print '<a class="menuWhite" href="/bugs/search.php?handle=' . $auth_user->handle . '&amp;cmd=display">Bugs</a>';
         print ")</small><br />\n";
         print_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
     }

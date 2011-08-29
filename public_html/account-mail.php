@@ -120,9 +120,8 @@ if (isset($_POST['submit'])) {
         . ' you can do this by filling out the following form.</p>';
 
     /** Guess the user if he is logged in */
-    if (isset($_COOKIE['PEAR_USER'])) {
-        $user =& new PEAR_User($dbh, $_COOKIE['PEAR_USER']);
-        $data = array('email' => $user->email, 'name' => $user->name);
+    if (!empty($auth_user)) {
+        $data = array('email' => $auth_user->email, 'name' => $auth_user->name);
     } else {
         $data = array();
     }

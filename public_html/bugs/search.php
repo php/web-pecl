@@ -29,7 +29,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 if (!empty($_GET['search_for']) &&
     !preg_match('/\\D/', trim($_GET['search_for'])))
 {
-    if (isset($_COOKIE['PEAR_USER'])) {
+    if (!empty($auth_user)) {
         $x = '&edit=1';
     } else {
         $x = '';
@@ -503,8 +503,8 @@ display_bug_error($warnings, 'warnings', 'WARNING:');
   <td style="white-space: nowrap">Return bugs <b>assigned</b> to</td>
   <td><input type="text" name="assign" value="<?php echo clean($assign);?>" />
 <?php
-    if (!empty($_COOKIE['PEAR_USER'])) {
-        $u = rinse($_REQUEST['PEAR_USER']);
+    if (!empty($auth_user)) {
+        $u = rinse($auth_user->handle);
         print "<input type=\"button\" value=\"set to $u\" onclick=\"form.assign.value='$u'\" />";
     }
 ?>
@@ -515,8 +515,8 @@ display_bug_error($warnings, 'warnings', 'WARNING:');
   <td nowrap="nowrap">Return only bugs in packages <b>maintained</b> by</td>
   <td><input type="text" name="maintain" value="<?php echo clean($maintain);?>" />
 <?php
-    if (!empty($_COOKIE['PEAR_USER'])) {
-        $u = stripslashes($_REQUEST['PEAR_USER']);
+    if (!empty($auth_user)) {
+        $u = stripslashes($auth_user->handle);
         print "<input type=\"button\" value=\"set to $u\" onclick=\"form.maintain.value='$u'\" />";
     }
 ?>

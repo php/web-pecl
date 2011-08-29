@@ -203,9 +203,10 @@ if (empty($id)) {
 
 function isAllowed($package)
 {
+	global $auth_user;
     auth_require();
-    $lead = in_array($_COOKIE['PEAR_USER'], array_keys(maintainer::get($package, true)));
-    $admin = user::isAdmin($_COOKIE['PEAR_USER']);
+    $lead = in_array($auth_user->handle, array_keys(maintainer::get($package, true)));
+    $admin = user::isAdmin($auth_user->handle);
 
     return ($lead || $admin);
 }

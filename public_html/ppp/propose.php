@@ -37,7 +37,7 @@ do {
                           "summary" => "enter the one-liner description",
                           "desc" => "enter the full description",
                           "category" => "choose a category");
-        if (empty($_COOKIE['PEAR_USER']) || !user::exists($_COOKIE['PEAR_USER'])) {
+        if (empty($auth_user) || !user::exists($auth_user->handle)) {
             $additionals = array("user_firstname" => "enter your firstname",
                                  "user_lastname" => "enter your lastname",
                                  "user_email" => "enter your email address",
@@ -45,7 +45,7 @@ do {
                                  );
             $required = array_merge($required, $additionals);
         } else {
-            $_POST['handle'] = $_COOKIE['PEAR_USER'];
+            $_POST['handle'] = $auth_user->handle;
         }
 
         foreach ($required as $field => $_desc) {
@@ -132,7 +132,7 @@ if ($display_form) {
                        null, $width, 3);
 
     // Only ask for user information if the user is not logged in
-    if (empty($_COOKIE['PEAR_USER']) || !user::exists($_COOKIE['PEAR_USER'])) {
+    if (empty($auth_user) || !user::exists($auth_user->handle)) {
        $form->addText("user_firstname", "Your firstname", null, 20);
        $form->addText("user_lastname", "Your lastname", null, 20);
        $form->addPassword("user_password", "Your password", null, 20);

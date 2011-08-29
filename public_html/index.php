@@ -70,13 +70,13 @@ echo menu_link("Browse All Packages", "packages.php");
 echo menu_link("Search Packages", "package-search.php");
 echo menu_link("Download Statistics", "package-stats.php");
 echo '</div>';
-if (isset($_COOKIE['PEAR_USER'])) {
+if (!empty($auth_user)) {
     echo '<h3>Developers</h3>';
     echo '<div class="indent">';
     echo menu_link("Upload Release", "release-upload.php");
     echo menu_link("New Package", "package-new.php");
     echo '</div>';
-    if (user::isAdmin($_COOKIE['PEAR_USER'])) {
+    if (user::isAdmin($auth_user->handle)) {
         echo '<h3>Administrators</h3>';
         echo '<div class="indent">';
         echo menu_link("Overview", "/admin/");

@@ -204,7 +204,7 @@ if ($relid) {
     }
 }
 
-if (!empty($_COOKIE['PEAR_USER'])) {
+if (!empty($auth_user)) {
     $bb->fullRow("<div align=\"right\">" .
                  make_link("/package-edit.php?id=$pacid",
                            make_image("edit.gif", "Edit package information")) .

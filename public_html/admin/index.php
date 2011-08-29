@@ -167,7 +167,7 @@ do {
 	            print "$i <tr>\n";
 	            print "$i  <td>\n";
 	            print "$i   <b>$nby " . date('H:i jS F Y', $ntime) . ":</b>";
-	            if ($nby == $_COOKIE['PEAR_USER']) {
+	            if ($nby == $auth_user->handle) {
 	                $url = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$acreq&cmd=Delete+note&id=$nid";
 	                $msg = "Are you sure you want to delete this note?";
 	                print "[<a href=\"javascript:confirmed_goto('$url', '$msg')\">delete your note</a>]";

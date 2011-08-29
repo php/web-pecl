@@ -2319,9 +2319,9 @@ class note
 
     function add($key, $value, $note, $author = "")
     {
-        global $dbh;
+        global $dbh, $auth_user;
         if (empty($author)) {
-            $author = $_COOKIE['PEAR_USER'];
+            $author = $auth_user->handle;
         }
         if (!in_array($key, array('uid', 'rid', 'cid', 'pid'), true)) {
             // bad hackers not allowed
@@ -2387,13 +2387,13 @@ class user
 
     function rejectRequest($uid, $reason)
     {
-        global $dbh;
+        global $dbh, $auth_user;
         list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?',
                                     array($uid));
         note::add("uid", $uid, "Account rejected: $reason");
-        $msg = "Your PECL account request was rejected by " . $_COOKIE['PEAR_USER'] . ":\n".
+        $msg = "Your PECL account request was rejected by " . $auth_user->handle . ":\n".
              "$reason\n";
-        $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
+        $xhdr = "From: " . $auth_user->handle . "@php.net";
         mail($email, "Your PECL Account Request", $msg, $xhdr, "-f bounce-no-user@php.net");
         return true;
     }
@@ -2403,7 +2403,7 @@ class user
 
     function activate($uid)
     {
-        global $dbh;
+        global $dbh, $auth_user;
 
         $user =& new PEAR_User($dbh, $uid);
         if (@$user->registered) {
@@ -2417,7 +2417,7 @@ class user
             $user->set('userinfo', $arr[1]);
         }
         $user->set('created', gmdate('Y-m-d H:i'));
-        $user->set('createdby', $_COOKIE['PEAR_USER']);
+        $user->set('createdby', $auth_user->handle);
         $user->set('registered', 1);
         $user->store();
         note::add("uid", $uid, "Account opened");
@@ -2426,7 +2426,7 @@ class user
         $msg = "Your PECL/PEAR account request has been opened.\n".
              "To log in, go to http://pecl.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";
-        $xhdr = "From: " . $_COOKIE['PEAR_USER'] . "@php.net";
+        $xhdr = "From: " . $auth_user->handle . "@php.net";
         mail($user->email, "Your PECL Account Request", $msg, $xhdr, "-f bounce-no-user@php.net");
         return true;
     }
@@ -2871,11 +2871,7 @@ class PEAR_User extends DB_storage
 
     function is($handle)
     {
-        if (!empty($_COOKIE['PEAR_USER'])) {
-            $ret = strtolower($_COOKIE['PEAR_USER']);
-        } else {
-            $ret = strtolower($this->handle);
-        }
+		$ret = strtolower($this->handle);
         return (strtolower($handle) == $ret);
     }
 

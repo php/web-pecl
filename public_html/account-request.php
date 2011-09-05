@@ -139,6 +139,7 @@ if (isset($_POST['submit'])) {
                         "passwd"   => $password,
                         "note"     => $purpose,
                         "group"    => 'pecl',
+                        "yesno"    => 'yes',
                     )
                 );
 

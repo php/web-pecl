@@ -137,7 +137,8 @@ if (isset($_POST['submit'])) {
                         "name"     => $name,
                         "email"    => $email,
                         "passwd"   => $password,
-                        "note"     => $purpose
+                        "note"     => $purpose,
+                        "group"    => 'pecl',
                     )
                 );
 

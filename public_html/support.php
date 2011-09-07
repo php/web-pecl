@@ -28,7 +28,7 @@ response_header("Support");
 <b>Table of Contents</b>
 <ul>
   <li><a href="#lists">Mailing Lists</a></li>
-  <li><a href="#tutorials">Tutorials</a></li>
+  <li><a href="#subscribe">Subscribing and Unsubscribing</a></li>
   <li><a href="#resources">Resources</a></li>
   <li><a href="#icons">PECL Icons</a></li>
 </ul>
@@ -99,7 +99,7 @@ while ( list(, $listinfo) = each($mailing_lists)) {
 </table>
 </p>
 
-<h3>Subscribing and Unsubscribing</h3>
+<a name="subscribe"></a><h3>Subscribing and Unsubscribing</h3>
 
 <p>
 There are a variety of commands you can use to modify your subscription.

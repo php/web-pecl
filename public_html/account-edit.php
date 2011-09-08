@@ -148,7 +148,6 @@ switch ($command) {
             } else {
                 $expire = 0;
             }
-            setcookie('PEAR_PW', md5($_POST['password']), $expire, '/');
 
             report_success('Your password was successfully updated.');
         }

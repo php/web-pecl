@@ -18,11 +18,8 @@
    $Id$
 */
 
-if (isset($_SERVER['PHP_AUTH_USER']) && !isset($_COOKIE['PEAR_USER'])) {
-    $_COOKIE['PEAR_USER'] = $_SERVER['PHP_AUTH_USER'];
-}
-if (isset($_SERVER['PHP_AUTH_PW']) && !isset($_COOKIE['PEAR_PW'])) {
-    $_COOKIE['PEAR_PW'] = $_SERVER['PHP_AUTH_PW'];
+if (isset($_SERVER['PHP_AUTH_USER']) && !isset($_SESSION['PEAR_USER'])) {
+    $_SESSION['PEAR_USER'] = $_SERVER['PHP_AUTH_USER'];
 }
 
 PEAR::setErrorHandling(PEAR_ERROR_RETURN);

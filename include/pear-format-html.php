@@ -79,12 +79,10 @@ function response_header($title = 'The PHP Extension Community Library', $style 
         } else {
             $auth_user = null;
         }
-        if (!empty($auth_user)) {
-            if (!empty($auth_user->registered)) {
-                global $developer_menu;
-                $SIDEBAR_DATA .= draw_navigation($developer_menu, 'Developers:');
-            }
-            if (!empty($auth_user->admin)) {
+        if (is_logged_in()) {
+            global $developer_menu;
+            $SIDEBAR_DATA .= draw_navigation($developer_menu, 'Developers:');
+            if (auth_check(true)) {
                 global $admin_menu;
                 $SIDEBAR_DATA .= draw_navigation($admin_menu, 'Administrators:');
             }

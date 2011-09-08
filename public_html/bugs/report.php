@@ -34,16 +34,16 @@ $errors              = array();
 $ok_to_submit_report = false;
 
 // captcha is not necessary if the user is logged in
-if (!$auth_user || !$auth_user->registered) {
+if (!is_logged_in()) {
 	require_once './include/NumeralCaptcha.php';
 	$numeralCaptcha = new NumeralCaptcha();
 }
 
 if (isset($_POST['in'])) {
-    $errors = incoming_details_are_valid($_POST['in'], 1, ($auth_user && $auth_user->registered));
+    $errors = incoming_details_are_valid($_POST['in'], 1, is_logged_in());
 
     // captcha is not necessary if the user is logged in
-	if (!$auth_user || !$auth_user->registered) {
+	if (!is_logged_in()) {
 		/**
 		 * Check if session answer is set, then compare
 		 * it with the post captcha value. If it's not
@@ -352,7 +352,7 @@ if (!package_exists($_REQUEST['package'])) {
   </th>
   <td class="form-input">
 <?php
-    if ($auth_user && $auth_user->registered) {
+    if (is_logged_in()) {
 ?>
    <?php echo clean($auth_user->name); ?>
    <input type="hidden" size="20" maxlength="40" name="in[reporter_name]"
@@ -376,7 +376,7 @@ if (!package_exists($_REQUEST['package'])) {
    <input type="hidden" name="in[did_luser_search]"
     value="<?php echo $_POST['in']['did_luser_search'] ? 1 : 0; ?>" />
 <?php
-if ($auth_user && $auth_user->registered) {
+if (is_logged_in()) {
 ?>
    <input type="text" size="20" maxlength="40" name="in[email]"
     value="<?php echo ($auth_user->showemail) ? $auth_user->email : ($auth_user->handle . '@php.net'); ?>" accesskey="o" />
@@ -477,7 +477,7 @@ if ($auth_user && $auth_user->registered) {
   </td>
  </tr>
 <?php
-if (!($auth_user && $auth_user->registered)) {
+if (!is_logged_in()) {
 ?>
  <tr>
   <th class="form-label_left">

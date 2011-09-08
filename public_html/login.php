@@ -23,7 +23,7 @@
  * To figure out cookies are REALLY off, check to see if the person came
  * from within the PEAR website or just submitted the login form.
  */
-if (!isset($_COOKIE['PHPSESSID']) &&
+if (!isset($_COOKIE[session_name()]) &&
     ((strpos(@$_SERVER['HTTP_REFERER'], @$_GET['redirect']) !== false) ||
      (isset($_POST['PEAR_USER']) && isset($_POST['PEAR_PW']))))
 {
@@ -41,13 +41,16 @@ if (!empty($auth_user)) {
 }
 
 if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_USER'], @$_POST['PEAR_PW'])) {
-    if (!empty($_POST['PEAR_PERSIST'])) {
-        $expire = 2147483647;
-    } else {
-        $expire = 0;
-    }
-    setcookie('PEAR_USER', $_POST['PEAR_USER'], $expire, '/');
-    setcookie('PEAR_PW', md5($_POST['PEAR_PW']), $expire, '/');
+	if (!empty($_POST['PEAR_PERSIST'])) {
+		setcookie('REMEMBER_ME', 1, 2147483647, '/');
+		setcookie(session_name(), session_id(), 2147483647, '/');
+	} else {
+	    $expire = 0;
+	    setcookie('REMEMBER_ME', 0, 2147483647, '/');
+	    setcookie(session_name(), session_id(), null, '/');
+	}
+
+    $_SESSION['PEAR_USER'] = $_POST['PEAR_USER'];
 
     /*
      * Update users lastlogin

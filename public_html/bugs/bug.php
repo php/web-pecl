@@ -61,11 +61,6 @@ if (!empty($_POST['pw'])) {
         $user = rinse($_POST['user']);
     }
     $pw = rinse($_POST['pw']);
-} elseif (isset($_COOKIE['PEAR_USER']) &&
-          isset($_COOKIE['PEAR_PW']) &&
-          $edit == 1) {
-    $user = rinse($_COOKIE['PEAR_USER']);
-    $pw   = rinse($_COOKIE['PEAR_PW']);
 } else {
     $user = '';
     $pw   = '';

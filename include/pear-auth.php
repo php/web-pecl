@@ -54,7 +54,7 @@ function auth_reject($realm = null, $message = null)
         print " <tr>\n";
         print '  <th class="form-label_left">&nbsp;</th>' . "\n";
         print '  <td class="form-input" style="white-space: nowrap">';
-        print '<input type="checkbox" name="PEAR_PERSIST" value="on" id="pear_persist_chckbx" /> ';
+        print '<input type="checkbox" name="PEAR_PERSIST" value="on" id="pear_persist_chckbx" '.((!empty($_COOKIE['REMEMBER_ME']) || !empty($_POST['PEAR_PERSIST']))?'checked="checked " ':'').'/> ';
         print '<label for="pear_persist_chckbx">Remember username and password.</label></td>' . "\n";
         print " </tr>\n";
         print " <tr>\n";
@@ -85,6 +85,7 @@ function auth_reject($realm = null, $message = null)
     exit;
 }
 
+// verify user + pass against the database
 function auth_verify($user, $passwd)
 {
     global $dbh, $auth_user;
@@ -140,6 +141,7 @@ function auth_verify($user, $passwd)
     return false;
 }
 
+// acl check for the given $atom, where true means pear.admin, false pear.dev
 function auth_check($atom)
 {
     global $dbh;
@@ -183,9 +185,7 @@ function auth_require($admin = false)
     global $auth_user;
     $res = true;
 
-    $user = @$_COOKIE['PEAR_USER'];
-    $passwd = @$_COOKIE['PEAR_PW'];
-    if (!auth_verify($user, $passwd)) {
+    if (!is_logged_in()) {
         auth_reject(); // exits
     }
 
@@ -213,15 +213,7 @@ function auth_require($admin = false)
  */
 function auth_logout()
 {
-    if (isset($_COOKIE['PEAR_USER'])) {
-        setcookie('PEAR_USER', '', 0, '/');
-        unset($_COOKIE['PEAR_USER']);
-    }
-    if (isset($_COOKIE['PEAR_PW'])) {
-        setcookie('PEAR_PW', '', 0, '/');
-        unset($_COOKIE['PEAR_PW']);
-    }
-
+	session_unset();
     if ($_SERVER['QUERY_STRING'] == 'logout=1') {
         localRedirect($_SERVER['PHP_SELF']);
     } else {
@@ -230,6 +222,21 @@ function auth_logout()
                                 '', $_SERVER['QUERY_STRING']));
     }
 }
+
+/**
+ * check if the user is logged in
+ */
+function is_logged_in()
+{
+	global $auth_user;
+	if (!$auth_user || !$auth_user->registered) {
+	    return false;
+	}
+	else{
+		return true;
+	}
+}
+
 
 $cvspasswd_file = "/repository/CVSROOT/passwd";
 
@@ -265,30 +272,16 @@ function cvs_verify_password($user, $pass)
 function init_auth_user()
 {
     global $auth_user, $dbh;
-    if (empty($_COOKIE['PEAR_USER']) || empty($_COOKIE['PEAR_PW'])) {
+    if (empty($_SESSION['PEAR_USER'])) {
         $auth_user = null;
         return false;
     }
     if (!empty($auth_user)) {
         return true;
     }
-    $auth_user = new PEAR_User($dbh, $_COOKIE['PEAR_USER']);
-    switch (strlen(@$auth_user->password)) {
-        // handle old-style DES-encrypted passwords
-        case 13: {
-            $seed = substr($auth_user->password, 0, 2);
-            if (crypt($_COOKIE['PEAR_PW'], $seed) == @$auth_user->password) {
-                return true;
-            }
-            break;
-        }
-        // handle new-style MD5-encrypted passwords
-        case 32: {
-            if (md5($_COOKIE['PEAR_PW']) == @$auth_user->password) {
-                return true;
-            }
-            break;
-        }
+    $auth_user = new PEAR_User($dbh, $_SESSION['PEAR_USER']);
+    if (is_logged_in()) {
+        return true;
     }
     $auth_user = null;
     return false;

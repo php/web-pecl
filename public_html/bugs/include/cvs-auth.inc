@@ -21,15 +21,7 @@ function find_password($user) {
 }
 
 function verify_password($user, $pass) {
-    return isset($_COOKIE['PEAR_USER']);
-	global $ignore_password;
-	$psw = find_password($user);
-	if (strlen($psw) > 0) {
-		if ($ignore_password || crypt($pass,substr($psw,0,2)) == $psw) {
-			return true;
-		}
-	}
-	return false;
+    return isset($_SESSION['PEAR_USER']);
 }
 
 ?>

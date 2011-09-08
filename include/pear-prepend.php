@@ -70,7 +70,7 @@ function get($name)
         return "";
     }
 }
-    
+
 if (empty($dbh)) {
     $options = array(
         'persistent' => false,
@@ -92,23 +92,19 @@ if (!isset($pear_rest)) {
 $tmp = filectime($_SERVER['SCRIPT_FILENAME']);
 $LAST_UPDATED = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';
 
+// set the session cookie lifetime to 2038 (this is the old behaviour, maybe we should change it to something shorter :))
+if(!empty($_COOKIE['REMEMBER_ME'])){
+	call_user_func_array('session_set_cookie_params', array_merge(session_get_cookie_params(), array('lifetime' => time()+86400)));
+}
+else{
+	call_user_func_array('session_set_cookie_params', array_merge(session_get_cookie_params(), array('lifetime' => null)));
+}
+
+session_start();
+init_auth_user();
 if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
     auth_logout();
 }
-
-if (!empty($_COOKIE['PEAR_USER']) && !@auth_verify($_COOKIE['PEAR_USER'], $_COOKIE['PEAR_PW'])) {
-    $__user = $_COOKIE['PEAR_USER'];
-    setcookie('PEAR_USER', '', 0, '/');
-    unset($_COOKIE['PEAR_USER']);
-    setcookie('PEAR_PW', '', 0, '/');
-    unset($_COOKIE['PEAR_PW']);
-    $msg = "Invalid username ($__user) or password";
-    if ($format == 'html') {
-        $msg .= " <a href=\"/?logout=1\">[logout]</a>";
-    }
-    auth_reject(null, $msg);
-}
-
 if (!function_exists('file_get_contents')) {
     function file_get_contents($file, $use_include_path = false) {
         if (!$fp = fopen($file, 'r', $use_include_path)) {
@@ -128,8 +124,6 @@ if (!function_exists('file_put_contents')) {
         fclose($fp);
     }
 }
-
-session_start();
 
 /**
 * Browser detection

@@ -53,17 +53,21 @@ if (empty($_REQUEST['edit']) || !(int)$_REQUEST['edit']) {
 } else {
     $edit = (int)$_REQUEST['edit'];
 }
-
-if (!empty($_POST['pw'])) {
-    if (empty($_POST['user'])) {
-        $user = '';
+if (!isset($auth_user)) {
+    if (!empty($_POST['pw'])) {
+        if (empty($_POST['user'])) {
+            $user = '';
+        } else {
+            $user = rinse($_POST['user']);
+        }
+        $pw = rinse($_POST['pw']);
     } else {
-        $user = rinse($_POST['user']);
+        $user = '';
+        $pw   = '';
     }
-    $pw = rinse($_POST['pw']);
 } else {
-    $user = '';
-    $pw   = '';
+    $user = $auth_user->handle;
+    $pw = $auth_user->password;
 }
 
 

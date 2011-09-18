@@ -10,7 +10,7 @@ function find_password($user) {
 	$fp=fopen($passwd_file,"r");
 	while(!feof($fp)) {
 		$line=fgets($fp,120);
-		list($luser,$passwd,$junk) = explode(":",$line);
+		list($luser,$passwd,) = explode(":",$line);
 		if($user==$luser) {
 			fclose($fp);
 			return($passwd);

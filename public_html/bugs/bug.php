@@ -53,24 +53,28 @@ if (empty($_REQUEST['edit']) || !(int)$_REQUEST['edit']) {
 } else {
     $edit = (int)$_REQUEST['edit'];
 }
-if (!isset($auth_user)) {
-    if (!empty($_POST['pw'])) {
-        if (empty($_POST['user'])) {
-            $user = '';
-        } else {
-            $user = rinse($_POST['user']);
-        }
-        $pw = rinse($_POST['pw']);
-    } else {
-        $user = '';
-        $pw   = '';
-    }
+
+if ($edit == 1) {
+    auth_require();
 } else {
-    $user = $auth_user->handle;
-    $pw = $auth_user->password;
+    if (!isset($auth_user)) {
+        if (!empty($_POST['pw'])) {
+            if (empty($_POST['user'])) {
+                $user = '';
+            } else {
+                $user = rinse($_POST['user']);
+            }
+            $pw = rinse($_POST['pw']);
+        } else {
+            $user = '';
+            $pw   = '';
+        }
+    } else {
+        $user = $auth_user->handle;
+        $pw = $auth_user->password;
+    }
+
 }
-
-
 // fetch info about the bug into $bug
 $query = 'SELECT b.id, b.package_name, b.bug_type, b.email,
         b.passwd, b.sdesc, b.ldesc, b.php_version, b.php_os,
@@ -230,7 +234,7 @@ if ($_POST['in'] && $edit == 3) {
 } elseif ($_POST['in'] && $edit == 1) {
     // Edits submitted by developer
 
-    if (!verify_password($user, $pw)) {
+    if (!isset($auth_user) && !verify_password($user, $pw)) {
         $errors[] = "You have to login first in order to edit the bug report.";
         $errors[] = 'Tip: log in via another browser window then resubmit the form in this window.';
     }

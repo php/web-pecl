@@ -10,7 +10,7 @@ class pear_rest
     function saveAllCategoriesREST()
     {
         require_once 'System.php';
-        global $dbh;
+
         $extra = '/rest/';
         $cdir = $this->_restdir . DIRECTORY_SEPARATOR . 'c';
         if (!is_dir($cdir)) {

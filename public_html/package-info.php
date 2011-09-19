@@ -19,23 +19,23 @@
    $Id$
 */
 
-require_once "Damblan/URL.php";
-$site = new Damblan_URL;
+$package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
+$version = filter_input(INPUT_GET, 'version', FILTER_SANITIZE_STRING);
+$relid = filter_input(INPUT_GET, FILTER_VALIDATE_INT);
 
-// {{{ setup, queries
-
-$params = array("package|pacid" => "", "version" => "");
-$site->getElements($params);
-
-$pacid = htmlspecialchars($params['package|pacid'],ENT_QUOTES);
-
-// Package data
-if (!empty($pacid)) {
-    $pkg = package::info($pacid);
+if (!$package) {
+    $_SERVER['REDIRECT_URL'] = $_SERVER['REQUEST_URI'];
+    include 'error/404.php';
+    exit();
 }
 
-$version = htmlspecialchars($params['version'], ENT_QUOTES);
-$relid = null;
+if (is_numeric($package)) {
+    $package = (int)$package;
+}
+
+// Package data
+$pkg = package::info($package);
+
 if (!empty($version)) {
     foreach ($pkg['releases'] as $ver => $release) {
         if ($ver == $version) {
@@ -43,11 +43,9 @@ if (!empty($version)) {
             break;
         }
     }
-} else {
-    $relid = (isset($_GET['relid'])) ? (int) $_GET['relid'] : null;
 }
 
-if (empty($pacid) || !isset($pkg['name'])) {
+if (empty($package) || !isset($pkg['name'])) {
     // Let's see if $pacid is a PEAR package
     if (!isset($pkg['name'])) {
         $pkg_name = package::info($pacid, 'name', true);

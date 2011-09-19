@@ -234,11 +234,6 @@ if ($_POST['in'] && $edit == 3) {
 } elseif ($_POST['in'] && $edit == 1) {
     // Edits submitted by developer
 
-    if (!isset($auth_user) && !verify_password($user, $pw)) {
-        $errors[] = "You have to login first in order to edit the bug report.";
-        $errors[] = 'Tip: log in via another browser window then resubmit the form in this window.';
-    }
-
     if (empty($_POST['ncomment'])) {
         $ncomment = '';
     } else {

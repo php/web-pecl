@@ -1,6 +1,6 @@
 <?php
 /*
- * Drop all accounts not active in any package and not having a SVN account
+ * Drop all karma not used by pecl and migrate pecl/pear.* to * only
  * Author: pierre@php.net
  */
 /* $Id: cleanup_user.php 292139 2009-12-14 20:12:55Z pajoye $ */

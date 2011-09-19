@@ -54,8 +54,6 @@ class Damblan_Karma {
      * @return boolean
      */
     function has($user, $level) {
-        $levels = array();
-
         switch ($level) {
         case "pear.pepr" :
         	$levels = array("pear.pepr", "pear.user", "pear.dev", "pear.admin", "pear.group" );

@@ -14,7 +14,7 @@ function rm_rf($path)
 {
     // Some sanity checks
     if (empty($path)) {
-        return;
+        return false;
     }
     if (@is_dir($path) && is_writable($path)) {
         $dp = opendir($path);

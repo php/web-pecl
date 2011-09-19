@@ -265,11 +265,7 @@ if ($_POST['in'] && $edit == 3) {
         }
     }
 
-    $query = "SELECT email FROM users WHERE handle = '" . escapeSQL($user) . "'";
-    $from =& $dbh->getOne($query);
-    if (!$from) {
-        $from = $user . '@php.net';
-    }
+    $from = $auth_user->email;
 
     if (!$errors && !($errors = incoming_details_are_valid($_POST['in']))) {
         $query = 'UPDATE bugdb SET';

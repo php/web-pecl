@@ -21,14 +21,8 @@
 /**
  * Details about PEAR accounts
  */
-require_once "Damblan/URL.php";
-$site = new Damblan_URL();
 
-$params = array("handle" => "");
-$site->getElements($params);
-
-$handle = $params['handle'];
-
+$handle = filter_input(INPUT_GET, 'handle', FILTER_SANITIZE_STRING);
 /**
  * Redirect to the accounts list if no handle was specified
  */

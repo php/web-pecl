@@ -18,7 +18,6 @@ installed in /usr/share/pear):
  ErrorDocument 404 /error/404.php
 
  Alias /package /usr/local/www/pearweb/public_html/package-info.php
- Alias /user    /usr/local/www/pearweb/public_html/account-info.php
 
  RewriteEngine On
  RewriteRule   /download-docs.php    /manual/index.php [R=301]
@@ -28,6 +27,11 @@ installed in /usr/share/pear):
  # Rewriting rules for the RSS feeds
  #
  RewriteRule   /feeds/(.+)\.rss$ /feeds/feeds.php?type=$1
+
+ #
+ # Rewriting rules for the account info /user/handle
+ #
+ RewriteRule   /user/(.+)$ /account-info.php?handle=$1
 
  <Location /get>
   ForceType application/x-httpd-php

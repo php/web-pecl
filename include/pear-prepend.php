@@ -19,10 +19,6 @@
 */
 require_once "pear-config.php";
 
-if (substr($_SERVER['PHP_SELF'], 0, 7) == '/manual') {
-    require_once "pear-manual.php";
-}
-
 // silence the strict and deprecated errors for now
 if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
         error_reporting(E_ALL&~E_STRICT&~E_DEPRECATED);

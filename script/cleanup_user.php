@@ -11,7 +11,7 @@ $svn_accounts = json_decode(file_get_contents(SVN_USERLIST), true);
 
 $dh = new PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
 
-$sql = 'select handle from users  where handle NOT IN (select handle from maintains)';
+$sql = 'select handle from users  where and registered=1 handle NOT IN (select handle from maintains)';
 $res = $dh->query($sql);
 $sql_del = 'DELETE FROM users WHERE handle=';
 $del = 0;
@@ -22,4 +22,3 @@ foreach ($res as $row) {
 	}
 }
 echo "$del accounts deleted.\n";
-

@@ -18,7 +18,7 @@
    $Id$
 */
 
-auth_require('pear.dev');
+auth_require('developer');
 
 define('HTML_FORM_MAX_FILE_SIZE', 16 * 1024 * 1024); // 16 MB
 define('HTML_FORM_TH_ATTR', 'class="form-label_left"');

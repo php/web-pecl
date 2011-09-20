@@ -55,36 +55,17 @@ class Damblan_Karma {
      */
     function has($user, $level) {
         switch ($level) {
-        case "pear.pepr" :
-        	$levels = array("pear.pepr", "pear.user", "pear.dev", "pear.admin", "pear.group" );
+
+        case "developer" :
+            $levels = array("developer", "admin");
             break;
 
-        case "pear.pepr.admin" :
-            $levels = array("pear.admin", "pear.group", "pear.pepr.admin");
+        case "admin" :
+            $levels = array("admin");
             break;
 
-        case "pear.user" :
-            $levels = array("pear.user", "pear.pepr", "pear.dev", "pear.admin", "pear.group");
-            break;
-
-        case "pear.dev" :
-            $levels = array("pear.dev", "pear.admin", "pear.group");
-            break;
-
-        case "pear.admin" :
-            $levels = array("pear.admin", "pear.group");
-            break;
-
-        case "pear.group" :
-            $levels = array("pear.group");
-            break;
-
-        case "global.karma.manager" :
-            $levels = array("pear.group");
-            break;
-
-        case "doc.chm-upload" :
-            $levels = array("pear.doc.chm-upload", "pear.group");
+        case "karma.manager" :
+            $levels = array("karma.manager");
             break;
 
         default :

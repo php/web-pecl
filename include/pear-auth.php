@@ -132,7 +132,7 @@ function auth_verify($user, $passwd)
     }
     if ($ok) {
         $auth_user->_readonly = true;
-        return auth_check("pear.user");
+        return auth_check("developer");
     }
     if ($error) {
         error_log("$error\n", 3, PEAR_TMPDIR . DIRECTORY_SEPARATOR . 'pear-errors.log');
@@ -141,7 +141,7 @@ function auth_verify($user, $passwd)
     return false;
 }
 
-// acl check for the given $atom, where true means pear.admin, false pear.dev
+// acl check for the given $atom, where true means admin, false developer
 function auth_check($atom)
 {
     global $dbh;
@@ -159,14 +159,14 @@ function auth_check($atom)
     // Check for backwards compatibility
     if (is_bool($atom)) {
         if ($atom == true) {
-            $atom = "pear.admin";
+            $atom = "admin";
         } else {
-            $atom = "pear.dev";
+            $atom = "developer";
         }
     }
 
-    // every authenticated user has the pear.user and pear.dev karma
-    if (in_array($atom, array("pear.user", "pear.dev"))) {
+    // every authenticated user has the developer karma
+    if (in_array($atom, array("developer"))) {
         return true;
     }
 

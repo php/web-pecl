@@ -588,7 +588,7 @@ class pear_rest
         require_once 'Damblan/Karma.php';
         $karma = &new Damblan_Karma($GLOBALS['dbh']);
         foreach ($maintainers as $maintainer) {
-            if (!$karma->has($maintainer['handle'], 'pear.dev')) {
+            if (!$karma->has($maintainer['handle'], 'developer')) {
                 continue;
             }
             $info .= ' <h xlink:href="/rest/m/' . $maintainer['handle'] . '">' .

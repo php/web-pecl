@@ -218,7 +218,7 @@ class LinePlot extends Plot{
 	if( $this->step_style ) $factor = 2;
 	$this->csimareas="";
 	for($i=$adjust; $i<count($cord)/$factor-$adjust; $i+=2) {
-	  if( is_numeric($this->coords[0][($i-$adjust)/2]) ) {
+	  if( is_numeric($this->coords[0][(int)(($i-$adjust)/2)]) ) {
 	    $xt=$cord[$i*$factor];
 	    $yt=$cord[$i*$factor+1];
             if( !empty($this->csimtargets[$i]) ) {

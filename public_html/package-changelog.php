@@ -18,11 +18,16 @@
    $Id$
 */
 
-// expected url vars: pacid package
-if (isset($_GET['package']) && empty($_GET['pacid'])) {
-    $pacid = $_GET['package'];
-} else {
-    $pacid = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
+$pacid = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
+if (!$pacid) {
+    $pacid = filter_input(INPUT_GET, 'pacid', FILTER_SANITIZE_STRING);
+}
+
+if (!$pacid) {
+    response_header("Error");
+    PEAR::raiseError('Invalid package');
+    response_footer();
+    exit();
 }
 
 $pkg = package::info($pacid);

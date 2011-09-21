@@ -124,7 +124,7 @@ function version_compare_firstelem($a, $b)
 // }}}
 
 // These classes correspond to tables and methods define operations on
-// each.  They are packaged into classes for easier xmlrpc
+// each.  They are packaged into classes for easier rest
 // integration.
 
 /**

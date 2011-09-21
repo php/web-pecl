@@ -40,15 +40,7 @@ if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
 
 require_once "PEAR.php";
 
-if (empty($format)) {
-    if (basename($_SERVER['PHP_SELF']) == "xmlrpc.php") {
-        $format = "xmlrpc";
-    } else {
-        $format = "html";
-    }
-}
-
-include_once "pear-format-$format.php";
+include_once "pear-format-html.php";
 
 include_once "DB.php";
 include_once "DB/storage.php";

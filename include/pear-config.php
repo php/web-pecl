@@ -88,4 +88,4 @@ define('PEAR_CHANNELNAME', 'pecl.php.net');
 
 define('DAMBLAN_RSS_CACHE_DIR', PEAR_TMPDIR . '/rss_cache');
 define('DAMBLAN_RSS_CACHE_TIME', 1800);
-define('SVN_USERLIST', '/home/www/pecl.php.net/data/svnusers.json');
+define('SVN_USERLIST', '/home/pierre/public_html/pecl/data/svnusers.json');

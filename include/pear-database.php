@@ -1358,7 +1358,7 @@ class maintainer
     function updateAll($pkgid, $users)
     {
 
-        global $dbh, $auth_user;
+        global $auth_user;
 
         $admin = $auth_user->isAdmin();
 
@@ -2268,7 +2268,7 @@ Authors
         if (PEAR::isError($sth)) {
             return false;
         } else {
-            return true;
+            return $success;
         }
     }
 

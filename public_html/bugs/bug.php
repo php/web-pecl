@@ -849,7 +849,7 @@ function delete_comment($id, $com_id)
 {
     global $dbh;
     $query = 'DELETE FROM bugdb_comments WHERE bug='.(int)$id.' AND id='.(int)$com_id;
-    $res =& $dbh->query($query);
+    $dbh->query($query);
 }
 
 function control($num, $desc)

@@ -309,7 +309,7 @@ function bugstats($status, $name)
 
 function sort_url($name)
 {
-    global $sort_by, $rev, $category, $developer, $titles;
+    global $sort_by, $category, $developer, $titles;
 
     if ($name == $sort_by) {
         $reve = ($rev == 1) ? 0 : 1;

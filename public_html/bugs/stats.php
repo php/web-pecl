@@ -312,6 +312,7 @@ function sort_url($name)
     global $sort_by, $category, $developer, $titles;
 
     if ($name == $sort_by) {
+        global $rev;
         $reve = ($rev == 1) ? 0 : 1;
     } else {
         $reve = 1;

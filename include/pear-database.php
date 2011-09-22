@@ -642,7 +642,7 @@ class package
                                $pinfo['package'] . '-' . $ver);
         } else {
             reset($info);
-            list($ver, $release) = each($info);
+            list($ver, ) = each($info);
             return array('version' => $ver,
                          'info' => package::getPackageFile($dependency['name'], $ver));
         }

@@ -922,8 +922,6 @@ function get_old_comments($bug_id, $all = 0)
     } else {
         return ("\n\nPrevious Comments:\n$divider\n\n" . $output . "The remainder of the comments for this report are too long. To view\nthe rest of the comments, please view the bug report online at\n    http://$site.php.net/bugs/bug.php?id=$bug_id\n");
     }
-
-    return '';
 }
 
 /**
@@ -972,7 +970,7 @@ function package_exists($type)
  */
 function incoming_details_are_valid($in, $initial = 0, $logged = false)
 {
-    global $bug, $dbh, $types;
+    global $bug, $types;
 
     if (!empty($in['sdesc']) && strcasecmp($in['sdesc'],'None') == 0) {
 		exit('.');
@@ -1034,8 +1032,7 @@ function incoming_details_are_valid($in, $initial = 0, $logged = false)
  */
 function get_package_mail($package_name, $bug_id=false)
 {
-    global $site, $bugEmail, $dbh;
-    global $user;
+    global $bugEmail;
 
     switch ($package_name) {
         case 'Bug System':
@@ -1114,7 +1111,7 @@ function format_search_string($search)
  */
 function show_bugs_menu($pkgname, $status = null)
 {
-    global $dbh, $pseudo_pkgs;
+    global $pseudo_pkgs;
 
     if (empty($pkgname)) {
         return;

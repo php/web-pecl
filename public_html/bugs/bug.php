@@ -826,7 +826,7 @@ response_footer();
 
 function output_note($com_id, $ts, $email, $comment, $showemail = 1, $handle = null)
 {
-    global $edit, $id, $trusted_developers, $user, $dbh;
+    global $edit, $id, $trusted_developers, $user;
 
     echo '<div class="comment">';
     echo "<strong>[",format_date($ts),"] ";

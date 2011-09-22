@@ -2479,8 +2479,6 @@ class user
         if ($field === null) {
             return $dbh->getRow('SELECT * FROM users WHERE handle = ?',
                                 array($user), DB_FETCHMODE_ASSOC);
-            unset($row['password']);
-            return $row;
         }
         if ($field == 'password' || preg_match('/[^a-z]/', $user)) {
             return null;

@@ -36,7 +36,7 @@ installed in /usr/share/pear):
  # rule for account info /package/pkgname/version
  RewriteRule   /package/(.+)/(.+)$ /package-info.php?package=$1&version=$2
  RewriteRule   /package/(.+)([^/]?)$ /package-info.php?package=$1
- RewriteRule   /packages/(.+)$ /packages.php?cat=$1
+ RewriteRule   /packages/(.+)$ /packages.php?category=$1
 
 
  <Location /get>

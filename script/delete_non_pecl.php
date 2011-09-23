@@ -96,6 +96,10 @@ if (!$only_db) {
         }
 
     }
+
+    /* Update category pkg counters */
+    $sql = 'update categories set npackages=(select count(id) from packages where category=categories.id);';
+    $res = $dh->query($sql);
 }
 
 $sql = '

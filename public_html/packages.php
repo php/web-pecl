@@ -32,29 +32,6 @@ require_once('HTML/Table.php');
 require_once('Pager/Pager.php');
 require_once('Net/URL.php');
 
-/**
-* Returns an appropriate query string
-* for a self referencing link
-*/
-function getQueryString($catname, $showempty = false, $moreinfo = false)
-{
-    $querystring = '/packages';
-
-    if ($catname) {
-        $querystring .= '/' . urldecode($catname);
-    }
-
-    if ($showempty) {
-        $querystring .= '?showempty=1';
-    }
-
-    if ($moreinfo) {
-        $querystring .= ($showempty ? '&' : '?' ). 'moreinfo=1';
-    }
-
-    return $querystring;
-}
-
 $category_name = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING);
 $category_name = preg_replace('/[^a-z0-9]/i', '', $category_name);
 

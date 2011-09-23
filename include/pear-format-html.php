@@ -37,7 +37,7 @@ $GLOBALS['docu_menu'] = array(
 );
 
 $GLOBALS['downloads_menu'] = array(
-    '/packages'        => 'Browse Packages',
+    '/packages/'        => 'Browse Packages',
     '/package-search.php'  => 'Search Packages',
     '/package-stats.php'   => 'Download Statistics'
 );

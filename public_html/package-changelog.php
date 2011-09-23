@@ -17,6 +17,7 @@
    +----------------------------------------------------------------------+
    $Id$
 */
+include PECL_INCLUDE_DIR . '/pear-database-package.php';
 
 $pacid = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 if (!$pacid) {

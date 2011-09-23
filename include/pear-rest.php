@@ -1,4 +1,7 @@
 <?php
+
+include PECL_INCLUDE_DIR . '/pear-database-category.php';
+
 class pear_rest
 {
     var $_restdir;

@@ -19,6 +19,8 @@
    $Id$
 */
 
+include PECL_INCLUDE_DIR . '/pear-database-category.php';
+
 /**
 * Searches for packages matching various user definable
 * criteria including:

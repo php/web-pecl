@@ -21,8 +21,7 @@
 require_once "pear-config.php";
 require_once "pear-debug.php";
 require_once "pear-database.php";
+include PECL_INCLUDE_DIR . '/pear-database-category.php';
 
 $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => true));
 renumber_visitations(true);
-
-?>

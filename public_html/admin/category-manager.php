@@ -19,6 +19,7 @@
 */
 
 auth_require(true);
+include PECL_INCLUDE_DIR . '/pear-database-category.php';
 
 /**
  * TODO

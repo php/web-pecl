@@ -10,6 +10,8 @@
 set_include_path(dirname(__FILE__) . '/include' . PATH_SEPARATOR . get_include_path());
 ob_start();
 require_once "pear-config.php";
+include PECL_INCLUDE_DIR . '/pear-database-category.php';
+
 if ($_SERVER['SERVER_NAME'] != PEAR_CHANNELNAME) {
     error_reporting(E_ALL);
     define('DEVBOX', true);

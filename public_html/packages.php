@@ -55,10 +55,6 @@ function getQueryString($catname, $showempty = false, $moreinfo = false)
     return $querystring;
 }
 
-/*
- * Check input variables
- * Expected url vars: catpid (category parent id), catname, showempty
- */
 $category_name = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING);
 $category_name = preg_replace('/[^a-z0-9]/i', '', $category_name);
 

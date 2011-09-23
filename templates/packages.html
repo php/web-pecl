@@ -5,15 +5,21 @@
 <?php foreach ($categories as $category) {?>
     <li id="category-<?php echo $category['id']; ?>">
         <h3>
-            <a href="<?php echo getQueryString($category['name']);?>">
+            <a href="/packages/<?php echo urlencode($category['name']);?>">
                 <span class="category-title"><?php echo $category['name']; ?></span>
                 <span class="category-count"><?php echo $category['npackages']; ?></span>
             </a>
         </h3>
         <div>
-            <?php foreach ($category_subcategory[$category['name']] as $sub_category) { ?>
-            <a href="<?php echo getQueryString($sub_category['name']);?>" class="category-sub-category" title=""><?php echo $sub_category['name']; ?></a>,
-            <?php } ?>
+            <?php
+            if (count($category_subcategory[$category['name']])>0) {
+                foreach ($category_subcategory[$category['name']] as $sub_category) {
+            ?>
+                <a href="/packages/<?php echo urlencode($sub_category['name']);?>" class="category-sub-category" title=""><?php echo $sub_category['name']; ?></a>&nbsp;&nbsp;
+            <?php }
+                echo '<br />';
+            }
+            ?>
             <?php $count = 10; foreach ($category_package[$category['name']] as $pkg) { ?>
             <a href="/package/<?php echo $pkg['name']; ?>" class="category-package"><?php echo $pkg['name']; ?></a>
             <?php

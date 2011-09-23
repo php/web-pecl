@@ -27,11 +27,6 @@
 $template_dir = __DIR__ . '/../templates/';
 $script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
-
-require_once('HTML/Table.php');
-require_once('Pager/Pager.php');
-require_once('Net/URL.php');
-
 $category_name = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING);
 $category_name = preg_replace('/[^a-z0-9]/i', '', $category_name);
 

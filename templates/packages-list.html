@@ -46,6 +46,7 @@
         <div class="package-more-info">
             <table class="package-data">
                 <tbody>
+<?php  if (!empty($pkg['status'])) {?>
                 <tr>
                     <th>Status:</th>
                     <td><?php echo $pkg['version']; ?> (<span class="package-stable"><?php echo $pkg['status']; ?></span>) released on <abbr class="date"
@@ -53,6 +54,7 @@
                     </td>
 
                 </tr>
+<?php } ?>
                 <tr>
                     <th>License:</th>
                     <td><span class="package-license-good"><a href="http://www.php.net/license"><?php echo $pkg['license']; ?></a></span>
@@ -60,7 +62,7 @@
                 </tr>
                 <tr>
                     <th>Releases:</th>
-                    <td><?php echo ($pkg['numreleases'] == 0 ? 'Yes' : 'No'); ?> </td>
+                    <td><?php echo ($pkg['numreleases'] > 0 ? 'Yes' : 'No'); ?> </td>
                 </tr>
                 <tr>
                     <th>Maintained:</th>

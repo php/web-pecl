@@ -13,15 +13,9 @@
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
-   | Authors: Richard Heyes                                               |
+   | Authors: Pierre Joye                                                 |
    +----------------------------------------------------------------------+
    $Id$
-*/
-
-/**
-* TODO
-* o Number of packages in brackets does not include packages in subcategories
-* o Make headers in package list clickable for ordering
 */
 
 $template_dir = __DIR__ . '/../templates/';

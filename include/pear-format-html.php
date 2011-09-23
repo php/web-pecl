@@ -37,7 +37,7 @@ $GLOBALS['docu_menu'] = array(
 );
 
 $GLOBALS['downloads_menu'] = array(
-    '/packages.php'        => 'Browse Packages',
+    '/packages'        => 'Browse Packages',
     '/package-search.php'  => 'Search Packages',
     '/package-stats.php'   => 'Download Statistics'
 );
@@ -199,7 +199,7 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
 
 function response_footer($style = false)
 {
-    global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES,$SCRIPT_NAME, $RSIDEBAR_DATA;
+    global $LAST_UPDATED, $RSIDEBAR_DATA;
 
     static $called;
     if ($called) {
@@ -522,7 +522,7 @@ class BorderBox {
 */
 function html_category_urhere($id, $link_lastest = false)
 {
-    $html = "<a href=\"/packages.php\">Top Level</a>";
+    $html = '<a href="/packages/">Top Level</a>';
     if ($id !== null) {
         global $dbh;
         $res = $dbh->query("SELECT c.id, c.name
@@ -623,7 +623,7 @@ function display_user_notes($user, $width = '50%')
                 "WHERE uid = ? ORDER BY ntime", true, array($user));
     if (!empty($notes)) {
         print "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
-        foreach ($notes as $nid => $data) {
+        foreach ($notes as $data) {
         print " <tr>\n";
         print "  <td>\n";
         print "   <b>{$data['nby']} {$data['ntime']}:</b>";

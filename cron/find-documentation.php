@@ -91,7 +91,7 @@ function readFolder($folder) {
                     }
                 }
 
-                $res = $dbh->execute($update, array($url, $matches1[1]));
+                $dbh->execute($update, array($url, $matches1[1]));
             }
         }
     }

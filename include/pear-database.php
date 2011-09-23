@@ -441,7 +441,7 @@ class package
             return false;
         }
         $found = false;
-        $release = false;
+
         foreach ($info as $ver => $release) {
             if ($installed && version_compare($ver, $installed, '<')) {
                 continue;
@@ -471,7 +471,7 @@ class package
                                $package . '-' . $ver);
         } else {
             reset($info);
-            list($ver, $release) = each($info);
+            list($ver, ) = each($info);
             return array('version' => $ver,
                          'info' => package::getPackageFile($packageinfo['package'], $ver));
         }
@@ -592,7 +592,7 @@ class package
             }
         }
         $found = false;
-        $release = false;
+
         foreach ($info as $ver => $release) {
 
             if (in_array($ver, $exclude)) { // skip excluded versions
@@ -2121,7 +2121,7 @@ class release
         if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
             return;
         }
-        $pacid   = package::info($pkginfo['package'], 'packageid');
+
         $authors = package::info($pkginfo['package'], 'authors');
         $txt_authors = '';
         foreach ($authors as $a) {
@@ -2175,7 +2175,7 @@ END;
         if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
             return;
         }
-        $pacid   = package::info($pkginfo->getPackage(), 'packageid');
+
         $authors = package::info($pkginfo->getPackage(), 'authors');
         $txt_authors = '';
         foreach ($authors as $a) {

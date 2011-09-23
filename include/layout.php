@@ -162,6 +162,5 @@ function make_bug_link($package, $type = 'list', $linktext = false) {
             }
             return make_link("/bugs/report.php?package=$package", $linktext);
     }
-
 }
 ?>

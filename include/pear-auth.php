@@ -21,9 +21,7 @@
 function auth_reject($realm = null, $message = null)
 {
     global $format;
-    if ($realm === null) {
-        $realm = PEAR_AUTH_REALM;
-    }
+
     if ($message === null) {
         $message = "Please enter your username and password:";
     }
@@ -178,7 +176,6 @@ function auth_check($atom)
 
 function auth_require($admin = false)
 {
-    global $auth_user;
     $res = true;
 
     if (!is_logged_in()) {

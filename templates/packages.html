@@ -1,188 +1,29 @@
-<script language="JavaScript" type="text/javascript">
-<!--
-	function toggleMoreInfo(packageName, packageID)
-	{
-		if (!document.getElementById) {
-			location.href = '/package/' + packageName;
-			return;
-		}
-
-		var rowLayer = document.getElementById('moreInfo_' + packageID);
-		var rowSpacerLayer = document.getElementById('moreInfo_' + packageID + '_spacer');
-		
-		newDisplay = rowLayer.style.display == 'none' ? 'inline' : 'none';
-		rowLayer.style.display       = newDisplay;
-		rowSpacerLayer.style.display = newDisplay;
-	}
-//-->
-</script>
-
-<style type="text/css">
-<!--
-	.eInfo_label {
-		font-weight: bold;
-		font-size: 80%;
-	}
-// -->
-</style>
-
-<table border="0" width="100%">
-    <tr>
-        <th valign="top" align="left">
-            Contents of :: <?php html_category_urhere($catpid, false); ?>
-        </th>
-        <td valign="top" align="right">
-            <?php echo $showempty_link; ?>
-        </td>
-    </tr>
-</table>
-
-<?php if($nrow) { ?>
-	<?php echo $table->toHtml(); ?>
+<div class="packages-header">
+    <h2 class="category-title">Packages <span class="category-package-count">(<?php echo $total_packages; ?>)</span></h2>
+</div>
+<ul class="categories">
+<?php foreach ($categories as $category) {?>
+    <li id="category-<?php echo $category['id']; ?>">
+        <h3>
+            <a href="<?php echo getQueryString($category['name']);?>">
+                <span class="category-title"><?php echo $category['name']; ?></span>
+                <span class="category-count"><?php echo $category['npackages']; ?></span>
+            </a>
+        </h3>
+        <div>
+            <?php foreach ($category_subcategory[$category['name']] as $sub_category) { ?>
+            <a href="<?php echo getQueryString($sub_category['name']);?>" class="category-sub-category" title=""><?php echo $sub_category['name']; ?></a>,
+            <?php } ?>
+            <?php $count = 10; foreach ($category_package[$category['name']] as $pkg) { ?>
+            <a href="/package/<?php echo $pkg['name']; ?>" class="category-package"><?php echo $pkg['name']; ?></a>
+            <?php
+                if ($count-- < 1) {
+                    echo "...";
+                    break;
+                }
+            ?>
+            <?php } ?>
+        </div>
+    </li>
 <?php } ?>
-
-<?php if($catpid and $packages) { ?>
-
-	<br />
-
-	<?php if ($subCategories) { ?>
-		Sub-categories: <?php echo $subCategories; ?><br /><br />
-	<?php } ?>
-
-	<style type="text/css">
-	<!--
-	th.pkgListHeader {
-		background-color: #cccccc;
-	}
-	
-	td.tableHeader {
-		background-color: #cccccc;
-		border-bottom: 1px solid black;
-		font-weight: bold;
-	}
-	
-	td.moreInfo {
-		background-color: #f0f0f0;
-		border: 1px dashed #c0c0c0;
-		position: relative;
-	}
-	
-	.closeButton {
-		border: 2px white outset;
-		background-color: #c0c0c0;
-	}
-	
-	.moreInfoHeader {
-		background-color: #dddddd;
-		border-bottom: 1px dashed #c0c0c0;
-	}
-
-	.moreInfoText {
-		font-size: 80%;
-		font-weight: bold;
-		font-family: Verdana;
-		padding-left: 5px;
-	}
-	// -->
-	</style>
-
-
-	<a href="<?php echo $hideMoreInfoLink; ?>" title="Hide all more info"><img src="gifs/moreinfo-no.gif" width="17" height="17" border="0" vspace="3" /></a>
-	<a href="<?php echo $showMoreInfoLink; ?>" title="Show all more info"><img src="gifs/moreinfo-yes.gif" width="17" height="17" border="0" vspace="3" /></a>
-	
-	<table border="0" style="border: solid 1px black" cellspacing="0" cellpadding="0">
-		<tr>
-			<td>
-				<table border="0" width="100%" cellspacing="0">
-					<tr class="tableHeader">
-						<td class="tableHeader" width="50" align="left">&nbsp;<?php echo $prev; ?></td>
-						<td class="tableHeader" align="center">Packages (<?php echo $first; ?> - <?php echo $last; ?> of <?php echo $total; ?>)</td>
-						<td class="tableHeader" width="50" align="right"><?php echo $next; ?>&nbsp;</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		
-		<tr>
-			<td>
-				<table border="0" id="packageList">
-					<tr>
-						<th class="pkgListHeader">#</td>
-						<th class="pkgListHeader"><nobr>Package name</nobr></td>
-						<th class="pkgListHeader">Description</td>
-						<td>&nbsp;</td>
-					</tr>
-				
-					<?php foreach($packages as $p) { ?>
-						<tr>
-							<td valign="top"><?php echo ($first++); ?></td>
-							<td valign="top"><a href="/package/<?php echo $p['name']; ?>"><strong><?php echo $p['name']; ?></strong></td>
-							<td valign="top"><?php echo $p['summary']; ?></td>
-							<td valign="top">
-								<?php if($_browser->is_ie5up) { ?>
-									<a href="#" onclick="toggleMoreInfo(<?php echo "'".$p['name']."'"; ?>,<?php echo $p['id']; ?>); return false" onmouseover="window.status = 'View more info about <?php echo $p['name']; ?>'; return true" onmouseout="window.status = ''" title="View more info about <?php echo $p['name']; ?>">
-										<img src="gifs/moreinfo.gif" border="0" />
-									</a>
-								<?php } ?>
-							</td>
-						</tr>
-						
-						<tr <?php if($_browser->is_ie5up || $defaultMoreInfoVis == 'none') { ?> style="display: <?php echo $defaultMoreInfoVis; ?>" <?php } ?> id="moreInfo_<?php echo $p['id']; ?>">
-							<td>&nbsp;</td>
-							
-							<td colspan="3" class="moreInfo">
-								<table border="0" class="moreInfoHeader" width="100%" cellspacing="0" cellpadding="0">
-									<tr>
-										<td><span class="moreInfoText">More information</span></td>
-										<td align="right">
-											<?php if($_browser->is_ie5up) { ?>
-												<a href="javascript: toggleMoreInfo(<?php echo "'".$p['name']."'"; ?>,<?php echo $p['id']; ?>)"><img class="closeButton" src="gifs/close.gif" border="0" /></a>
-											<?php } ?>
-										</td>
-									</tr>
-								</table>
-
-								<table border="0">
-									<tr>
-										<td class="eInfo_label"><strong>Number of releases:</strong></td>
-										<td><?php echo $p['eInfo']['numReleases']; ?></td>
-										
-										<td class="eInfo_label"><strong>License type:</strong></td>
-										<td><?php echo $p['eInfo']['license']; ?></td>
-									</tr>
-									
-									<tr>
-										<td class="eInfo_label"><strong>Status:</strong></td>
-										<td><?php echo $p['eInfo']['status']; ?></td>
-									</tr>
-								</table>
-								
-								
-							</td>
-						</tr>
-
-						<tr <?php if($_browser->is_ie5up || $defaultMoreInfoVis == 'none') { ?> style="display: <php echo $defaultMoreInfoVis; ?>" <?php } ?> id="moreInfo_<?php echo $p['id']; ?>_spacer"><td colspan="5">&nbsp;</td></tr>
-					<?php } ?>
-				</table>
-			</td>
-		</tr>
-	</table>
-
-<?php } elseif ($catpid) { ?>
-	<p align="center">
-		No packages found in this category
-	</p>
-<?php } ?>
-
-<br />
-
-<p align="center">
-	<?php if(!$catpid) {?>
-		Total number of packages: <?php echo $totalpackages; ?><br />
-		<?make_link('/package-stats.php', 'View package statistics')?>
-	<?php } else { ?>
-		<a href="/package-stats.php?cid=<?php echo $catpid; ?>">Statistics for category "<?php echo $catname; ?>"</a>
-	<?php } ?>
-</p>
-
-<?php response_footer(); ?>
+</ul>

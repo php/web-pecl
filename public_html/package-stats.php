@@ -19,6 +19,8 @@
    $Id$
  */
 
+include PECL_INCLUDE_DIR . '/pear-database-package.php';
+
 require_once 'HTML/Form.php';
 
 response_header('Package Statistics');

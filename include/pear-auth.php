@@ -20,61 +20,57 @@
 
 function auth_reject($realm = null, $message = null)
 {
-    global $format;
-
     if ($message === null) {
         $message = "Please enter your username and password:";
     }
 
     response_header('Login');
-    if ($format == 'html') {
-        $GLOBALS['ONLOAD'] = "document.login.PEAR_USER.focus();";
-        if ($message) {
-            report_error($message);
-        }
-        print "<form name=\"login\" action=\"/login.php\" method=\"post\">\n";
-        print '<table class="form-holder" cellspacing="1">' . "\n";
-        print " <tr>\n";
-        print '  <th class="form-label_left">';
-        print 'Use<span class="accesskey">r</span>name:</th>' . "\n";
-        print '  <td class="form-input">';
-        print '<input size="20" name="PEAR_USER" accesskey="r" /></td>' . "\n";
-        print " </tr>\n";
-        print " <tr>\n";
-        print '  <th class="form-label_left">Password:</th>' . "\n";
-        print '  <td class="form-input">';
-        print '<input size="20" name="PEAR_PW" type="password" /></td>' . "\n";
-        print " </tr>\n";
-        print " <tr>\n";
-        print '  <th class="form-label_left">&nbsp;</th>' . "\n";
-        print '  <td class="form-input" style="white-space: nowrap">';
-        print '<input type="checkbox" name="PEAR_PERSIST" value="on" id="pear_persist_chckbx" '.((!empty($_COOKIE['REMEMBER_ME']) || !empty($_POST['PEAR_PERSIST']))?'checked="checked " ':'').'/> ';
-        print '<label for="pear_persist_chckbx">Remember username and password.</label></td>' . "\n";
-        print " </tr>\n";
-        print " <tr>\n";
-        print '  <th class="form-label_left">&nbsp;</td>' . "\n";
-        print '  <td class="form-input"><input type="submit" value="Log in!" /></td>' . "\n";
-        print " </tr>\n";
-        print "</table>\n";
-        print '<input type="hidden" name="PEAR_OLDURL" value="';
-        if (isset($_GET['redirect'])) {
-            print htmlspecialchars(urldecode($_GET['redirect']));
-        } elseif (isset($_POST['PEAR_OLDURL'])) {
-            print htmlspecialchars($_POST['PEAR_OLDURL']);
-        } elseif (isset($_SERVER['REQUEST_URI'])) {
-            print htmlspecialchars($_SERVER['REQUEST_URI']);
-        } else {
-            print 'login.php';
-        }
-        print "\" />\n";
-        print "</form>\n";
-        print hdelim();
-        print "<p><strong>Note:</strong> If you just want to browse the website, ";
-        print "you will not need to log in. For all tasks that require ";
-        print "authentication, you will be redirected to this form ";
-        print "automatically. You can sign up for an account ";
-        print "<a href=\"/account-request.php\">over here</a>.</p>";
-    }
+	$GLOBALS['ONLOAD'] = "document.login.PEAR_USER.focus();";
+	if ($message) {
+		report_error($message);
+	}
+	print "<form name=\"login\" action=\"/login.php\" method=\"post\">\n";
+	print '<table class="form-holder" cellspacing="1">' . "\n";
+	print " <tr>\n";
+	print '  <th class="form-label_left">';
+	print 'Use<span class="accesskey">r</span>name:</th>' . "\n";
+	print '  <td class="form-input">';
+	print '<input size="20" name="PEAR_USER" accesskey="r" /></td>' . "\n";
+	print " </tr>\n";
+	print " <tr>\n";
+	print '  <th class="form-label_left">Password:</th>' . "\n";
+	print '  <td class="form-input">';
+	print '<input size="20" name="PEAR_PW" type="password" /></td>' . "\n";
+	print " </tr>\n";
+	print " <tr>\n";
+	print '  <th class="form-label_left">&nbsp;</th>' . "\n";
+	print '  <td class="form-input" style="white-space: nowrap">';
+	print '<input type="checkbox" name="PEAR_PERSIST" value="on" id="pear_persist_chckbx" '.((!empty($_COOKIE['REMEMBER_ME']) || !empty($_POST['PEAR_PERSIST']))?'checked="checked " ':'').'/> ';
+	print '<label for="pear_persist_chckbx">Remember username and password.</label></td>' . "\n";
+	print " </tr>\n";
+	print " <tr>\n";
+	print '  <th class="form-label_left">&nbsp;</td>' . "\n";
+	print '  <td class="form-input"><input type="submit" value="Log in!" /></td>' . "\n";
+	print " </tr>\n";
+	print "</table>\n";
+	print '<input type="hidden" name="PEAR_OLDURL" value="';
+	if (isset($_GET['redirect'])) {
+		print htmlspecialchars(urldecode($_GET['redirect']));
+	} elseif (isset($_POST['PEAR_OLDURL'])) {
+		print htmlspecialchars($_POST['PEAR_OLDURL']);
+	} elseif (isset($_SERVER['REQUEST_URI'])) {
+		print htmlspecialchars($_SERVER['REQUEST_URI']);
+	} else {
+		print 'login.php';
+	}
+	print "\" />\n";
+	print "</form>\n";
+	print hdelim();
+	print "<p><strong>Note:</strong> If you just want to browse the website, ";
+	print "you will not need to log in. For all tasks that require ";
+	print "authentication, you will be redirected to this form ";
+	print "automatically. You can sign up for an account ";
+	print "<a href=\"/account-request.php\">over here</a>.</p>";
     response_footer();
     exit;
 }

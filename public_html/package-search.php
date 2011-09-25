@@ -122,10 +122,11 @@ if (!empty($_GET)) {
                      FROM packages p,
                           maintains m
                           $release_join
-                    WHERE p.id = m.package " . $where . "
-                 ORDER BY p.name LIKE " . $dbh->quote('%' . $search_name_contains . '%') . " DESC, p.name";
+                    WHERE p.id = m.package " . $where . 
+                 " ORDER BY p.name DESC";
 
     $result = $dbh->query($sql);
+
 
     // Run through any results
     if (($numrows = $result->numRows()) > 0) { 
@@ -177,4 +178,3 @@ if (!empty($_GET)) {
  * Template stuff
  */
 include($template_dir . 'package-search.html');
-?>

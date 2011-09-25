@@ -17,9 +17,6 @@ response_header('Package Search');
 </style>
 <h1>Package Search</h1>
 
-<script type="text/javascript" language="javascript" src="javascript/calendar/browserSniffer.js"></script>
-<script type="text/javascript" language="javascript" src="javascript/calendar/dynCalendar.js"></script>
-
 <script type="text/javascript" language="javascript">
 
     /**
@@ -27,11 +24,7 @@ response_header('Package Search');
      */
     function form_reset() {
         searchForm = document.forms['search_form'];
-        if (<
-        ? php echo(int)
-        isset($numrows);
-        ?
-    >)
+        if (<?php echo(int) isset($numrows); ?>)
         {
             location.href = 'package-search.php';
 
@@ -71,7 +64,8 @@ response_header('Package Search');
     }
 
     if (datefield.type != "date") { //if browser doesn't support input type="date", initialize date picker widget:
-        jQuery(function($) { //on document.ready
+        jQuery(function($) {
+            //on document.ready
             $('#date').datepicker({dateFormat: 'yy-mm-dd' });
         })
     }
@@ -79,7 +73,7 @@ response_header('Package Search');
 
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES); ?>" method="get" name="search_form">
     <fieldset>
-        <label>Package name or sumamry contain:</label>
+        <label>Name/sumamry contain:</label>
         <?php $form->displayText('keywords', htmlspecialchars(@$_GET['pkg_name'], ENT_QUOTES), 0, 0, 'accesskey="c"');
         ?>
 
@@ -102,8 +96,8 @@ response_header('Package Search');
             <?php endforeach?>
         </select>
 
-        <label>With a release</label>
-        <input type="date" id="date" name="date" size="20"/>
+        <label>Release</label>
+        <input type="date" id="date" name="date" size="20" step="10" />
         <select name="date_type">
             <option value="after">After this date</option>
             <option value="before">Before this date</option>

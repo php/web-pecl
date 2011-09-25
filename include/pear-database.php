@@ -1234,7 +1234,7 @@ class user
     {
         global $dbh, $auth_user;
 
-        $user =& new PEAR_User($dbh, $uid);
+        $user =& new PEAR_User($uid);
         if (@$user->registered) {
             return false;
         }
@@ -1448,7 +1448,7 @@ class user
         }
 
         $handle = strtolower($data['handle']);
-        $obj =& new PEAR_User($dbh, $handle);
+        $obj =& new PEAR_User($handle);
 
         if (isset($obj->created)) {
             $data['jumpto'] = "handle";
@@ -1544,7 +1544,7 @@ class user
 
         $fields = array("name", "email", "homepage", "showemail", "userinfo", "pgpkeyid", "wishlist");
 
-        $user =& new PEAR_User($dbh, $data['handle']);
+        $user =& new PEAR_User($data['handle']);
         foreach ($data as $key => $value) {
             if (!in_array($key, $fields)) {
                 continue;
@@ -1614,30 +1614,46 @@ function mail_pear_admins($subject = "PEAR Account Request", $msg, $xhdr = '')
     }
     return false;
 }
-
 // }}}
 
 // {{{ class PEAR_User
-
-class PEAR_User extends DB_storage
+/* TODO:
+- add handle check against local SVN handles cache (json or apc cache), external function
+- add other dynamic properties (without local storage but cache)
+  . as much as possible info must be stored only on master or people
+*/
+class PEAR_User
 {
-    function PEAR_User(&$dbh, $user)
+    var $handle;
+    var $registered = 1;
+    private $admin = NULL;
+
+    function PEAR_User($user)
     {
-        $this->DB_storage("users", "handle", $dbh);
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $this->setup($user);
-        $this->popErrorHandling();
+        $this->handle = strtolower($user);
+        $this->email = $user . '@php.net';
     }
 
     function is($handle)
     {
-		$ret = strtolower($this->handle);
-        return (strtolower($handle) == $ret);
+        return (strtolower($handle) == $this->handle);
     }
 
     function isAdmin()
     {
-        return ($this->admin == 1);
+        if ($this->amdin === NULL) {
+            global $dbh;
+            $admin = $dbh->getOne("SELECT admin FROM users WHERE handle=" . $dbh->quote($this->handle));
+            if (!$admin) {
+                $this->admin = false;
+                return false;
+            } else {
+                $this->admin = true;
+                return true;
+            }
+        } else {
+            return $this->admin;
+        }
     }
 }
 

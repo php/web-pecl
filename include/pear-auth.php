@@ -88,10 +88,10 @@ function auth_verify($user, $passwd)
 	}
 
     if (empty($auth_user)) {
-        $auth_user = new PEAR_User($dbh, $user);
+        $auth_user = new PEAR_User($user);
     }
-
-	if(!@$auth_user->registered){
+    $auth_user->isAdmin();
+	if(!$auth_user->registered){
 		//FIXME: create user in local db
 		$users = @json_decode(@file_get_contents(SVN_USERLIST));
 		if(!is_object($users)){
@@ -109,7 +109,7 @@ function auth_verify($user, $passwd)
 		if(DB::isError($res)){
 			return false;
 		}
-		$auth_user = new PEAR_User($dbh, $user);
+		$auth_user = new PEAR_User($user);
 	}
 	$auth_user->_readonly = true;
 	return auth_check("developer");
@@ -252,7 +252,7 @@ function init_auth_user()
     if (!empty($auth_user)) {
         return true;
     }
-    $auth_user = new PEAR_User($dbh, $_SESSION['PEAR_USER']);
+    $auth_user = new PEAR_User($_SESSION['PEAR_USER']);
     if (is_logged_in()) {
         return true;
     }

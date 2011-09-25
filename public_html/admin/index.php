@@ -136,8 +136,8 @@ function updateRejectReason(selectObj) {
 do {
 
     // {{{ "approve account request" form
-
-    if (!empty($acreq)) {
+    /* Disable account request approval for now, will be totally removed later due to central storage for the developers details */
+    if (0 && !empty($acreq)) {
         $requser =& new PEAR_User($dbh, $acreq);
         if (empty($requser->name)) {
             break;
@@ -235,7 +235,7 @@ do {
 		<script language="JavaScript" type="text/javascript">
         <!--
 			/**
-            * This code is *nasty* (nastyCode™)
+            * This code is *nasty* (nastyCodeï¿½)
             */
 
         	function highlightAccountRow(spanObj)

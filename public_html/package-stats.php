@@ -13,11 +13,17 @@
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
-   | Authors: Martin Jansen <mj@php.net>                                  |
-   |          Richard Heyes <richard@php.net>                             |
+   | Authors: Pierre Joye <pierre@php.net>                                |
    +----------------------------------------------------------------------+
    $Id$
  */
+
+/* TODOs
+
+- Add chart for multiple releases or packages at the same time
+- use json cache and replace all the rendering with Javascript
+  . reduce traffic, reduce cpu&mem usage
+*/
 
 include PECL_INCLUDE_DIR . '/pear-database-package.php';
 

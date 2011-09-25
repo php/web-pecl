@@ -108,8 +108,8 @@ if (isset($_POST['submit'])) {
             // the user's "userinfo" column
             $userinfo = serialize(array($purpose, $moreinfo));
             $sth = $dbh->prepare("INSERT INTO users 
-                    (handle, name, email, password, registered, showemail, homepage, userinfo, from_site, active)
-                    VALUES(?, ?, ?, '', 0, ?, ?, ?, 'pecl', 0)");
+                    (handle, name, email, registered, showemail, homepage, userinfo, from_site, active)
+                    VALUES(?, ?, ?, 0, ?, ?, ?, 'pecl', 0)");
             $res = $dbh->execute($sth, array($handle, $name, $email, $showemail, $homepage, $userinfo));
 
             if (DB::isError($res)) {

@@ -90,8 +90,26 @@ function auth_verify($user, $passwd)
     if (empty($auth_user)) {
         $auth_user = new PEAR_User($dbh, $user);
     }
-	if(!$auth_user->registered){
-		//TODO: create user in local db
+
+	if(!@$auth_user->registered){
+		//FIXME: create user in local db
+		$users = @json_decode(@file_get_contents(SVN_USERLIST));
+		if(!is_object($users)){
+			error_log("missing file or malformed json in ".SVN_USERLIST."\n", 3, PEAR_TMPDIR . DIRECTORY_SEPARATOR . 'pear-errors.log');
+			return false;
+		}
+		if(!isset($users->$user)){
+			error_log("$user is missing from ".SVN_USERLIST.", try rebuilding the cache\n", 3, PEAR_TMPDIR . DIRECTORY_SEPARATOR . 'pear-errors.log');
+			return false;
+		}
+		$sth = $dbh->prepare("INSERT INTO users
+		        (handle, name, email, registered, from_site, active)
+		        VALUES(?, ?, ?, 1, 'pecl', 1)");
+		$res = $dbh->execute($sth, array($user, $users->$user, $user.'@php.net'));
+		if(DB::isError($res)){
+			return false;
+		}
+		$auth_user = new PEAR_User($dbh, $user);
 	}
 	$auth_user->_readonly = true;
 	return auth_check("developer");
@@ -184,7 +202,7 @@ function auth_logout()
 function is_logged_in()
 {
 	global $auth_user;
-	if (!$auth_user || !$auth_user->registered) {
+	if (!$auth_user || !@$auth_user->registered) {
 	    return false;
 	}
 	else{
@@ -299,3 +317,4 @@ function auth_verify_master_status($user, $pass){
 	return @unserialize($s);
 }
 ?>
+	

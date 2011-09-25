@@ -200,12 +200,6 @@ $fxml = fopen($TgzDir.'/Packages.xml', 'w');
 fwrite($fxml, $xml);
 fclose($fxml);
 
-if (function_exists('gzopen')) {
-    $fxml = gzopen($TgzDir.'/Packages.xml.gz', 'wb');
-    gzwrite($fxml, $xml);
-    gzclose($fxml);
-}
-
 function &pear_error($obj) {
     echo $obj->getMessage() . "\n" . $obj->getDebugInfo(). "\n";
     return null;

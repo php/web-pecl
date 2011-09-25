@@ -1594,15 +1594,6 @@ class user
     // }}}
 }
 
-// {{{ +proto string logintest() API 1.0
-
-function logintest()
-{
-    return true;
-}
-
-// }}}
-
 // {{{ mail_pear_admins()
 
 function mail_pear_admins($subject = "PEAR Account Request", $msg, $xhdr = '')

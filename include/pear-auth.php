@@ -40,7 +40,7 @@ function auth_reject($realm = null, $message = null)
 	print " <tr>\n";
 	print '  <th class="form-label_left">Password:</th>' . "\n";
 	print '  <td class="form-input">';
-	print '<input size="20" name="PEAR_PW" type="password" /></td>' . "\n";
+	print '<input size="20" name="PEAR_PW" type="password" autocomplete="off" /></td>' . "\n";
 	print " </tr>\n";
 	print " <tr>\n";
 	print '  <th class="form-label_left">&nbsp;</th>' . "\n";
@@ -80,55 +80,21 @@ function auth_verify($user, $passwd)
 {
     global $dbh, $auth_user;
 
+	$error = false;
+
+	if(!auth_verify_master($user, $passwd)) {
+		$auth_user = null;
+		return false;
+	}
+
     if (empty($auth_user)) {
         $auth_user = new PEAR_User($dbh, $user);
     }
-    $error = '';
-    $ok = false;
-    switch (strlen(@$auth_user->password)) {
-        // handle old-style DES-encrypted passwords
-        case 13: {
-            $seed = substr($auth_user->password, 0, 2);
-            $crypted = crypt($passwd, $seed);
-            if ($crypted == @$auth_user->password) {
-                $ok = true;
-            } else {
-                $error = "pear-auth: user `$user': invalid password (des)";
-            }
-            break;
-        }
-        // handle new-style MD5-encrypted passwords
-        case 32: {
-			// Check if the passwd is already md5()ed
-			if (preg_match('/^[a-z0-9]{32}$/', $passwd)) {
-				$crypted = $passwd;
-			} else {
-				$crypted = md5($passwd);
-			}
-            
-            if ($crypted == @$auth_user->password) {
-                $ok = true;
-            } else {
-                $error = "pear-auth: user `$user': invalid password (md5)";
-            }
-            break;
-        }
-    }
-    if (empty($auth_user->registered)) {
-        if ($user) {
-            $error = "pear-auth: user `$user' not registered";
-        }
-        $ok = false;
-    }
-    if ($ok) {
-        $auth_user->_readonly = true;
-        return auth_check("developer");
-    }
-    if ($error) {
-        error_log("$error\n", 3, PEAR_TMPDIR . DIRECTORY_SEPARATOR . 'pear-errors.log');
-    }
-    $auth_user = null;
-    return false;
+	if(!$auth_user->registered){
+		//TODO: create user in local db
+	}
+	$auth_user->_readonly = true;
+	return auth_check("developer");
 }
 
 // acl check for the given $atom, where true means admin, false developer

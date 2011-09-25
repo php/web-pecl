@@ -46,7 +46,7 @@ response_header('Edit Profile :: ' . $handle);
 print '<h1>Edit Profile: ';
 print '<a href="/user/'. $handle . '">' . $handle . '</a></h1>' . "\n";
 
-print "<ul><li><a href=\"#password\">Manage your password</a></li></ul>";
+print "<ul><li><a href=\"https://master.php.net/manage/users.php\">Manage your password</a></li></ul>";
 
 $admin = $auth_user->isAdmin();
 $user  = $auth_user->is($handle);
@@ -120,38 +120,6 @@ switch ($command) {
 
         report_success('Your information was successfully updated.');
         break;
-
-    case 'change_password':
-        $user = &new PEAR_User($dbh, $handle);
-
-        if (empty($_POST['password_old']) || empty($_POST['password']) ||
-            empty($_POST['password2'])) {
-
-            PEAR::raiseError('Please fill out all password fields.');
-            break;
-        }
-
-        if ($user->get('password') != md5($_POST['password_old'])) {
-            PEAR::raiseError('You provided a wrong old password.');
-            break;
-        }
-
-        if ($_POST['password'] != $_POST['password2']) {
-            PEAR::raiseError('The new passwords do not match.');
-            break;
-        }
-
-        $user->set('password', md5($_POST['password']));
-        if ($user->store()) {
-            if (!empty($_POST['PEAR_PERSIST'])) {
-                $expire = 2147483647;
-            } else {
-                $expire = 0;
-            }
-
-            report_success('Your password was successfully updated.');
-        }
-        break;
 }
 
 
@@ -199,22 +167,6 @@ $form->display('class="form-holder" style="margin-bottom: 2em;"'
                'Edit Your Information', 'class="form-caption"');
 
 
-print '<a name="password"></a>' . "\n";
-print '<h2>&raquo; Manage your password</h2>' . "\n";
-
-$form = new HTML_Form(htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES), 'post');
-$form->addPlaintext('<span class="accesskey">O</span>ld Password:',
-        $form->returnPassword('password_old', '', 40, 0,
-                              'accesskey="o"'));
-$form->addPassword('password', 'Password',
-        '', 10, null);
-$form->addCheckbox('PEAR_PERSIST', 'Remember username and password?',
-        '');
-$form->addSubmit('submit', 'Submit');
-$form->addHidden('handle', $handle);
-$form->addHidden('command', 'change_password');
-$form->display('class="form-holder" cellspacing="1"',
-               'Change Password', 'class="form-caption"');
 ob_end_flush();
 response_footer();
 ?>

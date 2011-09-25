@@ -99,18 +99,18 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            $md5pw = md5($password);
             $showemail = @(bool)$showemail;
 
-            $needsvn = @(bool)$needsvn;
+            // we always need svn, per the new authentication system
+            $needsvn = true;
 
             // hack to temporarily embed the "purpose" in
             // the user's "userinfo" column
             $userinfo = serialize(array($purpose, $moreinfo));
             $sth = $dbh->prepare("INSERT INTO users 
                     (handle, name, email, password, registered, showemail, homepage, userinfo, from_site, active)
-                    VALUES(?, ?, ?, ?, 0, ?, ?, ?, 'pecl', 0)");
-            $res = $dbh->execute($sth, array($handle, $name, $email, $md5pw, $showemail, $homepage, $userinfo));
+                    VALUES(?, ?, ?, '', 0, ?, ?, ?, 'pecl', 0)");
+            $res = $dbh->execute($sth, array($handle, $name, $email, $showemail, $homepage, $userinfo));
 
             if (DB::isError($res)) {
                 //constraint violation, only email and handle(username) is unique
@@ -121,10 +121,6 @@ if (isset($_POST['submit'])) {
                     display_error("$handle: " . DB::errorMessage($res));
                 }
                 $jumpto = "handle";
-                break;
-            }
-
-            if ($errors > 0) {
                 break;
             }
 
@@ -336,8 +332,7 @@ if ($display_form) {
     $bb->horizHeadRow("Username:", HTML_Form::returnText("handle", $handle, 12));
     $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", $firstname));
     $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", $lastname));
-    $bb->horizHeadRow("Password:", HTML_Form::returnPassword("password", null, 10) . "   Again: " . HTML_Form::returnPassword("password2", null, 10));
-    $bb->horizHeadRow("Need a SVN account?", HTML_Form::returnCheckbox("needsvn", $needsvn));
+    $bb->horizHeadRow("Password:", HTML_Form::returnPassword("password", null, 10, 0, 'autocomplete="off"') . "   Again: " . HTML_Form::returnPassword("password2", null, 10, 0, 'autocomplete="off"'));
 
     $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", $email));
     $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", $showemail));

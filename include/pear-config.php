@@ -42,12 +42,7 @@ if (isset($_SERVER['PEAR_DATABASE_DSN'])) {
     define('PECL_DB_HOST', 'localhost');
     define('PECL_DB_NAME', 'pear');
 
-    if (function_exists('mysql_connect')) {
-        $driver = 'mysql';
-    } elseif (function_exists('mysqli_connect')) {
-        $driver = 'mysqli';
-    }
-    define('PEAR_DATABASE_DSN', $driver . '://' . PECL_DB_USER . ':' . PECL_DB_PASSWORD. '@' . PECL_DB_HOST. '/' . PECL_DB_NAME); 
+    define('PEAR_DATABASE_DSN', 'mysqli://' . PECL_DB_USER . ':' . PECL_DB_PASSWORD. '@' . PECL_DB_HOST. '/' . PECL_DB_NAME);
     define('PECL_DB_DSN', 'mysql:host=' . PECL_DB_HOST . ';dbname=' . PECL_DB_NAME); 
 }
 

@@ -31,27 +31,16 @@
 $template_dir = dirname(dirname(__FILE__)) . '/templates/';
 require_once "HTML/Form.php";
 
+$search_date = filter_input(INPUT_GET, 'date', FILTER_SANITIZE_NUMBER_INT);
+$search_date_type = filter_input(INPUT_GET, 'date_type', FILTER_SANITIZE_STRING);
+$search_maintainer = filter_input(INPUT_GET, 'maintainer', FILTER_SANITIZE_STRING);
+$search_name_contains = filter_input(INPUT_GET, 'keywords', FILTER_SANITIZE_STRING);
+$search_category = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING);
+
 /**
 * Setup code for the form
 */
-$form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES));
-    
-/**
-* Months for released date dropdowns
-*/
-$months     = array();
-$months[1]  = 'January';
-$months[2]  = 'February';
-$months[3]  = 'March';
-$months[4]  = 'April';
-$months[5]  = 'May';
-$months[6]  = 'June';
-$months[7]  = 'July';
-$months[8]  = 'August';
-$months[9]  = 'September';
-$months[10] = 'October';
-$months[11] = 'November';
-$months[12] = 'December';
+$form = new HTML_Form('/package_search.php');
 
 /**
 * Code to fetch the current category list
@@ -84,58 +73,43 @@ if (!empty($_GET)) {
     $where = array();
 
     // Build package name part of query
-    if (!empty($_GET['pkg_name'])) {
-        $where[] = '(name LIKE'.$dbh->quote('%'.$_GET['pkg_name'].'%').' OR summary LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').')';
+    if (!empty($search_name_contains)) {
+        $where[] = '(name LIKE'.$dbh->quote('%' . $search_name_contains . '%').' OR p.summary LIKE ' . $dbh->quote('%' . $search_name_contains . '%') . ')';
     }
     
     // Build maintainer part of query
-    if (!empty($_GET['pkg_maintainer'])) {
-        $where[] = sprintf("handle LIKE %s", $dbh->quote('%' . $_GET['pkg_maintainer'] . '%'));
+    if (!empty($search_maintainer)) {
+        $where[] = sprintf("handle LIKE %s", $dbh->quote('%' . $search_maintainer . '%'));
     }
     
     // Build category part of query
-    if (!empty($_GET['pkg_category'])) {
-        $where[] = sprintf("category = %s", $dbh->quote($_GET['pkg_category']));
+    if (!empty($search_category)) {
+        $where[] = sprintf("category = %s", $dbh->quote($search_category));
     }
 
     /**
      * Any release date checking?
      */
-    $release_join        = '';
-    $set_released_on     = false;
-    $set_released_before = false;
-    $set_released_since  = false;
-    // RELEASED_ON
-    if (!empty($_GET['released_on_year']) AND !empty($_GET['released_on_month']) AND !empty($_GET['released_on_day'])) {
+    if (!empty($date)) {
+        $release_join        = '';
+        $set_released_on     = false;
+        $set_released_before = false;
+        $set_released_since  = false;
         $release_join = ', releases r';
         $where[] = "p.id = r.package";
-        $where[] = sprintf("DATE_FORMAT(r.releasedate, '%%Y-%%m-%%d') = '%04d-%02d-%02d'",
-                           (int)$_GET['released_on_year'],
-                           (int)$_GET['released_on_month'],
-                           (int)$_GET['released_on_day']);
-        $set_released_on = true;
+        switch ($search_date_type) {
+            case 'before':
+                $where[] = 'r.releasedate < ' . "'$search_date'";
+                break;
 
-    } else {
-        // RELEASED_BEFORE
-        if (!empty($_GET['released_before_year']) AND !empty($_GET['released_before_month']) AND !empty($_GET['released_before_day'])) {
-            $release_join = ', releases r';
-            $where[] = "p.id = r.package";
-            $where[] = sprintf("DATE_FORMAT(r.releasedate, '%%Y-%%m-%%d') <= '%04d-%02d-%02d'",
-                               (int)$_GET['released_before_year'],
-                               (int)$_GET['released_before_month'],
-                               (int)$_GET['released_before_day']);
-            $set_released_before = true;
-        }
-            
-        // RELEASED_SINCE
-        if (!empty($_GET['released_since_year']) AND !empty($_GET['released_since_month']) AND !empty($_GET['released_since_day'])) {
-            $release_join = ', releases r';
-            $where[] = "p.id = r.package";
-            $where[] = sprintf("DATE_FORMAT(r.releasedate, '%%Y-%%m-%%d') >= '%04d-%02d-%02d'",
-                               (int)$_GET['released_since_year'],
-                               (int)$_GET['released_since_month'],
-                               (int)$_GET['released_since_day']);
-            $set_released_since = true;
+            case 'after':
+                $where[] = 'r.releasedate >= ' . "'$search_date'";
+                break;
+
+            case 'on':
+                $where[] = 'r.releasedate = ' . "'$search_date'";
+            default:
+                break;
         }
     }
         
@@ -149,8 +123,7 @@ if (!empty($_GET)) {
                           maintains m
                           $release_join
                     WHERE p.id = m.package " . $where . "
-                 AND p.package_type='pecl'
-                 ORDER BY p.name LIKE ".$dbh->quote('%'.$_GET['pkg_name'].'%')." DESC, p.name";
+                 ORDER BY p.name LIKE " . $dbh->quote('%' . $search_name_contains . '%') . " DESC, p.name";
 
     $result = $dbh->query($sql);
 
@@ -160,6 +133,7 @@ if (!empty($_GET)) {
         // Paging
         include_once('Pager/Pager.php');
         $params['itemData'] = range(0, $numrows - 1);
+        $params['perPage'] = 20;
         $pager = Pager::factory($params);
         list($from, $to) = $pager->getOffsetByPageId();
         $links = $pager->getLinks('<img src="gifs/prev.gif" border="0" alt="&lt;&lt;" width="10" height="10">Prev', 'Next<img src="gifs/next.gif" border="0" alt="&gt;&gt;" width="10" height="10">');
@@ -202,5 +176,5 @@ if (!empty($_GET)) {
 /**
  * Template stuff
  */
-@include($template_dir . 'package-search.html');
+include($template_dir . 'package-search.html');
 ?>

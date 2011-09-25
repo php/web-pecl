@@ -138,7 +138,7 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
         print_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
     }
     echo delim();
-    print_link('/packages.php', 'Packages', false, 'class="menuBlack"');
+    print_link('/packages/', 'Packages', false, 'class="menuBlack"');
     echo delim();
     print_link('/support.php', 'Support', false, 'class="menuBlack"');
     echo delim();

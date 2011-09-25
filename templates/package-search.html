@@ -1,4 +1,5 @@
 <?php
+$load_jquery_date = true;
 response_header('Package Search');
 ?>
 <style type="text/css">
@@ -18,7 +19,6 @@ response_header('Package Search');
 <h1>Package Search</h1>
 
 <script type="text/javascript" language="javascript">
-
     /**
      * Resets the above variables to false when form is cleared
      */
@@ -55,14 +55,6 @@ response_header('Package Search');
 
     // -->
 
-    var datefield = document.createElement("input")
-    datefield.setAttribute("type", "date")
-    if (datefield.type != "date") { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
-        document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
-        document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
-        document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
-    }
-
     if (datefield.type != "date") { //if browser doesn't support input type="date", initialize date picker widget:
         jQuery(function($) {
             //on document.ready
@@ -74,12 +66,10 @@ response_header('Package Search');
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES); ?>" method="get" name="search_form">
     <fieldset>
         <label>Name/sumamry contain:</label>
-        <?php $form->displayText('keywords', htmlspecialchars(@$_GET['pkg_name'], ENT_QUOTES), 0, 0, 'accesskey="c"');
-        ?>
+        <?php $form->displayText('keywords', $search_name_contains, 0, 0, 'accesskey="c"'); ?>
 
         <label>Maintainer</label>
-        <input name="pkg_maintainer" type="text"
-               value="<?php echo htmlspecialchars($_GET['pkg_maintainer'], ENT_QUOTES); ?>"/>
+        <?php $form->displayText('maintainer', $search_maintainer); ?>
         <select onchange="document.forms['search_form'].pkg_maintainer.value = this.options[this.selectedIndex].value; this.selectedIndex = 0">
             <option value="">Select user...</option>
             <?php foreach($users as $u):?>
@@ -88,7 +78,7 @@ response_header('Package Search');
         </select>
 
         <label>Category:</label>
-        <select name="pkg_category">
+        <select name="category">
             <option value=""></option>
             <?php foreach($category_rows as $c):?>
             <option value="<?php echo $c['id']; ?>"
@@ -97,7 +87,7 @@ response_header('Package Search');
         </select>
 
         <label>Release</label>
-        <input type="date" id="date" name="date" size="20" step="10" />
+        <input type="date" id="date" name="date" size="20" step="10" value="<?php echo $search_date; ?> "/>
         <select name="date_type">
             <option value="after">After this date</option>
             <option value="before">Before this date</option>

@@ -58,7 +58,7 @@ $GLOBALS['_style'] = '';
 
 function response_header($title = 'The PHP Extension Community Library', $style = false)
 {
-    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles, $auth_user;
+    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles, $auth_user, $load_jquery_date;
     if ($_header_done) {
         return;
     }
@@ -103,6 +103,17 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
     }
 ?>
  <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/feeds/latest.rss" />
+<?php if ($load_jquery_date) { ?>
+<script type="text/javascript" language="javascript">
+var datefield = document.createElement("input");
+datefield.setAttribute("type", "date");
+if (datefield.type != "date") { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+    document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+    document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"><\/script>\n')
+    document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"><\/script>\n')
+}
+</script>
+<?php } ?>
 </head>
 
 <body <?php

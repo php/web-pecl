@@ -90,11 +90,8 @@ if (!empty($_GET)) {
     /**
      * Any release date checking?
      */
-    if (!empty($date)) {
+    if (!empty($search_date)) {
         $release_join        = '';
-        $set_released_on     = false;
-        $set_released_before = false;
-        $set_released_since  = false;
         $release_join = ', releases r';
         $where[] = "p.id = r.package";
         switch ($search_date_type) {
@@ -127,9 +124,8 @@ if (!empty($_GET)) {
 
     $result = $dbh->query($sql);
 
-
     // Run through any results
-    if (($numrows = $result->numRows()) > 0) { 
+    if (($numrows = $result->numRows()) > 0) {
     
         // Paging
         include_once('Pager/Pager.php');

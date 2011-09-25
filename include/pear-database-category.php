@@ -267,8 +267,7 @@ class category
                 r.state AS state
             FROM packages p, releases r, categories c
             WHERE
-                p.package_type = ?
-                AND p.id = r.package
+                p.id = r.package
                 AND p.category = c.id
                 AND c.name = ?
             ORDER BY r.releasedate DESC';

@@ -3,7 +3,7 @@ response_header('Package Search');
 ?>
 <style type="text/css">
     form fieldset {
-        clear : both;
+        clear: both;
         border-style: none;
         padding: 10px; /* padding in fieldset support spotty in IE */
         margin: 0;
@@ -12,7 +12,6 @@ response_header('Package Search');
     form {
         margin: 0;
         padding: 0;
-
         width: 80%;
     }
 </style>
@@ -28,10 +27,17 @@ response_header('Package Search');
      */
     function form_reset() {
         searchForm = document.forms['search_form'];
-        if (<?php echo(int) isset($numrows); ?>) {
+        if (<
+        ? php echo(int)
+        isset($numrows);
+        ?
+    >)
+        {
             location.href = 'package-search.php';
 
-        } else {
+        }
+    else
+        {
             /**
              * Re-enable search button
              */
@@ -72,9 +78,10 @@ response_header('Package Search');
 </script>
 
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES); ?>" method="get" name="search_form">
-<fieldset>
+    <fieldset>
         <label>Package name or sumamry contain:</label>
-        <?php $form->displayText('keywords', htmlspecialchars(@$_GET['pkg_name'], ENT_QUOTES), 0, 0, 'accesskey="c"'); ?>
+        <?php $form->displayText('keywords', htmlspecialchars(@$_GET['pkg_name'], ENT_QUOTES), 0, 0, 'accesskey="c"');
+        ?>
 
         <label>Maintainer</label>
         <input name="pkg_maintainer" type="text"
@@ -102,13 +109,12 @@ response_header('Package Search');
             <option value="before">Before this date</option>
             <option value="on">On</option>
         </select>
-</fieldset>
+    </fieldset>
     <fieldset>
         <input type="submit" name="submitButton" value="Search"/>
         <input type="reset" value="Clear" onclick="return form_reset()"/>
     </fieldset>
 </form>
-
 
 <?php if($numrows):?>
 <br/><br/>

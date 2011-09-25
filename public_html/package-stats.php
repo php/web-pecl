@@ -54,7 +54,7 @@ if ($package_id) {
 	$query = sprintf("SELECT SUM(ps.dl_number) AS download_count, ps.package as name, ps.pid as package_id
 	                  FROM package_stats ps, packages p 
 	                  WHERE p.package_type = 'pecl' AND p.id = ps.pid AND
-	                  p.category = %s GROUP BY ps.pid ORDER BY ps.dl_number DESC",
+	                  p.category = %s GROUP BY ps.pid ORDER BY download_count DESC",
                      $category_id
                      );
     $category_stats = $dbh->getAll($query, NULL, DB_FETCHMODE_ASSOC);
@@ -74,7 +74,7 @@ if ($package_id) {
 	$query             = "SELECT sum(ps.dl_number) as download_count, ps.package as name, ps.pid as package_id
 	                      FROM package_stats ps, packages p
 	                      WHERE p.id = ps.pid AND p.package_type = 'pecl'
-	                      GROUP BY ps.pid ORDER BY dl_number DESC";
+	                      GROUP BY ps.pid ORDER BY download_count DESC";
     $category_stats = $dbh->getAll($query, NULL, DB_FETCHMODE_ASSOC);
     $stat_mode = 'category';
 }

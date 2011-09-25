@@ -1594,64 +1594,6 @@ class user
     // }}}
 }
 
-class statistics
-{
-    // {{{ package()
-
-    /**
-     * Get general package statistics
-     *
-     * @param  integer ID of the package
-     * @return array
-     */
-    function package($id)
-    {
-        global $dbh;
-        $query = "SELECT SUM(dl_number) FROM package_stats WHERE pid = " . (int)$id;
-        return $dbh->getOne($query);
-    }
-
-    // }}}
-    // {{{ release()
-
-    function release($id, $rid = "")
-    {
-        global $dbh;
-
-         $query = 'SELECT s.release, s.dl_number, s.last_dl, r.releasedate '
-            . 'FROM package_stats AS s '
-            . 'LEFT JOIN releases AS r ON (s.rid = r.id) '
-            . "WHERE pid = " . (int)$id;
-        if (!empty($rid)) {
-            $query .= " AND rid = " . (int)$rid;
-        }
-        $query .= " GROUP BY rid ORDER BY rid DESC";
-
-        return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
-    }
-    
-    // }}}
-    // {{{ activeRelease()
-
-    function activeRelease($id, $rid = "")
-    {
-        global $dbh;
-
-         $query = 'SELECT s.release, SUM(s.dl_number) AS dl_number, MAX(s.last_dl) AS last_dl, MIN(r.releasedate) AS releasedate '
-            . 'FROM package_stats AS s '
-            . 'LEFT JOIN releases AS r ON (s.rid = r.id) '
-            . "WHERE pid = " . (int)$id;
-        if (!empty($rid)) {
-            $query .= " AND rid = " . (int)$rid;
-        }
-        $query .= " GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY r.releasedate DESC";
-
-        return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
-    }
-
-    // }}}
-}
-
 // {{{ +proto string logintest() API 1.0
 
 function logintest()

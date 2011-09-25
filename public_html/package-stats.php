@@ -132,8 +132,19 @@ if ($stat_mode == 'package') {
     $package_info = package::info($package_id, null, false);
     $package_name = $package_info['name'];
     $package_release_count = count($package_info['releases']);
-    $package_download_count =  number_format(statistics::package($package_id), 0, '.', ',');
-    $release_statistic = statistics::activeRelease($package_id, ($release_id > 0 ? $release_id : ''));
+
+    $query = 'SELECT s.release, SUM(s.dl_number) AS dl_number, MAX(s.last_dl) AS last_dl, MIN(r.releasedate) AS releasedate
+                FROM package_stats AS s 
+                LEFT JOIN releases AS r ON (s.rid = r.id)
+                WHERE pid = ' .$package_id;
+    if ($release_id) {
+        $query .= " AND rid = " . $release_id;
+    }
+    $query .= ' GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY r.releasedate DESC';
+    $release_statistic = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
+
+    $query = "SELECT SUM(dl_number) FROM package_stats WHERE pid = " . $package_id;
+    $package_download_count =  number_format($dbh->getOne($query), 0, '.', ',');
 
     $query = "SELECT id, version FROM releases WHERE package = '" . $package_id . "'";
     $release_list = $dbh->getAll($query, DB_FETCHMODE_ASSOC);

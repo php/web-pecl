@@ -1629,7 +1629,7 @@ class PEAR_User
 
     function isAdmin()
     {
-        if ($this->amdin === NULL) {
+        if ($this->admin === NULL) {
             global $dbh;
             $admin = $dbh->getOne("SELECT admin FROM users WHERE handle=" . $dbh->quote($this->handle));
             if (!$admin) {

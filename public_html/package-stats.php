@@ -101,6 +101,8 @@ $sql_in = "SELECT YEAR(yearmonth) AS dyear, MONTH(yearmonth) AS dmonth, SUM(down
                     GROUP BY dyear, dmonth
                     ORDER BY dyear DESC, dmonth DESC";
 
+$has_stat = false;
+
 if ($stat_mode == 'package') {
     $sql = sprintf($sql_in,
                    $package_id,
@@ -125,8 +127,6 @@ if ($stat_mode == 'package') {
 
     if (count($y_axis)) {
         $has_stat = true;
-    } else {
-        $has_stat = false;
     }
 
     $package_info = package::info($package_id, null, false);
@@ -160,6 +160,7 @@ if ($stat_mode == 'package') {
         $category_download_count += $stat['download_count'];
     }
     $category_package_count = count($category_stats);
+    $release_list = array();
 }
 
 $template_dir = __DIR__ . '/../templates/';

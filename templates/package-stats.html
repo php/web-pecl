@@ -58,8 +58,12 @@
 
 <?php
 if ($stat_mode == 'category') {
+    if (isset($category_name)) {
 ?>
 <h2>&raquo; Statistics for Category &quot;<a href="/packages/<?php echo $category_name; ?>"><?php echo $category_name; ?></a>&quot;</h2>
+<?php
+    }
+?>
 <table cellspacing="0" cellpadding="3" style="border: 0px; width: 90%;">
     <caption style="background-color: #CCCCCC;">General Statistics</caption>
     <tr>
@@ -89,7 +93,7 @@ if ($stat_mode == 'category') {
 
 <br/>
 <?php if ($has_stat) { ?>
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);

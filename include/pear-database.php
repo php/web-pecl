@@ -1686,20 +1686,6 @@ class PEAR_Release extends DB_storage
 }
 
 // }}}
-// {{{ class PEAR Proposal
-/*
-class PEAR_Proposal extends DB_storage
-{
-    function PEAR_Proposal(&$dbh, $package, $keycol = "id")
-    {
-        $this->DB_storage("package_proposals", $keycol, $dbh);
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $this->setup($package);
-        $this->popErrorHandling();
-    }
-}
-*/
-// }}}
 
 /**
  * Converts a Unix timestamp to a date() formatted string in the UTC time zone
@@ -1711,10 +1697,6 @@ class PEAR_Proposal extends DB_storage
  * @return string  the time formatted time
  */
 function make_utc_date($ts = null, $format = 'Y-m-d H:i \U\T\C') {
-    if (!$ts) {
-        $ts = time();
-    }
-    return gmdate($format, $ts);
+    $d = new DateTime("@$ts");
+    return $d->format($format);
 }
-
-?>

@@ -86,3 +86,4 @@ define('DAMBLAN_RSS_CACHE_TIME', 1800);
 define('SVN_USERLIST', realpath(__DIR__.'/../data/svnusers.json'));
 
 define('PECL_INCLUDE_DIR', __DIR__);
+define('PECL_TEMPLATE_DIR', realpath(__DIR__.'/../templates'));

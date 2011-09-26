@@ -53,84 +53,14 @@ if (!empty($_REQUEST['cmd'])) {
          * Delete note
          */
         note::remove($_REQUEST['id']);
-
-    } elseif ($_REQUEST['cmd'] == "Open Account" && !empty($_REQUEST['uid'])) {
-        /**
-         * Open account
-         */
-
-        // another hack to remove the temporary "purpose" field
-        // from the user's "userinfo"
-        if (user::activate($_REQUEST['uid'])) {
-            print "<p>Opened account $uid...</p>\n";
-        }
-		
-    } elseif ($_REQUEST['cmd'] == "Reject Request" && !empty($_REQUEST['uid'])) {
-		/**
-         * Reject account request
-         */
-        if (is_array($_REQUEST['uid'])) {
-            foreach ($_REQUEST['uid'] as $uid) {
-                user::rejectRequest($uid, $_REQUEST['reason']);
-                echo 'Account rejected: ' . $uid . '<br />';
-            }
-
-        } elseif (user::rejectRequest($_REQUEST['uid'], $_REQUEST['reason'])) {
-            print "<p>Rejected account request for $uid...</p>\n";
-        }
-
-    } elseif ($_REQUEST['cmd'] == "Delete Request" && !empty($_REQUEST['uid'])) {
-		/**
-         * Delete account request
-         */
-        if (is_array($_REQUEST['uid'])) {
-            foreach ($_REQUEST['uid'] as $uid) {
-                user::remove($uid);
-                echo 'Account request deleted: ' . $uid . '<br />';
-            }
-				
-			
-        } elseif (user::remove($_REQUEST['uid'])) {
-            print "<p>Deleted account request for \"$uid\"...</p>";
-        }
     }
 }
 
 // }}}
 
-// {{{ javascript functions
 
 ?>
-<script language="javascript" type="text/javascript">
-<!--
-
-function confirmed_goto(url, message) {
-    if (confirm(message)) {
-        location = url;
-    }
-}
-
-function confirmed_submit(button, action, required, errormsg) {
-    if (required && required.value == '') {
-        alert(errormsg);
-        return;
-    }
-    if (confirm('Are you sure you want to ' + action + '?')) {
-        button.form.cmd.value = button.value;
-        button.form.submit();
-    }
-}
-
-function updateRejectReason(selectObj) {
-    if (selectObj.selectedIndex != 0) {
-        document.forms['account_form'].reason.value = selectObj.options[selectObj.selectedIndex].value;
-    }
-    selectObj.selectedIndex = 0;
-}
-// -->
-</script>
 <?php
-
 // }}}
 
 do {
@@ -230,138 +160,7 @@ do {
 <?php
     // }}}
     // {{{ admin menu
-    } else {
-		?>
-		<script language="JavaScript" type="text/javascript">
-        <!--
-			/**
-            * This code is *nasty* (nastyCode�)
-            */
-
-        	function highlightAccountRow(spanObj)
-			{
-				var highlightColor = '#cfffb7';
-				
-				if (typeof(arguments[1]) == 'undefined') {
-					action = (spanObj.parentNode.parentNode.childNodes[0].style.backgroundColor == highlightColor);
-				} else {
-					action = !arguments[1];
-				}
-
-				if (document.getElementById) {
-					for (var i=0; i<spanObj.parentNode.parentNode.childNodes.length; i++) {
-						if (action) {
-							spanObj.parentNode.parentNode.childNodes[i].style.backgroundColor = '#ffffff';
-							spanObj.parentNode.parentNode.childNodes[0].childNodes[0].checked = false;
-						} else {
-							spanObj.parentNode.parentNode.childNodes[i].style.backgroundColor = highlightColor;
-							spanObj.parentNode.parentNode.childNodes[0].childNodes[0].checked = true;
-						}
-					}
-				}
-			}
-			
-			allSelected = false;
-			
-			function toggleSelectAll(linkElement)
-			{
-				tableBodyElement = linkElement.parentNode.parentNode.parentNode.parentNode;
-				
-				for (var i=0; i<tableBodyElement.childNodes.length; i++) {
-					if (tableBodyElement.childNodes[i].childNodes[0].childNodes[0].tagName == 'INPUT') {
-						highlightAccountRow(tableBodyElement.childNodes[i].childNodes[1].childNodes[0], !allSelected);
-					}
-				}
-				
-				allSelected = !allSelected;
-			}
-			
-			function setCmdInput(mode)
-			{
-				switch (mode) {
-					case 'reject':
-						if (document.forms['mass_reject_form'].reason.selectedIndex == 0) {
-							alert('Please select a reason to reject the accounts!');
-
-						} else if (confirm('Are you sure you want to reject these account requests ?')) {
-							document.forms['mass_reject_form'].cmd.value = 'Reject Request';
-							return true;
-						}
-						break;
-
-					case 'delete':
-						if (confirm('Are you sure you want to delete these account requests ?')) {
-							document.forms['mass_reject_form'].cmd.value = 'Delete Request';
-							return true;
-						}
-						break;
-				}
-				
-				return false;
-			}
-        //-->
-        </script>
-		<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" name="mass_reject_form" method="post">
-		<input type="hidden" value="" name="cmd"/>
-		<?php
-        $bb = new BorderBox("Account Requests", "100%", "", 6, true);
-        $requests = $dbh->getAssoc("SELECT u.handle,u.name,n.note,u.userinfo FROM users u ".
-                                   "LEFT JOIN notes n ON n.uid = u.handle ".
-                                   "WHERE u.registered = 0");
-        if (is_array($requests) && sizeof($requests) > 0) {
-            $bb->headRow("<font face=\"Marlett\"><a href=\"#\" onclick=\"toggleSelectAll(this)\">6</a></font>", "Name", "Handle", "Account Purpose", "Status", "&nbsp;");
-
-            foreach ($requests as $handle => $data) {
-                list($name, $note, $userinfo) = $data;
-
-				// Grab userinfo/request purpose
-				if (@unserialize($userinfo)) {
-					$userinfo = @unserialize($userinfo);
-					$account_purpose = $userinfo[0];
-				} else {
-					$account_purpose = $userinfo;
-				}
-
-                $rejected = (preg_match("/^Account rejected:/", $note));
-                if ($rejected) {
-                    continue;
-                }
-                $bb->plainRow('<input type="checkbox" value="' . $handle . '" name="uid[]" onmousedown="highlightAccountRow(this)" onclick="return false"/>',
-							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $name),
-                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $handle),
-							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $account_purpose),
-                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', ($rejected ? "rejected" : "<font color=\"#c00000\"><strong>Outstanding</strong></font>")),
-                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', "<a onmousedown=\"event.cancelBubble = true\" href=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$handle\">" . make_image("edit.gif") . "</a>")
-                              );
-            }
-
-        } else {
-            print "No account requests.";
-        }
-        $bb->end();
-
-		?>
-		<br />
-		<table align="center">
-		<tr>
-			<td>
-				<select name="reason">
-					<option value="">Select rejection reason...</option>
-					<option value="Account not needed">Account not needed</option>
-				</select>
-			</td>
-			<td><input type="submit" value="Reject selected accounts" onclick="return setCmdInput('reject')" /></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td><input type="submit" value="Delete selected accounts" onclick="return setCmdInput('delete')" /></td>
-		</tr>
-		</table>
-
-		</form>
-<?php
-    }
-
+    } 
     // }}}
 
 } while (false);

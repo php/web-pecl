@@ -58,9 +58,6 @@ sister, <acronym title="PHP Extension and Application Repository"
 echo '<h3>'; echo make_link('/news/', 'News'); echo '</h3>';
 echo '<h3>Documentation</h3>';
 echo '<div class="indent">';
-//echo menu_link("About PEAR", "/manual/en/about-pear.php");
-//echo menu_link("Manual", "/manual/");
-//echo menu_link("Frequently Asked Questions", "/manual/en/faq.php");
 echo menu_link("PECL specific docs", "/doc/index.php");
 echo menu_link("Mailing Lists &amp; Support Resources", "/support.php");
 echo '</div>';

@@ -5,11 +5,11 @@
     function reloadMe() {
         var newLocation = "\/package-stats.php" + '?'
                 + 'cid='
-                + document.forms[1].cid.value
+                + document.select_package.cid.value
                 + '&pid='
-                + document.forms[1].pid.value
+                + document.select_package.pid.value
                 + '&rid='
-                + document.forms[1].rid.value;
+                + document.select_package.rid.value;
 
         document.location.href = newLocation;
 
@@ -17,12 +17,12 @@
     //-->
 </script>
 
-<form action="package-stats.php" method="get">
+<form action="package-stats.php" method="get" name="select_package">
     <table>
         <caption style="background-color: #CCCCCC;">Select Package</caption>
         <tr>
             <td>
-                <select name="cid" onchange="javascript:reloadMe();">
+                <select id="cid" name="cid" onchange="javascript:reloadMe();">
                     <option value="">Select category ...</option>
 <?php foreach ($category_list as $category) {
     $selected = ($category_id == $category['id']) ? ' selected ' : '';
@@ -32,7 +32,7 @@
                 </select>
             </td>
             <td>
-                <select name="pid" onchange="javascript:reloadMe();">
+                <select id="pid" name="pid" onchange="javascript:reloadMe();">
                     <option value="">Select package ...</option>
 <?php foreach ($package_list as $pkg_id => $pkg_name) {
     $selected = ($package_id == $pkg_id) ? 'selected' : '';
@@ -42,7 +42,7 @@
                 </select>
             </td>
             <td>
-                <select onchange="javascript:reloadMe();" name="rid" size="1">
+                <select id="rid"  onchange="javascript:reloadMe();" name="rid" size="1">
                     <option value="">All releases</option>
 <?php foreach ($release_list as $release) {
     $selected = ($release['id'] == $release_id) ? 'selected' : '';

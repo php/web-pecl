@@ -3,16 +3,16 @@ development site for pearweb (this PHP installation has PEAR stuff
 installed in /usr/share/pear):
 
 <VirtualHost *>
- ServerName pear.localdomain
+ ServerName pecl.localdomain
 
- DocumentRoot /path/to/pearweb/public_html
+ DocumentRoot /path/to/peclweb/public_html
  DirectoryIndex index.php index.html
 
- php_value include_path .:/path/to/pearweb/include:/usr/share/pear
+ php_value y2k_compliance on
+ php_value include_path .:/path/to/pearweb/include:/path/to/pear
  php_value auto_prepend_file pear-prepend.php
  php_flag magic_quotes_gpc off
  php_flag magic_quotes_runtime off
- php_flag register_globals On
  php_flag allow_call_time_pass_reference On
 
  ErrorDocument 404 /error/404.php
@@ -38,13 +38,8 @@ installed in /usr/share/pear):
  RewriteRule   /package/(.+)([^/]?)$ /package-info.php?package=$1
  RewriteRule   /packages/(.+)$ /packages.php?category=$1
 
-
  <Location /get>
   ForceType application/x-httpd-php
- </Location>
-
- <Location /manual>
-  ErrorDocument 404 /error/404-manual.php
  </Location>
 
  <Directory /path/to/pearweb/public_html/bugs>

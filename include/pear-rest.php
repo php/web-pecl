@@ -1,11 +1,9 @@
 <?php
 
-include PECL_INCLUDE_DIR . '/pear-database-category.php';
-
 class pear_rest
 {
     var $_restdir;
-    function __construct($base);
+    function __construct($base)
     {
         $this->_restdir = $base;
     }
@@ -307,24 +305,30 @@ class pear_rest
         require_once 'PEAR/PackageFile/Parser/v2.php';
         require_once 'PEAR/Config.php';
         global $dbh;
+
         $extra = '/rest/';
         $pid = package::info($package, 'id');
+
         $releases = $dbh->getAll('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC',
             array($pid), DB_FETCHMODE_ASSOC);
+
+
         $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
         if (!is_dir($rdir)) {
             System::mkdir(array('-p', $rdir));
-            @chmod($rdir, 0777);
+            @chmod($rdir, 0774);
         }
         if (!$releases || !count($releases)) {
             // start from scratch, so that any pulled releases have their REST deleted
             System::rm(array('-r', $rdir . DIRECTORY_SEPARATOR . strtolower($package)));
             return;
         }
+
         $info = $this->_getAllReleasesRESTProlog($package);
         foreach ($releases as $release) {
             $packagexml = $dbh->getOne('SELECT packagexml FROM files WHERE package = ? AND
-                release = ?', array($pid, $release['id']));
+                `release` = ?', array($pid, $release['id']));
+
             $extra = '';
             if (strpos($packagexml, ' version="2.0"')) {
                 // little quick hack to determine package.xml version
@@ -589,7 +593,7 @@ class pear_rest
     http://pear.php.net/dtd/rest.allmaintainers.xsd">' . "\n";
         // package information
         require_once 'Damblan/Karma.php';
-        $karma = &new Damblan_Karma($GLOBALS['dbh']);
+        $karma = new Damblan_Karma($GLOBALS['dbh']);
         foreach ($maintainers as $maintainer) {
             if (!$karma->has($maintainer['handle'], 'developer')) {
                 continue;

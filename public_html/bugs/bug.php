@@ -48,6 +48,11 @@ if (empty($_REQUEST['id']) || !(int)$_REQUEST['id']) {
     $id = (int)$_REQUEST['id'];
 }
 
+$bug =& $dbh->getRow("SELECT new_id FROM bugdb WHERE id = ". $id, array(), DB_FETCHMODE_ASSOC);
+
+header('location: https://bugs.php.net/'. $bug['new_id']);
+exit;
+
 if (empty($_REQUEST['edit']) || !(int)$_REQUEST['edit']) {
     $edit = 0;
 } else {

@@ -144,7 +144,7 @@ if (datefield.type != "date") { //if browser doesn't support input type="date", 
         print 'Logged in as ' . strtoupper($auth_user->handle) . ' (';
         print '<a class="menuWhite" href="/user/' . $auth_user->handle . '">Info</a> | ';
         print '<a class="menuWhite" href="/account-edit.php?handle=' . $auth_user->handle . '">Profile</a> | ';
-        print '<a class="menuWhite" href="/bugs/search.php?handle=' . $auth_user->handle . '&amp;cmd=display">Bugs</a>';
+        print '<a class="menuWhite" href="https://bugs.php.net/search.php?search_for=&boolean=0&limit=30&order_by=&direction=DESC&cmd=display&status=Open&bug_type=All&php_os=&phpver=&cve_id=&assign=' . $auth_user->handle . '&author_email=&bug_age=0&bug_updated=0">Bugs</a>';
         print ")</small><br />\n";
         print_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
     }

@@ -249,6 +249,8 @@ if (!empty($cvs_link)) {
 }
 print '&nbsp;</td>';
 
+$bug_link = 'https://bugs.php.net/search.php?search_for=&boolean=0&limit=30&order_by=&direction=DESC&cmd=display&status=Open&bug_type=All&package_name[]='. $pkg['name'] .'&php_os=&phpver=&cve_id=&assign=&author_email=&bug_age=0&bug_updated=0';
+
 if (!empty($bug_link)) {
     print '<td align="center">[ ' . make_link($bug_link, "Package Bugs") . ' ]</td>';
 } else {

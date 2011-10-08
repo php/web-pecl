@@ -19,6 +19,10 @@
  * @version   $Id$
  */
 
+header('location: https://bugs.php.net/report.php');
+exit;
+
+
 /**
  * Obtain common includes
  */

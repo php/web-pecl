@@ -24,13 +24,14 @@ CREATE TABLE `bugdb` (
   `handle` varchar(20) NOT NULL default '',
   `registered` tinyint(1) NOT NULL default '0',
   `visitor_ip` int(10) unsigned NOT NULL default '0',
+  `new_id` int(8) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  INDEX (`php_version`(1)),
-  INDEX (`duplicate_of`),
-  INDEX (`package_version`(1)),
-  INDEX (`package_name`),
+  KEY `php_version` (`php_version`(1)),
+  KEY `duplicate_of` (`duplicate_of`),
+  KEY `package_version` (`package_version`(1)),
+  KEY `package_name` (`package_name`),
   FULLTEXT KEY `email` (`email`,`sdesc`,`ldesc`)
-);
+)
 
 --
 -- Table structure for table `bugdb_comments`

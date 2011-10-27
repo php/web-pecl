@@ -1,0 +1,89 @@
+<?php
+if ($page->data) {
+    extract($page->data);
+}
+?>
+<div id="page-header">
+    <h2>Accounts (<?php echo $account_total; ?>)</h2>
+</div>
+<p align="center">
+    Total accounts: <?php echo $account_total; ?><br/>
+
+    <?php
+foreach ($existing_firstletters as $l) {
+    if ($letter == $l) { ?>
+    <b><?php echo $l; ?></b>&nbsp;
+<?php
+    } else {
+?>
+    <a href="/accounts.php?letter=<?php echo $l; ?>"><?php echo $l; ?></a>&nbsp;
+    <?php
+     } ?>
+    <?php
+}
+?>
+    <input type="button" onclick="u=prompt('Go to account:','');if(u)location.href='http://pecl.local/user/'+u;" value="Go to account.."/>
+    <br />
+<?php if (empty($letter)) { ?>
+    Displaying accounts <?php echo $paging_offset; ?> - <?php echo $paging_last_in_page; ?>
+    of <?php echo $account_filter_total; ?><br/>
+<?php
+    if (!is_null($paging_prev_link)) {
+?>
+    <a href="<?php echo $paging_prev_link; ?>">&lt;&lt; Last <?php echo $paging_page_size; ?></a>&nbsp;
+<?php
+    }
+?>
+<?php
+    if (!is_null($paging_next_link)) {
+?>
+    <a href="<?php echo $paging_next_link; ?>">Next <?php echo $paging_next_page_total; ?> &gt;&gt;</a>
+<?php
+    }
+}
+?>
+</p>
+<table border="0" cellspacing="1" cellpadding="5" align="center">
+    <tr bgcolor="#CCCCCC">
+        <th>Handle</th>
+        <th>Name</th>
+        <th>Homepage</th>
+        <th>Wishlist</th>
+    </tr>
+    <?php $rowno= 0;
+if (is_object($account_list_result))
+while ($account = $account_list_result->fetchRow(DB_FETCHMODE_ASSOC)) {
+    if (++$rowno % 2) {
+    $col = '#E8E8E8';
+    } else {
+    $col = '#E0E0E0';
+    }
+    ?>
+    <tr bgcolor="<?php echo $col; ?>">
+        <td><a href="/user/<?php echo $account['handle']; ?>"><?php echo $account['handle']; ?></a></td>
+        <td><?php echo $account['name']; ?></td>
+        <td><a href="<?php echo $account['homepage']; ?>">Homepage</a></td>
+        <td><a href="<?php echo $account['wishlist']; ?>">Wishlist</a></td>
+    </tr>
+    <?php } ?>
+    <div>
+</table>
+
+<?php if (empty($letter)) { ?>
+<?php
+    if (!is_null($paging_prev_link)) {
+?>
+<a href="<?php echo $paging_prev_link; ?>">&lt;&lt; Last <?php echo $paging_page_size; ?></a>&nbsp;
+<?php
+    }
+?>
+<?php
+    if (!is_null($paging_next_link)) {
+?>
+<a href="<?php echo $paging_next_link; ?>">Next <?php echo $paging_next_page_total; ?> &gt;&gt;</a>
+<?php
+    }
+?>
+<?php
+}
+?>

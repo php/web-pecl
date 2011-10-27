@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<l xmlns="http://pear.php.net/dtd/rest.categorypackages"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackages
+    http://pear.php.net/dtd/rest.categorypackages.xsd">
+ <p xlink:href="/rest/p/imagick">imagick</p>
+ <p xlink:href="/rest/p/freeimage">FreeImage</p>
+ <p xlink:href="/rest/p/imlib2">imlib2</p>
+ <p xlink:href="/rest/p/gdchart">GDChart</p>
+ <p xlink:href="/rest/p/cairo_wrapper">cairo_wrapper</p>
+ <p xlink:href="/rest/p/cairo">cairo</p>
+ <p xlink:href="/rest/p/gmagick">gmagick</p>
+ <p xlink:href="/rest/p/pango">pango</p>
+ <p xlink:href="/rest/p/rsvg">rsvg</p>
+ <p xlink:href="/rest/p/framegrab">framegrab</p>
+</l>

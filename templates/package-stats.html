@@ -1,0 +1,178 @@
+<script type="text/javascript">
+    <!--
+    function reloadMe() {
+        var newLocation = "\/package-stats.php" + '?'
+                + 'cid='
+                + document.select_package.cid.value
+                + '&pid='
+                + document.select_package.pid.value
+                + '&rid='
+                + document.select_package.rid.value;
+
+        document.location.href = newLocation;
+
+    }
+    //-->
+</script>
+
+<?php include PECL_TEMPLATE_DIR . '/packages-submenu.html';
+if (is_array($page->data)) {
+    extract($page->data);
+}
+?>
+<div class="packages-header">
+    <h2 class="category-title">Packages Statistics</h2>
+</div>
+
+<form action="package-stats.php" method="get" name="select_package">
+    <table>
+        <tr>
+            <td>
+                <select id="cid" name="cid" onchange="javascript:reloadMe();">
+                    <option value="">Select category ...</option>
+<?php foreach ($category_list as $category) {
+    $selected = ($category_id == $category['id']) ? ' selected ' : '';
+?>
+                    <option value="<?php echo  $category['id']; ?>" <?php echo  $selected; ?>><?php echo  $category['name']; ?></option>
+<?php } ?>
+                </select>
+            </td>
+            <td>
+                <select id="pid" name="pid" onchange="javascript:reloadMe();">
+                    <option value="">Select package ...</option>
+<?php foreach ($package_list as $pkg_id => $pkg_name) {
+    $selected = ($package_id == $pkg_id) ? 'selected' : '';
+?>
+                    <option value="<?php echo $pkg_id; ?>"<?php echo  " $selected"; ?>><?php echo $pkg_name; ?></option>
+<?php } ?>
+                </select>
+            </td>
+            <td>
+                <select id="rid"  onchange="javascript:reloadMe();" name="rid" size="1">
+                    <option value="">All releases</option>
+<?php foreach ($release_list as $release) {
+    $selected = ($release['id'] == $release_id) ? 'selected' : '';
+?>
+                    <option value="<?php echo $release['id']; ?>"<?php echo  " $selected"; ?>><?php echo $release['version']; ?></option>
+<?php } ?>
+                </select>
+            </td>
+            <td><input type="submit" name="submit" value="Go"/></td>
+        </tr>
+    </table>
+</form>
+
+<?php
+if ($stat_mode == 'category') {
+    if (isset($category_name)) {
+?>
+<h2>&raquo; Statistics for Category &quot;<a href="/packages/<?php echo $category_name; ?>"><?php echo $category_name; ?></a>&quot;</h2>
+<?php
+    }
+?>
+<table cellspacing="0" cellpadding="3" style="border: 0px; width: 90%;">
+    <caption style="background-color: #CCCCCC;">General Statistics</caption>
+    <tr>
+        <td style="text-align: left;">
+            Total packages: <strong><?php echo $category_package_count; ?></strong><br/>
+            Total downloads: <strong><?php echo $category_download_count; ?></strong><br/>
+        </td>
+    </tr>
+</table>
+<?php
+
+} else {
+
+?>
+<h2>&raquo; Statistics for Package &quot;<a href="/package/<?php echo $package_name; ?>"><?php echo $package_name; ?></a>&quot;</h2>
+<table cellspacing="0" cellpadding="3" style="border: 0px; width: 90%;">
+    <caption style="background-color: #CCCCCC;">General Statistics</caption>
+    <tr>
+        <td style="text-align: left;">Number of releases: <strong><?php echo $package_release_count; ?></strong><br/>
+            Total downloads: <strong><?php echo $package_download_count; ?></strong><br/>
+        </td>
+    </tr>
+</table>
+<?php
+}
+?>
+
+<br/>
+<?php if ($has_stat) { ?>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '');
+        data.addColumn('number', '');
+
+        data.addRows([
+<?php
+foreach ($x_axis as $date) {
+    /* ['2005', 3.6], */
+    echo '[' . "'" . $date . "'" . ', '. $y_axis[$date] . '],';
+}
+?>
+        ]);
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, {width: 720, height: 320, title: 'Package download statistics',
+          hAxis: {slantedText: true}, legend: 'none', pointSize:4
+                         });
+      }
+    </script>
+<div id="chart_div"></div>
+<?php } ?>
+<?php
+if ($stat_mode == 'category') {
+?>
+<table border="0" width="100%" cellpadding="2" cellspacing="2">
+  <tr align="left" bgcolor="#cccccc">
+   <th>Package Name</th>
+   <th><span class="accesskey"># of downloads</span></th>
+   <th>&nbsp;</th>
+  </tr>
+<?php foreach ($category_stats as $stat){ ?>
+    <tr>
+        <td><a href="/package/<?php echo $stat['name']; ?>/package/<?php echo $stat['name']; ?>"><?php echo $stat['name']; ?></a></td>
+        <td><?php echo number_format($stat['download_count'], 0, '.', ','); ?></td>
+        <td>            [<a href="/package-stats.php?cid=1&amp;pid=<?php echo $stat['package_id']; ?>">Details</a>]</td>
+    </tr>
+<?php
+
+ }
+
+ ?>
+</table>
+<?php
+
+} else {
+
+?>
+<table cellspacing="0" cellpadding="3" style="border: 0px; width: 90%;">
+    <caption style="background-color: #CCCCCC;">Release Statistics</caption>
+    <tr>
+        <th style="text-align: left;">Version</th>
+        <th style="text-align: left;">Downloads</th>
+        <th style="text-align: left;">Released</th>
+        <th style="text-align: left;">Last Download</th>
+    </tr>
+<?php
+    foreach ($release_statistic as $stat){
+?>
+    <tr>
+        <td><a href="/package/<?php echo $package_name; ?>/download/<?php echo $stat['release']; ?>"><?php echo $stat['release']; ?></a></td>
+        <td><?php echo number_format($stat['dl_number'], 0, '.', ','); ?></td>
+        <td><?php echo make_utc_date(strtotime($stat['releasedate']), 'Y-m-d'); ?></td>
+        <td><?php echo make_utc_date(strtotime($stat['releasedate'])); ?></td>
+    </tr>
+<?php
+   }
+?>
+</table>
+<?php
+}
+?>
+<br/>

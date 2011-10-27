@@ -1,0 +1,32 @@
+<?php extract($page->data);?>
+<div id="my_package">
+    <h2>My Packages</h2>
+    <ul>
+        <?php foreach ($my_package as $pkg) { ?>
+        <li>
+            <a href="/packages.php"><?php echo $pkg->name; ?></a> [
+            <?php if ($pkg->role == 'lead' || $auth_user->isAdmin()) { ?>
+            <a href="package-edit.php?name=<?php echo $pkg->name; ?>">edit</a>
+            <?php }?>
+            ]
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+
+<div id="package_upload">
+    <form action="/release-upload2.php" method="POST" enctype="multipart/form-data">
+        <input type="file" name="files[]" multiple="multiple"/>
+        <input type="submit" value="Upload!" />
+    </form>
+    <div id="messages"></div>
+    <div id="release_confirm"></div>
+</div>
+
+<div style="clear:both"></div>
+<div id="my_pecl_bugs">
+    my pecl bugs
+</div>
+<div id="my_php_bugs">
+    my php bugs
+</div>

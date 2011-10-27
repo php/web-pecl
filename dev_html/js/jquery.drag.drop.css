@@ -1,0 +1,19 @@
+
+#package_upload {
+    float: right;
+    width: 50%;
+    margin-top:25px;
+}
+.file-drop {
+    text-align: center;
+    background-image:url('/images/package.png');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+	border: 1px solid #ccc;
+    height: 150px;
+    width: 140px;
+}
+
+.file-drop-hover {
+	border: 1px solid #ff0000;
+}

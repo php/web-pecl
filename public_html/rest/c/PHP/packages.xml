@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<l xmlns="http://pear.php.net/dtd/rest.categorypackages"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackages
+    http://pear.php.net/dtd/rest.categorypackages.xsd">
+ <p xlink:href="/rest/p/optimizer">optimizer</p>
+ <p xlink:href="/rest/p/igbinary">igbinary</p>
+ <p xlink:href="/rest/p/bcompiler">bcompiler</p>
+ <p xlink:href="/rest/p/apd">apd</p>
+ <p xlink:href="/rest/p/mono">mono</p>
+ <p xlink:href="/rest/p/session_mysql">session_mysql</p>
+ <p xlink:href="/rest/p/scream">scream</p>
+ <p xlink:href="/rest/p/xdebug">xdebug</p>
+ <p xlink:href="/rest/p/vld">vld</p>
+ <p xlink:href="/rest/p/ffi">ffi</p>
+ <p xlink:href="/rest/p/parsekit">parsekit</p>
+ <p xlink:href="/rest/p/docblock">docblock</p>
+ <p xlink:href="/rest/p/phpscript">PHPScript</p>
+ <p xlink:href="/rest/p/classkit">classkit</p>
+ <p xlink:href="/rest/p/postparser">postparser</p>
+ <p xlink:href="/rest/p/intercept">intercept</p>
+ <p xlink:href="/rest/p/runkit">runkit</p>
+ <p xlink:href="/rest/p/phar">phar</p>
+ <p xlink:href="/rest/p/operator">operator</p>
+ <p xlink:href="/rest/p/htscanner">htscanner</p>
+ <p xlink:href="/rest/p/parse_tree">Parse_Tree</p>
+ <p xlink:href="/rest/p/preprocessor">PreProcessor</p>
+ <p xlink:href="/rest/p/uploadprogress">uploadprogress</p>
+ <p xlink:href="/rest/p/funcall">funcall</p>
+ <p xlink:href="/rest/p/params">params</p>
+ <p xlink:href="/rest/p/phk">PHK</p>
+ <p xlink:href="/rest/p/automap">automap</p>
+ <p xlink:href="/rest/p/tcc">tcc</p>
+ <p xlink:href="/rest/p/llvm">llvm</p>
+ <p xlink:href="/rest/p/memtrack">memtrack</p>
+ <p xlink:href="/rest/p/memsession">memsession</p>
+ <p xlink:href="/rest/p/apm">APM</p>
+ <p xlink:href="/rest/p/meta">meta</p>
+</l>

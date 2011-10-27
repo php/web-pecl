@@ -1,0 +1,15 @@
+Short Term:
+* fix RSS header
+* Merge tracker with bugs.php.net patch tracker
+
+Medium Term:
+
+* Make the whole site XHTML valid
+
+Long Term:
+
+* Implement mirror facilities
+* Implement failover facilities
+
+
+Last Change: $Id: TODO 140263 2003-09-14 08:27:40Z mj $

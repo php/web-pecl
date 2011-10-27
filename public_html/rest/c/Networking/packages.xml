@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<l xmlns="http://pear.php.net/dtd/rest.categorypackages"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackages
+    http://pear.php.net/dtd/rest.categorypackages.xsd">
+ <p xlink:href="/rest/p/spread">spread</p>
+ <p xlink:href="/rest/p/netools">netools</p>
+ <p xlink:href="/rest/p/event">event</p>
+ <p xlink:href="/rest/p/mqseries">mqseries</p>
+ <p xlink:href="/rest/p/cyrus">cyrus</p>
+ <p xlink:href="/rest/p/kadm5">kadm5</p>
+ <p xlink:href="/rest/p/uuid">uuid</p>
+ <p xlink:href="/rest/p/net_gopher">Net_Gopher</p>
+ <p xlink:href="/rest/p/tcpwrap">tcpwrap</p>
+ <p xlink:href="/rest/p/cvsclient">cvsclient</p>
+ <p xlink:href="/rest/p/opendirectory">opendirectory</p>
+ <p xlink:href="/rest/p/zeroconf">zeroconf</p>
+ <p xlink:href="/rest/p/yaz">yaz</p>
+ <p xlink:href="/rest/p/perforce">perforce</p>
+ <p xlink:href="/rest/p/esmtp">esmtp</p>
+ <p xlink:href="/rest/p/ssh2">ssh2</p>
+ <p xlink:href="/rest/p/ares">ares</p>
+ <p xlink:href="/rest/p/yp">yp</p>
+ <p xlink:href="/rest/p/geoip">geoip</p>
+ <p xlink:href="/rest/p/ocal">ocal</p>
+ <p xlink:href="/rest/p/sam">sam</p>
+ <p xlink:href="/rest/p/ims">IMS</p>
+ <p xlink:href="/rest/p/yami">yami</p>
+ <p xlink:href="/rest/p/msession">msession</p>
+ <p xlink:href="/rest/p/dbus">DBus</p>
+ <p xlink:href="/rest/p/gupnp">gupnp</p>
+ <p xlink:href="/rest/p/gearman">gearman</p>
+ <p xlink:href="/rest/p/amqp">amqp</p>
+</l>

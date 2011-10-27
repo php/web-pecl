@@ -1,0 +1,15 @@
+<?php extract($page->data); ?>
+<form name="login" action="/login.php" method="post">
+    <label for="PEAR_USER"> Use<span class="accesskey">r</span>name:</label>
+    <input size="20" name="handle" accesskey="r"/>
+    <label for="PEAR_PW">Password:</label>
+    <input size="20" id="PEAR_PW" name="password" type="password" autocomplete="off"/>
+    <input type="checkbox" name="PEAR_PERSIST" value="on" id="pear_persist_chckbx"/> <label for="pear_persist_chckbx">Remember
+    username and password.</label>
+
+    <input type="submit" value="Log in!"/>
+
+    <input type="hidden" name="old_url" value="<?php echo $old_url; ?>"/>
+</form>
+<hr/><p><strong>Note:</strong> If you just want to browse the website, you will not need to log in. For all tasks that
+    require authentication, you will be redirected to this form automatically.</p>

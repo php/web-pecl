@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<l xmlns="http://pear.php.net/dtd/rest.categorypackages"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackages
+    http://pear.php.net/dtd/rest.categorypackages.xsd">
+ <p xlink:href="/rest/p/pecl_gen">PECL_Gen</p>
+ <p xlink:href="/rest/p/spl">SPL</p>
+ <p xlink:href="/rest/p/crack">crack</p>
+ <p xlink:href="/rest/p/fann">fann</p>
+ <p xlink:href="/rest/p/valkyrie">Valkyrie</p>
+ <p xlink:href="/rest/p/clips">clips</p>
+ <p xlink:href="/rest/p/huffman">huffman</p>
+ <p xlink:href="/rest/p/crack_dll">crack_dll</p>
+ <p xlink:href="/rest/p/filter">filter</p>
+ <p xlink:href="/rest/p/hash">hash</p>
+ <p xlink:href="/rest/p/spl_types">SPL_Types</p>
+ <p xlink:href="/rest/p/xrange">xrange</p>
+ <p xlink:href="/rest/p/xhprof">xhprof</p>
+ <p xlink:href="/rest/p/stomp">stomp</p>
+ <p xlink:href="/rest/p/svm">svm</p>
+ <p xlink:href="/rest/p/rsync">rsync</p>
+ <p xlink:href="/rest/p/functional">functional</p>
+</l>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>PECL :: Login page</title>
+    <meta http-equiv="Content-Type" content="text/html; UTF-8"/>
+    <link rel="shortcut icon" href="/gifs/pecl-favicon.ico"/>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/style-new.css" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://pecl.local/feeds/latest.rss"/>
+    <script type="text/javascript" language="javascript">
+        var load_jquery = 0;
+        var load_jquery_date = 0;
+
+        if (load_jquery_date == 1) {
+            var datefield = document.createElement("input");
+            datefield.setAttribute("type", "date");
+
+            //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+            if (datefield.type != "date") {
+                load_jquery = 1;
+            }
+        }
+
+        if (load_jquery == 1) {
+            document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+            document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"><\/script>\n')
+            document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"><\/script>\n')
+        }
+
+    </script>
+</head>
+
+<body>
+<div id="wrapper">
+    <div id="header">
+        <div id="logo"><a href="/"><img src="/gifs/peclsmall.gif" style="border: 0;" width="106" height="55"
+                                        alt="PECL"/></div>
+        <div id="subheader">
+            <ul id="menu">
+                <li class="menu-item current"><a href="/index.php">Main</a></li>
+                <li class="menu-item"><a href="/support/">Support</a></li>
+
+                <li class="menu-item"><a href="/manual/">Documentation</a></li>
+                <li class="menu-item"><a href="/packages/">Packages</a></li>
+                <li class="menu-item"><a href="/accounts/">Developers</a></li>
+                <li class="menu-item menu-item-last"><a href="/bugs/">Bugs</a></li>
+            </ul>
+             <a href="/login.php">Login</a></li>
+                </div>
+    </div>
+    <div id="content-wrapper">
+        <div id="content-inner">
+                    </div>
+    </div>
+    <div id="footer">Footer</div>
+</div>
+</body>
+</html>

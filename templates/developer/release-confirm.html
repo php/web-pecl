@@ -1,0 +1,44 @@
+<?php extract($page->data);?>
+<h2>Confirm release</h2>
+<ul>
+    <?php foreach ($files as $file) { ?>
+    <li>
+        <div id="btn_<?php echo $file->name_md5; ?>" class="release_action_view">
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td><?php echo  nl2br(htmlspecialchars($file->name, ENT_QUOTES)); ?></td>
+                </tr>
+                <tr>
+                    <td>Summary</td>
+                    <td><?php echo  nl2br(htmlspecialchars($file->package->summary, ENT_QUOTES)); ?></td>
+                </tr>
+                <tr>
+                    <td>Package version</td>
+                    <td><?php echo  nl2br(htmlspecialchars($file->package->version_release, ENT_QUOTES)); ?></td>
+                </tr>
+                <tr>
+                    <td>API version</td>
+                    <td><?php echo  nl2br(htmlspecialchars($file->package->version_api, ENT_QUOTES)); ?></td>
+                </tr>
+                <tr>
+                    <td>Release notes</td>
+                    <td><?php echo  nl2br(htmlspecialchars($file->package->notes, ENT_QUOTES)); ?></td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td><?php echo  nl2br(htmlspecialchars($file->package->description, ENT_QUOTES)); ?></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="button" onclick="confirm_release('<?php echo $file->name_md5; ?>');"
+                               value="Confirm"/>
+                        <input type="button" onclick="cancel_release('<?php echo $file->name_md5; ?>');"
+                               value="Cancel"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </li>
+    <?php } ?>
+</ul>

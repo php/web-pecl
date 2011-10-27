@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Package :: APC</title>
+    <meta http-equiv="Content-Type" content="text/html; UTF-8"/>
+    <link rel="shortcut icon" href="/gifs/pecl-favicon.ico"/>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/style-new.css" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://pecl.local/feeds/latest.rss"/>
+    <script type="text/javascript" language="javascript">
+        var load_jquery = 0;
+        var load_jquery_date = 0;
+
+        if (load_jquery_date == 1) {
+            var datefield = document.createElement("input");
+            datefield.setAttribute("type", "date");
+
+            //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+            if (datefield.type != "date") {
+                load_jquery = 1;
+            }
+        }
+
+        if (load_jquery == 1) {
+            document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+            document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"><\/script>\n')
+            document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"><\/script>\n')
+        }
+
+    </script>
+</head>
+
+<body>
+<div id="wrapper">
+    <div id="header">
+        <div id="logo"><a href="/"><img src="/gifs/peclsmall.gif" style="border: 0;" width="106" height="55"
+                                        alt="PECL"/></div>
+        <div id="subheader">
+            <ul id="menu">
+                <li class="menu-item current"><a href="/index.php">Main</a></li>
+                <li class="menu-item"><a href="/support/">Support</a></li>
+
+                <li class="menu-item"><a href="/manual/">Documentation</a></li>
+                <li class="menu-item"><a href="/packages/">Packages</a></li>
+                <li class="menu-item"><a href="/accounts/">Developers</a></li>
+                <li class="menu-item menu-item-last"><a href="/bugs/">Bugs</a></li>
+            </ul>
+             <a href="/login.php">Login</a></li>
+                </div>
+    </div>
+    <div id="content-wrapper">
+        <div id="content-inner">
+            <div id="page-header">
+    <h2>APC            </h2>
+    <div style="clear: both;"></div>
+</div>
+<a href="/packages/">Top Level</a>  :: <a href="/packages.php?catpid=3&catname=Caching">Caching</a><table cellpadding="0" cellspacing="1" style="width: 90%; border: 0px;">
+    <tr>
+        <td bgcolor="#000000">
+            <table cellpadding="2" cellspacing="1" style="width: 100%; border: 0px;">
+                <tr style="background-color: #CCCCCC;">
+                    <th colspan="2">Package Information</th>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Summary</th>
+                    <td valign="top" bgcolor="#e8e8e8">Alternative PHP Cache</td>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Maintainers</th>
+                    <td valign="top" bgcolor="#e8e8e8">
+                                                <a href="/user/rasmus">Rasmus Lerdorf</a>
+                        (lead)<br/>
+                                                <a href="/user/gschlossnagle">George Schlossnagle</a>
+                        (lead)<br/>
+                                                <a href="/user/edink">Edin Kadribasic</a>
+                        (developer)<br/>
+                                                <a href="/user/dcowgill">Daniel Cowgill</a>
+                        (lead)<br/>
+                                                <a href="/user/helly">Marcus Börger</a>
+                        (developer)<br/>
+                                                <a href="/user/pollita">Sara Golemon</a>
+                        (developer)<br/>
+                                                <a href="/user/iliaa">Ilia Alshanetsky</a>
+                        (developer)<br/>
+                                                <a href="/user/gopalv">Gopal Vijayaraghavan</a>
+                        (lead)<br/>
+                                                <a href="/user/shire">Brian Shire</a>
+                        (developer)<br/>
+                                                <a href="/user/kalle">Kalle Sommer Nielsen</a>
+                        (developer)<br/>
+                                            </td>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">License</th>
+                    <td valign="top" bgcolor="#e8e8e8">PHP License</td>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Description</th>
+                    <td valign="top" bgcolor="#e8e8e8">APC is a free, open, and robust framework for caching and optimizing PHP intermediate code.                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!-- border box ends -->
+
+<br/>
+<table border="0" cellspacing="3" cellpadding="3" height="48" width="90%" align="center">
+    <tr>
+        <td align="center">[ <a href="/get/APC">Download Latest</a> ]</td>
+        <td align="center">[ <a href="/package-changelog.php?package=APC">Changelog</a> ]</td>
+        <td align="center">[ <a href="/package-stats.php?pid=220&amp;rid=&amp;cid=3">View Statistics</a> ]</td>
+    </tr>
+    <tr>
+        <td align="center">
+            [ <a href="http://svn.php.net/pecl/apc" target="top">Browse Source</a> ]&nbsp;</td>
+        <td align="center">[ <a href="/bugs/search.php?cmd=display&status=Open&package_name[]=APC">Package Bugs</a> ]
+        </td>
+        <td align="center">[ <a href="http://php.net/APC">View Documentation</a> ]</td>
+    </tr>
+    <tr>
+        <td align="center">[ <a href="/bugs/report.php?package=APC">Report new bug</a> ]</td>
+    </tr>
+</table>
+
+<br/>
+
+<!-- border box starts -->
+<table cellpadding="0" cellspacing="1" style="width: 90%; border: 0px;">
+    <tr>
+        <td bgcolor="#000000">
+            <table cellpadding="2" cellspacing="1" style="width: 100%; border: 0px;">
+                <tr style="background-color: #CCCCCC;">
+                    <th colspan="5">Available Releases</th>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#ffffff">Version</th>
+                    <th valign="top" bgcolor="#ffffff">State</th>
+                    <th valign="top" bgcolor="#ffffff">Release Date</th>
+                    <th valign="top" bgcolor="#ffffff">Downloads</th>
+                    <th valign="top" bgcolor="#ffffff">&nbsp;</th>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.9">3.1.9</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2011-05-14 18:15:04</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.9.tgz">APC-3.1.9.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.9">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.8">3.1.8</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2011-05-02 14:36:55</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.8.tgz">APC-3.1.8.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.8">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.7">3.1.7</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">beta</td>
+                    <td valign="top" bgcolor="#e8e8e8">2011-01-11 14:10:06</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.7.tgz">APC-3.1.7.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.7">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.6">3.1.6</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2010-11-30 05:21:42</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.6.tgz">APC-3.1.6.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.6">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.5">3.1.5</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">beta</td>
+                    <td valign="top" bgcolor="#e8e8e8">2010-11-02 14:21:27</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.5.tgz">APC-3.1.5.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.5">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.4">3.1.4</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">beta</td>
+                    <td valign="top" bgcolor="#e8e8e8">2010-08-05 11:04:20</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.4.tgz">APC-3.1.4.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.4">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.3p1">3.1.3p1</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">beta</td>
+                    <td valign="top" bgcolor="#e8e8e8">2009-08-14 07:01:18</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.3p1.tgz">APC-3.1.3p1.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.3p1">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.3">3.1.3</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">beta</td>
+                    <td valign="top" bgcolor="#e8e8e8">2009-08-13 10:34:46</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.3.tgz">APC-3.1.3.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.3">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.2">3.1.2</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">beta</td>
+                    <td valign="top" bgcolor="#e8e8e8">2008-12-12 06:48:25</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.2.tgz">APC-3.1.2.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.2">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.1.1">3.1.1</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">beta</td>
+                    <td valign="top" bgcolor="#e8e8e8">2008-12-12 04:18:32</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.1.1.tgz">APC-3.1.1.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.1.1">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.19">3.0.19</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2008-05-15 02:48:05</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.19.tgz">APC-3.0.19.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.19">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.18">3.0.18</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2008-03-28 16:17:57</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.18.tgz">APC-3.0.18.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.18">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.17">3.0.17</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2008-03-25 16:16:58</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.17.tgz">APC-3.0.17.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.17">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.16">3.0.16</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2007-12-26 17:53:15</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.16.tgz">APC-3.0.16.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.16">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.15">3.0.15</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2007-10-18 16:40:51</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.15.tgz">APC-3.0.15.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.15">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.14">3.0.14</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2007-04-02 19:06:55</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.14.tgz">APC-3.0.14.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.14">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.13">3.0.13</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2007-02-24 18:01:46</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.13.tgz">APC-3.0.13.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.13">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.12p2">3.0.12p2</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2006-09-05 02:58:40</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.12p2.tgz">APC-3.0.12p2.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.12p2">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.12p1">3.0.12p1</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2006-09-05 02:53:11</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.12p1.tgz">APC-3.0.12p1.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.12p1">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.12">3.0.12</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2006-09-04 20:25:21</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.12.tgz">APC-3.0.12.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.12">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.11">3.0.11</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2006-08-17 02:06:20</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.11.tgz">APC-3.0.11.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.11">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.10">3.0.10</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2006-03-11 20:43:04</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.10.tgz">APC-3.0.10.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.10">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.9">3.0.9</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2006-03-04 14:38:34</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.9.tgz">APC-3.0.9.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.9">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.8">3.0.8</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2005-08-24 18:48:13</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.8.tgz">APC-3.0.8.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.8">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.7">3.0.7</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2005-08-16 21:28:37</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.7.tgz">APC-3.0.7.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.7">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.6">3.0.6</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2005-07-30 11:56:25</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.6.tgz">APC-3.0.6.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.6">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.5">3.0.5</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2005-07-28 01:53:31</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.5.tgz">APC-3.0.5.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.5">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.4">3.0.4</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2005-07-18 20:44:44</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.4.tgz">APC-3.0.4.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.4">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.3">3.0.3</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2005-07-07 12:24:26</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.3.tgz">APC-3.0.3.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.3">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.2">3.0.2</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2005-07-05 17:26:26</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.2.tgz">APC-3.0.2.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.2">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.1">3.0.1</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2005-07-05 15:55:19</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.1.tgz">APC-3.0.1.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.1">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/3.0.0">3.0.0</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2005-07-05 14:22:25</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-3.0.0.tgz">APC-3.0.0.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=3.0.0">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/2.0.4">2.0.4</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2004-06-27 03:54:00</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-2.0.4.tgz">APC-2.0.4.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=2.0.4">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/2.0.3">2.0.3</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2004-03-25 18:51:00</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-2.0.3.tgz">APC-2.0.3.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=2.0.3">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/2.0.2">2.0.2</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2004-03-12 01:51:00</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-2.0.2.tgz">APC-2.0.2.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=2.0.2">Changelog</a>]</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/APC/2.0">2.0</a></th>
+                    <td valign="top" bgcolor="#e8e8e8">stable</td>
+                    <td valign="top" bgcolor="#e8e8e8">2003-07-01 04:18:00</td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/APC-2.0.tgz">APC-2.0.tgz</a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=APC&release=2.0">Changelog</a>]</small>
+                    </td>
+                </tr>
+                            </table>
+        </td>
+    </tr>
+</table>
+<!-- border box ends -->
+<br/><br/>
+<!-- border box starts -->
+<table cellpadding="0" cellspacing="1" style="width: 90%; border: 0px;">
+    <tr>
+        <td bgcolor="#000000">
+            <table cellpadding="2" cellspacing="1" style="width: 100%; border: 0px;">
+                <tr style="background-color: #CCCCCC;">
+                    <th colspan="2">
+                        Dependencies
+                    </th>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Release 3.1.9:</th>
+                    <td valign="top" bgcolor="#e8e8e8">
+PHP Version: PHP 5.1.0 or newer<br />PEAR Package: PEAR Installer 1.4.0 or newer<br />                    </td>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Release 3.1.8:</th>
+                    <td valign="top" bgcolor="#e8e8e8">
+PHP Version: PHP 5.1.0 or newer<br />PEAR Package: PEAR Installer 1.4.0 or newer<br />                    </td>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Release 3.1.7:</th>
+                    <td valign="top" bgcolor="#e8e8e8">
+PHP Version: PHP 5.1.0 or newer<br />PEAR Package: PEAR Installer 1.4.0 or newer<br />                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+        </div>
+    </div>
+    <div id="footer">Footer</div>
+</div>
+</body>
+</html>

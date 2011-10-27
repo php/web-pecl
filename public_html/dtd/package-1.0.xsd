@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="package">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="name" />
+        <xs:element ref="summary" />
+        <xs:element ref="description" />
+        <xs:element ref="license" />
+        <xs:element ref="maintainers" />
+        <xs:element ref="release" />
+        <xs:element ref="changelog" />
+      </xs:choice>
+      <xs:attribute name="type" default="empty">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="source" />
+            <xs:enumeration value="binary" />
+            <xs:enumeration value="empty" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="version" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name" type="xs:string" />
+  <xs:element name="summary" type="xs:string" />
+  <xs:element name="description" type="xs:string" />
+  <xs:element name="maintainers">
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element ref="maintainer" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="maintainer">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="user" />
+        <xs:element ref="role" />
+        <xs:element ref="name" />
+        <xs:element ref="email" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="user" type="xs:string" />
+  <xs:element name="role" type="xs:string" />
+  <xs:element name="email" type="xs:string" />
+  <xs:element name="changelog">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="release" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="release">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="version" />
+        <xs:element ref="license" />
+        <xs:element ref="state" />
+        <xs:element ref="date" />
+        <xs:element ref="notes" />
+        <xs:element ref="filelist" />
+        <xs:element ref="deps" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="version" type="xs:string" />
+  <xs:element name="state" type="xs:string" />
+  <xs:element name="date" type="xs:string" />
+  <xs:element name="notes" type="xs:string" />
+  <xs:element name="filelist">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="dir" />
+        <xs:element ref="file" />
+        <xs:element ref="libfile" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dir">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="dir" />
+        <xs:element ref="file" />
+        <xs:element ref="libfile" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="baseinstalldir" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="file">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="role" default="php">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="php" />
+                <xs:enumeration value="ext" />
+                <xs:enumeration value="test" />
+                <xs:enumeration value="doc" />
+                <xs:enumeration value="data" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="debug" default="na">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="na" />
+                <xs:enumeration value="on" />
+                <xs:enumeration value="off" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="threaded" default="na">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="na" />
+                <xs:enumeration value="on" />
+                <xs:enumeration value="off" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="format" type="xs:string" />
+          <xs:attribute name="baseinstalldir" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="libfile">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="libname" />
+        <xs:element ref="sources" />
+        <xs:element ref="includes" />
+        <xs:element ref="libadd" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="libname" type="xs:string" />
+  <xs:element name="sources" type="xs:string" />
+  <xs:element name="libadd" type="xs:string" />
+  <xs:element name="deps">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="dep" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dep">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="type" use="required">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="pkg" />
+                <xs:enumeration value="ext" />
+                <xs:enumeration value="php" />
+                <xs:enumeration value="prog" />
+                <xs:enumeration value="ldlib" />
+                <xs:enumeration value="ltlib" />
+                <xs:enumeration value="os" />
+                <xs:enumeration value="websrv" />
+                <xs:enumeration value="sapi" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="rel">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="has" />
+                <xs:enumeration value="eq" />
+                <xs:enumeration value="lt" />
+                <xs:enumeration value="le" />
+                <xs:enumeration value="gt" />
+                <xs:enumeration value="ge" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="version" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

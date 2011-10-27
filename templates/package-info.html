@@ -1,0 +1,149 @@
+<?php extract($page->data); ?>
+<div id="page-header">
+    <h2><?php echo  $package['name']; ?>
+<?php if (isset($package_version)) { ?>
+        <?php echo $package_version; ?>
+<?php } ?>
+    </h2>
+    <div style="clear: both;"></div>
+</div>
+<?php html_category_urhere($package['categoryid'], true); ?>
+<?php if ($warning_msg) { ?>
+        <div class="warnings" ><?php echo $warning_msg; ?></div>
+<?php } ?>
+<table cellpadding="0" cellspacing="1" style="width: 90%; border: 0px;">
+    <tr>
+        <td bgcolor="#000000">
+            <table cellpadding="2" cellspacing="1" style="width: 100%; border: 0px;">
+                <tr style="background-color: #CCCCCC;">
+                    <th colspan="2">Package Information</th>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Summary</th>
+                    <td valign="top" bgcolor="#e8e8e8"><?php echo  $package['summary']; ?></td>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Maintainers</th>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <?php foreach ($maintainer_list as $maintainer) { ?>
+                        <a href="/user/<?php echo $maintainer->handle; ?>"><?php echo utf8_encode($maintainer->name); ?></a>
+                        (<?php echo $maintainer->role; ?>)<br/>
+                        <?php } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">License</th>
+                    <td valign="top" bgcolor="#e8e8e8"><?php echo $package['license']; ?></td>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Description</th>
+                    <td valign="top" bgcolor="#e8e8e8"><?php echo nl2br($package['description']); ?>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!-- border box ends -->
+
+<br/>
+<table border="0" cellspacing="3" cellpadding="3" height="48" width="90%" align="center">
+    <tr>
+        <td align="center">[ <a href="/get/<?php echo $package['name']; ?>">Download Latest</a> ]</td>
+        <td align="center">[ <a href="/package-changelog.php?package=<?php echo $package['name']; ?>">Changelog</a> ]</td>
+        <td align="center">[ <a href="/package-stats.php?pid=<?php echo $package['packageid']; ?>&amp;rid=&amp;cid=<?php echo $package['categoryid']; ?>">View Statistics</a> ]</td>
+    </tr>
+    <tr>
+        <td align="center">
+            [ <a href="<?php echo $package['cvs_link']; ?>" target="top">Browse Source</a> ]&nbsp;</td>
+        <td align="center">[ <a href="/bugs/search.php?cmd=display&status=Open&package_name[]=<?php echo $package['name']; ?>">Package Bugs</a> ]
+        </td>
+        <td align="center">[ <a href="http://php.net/<?php echo $package['name']; ?>">View Documentation</a> ]</td>
+    </tr>
+    <tr>
+        <td align="center">[ <a href="/bugs/report.php?package=<?php echo $package['name']; ?>">Report new bug</a> ]</td>
+    </tr>
+</table>
+
+<br/>
+
+<?php if (!$release_id) { ?>
+<!-- border box starts -->
+<table cellpadding="0" cellspacing="1" style="width: 90%; border: 0px;">
+    <tr>
+        <td bgcolor="#000000">
+            <table cellpadding="2" cellspacing="1" style="width: 100%; border: 0px;">
+                <tr style="background-color: #CCCCCC;">
+                    <th colspan="5">Available Releases</th>
+                </tr>
+                <tr>
+                    <th valign="top" bgcolor="#ffffff">Version</th>
+                    <th valign="top" bgcolor="#ffffff">State</th>
+                    <th valign="top" bgcolor="#ffffff">Release Date</th>
+                    <th valign="top" bgcolor="#ffffff">Downloads</th>
+                    <th valign="top" bgcolor="#ffffff">&nbsp;</th>
+                </tr>
+                <?php foreach($release_list as $version => $release) { ?>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc"><a
+                            href="/package/<?php echo $package['name']; ?>/<?php echo $version; ?>"><?php echo $version; ?></a></th>
+                    <td valign="top" bgcolor="#e8e8e8"><?php echo $release['state']; ?></td>
+                    <td valign="top" bgcolor="#e8e8e8"><?php echo $release['releasedate']; ?></td>
+                    <td valign="top" bgcolor="#e8e8e8"><a
+                            href="/get/<?php echo $download_list[$version]->basename; ?>"><?php echo $download_list[$version]->basename; ?></a> (0.0kB)
+                    </td>
+                    <td valign="top" bgcolor="#e8e8e8">
+                        <small>[<a href="/package-changelog.php?package=<?php echo $package['name']; ?>&release=<?php echo $version; ?>">Changelog</a>]</small>
+                    </td>
+                </tr>
+                <?php } ?>
+            </table>
+        </td>
+    </tr>
+</table>
+<?php } ?>
+<!-- border box ends -->
+<br/><br/>
+<?php if (!$dependency_list) { ?>
+No dependencies registered.<br/>
+<?php } else { ?>
+<!-- border box starts -->
+<table cellpadding="0" cellspacing="1" style="width: 90%; border: 0px;">
+    <tr>
+        <td bgcolor="#000000">
+            <table cellpadding="2" cellspacing="1" style="width: 100%; border: 0px;">
+                <tr style="background-color: #CCCCCC;">
+                    <th colspan="2">
+                        Dependencies
+<?php if ($release_id) { ?>
+ for <?php echo $package_version; ?>
+<?php } ?>
+                    </th>
+                </tr>
+<?php foreach ($dependency_list as $version => $deps) {?>
+                <tr>
+                    <th valign="top" bgcolor="#cccccc">Release <?php echo $version; ?>:</th>
+                    <td valign="top" bgcolor="#e8e8e8">
+<?php foreach ($deps as $dep) {
+    echo dep_to_human_text($dep) . "<br />";
+}
+?>
+                    </td>
+                </tr>
+<?php } ?>
+                <tr>
+                    <td>
+<?php
+                            if ($too_many_releases && empty($version)) {
+?>
+Dependencies for older releases can be found on the release overview page.
+<?php
+}
+?>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<?php } ?>

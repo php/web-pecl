@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<l xmlns="http://pear.php.net/dtd/rest.categorypackages"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackages
+    http://pear.php.net/dtd/rest.categorypackages.xsd">
+ <p xlink:href="/rest/p/namazu">namazu</p>
+ <p xlink:href="/rest/p/xdiff">xdiff</p>
+ <p xlink:href="/rest/p/ps">ps</p>
+ <p xlink:href="/rest/p/enchant">enchant</p>
+ <p xlink:href="/rest/p/panda">panda</p>
+ <p xlink:href="/rest/p/pdflib">pdflib</p>
+ <p xlink:href="/rest/p/colorer">colorer</p>
+ <p xlink:href="/rest/p/stem">stem</p>
+ <p xlink:href="/rest/p/bbcode">bbcode</p>
+ <p xlink:href="/rest/p/doublemetaphone">doublemetaphone</p>
+ <p xlink:href="/rest/p/textcat">TextCat</p>
+ <p xlink:href="/rest/p/markdown">markdown</p>
+ <p xlink:href="/rest/p/ssdeep">ssdeep</p>
+ <p xlink:href="/rest/p/re2">re2</p>
+</l>

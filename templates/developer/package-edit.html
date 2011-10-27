@@ -1,0 +1,112 @@
+<?php extract($page->data); ?>
+<h1>Edit package <?php echo $package_name; ?></h1><!-- border box starts -->
+<h2>Package Info</h2>
+<hr />
+<form action="/package-edit.php?name=<?php echo $package_name; ?>" method="POST">
+    <table border="0">
+        <tr>
+            <td>Package name:</td>
+            <td valign="middle">
+                <input type="text" id="package_name" name="package_name" value="<?php echo $package_name; ?>" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td>License:</td>
+            <td valign="middle">
+                <?php $form->displayText("license", $package['license'], 30); ?>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">Summary:</td>
+            <td>
+                <?php $form->displayTextarea("summary", $package['summary'], 40, 1, 255); ?>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">Description:</td>
+            <td>
+                <?php $form->displayTextarea("description", $package['description'], 80, 20); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Category:</td>
+            <td>
+                <?php $form->displaySelect("category", $category_list, (int)$package['categoryid']); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Homepage:</td>
+            <td valign="middle">
+                <input type="text" name="homepage" size="30" value=""/>
+            </td>
+        </tr>
+        <tr>
+            <td>Documentation (default http://www.php.net/<?php echo strtolower($package_name); ?>):</td>
+            <td valign="middle">
+                <?php $form->displayText("Documentation", $package['doc_link'], 30); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Web VCS Url (Default php's svn):</td>
+            <td valign="middle">
+                <?php $form->displayText("Documentation", $package['cvs_link'], 80); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Bug tracker Url:</td>
+            <td valign="middle">
+                <?php $form->displayText("bug_link", $package['bug_link'], 80); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Unmaintained package?</td>
+            <td valign="middle">
+                <?php $form->displayCheckbox('unmaintained', ($package['unmaintained'] == 1)) ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Superseded by:</td>
+            <td valign="middle">
+                <input type="" id="new_package" name="new_package">
+            </td>
+        </tr>
+        <tr>
+            <td>Wiki:</td>
+            <td valign="middle">
+                <input type="text" name="wiki_link" size="20" value=""/>
+            </td>
+        </tr>
+        <tr>
+            <td>New Home Link (if moved out of pecl):</td>
+            <td valign="middle">
+                <?php $form->displayText("new_channel", htmlspecialchars($package['new_channel'], 30)); ?>
+                New Package Name:     <?php $form->displayText("new_package", htmlspecialchars($package['new_package'],
+                50)); ?>
+            </td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" name="submit" value="Save changes"/>&nbsp;
+                <input type="reset" name="cancel" value="Cancel"
+                       onClick="javascript:window.location.href='/'; return false"/>
+            </td>
+        </tr>
+    </table>
+</form>
+<h2>Maintainers</h2>
+<hr />
+<form>
+
+<div class="maintainer_list">
+<ul id="maintainer_list"></ul>
+<input id="newname" name="newname" type="text">
+<input type="button" id="btn-add" value="Add as">
+<select name="role" id="role">
+    <option value="developer">developer</option>
+    <option value="helper">helper</option>
+    <option value="lead">lead</option>
+</select>
+<input type="button" id="btn-remove" value="Remove">&nbsp;<input type="button" id="btn-save" value="Save">
+</div>
+</form>

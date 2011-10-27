@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<l xmlns="http://pear.php.net/dtd/rest.categorypackages"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackages
+    http://pear.php.net/dtd/rest.categorypackages.xsd">
+ <p xlink:href="/rest/p/printer">printer</p>
+ <p xlink:href="/rest/p/w32api">w32api</p>
+ <p xlink:href="/rest/p/statgrab">statgrab</p>
+ <p xlink:href="/rest/p/threads">threads</p>
+ <p xlink:href="/rest/p/dio">dio</p>
+ <p xlink:href="/rest/p/win32ps">win32ps</p>
+ <p xlink:href="/rest/p/win32ps_dll">win32ps_dll</p>
+ <p xlink:href="/rest/p/expect">expect</p>
+ <p xlink:href="/rest/p/fam">fam</p>
+ <p xlink:href="/rest/p/proctitle">proctitle</p>
+ <p xlink:href="/rest/p/apacheaccessor">ApacheAccessor</p>
+ <p xlink:href="/rest/p/win32service">win32service</p>
+ <p xlink:href="/rest/p/yaf">yaf</p>
+</l>

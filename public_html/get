@@ -1,0 +1,99 @@
+<?php // -*- PHP -*-
+/*
+   +----------------------------------------------------------------------+
+   | PEAR Web site version 1.0                                            |
+   +----------------------------------------------------------------------+
+   | Copyright (c) 2001-2003 The PHP Group                                |
+   +----------------------------------------------------------------------+
+   | This source file is subject to version 2.02 of the PHP license,      |
+   | that is bundled with this package in the file LICENSE, and is        |
+   | available at through the world-wide-web at                           |
+   | http://www.php.net/license/2_02.txt.                                 |
+   | If you did not receive a copy of the PHP license and are unable to   |
+   | obtain it through the world-wide-web, please send a note to          |
+   | license@php.net so we can mail you a copy immediately.               |
+   +----------------------------------------------------------------------+
+   | Authors:                                                             |
+   +----------------------------------------------------------------------+
+   $Id: get 139120 2003-08-29 16:17:11Z cox $
+*/
+
+/**
+ * PEAR package downloader
+ *
+ * Valid calls recognized:
+ * /get/DB         -> Latest version
+ * /get/DB-1.2     -> Specific 1.2 version
+ * /get/DB-1.2.tar -> Specific file
+ * /get/DB-stable  -> Latest stable version
+ * /get/DB/1.2     -> Other way for 1.2 version
+ * /get/DB/stable  -> Other way for latest stable
+
+ * To all this calls the GET param "?uncompress=yes" would force
+ * to download the file without gzip compression
+ *
+ * other things like: "/PEAR_package/info" could be easily implemented
+ *
+ * It requires this to be added to httpd.conf/.htaccess:
+ * <Location "/get">
+ *  ForceType application/x-httpd-php
+ * </Location>
+ */
+
+// shut up or we risk getting corrupted tgz files
+error_reporting(0);
+
+function error_404($obj) {
+    header('HTTP/1.0 404 Not Found');
+    if (is_object($obj)) {
+        echo $obj->getMessage();
+        if (DEVBOX) {
+            echo ' ' . $obj->getDebugInfo();
+        }
+    } else {
+        print $obj;
+    }
+    exit;
+}
+
+PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'error_404');
+
+// This is needed to be able to test the downloads with "wget"
+// or the pear installer
+if (empty($dbh)) {
+    $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => false));
+}
+
+if (!isset($_SERVER['PATH_INFO']) || $_SERVER['PATH_INFO'] == '/') {
+    PEAR::raiseError('no package selected');
+}
+$opts = explode('/', $_SERVER['PATH_INFO']);
+$ok = false;
+if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], array('1', 'yes', 'on'))) {
+    $uncompress = true;
+} else {
+    $uncompress = false;
+}
+switch (sizeof($opts)) {
+    case 2: {
+        if (preg_match('/^([a-zA-Z0-9_]+)-(.+)\.(tar|tgz)$/', $opts[1], $matches)) {
+            list(, $package, $version) = $matches;
+            $ok = release::HTTPdownload($package, $version, $opts[1], $uncompress);
+        } elseif (preg_match('/^([a-zA-Z0-9_]+)-(.+)$/', $opts[1], $matches)) {
+            list(, $package, $version) = $matches;
+            $ok = release::HTTPdownload($package, $version, null, $uncompress);
+        } else {
+            $ok = release::HTTPdownload($opts[1], null, null, $uncompress);
+        }
+        break;
+    }
+    case 3: {
+        $ok = release::HTTPdownload($opts[1], $opts[2], null, $uncompress);
+        break;
+    }
+    default: {
+        $ok = false;
+    }
+}
+
+?>

@@ -1,0 +1,82 @@
+<?php
+if (is_array($page->data)) {
+extract($page->data);
+}
+?>
+
+    <div style="float:left; width: 75%;">
+        <h3>What is PECL?</h3>
+
+        <p>
+            <acronym title="PHP Extension Community Library">PECL</acronym>
+            is a repository for PHP Extensions, providing a directory of all known
+            extensions and hosting facilities for downloading and development of PHP
+            extensions.
+
+        </p>
+
+        <p>
+            The packaging and distribution system used by PECL is shared with its
+            sister, <acronym title="PHP Extension and Application Repository"
+                >PEAR</acronym>.
+        </p>
+
+        <h3><a href="/news/">News</a></h3>
+
+        <h3>Documentation</h3>
+
+        <div class="indent"><p>
+            <a href="/doc/index.php"><img src="/gifs/pecl_item.gif" style="border: 0;" width="17" height="19"
+                                          alt="PECL specific docs"/></a>&nbsp;<a href="/doc/index.php"><b>PECL specific
+            docs</b></a></p>
+
+            <p>
+                <a href="/support"><img src="/gifs/pecl_item.gif" style="border: 0;" width="17" height="19"
+                                            alt="Mailing Lists &amp; Support Resources"/></a>&nbsp;<a
+                    href="/support"><b>Mailing Lists &amp; Support Resources</b></a></p>
+        </div>
+        <h3>Downloads</h3>
+
+        <div class="indent"><p>
+
+            <a href="/packages/"><img src="/gifs/pecl_item.gif" style="border: 0;" width="17" height="19"
+                                      alt="Browse All Packages"/></a>&nbsp;<a href="/packages/"><b>Browse All
+            Packages</b></a></p>
+
+            <p>
+                <a href="/package-search.php"><img src="/gifs/pecl_item.gif" style="border: 0;" width="17" height="19"
+                                                   alt="Search Packages"/></a>&nbsp;<a href="package-search.php"><b>Search
+                Packages</b></a></p>
+
+            <p>
+                <a href="/package-stats.php"><img src="/gifs/pecl_item.gif" style="border: 0;" width="17" height="19"
+                                                  alt="Download Statistics"/></a>&nbsp;<a href="package-stats.php"><b>Download
+                Statistics</b></a></p>
+        </div>
+        <p>
+            <a href="#"><img src="/gifs/pecl_item.gif" style="border: 0;" width="17" height="19"
+                             alt="I want to publish my PHP Extension in PECL"/></a>&nbsp;<a
+                href="account-request.php"><b>I want to publish my PHP Extension in PECL</b></a></p>
+    </div>
+
+    <?php
+if (count($recent_release)) {
+?>
+    <div style="float:right;width:20%;top:0; right: 0; clear:right">
+        <ul id="latest_release">
+            <li>Recent Releases</li>
+            <?php
+        foreach ($recent_release as $release) {
+?>
+            <li>
+                <a href="/package/<?php echo $release['name'];?>/<?php echo $release['version'];?>"><?php echo $release['name'] . '-' . $release['version']; ?></a>
+                (<?php echo make_utc_date(strtotime($release['releasedate']), 'Y-m-d'); ?>)
+            </li>
+            <?php
+        }
+        ?>
+        </ul>
+    </div>
+    <?php
+}
+?>

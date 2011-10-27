@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<p xmlns="http://pear.php.net/dtd/rest.package"    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"    xsi:schemaLocation="http://pear.php.net/dtd/rest.package    http://pear.php.net/dtd/rest.package.xsd">
+ <n>amfext</n>
+ <c>pecl.php.net</c>
+ <ca xlink:href="/rest/c/Processing">Processing</ca>
+ <l>PHP</l>
+ <s>ActionScript Message Format extension</s>
+ <d>Allows to encode and decode PHP data in ActionScript Message Format (AMF) version 0 and 3</d>
+ <r xlink:href="/rest/r/amfext"/>
+</p>

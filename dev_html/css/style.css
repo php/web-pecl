@@ -22,26 +22,27 @@ body {
 #header {
     float: left;
     width: 100%;
-    background: navy;
-    height: 70px;
+    background-color: navy;
+    height: 50px;
     color: white;
 }
 
 #logo {
+    background-color: navy;
     float: left;
-    width: 120px;
+
     margin-top: 0;
     padding: 0;
-    height: 60px;
 }
 
 #subheader {
-    float: right;
+    float: left;
     text-align: right;
     margin-top: 0;
     margin-right: 0;
     color: white;
 }
+
 #subheader a {
     color: white;
     text-decoration: none;
@@ -128,6 +129,35 @@ div.class {
 #submenu li:first-child {
     margin-left: 2em;
     border-left: none;
+}
+
+.userinfo {
+    float: right;
+    padding: 8px 5px 7px 10px;
+    font-size: 12px;
+    border-top: none;
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-radius-topleft: 0;
+    -moz-border-radius-topright: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+ul.nav.logged_out, .userinfo {
+    background: #f5f5f5;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#f5f5f5',endColorstr='#ececec');
+    background: -webkit-gradient(linear,0% 0,0% 100%,from(#f5f5f5),to(#E8E8E8));
+    background: -moz-linear-gradient(270deg,#f5f5f5,#ECECEC);
+    border-color: #EEE;
+    border: 1px solid #ececec;
+    border-bottom-color: #f5f5f5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.2);
 }
 
 #page-header {

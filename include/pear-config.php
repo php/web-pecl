@@ -41,7 +41,10 @@ if (isset($_SERVER['PECL_DATABASE_DSN'])) {
     define('PECL_DB_HOST', 'localhost');
     define('PECL_DB_NAME', 'pear');
 
+    define('PECL_DB_BUG_NAME', 'phpbugs');
+
     define('PECL_DATABASE_DSN', 'mysqli://' . PECL_DB_USER . ':' . PECL_DB_PASSWORD. '@' . PECL_DB_HOST. '/' . PECL_DB_NAME);
+    define('BUG_DATABASE_DSN', 'mysqli://' . PECL_DB_USER . ':' . PECL_DB_PASSWORD. '@' . PECL_DB_HOST. '/' . PECL_DB_BUG_NAME);
     define('PECL_DB_DSN', 'mysql:host=' . PECL_DB_HOST . ';dbname=' . PECL_DB_NAME); 
 }
 

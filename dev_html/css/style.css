@@ -4,7 +4,7 @@ body {
     height: 100%;
     background-color: white;
     color: black;
-    font-family: verdana,arial,helvetica,sans-serif;
+    font-family: verdana, arial, helvetica, sans-serif;
     font-size: 90%;
     max-height: 100%;
 }
@@ -14,25 +14,74 @@ body {
     left: 0;
     width: 100%;
     position: absolute;
-	height:auto !important; /* real browsers */
-	height:100%; /* IE6: treaded as min-height*/
-	min-height:100%; /* real browsers */
+    height: auto !important; /* real browsers */
+    height: 100%; /* IE6: treaded as min-height*/
+    min-height: 100%; /* real browsers */
 }
 
 #header {
     float: left;
     width: 100%;
-    background-color: navy;
-    height: 50px;
+
     color: white;
 }
 
 #logo {
     background-color: navy;
     float: left;
-
     margin-top: 0;
     padding: 0;
+}
+
+#menu {
+    float: left;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#menu li {
+    list-style: none;
+    float: left;
+}
+
+#menu li a {
+    display: block;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #999;
+    font-weight: bold;
+}
+
+#menu li a:hover {
+    color: #000;
+}
+
+#menu li ul {
+    display: none;
+}
+
+#menu li:hover ul, #menu li.hover ul {
+    position: absolute;
+    display: inline;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#menu li:hover li, #menu li.hover li {
+    float: left;
+}
+
+#menu li:hover li a, #menu li.hover li a {
+    color: #000;
+}
+
+#menu li li a:hover {
+    color: #357;
 }
 
 #subheader {
@@ -60,77 +109,6 @@ div.class {
     clear: both;
 }
 
-#menu li {
-    list-style-type: none;
-    display: inline;
-}
-
-#menu li a {
-    background-color: navy;
-    color: #fff;
-    display: block;
-    float: left;
-    font-size: 100%;
-    padding-bottom: 3px;
-    padding-top: 2px;
-    padding-left: 8px;
-    padding-right: 8px;
-    text-decoration: none;
-    border-bottom: none;
-    font-family: verdana, helvetica, sans-serif;
-}
-
-#menu li.current a, #menu li.current a:hover {
-    background: #ffffff;
-    color: #000000;
-    font-weight: bold;
-}
-
-#menu li a:hover {
-    background: #fff;
-    color: navy;
-}
-
-#menu li:first-child {
-    margin-left: 1em;
-}
-
-#submenu {
-    clear: left;
-    width: auto;
-    height: 22px;
-    text-align: right;
-    margin-top: 0px!important;
-    margin-right: 0px!important;
-    margin-left: 0px!important;
-    margin-bottom: 0px!important;
-}
-
-#submenu a {
-    text-decoration: none;
-    border-bottom: none;
-    vertical-align: middle;
-    line-height: 22px;
-}
-
-#submenu li.current a, #submenu li.current a:hover  {
-    background: #ffffff;
-    color: #000000;
-    font-weight: bold;
-}
-
-#submenu li {
-    display: inline;
-    font-size: 93%;
-    padding: 0 1px 0 5px;
-    border-left: 1px solid #999;
-}
-
-#submenu li:first-child {
-    margin-left: 2em;
-    border-left: none;
-}
-
 .userinfo {
     float: right;
     padding: 8px 5px 7px 10px;
@@ -146,18 +124,18 @@ div.class {
 
 ul.nav.logged_out, .userinfo {
     background: #f5f5f5;
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#f5f5f5',endColorstr='#ececec');
-    background: -webkit-gradient(linear,0% 0,0% 100%,from(#f5f5f5),to(#E8E8E8));
-    background: -moz-linear-gradient(270deg,#f5f5f5,#ECECEC);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType = 0, startColorstr = '#f5f5f5', endColorstr = '#ececec');
+    background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#f5f5f5), to(#E8E8E8));
+    background: -moz-linear-gradient(270deg, #f5f5f5, #ECECEC);
     border-color: #EEE;
     border: 1px solid #ececec;
     border-bottom-color: #f5f5f5;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-    box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 #page-header {
@@ -195,7 +173,6 @@ ul.nav.logged_out, .userinfo {
     vertical-align: middle;
 }
 
-
 #maintainer_list span.name {
     float: left;
     width: 50%;
@@ -205,7 +182,6 @@ ul.nav.logged_out, .userinfo {
     float: left;
     width: 24%;
 }
-
 
 #maintainer_list span.cmd {
     float: right;
@@ -222,6 +198,7 @@ ul.nav.logged_out, .userinfo {
     padding: 3px 7px;
     background: white;
 }
+
 #my_package {
     float: left;
     padding-top: 10px;
@@ -233,13 +210,13 @@ ul.nav.logged_out, .userinfo {
     float: left;
     min-width: 200px;
     width: 30%;
-    border:  1px solid;
+    border: 1px solid;
     margin: 5px 5px 5px 5px;
     border-color: blue;
     margin: 5px 5px 5px 5px;
     padding: 2px;
     padding-top: 32px;
-    border-radius:3px;
+    border-radius: 3px;
 }
 
 #my_php_bugs {
@@ -248,11 +225,11 @@ ul.nav.logged_out, .userinfo {
     float: left;
     min-width: 200px;
     width: 30%;
-    border:  1px solid;
+    border: 1px solid;
     border-color: blue;
     margin: 5px 5px 5px 5px;
     padding-top: 32px;
-    border-radius:3px;
+    border-radius: 3px;
 }
 
 #my_follow_bugs {
@@ -261,11 +238,11 @@ ul.nav.logged_out, .userinfo {
     float: left;
     min-width: 200px;
     width: 30%;
-    border:  1px solid;
+    border: 1px solid;
     border-color: blue;
     margin: 5px 5px 5px 5px;
     padding-top: 32px;
-    border-radius:3px;
+    border-radius: 3px;
 }
 
 div.release_action_released {

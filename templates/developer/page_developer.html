@@ -44,6 +44,7 @@
 <body>
 <div id="wrapper">
     <div id="header">
+        <div id="logo"><a href="/"><img src="/images/peclsmall.gif" style="border: 0;" width="70" alt="PECL"/></div>
         <?php if ($auth_user) { ?>
         <div class="userinfo">
             <img src="https://secure.gravatar.com/avatar/<?php echo md5($auth_user->email); ?>" width="30" height="30"/>
@@ -52,7 +53,6 @@
                 href="/logout.php?logout=1">logout</a>
         </div>
         <?php } ?>
-        <div id="logo"><a href="/"><img src="/images/peclsmall.gif" style="border: 0;" width="70" alt="PECL"/></div>
         <div id="subheader">
             <ul id="menu">
                 <li class="menu-item current"><a href="/index.php">Main</a></li>

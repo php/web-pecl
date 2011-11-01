@@ -12,18 +12,19 @@ body {
 #wrapper {
     top: 0;
     left: 0;
-    width: 100%;
+    width: 98%;
     position: absolute;
     height: auto !important; /* real browsers */
     height: 100%; /* IE6: treaded as min-height*/
     min-height: 100%; /* real browsers */
+    align: center;
 }
 
 #header {
     position: relative;
     top: 0px;
     float: left;
-    width: 97%;
+    width: 100%;
     padding: 8px 5px 7px 10px;
     font-size: 12px;
     border-top: none;
@@ -95,13 +96,19 @@ body {
 
 #menu li:hover li a, #menu li.hover li a {
     color: #000;
+
 }
 
 #menu li li a:hover {
     color: #357;
 }
-
-
+#menu li.active {
+    padding: 3px 8px;
+    color: #000;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: bold;
+}
 #subheader a {
     color: white;
     text-decoration: none;

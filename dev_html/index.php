@@ -1,6 +1,7 @@
 <?php
 
-$sql = 'select id, packages.name, role from maintains,packages where packages.id = maintains.package AND handle=' . $dbh->quote($auth_user->handle);
+$sql = 'select id, packages.name, role from maintains,packages where packages.id = maintains.package AND handle=' .
+       $dbh->quote($auth_user->handle) . 'ORDER BY name';
 $my_package = $dbh->getAll($sql, NULL, DB_FETCHMODE_OBJECT);
 
 $db_bug = DB::connect(BUG_DATABASE_DSN);

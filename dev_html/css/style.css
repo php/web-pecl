@@ -35,10 +35,6 @@ body {
     border-top-right-radius: 0;
 }
 
-#content-wrapper {
-    position: relative;
-}
-
 #logo {
     background-color: navy;
     float: left;
@@ -54,7 +50,7 @@ body {
     right: 0;
     margin: 0;
     padding: 0;
-    vertical-align: bottom;
+
 }
 
 #menu li {
@@ -105,15 +101,6 @@ body {
     color: #357;
 }
 
-#subheader {
-    text-align: right;
-    position: relative;
-    margin-top: 0;
-    margin-right: 0;
-    color: white;
-    align: bottom;
-    bottom: 0;
-}
 
 #subheader a {
     color: white;

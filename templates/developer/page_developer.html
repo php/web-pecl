@@ -51,13 +51,7 @@
 <div id="wrapper">
     <div id="header">
     <?php if ($auth_user) { ?>
-        <div id="logo"><a href="/"><img src="/images/peclsmall.gif" style="border: 0;" width="70" alt="PECL"/></div>
-        <div id="userinfo">
-            <img src="https://secure.gravatar.com/avatar/<?php echo md5($auth_user->email); ?>" width="30" height="30"/>
-            &nbsp;<a class="logo"
-                     href="/user/<?php echo $auth_user->handle; ?>"><?php echo $auth_user->handle; ?></a>&nbsp;|&nbsp;<a
-                href="/logout.php?logout=1">logout</a>
-        </div>
+        <div id="logo"><a href="/"><img src="/images/peclsmall.gif" style="border: 0;" width="70" alt="PECL"/></a></div>
 
         <ul id="menu">
             <li class="menu-item current"><a href="/index.php">Main</a></li>
@@ -68,6 +62,13 @@
             <li class="menu-item"><a href="/accounts/">Developers</a></li>
             <li class="menu-item menu-item-last"><a href="/bugs/">Bugs</a></li>
         </ul>
+
+        <div id="userinfo">
+            <!--<img src="https://secure.gravatar.com/avatar/<?php echo md5($auth_user->email); ?>" width="30" height="30"/>-->
+            &nbsp;<a class="logo"
+                     href="/user/<?php echo $auth_user->handle; ?>"><?php echo $auth_user->handle; ?></a>&nbsp;|&nbsp;<a
+                href="/logout.php?logout=1">logout</a>
+        </div>
 
     <?php } ?>
 

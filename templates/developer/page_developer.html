@@ -30,9 +30,15 @@
         }
 
         if (load_jquery == 1) {
+<?php if (0) { ?>  
             document.write('<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
             document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"><\/script>\n')
             document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"><\/script>\n')
+<?php } else { ?>
+            document.write('<link href="/jquery/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+            document.write('<script src="/jquery/jquery.min.js"><\/script>\n')
+            document.write('<script src="/jquery/jquery-ui.min.js"><\/script>\n')
+<?php } ?>
         }
     </script>
 
@@ -44,27 +50,29 @@
 <body>
 <div id="wrapper">
     <div id="header">
+    <?php if ($auth_user) { ?>
         <div id="logo"><a href="/"><img src="/images/peclsmall.gif" style="border: 0;" width="70" alt="PECL"/></div>
-        <?php if ($auth_user) { ?>
-        <div class="userinfo">
+        <div id="userinfo">
             <img src="https://secure.gravatar.com/avatar/<?php echo md5($auth_user->email); ?>" width="30" height="30"/>
             &nbsp;<a class="logo"
                      href="/user/<?php echo $auth_user->handle; ?>"><?php echo $auth_user->handle; ?></a>&nbsp;|&nbsp;<a
                 href="/logout.php?logout=1">logout</a>
         </div>
-        <?php } ?>
-        <div id="subheader">
-            <ul id="menu">
-                <li class="menu-item current"><a href="/index.php">Main</a></li>
-                <li class="menu-item"><a href="/support/">Support</a></li>
 
-                <li class="menu-item"><a href="/manual/">Documentation</a></li>
-                <li class="menu-item"><a href="/packages/">Packages</a></li>
-                <li class="menu-item"><a href="/accounts/">Developers</a></li>
-                <li class="menu-item menu-item-last"><a href="/bugs/">Bugs</a></li>
-            </ul>
-        </div>
+        <ul id="menu">
+            <li class="menu-item current"><a href="/index.php">Main</a></li>
+            <li class="menu-item"><a href="/support/">Support</a></li>
+
+            <li class="menu-item"><a href="/manual/">Documentation</a></li>
+            <li class="menu-item"><a href="/packages/">Packages</a></li>
+            <li class="menu-item"><a href="/accounts/">Developers</a></li>
+            <li class="menu-item menu-item-last"><a href="/bugs/">Bugs</a></li>
+        </ul>
+
+    <?php } ?>
+
     </div>
+
     <div id="content-wrapper">
         <div id="content-inner">
             <?php echo $page->contents; ?>

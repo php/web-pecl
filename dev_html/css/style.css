@@ -20,10 +20,23 @@ body {
 }
 
 #header {
+    position: relative;
+    top: 0px;
     float: left;
-    width: 100%;
+    width: 97%;
+    padding: 8px 5px 7px 10px;
+    font-size: 12px;
+    border-top: none;
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-radius-topleft: 0;
+    -moz-border-radius-topright: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
 
-    color: white;
+#content-wrapper {
+    position: relative;
 }
 
 #logo {
@@ -31,14 +44,17 @@ body {
     float: left;
     margin-top: 0;
     padding: 0;
+    vertical-align: middle;
 }
 
 #menu {
-    float: left;
-    top: 0;
+	position: absolute;
+	bottom:0;
+	left: 80px;
     right: 0;
     margin: 0;
     padding: 0;
+    vertical-align: bottom;
 }
 
 #menu li {
@@ -46,6 +62,11 @@ body {
     float: left;
 }
 
+#userinfo {
+	position: absolute;
+    right: 5px;
+	bottom: 5px;
+}
 #menu li a {
     display: block;
     padding: 3px 8px;
@@ -85,11 +106,13 @@ body {
 }
 
 #subheader {
-    float: left;
     text-align: right;
+    position: relative;
     margin-top: 0;
     margin-right: 0;
     color: white;
+    align: bottom;
+    bottom: 0;
 }
 
 #subheader a {
@@ -109,20 +132,7 @@ div.class {
     clear: both;
 }
 
-.userinfo {
-    float: right;
-    padding: 8px 5px 7px 10px;
-    font-size: 12px;
-    border-top: none;
-    -webkit-border-top-left-radius: 0;
-    -webkit-border-top-right-radius: 0;
-    -moz-border-radius-topleft: 0;
-    -moz-border-radius-topright: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
-ul.nav.logged_out, .userinfo {
+ul.nav.logged_out, #header {
     background: #f5f5f5;
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType = 0, startColorstr = '#f5f5f5', endColorstr = '#ececec');
     background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#f5f5f5), to(#E8E8E8));

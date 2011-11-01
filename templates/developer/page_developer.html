@@ -54,16 +54,31 @@
         <div id="logo"><a href="/"><img src="/images/peclsmall.gif" style="border: 0;" width="70" alt="PECL"/></a></div>
 
         <ul id="menu">
-            <?php if (1 || $menu_active == 'main') {?>
-                <li class="active" >Main</li>
-            <?php } else { ?>
+<?php if ($menu_active == 'main') {?>
+                <li class="active">Main</li>
+<?php } else { ?>
                 <li><a href="/index.php">Main</a></li>
-            <?php } ?>
+<?php } ?>
+<?php if ($menu_active == 'support') {?>
+            <li class="active">Support</li>
+<?php } else { ?>
             <li><a href="/support/">Support</a></li>
-            <li><a href="/manual/">Documentation</a></li>
+<?php } ?>
+<?php if ($menu_active == 'packages') {?>
+            <li class="active">Packages</li>
+<?php } else { ?>
             <li><a href="/packages/">Packages</a></li>
+<?php } ?>
+<?php if ($menu_active == 'developers') {?>
+            <li class="active">Developers</li>
+<?php } else { ?>
             <li><a href="/accounts/">Developers</a></li>
+<?php } ?>
+<?php if ($menu_active == 'bugs') {?>
+            <li class="active">Bugs</li>
+<?php } else { ?>
             <li><a href="/bugs/">Bugs</a></li>
+<?php } ?>
         </ul>
 
         <div id="userinfo">

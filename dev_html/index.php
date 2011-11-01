@@ -12,6 +12,7 @@ $data = array(
     'my_package'  => $my_package,
     'my_bug_php'  => $my_bug_php,
     'my_bug_pecl' => $my_bug_pecl,
+    'menu_active' => 'main'
 );
 
 $page = new PeclPage('developer/page_developer.html');

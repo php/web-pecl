@@ -12,18 +12,28 @@ body {
 #wrapper {
     top: 0;
     left: 0;
-    width: 100%;
+    width: 98%;
     position: absolute;
     height: auto !important; /* real browsers */
     height: 100%; /* IE6: treaded as min-height*/
     min-height: 100%; /* real browsers */
+    align: center;
 }
 
 #header {
+    position: relative;
+    top: 0px;
     float: left;
     width: 100%;
-
-    color: white;
+    padding: 8px 5px 7px 10px;
+    font-size: 12px;
+    border-top: none;
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-radius-topleft: 0;
+    -moz-border-radius-topright: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 #logo {
@@ -31,14 +41,17 @@ body {
     float: left;
     margin-top: 0;
     padding: 0;
+    vertical-align: middle;
 }
 
 #menu {
-    float: left;
-    top: 0;
+	position: absolute;
+	bottom:0;
+	left: 80px;
     right: 0;
     margin: 0;
     padding: 0;
+
 }
 
 #menu li {
@@ -46,6 +59,11 @@ body {
     float: left;
 }
 
+#userinfo {
+	position: absolute;
+    right: 5px;
+	bottom: 5px;
+}
 #menu li a {
     display: block;
     padding: 3px 8px;
@@ -78,20 +96,19 @@ body {
 
 #menu li:hover li a, #menu li.hover li a {
     color: #000;
+
 }
 
 #menu li li a:hover {
     color: #357;
 }
-
-#subheader {
-    float: left;
-    text-align: right;
-    margin-top: 0;
-    margin-right: 0;
-    color: white;
+#menu li.active {
+    padding: 3px 8px;
+    color: #000;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: bold;
 }
-
 #subheader a {
     color: white;
     text-decoration: none;
@@ -109,20 +126,7 @@ div.class {
     clear: both;
 }
 
-.userinfo {
-    float: right;
-    padding: 8px 5px 7px 10px;
-    font-size: 12px;
-    border-top: none;
-    -webkit-border-top-left-radius: 0;
-    -webkit-border-top-right-radius: 0;
-    -moz-border-radius-topleft: 0;
-    -moz-border-radius-topright: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
-ul.nav.logged_out, .userinfo {
+ul.nav.logged_out, #header {
     background: #f5f5f5;
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType = 0, startColorstr = '#f5f5f5', endColorstr = '#ececec');
     background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#f5f5f5), to(#E8E8E8));

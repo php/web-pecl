@@ -6,7 +6,8 @@
         <li>
             <a href="/packages.php"><?php echo $pkg->name; ?></a> [
             <?php if ($pkg->role == 'lead' || $auth_user->isAdmin()) { ?>
-            <a href="package-edit.php?name=<?php echo $pkg->name; ?>">edit</a>
+            <a href="package-edit.php?name=<?php echo $pkg->name; ?>">edit</a> |
+            <a href="/bugs/<?php echo $pkg->name; ?>">bugs</a>
             <?php }?>
             ]
         </li>

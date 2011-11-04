@@ -22,11 +22,19 @@
     <div id="messages"></div>
     <div id="release_confirm"></div>
 </div>
-
+<?php print_r($sql); ?>
 <div style="clear:both"></div>
 <div id="my_pecl_bugs">
     my pecl bugs
 </div>
 <div id="my_php_bugs">
-    my php bugs
+    <ul>
+<?php
+foreach ($my_bug_php as $bug) {
+?>
+    <li><?php echo $bug->package_name; ?> | <?php echo $bug->id; ?> | <?php echo htmlentities($bug->sdesc); ?> </li>
+<?php
+}
+?>
+    </ul>
 </div>

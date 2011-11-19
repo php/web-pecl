@@ -12,7 +12,7 @@ installed in /usr/share/pear):
  php_value auto_prepend_file pear-prepend.php
  php_flag magic_quotes_gpc off
  php_flag magic_quotes_runtime off
- php_flag register_globals On
+ php_flag register_globals Off
  php_flag allow_call_time_pass_reference On
 
  ErrorDocument 404 /error/404.php

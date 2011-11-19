@@ -39,7 +39,7 @@ installed in /usr/share/pear):
  RewriteRule   /packages/(.+)$ /packages.php?category=$1
 
  RewriteRule   /about/(.+)$ /static.php?name=$1
-
+ RewriteRule   /(support|takeover|copyright|dtd|feeds)$ /static/$1.html
 
 
  <Location /get>

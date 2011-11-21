@@ -22,8 +22,8 @@ include_once 'twig.inc.php';
 
 function create_html_file(Twig_Environment $twig, $name, $pages) {
     $buffer = $twig->render($name . '.html.twig', array('title' => $pages[$name]));
-    file_put_contents(PECL_STATIC_HTML_DIR . '/' . $name . '.html', $buffer);
     echo $buffer;
+    file_put_contents(PECL_STATIC_HTML_DIR . '/' . $name . '.html', $buffer);
 }
 
 $pages = array (

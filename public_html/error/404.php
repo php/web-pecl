@@ -18,14 +18,12 @@
    $Id: 404.php 317276 2011-09-25 13:40:05Z pajoye $
 */
 
+include_once 'twig.inc.php';
 
-function create_html_file($name, $pages) {
-    $page = new PeclPage();
-    $page->title = $pages[$name];
-    $page->setTemplate(PECL_TEMPLATE_DIR . '/' . $name . '.html');
-    $page->saveTo(PECL_STATIC_HTML_DIR . '/' . $name . '.html');
-    $page->render();
-    echo $page->html;
+function create_html_file(Twig_Environment $twig, $name, $pages) {
+    $buffer = $twig->render($name . '.html.twig', array('title' => $pages[$name]));
+    file_put_contents(PECL_STATIC_HTML_DIR . '/' . $name . '.html', $buffer);
+    echo $buffer;
 }
 
 $pages = array (
@@ -52,7 +50,7 @@ if ($url{0} == '/') {
     }
 
     if (isset($pages[$page_name])) {
-        create_html_file(str_replace('/', '_', $page_name), $pages);
+        create_html_file($twig, str_replace('/', '_', $page_name), $pages);
         return;
     }
 }
@@ -113,12 +111,11 @@ if (count($packages) > 1) {
 } else {
 	$show_search_link = false;
 }
-
+$data['pinfo_url'] = $pinfo_url;
 $data['show_search_link'] = $show_search_link;
 
-$page = new PeclPage();
-$page->title = '404 Page Not found';
-$page->setTemplate(PECL_TEMPLATE_DIR . '/404.html');
-$page->addData($data);
-$page->render();
-echo $page->html;
+echo $twig->render('404.html.twig', array(
+    'title' => '404 Page Not found',
+    'data' => $data,
+    'uri' => $_SERVER['REQUEST_URI'],
+    'basename' => basename($_SERVER['REQUEST_URI'])));

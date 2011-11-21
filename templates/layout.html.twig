@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>{{ title|default('PECL') }}</title>
+    <meta http-equiv="Content-Type" content="text/html; UTF-8"/>
+    <link rel="shortcut icon" href="/gifs/pecl-favicon.ico"/>
+    <link rel="stylesheet" href="/bootstrap.min.css?v=1.4.0"/>
+    <link rel="stylesheet" href="/pecl.css"/>
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://pecl.local/feeds/latest.rss"/>
+    <script src="/jquery.min.js?v=1.6.4" type="text/javascript"></script>
+    <script src="/bootstrap-modal.js?v=1.4.0" type="text/javascript"></script>
+    <script src="/bootstrap-tabs.js?v=1.4.0" type="text/javascript"></script>
+</head>
+<body>
+<div id="login-modal" class="modal hide fade">
+    <form action='#' method="post">
+        <div class="modal-header">
+            <a href="#" class="close">&times;</a>
+
+            <h3>Connection</h3>
+        </div>
+        <div class="modal-body">
+            <div class="clearfix">
+                <label for="login">Login</label>
+
+                <div class="input">
+                    <input id="login" type="text" size="30" name="login"/>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="password">Password</label>
+
+                <div class="input">
+                    <input id="password" type="password" size="30" name="password"/>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn primary">Login</a>
+        </div>
+    </form>
+</div>
+<div class="topbar">
+    <div class="topbar-inner">
+        <div class="container">
+            <a class="brand" href="#">PECL</a>
+            <ul class="nav">
+                <li><a href="#main">Main</a></li>
+                <li><a href="#support">Support</a></li>
+                <li><a href="#documentation">Documentation</a></li>
+                <li><a href="#packages">Packages</a></li>
+                <li><a href="#developers">Developers</a></li>
+                <li><a href="#bugs">Bugs</a></li>
+            </ul>
+            <ul class="nav secondary-nav">
+                <li><a data-controls-modal="login-modal" data-backdrop="static">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class='container'>
+    {% block content %}{% endblock %}
+    <div class='footer'>
+        <p>&copy; The PHP Group - All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>

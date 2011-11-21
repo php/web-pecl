@@ -1,0 +1,130 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h1>Support</h1>
+<ul class='tabs' data-tabs="tabs">
+    <li class='active'><a href="#lists">Mailing Lists</a></li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#icons">PECL Icons</a></li>
+</ul>
+<div class="pill-content">
+    <div class='active' id='lists'>
+        <h2>Mailing Lists</h2>
+        <p>
+            There are 2 PECL-related mailing
+            lists available. Both of them have archives available, and they are
+            also available as newsgroups on our
+            <a href="news://news.php.net">news server</a>. The archives are
+            searchable.
+        </p>
+        <table class='bordered-table zebra-striped'>
+            <thead>
+            <tr>
+                <th class='tcenter'>PECL mailinglists</th>
+                <th class='tcenter'>Moderated</th>
+                <th class='tcenter'>Archive</th>
+                <th class='tcenter'>Newsgroup</th>
+                <th class='tcenter'>Normal</th>
+                <th class='tcenter'>Digest</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><strong>PECL developers list</strong><br/>A list for developers of PECL</td>
+                <td class='tcenter vmiddle'>no</td>
+                <td class='tcenter vmiddle'><a href="http://marc.info/?l=pecl-dev">yes</a></td>
+                <td class='tcenter vmiddle'><a href="news://news.php.net/php.pecl.dev">yes</a> / <a href="http://news.php.net/group.php?group=php.pecl.dev">http</a></td>
+                <td class='tcenter vmiddle'>pecl-dev</td>
+                <td class='tcenter vmiddle'>available</td>
+            </tr>
+            <tr>
+                <td><strong>PECL SVN list</strong><br/>All the commits of the svn PECL code repository are posted to this list automatically
+                </td>
+                <td class='tcenter vmiddle'>no</td>
+                <td class='tcenter vmiddle'><a href="http://marc.info/?l=pecl-cvs">yes</a></td>
+                <td class='tcenter vmiddle'><a href="news://news.php.net/php.pecl.cvs">yes</a> / <a href="http://news.php.net/group.php?group=php.pecl.cvs">http</a></td>
+                <td class='tcenter vmiddle'>pecl-cvs</td>
+                <td class='tcenter vmiddle'>n/a</td>
+            </tr>
+            </tbody>
+        </table>
+        <h2>Subscribing and Unsubscribing</h2>
+        <p>
+            There are a variety of commands you can use to modify your subscription.
+            Either send a message to pecl-<tt>whatever</tt>@lists.php.net (as in,
+            pecl-dev@lists.php.net) or you can view the commands for
+            ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here</a>.
+        </p>
+        <p>
+            For example, to subscribe to pecl-dev, send an email to pecl-dev-subscribe@lists.php.net and
+            you will be sent a confirmation mail that explains how to proceed with the subscription
+            process. And to instead receive digested (daily) pecl-dev email, use
+            pecl-dev-digest-subscribe@lists.php.net.
+            Similarly, use unsubscribe instead of subscribe to do the exact opposite.
+        </p>
+        <p>
+            If you have questions concerning this website, you can contact
+            <a href="mailto:peclweb@php.net">peclweb@php.net</a>.
+        </p>
+        <p>
+            Of course don't forget to visit the <i>#php.pecl</i> IRC channel at the <a href="http://www.efnet.org">
+            Eris Free Net</a>.
+        </p>
+    </div>
+    <div id='resources'>
+        <h2>PECL resources</h2>
+        <ul>
+            <li><a href="http://svn.php.net/viewvc/php/php-src/trunk/CODING_STANDARDS">PECL/PHP Coding
+                Standards</a></li>
+            <li><a href="http://php.net/internals2">PHP Internals Documentation</a></li>
+            <li><a href="http://talks.somabo.de/200903_montreal_php_extension_writing.pdf">PHP Extension
+                Writing, PHP Quebec 2009, Wed, 4th March 2009, Montreal, Canada</a> by Marcus B&ouml;rger
+            </li>
+            <li><a href="http://svn.php.net/viewvc/php/php-src/trunk/README.PARAMETER_PARSING_API">Parameter
+                Parsing API</a></li>
+            <li><a href="http://wiki.php.net/internals/engine">Different information about PHP internals not yet
+                added to the documentation</a></li>
+            <li><a href="http://wiki.php.net/internals/windows">Windows specific instructions</a></li>
+        </ul>
+    </div>
+    <div id='icons'>
+        <h2>Powered By PECL</h2>
+        <p>
+            What programming tool would be complete without a set of
+            icons to put on your webpage, telling the world what makes
+            your site tick?
+        </p>
+        <table class='bordered-table zebra-striped'>
+            <thead>
+            <tr>
+                <th class='tcenter'>Icon</th>
+                <th class='tcenter'>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class='tcenter vmiddle'><img src="/gifs/pecl-power.gif" style="border: 0;" width="88" height="31" alt="Powered by PECL, GIF format"/></td>
+                <td class='tcenter vmiddle'><strong>Powered by PECL, GIF format</strong><br />88 x 31 pixels<br />854 bytes</td>
+            </tr>
+            <tr>
+                <td class='tcenter vmiddle'><img src="/gifs/pecl-power.png" style="border: 0;" width="88" height="31" alt="Powered by PECL, PNG format"/></td>
+                <td class='tcenter vmiddle'><strong>Powered by PECL, PNG format</strong><br />88 x 31 pixels<br />1468 bytes</td>
+            </tr>
+            <tr>
+                <td class='tcenter vmiddle'><img src="/gifs/pecl-icon.gif" style="border: 0;" width="32" height="32" alt="32x32 PECL icon, GIF format"/></td>
+                <td class='tcenter vmiddle'><strong>32x32 PECL icon, GIF format</strong><br />32 x 32 pixels<br />398 bytes</td>
+            </tr>
+            <tr>
+                <td class='tcenter vmiddle'><img src="/gifs/pecl-icon.png" style="border: 0;" width="32" height="32" alt="32x32 PECL icon, PNG format"/></td>
+                <td class='tcenter vmiddle'><strong>32x32 PECL icon, PNG format</strong><br />32 x 32 pixels<br />945 bytes</td>
+            </tr>
+            </tbody>
+        </table>
+        <p>
+            <strong>Note:</strong> Please do not just include these icons directly but
+            download them and save them locally in order to keep HTTP traffic
+            low.
+        </p>
+    </div>
+</div>
+{% endblock %}

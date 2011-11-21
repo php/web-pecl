@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+/*
+ * Inspired from the Symfony vendor script.
+ *
+ * http://symfony.com/
+ *
+ */
+$rootDir = realpath(__DIR__ . '/..');
+$vendorDir = $rootDir . '/vendors/';
+
+$deps = parse_ini_file($rootDir.'/deps', true, INI_SCANNER_RAW);
+if (false === $deps) {
+    exit("The deps file is not valid ini syntax. Perhaps missing a trailing newline?\n");
+}
+foreach ($deps as $name => $dep) {
+    $dep = array_map('trim', $dep);
+
+    // revision
+    if (isset($versions[$name])) {
+        $rev = $versions[$name];
+    } else {
+        $rev = isset($dep['version']) ? $dep['version'] : 'origin/HEAD';
+    }
+
+    // install dir
+    $installDir = $vendorDir.'/'.$name;
+    if (PHP_OS == 'WINNT') {
+        system(sprintf('rmdir /S /Q %s', escapeshellarg(realpath($installDir))));
+    } else {
+        system(sprintf('rm -rf %s', escapeshellarg($installDir)));
+    }
+
+    echo "> Installing $name\n";
+
+    // url
+    if (!isset($dep['git'])) {
+        exit(sprintf('The "git" value for the "%s" dependency must be set.', $name));
+    }
+    $url = $dep['git'];
+
+    system(sprintf('git clone %s %s', escapeshellarg($url), escapeshellarg($installDir)));
+
+    system(sprintf('cd %s && git fetch origin && git reset --hard %s', escapeshellarg($installDir), escapeshellarg($rev)));
+}

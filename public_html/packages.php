@@ -21,7 +21,7 @@
 $script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
 $category_name = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING);
-$category_name = preg_replace('/[^a-z0-9]/i', '', $category_name);
+$category_name = preg_replace('/[^ a-z0-9]/i', '', $category_name);
 
 // the user is already at the top level
 if (empty($category_name)) {

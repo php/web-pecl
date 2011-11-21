@@ -29,14 +29,6 @@ elseif (version_compare(PHP_VERSION, '5.3.0') >= 0) {
         error_reporting(E_ALL);
 }
 
-// silence the notices for production
-if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
-    define('DEVBOX', true);
-} else {
-    error_reporting(error_reporting()&~E_NOTICE);
-    define('DEVBOX', false);
-}
-
 require_once "PEAR.php";
 
 include_once "pear-format-html.php";

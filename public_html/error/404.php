@@ -51,7 +51,7 @@ if ($url{0} == '/') {
 
     if (isset($pages[$page_name])) {
         create_html_file($twig, str_replace('/', '_', $page_name), $pages);
-        return;
+        exit();
     }
 }
 

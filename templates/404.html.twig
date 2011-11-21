@@ -1,0 +1,26 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h1>Error 404 - document not found</h1>
+
+<p>The requested document <em>{{ uri }}</em> was not found on this server.</p>
+
+{% if data.packages|default(false) %}
+<p>Searching the current list of packages for <em>{{ basename }}</em> included the following results :</p>
+<ul>
+    {% for p in data.packages %}
+    <li>
+        <a href='{{ p.pinfo_url }}{{ p.name }}'>{{ p.name }}</a><br />
+        <em>{{ p.summary }}</em>
+    </li>
+    {% endfor %}
+</ul>
+{% id data.show_search_link|default(false) %}
+<p class='tcenter'>
+    <a href>'/package-search.php?pkg_name={{ basename }}&amp;bool=AND&amp;submit=Search'>View full search results...</a>
+</p>
+{% endif %}
+{% endif %}
+<p>If you think that this error message is caused by an error in the configuration of the server, please contact
+<a href="mailto:pecl-dev@lists.php.net">pecl-dev@lists.php.net</a>.
+{% endblock %}

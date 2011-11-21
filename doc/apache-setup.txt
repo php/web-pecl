@@ -8,7 +8,7 @@ installed in /usr/share/pear):
  DocumentRoot /path/to/pearweb/public_html
  DirectoryIndex index.php index.html
 
- php_value include_path .:/path/to/pearweb/include:/usr/share/pear
+ php_value include_path .:/path/to/pearweb/vendors:/path/to/pearweb/include:/usr/share/pear
  php_value auto_prepend_file pear-prepend.php
  php_flag magic_quotes_gpc off
  php_flag magic_quotes_runtime off

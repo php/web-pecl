@@ -30,12 +30,12 @@ elseif (version_compare(PHP_VERSION, '5.3.0') >= 0) {
 }
 
 // silence the notices for production
-if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
-    define('DEVBOX', true);
-} else {
-    error_reporting(error_reporting()&~E_NOTICE);
-    define('DEVBOX', false);
-}
+//if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
+//    define('DEVBOX', true);
+//} else {
+//    error_reporting(error_reporting()&~E_NOTICE);
+//    define('DEVBOX', false);
+//}
 
 require_once "PEAR.php";
 
@@ -59,13 +59,13 @@ function get($name)
 }
 
 if (empty($dbh)) {
-    $options = array(
-        'persistent' => false,
-        'portability' => DB_PORTABILITY_ALL,
-    );
-    $GLOBALS['_NODB'] = true;
-    $dbh =& DB::connect(PECL_DATABASE_DSN, $options);
-    $GLOBALS['_NODB'] = false;
+//    $options = array(
+//        'persistent' => false,
+//        'portability' => DB_PORTABILITY_ALL,
+//    );
+//    $GLOBALS['_NODB'] = true;
+//    $dbh =& DB::connect(PECL_DATABASE_DSN, $options);
+//    $GLOBALS['_NODB'] = false;
 }
 if (!isset($pear_rest)) {
     $pear_rest = new pear_rest(PEAR_REST_DIR);

@@ -10,6 +10,7 @@
     <script src="/jquery.min.js?v=1.6.4" type="text/javascript"></script>
     <script src="/bootstrap-modal.js?v=1.4.0" type="text/javascript"></script>
     <script src="/bootstrap-tabs.js?v=1.4.0" type="text/javascript"></script>
+    <script src="/bootstrap-dropdown.js?v=1.4.0" type="text/javascript"></script>
 </head>
 <body>
 <div id="login-modal" class="modal hide fade">
@@ -48,7 +49,14 @@
                 <li><a href="#main">Main</a></li>
                 <li><a href="#support">Support</a></li>
                 <li><a href="#documentation">Documentation</a></li>
-                <li><a href="#packages">Packages</a></li>
+                <li class="dropdown" data-dropdown="dropdown">
+                    <a class="dropdown-toggle" href="#">Packages</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/packages/">Browse all packages</a></li>
+                        <li><a href="/package-search.php">Search packages</a></li>
+                        <li><a href="/package-stats.php">Download statistics</a></li>
+                    </ul>
+                </li>
                 <li><a href="#developers">Developers</a></li>
                 <li><a href="#bugs">Bugs</a></li>
             </ul>

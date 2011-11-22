@@ -15,7 +15,7 @@
     </li>
     {% endfor %}
 </ul>
-{% id data.show_search_link|default(false) %}
+{% if data.show_search_link|default(false) %}
 <p class='tcenter'>
     <a href>'/package-search.php?pkg_name={{ basename }}&amp;bool=AND&amp;submit=Search'>View full search results...</a>
 </p>

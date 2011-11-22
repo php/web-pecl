@@ -38,7 +38,7 @@ if (isset($_SERVER['PECL_DATABASE_DSN'])) {
 } else {
     define('PECL_DB_USER', 'pear');
     define('PECL_DB_PASSWORD', 'pear');
-    define('PECL_DB_HOST', 'localhost');
+    define('PECL_DB_HOST', '127.0.0.1');
     define('PECL_DB_NAME', 'pear');
 
     define('PECL_DB_BUG_NAME', 'phpbugs');

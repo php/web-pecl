@@ -21,7 +21,7 @@
 /* Send charset */
 header("Content-Type: text/html; charset=ISO-8859-1");
 
-PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
+// PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
 $extra_styles = array();
 

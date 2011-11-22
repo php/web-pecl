@@ -23,9 +23,9 @@ h1 {
     padding-bottom: 0;
     border-bottom: 1px solid #DDDDDD;
 }
-.tcenter {
-    text-align: center;
-}
+.tcenter { text-align: center; }
+.tleft { text-align: left; }
+.tright { text-align: right; }
 .vmiddle {
     vertical-align: middle;
 }
@@ -51,4 +51,19 @@ h1 {
 .footer p {
     font-style: italic;
     font-weight: bold;
+}
+
+div.recentReleases {
+    border-left: 1px solid #DDDDDD;
+    padding-left: 20px;
+    margin-top: 20px;
+}
+
+div.recentReleases ul {
+    margin-left: 0;
+    list-style-type: none;
+}
+
+div.recentReleases li {
+    margin-bottom: 5px;
 }

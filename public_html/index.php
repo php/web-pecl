@@ -18,19 +18,9 @@
    $Id: index.php 317355 2011-09-26 21:08:47Z pajoye $
 */
 
-$recent_release = release::getRecent();
+$data = array(
+    'title' => 'PECL :: The PHP Extension Community Library',
+    'releases' => release::getRecent()
+);
 
-$page = new PeclPage();
-$page->title = 'PECL :: The PHP Extension Community Library ';
-$page->setTemplate( PECL_TEMPLATE_DIR . '/index.html');
-
-
-
-if (count($recent_release)) {
-    $data = array('recent_release' => $recent_release);
-    $page->addData($data);
-}
-
-$page->render();
-
-echo $page->html;
+echo $twig->render('index.html.twig', $data);

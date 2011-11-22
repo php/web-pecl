@@ -18,8 +18,6 @@
    $Id: 404.php 317276 2011-09-25 13:40:05Z pajoye $
 */
 
-include_once 'twig.inc.php';
-
 function create_html_file(Twig_Environment $twig, $name, $pages) {
     $buffer = $twig->render($name . '.html.twig', array('title' => $pages[$name]));
     echo $buffer;

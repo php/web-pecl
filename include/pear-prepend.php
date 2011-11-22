@@ -19,6 +19,9 @@
 */
 require_once "pear-config.php";
 
+// Twig initialisation
+include_once 'twig.inc.php';
+
 // silence the strict and deprecated errors for now
 if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
         error_reporting(E_ALL&~E_STRICT&~E_DEPRECATED);

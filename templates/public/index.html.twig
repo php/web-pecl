@@ -1,0 +1,47 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class='row'>
+    <div class='span12'>
+        <h1>What is PECL?</h1>
+        <p>
+            <acronym title="PHP Extension Community Library">PECL</acronym>
+            is a repository for PHP Extensions, providing a directory of all known
+            extensions and hosting facilities for downloading and development of PHP
+            extensions.
+        </p>
+        <p>
+            The packaging and distribution system used by PECL is shared with its
+            sister, <acronym title="PHP Extension and Application Repository">PEAR</acronym>.
+        </p>
+        <h2>News</h2>
+        <h3>Documentation</h3>
+        <ul>
+            <li><a href="/doc/"><strong>PECL specific docs</strong></a></li>
+            <li><a href="/support"><strong>Mailing Lists &amp; Support Resources</strong></a></li>
+        </ul>
+        <h3>Downloads</h3>
+        <ul>
+            <li><a href="/packages/"><strong>Browse all packages</strong></a></li>
+            <li><a href="/package-search.php"><strong>Search packages</strong></a></li>
+            <li><a href="/package-stats.php"><strong>Download statistics</strong></a></li>
+        </ul>
+        <p><a href="account-request.php"><strong>I want to publish my PHP Extension in PECL</strong></a></p>
+    </div>
+    <div class='span4'>
+        <div class='recentReleases'>
+            <h3>Recent releases :</h3>
+            <ul>
+                {% for release in releases %}
+                <li>
+                    <a href="/package/{{ release.name }}/{{ release.version }}" title="{{ release.summary }}"><strong>{{ release.name }} {{ release.version }}</strong></a><br/>
+                    <strong><em>{{ release.releasedate|date('Y-m-d') }}</em></strong><br/>
+                    {{ release.summary }}
+                </li>
+                {% endfor %}
+            </ul>
+            <p class='tright'><a href='/feeds'>Syndicate this</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

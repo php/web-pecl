@@ -49,7 +49,7 @@ $total_packages = 0;
 if (!$toplevel) {
     $total_packages += $category['npackages'];
 
- $sql = '
+    $sql = '
             SELECT
                 p.id, p.name, p.summary, p.license, p.unmaintained, p.newpk_id,
                 (SELECT COUNT(package) FROM releases WHERE package = p.id) AS numreleases,
@@ -58,7 +58,7 @@ if (!$toplevel) {
                 (SELECT releasedate FROM releases WHERE package = p.id ORDER BY id DESC LIMIT 1) AS releasedate
             FROM packages p
             WHERE
-              category=' . $category['id'];
+              category=' . $category['id'] . ' ORDER BY p.name';
     $category_package = $dbh->getAll($sql);
 
     $category_subcategory = $dbh->getAll('SELECT id, name, npackages FROM categories WHERE parent=' . $category['id'] . ' ORDER BY name;', null, DB_FETCHMODE_ASSOC);
@@ -78,19 +78,19 @@ if (!$toplevel) {
 } else {
 
     $categories = $dbh->getAll('SELECT c.*, COUNT(p.id) AS npackages' .
-                       ' FROM categories c' .
-                       ' LEFT JOIN packages p ON p.category = c.id ' .
-                       " WHERE p.package_type = 'pecl'" .
-                       "  AND c.parent $category_where " .
-                       ' GROUP BY c.id ' .
-                       'ORDER BY name');
+        ' FROM categories c' .
+        ' LEFT JOIN packages p ON p.category = c.id ' .
+        " WHERE p.package_type = 'pecl'" .
+        "  AND c.parent $category_where " .
+        ' GROUP BY c.id ' .
+        'ORDER BY name');
 
     foreach ($categories as $category) {
         $category_package[$category['name']] = $dbh->getAll('SELECT name, summary, license FROM packages WHERE category=' . $category['id'] . ' ORDER BY name limit 0,' . $category['npackages']);
         $total_packages += $category['npackages'];
 
         $subcats = $dbh->getAll('SELECT name FROM categories WHERE parent=' . $category['id'] . ' ORDER BY name;',
-                              null, DB_FETCHMODE_ASSOC);
+            null, DB_FETCHMODE_ASSOC);
 
         if ($subcats) {
             $category_subcategory[$category['name']] = $subcats;
@@ -105,21 +105,17 @@ if (!$toplevel) {
 
 $data = array(
     'category_package' => $category_package,
-    'categories' => $categories,
     'category_subcategory' => $category_subcategory,
     'total_packages' => $total_packages,
 );
+
 if (!$toplevel) {
-    $data['sub_category_package'] = $sub_category_package;
+    $data['sub_category_package'] = isset($sub_category_package) ? $sub_category_package : null;
     $data['category_title'] = $category_title;
+} else {
+    $data['categories'] = $categories;
 }
 
-$page = new PeclPage();
-$page->title = 'Package Statistics';
-$page->setTemplate($template);
-$page->addStyle('/css/packages.css');
-$page->addData($data);
-$page->jquery = true;
-$page->render();
+$data['title'] = 'Packages';
 
-echo $page->html;
+echo $twig->render('packages.html.twig', $data);

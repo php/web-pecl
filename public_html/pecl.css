@@ -49,7 +49,7 @@ h1 {
     border-top: 1px solid #DDDDDD;
 }
 .footer p {
-    font-style: italic;
+    font-size: 10px;
     font-weight: bold;
 }
 
@@ -66,4 +66,12 @@ div.recentReleases ul {
 
 div.recentReleases li {
     margin-bottom: 5px;
+}
+
+div.packagesList span.label {
+    font-size: 14px;
+    line-height: 36px;
+    vertical-align: top;
+    padding: 2px 4px 2px 4px;
+    background-color: #0069D6;
 }

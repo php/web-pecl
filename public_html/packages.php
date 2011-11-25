@@ -89,7 +89,7 @@ if (!$toplevel) {
         $category_package[$category['name']] = $dbh->getAll('SELECT name, summary, license FROM packages WHERE category=' . $category['id'] . ' ORDER BY name limit 0,' . $category['npackages']);
         $total_packages += $category['npackages'];
 
-        $subcats = $dbh->getAll('SELECT name FROM categories WHERE parent=' . $category['id'] . ' ORDER BY name;',
+        $subcats = $dbh->getAll('SELECT name, npackages FROM categories WHERE parent=' . $category['id'] . ' ORDER BY name;',
             null, DB_FETCHMODE_ASSOC);
 
         if ($subcats) {

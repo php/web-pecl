@@ -33,7 +33,7 @@
             <ul>
                 {% for release in releases %}
                 <li>
-                    <a href="/package/{{ release.name }}/{{ release.version }}" title="{{ release.summary }}"><strong>{{ release.name }} {{ release.version }}</strong></a><br/>
+                    <a href="/package/{{ release.name|url_encode }}/{{ release.version|url_encode }}" title="{{ release.summary }}"><strong>{{ release.name }} {{ release.version }}</strong></a><br/>
                     <strong><em>{{ release.releasedate|date('Y-m-d') }}</em></strong><br/>
                     {{ release.summary }}
                 </li>

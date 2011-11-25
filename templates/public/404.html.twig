@@ -10,14 +10,14 @@
 <ul>
     {% for p in data.packages %}
     <li>
-        <a href='{{ p.pinfo_url }}{{ p.name }}'>{{ p.name }}</a><br />
+        <a href='{{ p.pinfo_url }}{{ p.name|url_encode }}'>{{ p.name }}</a><br />
         <em>{{ p.summary }}</em>
     </li>
     {% endfor %}
 </ul>
 {% if data.show_search_link|default(false) %}
 <p class='tcenter'>
-    <a href>'/package-search.php?pkg_name={{ basename }}&amp;bool=AND&amp;submit=Search'>View full search results...</a>
+    <a href>'/package-search.php?pkg_name={{ basename|url_encode }}&amp;bool=AND&amp;submit=Search'>View full search results...</a>
 </p>
 {% endif %}
 {% endif %}

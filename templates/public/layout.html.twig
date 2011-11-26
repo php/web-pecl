@@ -12,7 +12,7 @@
     <script src="/bootstrap-tabs.js?v=1.4.0" type="text/javascript"></script>
     <script src="/bootstrap-dropdown.js?v=1.4.0" type="text/javascript"></script>
 </head>
-<body>
+<body>{% spaceless %}
 <div id="login-modal" class="modal hide fade">
     <form action='#' method="post">
         <div class="modal-header">
@@ -52,7 +52,7 @@
                 <li class="dropdown" data-dropdown="dropdown">
                     <a class="dropdown-toggle" href="#">Packages</a>
                     <ul class="dropdown-menu">
-                        <li><a href="/packages/">Browse all packages</a></li>
+                        <li><a href="/packages.php">Browse all packages</a></li>
                         <li><a href="/package-search.php">Search packages</a></li>
                         <li><a href="/package-stats.php">Download statistics</a></li>
                     </ul>
@@ -72,5 +72,5 @@
         <p>&copy; The PHP Group - All rights reserved.</p>
     </div>
 </div>
-</body>
+{% endspaceless %}</body>
 </html>

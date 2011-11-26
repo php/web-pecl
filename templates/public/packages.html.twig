@@ -1,0 +1,54 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h2>{{ category_title|default('Packages')}} ({{ total_packages }})</h2>
+{% if not category_title %}
+<div class='row packagesList'>
+    {% for category in categories %}
+    <div class='span4'>
+        <h3><a href='/packages/{{ category.name }}'>{{ category.name }} <span class="label">{{ category.npackages }}</span></a></h3>
+        <p>
+        {% for sub_category in category_subcategory[category.name] %}
+            <a href="/packages/{{ sub_category.name}}">{{ sub_category.name}}</a>&#160;
+        {% endfor %}
+        {% for i in 0..10 %}
+            {% if category_package[category.name][i] %}
+            <a href="/packages/{{ category_package[category.name][i].name}}">{{ category_package[category.name][i].name}}</a>&#160;
+            {% endif %}
+        {% endfor %}
+        {% if category_package[category.name]|length > 10 %}...{% endif %}
+        </p>
+    </div>
+    {% if (loop.index % 4 == 0) and not loop.last %}
+</div>
+<div class='row packagesList'>
+    {% endif %}
+    {% endfor %}
+</div>
+{% else %}
+<div class='tcenter'><a href='/packages.php'>Back to top level</a></div>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Summary</th>
+            <th>Status</th>
+            <th>Version</th>
+            <th>Release date</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for pkg in category_package %}
+    <tr>
+        <td><a href='/package/{{ pkg.name }}'><strong>{{ pkg.name }}</strong></a></td>
+        <td>{{ pkg.summary}}</td>
+        <td>{{ pkg.status}}</td>
+        <td>{{ pkg.version}}</td>
+        <td>{{ pkg.releasedate|date('Y-m-d')}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class='tcenter'><a href='/packages.php'>Back to top level</a></div>
+{% endif %}
+{% endblock %}

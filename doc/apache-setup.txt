@@ -50,8 +50,4 @@ installed in /usr/share/pear):
   ErrorDocument 404 /error/404-manual.php
  </Location>
 
- <Directory /path/to/pearweb/public_html/bugs>
-     php_flag magic_quotes_gpc on
- </Directory>
-
 </VirtualHost>

@@ -1,53 +1,78 @@
 body {
     padding-top: 40px;
 }
+
+ul {
+    margin-bottom: 0;
+}
+
 .container-fluid > .sidebar {
     position: fixed;
     top: 50px;
 }
+
 .sidebar div {
     background-color: #f5f5f5;
     padding: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,.15);
-    -moz-box-shadow: 0px 0px 5px rgba(0,0,0,.15);
-    box-shadow: 0px 0px 5px rgba(0,0,0,.15);
+    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, .15);
+    -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, .15);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .15);
 }
+
 .sidebar ul {
     margin-bottom: 5px;
 }
+
 h1 {
     padding-top: 5px;
     padding-bottom: 0;
     border-bottom: 1px solid #DDDDDD;
 }
-.tcenter { text-align: center; }
-.tleft { text-align: left; }
-.tright { text-align: right; }
+
+.tcenter {
+    text-align: center;
+}
+
+.tleft {
+    text-align: left;
+}
+
+.tright {
+    text-align: right;
+}
+
 .vmiddle {
     vertical-align: middle;
 }
+
 .main table {
     margin-bottom: 9px;
 }
+
 .main h1 {
     margin-bottom: 5px;
 }
+
 .main h2 {
     margin-top: 35px;
 }
+
 .modal form {
     margin: 0;
 }
+
 .modal form .clearfix {
     margin: 5px 0 5px 0;
 }
+
 .footer {
     margin-top: 5px;
     border-top: 1px solid #DDDDDD;
 }
+
 .footer p {
     font-size: 10px;
     font-weight: bold;
@@ -74,4 +99,18 @@ div.packagesList span.label {
     vertical-align: top;
     padding: 2px 4px 2px 4px;
     background-color: #0069D6;
+}
+
+div.packageAction {
+    border-left: 1px solid #DDDDDD;
+    padding-left: 20px;
+}
+
+div.packageAction ul {
+    margin-left: 0;
+    list-style-type: none;
+}
+
+div.packageAction li {
+    margin-bottom: 5px;
 }

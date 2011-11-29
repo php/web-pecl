@@ -1,0 +1,107 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+<h1>{{ package.name }} {{ package_version|default('') }}<small>{{ package.summary }}</small></h1>
+<ul class="breadcrumb">
+    {% for label,url in navigation %}
+    <li><a href="{{ url }}">{{ label }}</a> <span class="divider">/</span></li>
+    {% endfor %}
+    <li class="active">{{ package.name }} {{ package_version|default('') }}</li>
+</ul>
+{% if warning_msg %}
+<div class="alert-message warning">{{ warning_msg }}</div>
+{% endif %}
+<h2>Details</h2>
+<div class='row'>
+    <div class='span13'>
+        <div class='row'>
+            <div class='span2'><strong>Description :</strong></div>
+            <div class='span11'>{{ package.description }}</div>
+        </div>
+        <br/>
+        <div class='row'>
+            <div class='span2'><strong>Maintainers :</strong></div>
+            <div class='span11'>
+                <ul>
+                    {% for maintainer in maintainer_list %}
+                    <li>
+                        <strong>{{ maintainer.name }}</strong>{% if maintainer.showemail %}&#160;<a href='mailto:{{ maintainer.email }}'>{{ maintainer.email }}</a> {% endif %}
+                        (<strong>{{ maintainer.role }}</strong>) {% if maintainer.wishlist %}[<a href='{{ maintainer.wishlist }}'>wishlist</a>] {% endif %}[<a href='/user/{{ maintainer.handle }}'>details</a>]
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <br/>
+        <div class='row'>
+            <div class='span2'><strong>License :</strong></div>
+            <div class='span11'>{{ package.license }}</div>
+        </div>
+    </div>
+    <div class='span3'>
+        <div class='packageAction'>
+            <ul>
+                <li><a href="/get/{{ package.name }}">Download Latest</a></li>
+                <li><a href="/package-changelog.php?package={{ package.name }}">Changelog</a></li>
+                <li><a href="/package-stats.php?pid={{ package.packageid }}&rid=&cid={{ package.categoryid }}">View Statistics</a></li>
+                <li><a href="{{ package.cvs_link }}" target="top">Browse Source</a></li>
+                <li><a href="/bugs/search.php?cmd=display&status=Open&package_name[]={{ package.name }}">Package Bugs</a></li>
+                <li><a href="http://php.net/{{ package.name }}">View Documentation</a></li>
+                <li><a href="/bugs/report.php?package={{ package.name }}">Report new bug</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% if not release_id %}
+<h2>Available Releases</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Version</th>
+            <th>State</th>
+            <th>Release Date</th>
+            <th>Downloads</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for version,release in release_list %}
+        <tr>
+            <td><a href="/package/{{ package.name }}/{{ version }}">{{ version }}</a></td>
+            <td>{{ release.state }}</td>
+            <td>{{ release.releasedate }}</td>
+            <td><a href="/get/{{ download_list[version].basename }}">{{ download_list[version].basename }}</a></td>
+            <td><a href="/package-changelog.php?package={{ package.name }}&release={{ version }}">Changelog</a></td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan='5'><em>No release available.</em></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+<h2>Dependency list</h2>
+{% if too_many_releases and not version %}
+<p>Dependencies for older releases can be found on the release overview page.</p>
+{% endif %}
+<table>
+    <thead>
+        <tr>
+            <th class='span2'>Version</th>
+            <th>Dependencies</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for version,deps in dependency_list %}
+        <tr>
+            <td><strong>{{ version }}</strong></td>
+            <td>{{ deps|join('<br/>')|raw }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan='2'><em>No dependencies registered.</em></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

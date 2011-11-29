@@ -220,7 +220,7 @@ if (count($package['releases'])) {
                         $row['type'] = 'pkg_pecl';
                     }
                 }
-                $dep[] = $row;
+                $dep[] = dep_to_human_text($row);
             }
         }
         $dependency_list[$r_version] = $dep;
@@ -232,7 +232,6 @@ $dependant_list = package::getDependants($package_name);
 $data = array(
     'package' => $package,
     'maintainer_list' => $maintainer_list,
-    'dependency_list' => $dependency_list,
     'dependant_list' => $dependant_list,
     'release_list' => $release_list,
     'download_list' => $download_list,
@@ -241,17 +240,29 @@ $data = array(
     'package_version' => $package_version,
     'warning_msg' =>$warning_msg,
 );
+if (isset($dependency_list)) $data['dependency_list'] = $dependency_list;
 
 if ($release_id) {
     $filename = strtolower($package_name) . '-' . $package_version . '.html';
+    $data['title'] = 'Package :: ' . strtolower($package_name) . '-' . $package_version;
 } else {
     $filename = strtolower($package_name) . '.html';
+    $data['title'] = 'Package :: ' . strtolower($package_name);
 }
 
-$page = new PeclPage();
-$page->title = $title;
-$page->setTemplate(PECL_TEMPLATE_DIR . '/package-info.html');
-$page->addData($data);
-$page->saveTo(PECL_STATIC_HTML_DIR . '/package/' . $filename);
-$page->render();
-echo $page->html;
+// navigation bar
+$data['navigation'] = array('Top level' => '/packages');
+if (!is_null($package['categoryid'])) {
+    $res = $dbh->query("SELECT c.id, c.name
+                            FROM categories c, categories cat
+                            WHERE cat.id = " . $package['categoryid'] .
+                            " AND c.cat_left <= cat.cat_left
+                            AND c.cat_right >= cat.cat_right");
+    while ($res->fetchInto($row, DB_FETCHMODE_ASSOC)) {
+        $data['navigation'][$row['name']] = '/packages/' . $row['name'];
+    }
+}
+
+$page = $twig->render('package-info.html.twig', $data);
+file_put_contents(__DIR__ . '/static/package/' . $filename, $page);
+echo $page;

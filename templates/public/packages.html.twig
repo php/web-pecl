@@ -1,6 +1,11 @@
 {% extends "layout.html.twig" %}
 {% block content %}
-<h2>{{ category_title|default('Packages')}} ({{ total_packages }})</h2>
+<h1>{{ category_title|default('Packages')}} ({{ total_packages }})</h1>
+<ul class="breadcrumb">
+    <li><a href="/packages">Top level</a> <span class="divider">/</span></li>
+    <li class="active">{{ category_title|default('Packages')}}</li>
+</ul>
+
 {% if not category_title %}
 <div class='row packagesList'>
     {% for category in categories %}
@@ -25,7 +30,6 @@
     {% endfor %}
 </div>
 {% else %}
-<div class='tcenter'><a href='/packages/'>Back to top level</a></div>
 <table>
     <thead>
         <tr>
@@ -52,6 +56,5 @@
     {% endfor %}
     </tbody>
 </table>
-<div class='tcenter'><a href='/packages/'>Back to top level</a></div>
 {% endif %}
 {% endblock %}

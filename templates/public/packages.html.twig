@@ -39,11 +39,17 @@
     <tbody>
     {% for pkg in category_package %}
     <tr>
+{% if pkg.releasedate %}
         <td><a href='/package/{{ pkg.name|url_encode }}'><strong>{{ pkg.name }}</strong></a></td>
         <td>{{ pkg.summary}}</td>
         <td>{{ pkg.status}}</td>
         <td>{{ pkg.version}}</td>
-        <td>{{ pkg.releasedate|date('Y-m-d')}}</td>
+        <td>{{ pkg.releasedate }}</td>
+{% else %}
+        <td><a href='/package/{{ pkg.name|url_encode }}'><strong>{{ pkg.name }}</strong></a></td>
+        <td>{{ pkg.summary}}</td>
+        <td colspan="3">no release available</td>
+{% endif %}
     </tr>
     {% endfor %}
     </tbody>

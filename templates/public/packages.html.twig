@@ -49,7 +49,7 @@
 {% if pkg.releasedate %}
         <td>{{ pkg.status}}</td>
         <td>{{ pkg.version}}</td>
-        <td>{{ pkg.releasedate }}</td>
+        <td>{{ pkg.releasedate|date('Y-m-d') }}</td>
 {% else %}
         <td colspan='3'><em>no release available</em></td>
 {% endif %}

@@ -29,6 +29,12 @@ if ($arg_cnt == 3) {
     list(, ,$package, $package_version) = $ar;
 }
 
+// Redirection if no parameters provided
+if (!isset($package) || empty($package)) {
+    header('Location: /');
+    exit;
+}
+
 $package = filter_var($package, FILTER_SANITIZE_STRING);
 $package_version = filter_var($package_version, FILTER_SANITIZE_STRING);
 

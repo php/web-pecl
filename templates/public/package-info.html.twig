@@ -53,7 +53,7 @@
 </div>
 {% if not release_id %}
 <h2>Available Releases</h2>
-<table>
+<table class='zebra-striped'>
     <thead>
         <tr>
             <th>Version</th>
@@ -84,7 +84,7 @@
 {% if too_many_releases and not version %}
 <p>Dependencies for older releases can be found on the release overview page.</p>
 {% endif %}
-<table>
+<table class='zebra-striped'>
     <thead>
         <tr>
             <th class='span2'>Version</th>

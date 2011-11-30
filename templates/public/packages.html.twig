@@ -1,11 +1,12 @@
 {% extends "layout.html.twig" %}
 {% block content %}
 <h1>{{ category_title|default('Packages')}} ({{ total_packages }})</h1>
+{% if category_title %}
 <ul class="breadcrumb">
     <li><a href="/packages">Top level</a> <span class="divider">/</span></li>
     <li class="active">{{ category_title|default('Packages')}}</li>
 </ul>
-
+{% endif %}
 {% if not category_title %}
 <div class='row packagesList'>
     {% for category in categories %}

@@ -68,7 +68,7 @@
         <tr>
             <td><a href="/package/{{ package.name }}/{{ version }}">{{ version }}</a></td>
             <td>{{ release.state }}</td>
-            <td>{{ release.releasedate }}</td>
+            <td>{{ release.releasedate|date('Y-m-d') }}</td>
             <td><a href="/get/{{ download_list[version].basename }}">{{ download_list[version].basename }}</a></td>
             <td><a href="/package-changelog.php?package={{ package.name }}&release={{ version }}">Changelog</a></td>
         </tr>

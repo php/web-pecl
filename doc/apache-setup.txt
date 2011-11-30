@@ -2,8 +2,8 @@ These are the typical Apache directives you need to set up a
 development site for pearweb (this PHP installation has PEAR stuff
 installed in /usr/share/pear):
 
-<VirtualHost *>
- ServerName pear.localdomain
+<VirtualHost *:80>
+ ServerName pecl.localdomain
 
  DocumentRoot /path/to/pearweb/public_html
  DirectoryIndex index.php index.html
@@ -50,5 +50,31 @@ installed in /usr/share/pear):
  <Location /manual>
   ErrorDocument 404 /error/404-manual.php
  </Location>
+</VirtualHost>
+
+<VirtualHost *:80>
+
+    ServerName pecldev.local
+
+    DocumentRoot /home/pierre/public_html/pecl/dev_html
+    DirectoryIndex index.php
+
+    SetEnv      USER_TOKEN "putthekeyhere"
+    SetEnv      PHPDOTNETAPI_KEY        putthekeyhere
+    SetEnv      PHPDOTNETAPI_SECRET     putthekeyhere
+    SetEnv      AUTH_TOKEN              "putthekeyhere"
+    SetEnv      PEAR_REST_DIR           /home/web/public_html/pecl/public_html/rest
+    SetEnv      PECL_UPLOAD_DIR         /home/web/public_html/pecl/upload
+
+    php_value include_path .:/home/web/public_html/pecl/include:/usr/share/php/
+    php_value auto_prepend_file pecl-developer-prepend.php
+
+    php_value date.timezone GMT
+    ErrorDocument 404 /error/404.php
+
+    RewriteEngine On
+    RewriteMap lc int:tolower
+    # rule for account info /user/handle
+    RewriteRule   /user/(.+)$ /account-edit.php?handle=${lc:$1}
 
 </VirtualHost>

@@ -18,7 +18,6 @@
    +----------------------------------------------------------------------+
    $Id$
 */
-include PECL_INCLUDE_DIR . '/pear-database-package.php';
 
 $package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 $version = filter_input(INPUT_GET, 'version', FILTER_SANITIZE_STRING);

@@ -18,8 +18,6 @@
    $Id$
 */
 
-include PECL_INCLUDE_DIR . '/pear-database-package.php';
-
 /**
  * On 404 error this will search for a package with the same
  * name as the requested document. Thus enabling urls such as:

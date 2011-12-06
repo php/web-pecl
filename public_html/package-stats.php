@@ -25,8 +25,6 @@
   . reduce traffic, reduce cpu&mem usage
 */
 
-include PECL_INCLUDE_DIR . '/pear-database-package.php';
-
 response_header('Package Statistics');
 ?>
 

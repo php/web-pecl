@@ -46,6 +46,8 @@ include_once "DB.php";
 include_once "DB/storage.php";
 include_once "pear-auth.php";
 include_once "pear-database.php";
+include_once "pear-database-category.php";
+include_once "pear-database-package.php";
 include_once "pear-rest.php";
 
 function get($name)

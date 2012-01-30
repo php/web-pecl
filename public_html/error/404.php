@@ -30,6 +30,7 @@ $pages = array (
     'about/privacy'   => 'Privacy',
     'about/damblan'   => 'About Damblan',
     'support'   => 'Support',
+    'documentation'   => 'Documentation',
     'takeover'  => 'Takeover a package',
     '404'       => 'Ooops cannot find this page',
     'dtd'       => 'Document Type Definitions',

@@ -1,0 +1,23 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h1>Documentation</h1>
+<h2>Some information on PECL specific topics</h2>
+<ul>
+    <li><a href="http://php.net/manual/install.pecl.php">How to install a PECL extension</a></li>
+    <li><a href="http://wiki.php.net/doc/scratchpad/pecldocs">How to document a PECL extension</a></li>
+</ul>
+<h2>Documentation for PECL extensions</h2>
+<p>
+    PECL extensions are documented within the main <a href="http://php.net/manual/">PHP Manual</a>.
+</p>
+<h2>SVN Branches and how they relate to PECL</h2>
+<p>
+    If you have your PECL code in the PHP SVN repository, you need to be aware of
+    our branching convention.  The PHP core code is branched like this:
+</p>
+<p>
+    See the <a href="http://wiki.php.net/vcs/svnfaq">PHP SVN FAQ</a> for a detailed
+    descriptions about how to use SVN and the concepts of branches and tags.
+</p>
+{% endblock %}

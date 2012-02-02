@@ -4,19 +4,17 @@
     <title>{{ title|default('PECL') }}</title>
     <meta http-equiv="Content-Type" content="text/html; UTF-8"/>
     <link rel="shortcut icon" href="/gifs/pecl-favicon.ico"/>
-    <link rel="stylesheet" href="/bootstrap.min.css?v=1.4.0"/>
-    <link rel="stylesheet" href="/pecl.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css?v=2.0.0"/>
+    <link rel="stylesheet" href="/css/pecl.css"/>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://pecl.local/feeds/latest.rss"/>
-    <script src="/jquery.min.js?v=1.6.4" type="text/javascript"></script>
-    <script src="/bootstrap-modal.js?v=1.4.0" type="text/javascript"></script>
-    <script src="/bootstrap-tabs.js?v=1.4.0" type="text/javascript"></script>
-    <script src="/bootstrap-dropdown.js?v=1.4.0" type="text/javascript"></script>
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.js?v=2.0.0" type="text/javascript"></script>
 </head>
 <body>{% spaceless %}
-<div id="login-modal" class="modal hide fade">
+<div id="login-modal" class="modal hide">
     <form action='#' method="post">
         <div class="modal-header">
-            <a href="#" class="close">&times;</a>
+            <a href="#" class="close" data-dismiss="modal">&times;</a>
             <h3>Connection</h3>
         </div>
         <div class="modal-body">
@@ -36,12 +34,12 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a href="#" class="btn primary">Login</a>
+            <a href="#" class="btn btn-primary">Login</a>
         </div>
     </form>
 </div>
-<div class="topbar">
-    <div class="topbar-inner">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
         <div class="container">
             <a class="brand" href="/">PECL</a>
             <ul class="nav">
@@ -49,18 +47,18 @@
                 <li><a href="/support">Support</a></li>
                 <li><a href="/documentation">Documentation</a></li>
                 <li class="dropdown" data-dropdown="dropdown">
-                    <a class="dropdown-toggle" href="/packages">Packages</a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Packages<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/packages">Browse all packages</a></li>
-                        <li><a href="/package-search.php">Search packages</a></li>
-                        <li><a href="/package-stats.php">Download statistics</a></li>
+                        <li><a href="/packages"><i class="icon-list"></i> Browse all packages</a></li>
+                        <li><a href="/package-search.php"><i class="icon-search"></i> Search packages</a></li>
+                        <li><a href="/package-stats.php"><i class="icon-download"></i> Download statistics</a></li>
                     </ul>
                 </li>
                 <li><a href="/developers">Developers</a></li>
                 <li><a href="https://bugs.php.net">Bugs</a></li>
             </ul>
-            <ul class="nav secondary-nav">
-                <li><a data-controls-modal="login-modal" data-backdrop="static">Login</a></li>
+            <ul class="nav pull-right">
+                <li><a data-toggle="modal" href="#login-modal">Login</a></li>
             </ul>
         </div>
     </div>

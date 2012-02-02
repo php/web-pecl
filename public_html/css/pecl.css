@@ -30,6 +30,7 @@ h1 {
     padding-top: 5px;
     padding-bottom: 0;
     border-bottom: 1px solid #DDDDDD;
+    margin-bottom: 10px;
 }
 
 .tcenter {
@@ -94,11 +95,7 @@ div.recentReleases li {
 }
 
 div.packagesList span.label {
-    font-size: 14px;
-    line-height: 36px;
     vertical-align: top;
-    padding: 2px 4px 2px 4px;
-    background-color: #0069D6;
 }
 
 div.packageAction {

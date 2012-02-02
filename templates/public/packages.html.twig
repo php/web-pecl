@@ -10,8 +10,8 @@
 {% if not category_title %}
 <div class='row packagesList'>
     {% for category in categories %}
-    <div class='span4'>
-        <h3><a href='/packages/{{ category.name|url_encode }}'>{{ category.name }} <span class="label">{{ category.npackages }}</span></a></h3>
+    <div class='span3'>
+        <h3><a href='/packages/{{ category.name|url_encode }}'>{{ category.name }} <span class="label label-info">{{ category.npackages }}</span></a></h3>
         <p>
         {% for sub_category in category_subcategory[category.name] %}
             <a href="/packages/{{ sub_category.name|url_encode }}"><strong>{{ sub_category.name}} ({{ sub_category.npackages}})</strong></a>&#160;
@@ -31,7 +31,7 @@
     {% endfor %}
 </div>
 {% else %}
-<table class='zebra-striped'>
+<table class='table table-striped'>
     <thead>
         <tr>
             <th>Name</th>

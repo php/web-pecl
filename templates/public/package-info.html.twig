@@ -1,6 +1,6 @@
 {% extends "layout.html.twig" %}
 {% block content %}
-<h1>{{ package.name }} {{ package_version|default('') }}<small>{{ package.summary }}</small></h1>
+<h1>{{ package.name }} {{ package_version|default('') }}&#160;<small>{{ package.summary }}</small></h1>
 <ul class="breadcrumb">
     {% for label,url in navigation %}
     <li><a href="{{ url }}">{{ label }}</a> <span class="divider">/</span></li>
@@ -12,15 +12,15 @@
 {% endif %}
 <h2>Details</h2>
 <div class='row'>
-    <div class='span13'>
+    <div class='span10'>
         <div class='row'>
             <div class='span2'><strong>Description :</strong></div>
-            <div class='span11'>{{ package.description }}</div>
+            <div class='span8'>{{ package.description }}</div>
         </div>
         <br/>
         <div class='row'>
             <div class='span2'><strong>Maintainers :</strong></div>
-            <div class='span11'>
+            <div class='span8'>
                 <ul>
                     {% for maintainer in maintainer_list %}
                     <li>
@@ -34,10 +34,10 @@
         <br/>
         <div class='row'>
             <div class='span2'><strong>License :</strong></div>
-            <div class='span11'>{{ package.license }}</div>
+            <div class='span8'>{{ package.license }}</div>
         </div>
     </div>
-    <div class='span3'>
+    <div class='span2'>
         <div class='packageAction'>
             <ul>
                 <li><a href="/get/{{ package.name }}">Download Latest</a></li>
@@ -53,7 +53,7 @@
 </div>
 {% if not release_id %}
 <h2>Available Releases</h2>
-<table class='zebra-striped'>
+<table class='table table-striped'>
     <thead>
         <tr>
             <th>Version</th>
@@ -84,7 +84,7 @@
 {% if too_many_releases and not version %}
 <p>Dependencies for older releases can be found on the release overview page.</p>
 {% endif %}
-<table class='zebra-striped'>
+<table class='table table-striped'>
     <thead>
         <tr>
             <th class='span2'>Version</th>

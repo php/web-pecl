@@ -111,3 +111,7 @@ div.packageAction ul {
 div.packageAction li {
     margin-bottom: 5px;
 }
+
+table tr.highlight {
+    font-weight: bold;
+}

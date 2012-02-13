@@ -36,12 +36,24 @@
             <div class='span2'><strong>License :</strong></div>
             <div class='span8'>{{ package.license }}</div>
         </div>
+        {% if package_version|default(false) %}
+        <br/>
+        <div class='row'>
+            <div class='span2'><strong>Version :</strong></div>
+            <div class='span8'><strong>{{ package_version }} ({{ release_list[package_version].state|default('') }})</strong></div>
+        </div>
+        <br/>
+        <div class='row'>
+            <div class='span2'><strong>Release notes :</strong></div>
+            <div class='span8'>{{ release_list[package_version].releasenotes|default('')|nl2br }}</div>
+        </div>
+        {% endif %}
     </div>
     <div class='span2'>
         <div class='packageAction'>
             <ul>
                 <li><a href="/get/{{ package.name }}">Download Latest</a></li>
-                <li><a href="/package-changelog.php?package={{ package.name }}">Changelog</a></li>
+                <li><a href="/package/changelog/{{ package.name }}">Changelog</a></li>
                 <li><a href="/package-stats.php?pid={{ package.packageid }}&rid=&cid={{ package.categoryid }}">View Statistics</a></li>
                 <li><a href="{{ package.cvs_link }}" target="top">Browse Source</a></li>
                 <li><a href="/bugs/search.php?cmd=display&status=Open&package_name[]={{ package.name }}">Package Bugs</a></li>
@@ -70,7 +82,7 @@
             <td>{{ release.state }}</td>
             <td>{{ release.releasedate|date('Y-m-d') }}</td>
             <td><a href="/get/{{ download_list[version].basename }}">{{ download_list[version].basename }}</a></td>
-            <td><a href="/package-changelog.php?package={{ package.name }}&release={{ version }}">Changelog</a></td>
+            <td><a href="/package/changelog/{{ package.name }}/{{ version }}">Changelog</a></td>
         </tr>
     {% else %}
         <tr>

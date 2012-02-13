@@ -1,0 +1,29 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+<h1>{{ package.name }}&#160;<small>{{ package.summary }}</small></h1>
+<ul class="breadcrumb">
+    <li><a href="/packages">Top level</a> <span class="divider">/</span></li>
+    <li class="active">{{ package.name }}</li>
+</ul>
+<h2>Changelog</h2>
+<table class='table table-striped'>
+    <thead>
+    <tr>
+        <th class='span2'>Release</th>
+        <th>What has changed?</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for version,data in package.releases %}
+    <tr {% if release == version %}class='highlight'{% endif %}>
+        <td><a href="/package/{{ package.name }}/{{ version }}">{{ version }}</a></td>
+        <td>{{ data.releasenotes|default('')|nl2br }}</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan='2'><em>No release available.</em></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -23,45 +23,56 @@ $pacid = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 if (!$pacid) {
     $pacid = filter_input(INPUT_GET, 'pacid', FILTER_SANITIZE_STRING);
 }
+$release = filter_input(INPUT_GET, 'release', FILTER_SANITIZE_STRING);
 
 if (!$pacid) {
-    response_header("Error");
-    PEAR::raiseError('Invalid package');
-    response_footer();
+    echo $twig->render('404.html.twig');
+//    response_header("Error");
+//    PEAR::raiseError('Invalid package');
+//    response_footer();
     exit();
 }
 
 $pkg = package::info($pacid);
 
 if (empty($pkg['name'])) {
-    response_header("Error");
-    PEAR::raiseError('Invalid package');
-    response_footer();
+    echo $twig->render('404.html.twig');
+//    response_header("Error");
+//    PEAR::raiseError('Invalid package');
+//    response_footer();
     exit();
 }
 
-$name = $pkg['name'];
-response_header("$name Changelog");
-print '<p>' . make_link("/" . $name, 'Return') . '</p>';
-$bb = new Borderbox("Changelog for " . $name, "90%", "", 2, true);
+//$name = $pkg['name'];
+//response_header("$name Changelog");
+//print '<p>' . make_link("/" . $name, 'Return') . '</p>';
+//$bb = new Borderbox("Changelog for " . $name, "90%", "", 2, true);
+//
+//if (count($pkg['releases']) == 0) {
+//    $bb->fullRow('There are no releases for ' . $name . ' yet.');
+//} else {
+//    $bb->headRow("Release", "What has changed?");
+//
+//    foreach ($pkg['releases'] as $version => $release) {
+//        $link = make_link("package-info.php?package=" . $pkg['name'] .
+//                          "&amp;version=" . urlencode($version), $version);
+//
+//        if (!empty($_GET['release']) && $version == $_GET['release']) {
+//            $bb->horizHeadRow($link, nl2br($release['releasenotes']));
+//        } else {
+//            $bb->plainRow($link, nl2br($release['releasenotes']));
+//        }
+//    }
+//}
+//$bb->end();
+//print '<p>' . make_link("/" . $name, 'Return') . '</p>';
+//response_footer();
 
-if (count($pkg['releases']) == 0) {
-    $bb->fullRow('There are no releases for ' . $name . ' yet.');
-} else {
-    $bb->headRow("Release", "What has changed?");
-
-    foreach ($pkg['releases'] as $version => $release) {
-        $link = make_link("package-info.php?package=" . $pkg['name'] .
-                          "&amp;version=" . urlencode($version), $version);
-
-        if (!empty($_GET['release']) && $version == $_GET['release']) {
-            $bb->horizHeadRow($link, nl2br($release['releasenotes']));
-        } else {
-            $bb->plainRow($link, nl2br($release['releasenotes']));
-        }
-    }
+if (empty($release)) {
+    $data = array_keys($pkg['releases']);
+    $release = $data[0];
 }
-$bb->end();
-print '<p>' . make_link("/" . $name, 'Return') . '</p>';
-response_footer();
-?>
+
+$page = $twig->render('package-changelog.html.twig', array('package' => $pkg, 'release' => $release));
+file_put_contents(__DIR__ . '/static/package/' . $pkg['name'] . ".changelog.html", $page);
+echo $page;

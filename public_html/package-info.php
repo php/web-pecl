@@ -268,7 +268,6 @@ if (!is_null($package['categoryid'])) {
         $data['navigation'][$row['name']] = '/packages/' . $row['name'];
     }
 }
-
 $page = $twig->render('package-info.html.twig', $data);
 file_put_contents(__DIR__ . '/static/package/' . $filename, $page);
 echo $page;

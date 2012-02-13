@@ -34,6 +34,8 @@ installed in /usr/share/pear):
  RewriteRule   /user/(.+)$ /account-info.php?handle=$1
 
  # rule for account info /package/pkgname/version
+ RewriteRule   /package/changelog/(.+)/(.+)$ /package-changelog.php?package=$1&release=$2
+ RewriteRule   /package/changelog/(.+)([^/]?)$ /package-changelog.php?package=$1
  RewriteRule   /package/(.+)/(.+)$ /package-info.php?package=$1&version=$2
  RewriteRule   /package/(.+)([^/]?)$ /package-info.php?package=$1
  RewriteRule   /packages /packages.php

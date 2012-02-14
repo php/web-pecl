@@ -19,9 +19,10 @@
 */
 
 function create_html_file(Twig_Environment $twig, $name, $pages) {
-    $buffer = $twig->render($name . '.html.twig', array('title' => $pages[$name]));
+    $proper_name = str_replace('/', '_', $name);
+    $buffer = $twig->render($proper_name . '.html.twig', array('title' => $pages[$name]));
     echo $buffer;
-    file_put_contents(PECL_STATIC_HTML_DIR . '/' . $name . '.html', $buffer);
+    file_put_contents(PECL_STATIC_HTML_DIR . '/' . $proper_name . '.html', $buffer);
 }
 
 $pages = array (
@@ -49,7 +50,7 @@ if ($url{0} == '/') {
     }
 
     if (isset($pages[$page_name])) {
-        create_html_file($twig, str_replace('/', '_', $page_name), $pages);
+        create_html_file($twig, $page_name, $pages);
         exit();
     }
 }

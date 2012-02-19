@@ -24,9 +24,10 @@ response_header("Privacy Policy");
 
 <h2>Email</h2>
 
-<p>We will not give away your email address to anyone, who is not
-related to the operations of pecl.php.net. We will also <b>never</b>
-ask you to send us any of your passwords via email.</p>
+<p>Package maintainer and bug reporter email addresses are shown slightly obfuscated.
+Unobfuscated email addresses are never given to anyone not related to the operations
+of pecl.php.net. We will also <b>never</b> ask you to send us any of your passwords
+via email.</p>
 
 <h2>Logfiles</h2>
 

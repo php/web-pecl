@@ -12,9 +12,9 @@
  *
  * @category  pearweb
  * @package   Bugs
- * @copyright Copyright (c) 1997-2004 The PHP Group
+ * @copyright Copyright (c) 1997-2012 The PHP Group
  * @license   http://www.php.net/license/3_0.txt  PHP License
- * @version   $Id$
+ * @version   $Id: index.php 317958 2011-10-10 10:52:51Z pajoye $
  */
 
 response_header('Bugs');
@@ -26,12 +26,12 @@ response_header('Bugs');
 <p>
  If you need support or you don't really know if the problem you found
  is a bug, please use our
- <?php print_link('/support.php', 'support channels'); ?>.
+ <?php print_link('/support', 'support channels'); ?>.
 </p>
 
 <p>
  Before submitting a bug, please make sure nobody has already reported it by
- <?php print_link('search.php', 'searching the existing bugs'); ?>.
+ <?php print_link('http://bugs.php.net/search.php', 'searching the existing bugs'); ?>.
  Also, read the tips on how to
  <?php print_link('http://bugs.php.net/how-to-report.php',
                   'report a bug that someone will want to help fix', 'top'); ?>.

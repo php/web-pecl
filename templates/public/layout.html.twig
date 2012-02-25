@@ -1,16 +1,54 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
     <title>{{ title|default('PECL') }}</title>
     <meta http-equiv="Content-Type" content="text/html; UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/gifs/pecl-favicon.ico"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css?v=2.0.0"/>
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css?v=2.0.0"/>
     <link rel="stylesheet" href="/css/pecl.css"/>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://pecl.local/feeds/latest.rss"/>
-    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
-    <script src="/js/bootstrap.js?v=2.0.0" type="text/javascript"></script>
 </head>
-<body>{% spaceless %}
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>			
+            <a class="brand" href="/">PECL</a>
+            <div class='nav-collapse'>
+				<ul class="nav">
+					<li><a href="/">Main</a></li>
+					<li><a href="/support">Support</a></li>
+					<li><a href="/documentation">Documentation</a></li>
+					<li class="dropdown" data-dropdown="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Packages<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/packages"><i class="icon-list"></i> Browse all packages</a></li>
+							<li><a href="/package-search.php"><i class="icon-search"></i> Search packages</a></li>
+							<li><a href="/package-stats.php"><i class="icon-download"></i> Download statistics</a></li>
+						</ul>
+					</li>
+					<li><a href="/developers">Developers</a></li>
+					<li><a href="https://bugs.php.net">Bugs</a></li>
+				</ul>
+				<ul class="nav pull-right">
+					<li><a data-toggle="modal" href="#login-modal">Login</a></li>
+				</ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='container'>
+    {% block content %}{% endblock %}
+    <div class='footer'>
+        <p>&copy; The PHP Group - All rights reserved.</p>
+    </div>
+</div>
 <div id="login-modal" class="modal hide">
     <form action='#' method="post">
         <div class="modal-header">
@@ -38,36 +76,7 @@
         </div>
     </form>
 </div>
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="/">PECL</a>
-            <ul class="nav">
-                <li><a href="/">Main</a></li>
-                <li><a href="/support">Support</a></li>
-                <li><a href="/documentation">Documentation</a></li>
-                <li class="dropdown" data-dropdown="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Packages<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/packages"><i class="icon-list"></i> Browse all packages</a></li>
-                        <li><a href="/package-search.php"><i class="icon-search"></i> Search packages</a></li>
-                        <li><a href="/package-stats.php"><i class="icon-download"></i> Download statistics</a></li>
-                    </ul>
-                </li>
-                <li><a href="/developers">Developers</a></li>
-                <li><a href="https://bugs.php.net">Bugs</a></li>
-            </ul>
-            <ul class="nav pull-right">
-                <li><a data-toggle="modal" href="#login-modal">Login</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div class='container'>
-    {% block content %}{% endblock %}
-    <div class='footer'>
-        <p>&copy; The PHP Group - All rights reserved.</p>
-    </div>
-</div>
-{% endspaceless %}</body>
+<script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="/js/bootstrap.js?v=2.0.0" type="text/javascript"></script>
+</body>
 </html>

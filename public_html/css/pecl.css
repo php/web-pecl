@@ -115,3 +115,24 @@ div.packageAction li {
 table tr.highlight {
     font-weight: bold;
 }
+
+/* Responsive Docs
+-------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+  /* Remove any padding from the body */
+  body {
+    padding-top: 0;
+  }
+
+}
+
+@media (min-width: 768px) and (max-width: 980px) {
+
+  /* Remove any padding from the body */
+  body {
+    padding-top: 0;
+  }
+
+}

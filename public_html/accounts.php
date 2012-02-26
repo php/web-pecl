@@ -19,84 +19,49 @@
 */
 
 $paging_offset = filter_input(INPUT_GET, 'offset', FILTER_VALIDATE_INT);
-$letter = filter_input(INPUT_GET, 'letter', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z]?$/")));
+$letter = strtolower(filter_input(INPUT_GET, 'letter', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z]?$/"))));
 $paging_page_size = 20;
 
-if (is_null($paging_offset)) {
-    $paging_offset = 0;
+if (empty($paging_offset)) {
+    $paging_offset = 1;
 }
 
-$existing_firstletters = $dbh->getCol(' SELECT DISTINCT(SUBSTRING(handle,1,1)) as letter  FROM users WHERE registered = 1 ORDER BY letter');
 $account_total = $dbh->getOne("SELECT COUNT(handle) FROM users WHERE registered = 1");
+$total_page = ceil($account_total / $paging_page_size);
 
-
+// Calculation of the offset if a letter is specified
 if (!empty($letter)) {
-    /* No paging when only a give letter is displayed */
-    $account_filter_total = $dbh->getOne('SELECT COUNT(handle) FROM users WHERE SUBSTRING(handle,1,1)=' . "'$letter'");
+    $arrayLetters = $dbh->getAll('SELECT SUBSTRING(handle,1,1) AS letter, COUNT(SUBSTRING(handle,1,1)) AS nb FROM users WHERE registered = 1 GROUP BY letter ORDER BY letter');
+    $bFound = false;
+    $nbLettersBeforeChosenOne = 0;
+    foreach ($arrayLetters as $item) {
+        $existing_firstletters[] = strtolower($item[0]);
+        if (strtolower($item[0]) == $letter) {
+            $bFound = true;
+        } else {
+            if (!$bFound) $nbLettersBeforeChosenOne += $item[1];
+        }
+    }
 
-    $account_list_result = $dbh->limitQuery('SELECT handle, name, homepage, wishlist FROM users WHERE SUBSTRING(handle,1,1)=' .
-                                 "'" . $letter . "'" . 'ORDER BY handle', 0, $paging_page_size);
+    $paging_offset = floor($nbLettersBeforeChosenOne / $paging_page_size) + 1;
 
 } else {
-	$account_list_result = $dbh->limitQuery('SELECT handle, name, homepage, wishlist FROM users WHERE registered = 1 ORDER BY handle',
-	                        $paging_offset, $paging_page_size);
-    $account_filter_total = $account_total;
-
-    $last_shown = $paging_offset + $paging_page_size - 1;
-
-    if (($paging_offset - $paging_page_size) > 0) {
-        $last = $paging_offset - $paging_page_size;
-        $paging_prev_link = '/accounts.php?offset=' . $last;
-    } else {
-        $last = 0;
-        $paging_prev_link = '/accounts.php';
-    }
-
-    if ($paging_offset == 0) {
-        $paging_prev_link = NULL;
-    }
-
-    $paging_next_offset = $paging_offset + $paging_page_size;
-    $paging_next_page_total = $account_filter_total - $paging_offset;
-    if ($paging_next_page_total > $account_filter_total) {
-        $paging_next_page_total = $account_filter_total - $paging_offset;
-    }
-    if ($paging_next_offset > $account_filter_total) {
-        $paging_next_link = NULL;
-    } else {
-        $paging_next_link =  '/accounts.php?offset=' . $paging_next_offset;
-    }
+    $existing_firstletters = $dbh->getCol('SELECT DISTINCT SUBSTRING(handle,1,1) AS letter FROM users WHERE registered = 1 ORDER BY letter');
 }
 
-if (empty($letter) && ($paging_offset + $paging_page_size < $account_filter_total)) {
-	$paging_next_page_total = min($paging_page_size, $account_filter_total - $paging_offset);
-    $paging_last_in_page = min($paging_offset + $paging_page_size, $account_filter_total);
-}
+$result = $dbh->limitQuery('SELECT handle, name, homepage, wishlist, email, showemail FROM users WHERE registered = 1 ORDER BY handle',
+                        ($paging_offset-1) * $paging_page_size, $paging_page_size);
+$account_list_result = array();
+while($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) $account_list_result[] = $row;
 
 $data = array(
     'account_list_result' => $account_list_result,
     'existing_firstletters' => $existing_firstletters,
     'letter' => $letter,
-    'account_filter_total' => $account_filter_total,
-
-    'paging_next_page_total' => $paging_next_page_total,
-    'paging_last_in_page' => $paging_last_in_page,
-    'paging_next_link' => $paging_next_link,
-    'paging_next_offset' => $paging_next_offset,
-    'paging_prev_link' => $paging_prev_link,
-    'paging_last_in_page' =>$paging_last_in_page,
-    'paging_prev_link' => $paging_prev_link,
-    'paging_page_size' => $paging_page_size,
-    'paging_last_in_page' => $paging_last_in_page,
-    'paging_offset' => $paging_offset,
-    'account_total' => $account_total,
+    'page' => $paging_offset,
+    'total_page' => $total_page,
+    'account_total' => $account_total
 );
 
-$page = new PeclPage();
-$page->title = 'Developers';
-$page->setTemplate(PECL_TEMPLATE_DIR . '/account-browser.html');
-$page->addData($data);
-$page->render();
-
-echo $page->html;
-
+$page = $twig->render('developers.html.twig', $data);
+echo $page;

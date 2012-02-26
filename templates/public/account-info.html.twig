@@ -58,6 +58,8 @@
                 <td><a href="/package/{{ package.name }}">{{ package.name }}</a></td>
                 <td>{{ package.role }}</td>
             </tr>
+            {% else %}
+            <tr><td colspan='2'><em>No participation found</em></td></tr>
             {% endfor %}
             </tbody>
         </table>

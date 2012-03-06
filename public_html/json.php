@@ -27,9 +27,6 @@ if (!$package) {
 	exit();
 }
 
-
-include PECL_INCLUDE_DIR . '/pear-database-package.php';
-
 // Package data
 $pkg   = package::info($package);
 if (!$pkg) {

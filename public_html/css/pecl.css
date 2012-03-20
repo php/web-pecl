@@ -1,29 +1,5 @@
 body {
-    padding-top: 40px;
-}
-
-ul {
-    margin-bottom: 0;
-}
-
-.container-fluid > .sidebar {
-    position: fixed;
-    top: 50px;
-}
-
-.sidebar div {
-    background-color: #f5f5f5;
-    padding: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, .15);
-    -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, .15);
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, .15);
-}
-
-.sidebar ul {
-    margin-bottom: 5px;
+    padding-top: 50px;
 }
 
 h1 {
@@ -31,6 +7,31 @@ h1 {
     padding-bottom: 0;
     border-bottom: 1px solid #DDDDDD;
     margin-bottom: 10px;
+}
+
+.navbar-inner {
+    background-color: #0088CC;
+    background-image: linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, rgb(0,92,184)),
+        color-stop(1, rgb(3,154,218))
+    );
+}
+
+.navbar ul.nav > li > a {
+    color: #ffffff;
+}
+
+.navbar ul.nav > li > a:hover {
+    text-decoration: underline;
 }
 
 .tcenter {
@@ -49,18 +50,6 @@ h1 {
     vertical-align: middle;
 }
 
-.main table {
-    margin-bottom: 9px;
-}
-
-.main h1 {
-    margin-bottom: 5px;
-}
-
-.main h2 {
-    margin-top: 35px;
-}
-
 .modal form {
     margin: 0;
 }
@@ -74,16 +63,11 @@ h1 {
     border-top: 1px solid #DDDDDD;
 }
 
-.footer p {
-    font-size: 10px;
-    font-weight: bold;
-}
-
-div.recentReleases {
-    border-left: 1px solid #DDDDDD;
-    padding-left: 20px;
-    margin-top: 20px;
-}
+/*div.recentReleases {*/
+    /*border-left: 1px solid #DDDDDD;*/
+    /*padding-left: 20px;*/
+    /*margin-top: 20px;*/
+/*}*/
 
 div.recentReleases ul {
     margin-left: 0;
@@ -94,7 +78,8 @@ div.recentReleases li {
     margin-bottom: 5px;
 }
 
-div.packagesList span.label {
+div.packagesList span.badge {
+    font-size: 12px;
     vertical-align: top;
 }
 
@@ -116,12 +101,13 @@ table tr.highlight {
     font-weight: bold;
 }
 
-/* Responsive Docs
--------------------------------------------------- */
+/*-------------------------------------------------- */
+/* Responsive Docs*/
+/*-------------------------------------------------- */
 
 @media (max-width: 768px) {
 
-  /* Remove any padding from the body */
+   /*Remove any padding from the body*/
   body {
     padding-top: 0;
   }
@@ -130,7 +116,7 @@ table tr.highlight {
 
 @media (min-width: 768px) and (max-width: 980px) {
 
-  /* Remove any padding from the body */
+   /*Remove any padding from the body*/
   body {
     padding-top: 0;
   }

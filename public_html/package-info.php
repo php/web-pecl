@@ -214,8 +214,8 @@ if (count($package['releases'])) {
             break;
         }
 
-        $deps = $package['releases'][$r_version]['deps'];
-        $dependency_list[$r_version] =  $package['releases'][$r_version]['deps'];
+        $deps = isset($package['releases'][$r_version]['deps']) ? $package['releases'][$r_version]['deps'] : null;
+        $dependency_list[$r_version] =  $deps;
         $dep = array();
         if (count($deps) > 0) {
             foreach ($deps as $row) {

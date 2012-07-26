@@ -1,0 +1,68 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+<h1>Package search</h1>
+<form class="form-horizontal">
+    <fieldset>
+        <div class='row'>
+            <div class="control-group span6">
+                <label class="control-label" for="keywords">Search for :</label>
+                <div class="controls">
+                    <input type="text" class="span4 focus" id="keywords" name="keywords" placeholder="keywords" value='{{ search.keywords|default('') }}'/>
+                </div>
+            </div>
+            <div class="control-group span6">
+                <label class="control-label" for="maintainer">Maintainer :</label>
+                <div class="controls">
+                    <select id="maintainer" name="maintainer" data-placeholder="Select user..." class="chzn-select span4">
+                        <option></option>
+                        {% for user in users %}
+                        <option value='{{ user.handle }}' {% if search.maintainer|default('') == user.handle %}selected='selected'{% endif %}>{{ user.name|default(user.handle) }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group span6">
+                <label class="control-label" for="category">Category :</label>
+                <div class="controls">
+                    <select id="category" name="category" data-placeholder="Select category..." class="chzn-select span4">
+                        <option></option>
+                        {% for category in category_rows %}
+                        <option value='{{ category.id }}' {% if search.category|default('') == category.id %}selected='selected'{% endif %}>{{ category.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group span6" >
+                <label class="control-label" for="date">Release date :</label>
+                <div class="controls">
+                    <select name='date_type' id='date_type' class='span1'>
+                        <option value='on' {% if search.date_type|default('') == 'on' %}selected='selected'{% endif %}>on</option>
+                        <option value='before' {% if search.date_type|default('') == 'before' %}selected='selected'{% endif %}>before</option>
+                        <option value='after' {% if search.date_type|default('') == 'after' %}selected='selected'{% endif %}>after</option>
+                    </select> <input type="text" class="datepicker span2" id="date" name="date" data-date="{{ "now"|date('Y-m-d') }}" data-date-format="yyyy-mm-dd" placeholder="Select date..." value="{{ search.date|default('') }}"/>
+                </div>
+            </div>
+        </div>
+        <div class="tcenter">
+            <button type="submit" class="btn btn-primary btn-large">Search</button> <a class="btn" href="/package-search.php">Cancel</a>
+        </div>
+    </fieldset>
+</form>
+{% if searched|default(false) %}
+<h3>Search result ({{ result|length }})</h3>
+<table class='table table-bordered table-striped table-condensed'>
+    <tbody>
+    {% for package in result %}
+        <tr>
+            <td><a href='/package/{{ package.raw_name }}'>{{ package.name|raw }}</a></td>
+            <td>{{ package.summary|raw }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan='2' class='tcenter'>No result found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

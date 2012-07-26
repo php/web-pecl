@@ -19,69 +19,62 @@
    $Id: package-search.php 317298 2011-09-25 23:33:00Z pajoye $
 */
 
-/**
-* Searches for packages matching various user definable
-* criteria including:
-*  o Name
-*  o Maintainer
-*  o Category
-*  o Release date (on/before/after)
-*/
-
-$template_dir = dirname(dirname(__FILE__)) . '/templates/';
-require_once "HTML/Form.php";
-
-$search_date = filter_input(INPUT_GET, 'date', FILTER_SANITIZE_NUMBER_INT);
-$search_date_type = filter_input(INPUT_GET, 'date_type', FILTER_SANITIZE_STRING);
-$search_maintainer = filter_input(INPUT_GET, 'maintainer', FILTER_SANITIZE_STRING);
-$search_name_contains = filter_input(INPUT_GET, 'keywords', FILTER_SANITIZE_STRING);
-$search_category = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING);
+require_once dirname(__FILE__) . '/../include/pear-database-category.php';
 
 /**
-* Setup code for the form
-*/
-$form = new HTML_Form('/package_search.php');
+ * Searches for packages matching various user definable
+ * criteria including:
+ *  o Name
+ *  o Maintainer
+ *  o Category
+ *  o Release date (on/before/after)
+ */
+
+
+$data = array();
 
 /**
-* Code to fetch the current category list
-*/
+ * Code to fetch the current category list
+ */
 $category_rows = category::listAll();
-if (!empty($_GET['pkg_category'])) {
-    for ($i=0; $i<count($category_rows); $i++) {
-        if ($_GET['pkg_category'] == $category_rows[$i]['id']) {
-            $category_rows[$i]['selected'] = 'selected="selected"';
-        }
-    }
-}
+$data['category_rows'] = $category_rows;
 
 /**
-* Fetch list of users/maintainers
-*/
+ * Fetch list of users/maintainers
+ */
 $users = $dbh->getAll('SELECT u.handle, u.name FROM users u, maintains m WHERE u.handle = m.handle GROUP BY handle ORDER BY u.name', DB_FETCHMODE_ASSOC);
-for ($i=0; $i<count($users); $i++) {
-    if (empty($users[$i]['name'])) {
-        $users[$i]['name'] = $users[$i]['handle'];
-    }
-}
+$data['users'] = $users;
 
 /**
-* Is form submitted? Do search and show
-* results.
-*/
+ * Is form submitted? Do search and show
+ * results.
+ */
 if (!empty($_GET)) {
+    $search_date          = filter_input(INPUT_GET, 'date', FILTER_SANITIZE_NUMBER_INT);
+    $search_date_type     = filter_input(INPUT_GET, 'date_type', FILTER_SANITIZE_STRING);
+    $search_maintainer    = filter_input(INPUT_GET, 'maintainer', FILTER_SANITIZE_STRING);
+    $search_name_contains = filter_input(INPUT_GET, 'keywords', FILTER_SANITIZE_STRING);
+    $search_category      = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING);
+
+    $data['search']['date'] = $search_date;
+    $data['search']['date_type'] = $search_date_type;
+    $data['search']['keywords'] = $search_name_contains;
+    $data['search']['category'] = $search_category;
+    $data['search']['maintainer'] = $search_maintainer;
+
     $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
     $where = array();
 
     // Build package name part of query
     if (!empty($search_name_contains)) {
-        $where[] = '(name LIKE'.$dbh->quote('%' . $search_name_contains . '%').' OR p.summary LIKE ' . $dbh->quote('%' . $search_name_contains . '%') . ')';
+        $where[] = '(name LIKE' . $dbh->quote('%' . $search_name_contains . '%') . ' OR p.summary LIKE ' . $dbh->quote('%' . $search_name_contains . '%') . ')';
     }
-    
+
     // Build maintainer part of query
     if (!empty($search_maintainer)) {
         $where[] = sprintf("handle LIKE %s", $dbh->quote('%' . $search_maintainer . '%'));
     }
-    
+
     // Build category part of query
     if (!empty($search_category)) {
         $where[] = sprintf("category = %s", $dbh->quote($search_category));
@@ -90,10 +83,10 @@ if (!empty($_GET)) {
     /**
      * Any release date checking?
      */
+    $release_join = '';
     if (!empty($search_date)) {
-        $release_join        = '';
         $release_join = ', releases r';
-        $where[] = "p.id = r.package";
+        $where[]      = "p.id = r.package";
         switch ($search_date_type) {
             case 'before':
                 $where[] = 'r.releasedate < ' . "'$search_date'";
@@ -109,68 +102,38 @@ if (!empty($_GET)) {
                 break;
         }
     }
-        
+
     // Compose query and execute
-    $where  = !empty($where) ? 'AND '.implode(' AND ', $where) : '';
-    $sql    = "SELECT DISTINCT p.id,
+    $where = !empty($where) ? 'AND ' . implode(' AND ', $where) : '';
+    $sql   = "SELECT DISTINCT p.id,
                           p.name,
                           p.category,
                           p.summary
                      FROM packages p,
                           maintains m
                           $release_join
-                    WHERE p.id = m.package " . $where . 
-                 " ORDER BY p.name DESC";
+                    WHERE p.id = m.package " . $where .
+        " ORDER BY p.name ASC";
 
     $result = $dbh->query($sql);
 
     // Run through any results
+    $data['searched'] = true;
+    $data['result'] = array();
+
     if (($numrows = $result->numRows()) > 0) {
-    
-        // Paging
-        include_once('Pager/Pager.php');
-        $params['itemData'] = range(0, $numrows - 1);
-        $params['perPage'] = 20;
-        $pager = Pager::factory($params);
-        list($from, $to) = $pager->getOffsetByPageId();
-        $links = $pager->getLinks('<img src="gifs/prev.gif" border="0" alt="&lt;&lt;" width="10" height="10">Prev', 'Next<img src="gifs/next.gif" border="0" alt="&gt;&gt;" width="10" height="10">');
-    
-        // Row number
-        $rownum = $from - 1;
+        while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)){
+            $row['raw_name'] = $row['name'];
+            if (!empty($_GET['keywords'])) {
+                $row['name']    = str_ireplace($_GET['keywords'], '<span style="background-color: #d5ffc1">' . $_GET['keywords'] . '</span>', strip_tags($row['name']));
+                $row['summary'] = str_ireplace($_GET['keywords'], '<span style="background-color: #d5ffc1">' . $_GET['keywords'] . '</span>', strip_tags($row['summary']));
+            }
 
-        /**
-        * Title html for results borderbox obj
-        * Eww.
-        */
-        $title_html  = sprintf('<table border="0" width="100%%" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td align="left" width="50"><nobr>%s</nobr></td>
-                                            <td align="center"><nobr>Search results (%s - %s of %s)</nobr></td>
-                                            <td align="right" width="50"><nobr>%s</nobr></td>
-                                        </tr>
-                                    </table>',
-                               $links['back'],
-                               $from,
-                               $to,
-                               $numrows,
-                               $links['next']);
-
-        while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC, $rownum++) AND $rownum <= $to) {
-			/**
-            * If name or summary was searched on, highlight the search string
-            */
-			$row['raw_name']    = $row['name'];
-			if (!empty($_GET['pkg_name'])) {
-				$row['name']    = str_ireplace($_GET['pkg_name'], '<span style="background-color: #d5ffc1">'.$_GET['pkg_name'].'</span>', $row['name']);
-				$row['summary'] = str_ireplace($_GET['pkg_name'], '<span style="background-color: #d5ffc1">'.$_GET['pkg_name'].'</span>', $row['summary']);
-			}
-
-            $search_results[] = $row;
+            $data['result'][] = $row;
         }
-    }    
+    }
 }
 
-/**
- * Template stuff
- */
-include($template_dir . 'package-search.html');
+$page = $twig->render('package-search.html.twig', $data);
+
+echo $page;

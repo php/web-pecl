@@ -1,0 +1,69 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+<h1>{{ user_info.name }}&#160;{% if user_info.admin|default(0) == 1 %}<small>PECL Administrator</small>{% endif %}</h1>
+<div class='row'>
+    <div class='span7'>
+        <h2>Account details</h2>
+        <table class='table'>
+            <tbody>
+            <tr>
+                <td class='span3'><strong>Handle</strong></td>
+                <td>{{ user_info.handle }}</td>
+            </tr>
+            <tr>
+                <td><strong>Name</strong></td>
+                <td>{{ user_info.name }}</td>
+            </tr>
+            {% if user_info.showemail|default(0) == 1 %}
+            <tr>
+                <td><strong>Email</strong></td>
+                <td><a href="mailto:{{ user_info.email }}">{{ user_info.email }}</a></td>
+            </tr>
+            {% endif %}
+            {% if user_info.homepage is not empty %}
+            <tr>
+                <td><strong>Homepage</strong></td>
+                <td><a target='_blank' href="{{ user_info.homepage }}">{{ user_info.homepage }}</a></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td><strong>Registered since</strong></td>
+                <td>{{ user_info.created }}</td>
+            </tr>
+            <tr>
+                <td><strong>Additional information</strong></td>
+                <td>{{ user_info.userinfo }}</td>
+            </tr>
+            {% if user_info.wishlist is not empty %}
+            <tr>
+                <td><strong>Wishlist</strong></td>
+                <td><a target='_blank' href="{{ user_info.wishlist }}">{{ user_info.wishlist }}</a></td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class='span5'>
+        <h2>Maintaining These Packages</h2>
+        <table class='table table-striped table-condensed'>
+            <thead>
+            <tr>
+                <th class='span2'>Package name</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for package in packages %}
+            <tr>
+                <td><a href="/package/{{ package.name }}">{{ package.name }}</a></td>
+                <td>{{ package.role }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan='2'><em>No participation found</em></td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

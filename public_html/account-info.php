@@ -30,22 +30,24 @@ if (empty($handle)) {
     localRedirect("/accounts.php");
 }
 
-$user_info = $dbh->getRow("SELECT * FROM users WHERE registered = 1 ".
-                    "AND handle = ?", array($handle), DB_FETCHMODE_OBJECT);
-print_r($user_info);
+$user_info = $dbh->getRow("SELECT * FROM users WHERE registered = 1 " .
+    "AND handle = ?", array($handle), DB_FETCHMODE_OBJECT);
+
 if ($user_info === null) {
     // XXX: make_404();
-    PEAR::raiseError("No account information found!");
+    //    PEAR::raiseError("No account information found!");
+    echo $twig->render('404.html.twig');
+    exit();
 }
 
 $access = $dbh->getCol("SELECT path FROM cvs_acl WHERE username = ?", 0,
-                       array($handle));
+    array($handle));
 
 if ($user_info->homepage != "") {
-	$url = parse_url($user_info->homepage);
-	if (empty($url['scheme'])) {
-		$user_info->homepage = 'http://' . $user_info->homepage;
-	}
+    $url = parse_url($user_info->homepage);
+    if (empty($url['scheme'])) {
+        $user_info->homepage = 'http://' . $user_info->homepage;
+    }
 }
 
 $query = "SELECT p.id, p.name, m.role
@@ -61,10 +63,14 @@ $data = array(
     'packages' => $packages,
 );
 
-$page = new PeclPage();
-$page->title = 'PECL :: Account ' . $user_info->handle;
-$page->setTemplate(PECL_TEMPLATE_DIR . '/account-info.html');
-$page->addData($data);
-$page->saveTo(PECL_STATIC_HTML_DIR . '/user/' . $user_info->handle . '.html');
-$page->render();
-echo $page->html;
+//$page = new PeclPage();
+//$page->title = 'PECL :: Account ' . $user_info->handle;
+//$page->setTemplate(PECL_TEMPLATE_DIR . '/account-info.html');
+//$page->addData($data);
+//$page->saveTo(PECL_STATIC_HTML_DIR . '/user/' . $user_info->handle . '.html');
+//$page->render();
+//echo $page->html;
+
+$page = $twig->render('account-info.html.twig', $data);
+file_put_contents(__DIR__ . '/static/user/' . $user_info->handle . ".html", $page);
+echo $page;

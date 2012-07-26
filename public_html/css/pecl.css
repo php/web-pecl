@@ -1,0 +1,124 @@
+body {
+    padding-top: 50px;
+}
+
+h1 {
+    padding-top: 5px;
+    padding-bottom: 0;
+    border-bottom: 1px solid #DDDDDD;
+    margin-bottom: 10px;
+}
+
+.navbar-inner {
+    background-color: #0088CC;
+    background-image: linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(0,92,184) 0%, rgb(3,154,218) 100%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, rgb(0,92,184)),
+        color-stop(1, rgb(3,154,218))
+    );
+}
+
+.navbar ul.nav > li > a {
+    color: #ffffff;
+}
+
+.navbar ul.nav > li > a:hover {
+    text-decoration: underline;
+}
+
+.tcenter {
+    text-align: center;
+}
+
+.tleft {
+    text-align: left;
+}
+
+.tright {
+    text-align: right;
+}
+
+.vmiddle {
+    vertical-align: middle;
+}
+
+.modal form {
+    margin: 0;
+}
+
+.modal form .clearfix {
+    margin: 5px 0 5px 0;
+}
+
+.footer {
+    margin-top: 5px;
+    border-top: 1px solid #DDDDDD;
+}
+
+/*div.recentReleases {*/
+    /*border-left: 1px solid #DDDDDD;*/
+    /*padding-left: 20px;*/
+    /*margin-top: 20px;*/
+/*}*/
+
+div.recentReleases ul {
+    margin-left: 0;
+    list-style-type: none;
+}
+
+div.recentReleases li {
+    margin-bottom: 5px;
+}
+
+div.packagesList span.badge {
+    font-size: 12px;
+    vertical-align: top;
+}
+
+div.packageAction {
+    border-left: 1px solid #DDDDDD;
+    padding-left: 20px;
+}
+
+div.packageAction ul {
+    margin-left: 0;
+    list-style-type: none;
+}
+
+div.packageAction li {
+    margin-bottom: 5px;
+}
+
+table tr.highlight {
+    font-weight: bold;
+}
+
+/*-------------------------------------------------- */
+/* Responsive Docs*/
+/*-------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+   /*Remove any padding from the body*/
+  body {
+    padding-top: 0;
+  }
+
+}
+
+@media (min-width: 768px) and (max-width: 980px) {
+
+   /*Remove any padding from the body*/
+  body {
+    padding-top: 0;
+  }
+
+}

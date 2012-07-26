@@ -1,0 +1,28 @@
+{% macro pagination(url, page, nbPages) %}
+{% set last = 0 %}
+{% set side_size = 5 %}
+{% if nbPages > 1 %}
+<div class="pagination">
+    <ul>
+        {% if page > 1 %}<li><a href='{{ url }}/{{ page - 1 }}'>&larr;</a></li>{% endif %}
+        {% for i in 1..nbPages %}
+            {% if (i <= side_size) or (i > (nbPages - side_size))  %}
+                {% if i != (last + 1) %}<li class="disabled"><a href="#">...</a></li>{% endif %}
+                {% if i != page %}<li><a href='{{ url }}/{{ i }}'>{{ i }}</a></li>{% else %}<li class="active"><a href="#">{{ i }}</a></li>{% endif %}
+                {% set last = i %}
+            {% elseif i == page %}
+                {% if ((i - 1) > side_size) and ((i - 1) != (last + 1)) %}<li class="disabled"><a href="#">...</a></li>{% endif %}
+                {% if (i - 1) > side_size %}{% if page > 1 %}<li><a href='{{ url }}/{{ i - 1 }}'>{{ i - 1 }}</a></li>{% else %}<li class="active"><a href="#">{{ i - 1 }}</a></li>{% endif %}{% endif %}
+                <li class="active"><a href="#">{{ i }}</a></li>
+                {% set last = i %}
+                {% if (i + 1) < (nbPages - 2) %}
+                    <li><a href='{{ url }}/{{ i + 1 }}'>{{ i + 1 }}</a></li>
+                    {% set last = (i + 1) %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if page < nbPages %}<li><a href='{{ url }}/{{ page + 1 }}'>&rarr;</a></li>{% endif %}
+    </ul>
+</div>
+{% endif %}
+{% endmacro %}

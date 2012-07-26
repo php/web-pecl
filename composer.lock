@@ -1,0 +1,17 @@
+{
+    "hash": "445a507d97f68703751d3015a5dee494",
+    "packages": [
+        {
+            "package": "twig/twig",
+            "version": "v1.9.1"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ]
+}

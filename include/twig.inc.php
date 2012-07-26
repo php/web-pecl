@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../vendors/twig/lib/Twig/Autoloader.php';
+require_once __DIR__ . '/../vendor/twig/twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 $loader = new Twig_Loader_Filesystem(realpath(__DIR__ . '/../templates/public'));

@@ -20,22 +20,22 @@
 
 function create_html_file(Twig_Environment $twig, $name, $pages) {
     $proper_name = str_replace('/', '_', $name);
-    $buffer = $twig->render($proper_name . '.html.twig', array('title' => $pages[$name]));
+    $buffer      = $twig->render($proper_name . '.html.twig', array('title' => $pages[$name]));
     echo $buffer;
     file_put_contents(PECL_STATIC_HTML_DIR . '/' . $proper_name . '.html', $buffer);
 }
 
-$pages = array (
-    'copyright' => 'Copyright and License',
-    'about'     => 'About',
+$pages = array(
+    'copyright'       => 'Copyright and License',
+    'about'           => 'About',
     'about/privacy'   => 'Privacy',
     'about/damblan'   => 'About Damblan',
-    'support'   => 'Support',
+    'support'         => 'Support',
     'documentation'   => 'Documentation',
-    'takeover'  => 'Takeover a package',
-    '404'       => 'Ooops cannot find this page',
-    'dtd'       => 'Document Type Definitions',
-    'feeds'      => 'Syndication Feeds ss',
+    'takeover'        => 'Takeover a package',
+    '404'             => 'Ooops cannot find this page',
+    'dtd'             => 'Document Type Definitions',
+    'feeds'           => 'Syndication Feeds ss',
 );
 
 $url = $_SERVER['SCRIPT_URL'];
@@ -76,7 +76,7 @@ if (strlen($_SERVER['REDIRECT_URL']) > 0 && $_SERVER['REDIRECT_URL']{1} == '~') 
     }
 }
 
-$pkg = strtr($_SERVER['REDIRECT_URL'], '-','_');
+$pkg       = strtr($_SERVER['REDIRECT_URL'], '-', '_');
 $pinfo_url = '/package/';
 
 // Check strictly
@@ -96,7 +96,7 @@ if (!DB::isError($name) && !empty($name)) {
 }
 
 // Check less strictly if nothing has been found previously
-$sql = "SELECT p.id, p.name, p.summary
+$sql  = "SELECT p.id, p.name, p.summary
             FROM packages p
             WHERE package_type = 'pecl' AND approved = 1 AND name LIKE ?
             ORDER BY p.name LIMIT 0, 5";
@@ -106,16 +106,16 @@ $packages = $dbh->getAll($sql, array($term), DB_FETCHMODE_ASSOC);
 
 $data = array();
 if (count($packages) > 1) {
-	$show_search_link = true;
+    $show_search_link = true;
     $data['packages'] = $packages;
 } else {
-	$show_search_link = false;
+    $show_search_link = false;
 }
-$data['pinfo_url'] = $pinfo_url;
+$data['pinfo_url']        = $pinfo_url;
 $data['show_search_link'] = $show_search_link;
 
 echo $twig->render('404.html.twig', array(
-    'title' => '404 Page Not found',
-    'data' => $data,
-    'uri' => $_SERVER['REQUEST_URI'],
-    'basename' => basename($_SERVER['REQUEST_URI'])));
+                                         'title'    => '404 Page Not found',
+                                         'data'     => $data,
+                                         'uri'      => $_SERVER['REQUEST_URI'],
+                                         'basename' => basename($_SERVER['REQUEST_URI'])));

@@ -26,67 +26,79 @@
 */
 
 include PECL_INCLUDE_DIR . '/pear-database-package.php';
+require_once dirname(__FILE__) . '/../include/pear-database-category.php';
+
+$data = array();
 
 $category_id = filter_input(INPUT_GET, "cid", FILTER_VALIDATE_INT);
-$package_id = filter_input(INPUT_GET, "pid", FILTER_VALIDATE_INT);
-$release_id = filter_input(INPUT_GET, "rid", FILTER_VALIDATE_INT);
+$package_id  = empty($category_id) ? null : filter_input(INPUT_GET, "pid", FILTER_VALIDATE_INT);
+$release_id  = empty($package_id) ? null : filter_input(INPUT_GET, "rid", FILTER_VALIDATE_INT);
 
-if ($package_id) {
-    $releases = $dbh->getAll('SELECT id, version FROM releases WHERE package = ' . $package_id, DB_FETCHMODE_ASSOC);
-    $stat_mode = 'package';
-/*
- * Category based statistics
- */
+$data['search']['cid'] = $category_id;
+$data['search']['pid'] = $package_id;
+$data['search']['rid'] = $release_id;
+
+if ($package_id && !empty($category_id)) {
+    $data['releases']  = $dbh->getAll('SELECT id, version FROM releases WHERE package = ' . $package_id, DB_FETCHMODE_ASSOC);
+    $data['stat_mode'] = 'package';
+    /*
+    * Category based statistics
+    */
 } elseif (!empty($category_id)) {
 
-	$category_name     = $dbh->getOne(sprintf("SELECT name FROM categories WHERE id = %d", $category_id));
-	$total_packages    = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT pid) FROM package_stats WHERE cid = %d", $category_id));
-	$total_maintainers = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT m.handle) FROM maintains m, packages p WHERE m.package = p.id AND p.category = %d", $category_id));
-	$total_releases    = $dbh->getOne(sprintf("SELECT COUNT(*) FROM package_stats WHERE cid = %d", $category_id));
-	$total_categories  = $dbh->getOne(sprintf("SELECT COUNT(*) FROM categories WHERE parent = %d", $category_id));
+    $data['category_name']     = $dbh->getOne(sprintf("SELECT name FROM categories WHERE id = %d", $category_id));
+    $data['total_packages']    = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT pid) FROM package_stats WHERE cid = %d", $category_id));
+    $data['total_maintainers'] = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT m.handle) FROM maintains m, packages p WHERE m.package = p.id AND p.category = %d", $category_id));
+    $data['total_releases']    = $dbh->getOne(sprintf("SELECT COUNT(*) FROM package_stats WHERE cid = %d", $category_id));
+    $data['total_categories']  = $dbh->getOne(sprintf("SELECT COUNT(*) FROM categories WHERE parent = %d", $category_id));
 
-	// Query to get package list from package_stats_table
-	$query = sprintf("SELECT SUM(ps.dl_number) AS download_count, ps.package as name, ps.pid as package_id
-	                  FROM package_stats ps, packages p 
+    // Query to get package list from package_stats_table
+    $query                  = sprintf("SELECT SUM(ps.dl_number) AS download_count, ps.package as name, ps.pid as package_id, p.category as category_id
+	                  FROM package_stats ps, packages p
 	                  WHERE p.package_type = 'pecl' AND p.id = ps.pid AND
 	                  p.category = %s GROUP BY ps.pid ORDER BY download_count DESC",
-                     $category_id
-                     );
-    $category_stats = $dbh->getAll($query, NULL, DB_FETCHMODE_ASSOC);
-    $stat_mode = 'category';
-/*
- * Global stats
- */
+        $category_id
+    );
+    $data['category_stats'] = $dbh->getAll($query, NULL, DB_FETCHMODE_ASSOC);
+    $data['stat_mode']      = 'category';
+    /*
+    * Global stats
+    */
 } else {
 
-	$total_packages    = number_format($dbh->getOne('SELECT COUNT(id) FROM packages WHERE package_type="pecl"'), 0, '.', ',');
-	$total_maintainers = number_format($dbh->getOne('SELECT COUNT(DISTINCT handle) FROM maintains'), 0, '.', ',');
-	$total_releases    = number_format($dbh->getOne('SELECT COUNT(*) FROM releases r, packages p
+    $data['total_packages']    = number_format($dbh->getOne('SELECT COUNT(id) FROM packages WHERE package_type="pecl"'), 0, '.', ',');
+    $data['total_maintainers'] = number_format($dbh->getOne('SELECT COUNT(DISTINCT handle) FROM maintains'), 0, '.', ',');
+    $data['total_releases']    = number_format($dbh->getOne('SELECT COUNT(*) FROM releases r, packages p
 	                   WHERE r.package = p.id AND p.package_type="pecl"'), 0, '.', ',');
-	$total_categories  = number_format($dbh->getOne('SELECT COUNT(*) FROM categories'), 0, '.', ',');
-    $total_downloads   = number_format($dbh->getOne('SELECT SUM(dl_number) FROM package_stats, packages p
+    $data['total_categories']  = number_format($dbh->getOne('SELECT COUNT(*) FROM categories'), 0, '.', ',');
+    $data['total_downloads']   = number_format($dbh->getOne('SELECT SUM(dl_number) FROM package_stats, packages p
                        WHERE package_stats.pid = p.id AND p.package_type="pecl"'), 0, '.', ',');
-	$query             = "SELECT sum(ps.dl_number) as download_count, ps.package as name, ps.pid as package_id
+    $query                     = "SELECT sum(ps.dl_number) as download_count, ps.package as name, ps.pid as package_id, p.category as category_id
 	                      FROM package_stats ps, packages p
 	                      WHERE p.id = ps.pid AND p.package_type = 'pecl'
 	                      GROUP BY ps.pid ORDER BY download_count DESC";
-    $category_stats = $dbh->getAll($query, NULL, DB_FETCHMODE_ASSOC);
-    $stat_mode = 'category';
+    $data['category_stats']    = $dbh->getAll($query, NULL, DB_FETCHMODE_ASSOC);
+    $data['stat_mode']         = 'category';
 }
 
-/**
- * This is the x axis labels. May change when
- * selectable dates is added.
- */
-$year   = date('Y') - 1;
-$month  = date('n') + 1;
-$x_axis = array();
-for ($i = 0; $i < 12; $i++) {
-    $time = mktime(0, 0, 0, $month + $i, 1, $year);
-    $x_axis[date('Y-m', $time)] = date('Y-m', $time);
-}
 
-$sql_in = "SELECT YEAR(yearmonth) AS dyear, MONTH(yearmonth) AS dmonth, SUM(downloads) AS downloads
+$data['has_stat'] = false;
+
+if ($data['stat_mode'] == 'package') {
+
+    /**
+     * This is the x axis labels. May change when
+     * selectable dates is added.
+     */
+    $year   = date('Y') - 1;
+    $month  = date('n') + 1;
+    $x_axis = array();
+    for ($i = 0; $i < 12; $i++) {
+        $time                       = mktime(0, 0, 0, $month + $i, 1, $year);
+        $x_axis[date('Y-m', $time)] = 0;
+    }
+
+    $sql_in = "SELECT YEAR(yearmonth) AS dyear, MONTH(yearmonth) AS dmonth, SUM(downloads) AS downloads
                     FROM aggregated_package_stats a, releases r
                     WHERE a.package_id = %d
                         AND r.id = a.release_id
@@ -96,124 +108,72 @@ $sql_in = "SELECT YEAR(yearmonth) AS dyear, MONTH(yearmonth) AS dmonth, SUM(down
                     GROUP BY dyear, dmonth
                     ORDER BY dyear DESC, dmonth DESC";
 
-$has_stat = false;
-
-if ($stat_mode == 'package') {
     $sql = sprintf($sql_in,
-                   $package_id,
-                   '');
+        $package_id,
+        empty($release_id) ? '' : 'AND r.id = ' . $release_id);
+
+    $chartData = array();
+    $chartData[] = array('Month', 'Downloads');
 
     if ($result = $dbh->query($sql)) {
-
-        foreach (array_keys($x_axis) as $key) {
-            $y_axis[$key] = 0;
-        }
-
         while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) {
             $key = $row['dyear'] . '-' . sprintf("%1$02d", $row['dmonth']);
-
-            if (isset($y_axis[$key])) {
-                $y_axis[$key] = $row['downloads'];
-            } else {
-                echo "key: $key not set\n";
-            }
+                if (isset($x_axis[$key])) {
+                    $x_axis[$key] = (float) $row['downloads'];
+                }
         }
     }
 
-    if (count($y_axis)) {
-        $has_stat = true;
-    }
+    foreach ($x_axis as $month => $download) $chartData[] = array($month, $download);
 
-    $package_info = package::info($package_id, null, false);
-    $package_name = $package_info['name'];
-    $package_release_count = count($package_info['releases']);
+    $data['has_stat'] = true;
+    $data['chartData'] = $chartData;
 
-    $query = 'SELECT s.release, SUM(s.dl_number) AS dl_number, MAX(s.last_dl) AS last_dl, MIN(r.releasedate) AS releasedate
-                FROM package_stats AS s 
+    $package_info                  = package::info($package_id, null, false);
+    $data['package_name']          = $package_info['name'];
+    $data['package_release_count'] = count($package_info['releases']);
+
+    $query = 'SELECT s.release, SUM(s.dl_number) AS dl_number, MAX(s.last_dl) AS last_dl, MIN(r.releasedate) AS releasedate, r.id as release_id
+                FROM package_stats AS s
                 LEFT JOIN releases AS r ON (s.rid = r.id)
-                WHERE pid = ' .$package_id;
+                WHERE pid = ' . $package_id;
     if ($release_id) {
         $query .= " AND rid = " . $release_id;
     }
     $query .= ' GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY r.releasedate DESC';
-    $release_statistic = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
+    $data['release_statistic'] = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
 
-    $query = "SELECT SUM(dl_number) FROM package_stats WHERE pid = " . $package_id;
-    $package_download_count =  number_format($dbh->getOne($query), 0, '.', ',');
+    $query                   = "SELECT SUM(dl_number) FROM package_stats WHERE pid = " . $package_id;
+    $data['total_downloads'] = number_format($dbh->getOne($query), 0, '.', ',');
 
-    $query = "SELECT id, version FROM releases WHERE package = '" . $package_id . "'";
+    $query        = "SELECT id, version FROM releases WHERE package = '" . $package_id . "'";
     $release_list = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
-    usort($release_list, function($a,$b) {return version_compare($b['version'],$a['version']);});
-
+    usort($release_list, function($a, $b) {
+        return version_compare($b['version'], $a['version']);
+    });
+    $data['release_list'] = $release_list;
 } else {
-    $y_axis = array();
-    foreach (array_keys($x_axis) as $key) {
-        $y_axis[$key] = 0;
-    }
     $category_download_count = 0;
-    foreach ($category_stats as $stat) {
+    foreach ($data['category_stats'] as $stat) {
         $category_download_count += $stat['download_count'];
     }
-    $category_package_count = count($category_stats);
-    $release_list = array();
+    $data['category_download_count'] = $category_download_count;
+    $data['category_package_count']  = count($data['category_stats']);
+    $data['release_list']            = array();
 }
 
-$template_dir = __DIR__ . '/../templates/';
-
-$category_list = category::listAll();
+$data['category_list'] = category::listAll();
 
 $query = "SELECT id, name FROM packages"
-         . (!empty($category_id) ? " WHERE category = '" . $category_id . "'" : '')
-         . " ORDER BY name";
+    . (!empty($category_id) ? " WHERE category = '" . $category_id . "'" : '')
+    . " ORDER BY name";
 
 $sth = $dbh->query($query);
 
 while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
     $package_list[$row['id']] = $row['name'];
 }
+$data['package_list'] = $package_list;
 
-
-$data_common = array(
-                'package_list' => $package_list,
-                'category_list' => $category_list,
-                'category_id' => $category_id,
-                'package_list' => $package_list,
-                'release_list' => $release_list,
-                'category_package_count' => $category_package_count,
-                'category_name' => $category_name,
-                'category_download_count' => $category_download_count,
-                'has_stat' => $has_stat,
-                'stat_mode' => $stat_mode,
-                'category_stats' => $category_stats,
-                'x_axis' => $x_axis,
-                'y_axis' => $y_axis,
-            );
-
-if ($stat_mode == 'package') {
-    $data_pkg = array(
-                'package_info' => $package_info,
-                'package_list' => $package_list,
-                'category_list' => $category_list,
-                'release' => $release,
-                'package_id'  => $package_id,
-                'release_list' => $release_list,
-                'release_id' => $release_id,
-                'package_name' => $package_name,
-                'package_release_count' => $package_release_count,
-                'package_download_count' => $package_download_count,
-                'release_statistic' => $release_statistic,
-            );
-    $data = array_merge($data_common, $data_pkg);
-} else {
-    $data = $data_common;
-}
-
-$page = new PeclPage();
-$page->title = 'Package Statistics';
-$page->setTemplate(PECL_TEMPLATE_DIR . '/package-stats.html');
-$page->addStyle('/css/packages.css');
-$page->addData($data);
-$page->jquery = true;
-$page->render();
-
-echo $page->html;
+$page = $twig->render('package-stats.html.twig', $data);
+echo $page;

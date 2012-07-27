@@ -1,7 +1,7 @@
 {% extends "layout.html.twig" %}
 {% block content %}
 <h1>Package search</h1>
-<form class="form-horizontal">
+<form class="form-horizontal" method='GET' action='/search'>
     <fieldset>
         <div class='row'>
             <div class="control-group span6">
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="tcenter">
-            <button type="submit" class="btn btn-primary btn-large">Search</button> <a class="btn" href="/package-search.php">Cancel</a>
+            <button type="submit" class="btn btn-primary btn-large">Search</button> <a class="btn" href="/search">Cancel</a>
         </div>
     </fieldset>
 </form>

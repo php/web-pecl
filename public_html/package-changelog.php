@@ -70,7 +70,7 @@ if (empty($pkg['name'])) {
 
 if (empty($release)) {
     $data = array_keys($pkg['releases']);
-    $release = $data[0];
+    $release = isset($data[0]) ? $data[0] : '';
 }
 
 $page = $twig->render('package-changelog.html.twig', array('package' => $pkg, 'release' => $release));

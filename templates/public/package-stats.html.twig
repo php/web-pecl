@@ -1,0 +1,111 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+<h1>Package Statistics</h1>
+<form id='frmStatistics' method='GET' action='/statistics'>
+    <div class='row'>
+        <div class='span4'>
+            <label for='cid'>Category</label>
+            <select id="cid" name="cid" data-placeholder="Select category..." class="chzn-select span4">
+                <option></option>
+                {% for category in category_list %}
+                <option value='{{ category.id }}' {% if search.cid|default('') == category.id %}selected='selected'{% endif %}>{{ category.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class='span4'>
+            {% if search.cid|default(false) and package_list|default(false) %}
+            <label for='pid'>Package</label>
+            <select id="pid" name="pid" data-placeholder="Select package..." class="chzn-select span4">
+                <option></option>
+                {% for id,name in package_list %}
+                <option value='{{ id }}' {% if search.pid|default('') == id %}selected='selected'{% endif %}>{{ name}}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+        </div>
+        <div class='span4'>
+            {% if search.cid|default(false) and search.pid|default(false) and releases|default(false) %}
+            <label for='rid'>Release</label>
+            <select id="rid" name="rid" data-placeholder="Select release..." class="chzn-select span4">
+                <option></option>
+                {% for release in releases %}
+                <option value='{{ release.id }}' {% if search.rid|default('') == release.id %}selected='selected'{% endif %}>{{ release.version}}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+        </div>
+    </div>
+</form>
+{% if not search.cid|default(false) %}
+<h3>Global Statistics</h3>
+{% elseif search.cid|default(false) and not search.pid %}
+<h3>Category Statistics for <a href='/packages/{{ category_name }}'>{{ category_name }}</a></h3>
+{% endif %}
+<div class='globalStats row tcenter'>
+    <ul>
+        {% if total_packages|default(false) %}<li><span class="label label-info">{{ total_packages }}</span> packages</li>{% endif %}
+        {% if total_maintainers|default(false) %}<li><span class="label label-info">{{ total_maintainers }}</span> maintainers</li>{% endif %}
+        {% if total_categories|default(false) %}<li><span class="label label-info">{{ total_categories }}</span> categories</li>{% endif %}
+        {% if total_releases|default(false) %}<li><span class="label label-info">{{ total_releases }}</span> releases</li>{% endif %}
+        {% if package_release_count|default(false) %}<li><span class="label label-info">{{ package_release_count }}</span> releases</li>{% endif %}
+        {% if total_downloads|default(false) %}<li><span class="label label-info">{{ total_downloads }}</span> downloads</li>{% endif %}
+    </ul>
+</div>
+{% if category_stats|default(false) %}
+<table class='table table-bordered table-striped table-condensed'>
+    <thead>
+    <tr>
+        <th class='span6'>Package name</th>
+        <th class='span6'># of downloads</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for stat in category_stats %}
+    <tr>
+        <td><a href='/package/{{ stat.name }}' title='package detail'>{{ stat.name }}</a></td>
+        <td><a href='/statistics?cid={{ stat.category_id }}&pid={{ stat.package_id }}' title='Statistics details'>{{ stat.download_count|number_format(0, '.', ',') }}</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% if release_statistic|default(false) %}
+<div id='chart'></div>
+<table class='table table-bordered table-striped table-condensed'>
+    <thead>
+    <tr>
+        <th class='span3'>Version</th>
+        <th class='span3'># of downloads</th>
+        <th class='span3'>Released</th>
+        <th class='span3'>Last download</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for stat in release_statistic %}
+    <tr>
+        <td><a href='/package/{{ package_name }}/{{ stat.release }}' title='package detail'>{{ stat.release }}</a></td>
+        <td><a href='/statistics?cid={{ search.cid }}&pid={{ search.pid }}&rid={{ stat.release_id}}' title='Statistics details'>{{ stat.dl_number|number_format(0, '.', ',') }}</a></td>
+        <td>{{ stat.releasedate }}</td>
+        <td>{{ stat.last_dl }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable({{ chartData|json_encode|raw }});
+
+        var options = {
+            title: '',
+            hAxis: {title: '', titleTextStyle: {color: 'blue'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+        chart.draw(data, options);
+    }
+</script>
+{% endif %}
+{% endblock %}

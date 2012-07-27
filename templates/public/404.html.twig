@@ -17,7 +17,7 @@
 </ul>
 {% if data.show_search_link|default(false) %}
 <p class='tcenter'>
-    <a href>'/package-search.php?pkg_name={{ basename|url_encode }}&amp;bool=AND&amp;submit=Search'>View full search results...</a>
+    <a href='/search?keywords={{ basename|url_encode }}&maintainer=&category=&date_type=on&date='>View full search results...</a>
 </p>
 {% endif %}
 {% endif %}

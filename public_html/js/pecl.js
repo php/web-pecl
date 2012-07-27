@@ -5,4 +5,10 @@ $(document).ready(function () {
     $('.datepicker').datepicker();
 
     $('.focus').focus();
+
+    if ($('#frmStatistics').length) {
+        $('.chzn-select').chosen().change(function() {
+            $('#frmStatistics').submit();
+        });
+    }
 });

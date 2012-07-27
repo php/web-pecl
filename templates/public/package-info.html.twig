@@ -54,7 +54,7 @@
             <ul>
                 <li><a href="/get/{{ package.name }}">Download Latest</a></li>
                 <li><a href="/package/changelog/{{ package.name }}">Changelog</a></li>
-                <li><a href="/package-stats.php?pid={{ package.packageid }}&rid=&cid={{ package.categoryid }}">View Statistics</a></li>
+                <li><a href="/statistics?pid={{ package.packageid }}&rid=&cid={{ package.categoryid }}">View Statistics</a></li>
                 <li><a href="{{ package.cvs_link }}" target="top">Browse Source</a></li>
                 <li><a href="/bugs/search.php?cmd=display&status=Open&package_name[]={{ package.name }}">Package Bugs</a></li>
                 <li><a href="http://php.net/{{ package.name }}">View Documentation</a></li>

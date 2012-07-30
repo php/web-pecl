@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Developers&#160;<small>({{ account_total }})</small></h1>
-<div class="pagination tcenter">
+<div class="pagination pagination-centered hidden-phone hidden-tablet">
     <ul>
         {% for item in existing_firstletters|default([]) %}
         {% if letter == item %}

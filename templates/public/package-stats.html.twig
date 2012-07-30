@@ -91,21 +91,26 @@
     {% endfor %}
     </tbody>
 </table>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable({{ chartData|json_encode|raw }});
-
-        var options = {
-            title: '',
-            hAxis: {title: '', titleTextStyle: {color: 'blue'}}
-        };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
-        chart.draw(data, options);
-    }
-</script>
 {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% if release_statistic|default(false) %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        $(document).ready(function () {
+            var data = google.visualization.arrayToDataTable({{ chartData|json_encode|raw }});
+
+            var options = {
+                title: '',
+                hAxis: {title: '', titleTextStyle: {color: 'blue'}}
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+            chart.draw(data, options);
+        });
+    </script>
+    {% endif %}
 {% endblock %}

@@ -1959,8 +1959,8 @@ class release
         } else {
             // Get a specific release
             $row = $dbh->getRow("SELECT id FROM releases ".
-                                "WHERE package = $package_id ".
-                                "AND version = '$version'",
+                                " WHERE package = " . $dbh->quoteSmart($package_id).
+                                " AND version = " . $dbh->quoteSmart($version),
                                 DB_FETCHMODE_ASSOC);
             if (PEAR::isError($row)) {
                 return $row;

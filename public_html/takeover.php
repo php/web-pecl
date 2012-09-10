@@ -50,18 +50,18 @@ the new lead maintainer for the package.</p>
 </li>
 <li>
 <p>
-If the sources of the package are kept in the PHP CVS repository,
+If the sources of the package are kept in the PHP git repository,
 you will also need an account for this. You can sign up for it
-on the <a href="http://www.php.net/cvs-php.php" target=
+on the <a href="http://www.php.net/git-php.php" target=
 "_top">PHP website</a>. Please mention in the purpose field of the
 request form that the PECL admins have told you to get an account, 
-so that your request can be processed faster. CVS accounts are
+so that your request can be processed faster. git accounts are
 managed by the PHP Group, so PECL unfortunately has only limited 
 influence on this proces</p>
 <div class="note">
 <blockquote class="note">
-<p><b>Note:</b> If you already have a CVS account for <tt class=
-"literal">cvs.php.net</tt>, it is only necessary for you to get
+<p><b>Note:</b> If you already have a git account for <tt class=
+"literal">git.php.net</tt>, it is only necessary for you to get
 additional <span class="QUOTE">"karma"</span> for the module where
 the package resides. You can request this karma by sending an email
 to the <a href="mailto:pecl-dev@lists.php.net" target="_top">PECL

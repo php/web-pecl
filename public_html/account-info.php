@@ -84,6 +84,7 @@ $query = "SELECT p.id, p.name, m.role
           FROM packages p, maintains m
           WHERE m.handle = '$handle'
           AND p.id = m.package
+          AND p.package_type = 'pecl'
           ORDER BY p.name";
 
 $sth = $dbh->query($query);

@@ -79,6 +79,7 @@ for ($i=0; $i<count($users); $i++) {
 * Is form submitted? Do search and show
 * results.
 */
+$numrows = 0;
 if (!empty($_GET)) {
     $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
     $where = array();

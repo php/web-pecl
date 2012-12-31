@@ -125,10 +125,6 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            if ($errors > 0) {
-                break;
-            }
-
             /* Now do the SVN stuff */
             if ($needsvn) {
                 $error = posttohost(

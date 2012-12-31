@@ -38,6 +38,7 @@ $fields  = array('handle',
                  'lastname',
                  'email',
                  'purpose',
+                 'sponsor',
                  'password',
                  'password2',
                  'email',
@@ -57,7 +58,9 @@ if (isset($_POST['submit'])) {
                               "firstname" => "your first name",
                               "lastname"  => "your last name",
                               "email"     => "your email address",
-                              "purpose"   => "the purpose of your PECL account");
+                              "purpose"   => "the purpose of your PECL account",
+                              "sponsor"   => "references to current users sponsoring your request",
+            );
 
             $name = $firstname . " " . $lastname;
 
@@ -90,6 +93,8 @@ if (isset($_POST['submit'])) {
             PEAR::setErrorHandling(PEAR_ERROR_RETURN);
 
             $handle = strtolower($handle);
+
+            $purpose .= "\n\nSponsor:\n" . $sponsor;
 
             $obj =& new PEAR_User($dbh, $handle);
 
@@ -340,6 +345,7 @@ if ($display_form) {
     $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", $showemail));
     $bb->horizHeadRow("Homepage", HTML_Form::returnText("homepage", $homepage));
     $bb->horizHeadRow("Purpose of your PECL account<br />(No account is needed for using PECL or PECL packages):", HTML_Form::returnTextarea("purpose", stripslashes($purpose)));
+    $bb->horizHeadRow("Sponsoring users<br />(Current php.net users who suggested you request an account and reviewed your extension/patch):", HTML_Form::returnTextarea("sponsor", stripslashes($sponsor)));
     $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes($moreinfo)));
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" />&nbsp;<input type=\"reset\" />");

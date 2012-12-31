@@ -304,15 +304,16 @@ do {
 		<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" name="mass_reject_form" method="post">
 		<input type="hidden" value="" name="cmd"/>
 		<?php
-        $bb = new BorderBox("Account Requests", "100%", "", 6, true);
-        $requests = $dbh->getAssoc("SELECT u.handle,u.name,n.note,u.userinfo FROM users u ".
+        $bb = new BorderBox("Account Requests", "100%", "", 7, true);
+        $requests = $dbh->getAssoc("SELECT u.handle,u.name,n.note,u.userinfo,u.created FROM users u ".
                                    "LEFT JOIN notes n ON n.uid = u.handle ".
-                                   "WHERE u.registered = 0");
+                                   "WHERE u.registered = 0 ".
+                                   "ORDER BY created ASC");
         if (is_array($requests) && sizeof($requests) > 0) {
-            $bb->headRow("<font face=\"Marlett\"><a href=\"#\" onclick=\"toggleSelectAll(this)\">6</a></font>", "Name", "Handle", "Account Purpose", "Status", "&nbsp;");
+            $bb->headRow("<font face=\"Marlett\"><a href=\"#\" onclick=\"toggleSelectAll(this)\">6</a></font>", "Name", "Handle", "Account Purpose", "Status", "Created at", "&nbsp;");
 
             foreach ($requests as $handle => $data) {
-                list($name, $note, $userinfo) = $data;
+                list($name, $note, $userinfo,$created_at) = $data;
 
 				// Grab userinfo/request purpose
 				if (@unserialize($userinfo)) {
@@ -331,6 +332,7 @@ do {
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $handle),
 							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $account_purpose),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', ($rejected ? "rejected" : "<font color=\"#c00000\"><strong>Outstanding</strong></font>")),
+                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $created_at),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', "<a onmousedown=\"event.cancelBubble = true\" href=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$handle\">" . make_image("edit.gif") . "</a>")
                               );
             }

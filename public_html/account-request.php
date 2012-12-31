@@ -107,10 +107,11 @@ if (isset($_POST['submit'])) {
             // hack to temporarily embed the "purpose" in
             // the user's "userinfo" column
             $userinfo = serialize(array($purpose, $moreinfo));
+            $created_at = gmdate('Y-m-d H:i');
             $sth = $dbh->prepare("INSERT INTO users 
-                    (handle, name, email, password, registered, showemail, homepage, userinfo, from_site, active)
-                    VALUES(?, ?, ?, ?, 0, ?, ?, ?, 'pecl', 0)");
-            $res = $dbh->execute($sth, array($handle, $name, $email, $md5pw, $showemail, $homepage, $userinfo));
+                    (handle, name, email, password, registered, showemail, homepage, userinfo, from_site, active, created)
+                    VALUES(?, ?, ?, ?, 0, ?, ?, ?, 'pecl', 0, ?)");
+            $res = $dbh->execute($sth, array($handle, $name, $email, $md5pw, $showemail, $homepage, $userinfo, $created_at));
 
             if (DB::isError($res)) {
                 //constraint violation, only email and handle(username) is unique

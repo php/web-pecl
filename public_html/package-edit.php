@@ -257,7 +257,6 @@ $form->displaySelect("new_package", $rows, htmlspecialchars($row['new_package'])
     <td>New Home Link (if moved out of pecl):</td>
     <td valign="middle">
     <?php $form->displayText("new_channel", htmlspecialchars($row['new_channel'], 30)); ?> 
-New Package Name:     <?php $form->displayText("new_package", htmlspecialchars($row['new_package'], 50)); ?>
     </td>    
 </tr>
 

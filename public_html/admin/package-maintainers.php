@@ -34,13 +34,13 @@ $self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 if (empty($id)) {
     auth_require(true);
 
-    $packages = package::listAll(false);
+    $packages = package::listAllNames();
     $values   = array();
 
-    foreach ($packages as $name => $package) {
-		if (isset($package['packageid'])) {
-            $values[$package['packageid']] = $name;
-		}
+    foreach ($packages as $package) {
+        if (isset($package['id'])) {
+            $values[$package['id']] = $package['name'];
+        }
     }
 
     $bb = new BorderBox("Select package");

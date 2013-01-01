@@ -128,7 +128,9 @@ if (empty($id)) {
         exit();
     }
 
-    $bb = new BorderBox("Manage maintainers", "100%");
+    $package = htmlentities($dbh->getOne('SELECT name FROM packages WHERE id=?', array($id)), ENT_QUOTES);
+
+    $bb = new BorderBox("Manage maintainers for $package", "100%");
 
     echo '<script src="/javascript/package-maintainers.js" type="text/javascript"></script>';
     echo '<form onSubmit="beforeSubmit()" name="form" method="get" action="' . $self . '">';

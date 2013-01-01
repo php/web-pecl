@@ -150,7 +150,7 @@ do {
         $bb->horizHeadRow("Realname:", htmlspecialchars($requser->name, ENT_QUOTES));
         $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . htmlspecialchars($requser->email, ENT_QUOTES) . "\">" .
 		  		htmlspecialchars($requser->email, ENT_QUOTES) . "</a>");
-        $bb->horizHeadRow("Purpose of account:", htmlspecialchars($purpose, ENT_QUOTES));
+        $bb->horizHeadRow("Purpose of account:", nl2br(htmlspecialchars($purpose, ENT_QUOTES)));
         $bb->horizHeadRow("More information:", htmlspecialchars($moreinfo, ENT_QUOTES));
         $bb->end();
 
@@ -330,7 +330,7 @@ do {
                 $bb->plainRow('<input type="checkbox" value="' . $handle . '" name="uid[]" onmousedown="highlightAccountRow(this)" onclick="return false"/>',
 							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $name),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $handle),
-							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $account_purpose),
+							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', nl2br($account_purpose)),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', ($rejected ? "rejected" : "<font color=\"#c00000\"><strong>Outstanding</strong></font>")),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $created_at),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', "<a onmousedown=\"event.cancelBubble = true\" href=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$handle\">" . make_image("edit.gif") . "</a>")

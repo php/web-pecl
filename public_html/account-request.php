@@ -196,7 +196,7 @@ if ($display_form) {
 
     response_header("Request Account");
 
-    $cs_link        = make_link('http://svn.php.net/viewvc/php/php-src/trunk/CODING_STANDARDS', 'PHP Coding Standards');
+    $cs_link        = make_link('http://git.php.net/?p=php-src.git;a=blob_plain;f=CODING_STANDARDS;hb=HEAD', 'PHP Coding Standards');
     $lic_link_pecl  = make_link('http://www.php.net/license/3_01.txt', 'PHP License 3.01');
     $lic_link_doc   = make_link('http://www.php.net/manual/en/cc.license.php', 'Creative Commons Attribution License');
     $doc_howto_pecl = make_link('http://wiki.php.net/doc/howto/pecldocs', 'PECL Docs Howto');

@@ -132,7 +132,7 @@ Eris Free Net</a>.
     <li><a href="http://git.php.net/?p=php-src.git;a=blob_plain;f=CODING_STANDARDS;hb=HEAD">PECL/PHP Coding Standards</a></li>
     <li><a href="https://wiki.php.net/internals/review_comments">Common issues in the proposed pecl packages</a></li>
     <li><a href="http://php.net/internals2">PHP Internals Documentation</a></li>
-    <li><a href="http://talks.somabo.de/200903_montreal_php_extension_writing.pdf">PHP Extension Writing, PHP Quebec 2009, Wed, 4th March 2009, Montreal, Canada</a> by Marcus B&ouml;rger</li>
+    <li><a href="https://wiki.php.net/internals/references">A list of externals references about maintaining and extending PHP</li>
     <li><a href="http://git.php.net/?p=php-src.git;a=blob_plain;f=README.PARAMETER_PARSING_API;hb=HEAD">Parameter Parsing API</a></li>
     <li><a href="http://wiki.php.net/internals/engine">Different information about PHP internals not yet added to the documentation</a></li>
     <li><a href="http://wiki.php.net/internals/windows">Windows specific instructions</a></li>

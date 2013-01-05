@@ -373,16 +373,8 @@ if ($sth->numRows() == 0) {
                 // Print link if it's a PEAR package and it's in the db
                 if ($row['type'] == 'pkg') {
                     $pkg = $dbh->getRow(sprintf("SELECT id, package_type FROM packages WHERE name = '%s'", $row['name']));
-                    if ($pkg['package_type'] == 'pecl') {
-                        $row['type'] = 'pkg_pecl';
-                        $row['name'] = sprintf('<a href="/package/%s">%s</a>', $row['name'], $row['name']);
-                    } else {
-                        if ($row['name'] == 'PEAR Installer') {
-                            $row['name'] = '<a href="http://pear.php.net/package/PEAR">PEAR Installer</a>';
-                        } else {
-                            $row['name'] = sprintf('<a href="http://pear.php.net/package/%s">%s</a>', $row['name'], $row['name']);
-                        }
-                    }
+                    $row['type'] = 'pkg_pecl';
+                    $row['name'] = sprintf('<a href="/package/%s">%s</a>', $row['name'], $row['name']);
                 }
 
                 if (isset($rel_trans[$row['relation']])) {

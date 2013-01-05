@@ -102,10 +102,10 @@ if (isset($_POST['submit'])) {
     }
 
     if ($message == '') {
-        $text = "[This message has been brought to you via pear.php.net.]\n\n";
+        $text = "[This message has been brought to you via pecl.php.net.]\n\n";
         $text .= wordwrap($_POST['text'], 72);
 
-        if (@mail($row['email'], $_POST['subject'], $text, 'From: "' . $_POST['name'] . '" <' . $_POST['email'] . '>', '-f bounces-ignored@php.net')) {
+        if (@mail($row['email'], $_POST['subject'], $text, 'From: "' . $_POST['name'] . '" <' . $_POST['email'] . '>', '-f noreply@php.net')) {
             echo '<p>Your message has been sent successfully.</p>';
         } else {
             PEAR::raiseError('An error occured while sending the message!');
@@ -116,7 +116,7 @@ if (isset($_POST['submit'])) {
         printForm($_POST);
     }
 } else {
-    echo '<p>If you want to get in contact with one of the PEAR contributors,'
+    echo '<p>If you want to get in contact with one of the PECL contributors,'
         . ' you can do this by filling out the following form.</p>';
 
     /** Guess the user if he is logged in */

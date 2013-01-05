@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
 
     $query = 'UPDATE packages SET name = ?, license = ?,
               summary = ?, description = ?, category = ?,
-              homepage = ?, package_type = ?, cvs_link = ?,
+              homepage = ?, cvs_link = ?,
               doc_link = ?, bug_link = ?, unmaintained = ?,
               newpackagename = ?, newchannel = ?
               WHERE id = ?';
@@ -103,7 +103,6 @@ if (isset($_POST['submit'])) {
                   $_POST['description'],
                   $_POST['category'],
                   $_POST['homepage'],
-                  $_POST['type'],
                   $_POST['cvs_link'],
                   $_POST['doc_link'],
                   $_POST['bug_link'],
@@ -160,12 +159,6 @@ $bb = new Borderbox("Edit package information");
     <td>Package name:</td>
     <td valign="middle">
     <?php $form->displayText("name", $row['name'], 30); ?>
-    </td>
-</tr>
-<tr>
-    <td>Package type:</td>
-    <td valign="middle">
-    <?php $form->displaySelect("type", array("pear" => "PEAR", "pecl" => "PECL"), $row['type'], 1); ?>
     </td>
 </tr>
 <tr>

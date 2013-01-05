@@ -117,7 +117,7 @@ Similarly, use unsubscribe instead of subscribe to do the exact opposite.
 
 <p>
 If you have questions concerning this website, you can contact
-<a href="mailto:peclweb@php.net">peclweb@php.net</a>.
+<a href="mailto:php-webmaster@lists.php.net">php-webmaster@lists.php.net</a>.
 </p>
 
 <p>

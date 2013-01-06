@@ -57,7 +57,7 @@ and may not be copied or imitated in whole or in part.</li>
 </ul>
 
 <p>
-You can contact the webmaster at <?php print_link('mailto:pear-webmaster@php.net', 'pear-webmaster@php.net'); ?>.
+You can contact the webmaster at <?php print_link('mailto:php-webmaster@lists.php.net', 'php-webmaster@lists.php.net'); ?>.
 </p>
 
 <p>

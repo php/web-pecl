@@ -46,7 +46,7 @@ feeds available for your viewing pleasure:</p>
 </ul>
 
 <p>If you have questions or suggestions about the RSS service, please
-contact the <?php echo make_mailto_link("pear-webmaster@php.net", "webmasters"); ?>.</p>
+contact the <?php echo make_mailto_link("php-webmaster@lists.php.net", "webmasters"); ?>.</p>
 
 <?php
 response_footer();

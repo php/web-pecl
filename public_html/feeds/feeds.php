@@ -33,8 +33,8 @@ function rss_create($items, $channel_title, $channel_description, $dest_file=fal
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel rdf:about="http://pecl.php.net/">
     <link>http://pecl.php.net/</link>
-    <dc:creator>pear-webmaster@lists.php.net</dc:creator>
-    <dc:publisher>pear-webmaster@lists.php.net</dc:publisher>
+    <dc:creator>php-webmaster@lists.php.net</dc:creator>
+    <dc:publisher>php-webmaster@lists.php.net</dc:publisher>
     <dc:language>en-us</dc:language>
 EOT;
 

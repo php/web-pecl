@@ -25,7 +25,7 @@ response_header("About this site");
 <p>This site has been created and is maintained by a number of people,
 which are listed on the <?php echo make_link("/credits.php", "credits page"); ?>.
 If you would like to contact them, you can write to
-<?php echo make_mailto_link("pear-webmaster@php.net"); ?>.</p>
+<?php echo make_mailto_link("php-webmaster@lists.php.net"); ?>.</p>
 
 <p>It has been built with <?php echo make_link("http://httpd.apache.org/", "Apache"); ?>,
 <?php echo make_link("http://php.net/", "PHP"); ?>,

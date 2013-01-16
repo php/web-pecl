@@ -146,7 +146,7 @@ if (isset($_POST['submit'])) {
                 );
 
                 if ($error) {
-                    display_error("Problem submitting the SVN account request: $error");
+                    display_error("Problem submitting the php.net account request: $error");
                     break;
                 }
             }
@@ -158,7 +158,7 @@ if (isset($_POST['submit'])) {
                    "Real Name:        {$name}\n".
                    "Email:            {$email}".
                    (@$showemail ? " (show address)" : " (hide address)") . "\n".
-                   "Need SVN Account: " . (@$needsvn ? "yes" : "no") . "\n".
+                   "Need php.net Account: " . (@$needsvn ? "yes" : "no") . "\n".
                    "Purpose:\n".
                    "$purpose\n\n".
                    "To handle: http://" . PEAR_CHANNELNAME . "/admin/?acreq={$handle}\n";
@@ -261,7 +261,7 @@ if ($display_form) {
 </p>
 <ul>
  <li>
-  If approved, you will also need to <a href='http://php.net/svn-php.php'>apply for a php.net SVN account</a>
+  If approved, you will also need to <a href='http://php.net/svn-php.php'>apply for a php.net php.net account</a>
   in order to commit the code to the php.net SVN repository. Select 'PECL Group' within that form when applying.
  </li>
 </ul>
@@ -339,7 +339,7 @@ if ($display_form) {
     $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", $firstname));
     $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", $lastname));
     $bb->horizHeadRow("Password:", HTML_Form::returnPassword("password", null, 10) . "   Again: " . HTML_Form::returnPassword("password2", null, 10));
-    $bb->horizHeadRow("Need a SVN account?", HTML_Form::returnCheckbox("needsvn", $needsvn));
+    $bb->horizHeadRow("Need a php.net account?", HTML_Form::returnCheckbox("needsvn", $needsvn));
 
     $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", $email));
     $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", $showemail));

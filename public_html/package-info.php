@@ -370,19 +370,32 @@ if ($sth->numRows() == 0) {
 
         if (count($deps) > 0) {
             foreach ($deps as $row) {
-                // Print link if it's a PEAR package and it's in the db
-                if ($row['type'] == 'pkg') {
-                    $pkg = $dbh->getRow(sprintf("SELECT id, package_type FROM packages WHERE name = '%s'", $row['name']));
+                // we have PEAR installer deps both with the name of PEAR Installer and PEAR, make it consistent here until it is fixed in the db
+                if ($row['name'] == 'PEAR Installer') {
+                    $row['name'] = 'PEAR';
+                }
+
+                // fix up wrong dep types here, until it is fixed in the db, we only have the pecl packages in the db now
+                if ($row['type'] == 'pkg' && $dbh->getRow(sprintf("SELECT id, package_type FROM packages WHERE name = '%s'", $row['name'])) {
                     $row['type'] = 'pkg_pecl';
-                    $row['name'] = sprintf('<a href="/package/%s">%s</a>', $row['name'], $row['name']);
+                }
+
+                if ($row['type'] == 'pkg_pecl') {
+                    $dep_name_html = sprintf('<a href="/package/%s">%s</a>', $row['name'], $row['name']);
+                }
+                elseif ($row['type'] == 'pkg') {
+                    $dep_name_html = sprintf('<a href="http://pear.php.net/package/%s">%s</a>', $row['name'], $row['name']);
+                }
+                else {
+                    $dep_name_html = $row['name'];
                 }
 
                 if (isset($rel_trans[$row['relation']])) {
                     $rel = sprintf($rel_trans[$row['relation']], $row['version']);
                     $dep_text .= sprintf("%s: %s %s",
-                                          $dep_type_desc[$row['type']], $row['name'], $rel);
+                                          $dep_type_desc[$row['type']], $dep_name_html, $rel);
                 } else {
-                    $dep_text .= sprintf("%s: %s", $dep_type_desc[$row['type']], $row['name']);
+                    $dep_text .= sprintf("%s: %s", $dep_type_desc[$row['type']], $dep_name_html);
                 }
                 $dep_text .= "<br />";
             }

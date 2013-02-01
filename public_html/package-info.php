@@ -376,7 +376,7 @@ if ($sth->numRows() == 0) {
                 }
 
                 // fix up wrong dep types here, until it is fixed in the db, we only have the pecl packages in the db now
-                if ($row['type'] == 'pkg' && $dbh->getRow(sprintf("SELECT id, package_type FROM packages WHERE name = '%s'", $row['name'])) {
+                if ($row['type'] == 'pkg' && $dbh->getRow(sprintf("SELECT id, package_type FROM packages WHERE name = '%s'", $row['name']))) {
                     $row['type'] = 'pkg_pecl';
                 }
 

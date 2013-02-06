@@ -195,8 +195,8 @@ if (!empty($auth_user)) {
     $bb->fullRow("<div align=\"right\">" .
                  make_link("/package-edit.php?id=$pacid",
                            make_image("edit.gif", "Edit package information")) .
-                 "&nbsp;" . make_link("/package-delete.php?id=$pacid",
-                                      make_image("delete.gif", "Delete package")) .
+                 (user::isAdmin($auth_user->handle)?"&nbsp;" . make_link("/package-delete.php?id=$pacid",
+                                      make_image("delete.gif", "Delete package")):"") .
                  "&nbsp;[" . make_link("/admin/package-maintainers.php?pid=$pacid",
                                        "Edit maintainers") .
                  "]</div>");

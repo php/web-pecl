@@ -22,7 +22,7 @@
  * Interface to delete a package.
  */
 
-auth_require();
+auth_require(true);
 
 response_header('Delete Package');
 echo '<h1>Delete Package</h1>';

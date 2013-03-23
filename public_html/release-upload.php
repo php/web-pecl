@@ -320,8 +320,14 @@ if ($display_verification) {
         case 'extsrc' :
             $type = 'Extension Source package';
         break;
+        case 'zendextsrc' :
+            $type = 'Zend Extension Source package';
+        break;
         case 'extbin' :
             $type = 'Extension Binary package';
+        break;
+        case 'zendextbin' :
+            $type = 'Zend Extension Binary package';
         break;
         case 'php' :
             $type = 'PHP package';

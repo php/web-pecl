@@ -133,7 +133,7 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
         print 'Logged in as ' . strtoupper($auth_user->handle) . ' (';
         print '<a class="menuWhite" href="/user/' . $auth_user->handle . '">Info</a> | ';
         print '<a class="menuWhite" href="/account-edit.php?handle=' . $auth_user->handle . '">Profile</a> | ';
-        print '<a class="menuWhite" href="/bugs/search.php?handle=' . $auth_user->handle . '&amp;cmd=display">Bugs</a>';
+        print '<a class="menuWhite" href="https://bugs.php.net/search.php?cmd=display&amp;status=Open&amp;assign=' . $auth_user->handle . '">Bugs</a>';
         print ")</small><br />\n";
         print_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
     }

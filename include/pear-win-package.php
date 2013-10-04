@@ -99,8 +99,8 @@ class package_dll
 				if (!isset($ret[$branch][$set["arch"]])) {
 					$ret[$branch][$set["arch"]] = array();
 				}
-				$ret[$branch][$set["arch"]][] = $pref . "-nts-" . $suf;
-				$ret[$branch][$set["arch"]][] = $pref . "-ts-" . $suf;
+				$ret[$branch][$set["arch"]][] = strtolower($pref . "-nts-" . $suf);
+				$ret[$branch][$set["arch"]][] = strtolower($pref . "-ts-" . $suf);
 			}
 		}
 
@@ -150,7 +150,7 @@ class package_dll
 				$branch_ok = true;
 
 				foreach ($zips as $zip) {
-					$branch_ok = $branch_ok && strpos(strtolower($r), strtolower($zip));
+					$branch_ok = $branch_ok && strpos(strtolower($r), $zip);
 				}
 
 				if ($branch_ok) {

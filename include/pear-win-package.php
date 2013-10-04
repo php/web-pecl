@@ -186,8 +186,11 @@ class package_dll
 		    /* Between the package release and DLL build can be the gap of
 			   30 minutes (in the best case). Lets give it 2h so we don't
 			   cache empty result too early. */
-			$dt = new DateTime($date);
-		    return time() >= $dt->getTimestamp()+self::$build_gap;
+
+			$dt = date_parse($date);
+			$rel_ts = mktime($dt['hour'], $dt['minute'], $dt['second'], $dt['month'], $dt['day'], $dt['year']);
+
+		    return time() >= $rel_ts+self::$build_gap;
 	}
 }
 

@@ -30,6 +30,7 @@ class package_dll
 {
 	protected static $cache_db = PECL_DLL_URL_CACHE_DB;
 
+	/* NOTE when edit here, don't forget to remove the cache file */
 	protected static $zip_name_parts = array (
 		'5.5' => array(
 			array('crt' => 'vc11', 'arch' => 'x86'),

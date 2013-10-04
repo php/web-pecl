@@ -28,6 +28,8 @@ define("PECL_DLL_URL_CACHE_DB", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_ur
  */
 class package_dll
 {
+	protected static $build_gap = 7200;
+
 	protected static $cache_db = PECL_DLL_URL_CACHE_DB;
 
 	/* NOTE when edit here, don't forget to remove the cache file */
@@ -107,12 +109,16 @@ class package_dll
 		return $ret;
 	}
 
-	public static function getDllDownloadUrls($name, $version, $cache = true)
+	public static function getDllDownloadUrls($name, $version, $date, $cache = true)
 	{
 		$host = 'windows.php.net';
 		$port = 80;
 		$uri = "/downloads/pecl/releases/" . strtolower($name) . "/" . $version;
 		$ret = array();
+
+		if (!self::buildGapOver($date)) {
+			return NULL;
+		}
 
 		if ($cache) {
 			$ret = self::dllDownloadUrlExistsCached($name, $version);
@@ -173,6 +179,14 @@ class package_dll
 		}
 		
 		return $ret;
+	}
+
+	public static function buildGapOver($date)
+	{
+		    /* Between the package release and DLL build can be the gap of
+			   30 minutes (in the best case). Lets give it 2h so we don't
+			   cache empty result too early. */
+		    return time() >= (new DateTime($date))->getTimestamp()+self::$build_gap;
 	}
 }
 

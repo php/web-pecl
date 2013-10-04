@@ -212,7 +212,7 @@ echo '<div>&nbsp;</div>';
 if ($version) {
 	$bb = new BorderBox("DLL List", "90%", "", 2, true);
 
-	$urls = package_dll::getDllDownloadUrls($pkg['name'], $version);
+	$urls = package_dll::getDllDownloadUrls($pkg['name'], $version, $pkg['releases'][$version]['releasedate']);
 	if (!$urls) {
 		$bb->fullRow("No DLL available");
 	} else {
@@ -310,7 +310,7 @@ if (!$relid) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
                                    "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")";
 
-				$urls = package_dll::getDllDownloadUrls($pkg['name'], $r_version);
+				$urls = package_dll::getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
 				if ($urls) {
 					$downloads_html .= "&nbsp;&nbsp;<a href=\"/package/$pkg[name]/$r_version/windows\">"
 									. "<img src=\"/gifs/windows-icon.png\" />DLL</a>"; 

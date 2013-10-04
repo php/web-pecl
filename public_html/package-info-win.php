@@ -219,7 +219,8 @@ if ($version) {
 		foreach ($urls as $desc => $set) {
 			$links = array();
 			foreach ($set as $url) {
-				$links[] = "<a href=\"$url\">" . basename($url) . "</a>";
+				$link_txt = package_dll::makeNiceLinkNameFromZipName(basename($url));
+				$links[] = "<a href=\"$url\">$link_txt</a>";
 			}
 			$bb->horizHeadRow("PHP $desc", implode("<br/>", $links));
 		}

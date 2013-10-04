@@ -192,5 +192,24 @@ class package_dll
 
 		    return time() >= $rel_ts+self::$build_gap;
 	}
+
+	public static function makeNiceLinkNameFromZipName($zip_name)
+	{
+		/* name looks like php_taint-1.1.0-5.4-nts-vc9-x86.zip*/
+		if (!preg_match(",php_([^-]+)-([a-z0-9\.]+)-([0-9\.]+)-(ts|nts)-(vc\d+)-(x86|x64)\.zip,", $zip_name, $part)) {
+			return $zip_name;
+		}
+
+		$name = $part[1];
+		$version = $part[2];
+		$branch = $part[3];
+		$zts = $part[4];
+		$crt = $part[5];
+		$arch = $part[6];
+
+		$zts_str = 'ts' == $zts ? "Thread Safe" : "Non Thread Safe";
+
+		return "$branch $zts_str (" . strtoupper($zts) . ") $arch";
+	}
 }
 

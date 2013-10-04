@@ -150,7 +150,7 @@ class package_dll
 				$branch_ok = true;
 
 				foreach ($zips as $zip) {
-					$branch_ok = $branch_ok && strpos($r, $zip);
+					$branch_ok = $branch_ok && strpos(strtolower($r), strtolower($zip));
 				}
 
 				if ($branch_ok) {

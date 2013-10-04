@@ -59,6 +59,7 @@ include_once "DB/storage.php";
 include_once "pear-auth.php";
 include_once "pear-database.php";
 include_once "pear-rest.php";
+include_once "pear-win-package.php";
 
 function get($name)
 {

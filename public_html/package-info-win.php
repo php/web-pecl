@@ -205,6 +205,30 @@ if (!empty($auth_user)) {
 $bb->end();
 
 // }}}
+
+
+// {{{ DLL List
+echo '<div>&nbsp;</div>';
+if ($version) {
+	$bb = new BorderBox("DLL List", "90%", "", 2, true);
+
+	$urls = package_dll::getDllDownloadUrls($pkg['name'], $version);
+	if (!$urls) {
+		$bb->fullRow("No DLL available");
+	} else {
+		foreach ($urls as $desc => $set) {
+			$links = array();
+			foreach ($set as $url) {
+				$links[] = "<a href=\"$url\">" . basename($url) . "</a>";
+			}
+			$bb->horizHeadRow("PHP $desc", implode("<br/>", $links));
+		}
+	}
+
+	$bb->end();
+}
+// }}}
+
 // {{{ latest/cvs/changelog links
 
 ?>

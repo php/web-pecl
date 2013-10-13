@@ -89,8 +89,27 @@ do {
 		$errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
 		break; 
 	}
-        $display_form = false;
-        $display_verification = true;
+
+	$license_found = false;
+	foreach ($info->getFileList() as $file_name => $file_data) {
+		if ("doc" != $file_data["role"]) {
+			continue;
+		}
+
+		/* Don't compare with basename($file_data["name"]), the license has 
+		 	to be in the package root. */
+		if (in_array($file_data["name"], array("LICENSE", "COPYING"))) {
+			$license_found = true;
+			break;
+		}
+	}
+	if (!$license_found) {
+		$errors[] = "No LICENSE or COPYING file was found in the root of the package. ";
+		break;
+	}
+
+	$display_form = false;
+	$display_verification = true;
 
     } elseif (isset($_POST['verify'])) {
         // Verify Button

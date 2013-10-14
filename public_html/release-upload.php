@@ -108,6 +108,57 @@ do {
 		break;
 	}
 
+	$pkg_version_ok = false;
+	$pkg_version_macros_found = false;
+	$pkg_xml_ext_version = $info->getVersion();
+	$pkg_name = $info->getName();
+	$pkg_extname = $info->getProvidesExtension();
+	foreach ($info->getFileList() as $file_name => $file_data) {
+		/* The file we're looking for is usually named like php_myextname.h,
+		 	but lets check any .h file in the pkg root. */
+		if ("src" != $file_data["role"] ||
+			false !== strstr($file_data["name"], "/") ||
+			".h" != substr($file_data["name"], -2)) {
+			continue;
+		}
+
+		$file_contents = $info->getFileContents($file_data["name"]);
+
+		$pat = ',define\s+PHP_(' . $pkg_name . '|' . $pkg_extname . ')_VERSION\s+"(.*)",i';
+		if (preg_match($pat, $file_contents, $m)) {
+			$pkg_version_macros_found = true;
+			$pkg_found_ext_name = $m[1];
+			$pkg_found_ext_version = $m[2];
+		} else {
+			unset($file_contents);
+			continue;
+		}
+
+		if ($pkg_xml_ext_version == $pkg_found_ext_version) {
+			$pkg_version_ok = true;
+			break;
+		}
+	}
+
+	if (!$pkg_version_ok) {
+		$name_to_show = $pkg_version_macros_found ? $pkg_found_ext_name : "MYEXTNAME";
+
+		if ($pkg_version_macros_found) {
+			$errors[] = "Extension version mismatch between the package.xml ($pkg_xml_ext_version) "
+				. "and the source code ($pkg_found_ext_version). ";
+		} else {
+			$errors[] = "The compliance between the package version in package.xml and extension source code "
+				. "couldn't be reliably determined. This check fixes the (unintended) "
+				. "version mismatch in phpinfo() and the PECL website. ";
+			$errors[] = "To pass please "
+				. "#define PHP_" . strtoupper($name_to_show) . "_VERSION \"$pkg_xml_ext_version\" " 
+				. "in your php_" . strtolower($name_to_show) . ".h or any other header file "
+				. "and use it for zend_module_entry definition. ";
+		}
+		$errors[] = "Both version strings have to match. ";
+		break;
+	}
+
 	$display_form = false;
 	$display_verification = true;
 

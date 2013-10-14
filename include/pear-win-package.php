@@ -100,7 +100,7 @@ class package_dll
 						continue;
 					}
 
-					if (array_key_exists($version, $data)) {
+					if (is_array($data) && array_key_exists($version, $data)) {
 						//echo "deliver cached\n";
 						$ret = $data[$version];
 						$cached_found = true;

@@ -57,6 +57,7 @@ class package_dll
 	{
 		$db = array();
 		$ret = NULL;
+		$cached_found = false;
 		$do_cache = false;
 
 		if (!self::buildGapOver($date)) {
@@ -99,8 +100,10 @@ class package_dll
 						continue;
 					}
 
-					if (isset($data[$version])) {
+					if (array_key_exists($version, $data)) {
+						//echo "deliver cached\n";
 						$ret = $data[$version];
+						$cached_found = true;
 						break;
 					}
 				}
@@ -108,7 +111,7 @@ class package_dll
 		} while (0);
 
 		/* not cached yet */
-		if (!$ret) {
+		if (!$ret && !$cached_found) {
 			//echo "fetching\n";
 			$do_cache = true;
 			$ret = self::fetchDllDownloadUrls($name, $version);

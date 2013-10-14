@@ -67,45 +67,46 @@ class package_dll
 			the live results then and don't cache. */
 		$cache = $cache && !file_exists(self::$cache_reset_lock);
 
-		if ($cache) {
-			if (self::isResetOverdue()) {
-				clearstatcache();
-				if (file_exists(self::$cache_reset_lock)) {
-					/* Reset is started by some other process in that small time gap.
-						That's still not full atomic, but reduces the risks significantly.  */
-					/* yeah, go to ... */
-					$cache = false;
-					goto nocache;
+		do {
+			if ($cache) {
+				if (self::isResetOverdue()) {
+					clearstatcache();
+					if (file_exists(self::$cache_reset_lock)) {
+						/* Reset is started by some other process in that small time gap.
+							That's still not full atomic, but reduces the risks significantly.  */
+						/* yeah, go to ... */
+						$cache = false;
+						break;
+					}
+
+					touch(self::$cache_reset_lock);
+
+					if (!file_exists(self::$last_reset_file)) {
+						touch(self::$last_reset_file);
+					}
+					file_put_contents(self::$last_reset_file, time(), LOCK_EX);
+					file_put_contents(self::$cache_db, serialize(array()), LOCK_EX);
+
+					unlink(self::$cache_reset_lock);
 				}
 
-				touch(self::$cache_reset_lock);
-
-				if (!file_exists(self::$last_reset_file)) {
-					touch(self::$last_reset_file);
+				if (file_exists(self::$cache_db)) {
+					$db = (array)unserialize(file_get_contents(self::$cache_db));
 				}
-				file_put_contents(self::$last_reset_file, time(), LOCK_EX);
-				file_put_contents(self::$cache_db, serialize(array()), LOCK_EX);
 
-				unlink(self::$cache_reset_lock);
+				foreach($db as $ext => $data) {
+					if ($ext != $name) {
+						continue;
+					}
+
+					if (isset($data[$version])) {
+						$ret = $data[$version];
+						break;
+					}
+				}
 			}
+		} while (0);
 
-			if (file_exists(self::$cache_db)) {
-				$db = (array)unserialize(file_get_contents(self::$cache_db));
-			}
-
-			foreach($db as $ext => $data) {
-				if ($ext != $name) {
-					continue;
-				}
-
-				if (isset($data[$version])) {
-					$ret = $data[$version];
-					break;
-				}
-			}
-		}
-
-nocache:
 		/* not cached yet */
 		if (!$ret) {
 			//echo "fetching\n";

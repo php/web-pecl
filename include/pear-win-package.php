@@ -19,6 +19,8 @@
 */
 
 define("PECL_DLL_URL_CACHE_DB", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_url.cache");
+define("PECL_DLL_URL_CACHE_LAST_RESET", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_last_reset");
+define("PECL_DLL_URL_CACHE_DB_RESET_LOCK", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_url_cache_reset.lock");
 
 /**
  * Class to handle package DLL builds
@@ -28,9 +30,14 @@ define("PECL_DLL_URL_CACHE_DB", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_ur
  */
 class package_dll
 {
-	protected static $build_gap = 7200;
+	protected static $build_gap = 10800; /* 3 hours */
+
+	protected static $reset_period = 259200; /* 3 days */
 
 	protected static $cache_db = PECL_DLL_URL_CACHE_DB;
+
+	protected static $last_reset_file = PECL_DLL_URL_CACHE_LAST_RESET;
+	protected static $cache_reset_lock = PECL_DLL_URL_CACHE_DB_RESET_LOCK;
 
 	/* NOTE when edit here, don't forget to remove the cache file */
 	protected static $zip_name_parts = array (
@@ -46,26 +53,72 @@ class package_dll
 		),
 	);
 
-	public static function dllDownloadUrlExistsCached($name, $version)
+	public static function getDllDownloadUrls($name, $version, $date, $cache = true)
 	{
-		if (!file_exists(self::$cache_db)) {
+		$db = array();
+		$ret = NULL;
+		$do_cache = false;
+
+		if (!self::buildGapOver($date)) {
 			return NULL;
 		}
 
-		$db = (array)unserialize(file_get_contents(self::$cache_db));
+		/* If cache reset lock exists, some reset is running right now. Deliver
+			the live results then and don't cache. */
+		$cache = $cache && !file_exists(self::$cache_reset_lock);
 
-		foreach($db as $ext => $data) {
-			if ($ext != $name) {
-				continue;
+		if ($cache) {
+			if (self::isResetOverdue()) {
+				clearstatcache();
+				if (file_exists(self::$cache_reset_lock)) {
+					/* Reset is started by some other process in that small time gap.
+						That's still not full atomic, but reduces the risks significantly.  */
+					/* yeah, go to ... */
+					$cache = false;
+					goto nocache;
+				}
+
+				touch(self::$cache_reset_lock);
+
+				if (!file_exists(self::$last_reset_file)) {
+					touch(self::$last_reset_file);
+				}
+				file_put_contents(self::$last_reset_file, time(), LOCK_EX);
+				file_put_contents(self::$cache_db, serialize(array()), LOCK_EX);
+
+				unlink(self::$cache_reset_lock);
 			}
 
-			if (isset($data[$version])) {
-				return $data[$version];
+			if (file_exists(self::$cache_db)) {
+				$db = (array)unserialize(file_get_contents(self::$cache_db));
+			}
+
+			foreach($db as $ext => $data) {
+				if ($ext != $name) {
+					continue;
+				}
+
+				if (isset($data[$version])) {
+					$ret = $data[$version];
+					break;
+				}
 			}
 		}
 
-		/* We're here means no cache yet */
-		return NULL;
+nocache:
+		/* not cached yet */
+		if (!$ret) {
+			//echo "fetching\n";
+			$do_cache = true;
+			$ret = self::fetchDllDownloadUrls($name, $version);
+		}
+
+		if ($cache && $do_cache) {
+			//echo "caching\n";
+			self::cacheDllDownloadInfo($name, $version, $ret);
+		}
+		
+		return $ret;
 	}
 
 	public static function cacheDllDownloadInfo($name, $version, $data)
@@ -81,6 +134,7 @@ class package_dll
 		}
 		
 		$db[$name][$version] = $data;
+		//$db[0][0] = md5(uniqid());
 
 		return false !== file_put_contents(self::$cache_db, serialize($db), LOCK_EX);
 	}
@@ -109,23 +163,12 @@ class package_dll
 		return $ret;
 	}
 
-	public static function getDllDownloadUrls($name, $version, $date, $cache = true)
+	public static function fetchDllDownloadUrls($name, $version)
 	{
 		$host = 'windows.php.net';
 		$port = 80;
 		$uri = "/downloads/pecl/releases/" . strtolower($name) . "/" . $version;
 		$ret = array();
-
-		if (!self::buildGapOver($date)) {
-			return NULL;
-		}
-
-		if ($cache) {
-			$ret = self::dllDownloadUrlExistsCached($name, $version);
-			if ($ret) {
-				return $ret;
-			}
-		}
 
 		$fp = fsockopen($host, $port);
 		if (!$fp) {
@@ -171,13 +214,8 @@ class package_dll
 					$ret[$branch] = array_merge($ret[$branch], $tmp);
 				}
 			}
-			
 		}
 	
-		if ($cache) {
-			self::cacheDllDownloadInfo($name, $version, $ret);
-		}
-		
 		return $ret;
 	}
 
@@ -210,6 +248,21 @@ class package_dll
 		$zts_str = 'ts' == $zts ? "Thread Safe" : "Non Thread Safe";
 
 		return "$branch $zts_str (" . strtoupper($zts) . ") $arch";
+	}
+
+	public static function isResetOverdue()
+	{
+		if (!file_exists(self::$last_reset_file)) {
+			file_put_contents(self::$last_reset_file, 0, LOCK_EX);
+		}
+
+		$ts = (int)file_get_contents(self::$last_reset_file);
+
+		if (time() - $ts > self::$reset_period) {
+			return true;
+		}
+
+		return false;
 	}
 }
 

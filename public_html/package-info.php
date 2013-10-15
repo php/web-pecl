@@ -112,6 +112,9 @@ if ($version) {
 }
 
 html_category_urhere($pkg['categoryid'], true);
+if ($relid) {
+	echo " :: " . make_link("/package/$name", $name) ;
+}
 
 print "<h2 align=\"center\">$name";
 if ($version) {
@@ -213,7 +216,7 @@ $bb->end();
 <table border="0" cellspacing="3" cellpadding="3" height="48" width="90%" align="center">
 <tr>
 <?php
-$get_link = make_link("/get/$name", 'Download Latest');
+$get_link = make_link("/get/$name", 'Latest Tarball');
 if ($version) {
     $changelog_link = make_link("/package-changelog.php?package=" .
                                 $pkg['name'] . '&amp;release=' . $version,

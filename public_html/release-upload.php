@@ -99,12 +99,12 @@ do {
 		/* Don't compare with basename($file_data["name"]), the license has 
 			to be in the package root. */
 		$lic_fnames = array(
-			"LICENSE",
-			"COPYING",
-			"LICENSE.md",
-			"COPYING.md",
-			"LICENSE.txt",
-			"COPYING.txt"
+			"LICENSE", "license",
+			"COPYING", "copying",
+			"LICENSE.md", "license.md",
+			"COPYING.md", "copying.md",
+			"LICENSE.txt", "license.txt",
+			"COPYING.txt", "copying.txt"
 		);
 		if (in_array($file_data["name"], $lic_fnames)) {
 			$license_found = true;

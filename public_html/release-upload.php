@@ -90,32 +90,6 @@ do {
 		break; 
 	}
 
-	$license_found = false;
-	foreach ($info->getFileList() as $file_name => $file_data) {
-		if ("doc" != $file_data["role"]) {
-			continue;
-		}
-
-		/* Don't compare with basename($file_data["name"]), the license has 
-			to be in the package root. */
-		$lic_fnames = array(
-			"LICENSE", "license",
-			"COPYING", "copying",
-			"LICENSE.md", "license.md",
-			"COPYING.md", "copying.md",
-			"LICENSE.txt", "license.txt",
-			"COPYING.txt", "copying.txt"
-		);
-		if (in_array($file_data["name"], $lic_fnames)) {
-			$license_found = true;
-			break;
-		}
-	}
-	if (!$license_found) {
-		$errors[] = "No LICENSE or COPYING file was found in the root of the package. ";
-		break;
-	}
-
 	$pkg_version_ok = false;
 	$pkg_version_macros_found = false;
 	$pkg_xml_ext_version = $info->getVersion();
@@ -419,6 +393,32 @@ if ($display_verification) {
                 'supported at pecl.php.net, only Extension releases are supported.  ' .
                 'pear.php.net supports php packages';
     }
+
+    $license_found = false;
+    foreach ($info->getFileList() as $file_name => $file_data) {
+	    if ("doc" != $file_data["role"]) {
+		    continue;
+	    }
+
+	    /* Don't compare with basename($file_data["name"]), the license has 
+	       to be in the package root. */
+	    $lic_fnames = array(
+			    "LICENSE", "license",
+			    "LICENSE.md", "license.md",
+			    "COPYING", "copying",
+			    "COPYING.md", "copying.md",
+			    "LICENSE.txt", "license.txt",
+			    "COPYING.txt", "copying.txt"
+			    );
+	    if (in_array($file_data["name"], $lic_fnames)) {
+		    $license_found = true;
+		    break;
+	    }
+    }
+    if (!$license_found) {
+	    $warnings[] = "No LICENSE or COPYING file was found in the root of the package. ";
+    }
+
     report_error($errors, 'errors','ERRORS:<br />'
                  . 'You must correct your package.xml file:');
     report_error($warnings, 'warnings', 'RECOMMENDATIONS:<br />'

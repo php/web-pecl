@@ -128,16 +128,17 @@ do {
 		if ($pkg_version_macros_found) {
 			$errors[] = "Extension version mismatch between the package.xml ($pkg_xml_ext_version) "
 				. "and the source code ($pkg_found_ext_version). ";
+			$errors[] = "Both version strings have to match. ";
 		} else {
-			$errors[] = "The compliance between the package version in package.xml and extension source code "
+			$warnings[] = "The compliance between the package version in package.xml and extension source code "
 				. "couldn't be reliably determined. This check fixes the (unintended) "
 				. "version mismatch in phpinfo() and the PECL website. ";
-			$errors[] = "To pass please "
+			$warnings[] = "To pass please "
 				. "#define PHP_" . strtoupper($name_to_show) . "_VERSION \"$pkg_xml_ext_version\" " 
 				. "in your php_" . strtolower($name_to_show) . ".h or any other header file "
 				. "and use it for zend_module_entry definition. ";
+			$warnings[] = "Both version strings have to match. ";
 		}
-		$errors[] = "Both version strings have to match. ";
 		break;
 	}
 

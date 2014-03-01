@@ -90,7 +90,7 @@ do {
 		break; 
 	}
 
-	$pkg_version_ok = false;
+	$pkg_version_ok = true;
 	$pkg_version_macros_found = false;
 	$pkg_xml_ext_version = $info->getVersion();
 	$pkg_name = $info->getName();
@@ -129,6 +129,7 @@ do {
 			$errors[] = "Extension version mismatch between the package.xml ($pkg_xml_ext_version) "
 				. "and the source code ($pkg_found_ext_version). ";
 			$errors[] = "Both version strings have to match. ";
+			break;
 		} else {
 			$warnings[] = "The compliance between the package version in package.xml and extension source code "
 				. "couldn't be reliably determined. This check fixes the (unintended) "
@@ -139,7 +140,6 @@ do {
 				. "and use it for zend_module_entry definition. ";
 			$warnings[] = "Both version strings have to match. ";
 		}
-		break;
 	}
 
 	$display_form = false;

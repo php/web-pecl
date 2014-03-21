@@ -57,7 +57,7 @@ class package_dll
 		),
 	);
 
-	public static function getDllDownloadUrls($name, $version, $date, $cache = true)
+	public static function getDllDownloadUrls($name, $version, $date, $cache = false)
 	{
 		$db = array();
 		$ret = NULL;

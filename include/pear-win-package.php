@@ -64,8 +64,7 @@ class package_dll
 			/* Reset is started by some other process in that small time gap.
 				That's still not full atomic, but reduces the risks significantly.  */
 			/* yeah, go to ... */
-			$cache = false;
-			break;
+			return;
 		}
 
 		touch(self::$cache_reset_lock);

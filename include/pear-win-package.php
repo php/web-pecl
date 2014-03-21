@@ -30,7 +30,7 @@ define("PECL_DLL_URL_CACHE_DB_RESET_LOCK", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "
  */
 class package_dll
 {
-	protected static $build_gap = 10800; /* 3 hours */
+	protected static $build_gap = 7200; /* 2 hours */
 
 	protected static $reset_period = 3600; /* 1 hour */
 
@@ -57,6 +57,28 @@ class package_dll
 		),
 	);
 
+	public static function resetDllDownloadCache()
+	{
+		clearstatcache();
+		if (file_exists(self::$cache_reset_lock)) {
+			/* Reset is started by some other process in that small time gap.
+				That's still not full atomic, but reduces the risks significantly.  */
+			/* yeah, go to ... */
+			$cache = false;
+			break;
+		}
+
+		touch(self::$cache_reset_lock);
+
+		if (!file_exists(self::$last_reset_file)) {
+			touch(self::$last_reset_file);
+		}
+		file_put_contents(self::$last_reset_file, time(), LOCK_EX);
+		file_put_contents(self::$cache_db, serialize(array()), LOCK_EX);
+
+		unlink(self::$cache_reset_lock);
+	}
+
 	public static function getDllDownloadUrls($name, $version, $date, $cache = false)
 	{
 		$db = array();
@@ -75,41 +97,24 @@ class package_dll
 		do {
 			if ($cache) {
 				if (self::isResetOverdue()) {
-					clearstatcache();
-					if (file_exists(self::$cache_reset_lock)) {
-						/* Reset is started by some other process in that small time gap.
-							That's still not full atomic, but reduces the risks significantly.  */
-						/* yeah, go to ... */
-						$cache = false;
-						break;
-					}
+					self::resetDllDownloadCache();
+				}
+			}
 
-					touch(self::$cache_reset_lock);
+			if (file_exists(self::$cache_db)) {
+				$db = (array)unserialize(file_get_contents(self::$cache_db));
+			}
 
-					if (!file_exists(self::$last_reset_file)) {
-						touch(self::$last_reset_file);
-					}
-					file_put_contents(self::$last_reset_file, time(), LOCK_EX);
-					file_put_contents(self::$cache_db, serialize(array()), LOCK_EX);
-
-					unlink(self::$cache_reset_lock);
+			foreach($db as $ext => $data) {
+				if ($ext != $name) {
+					continue;
 				}
 
-				if (file_exists(self::$cache_db)) {
-					$db = (array)unserialize(file_get_contents(self::$cache_db));
-				}
-
-				foreach($db as $ext => $data) {
-					if ($ext != $name) {
-						continue;
-					}
-
-					if (is_array($data) && array_key_exists($version, $data)) {
-						//echo "deliver cached\n";
-						$ret = $data[$version];
-						$cached_found = true;
-						break;
-					}
+				if (is_array($data) && array_key_exists($version, $data)) {
+					//echo "deliver cached\n";
+					$ret = $data[$version];
+					$cached_found = true;
+					break;
 				}
 			}
 		} while (0);
@@ -127,6 +132,30 @@ class package_dll
 		}
 		
 		return $ret;
+	}
+
+	public static function updateDllDownloadCache($name, $version)
+	{
+		$db = array();
+
+		if (file_exists(self::$cache_db)) {
+			$db = (array)unserialize(file_get_contents(self::$cache_db));
+		}
+
+		foreach($db as $ext => $data) {
+			if ($ext != $name) {
+				continue;
+			}
+
+			if (is_array($data) && array_key_exists($version, $data)) {
+				/* found cached, nothing to do */
+				return true;
+			}
+		}
+
+		$pkg = self::fetchDllDownloadUrls($name, $version);
+
+		return self::cacheDllDownloadInfo($name, $version, $pkg);
 	}
 
 	public static function cacheDllDownloadInfo($name, $version, $data)

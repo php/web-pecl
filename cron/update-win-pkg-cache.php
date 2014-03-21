@@ -24,8 +24,14 @@ $data = $dbh->getAll("SELECT packages.name, releases.version, releases.releaseda
 					NULL,
 					DB_FETCHMODE_ASSOC);
 
+if (package_dll::isResetOverdue()) {
+	package_dll::resetDllDownloadCache();
+}
+
 foreach ($data as $pkg) {
-	/* The last true arg forces caching, no caching at all when users request site. */
-	$urls = package_dll::getDllDownloadUrls($pkg['name'], $pkg['version'], $pkg['releasedate'], true);
+	//$urls = package_dll::getDllDownloadUrls($pkg['name'], $pkg['version'], $pkg['releasedate'], true);
+	if (!package_dll::updateDllDownloadCache($pkg['name'], $pkg['version'])) {
+		echo "Failed to update cache for $pkg[name]-$pkg[version]\n";
+	}
 }
 

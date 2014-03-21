@@ -79,7 +79,7 @@ class package_dll
 		unlink(self::$cache_reset_lock);
 	}
 
-	public static function getDllDownloadUrls($name, $version, $date, $cache = false)
+	public static function getDllDownloadUrls($name, $version, $date, $cache = true)
 	{
 		$db = array();
 		$ret = NULL;

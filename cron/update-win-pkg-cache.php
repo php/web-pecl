@@ -25,7 +25,10 @@ $data = $dbh->getAll("SELECT packages.name, releases.version, releases.releaseda
 					DB_FETCHMODE_ASSOC);
 
 if (package_dll::isResetOverdue()) {
-	package_dll::resetDllDownloadCache();
+	if (!package_dll::resetDllDownloadCache()) {
+		/* some reset running, just sleep and do our thing*/
+		sleep(10);
+	}
 }
 
 foreach ($data as $pkg) {

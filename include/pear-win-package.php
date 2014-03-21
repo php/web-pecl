@@ -64,7 +64,7 @@ class package_dll
 			/* Reset is started by some other process in that small time gap.
 				That's still not full atomic, but reduces the risks significantly.  */
 			/* yeah, go to ... */
-			return;
+			return false;
 		}
 
 		touch(self::$cache_reset_lock);
@@ -76,6 +76,8 @@ class package_dll
 		file_put_contents(self::$cache_db, serialize(array()), LOCK_EX);
 
 		unlink(self::$cache_reset_lock);
+
+		return true;
 	}
 
 	public static function getDllDownloadUrls($name, $version, $date, $cache = true)
@@ -96,7 +98,7 @@ class package_dll
 		do {
 			if ($cache) {
 				if (self::isResetOverdue()) {
-					self::resetDllDownloadCache();
+					$cache = self::resetDllDownloadCache();
 				}
 			}
 

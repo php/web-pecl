@@ -32,7 +32,7 @@ class package_dll
 {
 	protected static $build_gap = 10800; /* 3 hours */
 
-	protected static $reset_period = 259200; /* 3 days */
+	protected static $reset_period = 3600; /* 1 hour */
 
 	protected static $cache_db = PECL_DLL_URL_CACHE_DB;
 

@@ -131,7 +131,7 @@ switch ($command) {
             break;
         }
 
-        if ($user->get('password') != md5($_POST['password_old'])) {
+        if (!$admin && $user->get('password') != md5($_POST['password_old'])) {
             PEAR::raiseError('You provided a wrong old password.');
             break;
         }

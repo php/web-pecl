@@ -119,6 +119,8 @@ do {
 		if ($pkg_xml_ext_version == $pkg_found_ext_version) {
 			$pkg_version_ok = true;
 			break;
+		} else {
+			$pkg_version_ok = false;
 		}
 	}
 

@@ -35,7 +35,7 @@ else{
 }
 
 // silence the notices for production
-if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
+if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != 'pecl.php.net') {
     define('DEVBOX', true);
 } else {
     error_reporting(error_reporting()&~E_NOTICE);

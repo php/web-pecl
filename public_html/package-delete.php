@@ -29,7 +29,7 @@ echo '<h1>Delete Package</h1>';
 
 require_once "HTML/Form.php";
 
-if (!isset($_GET['id'])) {
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     report_error('No package ID specified.');
     response_footer();
     exit;

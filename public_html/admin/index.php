@@ -240,6 +240,7 @@ do {
 
         	function highlightAccountRow(spanObj)
 			{
+                return true;
 				var highlightColor = '#cfffb7';
 				
 				if (typeof(arguments[1]) == 'undefined') {
@@ -327,7 +328,7 @@ do {
                 if ($rejected) {
                     continue;
                 }
-                $bb->plainRow('<input type="checkbox" value="' . $handle . '" name="uid[]" onmousedown="highlightAccountRow(this)" onclick="return false"/>',
+                $bb->plainRow('<input type="checkbox" value="' . $handle . '" name="uid[]" onmousedown="highlightAccountRow(this)"/>',
 							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $name),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $handle),
 							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', nl2br($account_purpose)),

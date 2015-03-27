@@ -36,6 +36,7 @@ if (is_numeric($package)) {
 // Package data
 $pkg = package::info($package);
 
+$relid = FALSE;
 if (!empty($version)) {
     foreach ($pkg['releases'] as $ver => $release) {
         if ($ver == $version) {
@@ -43,6 +44,11 @@ if (!empty($version)) {
             break;
         }
     }
+}
+
+/* Sanity check&cleanup if given version does not exist */
+if ($relid === FALSE) {
+	$version = FALSE; 
 }
 
 if (empty($package) || !isset($pkg['name'])) {

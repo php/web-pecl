@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL&~E_STRICT&~E_DEPRECATED);
+
 //=======================================================================
 // File:	JPGRAPH.PHP
 // Description:	PHP4 Graph Plotting library. Base module.

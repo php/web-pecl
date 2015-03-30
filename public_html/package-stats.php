@@ -272,7 +272,6 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
   </tr>
   <tr>
    <td valign="top">
-	   <?php var_dump($releases); ?>
     Release:
     <select name="releases">
      <option value="">Select...</option>

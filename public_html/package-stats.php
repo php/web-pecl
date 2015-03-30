@@ -118,9 +118,10 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         }
         echo '    <option value="' . $row['id'] . '"' . $selected . '>' . $row['version'] . "</option>\n";
     }
-
+	$releases = $rows;
     echo "  </select>\n";
 } else {
+	$releases = array();
     echo '<input type="hidden" name="rid" value="" />'."\n";
 }
 
@@ -257,7 +258,6 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
     }
 //-->
 </script>
-
 <form name="graph_control" action="#">
  <input type="hidden" name="pid" value="<?php echo @$_GET['pid']; ?>" />
  <input type="hidden" name="rid" value="<?php echo @$_GET['rid']; ?>" />
@@ -272,13 +272,15 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
   </tr>
   <tr>
    <td valign="top">
+	   <?php var_dump($releases); ?>
     Release:
     <select name="releases">
      <option value="">Select...</option>
      <option value="0">All</option>
-     <?foreach($releases as $r):?>
+     <?php foreach($releases as $r) {?>
+     <?foreach($releases as $r) { ?>
       <option value="<?php echo $r['id']; ?>"><?php echo $r['version']; ?></option>
-     <?endforeach?>
+     <?php } ?>
     </select>
     Colour:
     <select name="colours">

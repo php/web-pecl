@@ -124,9 +124,7 @@ function version_compare_firstelem($a, $b)
 // }}}
 
 // These classes correspond to tables and methods define operations on
-// each.  They are packaged into classes for easier xmlrpc
-// integration.
-
+// each.
 /**
  * Class to handle categories
  *
@@ -1830,39 +1828,6 @@ class release
             }
         }
 
-
-
-        // Update Cache
-        include_once 'xmlrpc-cache.php';
-        $cache = new XMLRPC_Cache;
-        $GLOBALS['pear_rest']->saveAllReleasesREST($package);
-        $GLOBALS['pear_rest']->saveReleaseREST($file, $packagexml, $pkg_info, $auth_user->handle,
-            $release_id);
-        $GLOBALS['pear_rest']->savePackagesCategoryREST(package::info($package, 'category'));
-        // gotta clear all the permutations
-        $cache->remove('package.listAll', array(false));
-        $cache->remove('package.listAll', array(true));
-
-        $cache->remove('package.listAll', array(false, true));
-        $cache->remove('package.listAll', array(false, false));
-
-        $cache->remove('package.listAll', array(true, true));
-        $cache->remove('package.listAll', array(true, false));
-
-        $cache->remove('package.listAll', array(false, true, true));
-        $cache->remove('package.listAll', array(false, true, false));
-        $cache->remove('package.listAll', array(false, false, true));
-        $cache->remove('package.listAll', array(false, false, false));
-
-        $cache->remove('package.listAll', array(true, true, true));
-        $cache->remove('package.listAll', array(true, true, false));
-        $cache->remove('package.listAll', array(true, false, true));
-        $cache->remove('package.listAll', array(true, false, false));
-
-        // make sure pear is also removed
-        $cache->remove('package.info', array($package, null));
-        $cache->remove('package.info', array($package, array(null, null, true)));
-
         return $file;
     }
 
@@ -1886,7 +1851,6 @@ class release
     /**
      * Download release via HTTP
      *
-     * Not for xmlrpc export!
      *
      * @param string Name of the package
      * @param string Version string

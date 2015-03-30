@@ -7,16 +7,6 @@ http://pear.php.net/dtd/channel-1.0.xsd">
  <validatepackage version="1.0">PEAR_Validator_PECL</validatepackage>
  <servers>
   <primary>
-   <xmlrpc>
-    <function version="1.0">logintest</function>
-    <function version="1.0">package.listLatestReleases</function>
-    <function version="1.0">package.listAll</function>
-    <function version="1.0">package.info</function>
-    <function version="1.0">package.getDownloadURL</function>
-    <function version="1.0">package.getDepDownloadURL</function>
-    <function version="1.0">package.search</function>
-    <function version="1.0">channel.listAll</function>
-   </xmlrpc>
    <rest>
     <baseurl type="REST1.0">http://pecl.php.net/rest/</baseurl>
     <baseurl type="REST1.1">http://pecl.php.net/rest/</baseurl>

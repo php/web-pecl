@@ -29,11 +29,7 @@ function auth_reject($realm = null, $message = null)
     }
 
     response_header('Login');
-    if ($format == 'xmlrpc') {
-        Header("HTTP/1.0 401 Unauthorized");
-        Header("WWW-authenticate: basic realm=\"$realm\"");
-        report_error($message);
-    } elseif ($format == 'html') {
+    if ($format == 'html') {
         $GLOBALS['ONLOAD'] = "document.login.PEAR_USER.focus();";
         if ($message) {
             report_error($message);

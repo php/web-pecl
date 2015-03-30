@@ -64,7 +64,7 @@ response_header('Bugs');
 
 <p>
 You may find the
-<?php print_link('stats.php', 'Bug Statistics'); ?> page interesting.
+<?php print_link('https://bugs.php.net/stats.php', 'Bug Statistics'); ?> page interesting.
 </p>
 
 <?php

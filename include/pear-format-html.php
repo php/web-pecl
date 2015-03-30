@@ -199,7 +199,7 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
 
 function response_footer($style = false)
 {
-    global $LAST_UPDATED, $MIRRORS, $MYSITE, $COUNTRIES,$SCRIPT_NAME, $RSIDEBAR_DATA;
+    global $LAST_UPDATED, $MYSITE, $COUNTRIES,$SCRIPT_NAME, $RSIDEBAR_DATA;
 
     static $called;
     if ($called) {

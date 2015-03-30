@@ -348,7 +348,7 @@ if ($display_form) {
     $bb->horizHeadRow("Sponsoring users<br />(Current php.net users who suggested you request an account and reviewed your extension/patch):", HTML_Form::returnTextarea("sponsor", stripslashes($sponsor)));
     $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes($moreinfo)));
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
-    $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" />&nbsp;<input type=\"reset\" />");
+    $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" value=\"Submit\" />");
     $bb->end();
     print "</form>";
 

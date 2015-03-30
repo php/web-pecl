@@ -20,11 +20,9 @@
 
 if (isset($_SERVER['PEAR_TMPDIR'])) {
     define('PEAR_TMPDIR', $_SERVER['PEAR_TMPDIR']);
-    define('PEAR_CVS_TMPDIR', $_SERVER['PEAR_TMPDIR'].'/cvs');
     define('PEAR_UPLOAD_TMPDIR', $_SERVER['PEAR_TMPDIR'].'/uploads');
 } else {
     define('PEAR_TMPDIR', '/var/tmp/pear');
-    define('PEAR_CVS_TMPDIR', '/var/tmp/pear/cvs');
     define('PEAR_UPLOAD_TMPDIR', '/var/tmp/pear/uploads');
 }
 
@@ -65,22 +63,6 @@ if (isset($_SERVER['PEAR_REST_DIR'])) {
     define('PEAR_REST_DIR', $_SERVER['PEAR_REST_DIR']);
 } else {
     define('PEAR_REST_DIR', '/var/lib/peclweb/rest'); 
-}
-
-if (isset($_SERVER['PEAR_PATCHES'])) {
-    define('PEAR_PATCHES', $_SERVER['PEAR_PATCHES']);
-} else {
-    define('PEAR_PATCHES', '/var/lib/pear/patches/');
-}
-if (isset($_SERVER['PEAR_CVS'])) {
-    define('PEAR_CVS', $_SERVER['PEAR_CVS']);
-} else {
-    define('PEAR_CVS', '/var/lib/pear/patches/cvs/');
-}
-if (isset($_SERVER['PHP_CVS_REPO_DIR'])) {
-    define('PHP_CVS_REPO_DIR', $_SERVER['PHP_CVS_REPO_DIR']);
-} else {
-    define('PHP_CVS_REPO_DIR', '/repository/pear'); 
 }
 
 define('PEAR_COMMON_USER_NAME_REGEX', '/^[a-z][a-z0-9]+$/i');

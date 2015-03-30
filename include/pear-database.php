@@ -1950,6 +1950,11 @@ class release
 
             release::logDownload($package_id, $log_release, $log_file);
 
+            header('Content-Disposition: attachment;filename=' . $basename);
+            header('Content-type: application/octet-stream');
+            header('X-Sendfile: ' . '/local/www/sites/pecl.php.net/public_html/packages/' . $basename);
+
+if (0) {
             header('Last-modified: '.HTTP::date(filemtime($path)));
             header('Content-type: application/octet-stream');
             if ($uncompress) {
@@ -1961,7 +1966,7 @@ class release
                 header('Content-length: '.filesize($path));
                 readfile($path);
             }
-
+}
             return true;
         }
         header('HTTP/1.0 404 Not Found');

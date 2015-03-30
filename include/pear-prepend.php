@@ -18,18 +18,6 @@
    $Id$
 */
 require_once "pear-config.php";
-if (0) {
-	// silence the strict and deprecated errors for now
-	if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
-			error_reporting(E_ALL&~E_STRICT&~E_DEPRECATED);
-	}
-	elseif (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-			error_reporting(E_ALL&~E_DEPRECATED);
-	}
-	else{
-			error_reporting(E_ALL);
-	}
-}
 
 // silence the notices for production
 if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != 'pecl.php.net') {

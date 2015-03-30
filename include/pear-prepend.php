@@ -103,25 +103,6 @@ init_auth_user();
 if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
     auth_logout();
 }
-if (!function_exists('file_get_contents')) {
-    function file_get_contents($file, $use_include_path = false) {
-        if (!$fp = fopen($file, 'r', $use_include_path)) {
-            return false;
-        }
-        $data = fread($fp, filesize($file));
-        fclose($fp);
-        return $data;
-    }
-}
-
-if (!function_exists('file_put_contents')) {
-    function file_put_contents($fname, $contents)
-    {
-        $fp = fopen($fname, 'wb');
-        fwrite($fp, $contents);
-        fclose($fp);
-    }
-}
 
 /**
 * Browser detection

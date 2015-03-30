@@ -6,12 +6,16 @@
  * Author: pierre@php.net
  */
 /* $Id$ */
+putenv('PEAR_DATABASE_DSN', ' mysqli://root:n0ki41945@127.0.0.1/peclweb');
+putenv('PEAR_TMPDIR', '/home/pierre/projects/pecl/tmp');
+putenv('PEAR_TARBALL_DIR', '/home/pierre/projects/pecl/pecl/public_html/packages'); 
 
 include __DIR__ . '/../include/pear-config.php';
-
 // {{{ rm_rf()
 function rm_rf($path)
 {
+	echo "delete <$path>\n";
+	return;
     // Some sanity checks
     if (empty($path)) {
         return false;
@@ -40,6 +44,7 @@ Please fix the permission or select a new path.\n";
 }
 // }}}
 
+if (0) {
 if (defined('PEAR_TARBALL_DIR')) {
     $pkg_dir = PEAR_TARBALL_DIR;
 } else {
@@ -50,7 +55,6 @@ if (defined('PEAR_REST_DIR')) {
 } else {
     $rest_dir = __DIR__ . '../public_html/rest';
 }
-
 if (!is_dir($pkg_dir)) {
     echo "Invalid packages direcory $pkg_dir\n";
     exit(1);
@@ -63,7 +67,7 @@ if (is_dir($rest_dir) && !is_dir($rest_dir . '/p')) {
     echo "Invalid rest direcory $rest_dir\n";
     exit(1);
 }
-
+}
 $dh = new PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
 
 // Get the filenames and remove them, then delete the records
@@ -76,7 +80,7 @@ ORDER BY basename
 $res = $dh->query($sql);
 foreach ($res as $row) {
     if (file_exists($pkg_dir . '/' . $row['basename'])) {
-        unlink($pkg_dir . '/' . $row['basename']);
+//        unlink($pkg_dir . '/' . $row['basename']);
         echo $pkg_dir . '/' . $row['basename'] . " deleted\n";
     }
 }

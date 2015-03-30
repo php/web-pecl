@@ -91,10 +91,3 @@ init_auth_user();
 if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
     auth_logout();
 }
-
-/**
-* Browser detection
-*/
-require_once "browser.php";
-$_browser = &new browser();
-?>

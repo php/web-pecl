@@ -261,7 +261,7 @@ if ($display_form) {
 </p>
 <ul>
  <li>
-  If approved, you will also need to <a href='http://php.net/svn-php.php'>apply for a php.net account</a>
+  If approved, you will also need to <a href='http://php.net/git-php.php'>apply for a php.net account</a>
   in order to commit the code to the php.net SVN repository. Select 'PECL Group' within that form when applying.
  </li>
 </ul>

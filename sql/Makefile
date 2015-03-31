@@ -19,7 +19,6 @@
 
 TABLE_FILES=\
 	aggregated_package_stats.sql \
-	bugs.sql \
 	cvs_acl.sql \
 	cvs_groups.sql \
 	cvs_group_membership.sql \
@@ -31,7 +30,6 @@ TABLE_FILES=\
 	packages.sql \
 	package_stats.sql \
 	package_aliases.sql \
-	package_proposals.sql \
 	releases.sql \
 	deps.sql \
 	notes.sql \

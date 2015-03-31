@@ -28,12 +28,7 @@ if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != 'pecl.php.net')
 }
 
 require_once "PEAR.php";
-
-if (empty($format)) {
-        $format = "html";
-}
-
-include_once "pear-format-$format.php";
+include_once "pear-format-html.php";
 
 include_once "DB.php";
 include_once "DB/storage.php";

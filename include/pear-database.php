@@ -1954,19 +1954,6 @@ class release
             header('Content-type: application/octet-stream');
             header('X-Sendfile: ' . '/local/www/sites/pecl.php.net/public_html/packages/' . $basename);
 
-if (0) {
-            header('Last-modified: '.HTTP::date(filemtime($path)));
-            header('Content-type: application/octet-stream');
-            if ($uncompress) {
-                $tarname = preg_replace('/\.tgz$/', '.tar', $basename);
-                header('Content-disposition: attachment; filename="'.$tarname.'"');
-                readgzfile($path);
-            } else {
-                header('Content-disposition: attachment; filename="'.$basename.'"');
-                header('Content-length: '.filesize($path));
-                readfile($path);
-            }
-}
             return true;
         }
         header('HTTP/1.0 404 Not Found');
@@ -2026,80 +2013,35 @@ if (0) {
     {
         global $dbh;
 
-        $dbh->query('UPDATE aggregated_package_stats
-            SET downloads=downloads+1
-            WHERE
-                package_id=? AND
-                release_id=? AND
-                yearmonth="' . date('Y-m-01') . '"',
-            array($package, $release_id));
-        if ($dbh->affectedRows() == 0) {
-    		$dbh->query('INSERT INTO aggregated_package_stats
-    			(package_id, release_id, yearmonth, downloads)
-    			VALUES(?,?,?,1)',
-    			array($package, $release_id, date('Y-m-01')));
-        }
+		$dbh->query('INSERT INTO aggregated_package_stats
+					(package_id, release_id, yearmonth, downloads)
+					VALUES(?,?,?,1)
+					ON DUPLICATE KEY UPDATE downloads=downloads+1',
+			array($package, $release_id, date('Y-m-01')));
 
-//      This method can be used when we have MySQL 4.1,
-//      30% efficiency gain at least over previous method
-//		$dbh->query('INSERT INTO aggregated_package_stats
-//			(package_id, release_id, yearmonth, downloads)
-//			VALUES(?,?,?,1)
-//			ON DUPLICATE KEY UPDATE downloads=downloads+1',
-//			array($package, $release_id, date('Y-m-01')));
 
-        // {{{ Update package_stats table
+		$pkg_info = package::info($package, null);
 
-//      This method can be used when we have MySQL 4.1,
-//      30% efficiency gain at least over previous method
-//        $query = 'INSERT INTO package_stats
-//        			 (dl_number, package, release, pid, rid, cid, last_dl)
-//               	     VALUES (1, ?, ?, ?, ?, ?, ?)
-//               	     ON DUPLICATE KEY UPDATE
-//               	     	dl_number=dl_number+1,
-//               	     	last_dl = "' . date('Y-m-d H:i:s') . '"';
-//
-//        $dbh->query($query, array($pkg_info['name'],
-//                                  $version,
-//                                  $package,
-//                                  $release_id,
-//                                  $pkg_info['categoryid'],
-//                                  date('Y-m-d H:i:s')
-//                                  )
-//                    );
+		$query = 'SELECT version FROM releases'
+			   . ' WHERE package = ? AND id = ?';
+		$version = $dbh->getOne($query, array($package, $release_id));
 
-        $query = 'UPDATE package_stats '
-            . ' SET dl_number = dl_number + 1,'
-            . " last_dl = '" . date('Y-m-d H:i:s') . "'"
-            . ' WHERE pid = ? AND rid = ?';
-        $dbh->query($query, array($package, $release_id));
+		// {{{ Update package_stats table
+		$query = 'INSERT INTO package_stats
+		(dl_number, package, `release`, pid, rid, cid, last_dl)
+		VALUES (1, ?, ?, ?, ?, ?, ?)
+		ON DUPLICATE KEY UPDATE
+		dl_number=dl_number+1,
+		last_dl = "' . date('Y-m-d H:i:s') . '"';
 
-        if ($dbh->affectedRows() == 0) {
-            $pkg_info = package::info($package, null);
-
-            $query = 'SELECT version FROM releases'
-                   . ' WHERE package = ? AND id = ?';
-            $version = $dbh->getOne($query, array($package, $release_id));
-
-            if (!$version) {
-                return PEAR::raiseError('release:: the package you requested'
-                                        . ' has no release by that number');
-            }
-
-            $query = 'INSERT INTO package_stats'
-                   . ' (`dl_number`, `package`, `release`, `pid`, `rid`, `cid`, `last_dl`)'
-                   . ' VALUES (1, ?, ?, ?, ?, ?, ?)';
-
-            $dbh->query($query, array($pkg_info['name'],
-                                      $version,
-                                      $package,
-                                      $release_id,
-                                      $pkg_info['categoryid'],
-                                      date('Y-m-d H:i:s')
-                                      )
-                        );
-        }
-
+		$dbh->query($query, array($pkg_info['name'],
+			  $version,
+			  $package,
+			  $release_id,
+			  $pkg_info['categoryid'],
+			  date('Y-m-d H:i:s')
+			  )
+		);
         // }}}
     }
 

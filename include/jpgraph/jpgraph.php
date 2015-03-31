@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ALL&~E_STRICT&~E_DEPRECATED);
 
 //=======================================================================
 // File:	JPGRAPH.PHP
@@ -243,7 +242,7 @@ class JpGraphErrObject {
 
     // If aHalt is true then execution can't continue. Typical used for
     // fatal errors
-    function Raise($aMsg,$aHalt=true) {
+    static function Raise($aMsg,$aHalt=true) {
 	$aMsg = "<b>JpGraph Error:</b> ".$aMsg;
 	if( $aHalt )
 	    die($aMsg);
@@ -276,7 +275,7 @@ class JpGraphErrObjectImg {
 	return $s;
     }
 
-    function Raise($aMsg,$aHalt=true) {
+    static function Raise($aMsg,$aHalt=true) {
 	if( headers_sent() ) {
 		// Special case for headers already sent error. Dont
 		// return an image since it can't be displayed
@@ -306,11 +305,11 @@ class JpGraphErrObjectImg {
 // in all methods.
 //
 class JpGraphError {
-    function Install($aErrObject) {
+    static function Install($aErrObject) {
 	GLOBAL $__jpg_err;
 	$__jpg_err = $aErrObject;
     }
-    function Raise($aMsg,$aHalt=true){
+    static function Raise($aMsg,$aHalt=true){
 	GLOBAL $__jpg_err;
 	$tmp = new $__jpg_err;
 	$tmp->Raise($aMsg,$aHalt);
@@ -3278,26 +3277,21 @@ class Image {
 	    if( $dir==90 )
 		imagestringup($this->img,$this->font_family,$x,$y,$txt,$this->current_color);
 	    else	{
-		if (ereg("\n",$txt)) { 
-		    $tmp = split("\n",$txt);
-		    for($i=0; $i<count($tmp); ++$i) {
-			$w1 = $this->GetTextWidth($tmp[$i]);
-			if( $paragraph_align=="left" ) {
-			    imagestring($this->img,$this->font_family,$x,$y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+			$tmp = explode("\n", $txt);
+			for($i=0; $i<count($tmp); ++$i) {
+				$w1 = $this->GetTextWidth($tmp[$i]);
+				if( $paragraph_align=="left" ) {
+					imagestring($this->img,$this->font_family,$x,$y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+				}
+				elseif( $paragraph_align=="right" ) {
+					imagestring($this->img,$this->font_family,$x+($w-$w1),
+							$y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+				}
+				else {
+					imagestring($this->img,$this->font_family,$x+$w/2-$w1/2,
+							$y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+				}
 			}
-			elseif( $paragraph_align=="right" ) {
-			    imagestring($this->img,$this->font_family,$x+($w-$w1),
-			    $y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
-			}
-			else {
-			    imagestring($this->img,$this->font_family,$x+$w/2-$w1/2,
-			    $y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
-			}
-		    }
-		}else{
-		    //Put the text
-		    imagestring($this->img,$this->font_family,$x,$y-$h+1,$txt,$this->current_color);
-		}
 	    }
 	}
 	elseif($this->font_family >= FF_COURIER && $this->font_family <= FF_BOOK)  { // TTF font

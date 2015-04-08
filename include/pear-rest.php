@@ -321,7 +321,7 @@ class pear_rest
         $info = $this->_getAllReleasesRESTProlog($package);
         foreach ($releases as $release) {
             $packagexml = $dbh->getOne('SELECT packagexml FROM files WHERE package = ? AND
-                release = ?', array($pid, $release['id']));
+                `release` = ?', array($pid, $release['id']));
             $extra = '';
             if (strpos($packagexml, ' version="2.0"')) {
                 // little quick hack to determine package.xml version

@@ -511,7 +511,7 @@ class package
         }
         if (is_array($relids) && isset($relids['rid'])) {
             $packagexml = $dbh->getOne('SELECT packagexml FROM files WHERE ' .
-                'package = ? AND release = ?', array($relids['pid'], $relids['rid']));
+                'package = ? AND `release` = ?', array($relids['pid'], $relids['rid']));
             if (is_string($packagexml)) {
                 return $packagexml;
             }

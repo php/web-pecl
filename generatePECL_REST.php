@@ -24,7 +24,7 @@ include_once "pear-database.php";
 include_once "pear-rest.php";
 if (!isset($pear_rest)) {
     if (isset($_SERVER['argv']) && $_SERVER['argv'][1] == 'pecl') {
-        $pear_rest = new pear_rest('/var/lib/peclweb/rest');
+        $pear_rest = new pear_rest(PEAR_REST_DIR);
     } else {
         $pear_rest = new pear_rest(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'public_html' .
             DIRECTORY_SEPARATOR . 'rest');

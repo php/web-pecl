@@ -59,7 +59,7 @@ if (empty($dbh)) {
 }
 if (!isset($pear_rest)) {
     if (!DEVBOX) {
-        $pear_rest = new pear_rest('/var/lib/peclweb/rest');
+        $pear_rest = new pear_rest(PEAR_REST_DIR);
     } else {
         $pear_rest = new pear_rest(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'public_html' .
             DIRECTORY_SEPARATOR . 'rest');

@@ -70,10 +70,11 @@ if (!isset($_SERVER['PATH_INFO']) || $_SERVER['PATH_INFO'] == '/') {
 $opts = explode('/', $_SERVER['PATH_INFO']);
 $ok = false;
 if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], array('1', 'yes', 'on'))) {
-    $uncompress = true;
+	error_404(PEAR::raiseError("Uncompressed download is not supported, please enable the gzip extension"));
 } else {
     $uncompress = false;
 }
+
 switch (sizeof($opts)) {
     case 2: {
         if (preg_match('/^([a-zA-Z0-9_]+)-(.+)\.(tar|tgz)$/', $opts[1], $matches)) {

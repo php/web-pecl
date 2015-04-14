@@ -1884,8 +1884,7 @@ class release
 
         if ($file !== null) {
             if (substr($file, -4) == '.tar') {
-                $file = substr($file, 0, -4) . '.tgz';
-                $uncompress = true;
+                return PEAR::raiseError("Uncompressed download is not supported, please enable the gzip extension");
             }
             $row = $dbh->getRow("SELECT `fullpath`, `release`, `id` FROM files ".
                                 "WHERE UPPER(basename) = ?", array(strtoupper($file)),

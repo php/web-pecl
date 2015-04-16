@@ -1827,8 +1827,11 @@ class release
                 }
             }
         }
+        $GLOBALS['pear_rest']->saveAllReleasesREST($package);
+        $GLOBALS['pear_rest']->saveReleaseREST($file, $packagexml, $pkg_info, $auth_user->handle, $release_id);
+        $GLOBALS['pear_rest']->savePackagesCategoryREST(package::info($package, 'category'));
 
-        return $file;
+		return $file;
     }
 
     // }}}

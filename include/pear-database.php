@@ -1657,6 +1657,14 @@ class release
         }
         fwrite($fp, serialize($info));
         fclose($fp);
+
+		/* We have to save uncompressed version too, as we use X-Sendfile header */
+		$fp = fopen('compress.zlib://' . $file, 'rb');
+		$tarfilepath = substr($file, 0, -4) . '.tar';
+		if (!@file_put_contents($tarfilepath, $fp)) {
+            return PEAR::raiseError("Copy uncompressed archive failed: $php_errormsg");
+		}
+
         return $info;
     }
 
@@ -2195,6 +2203,9 @@ Authors
             if (!@unlink($row['fullpath'])) {
                 $success = false;
             }
+			$basename = basename($row['fullpath']);
+			$basename = substr($basename, 0, -4);
+			@unlink(PEAR_TARBALL_DIR . '/' . $basename . '.tar');
         }
 
         $query = sprintf("DELETE FROM `files` WHERE `package` = '%s' AND `release` = '%s'",

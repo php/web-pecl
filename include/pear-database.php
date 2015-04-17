@@ -1831,7 +1831,7 @@ class release
         $GLOBALS['pear_rest']->saveReleaseREST($file, $packagexml, $pkg_info, $auth_user->handle, $release_id);
         $GLOBALS['pear_rest']->savePackagesCategoryREST(package::info($package, 'category'));
 
-		return $file;
+        return $file;
     }
 
     // }}}
@@ -1869,7 +1869,6 @@ class release
         require_once "HTTP.php";
 
         $package_id = package::info($package, 'packageid', true);
-
         if (!$package_id) {
             $package_id = $dbh->getOne('SELECT package_id FROM package_aliases WHERE alias_name=' . $dbh->quoteSmart($package));
             if (!$package_id) {
@@ -1883,10 +1882,12 @@ class release
         }
 
         if ($file !== null) {
+            $basename = substr($file, 0, -4);
             if (substr($file, -4) == '.tar') {
-                $file = substr($file, 0, -4) . '.tgz';
+                $file =  $basename . '.tgz';
                 $uncompress = true;
             }
+
             $row = $dbh->getRow("SELECT `fullpath`, `release`, `id` FROM files ".
                                 "WHERE UPPER(basename) = ?", array(strtoupper($file)),
                                 DB_FETCHMODE_ASSOC);
@@ -1898,7 +1899,6 @@ class release
             $path = $row['fullpath'];
             $log_release = $row['release'];
             $log_file = $row['id'];
-            $basename = $file;
         } elseif ($version == null) {
             // Get the most recent version
             $row = $dbh->getRow("SELECT id FROM releases ".
@@ -1945,14 +1945,22 @@ class release
             if (empty($path) || (!@is_file(PEAR_TARBALL_DIR . '/' . $basename) && !@is_file($path))) {
                 return PEAR::raiseError("release download:: no version information found");
             }
+            $basename = substr($file, 0, -4);
+
         }
+
+        if ($uncompress) {
+            $basename .= '.tar';
+        } else {
+            $basename .= '.tgz';
+        }
+        $path = PEAR_TARBALL_DIR . '/' . $basename;
+
         if (isset($path)) {
             if (!isset($log_release)) {
                 $log_release = $release_id;
             }
-
             release::logDownload($package_id, $log_release, $log_file);
-
             header('Content-Disposition: attachment;filename=' . $basename);
             header('Content-type: application/octet-stream');
             header('X-Sendfile: ' . '/local/www/sites/pecl.php.net/public_html/packages/' . $basename);
@@ -2016,35 +2024,35 @@ class release
     {
         global $dbh;
 
-		$dbh->query('INSERT INTO aggregated_package_stats
-					(package_id, release_id, yearmonth, downloads)
-					VALUES(?,?,?,1)
-					ON DUPLICATE KEY UPDATE downloads=downloads+1',
-			array($package, $release_id, date('Y-m-01')));
+        $dbh->query('INSERT INTO aggregated_package_stats
+                    (package_id, release_id, yearmonth, downloads)
+                    VALUES(?,?,?,1)
+                    ON DUPLICATE KEY UPDATE downloads=downloads+1',
+            array($package, $release_id, date('Y-m-01')));
 
 
-		$pkg_info = package::info($package, null);
+        $pkg_info = package::info($package, null);
 
-		$query = 'SELECT version FROM releases'
-			   . ' WHERE package = ? AND id = ?';
-		$version = $dbh->getOne($query, array($package, $release_id));
+        $query = 'SELECT version FROM releases'
+               . ' WHERE package = ? AND id = ?';
+        $version = $dbh->getOne($query, array($package, $release_id));
 
-		// {{{ Update package_stats table
-		$query = 'INSERT INTO package_stats
-		(dl_number, package, `release`, pid, rid, cid, last_dl)
-		VALUES (1, ?, ?, ?, ?, ?, ?)
-		ON DUPLICATE KEY UPDATE
-		dl_number=dl_number+1,
-		last_dl = "' . date('Y-m-d H:i:s') . '"';
+        // {{{ Update package_stats table
+        $query = 'INSERT INTO package_stats
+        (dl_number, package, `release`, pid, rid, cid, last_dl)
+        VALUES (1, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+        dl_number=dl_number+1,
+        last_dl = "' . date('Y-m-d H:i:s') . '"';
 
-		$dbh->query($query, array($pkg_info['name'],
-			  $version,
-			  $package,
-			  $release_id,
-			  $pkg_info['categoryid'],
-			  date('Y-m-d H:i:s')
-			  )
-		);
+        $dbh->query($query, array($pkg_info['name'],
+              $version,
+              $package,
+              $release_id,
+              $pkg_info['categoryid'],
+              date('Y-m-d H:i:s')
+              )
+        );
         // }}}
     }
 
@@ -2785,7 +2793,7 @@ class PEAR_User extends DB_storage
 
     function is($handle)
     {
-		$ret = strtolower($this->handle);
+        $ret = strtolower($this->handle);
         return (strtolower($handle) == $ret);
     }
 

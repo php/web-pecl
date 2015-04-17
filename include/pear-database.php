@@ -1953,7 +1953,7 @@ class release
             if (empty($path) || (!@is_file(PEAR_TARBALL_DIR . '/' . $basename) && !@is_file($path))) {
                 return PEAR::raiseError("release download:: no version information found");
             }
-            $basename = substr($file, 0, -4);
+            $basename = substr($basename, 0, -4);
 
         }
 

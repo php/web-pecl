@@ -105,7 +105,7 @@ while ( list(, $listinfo) = each($mailing_lists)) {
 There are a variety of commands you can use to modify your subscription.
 Either send a message to pecl-<tt>whatever</tt>@lists.php.net (as in,
 pecl-dev@lists.php.net) or you can view the commands for
-ezmlm <a href="http://www.ezmlm.org/ezman-0.32/ezman1.html">here</a>.
+ezmlm <a href="http://untroubled.org/ezmlm/ezman/ezman1.html">here</a>.
 </p>
 
 <p>

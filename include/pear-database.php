@@ -1835,9 +1835,35 @@ class release
                 }
             }
         }
-        $GLOBALS['pear_rest']->saveAllReleasesREST($package);
-        $GLOBALS['pear_rest']->saveReleaseREST($file, $packagexml, $pkg_info, $auth_user->handle, $release_id);
-        $GLOBALS['pear_rest']->savePackagesCategoryREST(package::info($package, 'category'));
+        $res = $GLOBALS['pear_rest']->saveAllReleasesREST($package);
+        if (PEAR::isError($res)) {
+            $dbh->query('DELETE FROM deps WHERE ' .
+                "`release` = $release_id");
+            $dbh->query('DELETE FROM releases WHERE ' .
+                "id = $release_id");
+            @unlink($file);
+            return $res;
+        }
+
+        $res = $GLOBALS['pear_rest']->saveReleaseREST($file, $packagexml, $pkg_info, $auth_user->handle, $release_id);
+        if (PEAR::isError($res)) {
+            $dbh->query('DELETE FROM deps WHERE ' .
+                "`release` = $release_id");
+            $dbh->query('DELETE FROM releases WHERE ' .
+                "id = $release_id");
+            @unlink($file);
+            return $res;
+        }
+
+        $res = $GLOBALS['pear_rest']->savePackagesCategoryREST(package::info($package, 'category'));
+        if (PEAR::isError($res)) {
+            $dbh->query('DELETE FROM deps WHERE ' .
+                "`release` = $release_id");
+            $dbh->query('DELETE FROM releases WHERE ' .
+                "id = $release_id");
+            @unlink($file);
+            return $res;
+        }
 
         return $file;
     }

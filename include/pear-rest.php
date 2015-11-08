@@ -329,6 +329,9 @@ class pear_rest
                 $config = &PEAR_Config::singleton();
                 $pkg->setConfig($config); // configuration is unused for this quick parse
                 $pf = $pkg->parse($packagexml, '');
+                if (PEAR::isError($pf)) {
+                    return $pf;
+                }
                 if ($compat = $pf->getCompatible()) {
                     if (!isset($compat[0])) {
                         $compat = array($compat);

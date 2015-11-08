@@ -330,7 +330,7 @@ class pear_rest
                 $pkg->setConfig($config); // configuration is unused for this quick parse
                 $pf = $pkg->parse($packagexml, '');
                 if (PEAR::isError($pf)) {
-                    return $pf;
+                    return PEAR::raiseError(sprintf("Parsing the packagexml for release %s failed with error message: %s", $release['id'], $pf->getMessage()));
                 }
                 if ($compat = $pf->getCompatible()) {
                     if (!isset($compat[0])) {

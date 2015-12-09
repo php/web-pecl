@@ -55,6 +55,7 @@ if (empty($dbh)) {
     );
     $GLOBALS['_NODB'] = true;
     $dbh =& DB::connect(PEAR_DATABASE_DSN, $options);
+    $dbh->query('SET NAMES utf8');
     $GLOBALS['_NODB'] = false;
 }
 if (!isset($pear_rest)) {

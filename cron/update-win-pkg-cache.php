@@ -17,6 +17,7 @@ $dbh = DB::connect("mysql://pear:pear@localhost/pear");
 if (DB::isError($dbh)) {
 	die("could not connect to database");
 }
+$dbh->query('SET NAMES utf8');
 
 $data = $dbh->getAll("SELECT packages.name, releases.version, releases.releasedate 
 						FROM packages, releases

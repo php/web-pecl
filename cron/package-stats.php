@@ -27,10 +27,10 @@
 */
 	$dsn = "mysql://pear:pear@localhost/pear";
 	$dbh = DB::connect($dsn);
-
 	if (DB::isError($db = DB::connect($dsn))) {
 		die ("Failed to connect: $dsn\n");
 	}
+	$dbh->query('SET NAMES utf8');
 
 /**
 * Query the packages info and insert the results into

@@ -29,7 +29,7 @@ function rss_create($items, $channel_title, $channel_description, $dest_file=fal
     if (is_array($items) && count($items)>0) {
 
         $rss_top = <<<EOT
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel rdf:about="http://pecl.php.net/">
     <link>http://pecl.php.net/</link>
@@ -89,7 +89,7 @@ $item_entries
 			fclose($stream);
 			rename($tmpf, $dest_file);
 		}
-        header("Content-Type: text/xml; charset=iso-8859-1");
+        header("Content-Type: text/xml; charset=utf-8");
         echo $rss_feed;
     } else {
         rss_bailout();

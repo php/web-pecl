@@ -11,6 +11,7 @@ if(!ini_get('register_globals')){
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "data_error_handler");
 list($progname, $type, $user, $pass, $db) = $argv;
 $dbh = DB::connect("$type://$user:$pass@localhost/$db");
+$dbh->query('SET NAMES utf8');
 $me = getenv("USER");
 $now = gmdate("Y-m-d H:i:s");
 

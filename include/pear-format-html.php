@@ -19,7 +19,7 @@
 */
 
 /* Send charset */
-header("Content-Type: text/html; charset=ISO-8859-1");
+header("Content-Type: text/html; charset=utf-8");
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 

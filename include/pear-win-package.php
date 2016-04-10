@@ -212,7 +212,7 @@ class package_dll
 		$uri = "/downloads/pecl/releases/" . strtolower($name) . "/" . $version;
 		$ret = array();
 
-		$fp = fsockopen($host, $port);
+		$fp = @fsockopen($host, $port);
 		if (!$fp) {
 			return NULL;
 		}

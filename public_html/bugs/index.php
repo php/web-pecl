@@ -26,7 +26,7 @@ response_header('Bugs');
 <p>
  If you need support or you don't really know if the problem you found
  is a bug, please use our
- <?php print_link('/support', 'support channels'); ?>.
+ <?php print_link('/support.php', 'support channels'); ?>.
 </p>
 
 <p>

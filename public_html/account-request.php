@@ -39,16 +39,20 @@ $fields  = array('handle',
                  'email',
                  'purpose',
                  'sponsor',
-                 'password',
-                 'password2',
                  'email',
                  'moreinfo',
                  'homepage',
                  'needsvn', 
                  'showemail');
 
+$password_fields = array('password',  'password2');
+
 foreach ($fields as $field) {
     $$field = isset($_POST[$field]) ? htmlspecialchars(strip_tags($_POST[$field]),ENT_QUOTES) : null;
+}
+
+foreach ($password_fields as $field) {
+    $$field = isset($_POST[$field]) ? $_POST[$field] : null;
 }
 
 if (isset($_POST['submit'])) {

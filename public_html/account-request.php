@@ -39,16 +39,20 @@ $fields  = array('handle',
                  'email',
                  'purpose',
                  'sponsor',
-                 'password',
-                 'password2',
                  'email',
                  'moreinfo',
                  'homepage',
                  'needsvn', 
                  'showemail');
 
+$password_fields = array('password',  'password2');
+
 foreach ($fields as $field) {
     $$field = isset($_POST[$field]) ? htmlspecialchars(strip_tags($_POST[$field]),ENT_QUOTES) : null;
+}
+
+foreach ($password_fields as $field) {
+    $$field = isset($_POST[$field]) ? $_POST[$field] : null;
 }
 
 if (isset($_POST['submit'])) {
@@ -96,7 +100,7 @@ if (isset($_POST['submit'])) {
 
             $purpose .= "\n\nSponsor:\n" . $sponsor;
 
-            $obj =& new PEAR_User($dbh, $handle);
+            $obj = new PEAR_User($dbh, $handle);
 
             if (isset($obj->created)) {
                 display_error("Sorry, that username is already taken");

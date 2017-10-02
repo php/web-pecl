@@ -384,9 +384,6 @@ if (@!$_GET['pid']) {
 	    PEAR::raiseError('unable to generate stats');
 	}
 
-	if ($rows > 12) {
-		echo '<div id="jabba" style="height: 300px; overflow: auto">';
-	}
 	echo " <table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"2\">\n";
 	echo "  <tr align=\"left\" bgcolor=\"#cccccc\">\n";
 	echo "   <th>Package Name</th>\n";
@@ -415,10 +412,6 @@ if (@!$_GET['pid']) {
 	echo " </table>\n";
 
 	$bb->end();
-
-	if ($rows > 12) {
-		echo '</div>';
-	}
 }
 
 response_footer();

@@ -219,7 +219,9 @@ class package_dll
 		$port = 80;
 		$uri = "/downloads/pecl/releases/" . strtolower($name) . "/" . $version;
 		$ret = array();
+		$retries = 5;
 
+retry:
 		$fp = @fsockopen($host, $port);
 		if (!$fp) {
 			return NULL;
@@ -239,6 +241,11 @@ class package_dll
 		}
 		if (preg_match(',HTTP/\d\.\d 200 .*,', $r) < 1) {
 			fclose($fp);
+			if ($retries > 0) {
+				usleep(30000);
+				$retries--;
+				goto retry;
+			}
 			return NULL;
 		}
 

@@ -227,7 +227,7 @@ retry:
 			return NULL;
 		}
 
-		$hdrs = "GET $uri/ HTTP/1.0\r\nHost: $host\r\nConnection: close\r\n\r\n";
+		$hdrs = "GET $uri/ HTTP/1.0\r\nHost: $host\r\nUser-Agent: WebPecl/1.0\r\nConnection: close\r\n\r\n";
 		$r = fwrite($fp, $hdrs);
 		if (false === $r || $r != strlen($hdrs)) {
 			fclose($fp);

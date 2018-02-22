@@ -28,7 +28,7 @@
 *  o Release date (on/before/after)
 */
 
-$template_dir = dirname(dirname(__FILE__)) . '/templates/';
+$template_dir = dirname(__DIR__) . '/templates/';
 require_once "HTML/Form.php";
 
 /**

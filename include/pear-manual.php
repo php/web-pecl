@@ -36,7 +36,7 @@ function setupNavigation($data) {
     $tstamp = gmdate("D, d M Y",getlastmod());
 }
 
-function makeBorderTOC($this) {
+function makeBorderTOC($that) {
     global $NEXT, $PREV, $UP, $HOME, $TOC, $DOCUMENT_ROOT;
     global $SIDEBAR_DATA, $LANG,$CHARSET;
 
@@ -73,7 +73,7 @@ function makeBorderTOC($this) {
             continue;
         }
         $img = 'box-0.gif';
-        if ($title == $this) {
+        if ($title == $that) {
             $img = 'box-1.gif';
         }
 

@@ -53,7 +53,7 @@ if (empty($dbh)) {
         'portability' => DB_PORTABILITY_ALL,
     );
     $GLOBALS['_NODB'] = true;
-    $dbh =& DB::connect(PEAR_DATABASE_DSN, $options);
+    $dbh = DB::connect(PEAR_DATABASE_DSN, $options);
     $dbh->query('SET NAMES utf8');
     $GLOBALS['_NODB'] = false;
 }

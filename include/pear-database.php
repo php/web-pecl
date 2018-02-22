@@ -1691,7 +1691,7 @@ class release
                $_PEAR_Common_dependency_relations;
 
         require_once 'Archive/Tar.php';
-        $tar = &new Archive_Tar($file);
+        $tar = new Archive_Tar($file);
         $oldpackagexml = $tar->extractInString('package.xml');
         if (($packagexml = $tar->extractInString('package2.xml')) ||
               ($packagexml = $tar->extractInString('package.xml'))) {
@@ -1738,8 +1738,8 @@ class release
 
         require_once 'PEAR/PackageFile.php';
         require_once 'PEAR/Config.php';
-        $config = &PEAR_Config::singleton();
-        $pf = &new PEAR_PackageFile($config);
+        $config = PEAR_Config::singleton();
+        $pf = new PEAR_PackageFile($config);
         $pkg_info = $pf->fromXmlString($packagexml, PEAR_VALIDATE_DOWNLOADING,
             $compatible ? 'package2.xml' : 'package.xml');
 
@@ -2363,7 +2363,7 @@ class user
     {
         global $dbh, $auth_user;
 
-        $user =& new PEAR_User($dbh, $uid);
+        $user = new PEAR_User($dbh, $uid);
         if (@$user->registered) {
             return false;
         }
@@ -2579,7 +2579,7 @@ class user
         }
 
         $handle = strtolower($data['handle']);
-        $obj =& new PEAR_User($dbh, $handle);
+        $obj = new PEAR_User($dbh, $handle);
 
         if (isset($obj->created)) {
             $data['jumpto'] = "handle";
@@ -2675,7 +2675,7 @@ class user
 
         $fields = array("name", "email", "homepage", "showemail", "userinfo", "pgpkeyid", "wishlist");
 
-        $user =& new PEAR_User($dbh, $data['handle']);
+        $user = new PEAR_User($dbh, $data['handle']);
         foreach ($data as $key => $value) {
             if (!in_array($key, $fields)) {
                 continue;

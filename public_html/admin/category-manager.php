@@ -48,7 +48,7 @@ function parseTree(&$structure, $parent = null)
 
     if (count($categories)) {
         foreach ($categories as $cat) {
-            $newNode = &$structure->addItem(new HTML_TreeNode(array('text' => htmlspecialchars($cat['name']),
+            $newNode = $structure->addItem(new HTML_TreeNode(array('text' => htmlspecialchars($cat['name']),
                                                                     'icon' => 'folder.gif'), 
                                                               array('onclick' => 'category_click(event, this, ' . $cat['id'] . ')')
                                                               )

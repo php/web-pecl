@@ -227,7 +227,7 @@ if (!empty($catpid)) {
 		
     // Paging
     $total = count($packages);
-    $pager =& Pager::factory(array('totalItems' => $total, 'perPage' => 15));
+    $pager = Pager::factory(array('totalItems' => $total, 'perPage' => 15));
     list($first, $last) = $pager->getOffsetByPageId();
     list($prev, $pages, $next) = $pager->getLinks('<nobr><img src="gifs/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</nobr>', '<nobr>Next<img src="gifs/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></nobr>');
 

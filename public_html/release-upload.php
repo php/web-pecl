@@ -163,9 +163,9 @@ do {
         $util = new PEAR_Common;
         $info = $util->infoFromTgzFile($distfile);
         if (class_exists('PEAR_PackageFile')) {
-            $config = &PEAR_Config::singleton();
+            $config = PEAR_Config::singleton();
             $pkg = new PEAR_PackageFile($config);
-            $info = &$pkg->fromTgzFile($distfile, PEAR_VALIDATE_NORMAL);
+            $info = $pkg->fromTgzFile($distfile, PEAR_VALIDATE_NORMAL);
             if (PEAR::isError($info)) {
                 if (is_array($info->getUserInfo())) {
                     foreach ($info->getUserInfo() as $err) {
@@ -353,9 +353,9 @@ if ($display_verification) {
 
     response_header('Upload New Release :: Verify');
 
-    $config = &PEAR_Config::singleton();
+    $config = PEAR_Config::singleton();
     $pkg = new PEAR_PackageFile($config);
-    $info = &$pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
+    $info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
     $errors = $warnings = array();
     if (PEAR::isError($info)) {
         if (is_array($info->getUserInfo())) {

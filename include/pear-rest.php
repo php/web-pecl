@@ -326,7 +326,7 @@ class pear_rest
             if (strpos($packagexml, ' version="2.0"')) {
                 // little quick hack to determine package.xml version
                 $pkg = new PEAR_PackageFile_Parser_v2;
-                $config = &PEAR_Config::singleton();
+                $config = PEAR_Config::singleton();
                 $pkg->setConfig($config); // configuration is unused for this quick parse
                 $pf = $pkg->parse($packagexml, '');
                 if (PEAR::isError($pf)) {
@@ -589,7 +589,7 @@ class pear_rest
     http://pear.php.net/dtd/rest.allmaintainers.xsd">' . "\n";
         // package information
         require_once 'Damblan/Karma.php';
-        $karma = &new Damblan_Karma($GLOBALS['dbh']);
+        $karma = new Damblan_Karma($GLOBALS['dbh']);
         foreach ($maintainers as $maintainer) {
             if (!$karma->has($maintainer['handle'], 'pear.dev')) {
                 continue;

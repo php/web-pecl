@@ -140,7 +140,7 @@ function navigationBar($title,$id,$loc) {
         echo '<tr>';
         echo '<td valign="top" align="left"><small>'
              . make_link("/download-docs.php", "Download Documentation")
-            . '</small</td>';
+            . '</small></td>';
         echo '<td align="right"><small>Last updated: '.$tstamp.'<br />';
     }
 

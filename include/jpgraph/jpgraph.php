@@ -27,7 +27,7 @@ DEFINE("CACHE_DIR", "/tmp/");
 DEFINE("APACHE_CACHE_DIR", "/tmp/");
 
 // Directory for TTF fonts. Must end with '/'
-DEFINE("TTF_DIR", dirname(__FILE__) . "/ttf/");
+DEFINE("TTF_DIR", __DIR__ . "/ttf/");
 
 //------------------------------------------------------------------------
 // Various JpGraph Settings. PLEASE adjust accordingly to you

@@ -274,7 +274,7 @@ if ($display_form) {
  <strong>Please confirm the reason for this PECL account request:</strong>
 </p>
 
-<script language=\"JavaScript\" type=\"text/javascript\" defer=\"defer\">
+<script type=\"text/javascript\" defer=\"defer\">
 <!--
 	function reasonClick(option)
 	{
@@ -357,7 +357,7 @@ if ($display_form) {
     print "</form>";
 
     if ($jumpto) {
-        print "<script language=\"JavaScript\" type=\"text/javascript\">\n<!--\n";
+        print "<script type=\"text/javascript\">\n<!--\n";
         print "if (!document.forms[1].$jumpto.disabled) document.forms[1].$jumpto.focus();\n";
         print "\n// -->\n</script>\n";
     }

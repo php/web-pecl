@@ -5,10 +5,10 @@ response_header('Package Search');
 
 <h1>Package Search</h1>
 
-<script type="text/javascript" language="javascript" src="javascript/calendar/browserSniffer.js"></script>
-<script type="text/javascript" language="javascript" src="javascript/calendar/dynCalendar.js"></script>
+<script type="text/javascript" src="javascript/calendar/browserSniffer.js"></script>
+<script type="text/javascript" src="javascript/calendar/dynCalendar.js"></script>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 <!--
 
     date_updated_released_on     = false;
@@ -294,7 +294,7 @@ response_header('Package Search');
      <option value="<?php echo $value; ?>"><?php echo $value; ?></option>
     <?php endforeach?>
    </select>
-   <script language="JavaScript" type="text/javascript">
+   <script type="text/javascript">
     <!--
      calendarReleasedOn = new dynCalendar('calendarReleasedOn', 'setDateFromCalendar_released_on', 'gifs/');
     //-->
@@ -318,7 +318,7 @@ response_header('Package Search');
      <option value="<?php echo $value; ?>"><?php echo $value; ?></option>
     <?php endforeach?>
    </select>
-   <script language="JavaScript" type="text/javascript">
+   <script type="text/javascript">
     <!--
      calendarReleasedBefore = new dynCalendar('calendarReleasedBefore', 'setDateFromCalendar_released_before', 'gifs/');
     //-->
@@ -342,7 +342,7 @@ response_header('Package Search');
      <option value="<?php echo $value; ?>"><?php echo $value;?></option>
     <?php endforeach?>
    </select>
-   <script language="JavaScript" type="text/javascript">
+   <script type="text/javascript">
    <!--
     calendarReleasedSince = new dynCalendar('calendarReleasedSince', 'setDateFromCalendar_released_since', 'gifs/');
    //-->
@@ -362,7 +362,7 @@ response_header('Package Search');
 </form>
 
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
     /**
     * Call function to set dropdowns to their search values

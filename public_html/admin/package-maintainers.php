@@ -187,7 +187,7 @@ if (empty($id)) {
     echo '</table>';
     echo '</form>';
 
-    echo '<script language="JavaScript" type="text/javascript">';
+    echo '<script type="text/javascript">';
     echo 'document.form.remove.disabled = true;';
     echo 'document.form.add.disabled = true;';
     echo 'document.form.role.disabled = true;';

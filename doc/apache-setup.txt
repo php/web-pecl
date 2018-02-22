@@ -2,6 +2,8 @@ These are the typical Apache directives you need to set up a
 development site for pearweb (this PHP installation has PEAR stuff
 installed in /usr/share/pear):
 
+and install packages DB and HTTP
+
 <VirtualHost *>
  ServerName pear.localdomain
 

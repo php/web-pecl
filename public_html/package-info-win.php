@@ -354,7 +354,7 @@ if ($relid) {
 }
 $bb = new Borderbox($title, "90%", "", 2, true);
 
-$rels =& $pkg['releases'];
+$rels = $pkg['releases'];
 
 // Check if there are too much things to show
 $too_much = false;
@@ -406,7 +406,7 @@ if ($sth->numRows() == 0) {
             $title = "";
         }
 
-        $deps =& $pkg['releases'][$r_version]['deps'];
+        $deps = $pkg['releases'][$r_version]['deps'];
 
         if (count($deps) > 0) {
             foreach ($deps as $row) {

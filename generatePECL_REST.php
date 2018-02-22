@@ -39,7 +39,7 @@ if (empty($dbh)) {
         'persistent' => false,
         'portability' => DB_PORTABILITY_ALL,
     );
-    $dbh =& DB::connect(PEAR_DATABASE_DSN, $options);
+    $dbh = DB::connect(PEAR_DATABASE_DSN, $options);
     $dbh->query('SET NAMES utf8');
 }
 ob_end_clean();
@@ -69,7 +69,7 @@ echo "Generating Package REST...\n";
 $pear_rest->saveAllPackagesREST();
 require_once 'Archive/Tar.php';
 require_once 'PEAR/PackageFile.php';
-$config = &PEAR_Config::singleton();
+$config = PEAR_Config::singleton();
 $pkg = new PEAR_PackageFile($config);
 foreach (package::listAll(false, false, false) as $package => $info) {
     echo "  $package\n";
@@ -89,7 +89,7 @@ foreach (package::listAll(false, false, false) as $package => $info) {
                 echo "     Skipping INVALID Version $version (corrupt in database!)\n";
                 continue;
             }
-            $tar = &new Archive_Tar($fileinfo);
+            $tar = new Archive_Tar($fileinfo);
             if ($pxml = $tar->extractInString('package2.xml')) {
             } elseif ($pxml = $tar->extractInString('package.xml'));
             PEAR::pushErrorHandling(PEAR_ERROR_RETURN);

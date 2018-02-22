@@ -48,8 +48,8 @@ class patches {
      * @param  object PEAR::DB instance
      * @return void
      */
-    function patches(&$dbh) {
-        $this->dbh = &$dbh;
+    function patches($dbh) {
+        $this->dbh = $dbh;
     }
 
     /**

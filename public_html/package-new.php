@@ -124,7 +124,7 @@ people agree with you.
     }
 
     $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");
-    $form =& new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES), "POST");
+    $form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES), "POST");
 
     print "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "\">\n";
 

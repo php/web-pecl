@@ -138,7 +138,7 @@ do {
     // {{{ "approve account request" form
 
     if (!empty($acreq)) {
-        $requser =& new PEAR_User($dbh, $acreq);
+        $requser = new PEAR_User($dbh, $acreq);
         if (empty($requser->name)) {
             break;
         }

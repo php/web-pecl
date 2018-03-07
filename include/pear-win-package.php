@@ -220,7 +220,8 @@ class package_dll
 		$uri = "/downloads/pecl/releases/" . strtolower($name) . "/" . $version;
 		$ret = array();
 
-		$r = file_get_contents("https://$host$uri/");
+		$ctx = stream_context_create(array("http" => array("header" => "User-Agent: WebPecl/1.0")));
+		$r = file_get_contents("https://$host$uri/", false, $ctx);
 		if (false === $r) {
 			return NULL;
 		}

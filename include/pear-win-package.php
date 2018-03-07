@@ -220,29 +220,10 @@ class package_dll
 		$uri = "/downloads/pecl/releases/" . strtolower($name) . "/" . $version;
 		$ret = array();
 
-		$fp = @fsockopen($host, $port);
-		if (!$fp) {
+		$r = file_get_contents("https://$host$uri/");
+		if (false === $r) {
 			return NULL;
 		}
-
-		$hdrs = "GET $uri/ HTTP/1.0\r\nHost: $host\r\nUser-Agent: WebPecl/1.0\r\nConnection: close\r\n\r\n";
-		$r = fwrite($fp, $hdrs);
-		if (false === $r || $r != strlen($hdrs)) {
-			fclose($fp);
-			return NULL;
-		}
-
-		/* so much should be enough */
-		$r = '';
-		while (!feof($fp)) {
-			$r .= fread($fp, 32768);
-		}
-		if (preg_match(',HTTP/\d\.\d 200 .*,', $r) < 1) {
-			fclose($fp);
-			return NULL;
-		}
-
-		fclose($fp);
 
 		foreach (self::getZipFileList($name, $version) as $branch => $data) {
 			foreach ($data as $arch => $zips) {
@@ -255,7 +236,7 @@ class package_dll
 				if ($branch_ok) {
 					$tmp = array();
 					foreach ($zips as $zip) {
-						$tmp[] = "http://$host$uri/$zip";
+						$tmp[] = "https://$host$uri/$zip";
 					}
 
 					if (!isset($ret[$branch])) {

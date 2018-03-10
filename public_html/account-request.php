@@ -64,6 +64,7 @@ if (isset($_POST['submit'])) {
                               "email"     => "your email address",
                               "purpose"   => "the purpose of your PECL account",
                               "sponsor"   => "references to current users sponsoring your request",
+                              "language"  => "programmng language being developed",
             );
 
             $name = $firstname . " " . $lastname;
@@ -74,6 +75,12 @@ if (isset($_POST['submit'])) {
                     $jumpto = $field;
                     break 2;
                 }
+	    }
+
+            if (strtolower(trim($_POST['language'])) !== 'php') {
+                display_error('That was the wrong language choice');
+                $jumpto = "language";
+                break;
             }
 
             if (!preg_match(PEAR_COMMON_USER_NAME_REGEX, $handle)) {
@@ -351,6 +358,7 @@ if ($display_form) {
     $bb->horizHeadRow("Purpose of your PECL account<br />(No account is needed for using PECL or PECL packages):", HTML_Form::returnTextarea("purpose", stripslashes($purpose)));
     $bb->horizHeadRow("Sponsoring users<br />(Current php.net users who suggested you request an account and reviewed your extension/patch):", HTML_Form::returnTextarea("sponsor", stripslashes($sponsor)));
     $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes($moreinfo)));
+    $bb->horizHeadRow("Which programming language is developed at php.net (spam protection):", HTML_Form::returnText("language", ""));
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" value=\"Submit\" />");
     $bb->end();

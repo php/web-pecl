@@ -16,7 +16,6 @@
    | Authors: Martin Jansen <mj@php.net>                                  |
    |          Tomas V.V.Cox <cox@idecnet.com>                             |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 $package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);

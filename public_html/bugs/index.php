@@ -14,7 +14,6 @@
  * @package   Bugs
  * @copyright Copyright (c) 1997-2012 The PHP Group
  * @license   http://www.php.net/license/3_0.txt  PHP License
- * @version   $Id: index.php 317958 2011-10-10 10:52:51Z pajoye $
  */
 
 response_header('Bugs');

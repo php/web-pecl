@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors: Anatol Belski <ab@php.net>                                  |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 define("PECL_DLL_URL_CACHE_DB", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_url.cache");

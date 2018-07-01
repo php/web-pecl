@@ -16,7 +16,6 @@
    | Authors: Martin Jansen <mj@php.net>                                  |
    |          Richard Heyes <richard@php.net>                             |
    +----------------------------------------------------------------------+
-   $Id$
  */
 
 require_once 'HTML/Form.php';

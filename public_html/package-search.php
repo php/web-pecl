@@ -16,7 +16,6 @@
    | Authors: Richard Heyes <richard@php.net>                             |
    |          Martin Jansen <mj@php.net>                                  |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 /**

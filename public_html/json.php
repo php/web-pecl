@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors: Pierre Joye <pierre@php.net>                                |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 /* only support package maintainer for now, needed for bugs.php.net */

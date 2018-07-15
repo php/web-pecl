@@ -115,7 +115,7 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            $md5pw = md5($password);
+            $hash = password_hash($password, PASSWORD_DEFAULT);
             $showemail = @(bool)$showemail;
 
             $needsvn = @(bool)$needsvn;
@@ -127,7 +127,7 @@ if (isset($_POST['submit'])) {
             $sth = $dbh->prepare("INSERT INTO users 
                     (handle, name, email, password, registered, showemail, homepage, userinfo, from_site, active, created)
                     VALUES(?, ?, ?, ?, 0, ?, ?, ?, 'pecl', 0, ?)");
-            $res = $dbh->execute($sth, array($handle, $name, $email, $md5pw, $showemail, $homepage, $userinfo, $created_at));
+            $res = $dbh->execute($sth, array($handle, $name, $email, $hash, $showemail, $homepage, $userinfo, $created_at));
 
             if (DB::isError($res)) {
                 //constraint violation, only email and handle(username) is unique

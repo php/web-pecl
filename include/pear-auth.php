@@ -107,7 +107,7 @@ function auth_verify($user, $passwd)
             $crypted = md5($passwd);
 
             if ($crypted == @$auth_user->password) {
-                $update = $dbh->prepare("UPDATE users SET password = ? WHERE user = ?");
+                $update = $dbh->prepare("UPDATE users SET password = ? WHERE handle = ?");
                 $result = $dbh->execute($update, [password_hash($passwd, PASSWORD_DEFAULT), $user]);
                 $ok = true;
             } else {

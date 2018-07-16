@@ -41,6 +41,10 @@ class package_dll
 
 	/* NOTE when edit here, don't forget to remove the cache file */
 	protected static $zip_name_parts = array (
+		'7.3' => array(
+			array('crt' => 'vc15', 'arch' => 'x64'),
+			array('crt' => 'vc15', 'arch' => 'x86'),
+		),
 		'7.2' => array(
 			array('crt' => 'vc15', 'arch' => 'x64'),
 			array('crt' => 'vc15', 'arch' => 'x86'),

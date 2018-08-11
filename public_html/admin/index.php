@@ -100,7 +100,7 @@ if (!empty($_REQUEST['cmd'])) {
 // {{{ javascript functions
 
 ?>
-<script type="text/javascript">
+<script>
 <!--
 
 function confirmed_goto(url, message) {
@@ -231,7 +231,7 @@ do {
     // {{{ admin menu
     } else {
 		?>
-		<script type="text/javascript">
+		<script>
         <!--
 			/**
             * This code is *nasty* (nastyCode�)

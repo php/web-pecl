@@ -3,7 +3,6 @@
  * Drop all accounts not active in any package and not having a SVN account
  * Author: pierre@php.net
  */
-/* $Id$ */
 
 include __DIR__ . '/../include/pear-config.php';
 $svnusers = '/home/pierre/project/pecl/migration/svnusers';

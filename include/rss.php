@@ -13,11 +13,11 @@ define('PEAR_SITE_PWN','http://pear.php.net/weeklynews.php#');
 /**
  * PEAR Weekly news HTML files
  */
-define('PEAR_PWN_PATH',dirname(__FILE__) . '/../weeklynews');
+define('PEAR_PWN_PATH',__DIR__ . '/../weeklynews');
 /**
  * RSS directory (http available)
  */
-define('PEAR_RSS_PATH',dirname(__FILE__) . '/../public_html/rss');
+define('PEAR_RSS_PATH',__DIR__ . '/../public_html/rss');
 
 /**
 * DSN for pear packages database

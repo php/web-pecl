@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors:                                                             |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 require_once "HTML/Form.php";
@@ -64,6 +63,7 @@ if (isset($_POST['submit'])) {
                               "email"     => "your email address",
                               "purpose"   => "the purpose of your PECL account",
                               "sponsor"   => "references to current users sponsoring your request",
+                              "language"  => "programmng language being developed",
             );
 
             $name = $firstname . " " . $lastname;
@@ -74,6 +74,12 @@ if (isset($_POST['submit'])) {
                     $jumpto = $field;
                     break 2;
                 }
+	    }
+
+            if (strtolower(trim($_POST['language'])) !== 'php') {
+                display_error('That was the wrong language choice');
+                $jumpto = "language";
+                break;
             }
 
             if (!preg_match(PEAR_COMMON_USER_NAME_REGEX, $handle)) {
@@ -108,7 +114,7 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            $md5pw = md5($password);
+            $hash = password_hash($password, PASSWORD_DEFAULT);
             $showemail = @(bool)$showemail;
 
             $needsvn = @(bool)$needsvn;
@@ -120,7 +126,7 @@ if (isset($_POST['submit'])) {
             $sth = $dbh->prepare("INSERT INTO users 
                     (handle, name, email, password, registered, showemail, homepage, userinfo, from_site, active, created)
                     VALUES(?, ?, ?, ?, 0, ?, ?, ?, 'pecl', 0, ?)");
-            $res = $dbh->execute($sth, array($handle, $name, $email, $md5pw, $showemail, $homepage, $userinfo, $created_at));
+            $res = $dbh->execute($sth, array($handle, $name, $email, $hash, $showemail, $homepage, $userinfo, $created_at));
 
             if (DB::isError($res)) {
                 //constraint violation, only email and handle(username) is unique
@@ -351,6 +357,7 @@ if ($display_form) {
     $bb->horizHeadRow("Purpose of your PECL account<br />(No account is needed for using PECL or PECL packages):", HTML_Form::returnTextarea("purpose", stripslashes($purpose)));
     $bb->horizHeadRow("Sponsoring users<br />(Current php.net users who suggested you request an account and reviewed your extension/patch):", HTML_Form::returnTextarea("sponsor", stripslashes($sponsor)));
     $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes($moreinfo)));
+    $bb->horizHeadRow("Which programming language is developed at php.net (spam protection):", HTML_Form::returnText("language", ""));
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" value=\"Submit\" />");
     $bb->end();

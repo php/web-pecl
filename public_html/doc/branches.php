@@ -1,4 +1,4 @@
-<?php # $Id$
+<?php
 response_header("CVS Branches and how they relate to PECL");
 ?>
 

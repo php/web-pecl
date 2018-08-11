@@ -2,12 +2,11 @@
 /** 
  * Generate static REST files for pecl.php.net from existing data
  * @author Greg Beaver <cellog@php.net>
- * @version $Id$
  */
 /**
  * Useful files to have
  */
-set_include_path(dirname(__FILE__) . '/include' . PATH_SEPARATOR . get_include_path());
+set_include_path(__DIR__ . '/include' . PATH_SEPARATOR . get_include_path());
 ob_start();
 require_once "pear-config.php";
 if ($_SERVER['SERVER_NAME'] != PEAR_CHANNELNAME) {
@@ -26,7 +25,7 @@ if (!isset($pear_rest)) {
     if (isset($_SERVER['argv']) && $_SERVER['argv'][1] == 'pecl') {
         $pear_rest = new pear_rest(PEAR_REST_DIR);
     } else {
-        $pear_rest = new pear_rest(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'public_html' .
+        $pear_rest = new pear_rest(__DIR__ . DIRECTORY_SEPARATOR . 'public_html' .
             DIRECTORY_SEPARATOR . 'rest');
     }
 }

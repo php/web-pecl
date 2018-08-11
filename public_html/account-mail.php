@@ -59,7 +59,7 @@ function printForm($data = array())
 
     $bb->end();
 
-    echo "<script language=\"JavaScript\">\n";
+    echo "<script>\n";
     echo "<!--\n";
     echo "document.forms.contact." . $focus . ".focus();\n";
     echo "-->\n";

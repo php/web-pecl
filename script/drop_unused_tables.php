@@ -3,7 +3,6 @@
  * Drop unused tables 
  * Author: pierre@php.net
  */
-/* $Id$ */
 
 include __DIR__ . '/../include/pear-config.php';
 

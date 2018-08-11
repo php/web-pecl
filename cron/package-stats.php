@@ -16,7 +16,6 @@
 * +----------------------------------------------------------------------+
 * | Authors: Richard Heyes <richard@php.net>                             |
 * +----------------------------------------------------------------------+
-* $Id$
 *
 * This short script populates the package_stats table and should be run
 * via cron.

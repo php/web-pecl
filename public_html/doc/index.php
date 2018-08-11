@@ -1,4 +1,4 @@
-<?php # $Id$
+<?php
 response_header("PECL specific docs");
 ?>
 

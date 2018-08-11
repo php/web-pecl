@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors:                                                             |
    +----------------------------------------------------------------------+
-   $Id$
 */
 require_once "pear-config.php";
 
@@ -62,7 +61,7 @@ if (!isset($pear_rest)) {
     if (!DEVBOX) {
         $pear_rest = new pear_rest(PEAR_REST_DIR);
     } else {
-        $pear_rest = new pear_rest(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'public_html' .
+        $pear_rest = new pear_rest(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'public_html' .
             DIRECTORY_SEPARATOR . 'rest');
     }
 }

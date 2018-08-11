@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors: Richard Heyes                                               |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 /**
@@ -24,7 +23,7 @@
 * o Make headers in package list clickable for ordering
 */
 
-$template_dir = dirname(dirname(__FILE__)) . '/templates/';
+$template_dir = dirname(__DIR__) . '/templates/';
 $script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
 

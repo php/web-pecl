@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors: Anatol Belski <ab@php.net>                                  |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 define("PECL_DLL_URL_CACHE_DB", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_url.cache");
@@ -41,25 +40,29 @@ class package_dll
 
 	/* NOTE when edit here, don't forget to remove the cache file */
 	protected static $zip_name_parts = array (
-		'7.2' => array(
-			array('crt' => 'vc15', 'arch' => 'x86'),
+		'7.3' => array(
 			array('crt' => 'vc15', 'arch' => 'x64'),
+			array('crt' => 'vc15', 'arch' => 'x86'),
+		),
+		'7.2' => array(
+			array('crt' => 'vc15', 'arch' => 'x64'),
+			array('crt' => 'vc15', 'arch' => 'x86'),
 		),
 		'7.1' => array(
-			array('crt' => 'vc14', 'arch' => 'x86'),
 			array('crt' => 'vc14', 'arch' => 'x64'),
+			array('crt' => 'vc14', 'arch' => 'x86'),
 		),
 		'7.0' => array(
-			array('crt' => 'vc14', 'arch' => 'x86'),
 			array('crt' => 'vc14', 'arch' => 'x64'),
+			array('crt' => 'vc14', 'arch' => 'x86'),
 		),
 		'5.6' => array(
-			array('crt' => 'vc11', 'arch' => 'x86'),
 			array('crt' => 'vc11', 'arch' => 'x64'),
+			array('crt' => 'vc11', 'arch' => 'x86'),
 		),
 		'5.5' => array(
-			array('crt' => 'vc11', 'arch' => 'x86'),
 			array('crt' => 'vc11', 'arch' => 'x64'),
+			array('crt' => 'vc11', 'arch' => 'x86'),
 		),
 		'5.4' => array(
 			array('crt' => 'vc9', 'arch' => 'x86'),
@@ -219,37 +222,12 @@ class package_dll
 		$port = 80;
 		$uri = "/downloads/pecl/releases/" . strtolower($name) . "/" . $version;
 		$ret = array();
-		$retries = 5;
 
-retry:
-		$fp = @fsockopen($host, $port);
-		if (!$fp) {
+		$ctx = stream_context_create(array("http" => array("header" => "User-Agent: WebPecl/1.0")));
+		$r = file_get_contents("https://$host$uri/", false, $ctx);
+		if (false === $r) {
 			return NULL;
 		}
-
-		$hdrs = "GET $uri/ HTTP/1.0\r\nHost: $host\r\nUser-Agent: WebPecl/1.0\r\nConnection: close\r\n\r\n";
-		$r = fwrite($fp, $hdrs);
-		if (false === $r || $r != strlen($hdrs)) {
-			fclose($fp);
-			return NULL;
-		}
-
-		/* so much should be enough */
-		$r = '';
-		while (!feof($fp)) {
-			$r .= fread($fp, 32768);
-		}
-		if (preg_match(',HTTP/\d\.\d 200 .*,', $r) < 1) {
-			fclose($fp);
-			if ($retries > 0) {
-				usleep(30000);
-				$retries--;
-				goto retry;
-			}
-			return NULL;
-		}
-
-		fclose($fp);
 
 		foreach (self::getZipFileList($name, $version) as $branch => $data) {
 			foreach ($data as $arch => $zips) {
@@ -262,7 +240,7 @@ retry:
 				if ($branch_ok) {
 					$tmp = array();
 					foreach ($zips as $zip) {
-						$tmp[] = "http://$host$uri/$zip";
+						$tmp[] = "https://$host$uri/$zip";
 					}
 
 					if (!isset($ret[$branch])) {

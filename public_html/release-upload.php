@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors:                                                             |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 auth_require('pear.dev');
@@ -34,6 +33,10 @@ $success              = false;
 $errors               = array();
 
 PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
+
+if (!file_exists(PEAR_UPLOAD_TMPDIR)) {
+	mkdir(PEAR_UPLOAD_TMPDIR, 0777, true);
+}
 
 do {
     if (isset($_POST['upload'])) {

@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors:                                                             |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 function auth_reject($realm = null, $message = null)
@@ -92,7 +91,7 @@ function auth_verify($user, $passwd)
     $ok = false;
     switch (strlen(@$auth_user->password)) {
         // handle old-style DES-encrypted passwords
-        case 13: {
+        case 13:
             $seed = substr($auth_user->password, 0, 2);
             $crypted = crypt($passwd, $seed);
             if ($crypted == @$auth_user->password) {
@@ -101,18 +100,27 @@ function auth_verify($user, $passwd)
                 $error = "pear-auth: user `$user': invalid password (des)";
             }
             break;
-        }
-        // handle new-style MD5-encrypted passwords
-        case 32: {
+
+        // handle old MD5-hashed passwords and update them to password_hash()
+        case 32:
             $crypted = md5($passwd);
 
             if ($crypted == @$auth_user->password) {
+                $update = $dbh->prepare("UPDATE users SET password = ? WHERE handle = ?");
+                $result = $dbh->execute($update, [password_hash($passwd, PASSWORD_DEFAULT), $user]);
                 $ok = true;
             } else {
                 $error = "pear-auth: user `$user': invalid password (md5)";
             }
             break;
-        }
+
+        default:
+            if (password_verify($passwd, $auth_user->password)) {
+                $ok = true;
+            } else {
+                $error = "pear-auth: user `$user': invalid password (password_verify)";
+            }
+            break;
     }
     if (empty($auth_user->registered)) {
         if ($user) {

@@ -18,7 +18,6 @@
    |          Martin Jansen <mj@php.net>                                  |
    |          Gregory Beaver <cellog@php.net>                             |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 require_once 'DB/storage.php';

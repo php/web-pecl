@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors:                                                             |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 require_once "site.php";
@@ -36,7 +35,7 @@ function setupNavigation($data) {
     $tstamp = gmdate("D, d M Y",getlastmod());
 }
 
-function makeBorderTOC($this) {
+function makeBorderTOC($that) {
     global $NEXT, $PREV, $UP, $HOME, $TOC, $DOCUMENT_ROOT;
     global $SIDEBAR_DATA, $LANG,$CHARSET;
 
@@ -73,7 +72,7 @@ function makeBorderTOC($this) {
             continue;
         }
         $img = 'box-0.gif';
-        if ($title == $this) {
+        if ($title == $that) {
             $img = 'box-1.gif';
         }
 
@@ -140,7 +139,7 @@ function navigationBar($title,$id,$loc) {
         echo '<tr>';
         echo '<td valign="top" align="left"><small>'
              . make_link("/download-docs.php", "Download Documentation")
-            . '</small</td>';
+            . '</small></td>';
         echo '<td align="right"><small>Last updated: '.$tstamp.'<br />';
     }
 

@@ -16,16 +16,12 @@
 // | Authors: Ulf Wendel <ulf.wendel@phpdoc.de>                           |
 // |          Sebastian Bergmann <sb@sebastian-bergmann.de>               |
 // +----------------------------------------------------------------------+
-//
-// $Id$
-//
 
 /**
 * Generates a HTML menu from a multidimensional hash.
 *
 * Special thanks to the original author: Alex Vorobiev  <sasha@mathforum.com>.
 *
-* @version  $Id$
 * @author   Ulf Wendel <ulf.wendel@phpdoc.de>
 * @access   public
 * @package  HTML

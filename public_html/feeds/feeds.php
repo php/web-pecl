@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors: Pierre-Alain Joye <pajoye@php.net>                          |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 function rss_bailout() {
@@ -171,6 +170,6 @@ switch ($type) {
 }
 
 // we do not use yet static files. It will be activated with the new backends.
-// $file = dirname(__FILE__) . '/' .  $type . '_' . $argument . '.rss';
+// $file = __DIR__ . '/' .  $type . '_' . $argument . '.rss';
 $file = false;
 rss_create($items, $channel_title, $channel_description, $file);

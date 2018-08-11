@@ -15,7 +15,6 @@
    +----------------------------------------------------------------------+
    | Authors: Richard Heyes                                               |
    +----------------------------------------------------------------------+
-   $Id$
 */
 
 auth_require(true);
@@ -27,7 +26,7 @@ auth_require(true);
  *   deleting categories.
  */
 
-$template_dir = dirname(dirname(__FILE__)) . '/../templates/';
+$template_dir = dirname(__DIR__) . '/../templates/';
 	
 /**
  * Function to recurse thru the tree adding nodes to treemenu

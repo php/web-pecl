@@ -6,12 +6,12 @@
 // +---------------------------------------------------------------------+
 //
 
-require_once dirname(__FILE__) . '/../include/pear-prepend.php';
+require_once __DIR__ . '/../include/pear-prepend.php';
 
 /*require_once "PEAR.php";
 require_once "DB.php";
 
-require_once dirname(__FILE__) . '/../include/pear-win-package.php';*/
+require_once __DIR__ . '/../include/pear-win-package.php';*/
 
 $dbh = DB::connect("mysql://pear:pear@localhost/pear");
 if (DB::isError($dbh)) {

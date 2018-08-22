@@ -25,7 +25,7 @@ response_header('Package Statistics');
 
 <h1>Package Statistics</h1>
 
-<script language="JavaScript" type="text/javascript">
+<script>
 <!--
 function reloadMe()
 {
@@ -198,7 +198,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
     ?>
 <br /><br />
 
-<script language="JavaScript" type="text/javascript">
+<script>
 <!--
     function clearGraphList()
     {

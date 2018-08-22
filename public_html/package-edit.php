@@ -29,7 +29,7 @@ $form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES));
 response_header("Edit package");
 ?>
 
-<script language="javascript">
+<script>
 <!--
 
 function confirmed_goto(url, message) {

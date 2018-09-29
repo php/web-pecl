@@ -100,7 +100,7 @@ if (!empty($_REQUEST['cmd'])) {
 // {{{ javascript functions
 
 ?>
-<script language="javascript" type="text/javascript">
+<script>
 <!--
 
 function confirmed_goto(url, message) {
@@ -231,10 +231,10 @@ do {
     // {{{ admin menu
     } else {
 		?>
-		<script language="JavaScript" type="text/javascript">
+		<script>
         <!--
 			/**
-            * This code is *nasty* (nastyCode�)
+            * This code is *nasty* (nastyCode™)
             */
 
         	function highlightAccountRow(spanObj)

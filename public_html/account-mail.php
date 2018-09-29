@@ -24,7 +24,7 @@
 /**
  * Redirect to the accounts list if no handle was specified
  */
-if (!isset($_GET['handle'])) {
+if (!isset($_GET['handle']) || !preg_match('@^[0-9A-Za-z_]{2,20}$@', $_GET['handle'])) {
     localRedirect('/accounts.php');
 } else {
     $handle = $_GET['handle'];
@@ -59,7 +59,7 @@ function printForm($data = array())
 
     $bb->end();
 
-    echo "<script language=\"JavaScript\">\n";
+    echo "<script>\n";
     echo "<!--\n";
     echo "document.forms.contact." . $focus . ".focus();\n";
     echo "-->\n";

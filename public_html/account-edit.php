@@ -164,7 +164,7 @@ $cvs_acl_arr = $dbh->getCol('SELECT path FROM cvs_acl'
 $cvs_acl = implode("\n", $cvs_acl_arr);
 
 if ($row === null) {
-    error_handler($handle . ' is not a valid account name.', 'Invalid Account');
+    error_handler(htmlspecialchars($handle, ENT_QUOTES) . ' is not a valid account name.', 'Invalid Account');
 }
 
 

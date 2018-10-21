@@ -38,4 +38,3 @@ foreach ($data as $pkg) {
 		echo "Failed to update cache for $pkg[name]-$pkg[version]\n";
 	}
 }
-

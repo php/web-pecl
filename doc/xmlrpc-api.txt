@@ -41,4 +41,3 @@ release.notes
 category.list
 
 category.browse
-

@@ -16,4 +16,3 @@ $res = $dh->query($sql);
 
 $sql = "delete from karma where level='pear.pepr' or level='pear.pepr' or level='pear.pepr.admin' or level='pear.doc.chm-upload' or level='pear.election' or level='pear.planet.admin' or level='pear.group' or level='pear.voter';";
 $res = $dh->query($sql);
-

@@ -13,5 +13,3 @@ elections, election_votes_single, election_votes_multiple, election_votes_abstai
 
 $dh = new PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
 $res = $dh->query($sql);
-
-

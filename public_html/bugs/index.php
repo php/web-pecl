@@ -71,4 +71,3 @@ You may find the
 response_footer();
 
 ?>
-

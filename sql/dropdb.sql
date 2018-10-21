@@ -4,4 +4,3 @@ DELETE FROM user WHERE user = 'pear';
 DELETE FROM db WHERE db = 'pear';
 
 FLUSH PRIVILEGES;
-

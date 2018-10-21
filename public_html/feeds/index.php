@@ -50,4 +50,3 @@ contact the <?php echo make_mailto_link("php-webmaster@lists.php.net", "webmaste
 <?php
 response_footer();
 ?>
-

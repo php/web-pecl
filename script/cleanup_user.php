@@ -24,4 +24,3 @@ foreach ($res as $row) {
 	}
 }
 echo "$del accounts deleted.\n";
-

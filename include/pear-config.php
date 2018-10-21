@@ -44,8 +44,8 @@ if (isset($_SERVER['PEAR_DATABASE_DSN'])) {
     } elseif (function_exists('mysqli_connect')) {
         $driver = 'mysqli';
     }
-    define('PEAR_DATABASE_DSN', $driver . '://' . PECL_DB_USER . ':' . PECL_DB_PASSWORD. '@' . PECL_DB_HOST. '/' . PECL_DB_NAME); 
-    define('PECL_DB_DSN', 'mysql:host=' . PECL_DB_HOST . ';dbname=' . PECL_DB_NAME); 
+    define('PEAR_DATABASE_DSN', $driver . '://' . PECL_DB_USER . ':' . PECL_DB_PASSWORD. '@' . PECL_DB_HOST. '/' . PECL_DB_NAME);
+    define('PECL_DB_DSN', 'mysql:host=' . PECL_DB_HOST . ';dbname=' . PECL_DB_NAME);
 }
 
 if (isset($_SERVER['PEAR_AUTH_REALM'])) {
@@ -56,12 +56,12 @@ if (isset($_SERVER['PEAR_AUTH_REALM'])) {
 if (isset($_SERVER['PEAR_TARBALL_DIR'])) {
     define('PEAR_TARBALL_DIR', $_SERVER['PEAR_TARBALL_DIR']);
 } else {
-    define('PEAR_TARBALL_DIR', '/var/lib/pear'); 
+    define('PEAR_TARBALL_DIR', '/var/lib/pear');
 }
 if (isset($_SERVER['PEAR_REST_DIR'])) {
     define('PEAR_REST_DIR', $_SERVER['PEAR_REST_DIR']);
 } else {
-    define('PEAR_REST_DIR', '/var/lib/peclweb/rest'); 
+    define('PEAR_REST_DIR', '/var/lib/peclweb/rest');
 }
 
 define('PEAR_COMMON_USER_NAME_REGEX', '/^[a-z][a-z0-9]+$/i');

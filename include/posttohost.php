@@ -11,7 +11,7 @@ function posttohost($url, $data)
     // Get parts of URL
     $url = parse_url($url);
     if (!$url) { return "couldn't parse url"; }
-    
+
     // Provide defaults for port and query string
     if (!isset($url['port']))  { $url['port'] = ""; }
     if (!isset($url['query'])) { $url['query'] = ""; }
@@ -39,7 +39,7 @@ function posttohost($url, $data)
     $line = fgets($fp, 1024);
     if (!eregi("^HTTP/1\\.. 200", $line)) { return; }
 
-    // Put everything, except the headers to $results 
+    // Put everything, except the headers to $results
     $results = ""; $inheader = TRUE;
     while(!feof($fp)) {
         $line = fgets($fp, 1024);

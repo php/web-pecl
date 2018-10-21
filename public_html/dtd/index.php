@@ -32,7 +32,7 @@ response_header("Document Type Definitions");
   <td>This is the <acronym title="Document Type Definition">DTD</acronym>
   that defines the legal building blocks of the <tt>package.xml</tt>
   file that comes with each package. More information about
-  <tt>package.xml</tt> can be found 
+  <tt>package.xml</tt> can be found
   <a href="/manual/en/developers.packagedef.php">in the manual</a>.
   <br /><br />A <a href="/dtd/package-1.0.xsd">
   <acronym title="XML Schema Definition">XSD</acronym> file</a> is

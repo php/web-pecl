@@ -98,7 +98,7 @@ foreach ($releases as $release) {
     $bplots[$rid]->SetFillGradient("white", $colour, GRAD_HOR);
     //$bplot->setFillColor("#339900");
     $bplots[$rid]->SetColor("black");
-    $bplots[$rid]->value->setFormat('%d'); 
+    $bplots[$rid]->value->setFormat('%d');
     $bplots[$rid]->value->Show();
 }
 
@@ -121,7 +121,7 @@ if (!DEVBOX) {
     header('Expires: ' . date('r', time() + $cache_time));
     header('Cache-Control: public, max-age=' . $cache_time);
     header('Pragma: cache');
-	
+
     // Main graph object
     $graph = new Graph(543, 200, md5($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']), $cache_time);
 } else {
@@ -152,7 +152,7 @@ if (count($bplots) > 1) {
 } else {
     $graph->Add($bplots[0]);
 }
-	
+
 // Finally send the graph to the browser
 $graph->Stroke();
 ?>

@@ -33,7 +33,7 @@ TABLE_FILES=\
 	releases.sql \
 	deps.sql \
 	notes.sql \
-	users.sql 
+	users.sql
 SQL_TYPE=mysql
 SQL_USER=pear
 SQL_PW=pear

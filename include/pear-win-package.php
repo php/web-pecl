@@ -146,7 +146,7 @@ class package_dll
 			//echo "caching\n";
 			self::cacheDllDownloadInfo($name, $version, $ret);
 		}
-		
+
 		return $ret;
 	}
 
@@ -185,7 +185,7 @@ class package_dll
 		if (!isset($db[$name])) {
 			$db[$name] = array();
 		}
-		
+
 		$db[$name][$version] = $data;
 		//$db[0][0] = md5(uniqid());
 
@@ -250,7 +250,7 @@ class package_dll
 				}
 			}
 		}
-	
+
 		return $ret;
 	}
 

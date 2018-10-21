@@ -10,7 +10,7 @@
 // |   notice, this list of conditions and the following disclaimer.       |
 // | o Redistributions in binary form must reproduce the above copyright   |
 // |   notice, this list of conditions and the following disclaimer in the |
-// |   documentation and/or other materials provided with the distribution.| 
+// |   documentation and/or other materials provided with the distribution.|
 // | o The names of the authors may not be used to endorse or promote      |
 // |   products derived from this software without specific prior written  |
 // |   permission.                                                         |
@@ -48,7 +48,7 @@
 		this.usePersistence   = usePersistence;
 		this.noTopLevelImages = noTopLevelImages;
 		this.n                = new Array();
-	
+
 		this.nodeRefs       = new Array();
 		this.branches       = new Array();
 		this.branchStatus   = new Array();
@@ -66,7 +66,7 @@
 	{
 		newIndex = this.n.length;
 		this.n[newIndex] = newNode;
-		
+
 		return this.n[newIndex];
 	}
 
@@ -78,15 +78,15 @@
 		var plustop    = new Image; plustop.src    = this.iconpath + '/plustop.gif';
 		var plusbottom = new Image; plusbottom.src = this.iconpath + '/plusbottom.gif';
 		var plus       = new Image; plus.src       = this.iconpath + '/plus.gif';
-	
+
 		var minustop    = new Image; minustop.src    = this.iconpath + '/minustop.gif';
 		var minusbottom = new Image; minusbottom.src = this.iconpath + '/minusbottom.gif';
 		var minus       = new Image; minus.src       = this.iconpath + '/minus.gif';
-	
+
 		var branchtop    = new Image; branchtop.src    = this.iconpath + '/branchtop.gif';
 		var branchbottom = new Image; branchbottom.src = this.iconpath + '/branchbottom.gif';
 		var branch       = new Image; branch.src       = this.iconpath + '/branch.gif';
-	
+
 		var linebottom = new Image; linebottom.src = this.iconpath + '/linebottom.gif';
 		var line       = new Image; line.src       = this.iconpath + '/line.gif';
 	}
@@ -104,7 +104,7 @@
 		var modifier      = '';
 		var layerID       = '';
 		var parentLayerID = '';
-	
+
 		/**
 	    * Parse any optional arguments
 	    */
@@ -114,14 +114,14 @@
 		var expanded      = arguments[3] ? arguments[3] : false;
 		var visibility    = arguments[4] ? arguments[4] : 'inline';
 		var parentLayerID = arguments[5] ? arguments[5] : null;
-	
+
 		var currentlevel  = level.length;
-	
+
 		for (var i=0; i<nodes.length; i++) {
-		
+
 			level[currentlevel] = i+1;
 			layerID = this.myname + '_' + 'node_' + this.implode('_', level);
-	
+
 			/**
             * Store this object in the nodeRefs array
             */
@@ -131,7 +131,7 @@
 	        * Store the child/parent relationship
 	        */
 			this.childParents[layerID] = parentLayerID;
-	
+
 			/**
 	        * Gif modifier
 	        */
@@ -142,25 +142,25 @@
 			} else {
 				modifier = "";
 			}
-	
+
 			/**
 	        * Single root branch is always expanded
 	        */
 			if (!this.doesMenu() || (parentLayerID == null && (nodes.length == 1 || this.noTopLevelImages))) {
 				expanded = true;
-	
+
 			} else if (nodes[i].expanded) {
 				expanded = true;
-	
+
 			} else {
 				expanded = false;
 			}
-	
+
 			/**
 	        * Make sure visibility is correct based on parent status
 	        */
 			visibility =  this.checkParentVisibility(layerID) ? visibility : 'none';
-	
+
 			/**
 	        * Setup branch status and build an indexed array
 			* of branch layer ids
@@ -169,7 +169,7 @@
 				this.branchStatus[layerID] = expanded;
 				this.branches[this.branches.length] = layerID;
 			}
-	
+
 			/**
 	        * Setup toggle relationship
 	        */
@@ -177,13 +177,13 @@
 				this.layerRelations[parentLayerID] = new Array();
 			}
 			this.layerRelations[parentLayerID][this.layerRelations[parentLayerID].length] = layerID;
-	
+
 			/**
 	        * Branch images
 	        */
 			var gifname = nodes[i].n.length && this.doesMenu() && nodes[i].isDynamic ? (expanded ? 'minus' : 'plus') : 'branch';
 			var iconimg = nodes[i].icon ? this.stringFormat('<img src="{0}/{1}" width="20" height="20" align="top">', this.iconpath, nodes[i].icon) : '';
-			
+
 			/**
 			* Add event handlers
 			*/
@@ -212,7 +212,7 @@
 							  eventHandlers,
 							  nodes[i].title,
 							  linkEnd);
-	
+
 			/**
 	        * Write out the HTML. Uses document.write for speed over layers and
 			* innerHTML. This however means no dynamic adding/removing nodes on
@@ -232,14 +232,14 @@
 	            */
 				if (parentLayerID == null && (nodes.length == 1 || this.noTopLevelImages)) {
 					var newPrepend = '';
-	
+
 				} else if (i < (nodes.length - 1)) {
 					var newPrepend = prepend + this.stringFormat('<img src="{0}/line.gif" width="20" height="20" align="top">', this.iconpath);
-	
+
 				} else {
 					var newPrepend = prepend + this.stringFormat('<img src="{0}/linebottom.gif" width="20" height="20" align="top">', this.iconpath);
 				}
-	
+
 				this.drawMenu(nodes[i].n,
 				              level,
 				              newPrepend,
@@ -259,19 +259,19 @@
 		var currentDisplay = this.getLayer(layerID).style.display;
 		var newDisplay     = (this.branchStatus[layerID] && currentDisplay == 'inline') ? 'none' : 'inline';
 		var fireEvents     = arguments[2] != null ? arguments[2] : true;
-	
+
 		for (var i=0; i<this.layerRelations[layerID].length; i++) {
-	
+
 			if (this.branchStatus[this.layerRelations[layerID][i]]) {
 				this.toggleBranch(this.layerRelations[layerID][i], false);
 			}
-	
+
 			this.getLayer(this.layerRelations[layerID][i]).style.display = newDisplay;
 		}
-	
+
 		if (updateStatus) {
 			this.branchStatus[layerID] = !this.branchStatus[layerID];
-	
+
 			/**
 	        * Persistence
 	        */
@@ -284,11 +284,11 @@
 			*/
 			if (fireEvents) {
 				nodeObject = this.nodeRefs[layerID];
-	
+
 				if (nodeObject.ontoggle != null) {
 					eval(nodeObject.ontoggle);
 				}
-				
+
 				if (newDisplay == 'none' && nodeObject.oncollapse != null) {
 					eval(nodeObject.oncollapse);
 				} else if (newDisplay == 'inline' && nodeObject.onexpand != null){
@@ -307,10 +307,10 @@
 	TreeMenu.prototype.swapImage = function (layerID)
 	{
 		imgSrc = document.images['img_' + layerID].src;
-	
+
 		re = /^(.*)(plus|minus)(bottom|top|single)?.gif$/
 		if (matches = imgSrc.match(re)) {
-	
+
 			document.images['img_' + layerID].src = this.stringFormat('{0}{1}{2}{3}',
 			                                                matches[1],
 															matches[2] == 'plus' ? 'minus' : 'plus',
@@ -342,10 +342,10 @@
 	{
 		if (is_ie4) {
 			return document.all(layerID);
-	
+
 		} else if (document.getElementById(layerID)) {
 			return document.getElementById(layerID);
-	
+
 		} else if (document.all(layerID)) {
 			return document.all(layerID);
 		}
@@ -385,7 +385,7 @@
 				cookieString[cookieString.length] = i;
 			}
 		}
-		
+
 		document.cookie = 'TreeMenuBranchStatus=' + cookieString.join(':');
 	}
 
@@ -434,7 +434,7 @@
 	}
 
 /**
-* Checks whether a branch should be open 
+* Checks whether a branch should be open
 * or not based on its parents' status
 */
 	TreeMenu.prototype.checkParentVisibility = function (layerID)
@@ -442,13 +442,13 @@
 		if (this.in_array(this.childParents[layerID], this.branches)
 		    && this.branchStatus[this.childParents[layerID]]
 			&& this.checkParentVisibility(this.childParents[layerID]) ) {
-			
+
 			return true;
-	
+
 		} else if (this.childParents[layerID] == null) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -458,13 +458,13 @@
 	TreeMenu.prototype.stringFormat = function (strInput)
 	{
 		var idx = 0;
-	
+
 		for (var i=1; i<arguments.length; i++) {
 			while ((idx = strInput.indexOf('{' + (i - 1) + '}', idx)) != -1) {
 				strInput = strInput.substring(0, idx) + arguments[i] + strInput.substr(idx + 3);
 			}
 		}
-		
+
 		return strInput;
 	}
 
@@ -474,7 +474,7 @@
 	TreeMenu.prototype.implode = function (seperator, input)
 	{
 		var output = '';
-	
+
 		for (var i=0; i<input.length; i++) {
 			if (i == 0) {
 				output += input[i];
@@ -482,7 +482,7 @@
 				output += seperator + input[i];
 			}
 		}
-		
+
 		return output;
 	}
 
@@ -496,7 +496,7 @@
 				return true;
 			}
 		}
-	
+
 		return false;
 	}
 
@@ -526,7 +526,7 @@
 	{
 		newIndex = this.n.length;
 		this.n[newIndex] = newNode;
-		
+
 		return this.n[newIndex];
 	}
 
@@ -557,7 +557,7 @@
 * That's the end of the tree classes. What follows is
 * the browser detection code.
 */
-	
+
 
 //<!--
 // Ultimate client-side JavaScript client sniff. Version 3.03
@@ -565,7 +565,7 @@
 // Revised 17 May 99 to add is_nav5up and is_ie5up (see below).
 // Revised 20 Dec 00 to add is_gecko and change is_nav5up to is_nav6up
 //                      also added support for IE5.5 Opera4&5 HotJava3 AOLTV
-// Revised 22 Feb 01 to correct Javascript Detection for IE 5.x, Opera 4, 
+// Revised 22 Feb 01 to correct Javascript Detection for IE 5.x, Opera 4,
 //                      correct Opera 5 detection
 //                      add support for winME and win2k
 //                      synch with browser-type-oo.js
@@ -604,7 +604,7 @@
 //
 // Note: you don't want your Nav4 or IE4 code to "turn off" or
 // stop working when new versions of browsers are released, so
-// in conditional code forks, use is_ie5up ("IE 5.0 or greater") 
+// in conditional code forks, use is_ie5up ("IE 5.0 or greater")
 // is_opera5up ("Opera 5.0 or greater") instead of is_ie5 or is_opera5
 // to check version in code which you want to work on future
 // versions.

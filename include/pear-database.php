@@ -2760,7 +2760,7 @@ class statistics
 
         return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
     }
-    
+
     // }}}
     // {{{ activeRelease()
 

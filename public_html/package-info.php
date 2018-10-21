@@ -166,7 +166,7 @@ if (!is_null($apply_rule) && isset($dec_messages[$apply_rule])) {
     $str .= '</div>';
     echo $str;
 }
-    
+
 // }}}
 // {{{ "Package Information" box
 
@@ -291,7 +291,7 @@ if (!$relid) {
 				$urls = package_dll::getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
 				if ($urls) {
 					$downloads_html .= "&nbsp;&nbsp;<a href=\"/package/$pkg[name]/$r_version/windows\">"
-									. "<img src=\"/gifs/windows-icon.png\" />DLL</a>"; 
+									. "<img src=\"/gifs/windows-icon.png\" />DLL</a>";
 				}
             }
 

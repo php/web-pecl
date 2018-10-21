@@ -115,7 +115,7 @@ $sth = $dbh->query('SELECT c.*, COUNT(p.id) AS npackages' .
                    ' LEFT JOIN packages p ON p.category = c.id ' .
                    " WHERE p.package_type = 'pecl'" .
                    "  AND c.parent $category_where " .
-                   ' GROUP BY c.id ' . 
+                   ' GROUP BY c.id ' .
                    'ORDER BY name');
 
 $table   = new HTML_Table('border="0" cellpadding="6" cellspacing="2" width="100%"');
@@ -224,7 +224,7 @@ if (!empty($catpid)) {
 
     // Package list
     $packages = $dbh->getAll("SELECT id, name, summary, license FROM packages WHERE category=$catpid AND package_type = 'pecl' ORDER BY name");
-		
+
     // Paging
     $total = count($packages);
     $pager = Pager::factory(array('totalItems' => $total, 'perPage' => 15));

@@ -79,7 +79,7 @@ foreach ($firstletters as $fl) {
 	} else {
 		printf('<a href="%s?letter=%s">%s</a> ',
 			   htmlspecialchars($_SERVER['PHP_SELF']), $fl, strtoupper($fl));
-	}		   
+	}
 }
 print '</td><td rowspan="2" align="right">';
 print '<form><input type="button" onclick="';

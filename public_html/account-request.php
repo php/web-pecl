@@ -41,7 +41,7 @@ $fields  = array('handle',
                  'email',
                  'moreinfo',
                  'homepage',
-                 'needsvn', 
+                 'needsvn',
                  'showemail');
 
 $password_fields = array('password',  'password2');

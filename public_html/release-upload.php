@@ -90,7 +90,7 @@ do {
 
 	if (version_compare($info->getPackageXmlVersion(), '2.0', '<')) {
 		$errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
-		break; 
+		break;
 	}
 
 	$pkg_version_ok = true;
@@ -140,7 +140,7 @@ do {
 				. "couldn't be reliably determined. This check fixes the (unintended) "
 				. "version mismatch in phpinfo() and the PECL website. ";
 			$warnings[] = "To pass please "
-				. "#define PHP_" . strtoupper($name_to_show) . "_VERSION \"$pkg_xml_ext_version\" " 
+				. "#define PHP_" . strtoupper($name_to_show) . "_VERSION \"$pkg_xml_ext_version\" "
 				. "in your php_" . strtolower($name_to_show) . ".h or any other header file "
 				. "and use it for zend_module_entry definition. ";
 			$warnings[] = "Both version strings have to match. ";
@@ -218,7 +218,7 @@ do {
                                         $distfile, md5_file($distfile));
             }
         } else {
-    
+
             $pacid = package::info($info['package'], 'id');
             if (PEAR::isError($pacid)) {
                 $errors[] = $pacid->getMessage();
@@ -229,7 +229,7 @@ do {
                 $errors[] = 'You don\'t have permissions to upload this release.';
                 break;
             }
-    
+
             $e = package::updateInfo($pacid,
                     array(
                         'summary'     => $info['summary'],
@@ -240,7 +240,7 @@ do {
                 $errors[] = $e->getMessage();
                 break;
             }
-    
+
             $users = array();
             foreach ($info['maintainers'] as $user) {
                 $users[strtolower($user['handle'])] = array(
@@ -248,7 +248,7 @@ do {
                                                         'active' => 1,
                                                       );
             }
-    
+
             $e = maintainer::updateAll($pacid, $users);
             if (PEAR::isError($e)) {
                 $errors[] = $e->getMessage();
@@ -406,7 +406,7 @@ if ($display_verification) {
 		    continue;
 	    }
 
-	    /* Don't compare with basename($file_data["name"]), the license has 
+	    /* Don't compare with basename($file_data["name"]), the license has
 	       to be in the package root. */
 	    $lic_fnames = array(
 			    "LICENSE", "license",

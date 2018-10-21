@@ -63,7 +63,7 @@ if (!empty($_REQUEST['cmd'])) {
         if (user::activate($_REQUEST['uid'])) {
             print "<p>Opened account $uid...</p>\n";
         }
-		
+
     } elseif ($_REQUEST['cmd'] == "Reject Request" && !empty($_REQUEST['uid'])) {
 		/**
          * Reject account request
@@ -87,8 +87,8 @@ if (!empty($_REQUEST['cmd'])) {
                 user::remove($uid);
                 echo 'Account request deleted: ' . $uid . '<br />';
             }
-				
-			
+
+
         } elseif (user::remove($_REQUEST['uid'])) {
             print "<p>Deleted account request for \"$uid\"...</p>";
         }
@@ -195,7 +195,7 @@ do {
 	    print "$i </tr>\n";
 	    print "$i</table>\n";
 	    print "$i</form>\n";
-	
+
 	    $bb->end();
 ?>
 
@@ -241,7 +241,7 @@ do {
 			{
                 return true;
 				var highlightColor = '#cfffb7';
-				
+
 				if (typeof(arguments[1]) == 'undefined') {
 					action = (spanObj.parentNode.parentNode.childNodes[0].style.backgroundColor == highlightColor);
 				} else {
@@ -260,22 +260,22 @@ do {
 					}
 				}
 			}
-			
+
 			allSelected = false;
-			
+
 			function toggleSelectAll(linkElement)
 			{
 				tableBodyElement = linkElement.parentNode.parentNode.parentNode.parentNode;
-				
+
 				for (var i=0; i<tableBodyElement.childNodes.length; i++) {
 					if (tableBodyElement.childNodes[i].childNodes[0].childNodes[0].tagName == 'INPUT') {
 						highlightAccountRow(tableBodyElement.childNodes[i].childNodes[1].childNodes[0], !allSelected);
 					}
 				}
-				
+
 				allSelected = !allSelected;
 			}
-			
+
 			function setCmdInput(mode)
 			{
 				switch (mode) {
@@ -296,7 +296,7 @@ do {
 						}
 						break;
 				}
-				
+
 				return false;
 			}
         //-->

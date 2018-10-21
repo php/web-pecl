@@ -81,7 +81,7 @@ found on this server.</p>
 	Searching the current list of packages for
 	<i><?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)); ?></i> included the
 	following results:
-	
+
 	<ul>
 	<?php foreach($packages as $p) { ?>
 		<li>
@@ -90,7 +90,7 @@ found on this server.</p>
 		</li>
 	<?php } ?>
 	</ul>
-	
+
 	<?php if($show_search_link) { ?>
 		<p align="center">
 			<?php print_link(getURL('/package-search.php?pkg_name=' . htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)) . '&amp;bool=AND&amp;submit=Search'), 'View full search results...'); ?>

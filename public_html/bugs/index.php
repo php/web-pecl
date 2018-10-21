@@ -46,7 +46,7 @@ response_header('Bugs');
    or the <?php print_link('/package-search.php', 'Package&nbsp;Search'); ?>
    system.
   </li>
-  
+
   <li>
    If the bug you found does not relate to a package, one of the following
    categories should be appropriate:

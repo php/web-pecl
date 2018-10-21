@@ -44,7 +44,7 @@ class Damblan_Log_Mail extends Log_observer {
 
         $this->_headers['From'] = "\"PEAR System Administrators\" <pear-sys@php.net>";
     }
-    
+
     /**
      * Generate logging email
      *
@@ -59,7 +59,7 @@ class Damblan_Log_Mail extends Log_observer {
         $ok = $this->_mailer->send($this->_recipients, $this->_headers, $event['message']);
 
         if ($ok === false) {
-            trigger_error("Email notification routine failed.", 
+            trigger_error("Email notification routine failed.",
                           E_USER_WARNING);
         }
     }

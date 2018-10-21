@@ -18,7 +18,7 @@
 */
 
 response_header("Copyright and License");
-  
+
 ?>
 
 <h2>Copyright and License</h2>
@@ -33,14 +33,14 @@ For information on the PHP License (i.e. using the PHP language),
 <h2>Website Copyright</h2>
 
 <p>
-The code, text, PHP logo, and graphical elements on this website 
-and the mirror websites (the "Site") are Copyright &copy; 2001-<?php echo date('Y');?> 
+The code, text, PHP logo, and graphical elements on this website
+and the mirror websites (the "Site") are Copyright &copy; 2001-<?php echo date('Y');?>
 The PHP Group.  All rights reserved.
 </p>
 
 <p>
 Except as otherwise indicated elsewhere on this Site, you are free
-view, download and print the documents and information available 
+view, download and print the documents and information available
 on this Site subject to the following conditions:
 </p>
 <ul>
@@ -60,7 +60,7 @@ You can contact the webmaster at <?php print_link('mailto:php-webmaster@lists.ph
 </p>
 
 <p>
-For more information on the PHP Group and the PHP project, please see 
+For more information on the PHP Group and the PHP project, please see
 <?php print_link('http://www.php.net/'); ?>.
 </p>
 

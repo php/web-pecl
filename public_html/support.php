@@ -109,7 +109,7 @@ ezmlm <a href="http://untroubled.org/ezmlm/ezman/ezman1.html">here</a>.
 
 <p>
 For example, to subscribe to pecl-dev, send an email to pecl-dev-subscribe@lists.php.net and
-you will be sent a confirmation mail that explains how to proceed with the subscription 
+you will be sent a confirmation mail that explains how to proceed with the subscription
 process.  And to instead receive digested (daily) pecl-dev email, use pecl-dev-digest-subscribe@lists.php.net.
 Similarly, use unsubscribe instead of subscribe to do the exact opposite.
 </p>

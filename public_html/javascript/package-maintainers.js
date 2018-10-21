@@ -62,11 +62,11 @@ function beforeSubmit() {
     }
 }
 
-function activateAdd() { 
-    document.form.add.disabled = false; 
+function activateAdd() {
+    document.form.add.disabled = false;
     document.form.role.disabled = false;
 }
 
-function activateRemove() { 
+function activateRemove() {
     document.form.remove.disabled = false;
 }

@@ -236,7 +236,7 @@ class pear_rest
             c.id = ?', array($package['categoryid']), DB_FETCHMODE_ASSOC);
         if (isset($package['parent']) && $package['parent']) {
             $parent = '
- <pa xlink:href="' . $extra . 'p/' . $package['parent'] . '">' . 
+ <pa xlink:href="' . $extra . 'p/' . $package['parent'] . '">' .
                 $package['parent'] . '</pa>';
         } else {
             $parent = '';

@@ -9,7 +9,7 @@
 
 		var rowLayer = document.getElementById('moreInfo_' + packageID);
 		var rowSpacerLayer = document.getElementById('moreInfo_' + packageID + '_spacer');
-		
+
 		newDisplay = rowLayer.style.display == 'none' ? 'inline' : 'none';
 		rowLayer.style.display       = newDisplay;
 		rowSpacerLayer.style.display = newDisplay;
@@ -54,24 +54,24 @@
 	th.pkgListHeader {
 		background-color: #cccccc;
 	}
-	
+
 	td.tableHeader {
 		background-color: #cccccc;
 		border-bottom: 1px solid black;
 		font-weight: bold;
 	}
-	
+
 	td.moreInfo {
 		background-color: #f0f0f0;
 		border: 1px dashed #c0c0c0;
 		position: relative;
 	}
-	
+
 	.closeButton {
 		border: 2px white outset;
 		background-color: #c0c0c0;
 	}
-	
+
 	.moreInfoHeader {
 		background-color: #dddddd;
 		border-bottom: 1px dashed #c0c0c0;
@@ -89,7 +89,7 @@
 
 	<a href="<?php echo $hideMoreInfoLink; ?>" title="Hide all more info"><img src="gifs/moreinfo-no.gif" width="17" height="17" border="0" vspace="3" /></a>
 	<a href="<?php echo $showMoreInfoLink; ?>" title="Show all more info"><img src="gifs/moreinfo-yes.gif" width="17" height="17" border="0" vspace="3" /></a>
-	
+
 	<table border="0" style="border: solid 1px black" cellspacing="0" cellpadding="0">
 		<tr>
 			<td>
@@ -102,7 +102,7 @@
 				</table>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>
 				<table border="0" id="packageList">
@@ -112,7 +112,7 @@
 						<th class="pkgListHeader">Description</td>
 						<td>&nbsp;</td>
 					</tr>
-				
+
 					<?php foreach($packages as $p) { ?>
 						<tr>
 							<td valign="top"><?php echo ($first++); ?></td>
@@ -124,10 +124,10 @@
 								</a>
 							</td>
 						</tr>
-						
+
 						<tr <?php if($defaultMoreInfoVis == 'none') { ?> style="display: <?php echo $defaultMoreInfoVis; ?>" <?php } ?> id="moreInfo_<?php echo $p['id']; ?>">
 							<td>&nbsp;</td>
-							
+
 							<td colspan="3" class="moreInfo">
 								<table border="0" class="moreInfoHeader" width="100%" cellspacing="0" cellpadding="0">
 									<tr>
@@ -142,18 +142,18 @@
 									<tr>
 										<td class="eInfo_label"><strong>Number of releases:</strong></td>
 										<td><?php echo $p['eInfo']['numReleases']; ?></td>
-										
+
 										<td class="eInfo_label"><strong>License type:</strong></td>
 										<td><?php echo $p['eInfo']['license']; ?></td>
 									</tr>
-									
+
 									<tr>
 										<td class="eInfo_label"><strong>Status:</strong></td>
 										<td><?php echo $p['eInfo']['status']; ?></td>
 									</tr>
 								</table>
-								
-								
+
+
 							</td>
 						</tr>
 

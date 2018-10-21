@@ -32,7 +32,7 @@
 			currentHighlight = layerID;
 		}
 	}
-	
+
 	/**
     * Updates form with correct cateogry parent name/id
     */
@@ -51,7 +51,7 @@
 			formObj.cat_delete.value      = '';
 		}
 	}
-	
+
 	/**
     * Called when update checkbox is clicked
     */
@@ -72,7 +72,7 @@
 			formObj.action.value = 'add';
 		}
 	}
-	
+
 	categories = new Array();
 
 	<?foreach($categories as $c):?>
@@ -89,7 +89,7 @@ categories[<?php echo $c['id']; ?>] = new Array('<?php echo $c['name']; ?>', '<?
 		border: 1px #aaaaaa solid;
 		background-color: #eeeeee;
 	}
-	
+
 	.treeMenuOff {
 		padding: 1px;
 		width: 202x;
@@ -112,7 +112,7 @@ categories[<?php echo $c['id']; ?>] = new Array('<?php echo $c['name']; ?>', '<?
 		<td>
 			<div class="treeMenuContainer" onclick="category_click(null)">
 				<?$treeMenuPres->printMenu()?>
-			</div>		
+			</div>
 		</td>
 		<td valign="top">
 			<span class="error"><?php echo @$message; ?></span>

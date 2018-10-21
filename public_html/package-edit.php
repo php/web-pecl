@@ -213,7 +213,7 @@ $form->displaySelect("category", $rows, (int)$row['categoryid']);
     <td>Bug tracker Url:</td>
     <td valign="middle">
     <?php $form->displayText("bug_link", $row['bug_link'], 30); ?>
-    </td>    
+    </td>
 </tr>
 <tr>
     <td>Unmaintained package?</td>
@@ -241,15 +241,15 @@ $form->displaySelect("new_package", $rows, htmlspecialchars($row['new_package'])
 <tr>
     <td>Wiki:</td>
     <td valign="middle">
-    <?php $form->displayText("wiki_link", htmlspecialchars($row['wiki_link'], 30)); ?> 
-    </td>    
+    <?php $form->displayText("wiki_link", htmlspecialchars($row['wiki_link'], 30)); ?>
+    </td>
 </tr>
 -->
 <tr>
     <td>New Home Link (if moved out of pecl):</td>
     <td valign="middle">
-    <?php $form->displayText("new_channel", htmlspecialchars($row['new_channel'], 30)); ?> 
-    </td>    
+    <?php $form->displayText("new_channel", htmlspecialchars($row['new_channel'], 30)); ?>
+    </td>
 </tr>
 
 <tr>

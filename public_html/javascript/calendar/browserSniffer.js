@@ -4,7 +4,7 @@
 // Revised 17 May 99 to add is_nav5up and is_ie5up (see below).
 // Revised 20 Dec 00 to add is_gecko and change is_nav5up to is_nav6up
 //                      also added support for IE5.5 Opera4&5 HotJava3 AOLTV
-// Revised 22 Feb 01 to correct Javascript Detection for IE 5.x, Opera 4, 
+// Revised 22 Feb 01 to correct Javascript Detection for IE 5.x, Opera 4,
 //                      correct Opera 5 detection
 //                      add support for winME and win2k
 //                      synch with browser-type-oo.js
@@ -43,7 +43,7 @@
 //
 // Note: you don't want your Nav4 or IE4 code to "turn off" or
 // stop working when new versions of browsers are released, so
-// in conditional code forks, use is_ie5up ("IE 5.0 or greater") 
+// in conditional code forks, use is_ie5up ("IE 5.0 or greater")
 // is_opera5up ("Opera 5.0 or greater") instead of is_ie5 or is_opera5
 // to check version in code which you want to work on future
 // versions.
@@ -99,9 +99,9 @@
     var is_opera5 = (agt.indexOf("opera 5") != -1 || agt.indexOf("opera/5") != -1);
     var is_opera5up = (is_opera && !is_opera2 && !is_opera3 && !is_opera4);
 
-    var is_webtv = (agt.indexOf("webtv") != -1); 
+    var is_webtv = (agt.indexOf("webtv") != -1);
 
-    var is_TVNavigator = ((agt.indexOf("navio") != -1) || (agt.indexOf("navio_aoltv") != -1)); 
+    var is_TVNavigator = ((agt.indexOf("navio") != -1) || (agt.indexOf("navio_aoltv") != -1));
     var is_AOLTV = is_TVNavigator;
 
     var is_hotjava = (agt.indexOf("hotjava") != -1);
@@ -137,9 +137,9 @@
     var is_win95 = ((agt.indexOf("win95")!=-1) || (agt.indexOf("windows 95")!=-1));
 
     // is this a 16 bit compiled version?
-    var is_win16 = ((agt.indexOf("win16")!=-1) || 
-               (agt.indexOf("16bit")!=-1) || (agt.indexOf("windows 3.1")!=-1) || 
-               (agt.indexOf("windows 16-bit")!=-1) );  
+    var is_win16 = ((agt.indexOf("win16")!=-1) ||
+               (agt.indexOf("16bit")!=-1) || (agt.indexOf("windows 3.1")!=-1) ||
+               (agt.indexOf("windows 16-bit")!=-1) );
 
     var is_win31 = ((agt.indexOf("windows 3.1")!=-1) || (agt.indexOf("win16")!=-1) ||
                     (agt.indexOf("windows 16-bit")!=-1));
@@ -153,20 +153,20 @@
     //         the 16-bit version running on Win98 will still return "Win95".
     var is_win98 = ((agt.indexOf("win98")!=-1) || (agt.indexOf("windows 98")!=-1));
     var is_winnt = ((agt.indexOf("winnt")!=-1) || (agt.indexOf("windows nt")!=-1));
-    var is_win32 = (is_win95 || is_winnt || is_win98 || 
+    var is_win32 = (is_win95 || is_winnt || is_win98 ||
                     ((is_major >= 4) && (navigator.platform == "Win32")) ||
                     (agt.indexOf("win32")!=-1) || (agt.indexOf("32bit")!=-1));
 
-    var is_os2   = ((agt.indexOf("os/2")!=-1) || 
-                    (navigator.appVersion.indexOf("OS/2")!=-1) ||   
+    var is_os2   = ((agt.indexOf("os/2")!=-1) ||
+                    (navigator.appVersion.indexOf("OS/2")!=-1) ||
                     (agt.indexOf("ibm-webexplorer")!=-1));
 
     var is_mac    = (agt.indexOf("mac")!=-1);
     // hack ie5 js version for mac
     if (is_mac && is_ie5up) is_js = 1.4;
-    var is_mac68k = (is_mac && ((agt.indexOf("68k")!=-1) || 
+    var is_mac68k = (is_mac && ((agt.indexOf("68k")!=-1) ||
                                (agt.indexOf("68000")!=-1)));
-    var is_macppc = (is_mac && ((agt.indexOf("ppc")!=-1) || 
+    var is_macppc = (is_mac && ((agt.indexOf("ppc")!=-1) ||
                                 (agt.indexOf("powerpc")!=-1)));
 
     var is_sun   = (agt.indexOf("sunos")!=-1);
@@ -180,23 +180,23 @@
     var is_hpux9 = (is_hpux && (agt.indexOf("09.")!=-1));
     var is_hpux10= (is_hpux && (agt.indexOf("10.")!=-1));
     var is_aix   = (agt.indexOf("aix") !=-1);      // IBM
-    var is_aix1  = (agt.indexOf("aix 1") !=-1);    
-    var is_aix2  = (agt.indexOf("aix 2") !=-1);    
-    var is_aix3  = (agt.indexOf("aix 3") !=-1);    
-    var is_aix4  = (agt.indexOf("aix 4") !=-1);    
+    var is_aix1  = (agt.indexOf("aix 1") !=-1);
+    var is_aix2  = (agt.indexOf("aix 2") !=-1);
+    var is_aix3  = (agt.indexOf("aix 3") !=-1);
+    var is_aix4  = (agt.indexOf("aix 4") !=-1);
     var is_linux = (agt.indexOf("inux")!=-1);
     var is_sco   = (agt.indexOf("sco")!=-1) || (agt.indexOf("unix_sv")!=-1);
-    var is_unixware = (agt.indexOf("unix_system_v")!=-1); 
-    var is_mpras    = (agt.indexOf("ncr")!=-1); 
+    var is_unixware = (agt.indexOf("unix_system_v")!=-1);
+    var is_mpras    = (agt.indexOf("ncr")!=-1);
     var is_reliant  = (agt.indexOf("reliantunix")!=-1);
-    var is_dec   = ((agt.indexOf("dec")!=-1) || (agt.indexOf("osf1")!=-1) || 
-           (agt.indexOf("dec_alpha")!=-1) || (agt.indexOf("alphaserver")!=-1) || 
-           (agt.indexOf("ultrix")!=-1) || (agt.indexOf("alphastation")!=-1)); 
+    var is_dec   = ((agt.indexOf("dec")!=-1) || (agt.indexOf("osf1")!=-1) ||
+           (agt.indexOf("dec_alpha")!=-1) || (agt.indexOf("alphaserver")!=-1) ||
+           (agt.indexOf("ultrix")!=-1) || (agt.indexOf("alphastation")!=-1));
     var is_sinix = (agt.indexOf("sinix")!=-1);
     var is_freebsd = (agt.indexOf("freebsd")!=-1);
     var is_bsd = (agt.indexOf("bsd")!=-1);
-    var is_unix  = ((agt.indexOf("x11")!=-1) || is_sun || is_irix || is_hpux || 
-                 is_sco ||is_unixware || is_mpras || is_reliant || 
+    var is_unix  = ((agt.indexOf("x11")!=-1) || is_sun || is_irix || is_hpux ||
+                 is_sco ||is_unixware || is_mpras || is_reliant ||
                  is_dec || is_sinix || is_aix || is_linux || is_bsd || is_freebsd);
 
     var is_vms   = ((agt.indexOf("vax")!=-1) || (agt.indexOf("openvms")!=-1));

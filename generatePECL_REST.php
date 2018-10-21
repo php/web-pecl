@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * Generate static REST files for pecl.php.net from existing data
  * @author Greg Beaver <cellog@php.net>
  */

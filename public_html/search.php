@@ -46,7 +46,7 @@ switch ($_POST['search_in']) {
         $location = "http://marc.info/";
         $query = "l=".$_POST['search_in']."&w=2&r=1&q=b&s=".urlencode($_POST['search_string']);
         header("Location: ".$location."?".$query);
-        
+
         break;
 
     case 'site':

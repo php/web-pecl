@@ -34,7 +34,7 @@ require_once "HTML/Form.php";
 * Setup code for the form
 */
 $form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES));
-    
+
 /**
 * Months for released date dropdowns
 */
@@ -87,12 +87,12 @@ if (!empty($_GET)) {
     if (!empty($_GET['pkg_name'])) {
         $where[] = '(name LIKE'.$dbh->quote('%'.$_GET['pkg_name'].'%').' OR summary LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').')';
     }
-    
+
     // Build maintainer part of query
     if (!empty($_GET['pkg_maintainer'])) {
         $where[] = sprintf("handle LIKE %s", $dbh->quote('%' . $_GET['pkg_maintainer'] . '%'));
     }
-    
+
     // Build category part of query
     if (!empty($_GET['pkg_category'])) {
         $where[] = sprintf("category = %s", $dbh->quote($_GET['pkg_category']));
@@ -126,7 +126,7 @@ if (!empty($_GET)) {
                                (int)$_GET['released_before_day']);
             $set_released_before = true;
         }
-            
+
         // RELEASED_SINCE
         if (!empty($_GET['released_since_year']) AND !empty($_GET['released_since_month']) AND !empty($_GET['released_since_day'])) {
             $release_join = ', releases r';
@@ -138,7 +138,7 @@ if (!empty($_GET)) {
             $set_released_since = true;
         }
     }
-        
+
     // Compose query and execute
     $where  = !empty($where) ? 'AND '.implode(' AND ', $where) : '';
     $sql    = "SELECT DISTINCT p.id,
@@ -155,15 +155,15 @@ if (!empty($_GET)) {
     $result = $dbh->query($sql);
 
     // Run through any results
-    if (($numrows = $result->numRows()) > 0) { 
-    
+    if (($numrows = $result->numRows()) > 0) {
+
         // Paging
         include_once('Pager/Pager.php');
         $params['itemData'] = range(0, $numrows - 1);
         $pager = Pager::factory($params);
         list($from, $to) = $pager->getOffsetByPageId();
         $links = $pager->getLinks('<img src="gifs/prev.gif" border="0" alt="&lt;&lt;" width="10" height="10">Prev', 'Next<img src="gifs/next.gif" border="0" alt="&gt;&gt;" width="10" height="10">');
-    
+
         // Row number
         $rownum = $from - 1;
 
@@ -196,7 +196,7 @@ if (!empty($_GET)) {
 
             $search_results[] = $row;
         }
-    }    
+    }
 }
 
 /**

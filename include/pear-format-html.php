@@ -595,7 +595,7 @@ function get_license_link($license = "")
         case 'PHP License 3.0':
             $link = 'http://www.php.net/license/3_0.txt';
             break;
-	
+
         case 'PHP 2.02':
         case 'PHP License 2.02':
             $link = 'http://www.php.net/license/2_02.txt';

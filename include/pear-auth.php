@@ -27,7 +27,7 @@ function auth_reject($realm = null, $message = null)
     }
 
     response_header('Login');
- 
+
 	$GLOBALS['ONLOAD'] = "document.login.PEAR_USER.focus();";
 	if ($message) {
 		report_error($message);
@@ -146,7 +146,7 @@ function auth_check($atom)
     static $karma;
 
     require_once "Damblan/Karma.php";
-    
+
     global $auth_user;
 
     // admins are almighty

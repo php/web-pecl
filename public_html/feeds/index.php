@@ -23,7 +23,7 @@ response_header("Syndication feeds");
 
 <h2>RSS</h2>
 
-<p>We have a number of <?php echo make_link("http://web.resource.org/rss/1.0/", "RSS"); ?> 
+<p>We have a number of <?php echo make_link("http://web.resource.org/rss/1.0/", "RSS"); ?>
 feeds available for your viewing pleasure:</p>
 
 <ul>

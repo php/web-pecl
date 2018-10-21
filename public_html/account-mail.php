@@ -35,7 +35,7 @@ require_once 'HTML/Form.php';
 
 // {{{ printForm
 
-function printForm($data = array()) 
+function printForm($data = array())
 {
     // The first field that's empty
     $focus = '';

@@ -1,6 +1,6 @@
 <?php
 /*
- * Drop unused tables 
+ * Drop unused tables
  * Author: pierre@php.net
  */
 

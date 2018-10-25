@@ -195,7 +195,7 @@ class category
     /**
      * Deletes a category
      *
-     * @param integer $id Cateogry ID
+     * @param integer $id Category ID
      */
     function delete($id)
     {

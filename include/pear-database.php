@@ -2819,7 +2819,7 @@ function mail_pear_admins($subject = "PEAR Account Request", $msg, $xhdr = '')
 
 class PEAR_User extends DB_storage
 {
-    function PEAR_User(&$dbh, $user)
+    public function __construct(&$dbh, $user)
     {
         $this->DB_storage("users", "handle", $dbh);
         $this->pushErrorHandling(PEAR_ERROR_RETURN);
@@ -2844,7 +2844,7 @@ class PEAR_User extends DB_storage
 
 class PEAR_Package extends DB_storage
 {
-    function PEAR_Package(&$dbh, $package, $keycol = "id")
+    public function __construct(&$dbh, $package, $keycol = "id")
     {
         $this->DB_storage("packages", $keycol, $dbh);
         $this->pushErrorHandling(PEAR_ERROR_RETURN);
@@ -2858,7 +2858,7 @@ class PEAR_Package extends DB_storage
 
 class PEAR_Release extends DB_storage
 {
-    function PEAR_Release(&$dbh, $release)
+    public function __construct(&$dbh, $release)
     {
         $this->DB_storage("releases", "id", $dbh);
         $this->pushErrorHandling(PEAR_ERROR_RETURN);

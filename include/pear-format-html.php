@@ -404,7 +404,7 @@ function report_success($in)
 }
 
 class BorderBox {
-    function BorderBox($title, $width = "90%", $indent = "", $cols = 1,
+    public function __construct($title, $width = "90%", $indent = "", $cols = 1,
                        $open = false) {
         $this->title = $title;
         $this->width = $width;

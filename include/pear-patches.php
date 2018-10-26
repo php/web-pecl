@@ -47,7 +47,7 @@ class patches {
      * @param  object PEAR::DB instance
      * @return void
      */
-    function patches($dbh) {
+    public function __construct($dbh) {
         $this->dbh = $dbh;
     }
 

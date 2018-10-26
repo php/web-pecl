@@ -37,8 +37,8 @@ class Damblan_Log_Mail extends Log_observer {
     var $_headers = array();
     var $_recipients = "";
 
-    function Damblan_Log_Mail() {
-        $this->Log_observer();
+    public function __construct() {
+        parent::__construct();
 
         $this->_mailer = Mail::factory("mail", "-f  bounce-no-user@php.net");
 

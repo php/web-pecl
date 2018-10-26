@@ -96,7 +96,7 @@ class HTML_Menu {
     * @param    string
     * @see      setMenuType(), setMenu()
     */
-    function HTML_Menu($menu = '', $type = 'tree', $url_env_var = 'PHP_SELF') {
+    public function __construct($menu = '', $type = 'tree', $url_env_var = 'PHP_SELF') {
         if (is_array($menu))
             $this->setMenu($menu);
 

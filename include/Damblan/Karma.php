@@ -37,7 +37,7 @@ class Damblan_Karma {
      * @access public
      * @param  object Instance of PEAR::DB
      */
-    function Damblan_Karma(&$dbh) {
+    public function __construct(&$dbh) {
         $this->_dbh = $dbh;
     }
 

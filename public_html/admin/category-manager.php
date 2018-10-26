@@ -125,4 +125,4 @@ if (!empty($_SESSION['category_manager']['error_msg'])) {
 $categories   = $dbh->getAll('SELECT id, name, description FROM categories ORDER BY id', null, DB_FETCHMODE_ASSOC);
 $treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, ['images' => '../gifs/TreeMenu', 'defaultClass' => 'treeMenuOff']);
 
-include($template_dir . 'category-manager.html');
+include($template_dir . 'category-manager.php');

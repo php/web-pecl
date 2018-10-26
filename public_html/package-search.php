@@ -202,4 +202,4 @@ if (!empty($_GET)) {
 /**
  * Template stuff
  */
-@include($template_dir . 'package-search.html');
+@include($template_dir . 'package-search.php');

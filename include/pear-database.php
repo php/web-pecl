@@ -2370,7 +2370,6 @@ class user
         @$arr = unserialize($user->userinfo);
         note::removeAll("uid", $uid);
         $user->set('registered', 1);
-        /* $user->set('ppp_only', 0); */
         if (is_array($arr)) {
             $user->set('userinfo', $arr[1]);
         }
@@ -2867,20 +2866,6 @@ class PEAR_Release extends DB_storage
     }
 }
 
-// }}}
-// {{{ class PEAR Proposal
-/*
-class PEAR_Proposal extends DB_storage
-{
-    function PEAR_Proposal(&$dbh, $package, $keycol = "id")
-    {
-        $this->DB_storage("package_proposals", $keycol, $dbh);
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $this->setup($package);
-        $this->popErrorHandling();
-    }
-}
-*/
 // }}}
 
 if (!function_exists("md5_file")) {

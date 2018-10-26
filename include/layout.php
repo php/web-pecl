@@ -104,18 +104,6 @@ function delim($color = false, $delimiter = '&nbsp;|&nbsp;')
     return sprintf('<span style="color: %s;">%s</span>', $color, $delimiter);
 }
 
-
-
-// hdelim()
-// print a horizontal delimiter (just a wide line);
-//
-
-function hdelim() {
-    return '<hr />';
-}
-
-
-
 // make_link()
 // return a hyperlink to something, within the site
 //

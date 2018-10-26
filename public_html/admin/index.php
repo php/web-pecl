@@ -38,7 +38,7 @@ response_header("PEAR Administration");
 
 menu_link("Package maintainers", "package-maintainers.php");
 menu_link("Manage categories", "category-manager.php");
-echo hdelim();
+echo '<hr>';
 
 // {{{ adding and deleting notes
 

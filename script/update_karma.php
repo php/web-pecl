@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /*
  * Drop all karma not used by pecl and migrate pecl/pear.* to * only

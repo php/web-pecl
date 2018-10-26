@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 include __DIR__ . '/../include/pear-config.php';
 

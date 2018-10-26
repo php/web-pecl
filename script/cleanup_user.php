@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /*
  * Drop all accounts not active in any package and not having a SVN account

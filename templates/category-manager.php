@@ -1,4 +1,4 @@
-<?response_header()?>
+<?php response_header(); ?>
 
 <script src="/javascript/TreeMenu/TreeMenu.js"></script>
 <script>
@@ -75,9 +75,9 @@
 
 	categories = new Array();
 
-	<?foreach($categories as $c):?>
+	<?php foreach($categories as $c): ?>
 categories[<?php echo $c['id']; ?>] = new Array('<?php echo $c['name']; ?>', '<?php echo $c['description']; ?>');
-	<?endforeach?>
+	<?php endforeach; ?>
 //-->
 </script>
 
@@ -85,7 +85,7 @@ categories[<?php echo $c['id']; ?>] = new Array('<?php echo $c['name']; ?>', '<?
 	<tr>
 		<td>
 			<div class="treeMenuContainer" onclick="category_click(null)">
-				<?$treeMenuPres->printMenu()?>
+				<?php $treeMenuPres->printMenu(); ?>
 			</div>
 		</td>
 		<td valign="top">
@@ -137,4 +137,4 @@ categories[<?php echo $c['id']; ?>] = new Array('<?php echo $c['name']; ?>', '<?
 </table>
 
 
-<?response_footer()?>
+<?php response_footer();

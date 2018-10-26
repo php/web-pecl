@@ -128,10 +128,10 @@
 <p align="center">
 	<?php if(!$catpid) {?>
 		Total number of packages: <?php echo $totalpackages; ?><br />
-		<?make_link('/package-stats.php', 'View package statistics')?>
+		<?php make_link('/package-stats.php', 'View package statistics'); ?>
 	<?php } else { ?>
 		<a href="/package-stats.php?cid=<?php echo $catpid; ?>">Statistics for category "<?php echo $catname; ?>"</a>
 	<?php } ?>
 </p>
 
-<?php response_footer(); ?>
+<?php response_footer();

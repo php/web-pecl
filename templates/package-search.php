@@ -396,4 +396,4 @@ response_header('Package Search');
 
 <?php endif?>
 
-<?php response_footer(); ?>
+<?php response_footer();

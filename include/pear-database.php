@@ -2821,7 +2821,7 @@ class PEAR_User extends DB_storage
 {
     public function __construct(&$dbh, $user)
     {
-        $this->DB_storage("users", "handle", $dbh);
+        parent::__construct("users", "handle", $dbh);
         $this->pushErrorHandling(PEAR_ERROR_RETURN);
         $this->setup($user);
         $this->popErrorHandling();
@@ -2846,7 +2846,7 @@ class PEAR_Package extends DB_storage
 {
     public function __construct(&$dbh, $package, $keycol = "id")
     {
-        $this->DB_storage("packages", $keycol, $dbh);
+        parent::__construct("packages", $keycol, $dbh);
         $this->pushErrorHandling(PEAR_ERROR_RETURN);
         $this->setup($package);
         $this->popErrorHandling();
@@ -2860,7 +2860,7 @@ class PEAR_Release extends DB_storage
 {
     public function __construct(&$dbh, $release)
     {
-        $this->DB_storage("releases", "id", $dbh);
+        parent::__construct("releases", "id", $dbh);
         $this->pushErrorHandling(PEAR_ERROR_RETURN);
         $this->setup($release);
         $this->popErrorHandling();

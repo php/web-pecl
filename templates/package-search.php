@@ -9,8 +9,6 @@ response_header('Package Search');
 <script src="javascript/calendar/dynCalendar.js"></script>
 
 <script>
-<!--
-
     date_updated_released_on     = false;
     date_updated_released_before = false;
     date_updated_released_since  = false;
@@ -231,8 +229,6 @@ response_header('Package Search');
             alert("Mozilla M15 or later is required to add a search engine.");
         }
     }
-
-// -->
 </script>
 <!-- This class prints stuff as part of it's constructor. -->
 
@@ -295,9 +291,7 @@ response_header('Package Search');
     <?php endforeach?>
    </select>
    <script>
-    <!--
      calendarReleasedOn = new dynCalendar('calendarReleasedOn', 'setDateFromCalendar_released_on', 'gifs/');
-    //-->
    </script>
   </td>
  </tr>
@@ -319,9 +313,7 @@ response_header('Package Search');
     <?php endforeach?>
    </select>
    <script>
-    <!--
      calendarReleasedBefore = new dynCalendar('calendarReleasedBefore', 'setDateFromCalendar_released_before', 'gifs/');
-    //-->
    </script>
   </td>
  </tr>
@@ -343,9 +335,7 @@ response_header('Package Search');
     <?php endforeach?>
    </select>
    <script>
-   <!--
     calendarReleasedSince = new dynCalendar('calendarReleasedSince', 'setDateFromCalendar_released_since', 'gifs/');
-   //-->
    </script>
   </td>
  </tr>
@@ -363,12 +353,10 @@ response_header('Package Search');
 
 
 <script>
-<!--
     /**
     * Call function to set dropdowns to their search values
     */
     setReleaseDropdowns();
-//-->
 </script>
 
 <?php if($numrows):?>

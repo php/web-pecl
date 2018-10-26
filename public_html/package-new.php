@@ -143,9 +143,9 @@ people agree with you.
     $bb->end();
 
     if ($jumpto) {
-        print "\n<script>\n<!--\n";
+        print "\n<script>\n";
         print "document.forms[1].$jumpto.focus();\n";
-        print "// -->\n</script>\n";
+        print "</script>\n";
     }
 
     print "</form>\n";

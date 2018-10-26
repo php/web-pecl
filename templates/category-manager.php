@@ -2,7 +2,6 @@
 
 <script src="/javascript/TreeMenu/TreeMenu.js"></script>
 <script>
-<!--
 	currentHighlight = null;
 
 	function category_click(e, obj, catID)
@@ -78,7 +77,6 @@
 	<?php foreach($categories as $c): ?>
 categories[<?php echo $c['id']; ?>] = new Array('<?php echo $c['name']; ?>', '<?php echo $c['description']; ?>');
 	<?php endforeach; ?>
-//-->
 </script>
 
 <table>

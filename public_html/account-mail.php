@@ -60,9 +60,7 @@ function printForm($data = [])
     $bb->end();
 
     echo "<script>\n";
-    echo "<!--\n";
     echo "document.forms.contact." . $focus . ".focus();\n";
-    echo "-->\n";
     echo "</script>";
 }
 

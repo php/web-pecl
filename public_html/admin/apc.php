@@ -485,7 +485,7 @@ EOB;
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head><title>APC INFO</title>
-<style><!--
+<style>
 body { background:white; font-size:100.01%; margin:0; padding:0; }
 body,p,td,th,input,submit { font-size:0.8em;font-family:arial,helvetica,sans-serif; }
 * html body   {font-size:0.8em}
@@ -679,7 +679,6 @@ input {
 	margin-right:1em;
 	padding:0.1em 0.5em 0.1em 0.5em;
 	}
-//-->
 </style>
 </head>
 <body>

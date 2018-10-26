@@ -26,7 +26,6 @@ response_header('Package Statistics');
 <h1>Package Statistics</h1>
 
 <script>
-<!--
 function reloadMe()
 {
     var newLocation = '<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>?'
@@ -40,7 +39,6 @@ function reloadMe()
     document.location.href = newLocation;
 
 }
-//-->
 </script>
 
 <?php
@@ -199,7 +197,6 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 <br /><br />
 
 <script>
-<!--
     function clearGraphList()
     {
         graphForm = document.forms['graph_control'];
@@ -255,7 +252,6 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
             alert('Please select one or more releases to show!');
         }
     }
-//-->
 </script>
 <form name="graph_control" action="#">
  <input type="hidden" name="pid" value="<?php echo @$_GET['pid']; ?>" />

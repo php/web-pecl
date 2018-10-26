@@ -1,5 +1,4 @@
 <script>
-<!--
 	function toggleMoreInfo(packageName, packageID)
 	{
 		if (!document.getElementById) {
@@ -14,7 +13,6 @@
 		rowLayer.style.display       = newDisplay;
 		rowSpacerLayer.style.display = newDisplay;
 	}
-//-->
 </script>
 
 <table border="0" width="100%">

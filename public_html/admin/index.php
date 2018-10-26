@@ -101,8 +101,6 @@ if (!empty($_REQUEST['cmd'])) {
 
 ?>
 <script>
-<!--
-
 function confirmed_goto(url, message) {
     if (confirm(message)) {
         location = url;
@@ -126,7 +124,6 @@ function updateRejectReason(selectObj) {
     }
     selectObj.selectedIndex = 0;
 }
-// -->
 </script>
 <?php
 
@@ -232,7 +229,6 @@ do {
     } else {
 		?>
 		<script>
-        <!--
 			/**
             * This code is *nasty* (nastyCode™)
             */
@@ -299,7 +295,6 @@ do {
 
 				return false;
 			}
-        //-->
         </script>
 		<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" name="mass_reject_form" method="post">
 		<input type="hidden" value="" name="cmd"/>

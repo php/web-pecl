@@ -30,14 +30,11 @@ response_header("Edit package");
 ?>
 
 <script>
-<!--
-
 function confirmed_goto(url, message) {
     if (confirm(message)) {
         location = url;
     }
 }
-// -->
 </script>
 
 <?php

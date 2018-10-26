@@ -284,7 +284,6 @@ if ($display_form) {
 </p>
 
 <script defer=\"defer\">
-<!--
 	function reasonClick(option)
 	{
 		if (option == 'pkg') {
@@ -314,7 +313,6 @@ if ($display_form) {
 	}
 
 	enableForm(false);
-//-->
 </script>
 
 <table border=\"0\" style=\"border: 2px #ff0000 dashed; padding: 0px\" id=\"reason_table\">
@@ -367,9 +365,9 @@ if ($display_form) {
     print "</form>";
 
     if ($jumpto) {
-        print "<script>\n<!--\n";
+        print "<script>\n";
         print "if (!document.forms[1].$jumpto.disabled) document.forms[1].$jumpto.focus();\n";
-        print "\n// -->\n</script>\n";
+        print "</script>\n";
     }
 }
 

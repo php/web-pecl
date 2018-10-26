@@ -148,8 +148,8 @@ if (!USE_AUTHENTIFICATION) {
 			!isset($_SERVER['PHP_AUTH_PW']) ||
 			$_SERVER['PHP_AUTH_USER'] != ADMIN_USERNAME ||
 			$_SERVER['PHP_AUTH_PW'] != ADMIN_PASSWORD) {
-			Header("WWW-Authenticate: Basic realm=\"APC Login\"");
-			Header("HTTP/1.0 401 Unauthorized");
+			header("WWW-Authenticate: Basic realm=\"APC Login\"");
+			header("HTTP/1.0 401 Unauthorized");
 
 			echo <<<EOB
 				<html><body>

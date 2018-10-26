@@ -152,10 +152,10 @@ function sendManualHeaders($charset,$lang) {
         global $LANG,$CHARSET;
         $LANG = $lang;
         $CHARSET = $charset;
-    Header("Cache-Control: public, max-age=600");
-    Header("Vary: Cookie");
-    Header("Content-type: text/html;charset=$charset");
-    Header("Content-language: $lang");
+    header("Cache-Control: public, max-age=600");
+    header("Vary: Cookie");
+    header("Content-type: text/html;charset=$charset");
+    header("Content-language: $lang");
 }
 
 function manualHeader($title,$id="") {

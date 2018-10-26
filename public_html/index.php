@@ -29,7 +29,7 @@ if (@sizeof($recent) > 0) {
             $desc .= '...';
         }
         $desc = htmlentities($desc);
-        $RSIDEBAR_DATA .= "<tr><td valign=\"top\" class=\"compact\">";
+        $RSIDEBAR_DATA .= "<tr><td valign=\"top\">";
         $RSIDEBAR_DATA .= "<a href=\"/package/" . $name . "/\">";
         $RSIDEBAR_DATA .= "$name $version</a><br /><i>$releasedate:</i> $desc</td></tr>";
     }

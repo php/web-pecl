@@ -22,7 +22,6 @@ td.content {
     padding: 1em 0.5em 0.3em 0.5em;
 }
 
-
 /* ========= Header ========= */
 
 td.head-logo {
@@ -233,10 +232,6 @@ form {
     margin-bottom : 0;
 }
 
-submit {
-    border: 0px;
-}
-
 /* === User Submission Responses === */
 
 div.errors,
@@ -290,8 +285,9 @@ a:link, a:visited {
 a:hover {
     color: #000033;
 }
+
 a:active {
-	color: #cc00cc;
+    color: #cc00cc;
 }
 
 th.headrow {
@@ -334,9 +330,6 @@ hr {
     font-size: 85%;
     font-style: italic;
     color: #66cc66;
-}
-
-.compact {
 }
 
 code, pre, tt {
@@ -431,4 +424,72 @@ hr.greyline {
 
 ul {
     margin-top: 0em;
+}
+
+.error {
+    font-size: 120%;
+    color: #660000;
+    background-color: #fee;
+    padding: 5px;
+}
+
+.eInfo_label {
+    font-weight: bold;
+    font-size: 80%;
+}
+
+th.pkgListHeader {
+    background-color: #cccccc;
+}
+
+td.tableHeader {
+    background-color: #cccccc;
+    border-bottom: 1px solid black;
+    font-weight: bold;
+}
+
+td.moreInfo {
+    background-color: #f0f0f0;
+    border: 1px dashed #c0c0c0;
+    position: relative;
+}
+
+.closeButton {
+    border: 2px white outset;
+    background-color: #c0c0c0;
+}
+
+.moreInfoHeader {
+    background-color: #dddddd;
+    border-bottom: 1px dashed #c0c0c0;
+}
+
+.moreInfoText {
+    font-size: 80%;
+    font-weight: bold;
+    font-family: Verdana;
+    padding-left: 5px;
+}
+
+.treeMenuContainer {
+    height: 400px;
+    width: 220px;
+    overflow: auto;
+    border: 1px #aaaaaa solid;
+    background-color: #eeeeee;
+}
+
+.treeMenuOff {
+    padding: 1px;
+    width: 202x;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.treeMenuOn {
+    border: 1px solid #000080;
+    background-color: #adadd1;
+    width: 202px;
+    cursor: pointer;
+    cursor: hand;
 }

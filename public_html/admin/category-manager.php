@@ -62,8 +62,6 @@ function parseTree(&$structure, $parent = null)
  * Form submitted?
  */
 if (!empty($_POST)) {
-    include_once '../../include/pear-category.php';
-
     switch (@$_POST['action']) {
     case 'add':
         if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {

@@ -22,7 +22,6 @@ td.content {
     padding: 1em 0.5em 0.3em 0.5em;
 }
 
-
 /* ========= Header ========= */
 
 td.head-logo {
@@ -233,10 +232,6 @@ form {
     margin-bottom : 0;
 }
 
-submit {
-    border: 0px;
-}
-
 /* === User Submission Responses === */
 
 div.errors,
@@ -290,8 +285,9 @@ a:link, a:visited {
 a:hover {
     color: #000033;
 }
+
 a:active {
-	color: #cc00cc;
+    color: #cc00cc;
 }
 
 th.headrow {
@@ -334,9 +330,6 @@ hr {
     font-size: 85%;
     font-style: italic;
     color: #66cc66;
-}
-
-.compact {
 }
 
 code, pre, tt {
@@ -431,4 +424,12 @@ hr.greyline {
 
 ul {
     margin-top: 0em;
+}
+
+.error {
+    font-size: 120%;
+    color: #000000;
+    background-color: #fee;
+    border: 1px solid #c00;
+    padding: 5px;
 }

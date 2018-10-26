@@ -44,4 +44,3 @@ response_header("Document Type Definitions");
 <?php
 $bb->end();
 response_footer();
-?>

@@ -437,9 +437,5 @@ if (count($dependants) > 0) {
 }
 
 // }}}
-// {{{ page footer
 
 response_footer();
-
-// }}}
-?>

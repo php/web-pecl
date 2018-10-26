@@ -216,4 +216,3 @@ $form->display('class="form-holder" cellspacing="1"',
                'Change Password', 'class="form-caption"');
 ob_end_flush();
 response_footer();
-?>

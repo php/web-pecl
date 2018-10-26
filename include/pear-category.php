@@ -74,5 +74,3 @@ function &get_categories_menu($type = 'tree') {
     $m = new HTML_Menu ($menu, $type, 'REQUEST_URI');
     return $m->get();
 }
-
-?>

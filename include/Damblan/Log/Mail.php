@@ -99,4 +99,3 @@ class Damblan_Log_Mail extends Log_observer {
         $this->_headers[$name] = $value;
     }
 }
-?>

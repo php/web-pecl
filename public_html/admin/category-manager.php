@@ -126,4 +126,3 @@ $categories   = $dbh->getAll('SELECT id, name, description FROM categories ORDER
 $treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, ['images' => '../gifs/TreeMenu', 'defaultClass' => 'treeMenuOff']);
 
 include($template_dir . 'category-manager.html');
-?>

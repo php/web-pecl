@@ -46,5 +46,3 @@
 	if (DB::isError($db->query($sql))) {
 		die('Query failed');
 	}
-
-?>

@@ -206,5 +206,3 @@ for ($i = 0; $i < $arc_count; $i++) {
  */
 header('Content-type: image/jpeg');
 imagejpeg($im, null, 100);
-
-?>

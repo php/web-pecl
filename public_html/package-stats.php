@@ -414,4 +414,3 @@ if (@!$_GET['pid']) {
 }
 
 response_footer();
-?>

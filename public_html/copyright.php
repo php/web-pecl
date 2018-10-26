@@ -66,4 +66,3 @@ For more information on the PHP Group and the PHP project, please see
 
 <?php
 response_footer();
-?>

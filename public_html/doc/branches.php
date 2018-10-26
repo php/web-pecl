@@ -14,4 +14,3 @@ descriptions about how to use SVN and the concepts of branches and tags.
 
 <?php
 response_footer();
-?>

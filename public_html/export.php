@@ -51,5 +51,3 @@ if ($what == "avail") {
 		print "{$row[0]}\n";
 	}
 }
-
-?>

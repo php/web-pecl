@@ -95,5 +95,3 @@ switch (sizeof($opts)) {
         $ok = false;
     }
 }
-
-?>

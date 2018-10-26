@@ -591,4 +591,3 @@ class HTML_Menu {
       return $GLOBALS[$this->url_env_var];
     }
 }
-?>

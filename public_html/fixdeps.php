@@ -77,5 +77,3 @@ while ($sth->fetchInto($row)) {
 }
 
 response_footer();
-
-?>

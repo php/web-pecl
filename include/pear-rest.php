@@ -607,4 +607,3 @@ class pear_rest
         @chmod($mdir . DIRECTORY_SEPARATOR . 'allmaintainers.xml', 0666);
     }
 }
-?>

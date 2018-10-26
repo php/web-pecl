@@ -241,4 +241,3 @@ class Damblan_Karma {
         $logger->log($text);
     }
 }
-?>

@@ -40,4 +40,3 @@ the website is
 
 <?php
 response_footer();
-?>

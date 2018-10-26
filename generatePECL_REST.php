@@ -114,4 +114,3 @@ foreach (category::listAll() as $category) {
     $pear_rest->savePackagesCategoryREST($category['name']);
     echo "done\n";
 }
-?>

@@ -32,5 +32,3 @@ if (isset($showmsg)) {
     Header("Refresh: 1; url=\"./\"");
     auth_reject(PEAR_AUTH_REALM, "Logging out");
 }
-
-?>

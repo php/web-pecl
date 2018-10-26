@@ -246,4 +246,3 @@ class patches {
         return false;
     }
 }
-?>

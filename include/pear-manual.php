@@ -210,4 +210,3 @@ function manualFooter($title,$id="") {
 
     response_footer();
 }
-?>

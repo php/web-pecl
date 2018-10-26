@@ -41,4 +41,3 @@ possibility to download and install Damblan as a PEAR package.</p>
 
 <?php
 response_footer();
-?>

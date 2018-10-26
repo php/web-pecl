@@ -90,5 +90,3 @@ foreach ($users as $username => $info) {
 	$users_added++;
 }
 print "$users_added users added.\n";
-
-?>

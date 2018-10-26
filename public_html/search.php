@@ -61,4 +61,3 @@ switch ($_POST['search_in']) {
         response_footer();
         break;
 }
-?>

@@ -179,4 +179,3 @@ echo '<p><b>Note:</b> Please do not just include these icons directly but
         low.</p>';
 
 response_footer();
-?>

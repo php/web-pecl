@@ -79,5 +79,3 @@ if (is_resource($avail)) {
 	}
 	print "$ent entries\n";
 }
-
-?>

@@ -129,4 +129,3 @@ if (isset($_POST['submit'])) {
 }
 
 response_footer();
-?>

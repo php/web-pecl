@@ -86,5 +86,3 @@ if (isset($_POST['PEAR_USER']) || isset($_POST['PEAR_PW'])) {
 }
 
 auth_reject(PEAR_AUTH_REALM, $msg);
-
-?>

@@ -341,4 +341,3 @@ function auth_verify_master_status($user, $pass){
 
 	return @unserialize($s);
 }
-?>

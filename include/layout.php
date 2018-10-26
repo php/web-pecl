@@ -163,4 +163,3 @@ function make_bug_link($package, $type = 'list', $linktext = false) {
     }
 
 }
-?>

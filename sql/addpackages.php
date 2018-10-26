@@ -43,13 +43,15 @@ foreach (explode("\n", $packages) as $line) {
     } else {
         $catid = $catmap[$category];
     }
-    package::add(array('name'     => $name,
-                      'type'     => 'pear',
-                      'license'  => 'PEAR License',
-                      'description' => '',
-                      'summary'  => $summary,
-                      'category' => $catid,
-                      'lead'     => $lead));
+    package::add([
+        'name'        => $name,
+        'type'        => 'pear',
+        'license'     => 'PEAR License',
+        'description' => '',
+        'summary'     => $summary,
+        'category'    => $catid,
+        'lead'        => $lead
+    ]);
     print "Package: $name\n";
 }
 

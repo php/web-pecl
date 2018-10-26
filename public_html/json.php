@@ -39,7 +39,7 @@ $sth = $dbh->query("SELECT u.handle".
                    " FROM maintains m, users u".
                    " WHERE m.package = $pacid".
                    " AND m.handle = u.handle");
-$maintainers = array();
+$maintainers = [];
 while ($row = $sth->fetchRow()) {
 	$maintainers[] = $row->handle;
 }

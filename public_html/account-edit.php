@@ -64,9 +64,9 @@ if (isset($_POST['command']) && strlen($_POST['command'] < 32)) {
 
 switch ($command) {
     case 'update':
-        $fields_list = array("name", "email", "homepage", "showemail", "userinfo", "pgpkeyid", "wishlist");
+        $fields_list = ["name", "email", "homepage", "showemail", "userinfo", "pgpkeyid", "wishlist"];
 
-        $user_data_post = array('handle' => $handle);
+        $user_data_post = ['handle' => $handle];
         foreach ($fields_list as $k) {
             if ($k == 'showemail') {
                 $user_data_post['showemail'] =  isset($_POST['showemail']) ? 1 : 0;
@@ -104,7 +104,7 @@ switch ($command) {
             foreach ($lost_entries as $ent) {
                 $del = $dbh->affectedRows();
                 print "Removing CVS access to $ent for $handle...<br />\n";
-                $dbh->execute($sth, array($handle, $ent));
+                $dbh->execute($sth, [$handle, $ent]);
             }
         }
 
@@ -113,7 +113,7 @@ switch ($command) {
                                  "VALUES(?,?,?)");
             foreach ($new_entries as $ent) {
                 print "Adding CVS access to $ent for $handle...<br />\n";
-                $dbh->execute($sth, array($handle, $ent, 1));
+                $dbh->execute($sth, [$handle, $ent, 1]);
             }
         }
 
@@ -156,11 +156,11 @@ switch ($command) {
 
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
-$row = $dbh->getRow('SELECT * FROM users WHERE handle = ?', array($handle));
+$row = $dbh->getRow('SELECT * FROM users WHERE handle = ?', [$handle]);
 
 $cvs_acl_arr = $dbh->getCol('SELECT path FROM cvs_acl'
                             . ' WHERE username = ? AND access = 1', 0,
-                            array($handle));
+                            [$handle]);
 $cvs_acl = implode("\n", $cvs_acl_arr);
 
 if ($row === null) {

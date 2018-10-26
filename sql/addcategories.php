@@ -33,13 +33,13 @@ XML;;
 XML-RPC;;XML
 ';
 
-$catids = array();
+$catids = [];
 foreach (explode("\n", $categories) as $line) {
 	if (trim($line) == '') {
 		continue;
     }
 	list($name, $desc, $parent) = explode(";", trim($line));
-	$params = array('name' => $name, 'desc' => $desc);
+	$params = ['name' => $name, 'desc' => $desc];
 	if (!empty($parent)) {
 		$params['parent'] = $catids[$parent];
 	}

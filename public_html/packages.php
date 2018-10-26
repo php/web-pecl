@@ -37,7 +37,7 @@ require_once('Net/URL.php');
 */
 function getQueryString($catpid, $catname, $showempty = false, $moreinfo = false)
 {
-    $querystring = array();
+    $querystring = [];
     $entries_cnt = 0;
     if ($catpid) {
         $querystring[] = 'catpid=' . (int)$catpid;
@@ -120,7 +120,7 @@ $sth = $dbh->query('SELECT c.*, COUNT(p.id) AS npackages' .
 
 $table   = new HTML_Table('border="0" cellpadding="6" cellspacing="2" width="100%"');
 $nrow    = 0;
-$catdata = array();
+$catdata = [];
 
 // Get names of sub-categories
 $subcats = $dbh->getAssoc("SELECT p.id AS pid, c.id AS id, c.name AS name, c.summary AS summary".
@@ -149,7 +149,7 @@ while ($sth->fetchInto($row)) {
 
     $sub_items = 0;
 
-    $sub_links = array();
+    $sub_links = [];
     if (isset($subcats[$id])) {
         foreach ($subcats[$id] as $subcat) {
             $sub_links[] = '<b><a href="'. $script_name .'?catpid='.$subcat['id'].'&amp;catname='.
@@ -179,23 +179,23 @@ while ($sth->fetchInto($row)) {
     settype($npackages, 'string');
     settype($ncategories, 'string');
 
-    $data  = '<font size="+1"><b><a href="'. $script_name .'?catpid='.$id.'&amp;catname='.urlencode($name).'">'.$name.'</a></b></font> ('.$npackages.')<br />';//$name; //array($name, $npackages, $ncategories, $summary);
+    $data  = '<font size="+1"><b><a href="'. $script_name .'?catpid='.$id.'&amp;catname='.urlencode($name).'">'.$name.'</a></b></font> ('.$npackages.')<br />';//$name; //[$name, $npackages, $ncategories, $summary];
     $data .= $sub_links.'<br />';
     $catdata[] = $data;
 
     $totalpackages += $npackages;
 
     if ($nrow++ % 2 == 1) {
-        $table->addRow(array($catdata[0], $catdata[1]));
+        $table->addRow([$catdata[0], $catdata[1]]);
         $table->setCellAttributes($table->getRowCount()-1, 0, 'width="50%"');
         $table->setCellAttributes($table->getRowCount()-1, 1, 'width="50%"');
-        $catdata = array();
+        $catdata = [];
     }
 } // End while
 
 // Any left over (odd number of categories).
 if (count($catdata) > 0){
-    $table->addRow(array($catdata[0]));
+    $table->addRow([$catdata[0]]);
     $table->setCellAttributes($table->getRowCount()-1, 0, 'width="50%"');
     $table->setCellAttributes($table->getRowCount()-1, 1, 'width="50%"');
 }
@@ -227,7 +227,7 @@ if (!empty($catpid)) {
 
     // Paging
     $total = count($packages);
-    $pager = Pager::factory(array('totalItems' => $total, 'perPage' => 15));
+    $pager = Pager::factory(['totalItems' => $total, 'perPage' => 15]);
     list($first, $last) = $pager->getOffsetByPageId();
     list($prev, $pages, $next) = $pager->getLinks('<nobr><img src="gifs/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</nobr>', '<nobr>Next<img src="gifs/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></nobr>');
 

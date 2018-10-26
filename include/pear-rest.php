@@ -14,7 +14,7 @@ class pear_rest
         $extra = '/rest/';
         $cdir = $this->_restdir . DIRECTORY_SEPARATOR . 'c';
         if (!is_dir($cdir)) {
-            System::mkdir(array('-p', $cdir));
+            System::mkdir(['-p', $cdir]);
             @chmod($cdir, 0777);
         }
 
@@ -46,14 +46,14 @@ class pear_rest
         $extra = '/rest/';
         $cdir = $this->_restdir . DIRECTORY_SEPARATOR . 'c';
         if (!is_dir($cdir)) {
-            System::mkdir(array('-p', $cdir));
+            System::mkdir(['-p', $cdir]);
             @chmod($cdir, 0777);
         }
-        $category = $dbh->getAll('SELECT * FROM categories WHERE name = ?', array($category),
+        $category = $dbh->getAll('SELECT * FROM categories WHERE name = ?', [$category],
             DB_FETCHMODE_ASSOC);
         $category = $category[0];
         if (!is_dir($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']))) {
-            System::mkdir(array('-p', $cdir . DIRECTORY_SEPARATOR . urlencode($category['name'])));
+            System::mkdir(['-p', $cdir . DIRECTORY_SEPARATOR . urlencode($category['name'])]);
             @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']), 0777);
         }
         $category['description'] = htmlspecialchars($category['description']);
@@ -87,7 +87,7 @@ class pear_rest
             "WHERE p.package_type = 'pecl' " .
             "AND p.category = c.id AND c.name = ? AND p.approved = 1";
 
-        $sth = $dbh->getAll($query, array($category['name']), DB_FETCHMODE_ASSOC);
+        $sth = $dbh->getAll($query, [$category['name']], DB_FETCHMODE_ASSOC);
         foreach ($sth as $package) {
             $list .= ' <p xlink:href="' . $extra . 'p/' . strtolower($package['name']) . '">' .
                 $package['name'] . '</p>
@@ -141,7 +141,7 @@ class pear_rest
                     strtolower($package['name']));
                 while (false !== ($entry = readdir($dirhandle))) {
                     if (strpos($entry, 'deps.') === 0) {
-                        $version = str_replace(array('deps.', '.txt'), array('', ''), $entry);
+                        $version = str_replace(['deps.', '.txt'], ['', ''], $entry);
                         $fullpackageinfo .= '
 <deps>
  <v>' . $version . '</v>
@@ -175,7 +175,7 @@ class pear_rest
             return;
         }
         // remove all category info
-        System::rm(array('-r', $cdir . DIRECTORY_SEPARATOR . urlencode($category)));
+        System::rm(['-r', $cdir . DIRECTORY_SEPARATOR . urlencode($category)]);
     }
 
     function saveAllPackagesREST()
@@ -183,7 +183,7 @@ class pear_rest
         require_once 'System.php';
         $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
         if (!is_dir($pdir)) {
-            System::mkdir(array('-p', $pdir));
+            System::mkdir(['-p', $pdir]);
             @chmod($pdir, 0777);
         }
 
@@ -224,16 +224,16 @@ class pear_rest
 
         $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
         if (!is_dir($pdir)) {
-            System::mkdir(array('-p', $pdir));
+            System::mkdir(['-p', $pdir]);
             @chmod($pdir, 0777);
         }
         if (!is_dir($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']))) {
-            System::mkdir(array('-p', $pdir . DIRECTORY_SEPARATOR .
-                strtolower($package['name'])));
+            System::mkdir(['-p', $pdir . DIRECTORY_SEPARATOR .
+                strtolower($package['name'])]);
             @chmod($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']), 0777);
         }
         $catinfo = $dbh->getOne('SELECT c.name FROM packages, categories c WHERE 
-            c.id = ?', array($package['categoryid']), DB_FETCHMODE_ASSOC);
+            c.id = ?', [$package['categoryid']], DB_FETCHMODE_ASSOC);
         if (isset($package['parent']) && $package['parent']) {
             $parent = '
  <pa xlink:href="' . $extra . 'p/' . $package['parent'] . '">' .
@@ -283,8 +283,8 @@ class pear_rest
         $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
         $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
         // remove all package/release info for this package
-        System::rm(array('-r', $pdir . DIRECTORY_SEPARATOR . $package));
-        System::rm(array('-r', $rdir . DIRECTORY_SEPARATOR . $package));
+        System::rm(['-r', $pdir . DIRECTORY_SEPARATOR . $package]);
+        System::rm(['-r', $rdir . DIRECTORY_SEPARATOR . $package]);
     }
 
     function _getAllReleasesRESTProlog($package)
@@ -307,21 +307,21 @@ class pear_rest
         $extra = '/rest/';
         $pid = package::info($package, 'id');
         $releases = $dbh->getAll('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC',
-            array($pid), DB_FETCHMODE_ASSOC);
+            [$pid], DB_FETCHMODE_ASSOC);
         $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
         if (!is_dir($rdir)) {
-            System::mkdir(array('-p', $rdir));
+            System::mkdir(['-p', $rdir]);
             @chmod($rdir, 0777);
         }
         if (!$releases || !count($releases)) {
             // start from scratch, so that any pulled releases have their REST deleted
-            System::rm(array('-r', $rdir . DIRECTORY_SEPARATOR . strtolower($package)));
+            System::rm(['-r', $rdir . DIRECTORY_SEPARATOR . strtolower($package)]);
             return;
         }
         $info = $this->_getAllReleasesRESTProlog($package);
         foreach ($releases as $release) {
             $packagexml = $dbh->getOne('SELECT packagexml FROM files WHERE package = ? AND
-                `release` = ?', array($pid, $release['id']));
+                `release` = ?', [$pid, $release['id']]);
             $extra = '';
             if (strpos($packagexml, ' version="2.0"')) {
                 // little quick hack to determine package.xml version
@@ -334,7 +334,7 @@ class pear_rest
                 }
                 if ($compat = $pf->getCompatible()) {
                     if (!isset($compat[0])) {
-                        $compat = array($compat);
+                        $compat = [$compat];
                     }
                     foreach ($compat as $entry) {
                         $extra .= '<co><c>' . $entry['channel'] . '</c>' .
@@ -343,7 +343,7 @@ class pear_rest
                             '<max>' . $entry['max'] . '</max>';
                         if (isset($entry['exclude'])) {
                             if (!is_array($entry['exclude'])) {
-                                $entry['exclude'] = array($entry['exclude']);
+                                $entry['exclude'] = [$entry['exclude']];
                             }
                             foreach ($entry['exclude'] as $exclude) {
                                 $extra .= '<x>' . $exclude . '</x>';
@@ -372,7 +372,7 @@ class pear_rest
         }
         $info .= '</a>';
         if (!is_dir($rdir . DIRECTORY_SEPARATOR . strtolower($package))) {
-            System::mkdir(array('-p', $rdir . DIRECTORY_SEPARATOR . strtolower($package)));
+            System::mkdir(['-p', $rdir . DIRECTORY_SEPARATOR . strtolower($package)]);
             @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package), 0777);
         }
         file_put_contents($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
@@ -432,18 +432,18 @@ class pear_rest
         $extra = '/rest/';
         $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
         if (!is_dir($rdir)) {
-            System::mkdir(array('-p', $rdir));
+            System::mkdir(['-p', $rdir]);
             @chmod($rdir, 0777);
         }
 
         $package = $pkgobj->getPackage();
         if (!is_dir($rdir . DIRECTORY_SEPARATOR . strtolower($package))) {
-            System::mkdir(array('-p', $rdir . DIRECTORY_SEPARATOR . strtolower($package)));
+            System::mkdir(['-p', $rdir . DIRECTORY_SEPARATOR . strtolower($package)]);
             @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package), 0777);
         }
 
         $releasedate = $dbh->getOne('SELECT releasedate FROM releases WHERE id = ?',
-            array($id));
+            [$id]);
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <r xmlns="http://pear.php.net/dtd/rest.release"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -490,7 +490,7 @@ class pear_rest
         require_once 'System.php';
         $mdir = $this->_restdir . DIRECTORY_SEPARATOR . 'm';
         if (is_dir($mdir . DIRECTORY_SEPARATOR . $handle)) {
-            System::rm(array('-r', $mdir . DIRECTORY_SEPARATOR . $handle));
+            System::rm(['-r', $mdir . DIRECTORY_SEPARATOR . $handle]);
         }
     }
 
@@ -499,17 +499,17 @@ class pear_rest
         require_once 'System.php';
         global $dbh;
         $pid = package::info($package, 'id');
-        $maintainers = $dbh->getAll('SELECT * FROM maintains WHERE package = ?', array($pid),
+        $maintainers = $dbh->getAll('SELECT * FROM maintains WHERE package = ?', [$pid],
             DB_FETCHMODE_ASSOC);
         $extra = '/rest/';
         if (count($maintainers)) {
             $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
             if (!is_dir($pdir)) {
-                System::mkdir(array('-p', $pdir));
+                System::mkdir(['-p', $pdir]);
                 @chmod($pdir, 0777);
             }
             if (!is_dir($pdir . DIRECTORY_SEPARATOR . strtolower($package))) {
-                System::mkdir(array('-p', $pdir . DIRECTORY_SEPARATOR . strtolower($package)));
+                System::mkdir(['-p', $pdir . DIRECTORY_SEPARATOR . strtolower($package)]);
                 @chmod($pdir . DIRECTORY_SEPARATOR . strtolower($package), 0777);
             }
             $info = '<?xml version="1.0" encoding="UTF-8" ?>
@@ -541,16 +541,16 @@ class pear_rest
         require_once 'System.php';
         global $dbh;
         $maintainer = $dbh->getAll('SELECT * FROM users WHERE handle = ?',
-            array($maintainer), DB_FETCHMODE_ASSOC);
+            [$maintainer], DB_FETCHMODE_ASSOC);
         $maintainer = $maintainer[0];
         $extra = '/rest/';
         $mdir = $this->_restdir . DIRECTORY_SEPARATOR . 'm';
         if (!is_dir($mdir)) {
-            System::mkdir(array('-p', $mdir));
+            System::mkdir(['-p', $mdir]);
             @chmod($mdir, 0777);
         }
         if (!is_dir($mdir . DIRECTORY_SEPARATOR . $maintainer['handle'])) {
-            System::mkdir(array('-p', $mdir . DIRECTORY_SEPARATOR . $maintainer['handle']));
+            System::mkdir(['-p', $mdir . DIRECTORY_SEPARATOR . $maintainer['handle']]);
             @chmod($mdir . DIRECTORY_SEPARATOR . $maintainer['handle'], 0777);
         }
         if ($maintainer['homepage']) {
@@ -600,7 +600,7 @@ class pear_rest
         $info .= '</m>';
         $mdir = $this->_restdir . DIRECTORY_SEPARATOR . 'm';
         if (!is_dir($mdir)) {
-            System::mkdir(array('-p', $mdir));
+            System::mkdir(['-p', $mdir]);
             @chmod($mdir, 0777);
         }
         file_put_contents($mdir . DIRECTORY_SEPARATOR . 'allmaintainers.xml', $info);

@@ -80,14 +80,14 @@ if (isset($_POST['submit'])) {
 		if (!empty($_POST['newpk_id'])) {
 			$_POST['new_channel'] = 'pecl.php.net';
 			$_POST['new_package'] = $dbh->getOne('SELECT name from packages WHERE id = ?',
-					array($_POST['newpk_id']));
+					[$_POST['newpk_id']]);
 			if (!$_POST['new_package']) {
 				$_POST['new_channel'] = $_POST['newpk_id'] = null;
 			}
 		} else {
 			if ($_POST['new_channel'] == 'pecl.php.net') {
 				$_POST['newpk_id'] = $dbh->getOne('SELECT id from packages WHERE name = ?',
-						array($_POST['new_package']));
+						[$_POST['new_package']]);
 				if (!$_POST['newpk_id']) {
 					$_POST['new_channel'] = $_POST['new_package'] = null;
 				}
@@ -95,7 +95,7 @@ if (isset($_POST['submit'])) {
 		}
 
 
-    $qparams = array(
+    $qparams = [
                   $_POST['name'],
                   $_POST['license'],
                   $_POST['summary'],
@@ -109,7 +109,7 @@ if (isset($_POST['submit'])) {
                   $_POST['new_package'],
                   $_POST['new_channel'],
                   $_GET['id']
-                );
+    ];
 
     $sth = $dbh->query($query, $qparams);
 
@@ -227,7 +227,7 @@ $form->displaySelect("category", $rows, (int)$row['categoryid']);
 <?php
 $sth = $dbh->query('SELECT name FROM packages WHERE package_type="pecl" ORDER BY name');
 
-$rows = array('' => 'Select package');
+$rows = ['' => 'Select package'];
 while ($package = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
     $rows[$package['name']] = $package['name'];
 }

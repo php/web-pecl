@@ -86,29 +86,29 @@ function show_latest($lang) {
 		$date = date("Ymd",$week);
 		$file = PEAR_PWN_PATH.'/'.$date. ".{$lang}.html";
         if (@file_exists($file) ){
-            return array($date,$file);
+            return [$date,$file];
         }
     }
 	return false;
 }
 
-$lang_maps = array(
+$lang_maps = [
     "en"    => "en_US",
     "de"    => "de",
     "fr"    => "fr",
     "pt_BR" => "pt_BR",
     "pl"    => "pl",
     "es"    => "es"
-);
+];
 
-$iso_maps = array(
+$iso_maps = [
     "en"        => "iso-8859-1",
     "de"        => "iso-8859-1",
     "fr"        => "iso-8859-1",
     "pt_BR"     => "iso-8859-1",
     "pl"        => "iso-8859-2",
     "es"        => "iso-8859-1"
-);
+];
 
 
 ?>

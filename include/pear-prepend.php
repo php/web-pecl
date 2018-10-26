@@ -48,10 +48,10 @@ function get($name)
 }
 
 if (empty($dbh)) {
-    $options = array(
+    $options = [
         'persistent' => false,
         'portability' => DB_PORTABILITY_ALL,
-    );
+    ];
     $GLOBALS['_NODB'] = true;
     $dbh = DB::connect(PEAR_DATABASE_DSN, $options);
     $dbh->query('SET NAMES utf8');
@@ -71,10 +71,10 @@ $LAST_UPDATED = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';
 
 // set the session cookie lifetime to 2038 (this is the old behaviour, maybe we should change it to something shorter :))
 if(!empty($_COOKIE['REMEMBER_ME'])){
-	call_user_func_array('session_set_cookie_params', array_merge(session_get_cookie_params(), array('lifetime' => time()+86400)));
+	call_user_func_array('session_set_cookie_params', array_merge(session_get_cookie_params(), ['lifetime' => time()+86400]));
 }
 else{
-	call_user_func_array('session_set_cookie_params', array_merge(session_get_cookie_params(), array('lifetime' => null)));
+	call_user_func_array('session_set_cookie_params', array_merge(session_get_cookie_params(), ['lifetime' => null]));
 }
 
 session_start();

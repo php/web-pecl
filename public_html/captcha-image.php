@@ -72,7 +72,7 @@ $font_size_min    = 18;
  * Ease dev box configuration by doing this funky string replace.
  */
 $font_dir = strtr($_SERVER['DOCUMENT_ROOT'],
-                  array('public_html' => 'include')) . '/fonts/';
+                  ['public_html' => 'include']) . '/fonts/';
 
 /*
  * This array contains the list of font names and the number the base
@@ -82,9 +82,9 @@ $font_dir = strtr($_SERVER['DOCUMENT_ROOT'],
  * Fonts were obtained from http://www.freefontsnow.com/.  They are free
  * for use under certain circumstances (such as the php.net websites).
  */
-$fonts = array(
+$fonts = [
     'coolveti.ttf'      => 1,    // by Ray Larabie
-);
+];
 
 
 
@@ -93,7 +93,7 @@ $fonts = array(
  */
 $image_width  = 0;
 $image_height = 0;
-$data         = array();
+$data         = [];
 
 for ($i = 0; $i < strlen($_SESSION['captcha']); $i++) {
     $char = substr($_SESSION['captcha'], $i, 1);
@@ -118,14 +118,14 @@ for ($i = 0; $i < strlen($_SESSION['captcha']); $i++) {
     $image_width += $width + $font_padding;
     $image_height = max($image_height, $height);
 
-    $data[] = array(
+    $data[] = [
         'font'   => $font,
         'char'   => $char,
         'size'   => $size,
         'angle'  => $angle,
         'height' => $height,
         'width'  => $width,
-    );
+    ];
 }
 
 $image_width -= $font_padding;
@@ -141,7 +141,7 @@ $im = imagecreate($image_width, $image_height);
  * 0 is the background color.
  * 1 through x are the foreground colors.
  */
-$colors = array(
+$colors = [
     imagecolorallocate($im,
                        51 * mt_rand($color_bg_min, $color_bg_max),
                        51 * mt_rand($color_bg_min, $color_bg_max),
@@ -154,7 +154,7 @@ $colors = array(
                        51 * mt_rand($color_fg_min, $color_fg_max),
                        51 * mt_rand($color_fg_min, $color_fg_max),
                        51 * mt_rand($color_fg_min, $color_fg_max)),
-);
+];
 $color_max = count($colors) - 1;
 
 /*

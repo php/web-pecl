@@ -55,7 +55,7 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
      * Update users lastlogin
      */
     $query = 'UPDATE users SET lastlogin = NOW() WHERE handle = ?';
-    $dbh->query($query, array($_POST['PEAR_USER']));
+    $dbh->query($query, [$_POST['PEAR_USER']]);
 
     /*
      * Update users password if it is held in the db
@@ -63,7 +63,7 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
      */
     if (strlen(@$auth_user->password) == 13) { // $auth_user comes from auth_verify() function
         $query = 'UPDATE users SET password = ? WHERE handle = ?';
-        $dbh->query($query, array(md5($_POST['PEAR_PW']), $_POST['PEAR_USER']));
+        $dbh->query($query, [md5($_POST['PEAR_PW']), $_POST['PEAR_USER']]);
     }
 
     /*

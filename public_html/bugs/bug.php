@@ -1,5 +1,5 @@
 <?php
-$bugs = array (
+$bugs = [
   5 => '55880',
   11 => '55881',
   15 => '55882',
@@ -4139,7 +4139,7 @@ $bugs = array (
   24438 => '60016',
   24439 => '60017',
   24440 => '60018',
-);
+];
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!$id) {

@@ -38,7 +38,7 @@ $form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES));
 /**
 * Months for released date dropdowns
 */
-$months     = array();
+$months     = [];
 $months[1]  = 'January';
 $months[2]  = 'February';
 $months[3]  = 'March';
@@ -81,7 +81,7 @@ for ($i=0; $i<count($users); $i++) {
 $numrows = 0;
 if (!empty($_GET)) {
     $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
-    $where = array();
+    $where = [];
 
     // Build package name part of query
     if (!empty($_GET['pkg_name'])) {

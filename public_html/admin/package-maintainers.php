@@ -55,12 +55,12 @@ if (empty($id)) {
     $all = maintainer::get($id);
 
     // Transform
-    $new_list = array();
+    $new_list = [];
     foreach ((array)$_GET['maintainers'] as $maintainer) {
         list($handle, $role) = explode("||", $maintainer);
         $new_list[$handle] = $role;
     }
-    $package = $dbh->getOne('SELECT name FROM packages WHERE id=?', array($id));
+    $package = $dbh->getOne('SELECT name FROM packages WHERE id=?', [$id]);
 
 
     // Perform databases operations
@@ -86,22 +86,22 @@ if (empty($id)) {
             continue;
         }
         echo 'Deleting user <b>' . $handle . '</b> ...<br />';
-        $result = $dbh->execute($delete, array($handle, $id));
+        $result = $dbh->execute($delete, [$handle, $id]);
     }
 
     // Update/Insert existing maintainers
     foreach ($new_list as $handle => $role) {
-        $result = $dbh->execute($check, array($handle, $id));
+        $result = $dbh->execute($check, [$handle, $id]);
 
         $row = $result->fetchRow(DB_FETCHMODE_ASSOC);
         if (!is_array($row)) {
             // Insert new maintainer
             echo 'Adding user <b>' . $handle . '</b> ...<br />';
-            $result = $dbh->execute($insert, array($handle, $id, $role));
+            $result = $dbh->execute($insert, [$handle, $id, $role]);
         } else if ($role != $row['role']) {
             // Update role
             echo 'Updating user <b>' . $handle . '</b> ...<br />';
-            $result = $dbh->execute($update, array($role, $handle, $id));
+            $result = $dbh->execute($update, [$role, $handle, $id]);
         }
     }
 
@@ -120,7 +120,7 @@ if (empty($id)) {
         exit();
     }
 
-    $package = htmlentities($dbh->getOne('SELECT name FROM packages WHERE id=?', array($id)), ENT_QUOTES);
+    $package = htmlentities($dbh->getOne('SELECT name FROM packages WHERE id=?', [$id]), ENT_QUOTES);
 
     $bb = new BorderBox("Manage maintainers for $package", "100%");
 

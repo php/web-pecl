@@ -60,7 +60,7 @@ PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'error_404');
 // This is needed to be able to test the downloads with "wget"
 // or the pear installer
 if (empty($dbh)) {
-    $dbh = DB::connect(PEAR_DATABASE_DSN, array('persistent' => false));
+    $dbh = DB::connect(PEAR_DATABASE_DSN, ['persistent' => false]);
     $dbh->query('SET NAMES utf8');
 }
 
@@ -69,7 +69,7 @@ if (!isset($_SERVER['PATH_INFO']) || $_SERVER['PATH_INFO'] == '/') {
 }
 $opts = explode('/', $_SERVER['PATH_INFO']);
 $ok = false;
-if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], array('1', 'yes', 'on'))) {
+if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], ['1', 'yes', 'on'])) {
     $uncompress = true;
 } else {
     $uncompress = false;

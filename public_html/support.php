@@ -36,24 +36,22 @@ response_header("Support");
 
 <?php
 
-  // array of lists (list, name, short desc., moderated, archive, digest, newsgroup)
-  $mailing_lists = array(
-
+// array of lists (list, name, short desc., moderated, archive, digest, newsgroup)
+$mailing_lists = [
     'PECL mailinglists',
 
-    array (
+    [
       'pecl-dev', 'PECL developers list',
       'A list for developers of PECL',
       false, true, true, "php.pecl.dev"
-    ),
+    ],
 
-    array (
+    [
       'pecl-cvs', 'PECL SVN list',
       'All the commits of the svn PECL code repository are posted to this list automatically',
       false, true, false, "php.pecl.cvs"
-    ),
-
-  );
+    ],
+];
 ?>
 <p>
 There are <?php echo count($mailing_lists)-1; ?> PECL-related mailing
@@ -149,12 +147,12 @@ Eris Free Net</a>.
 
 <?php
 
-$icons = Array(
-    'pecl-power.gif'    => 'Powered by PECL, GIF format',
-    'pecl-power.png'    => 'Powered by PECL, PNG format',
-    'pecl-icon.gif'     => '32x32 PECL icon, GIF format',
-    'pecl-icon.png'     => '32x32 PECL icon, PNG format',
-);
+$icons = [
+    'pecl-power.gif' => 'Powered by PECL, GIF format',
+    'pecl-power.png' => 'Powered by PECL, PNG format',
+    'pecl-icon.gif'  => '32x32 PECL icon, GIF format',
+    'pecl-icon.png'  => '32x32 PECL icon, PNG format',
+];
 
 echo '<table cellpadding="5" cellspacing="1">';
 

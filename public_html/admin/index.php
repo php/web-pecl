@@ -157,7 +157,7 @@ do {
 	    $bb = new BorderBox("Notes for user " . htmlspecialchars($requser->handle, ENT_QUOTES));
 	    $notes = $dbh->getAssoc("SELECT id,nby,UNIX_TIMESTAMP(ntime) AS ntime,note FROM notes ".
 	                "WHERE uid = ? ORDER BY ntime", true,
-	                array($requser->handle));
+	                [$requser->handle]);
 	    $i = "      ";
 	    if (is_array($notes) && sizeof($notes) > 0) {
 	        print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";

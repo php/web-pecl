@@ -69,7 +69,7 @@ define('OB_SYS_CACHE_DIR',4);
 define('OB_VERSION_CHECK',9);
 
 // check validity of input variables
-$vardom=array(
+$vardom=[
 	'OB'	=> '/^\d+$/',			// operational mode switch
 	'CC'	=> '/^[01]$/',			// clear cache requested
 	'SH'	=> '/^[a-z0-9]+$/',		// shared object description
@@ -82,16 +82,16 @@ $vardom=array(
 	'SORT1'	=> '/^[AHSMCDTZ]$/',	// first sort key
 	'SORT2'	=> '/^[DA]$/',			// second sort key
 	'AGGR'	=> '/^\d+$/'			// aggregation by dir level
-);
+];
 
 // default cache mode
 $cache_mode='opcode';
 
 // cache scope
-$scope_list=array(
+$scope_list=[
 	'A' => 'cache_list',
 	'D' => 'deleted_list'
-);
+];
 
 // handle POST and GET requests
 if (empty($_REQUEST)) {
@@ -102,7 +102,7 @@ if (empty($_REQUEST)) {
 	} else if (!empty($_POST)) {
 		$_REQUEST = $_POST;
 	} else {
-		$_REQUEST = array();
+		$_REQUEST = [];
 	}
 }
 
@@ -326,7 +326,7 @@ if (isset($MYREQUEST['IMG']))
 		// This block of code creates the pie chart.  It is a lot more complex than you
 		// would expect because we try to visualize any memory fragmentation as well.
 		$angle_from = 0;
-		$string_placement=array();
+		$string_placement=[];
 		for($i=0; $i<$mem['num_seg']; $i++) {
 			$ptr = 0;
 			$free = $mem['block_lists'][$i];
@@ -336,7 +336,7 @@ if (isset($MYREQUEST['IMG']))
 					if(($angle_to+$fuzz)>1) $angle_to = 1;
 					fill_arc($image,$x,$y,$size,$angle_from*360,$angle_to*360,$col_black,$col_red);
 					if (($angle_to-$angle_from)>0.05) {
-						array_push($string_placement, array($angle_from,$angle_to));
+						array_push($string_placement, [$angle_from,$angle_to]);
 					}
 					$angle_from = $angle_to;
 				}
@@ -344,7 +344,7 @@ if (isset($MYREQUEST['IMG']))
 				if(($angle_to+$fuzz)>1) $angle_to = 1;
 				fill_arc($image,$x,$y,$size,$angle_from*360,$angle_to*360,$col_black,$col_green);
 				if (($angle_to-$angle_from)>0.05) {
-					array_push($string_placement, array($angle_from,$angle_to));
+					array_push($string_placement, [$angle_from,$angle_to]);
 				}
 				$angle_from = $angle_to;
 				$ptr = $block['offset']+$block['size'];
@@ -354,7 +354,7 @@ if (isset($MYREQUEST['IMG']))
 				if(($angle_to+$fuzz)>1) $angle_to = 1;
 				fill_arc($image,$x,$y,$size,$angle_from*360,$angle_to*360,$col_black,$col_red);
 				if (($angle_to-$angle_from)>0.05) {
-					array_push($string_placement, array($angle_from,$angle_to));
+					array_push($string_placement, [$angle_from,$angle_to]);
 				}
 			}
 		}
@@ -427,7 +427,7 @@ if (isset($MYREQUEST['IMG']))
 // pretty printer for byte values
 //
 function bsize($s) {
-	foreach (array('','K','M','G') as $i => $k) {
+	foreach (['','K','M','G'] as $i => $k) {
 		if ($s < 1024) break;
 		$s/=1024;
 	}
@@ -1004,7 +1004,7 @@ EOB;
 
 	// builds list with alpha numeric sortable keys
 	//
-	$list = array();
+	$list = [];
 	foreach($cache[$scope_list[$MYREQUEST['SCOPE']]] as $i => $entry) {
 		switch($MYREQUEST['SORT1']) {
 			case 'A': $k=sprintf('%015d-',$entry['access_time']); 	break;
@@ -1135,14 +1135,14 @@ EOB;
 
 	// builds list with alpha numeric sortable keys
 	//
-	$tmp = $list = array();
+	$tmp = $list = [];
 	foreach($cache[$scope_list[$MYREQUEST['SCOPE']]] as $entry) {
 		$n = dirname($entry['filename']);
 		if ($MYREQUEST['AGGR'] > 0) {
 			$n = preg_replace("!^(/?(?:[^/\\\\]+[/\\\\]){".($MYREQUEST['AGGR']-1)."}[^/\\\\]*).*!", "$1", $n);
 		}
 		if (!isset($tmp[$n])) {
-			$tmp[$n] = array('hits'=>0,'size'=>0,'ents'=>0);
+			$tmp[$n] = ['hits'=>0,'size'=>0,'ents'=>0];
 		}
 		$tmp[$n]['hits'] += $entry['num_hits'];
 		$tmp[$n]['size'] += $entry['mem_size'];
@@ -1158,7 +1158,7 @@ EOB;
 			case 'C': $kn=sprintf('%015d-',$v['hits'] / $v['ents']);break;
 			case 'S': $kn = $k;					break;
 		}
-		$list[$kn.$k] = array($k, $v['ents'], $v['hits'], $v['size']);
+		$list[$kn.$k] = [$k, $v['ents'], $v['hits'], $v['size']];
 	}
 
 	if ($list) {

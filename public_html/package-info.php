@@ -88,7 +88,7 @@ while ($row = $sth->fetchRow()) {
 }
 
 if (!$relid) {
-    $downloads = array();
+    $downloads = [];
 
     $sth = $dbh->query("SELECT f.id AS `id`, f.release AS `release`,".
                        " f.platform AS platform, f.format AS format,".
@@ -124,17 +124,17 @@ print "</h2>\n";
 
 // }}}
 // {{{ Supeseded checks
-$dec_messages = array(
+$dec_messages = [
     'abandoned'    => 'This package is not maintained anymore and has been superseded.',
     'superseded'   => 'This package has been superseded, but is still maintained for bugs and security fixes.',
     'unmaintained' => 'This package is not maintained, if you would like to take over please go to <a href="/takeover.php">this page</a>.'
-);
+];
 
-$dec_table = array(
-    'abandoned'    => array('superseded' => 'Y', 'unmaintained' => 'Y'),
-    'superseded'   => array('superseded' => 'Y', 'unmaintained' => 'N'),
-    'unmaintained' => array('superseded' => 'N', 'unmaintained' => 'Y'),
-);
+$dec_table = [
+    'abandoned'    => ['superseded' => 'Y', 'unmaintained' => 'Y'],
+    'superseded'   => ['superseded' => 'Y', 'unmaintained' => 'N'],
+    'unmaintained' => ['superseded' => 'N', 'unmaintained' => 'Y'],
+];
 
 $apply_rule = null;
 foreach ($dec_table as $rule => $conditions) {
@@ -334,7 +334,7 @@ if (count ($rels) > 3) {
 if ($sth->numRows() == 0) {
     print "<i>No releases yet.</i>";
 } else {
-    $rel_trans = array(
+    $rel_trans = [
         'lt' => 'older than %s',
         'le' => 'version %s or older',
         'eq' => 'version %s',
@@ -347,8 +347,8 @@ if ($sth->numRows() == 0) {
         'ne' => '!=',
         'gt' => '>',
         'ge' => '>=', */
-        );
-    $dep_type_desc = array(
+    ];
+    $dep_type_desc = [
         'pkg'         => 'PEAR Package',
         'pkg_pecl'    => 'PECL Package',
         'ext'    => 'PHP Extension',
@@ -359,7 +359,7 @@ if ($sth->numRows() == 0) {
         'os'     => 'Operating System',
         'websrv' => 'Web Server',
         'sapi'   => 'SAPI Backend',
-        );
+    ];
 
     // Loop per version
     foreach ($rels as $r_version => $rel) {

@@ -32,7 +32,7 @@ if (empty($handle)) {
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 $row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 ".
-                    "AND handle = ?", array($handle));
+                    "AND handle = ?", [$handle]);
 
 if ($row === null) {
     // XXX: make_404();
@@ -40,7 +40,7 @@ if ($row === null) {
 }
 
 $access = $dbh->getCol("SELECT path FROM cvs_acl WHERE username = ?", 0,
-                       array($handle));
+                       [$handle]);
 
 response_header($row['name']);
 
@@ -53,7 +53,7 @@ $bb = new BorderBox("Account Details", "100%", "", 2, true);
 $bb->horizHeadRow("Handle:", $handle);
 $bb->horizHeadRow("Name:", $row['name']);
 if ($row['showemail'] != 0) {
-    $bb->horizHeadRow("Email:", "<a href=\"/account-mail.php?handle=" . $handle . "\">".str_replace(array("@", "."), array(" at ", " dot "), $row['email'])."</a>");
+    $bb->horizHeadRow("Email:", "<a href=\"/account-mail.php?handle=" . $handle . "\">".str_replace(["@", "."], [" at ", " dot "], $row['email'])."</a>");
 }
 if ($row['homepage'] != "") {
 

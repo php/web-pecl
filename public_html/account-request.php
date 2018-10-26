@@ -32,19 +32,21 @@ $width = 60;
 $errorMsg = "";
 $jumpto = "handle";
 
-$fields  = array('handle',
-                 'firstname',
-                 'lastname',
-                 'email',
-                 'purpose',
-                 'sponsor',
-                 'email',
-                 'moreinfo',
-                 'homepage',
-                 'needsvn',
-                 'showemail');
+$fields  = [
+    'handle',
+    'firstname',
+    'lastname',
+    'email',
+    'purpose',
+    'sponsor',
+    'email',
+    'moreinfo',
+    'homepage',
+    'needsvn',
+    'showemail'
+];
 
-$password_fields = array('password',  'password2');
+$password_fields = ['password', 'password2'];
 
 foreach ($fields as $field) {
     $$field = isset($_POST[$field]) ? htmlspecialchars(strip_tags($_POST[$field]),ENT_QUOTES) : null;
@@ -57,14 +59,15 @@ foreach ($password_fields as $field) {
 if (isset($_POST['submit'])) {
     do {
 
-            $required = array("handle"    => "your desired username",
-                              "firstname" => "your first name",
-                              "lastname"  => "your last name",
-                              "email"     => "your email address",
-                              "purpose"   => "the purpose of your PECL account",
-                              "sponsor"   => "references to current users sponsoring your request",
-                              "language"  => "programmng language being developed",
-            );
+        $required = [
+            "handle"    => "your desired username",
+            "firstname" => "your first name",
+            "lastname"  => "your last name",
+            "email"     => "your email address",
+            "purpose"   => "the purpose of your PECL account",
+            "sponsor"   => "references to current users sponsoring your request",
+            "language"  => "programmng language being developed",
+        ];
 
             $name = $firstname . " " . $lastname;
 
@@ -121,12 +124,12 @@ if (isset($_POST['submit'])) {
 
             // hack to temporarily embed the "purpose" in
             // the user's "userinfo" column
-            $userinfo = serialize(array($purpose, $moreinfo));
+            $userinfo = serialize([$purpose, $moreinfo]);
             $created_at = gmdate('Y-m-d H:i');
             $sth = $dbh->prepare("INSERT INTO users 
                     (handle, name, email, password, registered, showemail, homepage, userinfo, from_site, active, created)
                     VALUES(?, ?, ?, ?, 0, ?, ?, ?, 'pecl', 0, ?)");
-            $res = $dbh->execute($sth, array($handle, $name, $email, $hash, $showemail, $homepage, $userinfo, $created_at));
+            $res = $dbh->execute($sth, [$handle, $name, $email, $hash, $showemail, $homepage, $userinfo, $created_at]);
 
             if (DB::isError($res)) {
                 //constraint violation, only email and handle(username) is unique
@@ -144,7 +147,7 @@ if (isset($_POST['submit'])) {
             if ($needsvn) {
                 $error = posttohost(
                     'http://master.php.net/entry/svn-account.php',
-                    array(
+                    [
                         "username" => $handle,
                         "name"     => $name,
                         "email"    => $email,
@@ -152,7 +155,7 @@ if (isset($_POST['submit'])) {
                         "note"     => $purpose,
                         "group"    => 'pecl',
                         "yesno"    => 'yes',
-                    )
+                    ]
                 );
 
                 if ($error) {

@@ -60,7 +60,7 @@ while ($sth->fetchInto($row)) {
 		$phs = substr(str_repeat('?,', sizeof($values) + 2), 0, -1);
 		$query = "INSERT INTO deps (package,release,$fields) VALUES($phs)";
 		$pq = $dbh->prepare($query);
-		$values = array_merge(array($package, $release), $values);
+		$values = array_merge([$package, $release], $values);
 		if ($dep['type'] == 'php') {
 			printf("%s : php %s %s %s<br />\n", $rel_id2name[$release],
 				   $dep['relation'], $dep['version']);

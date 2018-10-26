@@ -48,9 +48,9 @@ function parseTree(&$structure, $parent = null)
 
     if (count($categories)) {
         foreach ($categories as $cat) {
-            $newNode = $structure->addItem(new HTML_TreeNode(array('text' => htmlspecialchars($cat['name']),
-                                                                    'icon' => 'folder.gif'),
-                                                              array('onclick' => 'category_click(event, this, ' . $cat['id'] . ')')
+            $newNode = $structure->addItem(new HTML_TreeNode(['text' => htmlspecialchars($cat['name']),
+                                                                    'icon' => 'folder.gif'],
+                                                              ['onclick' => 'category_click(event, this, ' . $cat['id'] . ')']
                                                               )
                                             );
             parseTree($newNode, $cat['id']);
@@ -67,9 +67,9 @@ if (!empty($_POST)) {
     switch (@$_POST['action']) {
     case 'add':
         if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {
-            $result = category::add(array('name'   => $_POST['catName'],
+            $result = category::add(['name'   => $_POST['catName'],
                                           'desc'   => $_POST['catDesc'],
-                                          'parent' => !empty($_POST['cat_parent']) ? (int)$_POST['cat_parent'] : null));
+                                          'parent' => !empty($_POST['cat_parent']) ? (int)$_POST['cat_parent'] : null]);
             $_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to insert category: ' . $result->message : 'Category added';
         } else {
             $_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
@@ -123,7 +123,7 @@ if (!empty($_SESSION['category_manager']['error_msg'])) {
 }
 
 $categories   = $dbh->getAll('SELECT id, name, description FROM categories ORDER BY id', null, DB_FETCHMODE_ASSOC);
-$treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, array('images' => '../gifs/TreeMenu', 'defaultClass' => 'treeMenuOff'));
+$treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, ['images' => '../gifs/TreeMenu', 'defaultClass' => 'treeMenuOff']);
 
 include($template_dir . 'category-manager.html');
 ?>

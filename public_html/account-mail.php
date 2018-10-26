@@ -35,12 +35,12 @@ require_once 'HTML/Form.php';
 
 // {{{ printForm
 
-function printForm($data = array())
+function printForm($data = [])
 {
     // The first field that's empty
     $focus = '';
 
-    foreach (array('name', 'email', 'subject', 'text') as $key) {
+    foreach (['name', 'email', 'subject', 'text'] as $key) {
         if (!isset($data[$key])) {
             $data[$key] = '';
             ($focus == '') ? $focus = $key : '';
@@ -73,7 +73,7 @@ response_header('Contact');
 $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
 
 $row = $dbh->getRow('SELECT * FROM users WHERE registered = 1 '.
-                    'AND handle = ?', array($handle));
+                    'AND handle = ?', [$handle]);
 
 if ($row === null) {
     PEAR::raiseError('No account information found!');
@@ -120,9 +120,9 @@ if (isset($_POST['submit'])) {
 
     /** Guess the user if he is logged in */
     if (!empty($auth_user)) {
-        $data = array('email' => $auth_user->email, 'name' => $auth_user->name);
+        $data = ['email' => $auth_user->email, 'name' => $auth_user->name];
     } else {
-        $data = array();
+        $data = [];
     }
 
     printForm($data);

@@ -25,7 +25,7 @@ if (empty($user)) {
 
 PEAR::setErrorHandling(PEAR_ERROR_RETURN);
 $url = $dbh->getOne('SELECT wishlist FROM users WHERE handle = ?',
-                    array($user));
+                    [$user]);
 if (empty($url) || PEAR::isError($url)) {
     header("HTTP/1.0 404 Not found");
     die("<h1>User not found</h1>\n");

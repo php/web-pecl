@@ -19,8 +19,8 @@
 
 require_once "site.php";
 
-$NEXT = $PREV = $UP = $HOME = array(false, false);
-$TOC = array();
+$NEXT = $PREV = $UP = $HOME = [false, false];
+$TOC = [];
 
 $SIDEBAR_DATA = '';
 
@@ -120,7 +120,7 @@ function navigationBar($title,$id,$loc) {
 
     if ($loc != 'bottom') {
         global $LANGUAGES;
-        $links = array();
+        $links = [];
         foreach($LANGUAGES as $code => $name) {
             if (file_exists("../$code/$id")) {
                 $links[] = make_link("../$code/$id", $name);

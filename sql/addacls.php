@@ -2,10 +2,10 @@
 
 require_once "DB.php";
 
-$acl_paths = array();
-$acl_users = array();
-$group_members = array();
-$group_comment = array();
+$acl_paths = [];
+$acl_users = [];
+$group_members = [];
+$group_comment = [];
 
 $op = ini_get("include_path");
 ini_set("include_path", ".:../../CVSROOT:/repository/CVSROOT");
@@ -35,11 +35,11 @@ $gh2 = $dbh->prepare("INSERT INTO cvs_group_membership (groupname,".
 					 "username,granted_when,granted_by) VALUES(?,?,?,?)");
 $dupes = 0;
 foreach ($group_comment as $group => $comment) {
-	$dbh->execute($gh1, array($group, $comment));
+	$dbh->execute($gh1, [$group, $comment]);
 	$members = $group_members[$group];
 	foreach ($members as $member) {
 		$dbh->expectError(DB_ERROR_ALREADY_EXISTS);
-		$err = $dbh->execute($gh2, array($group, $member, $now, $me));
+		$err = $dbh->execute($gh2, [$group, $member, $now, $me]);
 		if (PEAR::isError($err) && $err->getCode() == DB_ERROR_ALREADY_EXISTS)
 			$dupes++;
 		$dbh->popExpect();
@@ -73,7 +73,7 @@ if (is_resource($avail)) {
 	foreach ($acl_paths as $path => $acldata) {
 		foreach ($acldata as $user => $foo) {
 			$type = isset($group_comment[$user]) ? 'group' : 'user';
-			$dbh->execute($sth, array($user, $type, $path, 1));
+			$dbh->execute($sth, [$user, $type, $path, 1]);
 			$ent++;
 		}
 	}

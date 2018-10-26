@@ -22,36 +22,36 @@ header("Content-Type: text/html; charset=utf-8");
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
-$extra_styles = array();
+$extra_styles = [];
 
 require_once 'layout.php';
 
-$GLOBALS['main_menu'] = array(
+$GLOBALS['main_menu'] = [
     '/index.php'           => 'Home',
     '/news/'               => 'News'
-);
+];
 
-$GLOBALS['docu_menu'] = array(
+$GLOBALS['docu_menu'] = [
     '/support.php'         => 'Support'
-);
+];
 
-$GLOBALS['downloads_menu'] = array(
+$GLOBALS['downloads_menu'] = [
     '/packages.php'        => 'Browse Packages',
     '/package-search.php'  => 'Search Packages',
     '/package-stats.php'   => 'Download Statistics'
-);
+];
 
-$GLOBALS['developer_menu'] = array(
+$GLOBALS['developer_menu'] = [
     '/accounts.php'        => 'Account Browser',
     '/release-upload.php'  => 'Upload Release',
     '/package-new.php'     => 'New Package'
-);
+];
 
-$GLOBALS['admin_menu'] = array(
+$GLOBALS['admin_menu'] = [
     '/admin/'                     => 'Overview',
     '/admin/package-maintainers.php' => 'Maintainers',
     '/admin/category-manager.php' => 'Categories'
-);
+];
 
 $GLOBALS['_style'] = '';
 
@@ -325,12 +325,12 @@ function report_error($in, $class = 'errors', $head = 'ERROR:')
 {
     if (PEAR::isError($in)) {
         if (DEVBOX == true) {
-            $in = array($in->getMessage() . '... ' . $in->getUserInfo());
+            $in = [$in->getMessage() . '... ' . $in->getUserInfo()];
         } else {
-            $in = array($in->getMessage());
+            $in = [$in->getMessage()];
         }
     } elseif (!is_array($in)) {
-        $in = array($in);
+        $in = [$in];
     } elseif (!count($in)) {
         return false;
     }
@@ -619,7 +619,7 @@ function display_user_notes($user, $width = '50%')
     global $dbh;
     $bb = new BorderBox("Notes for user $user", $width);
     $notes = $dbh->getAssoc("SELECT id,nby,ntime,note FROM notes ".
-                "WHERE uid = ? ORDER BY ntime", true, array($user));
+                "WHERE uid = ? ORDER BY ntime", true, [$user]);
     if (!empty($notes)) {
         print "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
         foreach ($notes as $nid => $data) {

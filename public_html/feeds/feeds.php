@@ -98,7 +98,7 @@ $item_entries
 $url_redirect = isset($_SERVER['REDIRECT_SCRIPT_URL']) ? $_SERVER['REDIRECT_SCRIPT_URL'] : '';
 
 if (!empty($url_redirect)) {
-    $url_redirect = str_replace(array('/feeds/', '.rss'), array('', ''), $url_redirect);
+    $url_redirect = str_replace(['/feeds/', '.rss'], ['', ''], $url_redirect);
     $elems = explode('_', $url_redirect);
     $type = $elems[0];
     $argument = htmlentities(strip_tags(str_replace($type . '_', '', $url_redirect)));

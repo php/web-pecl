@@ -60,9 +60,9 @@ if (!isset($_POST['confirm'])) {
     // XXX: Implement backup functionality
     // make_backup($_GET['id']);
 
-    $tables = array("releases" => "package", "maintains" => "package",
+    $tables = ["releases" => "package", "maintains" => "package",
                     "deps" => "package", "files" => "package",
-                    "packages" => "id");
+                    "packages" => "id"];
 
     echo "<pre>\n";
 

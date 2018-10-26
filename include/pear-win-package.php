@@ -39,38 +39,38 @@ class package_dll
 	protected static $cache_reset_lock = PECL_DLL_URL_CACHE_DB_RESET_LOCK;
 
 	/* NOTE when edit here, don't forget to remove the cache file */
-	protected static $zip_name_parts = array (
-		'7.3' => array(
-			array('crt' => 'vc15', 'arch' => 'x64'),
-			array('crt' => 'vc15', 'arch' => 'x86'),
-		),
-		'7.2' => array(
-			array('crt' => 'vc15', 'arch' => 'x64'),
-			array('crt' => 'vc15', 'arch' => 'x86'),
-		),
-		'7.1' => array(
-			array('crt' => 'vc14', 'arch' => 'x64'),
-			array('crt' => 'vc14', 'arch' => 'x86'),
-		),
-		'7.0' => array(
-			array('crt' => 'vc14', 'arch' => 'x64'),
-			array('crt' => 'vc14', 'arch' => 'x86'),
-		),
-		'5.6' => array(
-			array('crt' => 'vc11', 'arch' => 'x64'),
-			array('crt' => 'vc11', 'arch' => 'x86'),
-		),
-		'5.5' => array(
-			array('crt' => 'vc11', 'arch' => 'x64'),
-			array('crt' => 'vc11', 'arch' => 'x86'),
-		),
-		'5.4' => array(
-			array('crt' => 'vc9', 'arch' => 'x86'),
-		),
-		'5.3' => array(
-			array('crt' => 'vc9', 'arch' => 'x86'),
-		),
-	);
+	protected static $zip_name_parts = [
+		'7.3' => [
+			['crt' => 'vc15', 'arch' => 'x64'],
+			['crt' => 'vc15', 'arch' => 'x86'],
+		],
+		'7.2' => [
+			['crt' => 'vc15', 'arch' => 'x64'],
+			['crt' => 'vc15', 'arch' => 'x86'],
+		],
+		'7.1' => [
+			['crt' => 'vc14', 'arch' => 'x64'],
+			['crt' => 'vc14', 'arch' => 'x86'],
+		],
+		'7.0' => [
+			['crt' => 'vc14', 'arch' => 'x64'],
+			['crt' => 'vc14', 'arch' => 'x86'],
+		],
+		'5.6' => [
+			['crt' => 'vc11', 'arch' => 'x64'],
+			['crt' => 'vc11', 'arch' => 'x86'],
+		],
+		'5.5' => [
+			['crt' => 'vc11', 'arch' => 'x64'],
+			['crt' => 'vc11', 'arch' => 'x86'],
+		],
+		'5.4' => [
+			['crt' => 'vc9', 'arch' => 'x86'],
+		],
+		'5.3' => [
+			['crt' => 'vc9', 'arch' => 'x86'],
+		],
+	];
 
 	public static function resetDllDownloadCache()
 	{
@@ -88,7 +88,7 @@ class package_dll
 			touch(self::$last_reset_file);
 		}
 		file_put_contents(self::$last_reset_file, time(), LOCK_EX);
-		file_put_contents(self::$cache_db, serialize(array()), LOCK_EX);
+		file_put_contents(self::$cache_db, serialize([]), LOCK_EX);
 
 		unlink(self::$cache_reset_lock);
 
@@ -97,7 +97,7 @@ class package_dll
 
 	public static function getDllDownloadUrls($name, $version, $date, $cache = true)
 	{
-		$db = array();
+		$db = [];
 		$ret = NULL;
 		$cached_found = false;
 		$do_cache = false;
@@ -152,7 +152,7 @@ class package_dll
 
 	public static function updateDllDownloadCache($name, $version)
 	{
-		$db = array();
+		$db = [];
 
 		if (file_exists(self::$cache_db)) {
 			$db = (array)unserialize(file_get_contents(self::$cache_db));
@@ -176,14 +176,14 @@ class package_dll
 
 	public static function cacheDllDownloadInfo($name, $version, $data)
 	{
-		$db = array();
+		$db = [];
 
 		if (file_exists(self::$cache_db)) {
 			$db = (array)unserialize(file_get_contents(self::$cache_db));
 		}
 
 		if (!isset($db[$name])) {
-			$db[$name] = array();
+			$db[$name] = [];
 		}
 
 		$db[$name][$version] = $data;
@@ -195,7 +195,7 @@ class package_dll
 	/* need always both ts/nts for each branch */
 	public static function getZipFileList($name, $version)
 	{
-		$ret = array();
+		$ret = [];
 
 		foreach (self::$zip_name_parts as $branch => $data) {
 			foreach ($data as $set) {
@@ -203,10 +203,10 @@ class package_dll
 				$suf = $set["crt"] . "-" . $set["arch"] . ".zip";
 
 				if (!isset($ret[$branch])) {
-					$ret[$branch] = array();
+					$ret[$branch] = [];
 				}
 				if (!isset($ret[$branch][$set["arch"]])) {
-					$ret[$branch][$set["arch"]] = array();
+					$ret[$branch][$set["arch"]] = [];
 				}
 				$ret[$branch][$set["arch"]][] = strtolower($pref . "-nts-" . $suf);
 				$ret[$branch][$set["arch"]][] = strtolower($pref . "-ts-" . $suf);
@@ -221,9 +221,9 @@ class package_dll
 		$host = 'windows.php.net';
 		$port = 80;
 		$uri = "/downloads/pecl/releases/" . strtolower($name) . "/" . $version;
-		$ret = array();
+		$ret = [];
 
-		$ctx = stream_context_create(array("http" => array("header" => "User-Agent: WebPecl/1.0")));
+		$ctx = stream_context_create(["http" => ["header" => "User-Agent: WebPecl/1.0"]]);
 		$r = file_get_contents("https://$host$uri/", false, $ctx);
 		if (false === $r) {
 			return NULL;
@@ -238,13 +238,13 @@ class package_dll
 				}
 
 				if ($branch_ok) {
-					$tmp = array();
+					$tmp = [];
 					foreach ($zips as $zip) {
 						$tmp[] = "https://$host$uri/$zip";
 					}
 
 					if (!isset($ret[$branch])) {
-						$ret[$branch] = array();
+						$ret[$branch] = [];
 					}
 					$ret[$branch] = array_merge($ret[$branch], $tmp);
 				}

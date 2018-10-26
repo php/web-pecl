@@ -164,7 +164,7 @@ function auth_check($atom)
     }
 
     // every authenticated user has the pear.user and pear.dev karma
-    if (in_array($atom, array("pear.user", "pear.dev"))) {
+    if (in_array($atom, ["pear.user", "pear.dev"])) {
         return true;
     }
 
@@ -288,20 +288,20 @@ function init_auth_user()
 function auth_verify_master($user, $pass)
 {
     $post = http_build_query(
-        array(
+        [
             'token' => getenv('AUTH_TOKEN'),
             'username' => $user,
             'password' => $pass,
-        )
+        ]
     );
 
-    $opts = array(
+    $opts = [
         'method'	=> 'POST',
         'header'	=> 'Content-type: application/x-www-form-urlencoded',
         'content'	=> $post,
-    );
+    ];
 
-    $ctx = stream_context_create(array('http' => $opts));
+    $ctx = stream_context_create(['http' => $opts]);
 
     $s = file_get_contents('https://master.php.net/fetch/cvsauth.php', false, $ctx);
 
@@ -322,20 +322,20 @@ function auth_verify_master($user, $pass)
 
 function auth_verify_master_status($user, $pass){
 	$post = http_build_query(
-	    array(
+	    [
 	        'token' => getenv('AUTH_TOKEN'),
 	        'username' => $user,
 	        'password' => $pass,
-	    )
+	    ]
 	);
 
-	$opts = array(
+	$opts = [
 	    'method'	=> 'POST',
 	    'header'	=> 'Content-type: application/x-www-form-urlencoded',
 	    'content'	=> $post,
-	);
+	];
 
-	$ctx = stream_context_create(array('http' => $opts));
+	$ctx = stream_context_create(['http' => $opts]);
 
 	$s = file_get_contents('https://master.php.net/fetch/cvsauth.php', false, $ctx);
 

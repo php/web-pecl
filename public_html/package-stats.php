@@ -120,7 +120,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 	$releases = $rows;
     echo "  </select>\n";
 } else {
-	$releases = array();
+	$releases = [];
     echo '<input type="hidden" name="rid" value="" />'."\n";
 }
 

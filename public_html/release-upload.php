@@ -30,7 +30,7 @@ require_once 'HTML/Form.php';
 $display_form         = true;
 $display_verification = false;
 $success              = false;
-$errors               = array();
+$errors               = [];
 
 PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
 
@@ -72,7 +72,7 @@ do {
 	$config = PEAR_Config::singleton();
 	$pkg = new PEAR_PackageFile($config);
 	$info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
-	$errors = $warnings = array();
+	$errors = $warnings = [];
 
 	if (PEAR::isError($info)) {
 		if (is_array($info->getUserInfo())) {
@@ -190,22 +190,22 @@ do {
                     $license = $license['_content'];
                 }
                 $e = package::updateInfo($pacid,
-                        array(
+                        [
                             'summary'     => $info->getSummary(),
                             'description' => $info->getDescription(),
                             'license'     => $license,
-                        ));
+                        ]);
                 if (PEAR::isError($e)) {
                     $errors[] = $e->getMessage();
                     break;
                 }
-                $users = array();
+                $users = [];
                 foreach ($info->getMaintainers() as $user) {
-                    $users[strtolower($user['handle'])] = array(
+                    $users[strtolower($user['handle'])] = [
                                                             'role'   => $user['role'],
                                                             'active' => !isset($user['active']) ||
                                                                 $user['active'] == 'yes',
-                                                          );
+                                                          ];
                 }
                 $e = maintainer::updateAll($pacid, $users);
                 if (PEAR::isError($e)) {
@@ -231,22 +231,22 @@ do {
             }
 
             $e = package::updateInfo($pacid,
-                    array(
+                    [
                         'summary'     => $info['summary'],
                         'description' => $info['description'],
                         'license'     => $info['release_license'],
-                    ));
+                    ]);
             if (PEAR::isError($e)) {
                 $errors[] = $e->getMessage();
                 break;
             }
 
-            $users = array();
+            $users = [];
             foreach ($info['maintainers'] as $user) {
-                $users[strtolower($user['handle'])] = array(
+                $users[strtolower($user['handle'])] = [
                                                         'role'   => $user['role'],
                                                         'active' => 1,
-                                                      );
+                                                      ];
             }
 
             $e = maintainer::updateAll($pacid, $users);
@@ -356,7 +356,7 @@ if ($display_verification) {
     $config = PEAR_Config::singleton();
     $pkg = new PEAR_PackageFile($config);
     $info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
-    $errors = $warnings = array();
+    $errors = $warnings = [];
     if (PEAR::isError($info)) {
         if (is_array($info->getUserInfo())) {
             foreach ($info->getUserInfo() as $err) {
@@ -408,14 +408,14 @@ if ($display_verification) {
 
 	    /* Don't compare with basename($file_data["name"]), the license has
 	       to be in the package root. */
-	    $lic_fnames = array(
+	    $lic_fnames = [
 			    "LICENSE", "license",
 			    "LICENSE.md", "license.md",
 			    "COPYING", "copying",
 			    "COPYING.md", "copying.md",
 			    "LICENSE.txt", "license.txt",
 			    "COPYING.txt", "copying.txt"
-			    );
+        ];
 	    if (in_array($file_data["name"], $lic_fnames)) {
 		    $license_found = true;
 		    break;
@@ -465,7 +465,7 @@ function checkUser($user, $pacid = null)
                  m.handle = ? AND
                  p.id = m.package $add AND
                  (m.role IN ('lead', 'developer'))";
-    $res = $dbh->getOne($query, array($user));
+    $res = $dbh->getOne($query, [$user]);
     if ($res !== null) {
         return true;
     }

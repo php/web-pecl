@@ -60,10 +60,10 @@ $sql = "SELECT p.id, p.name, p.summary
             WHERE package_type = 'pecl' AND approved = 1 AND name LIKE ?
             ORDER BY p.name";
 $term = "%" . basename($pkg) . "%";
-$packages = $dbh->getAll($sql, array($term), DB_FETCHMODE_ASSOC);
+$packages = $dbh->getAll($sql, [$term], DB_FETCHMODE_ASSOC);
 
 if (count($packages) > 3) {
-	$packages = array($packages[0], $packages[1], $packages[2]);
+	$packages = [$packages[0], $packages[1], $packages[2]];
 	$show_search_link = true;
 } else {
 	$show_search_link = false;

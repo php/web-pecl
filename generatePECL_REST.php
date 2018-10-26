@@ -34,18 +34,18 @@ include_once "DB.php";
 include_once "DB/storage.php";
 
 if (empty($dbh)) {
-    $options = array(
+    $options = [
         'persistent' => false,
         'portability' => DB_PORTABILITY_ALL,
-    );
+    ];
     $dbh = DB::connect(PEAR_DATABASE_DSN, $options);
     $dbh->query('SET NAMES utf8');
 }
 ob_end_clean();
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 require_once 'System.php';
-System::rm(array('-r', $pear_rest->_restdir));
-System::mkdir(array('-p', $pear_rest->_restdir));
+System::rm(['-r', $pear_rest->_restdir]);
+System::mkdir(['-p', $pear_rest->_restdir]);
 chmod($pear_rest->_restdir, 0777);
 echo "Generating Category REST...\n";
 foreach (category::listAll() as $category) {
@@ -55,7 +55,7 @@ foreach (category::listAll() as $category) {
 }
 $pear_rest->saveAllCategoriesREST();
 echo "Generating Maintainer REST...\n";
-$maintainers = $dbh->getAll('SELECT * FROM users', array(), DB_FETCHMODE_ASSOC);
+$maintainers = $dbh->getAll('SELECT * FROM users', [], DB_FETCHMODE_ASSOC);
 foreach ($maintainers as $maintainer) {
     echo "  $maintainer[handle]...";
     $pear_rest->saveMaintainerREST($maintainer['handle']);
@@ -83,7 +83,7 @@ foreach (package::listAll(false, false, false) as $package => $info) {
         echo "done\n";
         foreach ($releases as $version => $blah) {
             $fileinfo = $dbh->getOne('SELECT fullpath FROM files WHERE release = ?',
-                array($blah['id']));
+                [$blah['id']]);
             if (!$fileinfo) {
                 echo "     Skipping INVALID Version $version (corrupt in database!)\n";
                 continue;

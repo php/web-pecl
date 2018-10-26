@@ -31,7 +31,7 @@ $errorMsg = "";
 $jumpto = "name";
 
 /* May seem like overkill, but the prepended get() function checks both GET and POST */
-$valid_args = array('submit', 'name','category','license','summary','desc','homepage','cvs_link');
+$valid_args = ['submit', 'name','category','license','summary','desc','homepage','cvs_link'];
 foreach($valid_args as $arg) {
         if(isset($_POST[$arg])) $_POST[$arg] = htmlspecialchars($_POST[$arg], ENT_QUOTES);
         if(isset($_GET[$arg])) $_GET[$arg] = htmlspecialchars($_GET[$arg], ENT_QUOTES);
@@ -41,11 +41,11 @@ $submit = isset($_POST['submit']) ? true : false;
 
 do {
     if (isset($submit)) {
-        $required = array("name" => "enter the package name",
+        $required = ["name" => "enter the package name",
                           "summary" => "enter the one-liner description",
                           "desc" => "enter the full description",
                           "license" => "choose a license type",
-                          "category" => "choose a category");
+                          "category" => "choose a category"];
         foreach ($required as $field => $_desc) {
             if (empty($_POST[$field])) {
                 display_error("Please $_desc!");
@@ -70,7 +70,7 @@ do {
         }
 
         $dbh->expectError(DB_ERROR_ALREADY_EXISTS);
-        $pkg = package::add(array(
+        $pkg = package::add([
                                   'name'        => $_POST['name'],
                                   'type'        => 'pecl',
                                   'category'    => $_POST['category'],
@@ -80,7 +80,7 @@ do {
                                   'homepage'    => $_POST['homepage'],
                                   'cvs_link'    => $_POST['cvs_link'],
                                   'lead'        => $auth_user->handle
-                                  ));
+        ]);
         $dbh->popExpect();
         if (DB::isError($pkg) && $pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
             error_handler("The `" . htmlspecialchars($_POST['name'],ENT_QUOTES) . "' package already exists!",

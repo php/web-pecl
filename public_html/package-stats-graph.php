@@ -42,7 +42,7 @@ $cache_time = 300;
  */
 $year   = date('Y') - 1;
 $month  = date('n') + 1;
-$x_axis = array();
+$x_axis = [];
 for ($i = 0; $i < 12; $i++) {
     $time = mktime(0, 0, 0, $month + $i, 1, $year);
     $x_axis[date('Ym', $time)] = date('M', $time);
@@ -64,7 +64,7 @@ if (!isset($releases) || !is_array($releases)) {
 }
 
 foreach ($releases as $release) {
-    $y_axis = array();
+    $y_axis = [];
     list($rid, $colour) = explode('_', $release);
     $colour = '#' . $colour;
     foreach (array_keys($x_axis) as $key) {

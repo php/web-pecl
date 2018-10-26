@@ -7,7 +7,7 @@
 include __DIR__ . '/../include/pear-config.php';
 $svnusers = '/home/pierre/project/pecl/migration/svnusers';
 $svn_accounts = file($svnusers);
-function nonl(&$var) {$var = str_replace(array("\n","\r", "\r\n"), '', $var);}
+function nonl(&$var) {$var = str_replace(["\n","\r", "\r\n"], '', $var);}
 array_walk($svn_accounts, 'nonl');
 
 $sql = 'select handle from users  where handle NOT IN (select handle from maintains)';

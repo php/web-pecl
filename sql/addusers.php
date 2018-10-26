@@ -23,7 +23,7 @@ andrei;;;;1
 thies;;;;1
 ';
 
-$users = array(); // array(user=>array(user,pw,name,email,admin),...)
+$users = []; // [user=>[user,pw,name,email,admin],...]
 foreach (explode("\n", $hardcoded_users) as $line) {
 	$line = trim($line);
     if (empty($line)) {
@@ -86,7 +86,7 @@ foreach ($users as $username => $info) {
     if (empty($email)) {
 		$email = "{$user}@php.net";
     }
-    $dbh->execute($sth, array($user,$pw,$name,$email,$now,$me,$admin));
+    $dbh->execute($sth, [$user,$pw,$name,$email,$now,$me,$admin]);
 	$users_added++;
 }
 print "$users_added users added.\n";

@@ -69,13 +69,15 @@ if (!isset($pear_rest)) {
 $tmp = filectime($_SERVER['SCRIPT_FILENAME']);
 $LAST_UPDATED = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';
 
-// set the session cookie lifetime to 2038 (this is the old behaviour, maybe we should change it to something shorter :))
-if(!empty($_COOKIE['REMEMBER_ME'])){
-	call_user_func_array('session_set_cookie_params', array_merge(session_get_cookie_params(), ['lifetime' => time()+86400]));
-}
-else{
-	call_user_func_array('session_set_cookie_params', array_merge(session_get_cookie_params(), ['lifetime' => null]));
-}
+// Extend the session cookie lifetime
+$params = session_get_cookie_params();
+session_set_cookie_params(
+    (!empty($_COOKIE['REMEMBER_ME'])) ? time()+86400 : null,
+    $params['path'],
+    $params['domain'],
+    $params['secure'],
+    $params['httponly']
+);
 
 session_start();
 init_auth_user();

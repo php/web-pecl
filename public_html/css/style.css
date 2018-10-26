@@ -428,8 +428,68 @@ ul {
 
 .error {
     font-size: 120%;
-    color: #000000;
+    color: #660000;
     background-color: #fee;
-    border: 1px solid #c00;
     padding: 5px;
+}
+
+.eInfo_label {
+    font-weight: bold;
+    font-size: 80%;
+}
+
+th.pkgListHeader {
+    background-color: #cccccc;
+}
+
+td.tableHeader {
+    background-color: #cccccc;
+    border-bottom: 1px solid black;
+    font-weight: bold;
+}
+
+td.moreInfo {
+    background-color: #f0f0f0;
+    border: 1px dashed #c0c0c0;
+    position: relative;
+}
+
+.closeButton {
+    border: 2px white outset;
+    background-color: #c0c0c0;
+}
+
+.moreInfoHeader {
+    background-color: #dddddd;
+    border-bottom: 1px dashed #c0c0c0;
+}
+
+.moreInfoText {
+    font-size: 80%;
+    font-weight: bold;
+    font-family: Verdana;
+    padding-left: 5px;
+}
+
+.treeMenuContainer {
+    height: 400px;
+    width: 220px;
+    overflow: auto;
+    border: 1px #aaaaaa solid;
+    background-color: #eeeeee;
+}
+
+.treeMenuOff {
+    padding: 1px;
+    width: 202x;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.treeMenuOn {
+    border: 1px solid #000080;
+    background-color: #adadd1;
+    width: 202px;
+    cursor: pointer;
+    cursor: hand;
 }

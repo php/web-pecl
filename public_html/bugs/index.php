@@ -69,5 +69,3 @@ You may find the
 <?php
 
 response_footer();
-
-?>

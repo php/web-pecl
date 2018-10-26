@@ -37,4 +37,3 @@ printf("<a href=\"%s\">click here to go to %s's wishlist</a>",
        $url,
        $user
        );
-?>

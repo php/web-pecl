@@ -24,5 +24,3 @@ $dbh->setErrorHandling(PEAR_ERROR_DIE);
 print htmlspecialchars($REQUEST_URI, ENT_QUOTES)."\n\n";
 
 renumber_visitations(true);
-
-?>

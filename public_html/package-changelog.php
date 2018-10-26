@@ -57,4 +57,3 @@ if (count($pkg['releases']) == 0) {
 $bb->end();
 print '<p>' . make_link("/" . $name, 'Return') . '</p>';
 response_footer();
-?>

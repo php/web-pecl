@@ -118,4 +118,3 @@ if (!isset($_POST['confirm'])) {
 }
 
 response_footer();
-?>

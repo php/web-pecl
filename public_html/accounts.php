@@ -170,5 +170,3 @@ print " </tr>\n";
 print "</table>\n";
 
 response_footer();
-
-?>

@@ -2893,5 +2893,3 @@ function make_utc_date($ts = null, $format = 'Y-m-d H:i \U\T\C') {
     }
     return gmdate($format, $ts);
 }
-
-?>

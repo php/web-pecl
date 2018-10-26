@@ -24,5 +24,3 @@ require_once "pear-database.php";
 $dbh = DB::connect(PEAR_DATABASE_DSN, ['persistent' => true]);
 $dbh->query('SET NAMES utf8');
 renumber_visitations(true);
-
-?>

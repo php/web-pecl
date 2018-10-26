@@ -473,5 +473,3 @@ function checkUser($user, $pacid = null)
     $res = user::isAdmin($user);
     return ($res === true);
 }
-
-?>

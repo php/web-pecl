@@ -104,4 +104,6 @@ found on this server.</p>
 configuration of the server, please contact
 <?php echo make_mailto_link("pecl-dev@lists.php.net"); ?>.
 
-<?php response_footer(); ?>
+<?php
+
+response_footer();

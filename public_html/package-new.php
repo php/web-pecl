@@ -159,5 +159,3 @@ function display_error($msg)
 
     $errorMsg .= "<font color=\"#cc0000\" size=\"+1\">$msg</font><br />\n";
 }
-
-?>

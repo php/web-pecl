@@ -296,4 +296,3 @@ echo "</table>\n";
 $bb->end();
 
 response_footer();
-?>

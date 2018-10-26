@@ -8,4 +8,6 @@ found in the PEAR manual.</p>
 <p>Please go to the <?php print_link("/manual/", "Table of Contents"); ?>
 and try to find the desired chapter there.</p>
 
-<?php response_footer(); ?>
+<?php
+
+response_footer();

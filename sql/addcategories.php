@@ -47,5 +47,3 @@ foreach (explode("\n", $categories) as $line) {
 	$catids[$name] = $catid;
 	print "Category: $name\n";
 }
-
-?>

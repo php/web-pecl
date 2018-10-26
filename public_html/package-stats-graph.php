@@ -155,4 +155,3 @@ if (count($bplots) > 1) {
 
 // Finally send the graph to the browser
 $graph->Stroke();
-?>

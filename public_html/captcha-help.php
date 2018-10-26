@@ -62,5 +62,3 @@ form which requires a CAPTCHA.</p>
 }
 
 response_footer();
-
-?>

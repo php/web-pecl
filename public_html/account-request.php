@@ -374,5 +374,3 @@ if ($display_form) {
 }
 
 response_footer();
-
-?>

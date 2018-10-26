@@ -206,4 +206,3 @@ function isAllowed($package)
 }
 
 response_footer();
-?>

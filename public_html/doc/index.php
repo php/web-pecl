@@ -18,4 +18,3 @@ PECL extensions are documented within the main <a href="http://php.net/manual/">
 
 <?php
 response_footer();
-?>

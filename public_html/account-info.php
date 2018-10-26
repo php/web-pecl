@@ -114,5 +114,3 @@ print "<br /><a href=\"/account-edit.php?handle=$handle\">". make_image("edit.gi
 print "</td></tr></table>\n";
 
 response_footer();
-
-?>

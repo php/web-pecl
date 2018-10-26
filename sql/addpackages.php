@@ -54,5 +54,3 @@ foreach (explode("\n", $packages) as $line) {
     ]);
     print "Package: $name\n";
 }
-
-?>

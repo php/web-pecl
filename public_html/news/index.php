@@ -44,4 +44,3 @@ echo "<li>" . make_link("http://news.php.net/article.php?group=php.pecl.dev&arti
 echo "</ul>";
 
 response_footer();
-?>

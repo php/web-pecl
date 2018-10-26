@@ -28,5 +28,3 @@ function data_error_handler($obj) {
 	print "\n";
 	exit;
 }
-
-?>

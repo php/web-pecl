@@ -35,4 +35,3 @@ response_header('Credits');
 
 <?php
 response_footer();
-?>

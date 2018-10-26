@@ -43,4 +43,3 @@ information and we do not give away the information from the cookies.</p>
 
 <?php
 response_footer();
-?>

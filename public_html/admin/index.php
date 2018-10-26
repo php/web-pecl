@@ -369,4 +369,3 @@ do {
 } while (false);
 
 response_footer();
-?>

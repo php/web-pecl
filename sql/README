@@ -1,3 +1,0 @@
-To create the "pear" database, run "make create".  You need the CGI version
-of PHP installed.  To nuke the database again, run "make destroy".
-On FreeBSD, use "gmake" instead of "make".

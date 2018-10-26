@@ -108,7 +108,7 @@
 							</td>
 						</tr>
 
-						<tr <?php if($defaultMoreInfoVis == 'none') { ?> style="display: <php echo $defaultMoreInfoVis; ?>" <?php } ?> id="moreInfo_<?php echo $p['id']; ?>_spacer"><td colspan="5">&nbsp;</td></tr>
+						<tr <?php if($defaultMoreInfoVis == 'none') { ?> style="display: <?php echo $defaultMoreInfoVis; ?>" <?php } ?> id="moreInfo_<?php echo $p['id']; ?>_spacer"><td colspan="5">&nbsp;</td></tr>
 					<?php } ?>
 				</table>
 			</td>

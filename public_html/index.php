@@ -72,7 +72,7 @@ if (!empty($auth_user)) {
     echo menu_link("Upload Release", "release-upload.php");
     echo menu_link("New Package", "package-new.php");
     echo '</div>';
-    if (user::isAdmin($auth_user->handle)) {
+    if ($auth_user->isAdmin()) {
         echo '<h3>Administrators</h3>';
         echo '<div class="indent">';
         echo menu_link("Overview", "/admin/");

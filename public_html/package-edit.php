@@ -51,7 +51,7 @@ if (!isset($_GET['id'])) {
  * a PEAR administrator.
  */
 $lead = user::maintains($auth_user->handle, $_GET['id'], "lead");
-$admin = user::isAdmin($auth_user->handle);
+$admin = $auth_user->isAdmin();
 
 if (!$lead && !$admin) {
     PEAR::raiseError("Only the lead maintainer of the package or PEAR

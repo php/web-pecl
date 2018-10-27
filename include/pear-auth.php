@@ -150,7 +150,7 @@ function auth_check($atom)
     global $auth_user;
 
     // admins are almighty
-    if (user::isAdmin($auth_user->handle)) {
+    if ($auth_user->isAdmin()) {
         return true;
     }
 

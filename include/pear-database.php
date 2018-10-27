@@ -2393,25 +2393,12 @@ class user
 
     function isAdmin($handle)
     {
-
-
         global $dbh;
-
 
         $query = "SELECT handle FROM users WHERE handle = ? AND admin = 1";
         $sth = $dbh->query($query, [$handle]);
 
-
-
-
-
-
-
-
         return ($sth->numRows() > 0);
-
-
-
     }
 
     // }}}

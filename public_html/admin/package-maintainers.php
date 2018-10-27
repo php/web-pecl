@@ -200,7 +200,7 @@ function isAllowed($package)
 	global $auth_user;
     auth_require();
     $lead = in_array($auth_user->handle, array_keys(maintainer::get($package, true)));
-    $admin = user::isAdmin($auth_user->handle);
+    $admin = $auth_user->isAdmin();
 
     return ($lead || $admin);
 }

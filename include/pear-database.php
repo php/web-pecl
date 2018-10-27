@@ -8,7 +8,7 @@
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
    | available at through the world-wide-web at                           |
-   | http://www.php.net/license/2_02.txt.                                 |
+   | https://php.net/license/2_02.txt.                                    |
    | If you did not receive a copy of the PHP license and are unable to   |
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
@@ -2117,7 +2117,7 @@ class release
         $upload = basename($upload);
         $release = "{$pkginfo['package']}-{$pkginfo['version']} ({$pkginfo['release_state']})";
         $txtanounce =<<<END
-The new PECL package $release has been released at http://pecl.php.net/.
+The new PECL package $release has been released at https://pecl.php.net/.
 
 Release notes
 -------------
@@ -2129,9 +2129,9 @@ Package Info
 
 Related Links
 -------------
-Package home: http://pecl.php.net/package/$pkginfo[package]
-   Changelog: http://pecl.php.net/package-changelog.php?package=$pkginfo[package]
-    Download: http://pecl.php.net/get/$upload
+Package home: https://pecl.php.net/package/$pkginfo[package]
+   Changelog: https://pecl.php.net/package-changelog.php?package=$pkginfo[package]
+    Download: https://pecl.php.net/get/$upload
 
 Authors
 -------------
@@ -2171,7 +2171,7 @@ END;
         $upload = basename($upload);
         $release = $pkginfo->getPackage() . '-' . $pkginfo->getVersion() .
              ' (' . $pkginfo->getState() . ')';
-        $txtanounce ='The new PECL package ' . $release . ' has been released at http://pecl.php.net/.
+        $txtanounce ='The new PECL package ' . $release . ' has been released at https://pecl.php.net/.
 
 Release notes
 -------------
@@ -2183,9 +2183,9 @@ Package Info
 
 Related Links
 -------------
-Package home: http://pecl.php.net/package/' . $pkginfo->getPackage() . '
-   Changelog: http://pecl.php.net/package-changelog.php?package=' . $pkginfo->getPackage() . '
-    Download: http://pecl.php.net/get/' . $upload . '
+Package home: https://pecl.php.net/package/' . $pkginfo->getPackage() . '
+   Changelog: https://pecl.php.net/package-changelog.php?package=' . $pkginfo->getPackage() . '
+    Download: https://pecl.php.net/get/' . $upload . '
 
 Authors
 -------------
@@ -2381,7 +2381,7 @@ class user
         $GLOBALS['pear_rest']->saveMaintainerREST($user->handle);
         $GLOBALS['pear_rest']->saveAllmaintainersREST();
         $msg = "Your PECL/PEAR account request has been opened.\n".
-             "To log in, go to http://pecl.php.net/ and click on \"login\" in\n".
+             "To log in, go to https://pecl.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";
         $xhdr = "From: " . $auth_user->handle . "@php.net";
         mail($user->email, "Your PECL Account Request", $msg, $xhdr, "-f noreply@php.net");
@@ -2873,7 +2873,7 @@ class PEAR_Release extends DB_storage
  *
  * @param int    $ts      a Unix timestamp from the local machine.  If none
  *                         is provided the current time is used.
- * @param string $format  a format string, as per http://php.net/date
+ * @param string $format  a format string, as per https://php.net/date
  *
  * @return string  the time formatted time
  */

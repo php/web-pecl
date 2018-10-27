@@ -4143,7 +4143,7 @@ $bugs = [
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!$id) {
-    localRedirect('http://bugs.php.net/search.php');
+    localRedirect('https://bugs.php.net/search.php');
 } else {
     header('location: https://bugs.php.net/'. $bugs[$id]);
 }

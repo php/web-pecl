@@ -8,7 +8,7 @@ our branching convention.  The PHP core code is branched like this:
 </p>
 
 <p>
-See the <a href="http://wiki.php.net/vcs/svnfaq">PHP SVN FAQ</a> for a detailed
+See the <a href="https://wiki.php.net/vcs/svnfaq">PHP SVN FAQ</a> for a detailed
 descriptions about how to use SVN and the concepts of branches and tags.
 </p>
 

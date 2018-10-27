@@ -8,7 +8,7 @@
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
    | available at through the world-wide-web at                           |
-   | http://www.php.net/license/2_02.txt.                                 |
+   | https://php.net/license/2_02.txt.                                    |
    | If you did not receive a copy of the PHP license and are unable to   |
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
@@ -209,10 +209,10 @@ if ($display_form) {
 
     response_header("Request Account");
 
-    $cs_link        = make_link('http://git.php.net/?p=php-src.git;a=blob_plain;f=CODING_STANDARDS;hb=HEAD', 'PHP Coding Standards');
-    $lic_link_pecl  = make_link('http://www.php.net/license/3_01.txt', 'PHP License 3.01');
-    $lic_link_doc   = make_link('http://www.php.net/manual/en/cc.license.php', 'Creative Commons Attribution License');
-    $doc_howto_pecl = make_link('http://wiki.php.net/doc/howto/pecldocs', 'PECL Docs Howto');
+    $cs_link        = make_link('https://git.php.net/?p=php-src.git;a=blob_plain;f=CODING_STANDARDS;hb=HEAD', 'PHP Coding Standards');
+    $lic_link_pecl  = make_link('https://php.net/license/3_01.txt', 'PHP License 3.01');
+    $lic_link_doc   = make_link('https://php.net/manual/en/cc.license.php', 'Creative Commons Attribution License');
+    $doc_howto_pecl = make_link('https://wiki.php.net/doc/howto/pecldocs', 'PECL Docs Howto');
 
     print "<h1>Publishing in PECL</h1>
 
@@ -274,7 +274,7 @@ if ($display_form) {
 </p>
 <ul>
  <li>
-  If approved, you will also need to <a href='http://php.net/git-php.php'>apply for a php.net account</a>
+  If approved, you will also need to <a href='https://php.net/git-php.php'>apply for a php.net account</a>
   in order to commit the code to the php.net SVN repository. Select 'PECL Group' within that form when applying.
  </li>
 </ul>

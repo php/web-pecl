@@ -8,7 +8,7 @@
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
   | available through the world-wide-web at the following url:           |
-  | http://www.php.net/license/3_01.txt                                  |
+  | https://php.net/license/3_01.txt                                     |
   | If you did not receive a copy of the PHP license and are unable to   |
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
@@ -684,7 +684,7 @@ input {
 <body>
 <div class="head">
 	<h1 class="apc">
-		<div class="logo"><span class="logo"><a href="http://pecl.php.net/package/APC">APC</a></span></div>
+		<div class="logo"><span class="logo"><a href="https://pecl.php.net/package/APC">APC</a></span></div>
 		<div class="nameinfo">Opcode Cache</div>
 	</h1>
 	<div class="login">
@@ -1213,7 +1213,7 @@ case OB_VERSION_CHECK:
 		</tr>
 EOB;
 
-	$rss = @file_get_contents("http://pecl.php.net/feeds/pkg_apc.rss");
+	$rss = @file_get_contents("https://pecl.php.net/feeds/pkg_apc.rss");
 	if (!$rss) {
 		echo '<tr class="td-last center"><td>Unable to fetch version information.</td></tr>';
 	} else {
@@ -1226,8 +1226,8 @@ EOB;
 			$i = 3;
 		} else {
 			echo '<div class="failed">You are running an older version of APC ('.$apcversion.'), 
-				newer version '.$match[1].' is available at <a href="http://pecl.php.net/package/APC/'.$match[1].'">
-				http://pecl.php.net/package/APC/'.$match[1].'</a>
+				newer version '.$match[1].' is available at <a href="https://pecl.php.net/package/APC/'.$match[1].'">
+				https://pecl.php.net/package/APC/'.$match[1].'</a>
 				</div>';
 			$i = -1;
 		}
@@ -1244,7 +1244,7 @@ EOB;
 			} else if (!$i--) {
 				break;
 			}
-			echo "<b><a href=\"http://pecl.php.net/package/APC/$ver\">".htmlspecialchars($v)."</a></b><br><blockquote>";
+			echo "<b><a href=\"https://pecl.php.net/package/APC/$ver\">".htmlspecialchars($v)."</a></b><br><blockquote>";
 			echo nl2br(htmlspecialchars(current($match[2])))."</blockquote>";
 			next($match[2]);
 		}

@@ -8,7 +8,7 @@
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
    | available at through the world-wide-web at                           |
-   | http://www.php.net/license/2_02.txt.                                 |
+   | https://php.net/license/2_02.txt.                                    |
    | If you did not receive a copy of the PHP license and are unable to   |
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
@@ -260,7 +260,7 @@ print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
   <td class="foot-source">
    <small>
     Last updated: <?php echo $LAST_UPDATED; ?><br />
-    Bandwidth and hardware provided by: <?php print_link("http://www.pair.com/", "pair Networks"); ?>
+    Bandwidth and hardware provided by: <?php print_link("https://www.pair.com/", "pair Networks"); ?>
    </small>
   </td>
  </tr>
@@ -588,22 +588,22 @@ function get_license_link($license = "")
         case 'PHP License':
         case 'PHP 3.01':
         case 'PHP License 3.01':
-            $link = 'http://www.php.net/license/3_01.txt';
+            $link = 'https://php.net/license/3_01.txt';
             break;
 
         case 'PHP 3.0':
         case 'PHP License 3.0':
-            $link = 'http://www.php.net/license/3_0.txt';
+            $link = 'https://php.net/license/3_0.txt';
             break;
 
         case 'PHP 2.02':
         case 'PHP License 2.02':
-            $link = 'http://www.php.net/license/2_02.txt';
+            $link = 'https://php.net/license/2_02.txt';
             break;
 
         case 'LGPL':
         case 'GNU Lesser General Public License':
-            $link = 'http://www.gnu.org/licenses/lgpl.html';
+            $link = 'https://www.gnu.org/licenses/lgpl.html';
             break;
 
         default:

@@ -3,12 +3,12 @@
 /**
  * PEAR PWN URI
  */
-define('PEAR_SITE','http://pear.php.net');
+define('PEAR_SITE','https://pear.php.net');
 
 /**
  * PEAR PWN URI
  */
-define('PEAR_SITE_PWN','http://pear.php.net/weeklynews.php#');
+define('PEAR_SITE_PWN','https://pear.php.net/weeklynews.php#');
 
 /**
  * PEAR Weekly news HTML files

@@ -8,7 +8,7 @@
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
    | available at through the world-wide-web at                           |
-   | http://www.php.net/license/2_02.txt.                                 |
+   | https://php.net/license/2_02.txt.                                    |
    | If you did not receive a copy of the PHP license and are unable to   |
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
@@ -423,7 +423,7 @@ if ($sth->numRows() == 0) {
                     $dep_name_html = sprintf('<a href="/package/%s">%s</a>', $row['name'], $row['name']);
                 }
                 elseif ($row['type'] == 'pkg') {
-                    $dep_name_html = sprintf('<a href="http://pear.php.net/package/%s">%s</a>', $row['name'], $row['name']);
+                    $dep_name_html = sprintf('<a href="https://pear.php.net/package/%s">%s</a>', $row['name'], $row['name']);
                 }
                 else {
                     $dep_name_html = $row['name'];

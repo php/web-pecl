@@ -24,6 +24,7 @@ $relid = filter_input(INPUT_GET, FILTER_VALIDATE_INT);
 
 if (!$package) {
     $_SERVER['REDIRECT_URL'] = $_SERVER['REQUEST_URI'];
+    header('HTTP/1.0 404 Not Found');
     include 'error/404.php';
     exit();
 }
@@ -52,6 +53,7 @@ if ($relid === FALSE) {
 
 if (empty($package) || !isset($pkg['name'])) {
     $_SERVER['REDIRECT_URL'] = $_SERVER['REQUEST_URI'];
+    header('HTTP/1.0 404 Not Found');
     include 'error/404.php';
     exit();
 }

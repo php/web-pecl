@@ -36,6 +36,7 @@ $row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 ".
 
 if ($row === null) {
     // XXX: make_404();
+    header('HTTP/1.0 404 Not Found');
     PEAR::raiseError("No account information found!");
 }
 

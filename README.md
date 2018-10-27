@@ -165,5 +165,5 @@ people involved in maintaining this site. Big thanks to
 
 ## License and copyrights
 
-This repository is released under the [PHP license](LICENSE). Visit
-[copyrights page](https://pecl.php.net/copyrights.php) for more information.
+This repository is released under the [PHP license](LICENSE). Visit the
+[copyright page](https://pecl.php.net/copyright.php) for more information.

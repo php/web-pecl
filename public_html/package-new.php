@@ -138,7 +138,7 @@ people agree with you.
     $bb->horizHeadRow("Full description", $form->returnTextarea("desc", get("desc"), $width, 3));
     $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 40, 255));
     $bb->horizHeadRow("Browse Source URL", $form->returnText("cvs_link", get("cvs_link"), 40, 255) .
-                                     '<br /><small>For example: http://cvs.php.net/cvs.php/pecl/PDO</small>');
+                                     '<br /><small>For example: https://git.php.net/?p=pecl/php/operator.git</small>');
     $bb->fullRow($form->returnSubmit("Submit Request", "submit"));
     $bb->end();
 

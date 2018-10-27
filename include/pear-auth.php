@@ -235,35 +235,6 @@ function is_logged_in()
 	}
 }
 
-
-$cvspasswd_file = "/repository/CVSROOT/passwd";
-
-function cvs_find_password($user)
-{
-    global $cvspasswd_file;
-    $fp = fopen($cvspasswd_file,"r");
-    while ($line = fgets($fp, 120)) {
-        list($luser, $passwd, $groups) = explode(":", $line);
-        if ($user == $luser) {
-            fclose($fp);
-            return $passwd;
-        }
-    }
-    fclose($fp);
-    return false;
-}
-
-function cvs_verify_password($user, $pass)
-{
-    $psw = cvs_find_password($user);
-    if (strlen($psw) > 0) {
-        if (crypt($pass,substr($psw,0,2)) == $psw) {
-            return true;
-        }
-    }
-    return false;
-}
-
 /*
 * setup the $auth_user object
 */
@@ -283,61 +254,4 @@ function init_auth_user()
     }
     $auth_user = null;
     return false;
-}
-
-function auth_verify_master($user, $pass)
-{
-    $post = http_build_query(
-        [
-            'token' => getenv('AUTH_TOKEN'),
-            'username' => $user,
-            'password' => $pass,
-        ]
-    );
-
-    $opts = [
-        'method'	=> 'POST',
-        'header'	=> 'Content-type: application/x-www-form-urlencoded',
-        'content'	=> $post,
-    ];
-
-    $ctx = stream_context_create(['http' => $opts]);
-
-    $s = file_get_contents('https://master.php.net/fetch/cvsauth.php', false, $ctx);
-
-    $a = @unserialize($s);
-    if (!is_array($a)) {
-        $error = "Failed to get authentication information.Maybe master is down?";
-        error_log("$error\n", 3, PEAR_TMPDIR . DIRECTORY_SEPARATOR . 'pear-errors.log');
-        return false;
-    }
-    if (isset($a['errno'])) {
-        $error = "Authentication failed: {$a['errstr']}";
-        error_log("$error\n", 3, PEAR_TMPDIR . DIRECTORY_SEPARATOR . 'pear-errors.log');
-        return false;
-    }
-
-    return true;
-}
-
-function auth_verify_master_status($user, $pass){
-	$post = http_build_query(
-	    [
-	        'token' => getenv('AUTH_TOKEN'),
-	        'username' => $user,
-	        'password' => $pass,
-	    ]
-	);
-
-	$opts = [
-	    'method'	=> 'POST',
-	    'header'	=> 'Content-type: application/x-www-form-urlencoded',
-	    'content'	=> $post,
-	];
-
-	$ctx = stream_context_create(['http' => $opts]);
-
-	$s = file_get_contents('https://master.php.net/fetch/cvsauth.php', false, $ctx);
-
-	return @unserialize($s);
 }

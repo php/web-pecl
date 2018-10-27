@@ -17,8 +17,6 @@
    +----------------------------------------------------------------------+
 */
 
-if (empty($prevsearch)) $prevsearch = '';
-
 // spacer()
 // print a IMG tag for a sized spacer GIF
 //
@@ -31,21 +29,6 @@ function spacer($width=1, $height=1, $align=false, $extras=false) {
         ($extras ? $extras : '')
     );
 }
-
-
-
-// resize_image()
-// tag the output of make_image() and resize it manually
-//
-
-function resize_image($img, $width=1, $height=1) {
-    $str = preg_replace('/width=\"([0-9]+?)\"/i', '', $img );
-    $str = preg_replace('/height=\"([0-9]+?)\"/i', '', $str );
-    $str = substr($str,0,-1) . sprintf(' height="%s" width="%s" />', $height, $width );
-    return $str;
-}
-
-
 
 /**
  * Returns an IMG tag for a given file (relative to the images dir)
@@ -80,18 +63,6 @@ function make_image($file, $alt = '', $align = '', $extras = '', $dir = '',
     }
     return $image;
 }
-
-
-
-/**
- * Prints an IMG tag for a given file
- */
-function print_image($file, $alt = '', $align = '', $extras = '', $dir = '',
-                     $border = 0)
-{
-    print make_image($file, $alt, $align, $extras, $dir);
-}
-
 
 /**
  * Print a pipe delimiter

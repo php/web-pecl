@@ -2868,16 +2868,6 @@ class PEAR_Release extends DB_storage
 
 // }}}
 
-if (!function_exists("md5_file")) {
-    function md5_file($filename) {
-        $fp = @fopen($filename, "r");
-        if (is_resource($fp)) {
-            return md5(fread($fp, filesize($filename)));
-        }
-        return null;
-    }
-}
-
 /**
  * Converts a Unix timestamp to a date() formatted string in the UTC time zone
  *

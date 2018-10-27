@@ -80,7 +80,7 @@ if (empty($catpid)) {
     $catname = "Top Level";
 } else {
     $category_where = "= " . $catpid;
-    if (isset($_GET['catname']) && eregi('^[0-9a-z_ ]{1,80}$', $_GET['catname'])) {
+    if (isset($_GET['catname']) && preg_match('/^[0-9a-z_ ]{1,80}$/i', $_GET['catname'])) {
         $catname = $_GET['catname'];
     } else {
         $catname = '';

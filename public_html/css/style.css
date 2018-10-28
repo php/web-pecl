@@ -34,9 +34,12 @@ td.head-menu {
     background-color: #330099;
     height: 1px;
     padding-right: 0.5em;
-    padding-bottom: 0.1em;
+    padding-bottom: 0.5em;
     text-align: right;
     vertical-align: bottom;
+    color: #000000;
+    font-weight: bold;
+    font-size: 75%;
 }
 
 td.head-search {
@@ -57,12 +60,6 @@ p.head-search {
 p.head-search input,
 p.head-search select {
     font-size: 100%;
-}
-
-td.head-menu {
-    color: #000000;
-    font-weight: bold;
-    font-size: 75%;
 }
 
 .menuWhite {

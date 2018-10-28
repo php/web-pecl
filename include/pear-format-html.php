@@ -143,8 +143,7 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
     print_link('/support.php', 'Support', false, 'class="menuBlack"');
     echo delim();
     print_link('/bugs/', 'Bugs', false, 'class="menuBlack"');
-      ?>&nbsp;<br />
-      <?php spacer(2,2); ?><br />
+      ?>
   </td>
  </tr>
 

@@ -18,19 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-// spacer()
-// print a IMG tag for a sized spacer GIF
-//
-
-function spacer($width=1, $height=1, $align=false, $extras=false) {
-    printf('<img src="/gifs/spacer.gif" width="%d" height="%d" border="0" alt="" %s%s />',
-        $width,
-        $height,
-        ($align ? 'align="'.$align.'" ' : ''),
-        ($extras ? $extras : '')
-    );
-}
-
 /**
  * Returns an IMG tag for a given file (relative to the images dir)
  */

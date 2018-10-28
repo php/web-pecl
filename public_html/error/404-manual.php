@@ -27,7 +27,7 @@ response_header("Error 404");
 <p>The requested document <i><?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?></i> was not
 found in the PEAR manual.</p>
 
-<p>Please go to the <?php print_link("/manual/", "Table of Contents"); ?>
+<p>Please go to the <?php echo make_link("/manual/", "Table of Contents"); ?>
 and try to find the desired chapter there.</p>
 
 <?php

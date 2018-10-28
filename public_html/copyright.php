@@ -28,7 +28,7 @@ response_header("Copyright and License");
 
 <p>
 For information on the PHP License (i.e. using the PHP language),
-<?php print_link('https://php.net/license/', 'click here'); ?>.
+<?php echo make_link('https://php.net/license/', 'click here'); ?>.
 </p>
 
 <h2>Website Copyright</h2>
@@ -57,12 +57,12 @@ and may not be copied or imitated in whole or in part.</li>
 </ul>
 
 <p>
-You can contact the webmaster at <?php print_link('mailto:php-webmaster@lists.php.net', 'php-webmaster@lists.php.net'); ?>.
+You can contact the webmaster at <?php echo make_link('mailto:php-webmaster@lists.php.net', 'php-webmaster@lists.php.net'); ?>.
 </p>
 
 <p>
 For more information on the PHP Group and the PHP project, please see
-<?php print_link('https://php.net/'); ?>.
+<?php echo make_link('https://php.net/'); ?>.
 </p>
 
 <?php

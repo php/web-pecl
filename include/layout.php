@@ -73,14 +73,6 @@ function make_mailto_link ($url, $linktext=false, $extras=false) {
     return make_link("mailto:" . $url, ($linktext ? $linktext : $url), false, $extras);
 }
 
-// print_link()
-// echo a hyperlink to something, within the site
-//
-
-function print_link($url, $linktext=false, $target=false, $extras=false) {
-    echo make_link($url, $linktext, $target, $extras);
-}
-
 // make_bug_link()
 // creates a link for the bug system
 

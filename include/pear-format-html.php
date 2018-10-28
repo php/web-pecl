@@ -120,14 +120,14 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
 <table class="head" cellspacing="0" cellpadding="0" width="100%">
  <tr>
   <td class="head-logo">
-<?php print_link('/', make_image('peclsmall.gif', 'PECL :: The PHP Extension Community Library', false, false, false, false, 'margin: 5px;')); ?><br />
+<?php echo make_link('/', make_image('peclsmall.gif', 'PECL :: The PHP Extension Community Library', false, false, false, false, 'margin: 5px;')); ?><br />
   </td>
 
   <td class="head-menu">
       <?php
 
     if (empty($auth_user)) {
-        print_link('/login.php', 'Login', false, 'class="menuBlack"');
+        echo make_link('/login.php', 'Login', false, 'class="menuBlack"');
     } else {
         print '<small class="menuWhite">';
         print 'Logged in as ' . strtoupper($auth_user->handle) . ' (';
@@ -135,14 +135,14 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
         print '<a class="menuWhite" href="/account-edit.php?handle=' . $auth_user->handle . '">Profile</a> | ';
         print '<a class="menuWhite" href="https://bugs.php.net/search.php?cmd=display&amp;status=Open&amp;assign=' . $auth_user->handle . '">Bugs</a>';
         print ")</small><br />\n";
-        print_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
+        echo make_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
     }
     echo '&nbsp;|&nbsp;';
-    print_link('/packages.php', 'Packages', false, 'class="menuBlack"');
+    echo make_link('/packages.php', 'Packages', false, 'class="menuBlack"');
     echo '&nbsp;|&nbsp;';
-    print_link('/support.php', 'Support', false, 'class="menuBlack"');
+    echo make_link('/support.php', 'Support', false, 'class="menuBlack"');
     echo '&nbsp;|&nbsp;';
-    print_link('/bugs/', 'Bugs', false, 'class="menuBlack"');
+    echo make_link('/bugs/', 'Bugs', false, 'class="menuBlack"');
       ?>
   </td>
  </tr>
@@ -242,9 +242,9 @@ function response_footer($style = false)
  <tr>
   <td class="foot-bar" colspan="2">
 <?php
-print_link('/about/privacy.php', 'PRIVACY POLICY', false, 'class="menuBlack"');
+echo make_link('/about/privacy.php', 'PRIVACY POLICY', false, 'class="menuBlack"');
 echo '&nbsp;|&nbsp;';
-print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
+echo make_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
 ?>
    <br />
   </td>
@@ -253,14 +253,14 @@ print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
  <tr>
   <td class="foot-copy">
    <small>
-	<?php print_link('/copyright.php', 'Copyright &copy; 2001-'.date('Y').' The PHP Group'); ?><br />
+	<?php echo make_link('/copyright.php', 'Copyright &copy; 2001-'.date('Y').' The PHP Group'); ?><br />
      All rights reserved.<br />
    </small>
   </td>
   <td class="foot-source">
    <small>
     Last updated: <?php echo $LAST_UPDATED; ?><br />
-    Bandwidth and hardware provided by: <?php print_link("https://www.pair.com/", "pair Networks"); ?>
+    Bandwidth and hardware provided by: <?php echo make_link("https://www.pair.com/", "pair Networks"); ?>
    </small>
   </td>
  </tr>
@@ -297,9 +297,9 @@ function &draw_navigation($data, $menu_title = '')
 
 function menu_link($text, $url) {
     echo "<p>\n";
-    print_link($url, make_image('pecl_item.gif', $text) );
+    echo make_link($url, make_image('pecl_item.gif', $text) );
     echo '&nbsp;';
-    print_link($url, '<b>' . $text . '</b>' );
+    echo make_link($url, '<b>' . $text . '</b>' );
     echo "</p>\n";
 }
 

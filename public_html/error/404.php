@@ -86,7 +86,7 @@ found on this server.</p>
 	<ul>
 	<?php foreach($packages as $p) { ?>
 		<li>
-			<?php print_link(getURL($pinfo_url . $p['name']), $p['name']); ?><br />
+			<?php echo make_link(getURL($pinfo_url . $p['name']), $p['name']); ?><br />
 			<i><?php echo $p['summary']; ?></i><br /><br />
 		</li>
 	<?php } ?>
@@ -94,7 +94,7 @@ found on this server.</p>
 
 	<?php if($show_search_link) { ?>
 		<p align="center">
-			<?php print_link(getURL('/package-search.php?pkg_name=' . htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)) . '&amp;bool=AND&amp;submit=Search'), 'View full search results...'); ?>
+			<?php echo make_link(getURL('/package-search.php?pkg_name=' . htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)) . '&amp;bool=AND&amp;submit=Search'), 'View full search results...'); ?>
 		</p>
 <?php
     }

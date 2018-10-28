@@ -1,9 +1,10 @@
 <?php
+
 /*
   +----------------------------------------------------------------------+
-  | APC                                                                  |
+  | The PECL website                                                     |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2006 The PHP Group                                     |
+  | Copyright (c) 1999-2018 The PHP Group                                |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -17,10 +18,7 @@
   |          Rasmus Lerdorf <rasmus@php.net>                             |
   |          Ilia Alshanetsky <ilia@prohost.org>                         |
   +----------------------------------------------------------------------+
-
-   All other licensing and usage conditions are those of the PHP Group.
-
- */
+*/
 
 ////////// READ OPTIONAL CONFIGURATION FILE ////////////
 if (file_exists("apc.conf.php")) include("apc.conf.php");
@@ -1225,7 +1223,7 @@ EOB;
 			echo '<div class="ok">You are running the latest version of APC ('.$apcversion.')</div>';
 			$i = 3;
 		} else {
-			echo '<div class="failed">You are running an older version of APC ('.$apcversion.'), 
+			echo '<div class="failed">You are running an older version of APC ('.$apcversion.'),
 				newer version '.$match[1].' is available at <a href="https://pecl.php.net/package/APC/'.$match[1].'">
 				https://pecl.php.net/package/APC/'.$match[1].'</a>
 				</div>';

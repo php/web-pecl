@@ -26,30 +26,6 @@ require_once 'DB/storage.php';
 require_once 'PEAR/Common.php';
 require_once 'HTTP.php';
 
-// {{{ validate()
-
-function validate($entity, $field, $value /* , $oldvalue, $object */) {
-    switch ("$entity/$field") {
-        case "users/handle":
-            if (!preg_match('/^[a-z][a-z0-9]+$/i', $value)) {
-                return false;
-            }
-            break;
-        case "users/name":
-            if (!$value) {
-                return false;
-            }
-            break;
-        case "users/email":
-            if (!preg_match('/[a-z0-9_\.\+%]@[a-z0-9\.]+\.[a-z]+$', $email)) {
-                return false;
-            }
-            break;
-    }
-    return true;
-}
-
-// }}}
 // {{{ renumber_visitations()
 
 /**

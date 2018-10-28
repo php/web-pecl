@@ -26,6 +26,7 @@ PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 $extra_styles = [];
 
 require_once 'layout.php';
+require_once __DIR__.'/../src/BorderBox.php';
 
 $GLOBALS['main_menu'] = [
     '/index.php'           => 'Home',
@@ -401,117 +402,6 @@ function report_success($in)
     echo '<div class="success">';
     echo htmlspecialchars($in);
     echo "</div>\n";
-}
-
-class BorderBox {
-    public function __construct($title, $width = "90%", $indent = "", $cols = 1,
-                       $open = false) {
-        $this->title = $title;
-        $this->width = $width;
-        $this->indent = $indent;
-        $this->cols = $cols;
-        $this->open = $open;
-        $this->start();
-    }
-
-    function start() {
-        $title = $this->title;
-        if (is_array($title)) {
-            $title = implode('</th><th>', $title);
-        }
-        $i = $this->indent;
-        print "<!-- border box starts -->\n";
-        print "$i<table cellpadding=\"0\" cellspacing=\"1\" style=\"width: $this->width; border: 0px;\">\n";
-        print "$i <tr>\n";
-        print "$i  <td bgcolor=\"#000000\">\n";
-        print "$i   <table cellpadding=\"2\" cellspacing=\"1\" style=\"width: 100%; border: 0px;\">\n";
-        print "$i    <tr style=\"background-color: #CCCCCC;\">\n";
-        print "$i     <th";
-        if ($this->cols > 1) {
-            print " colspan=\"$this->cols\"";
-        }
-        print ">$title</th>\n";
-        print "$i    </tr>\n";
-        if (!$this->open) {
-            print "$i    <tr bgcolor=\"#ffffff\">\n";
-            print "$i     <td>\n";
-        }
-    }
-
-    function end() {
-        $i = $this->indent;
-        if (!$this->open) {
-            print "$i     </td>\n";
-            print "$i    </tr>\n";
-        }
-        print "$i   </table>\n";
-        print "$i  </td>\n";
-        print "$i </tr>\n";
-        print "$i</table>\n";
-        print "<!-- border box ends -->\n";
-    }
-
-    function horizHeadRow($heading /* ... */) {
-        $i = $this->indent;
-        print "$i    <tr>\n";
-        print "$i     <th valign=\"top\" bgcolor=\"#cccccc\">$heading</th>\n";
-        for ($j = 0; $j < $this->cols-1; $j++) {
-            print "$i     <td valign=\"top\" bgcolor=\"#e8e8e8\">";
-            $data = @func_get_arg($j + 1);
-            if (empty($data)) {
-                print "&nbsp;";
-            } else {
-                print $data;
-            }
-            print "</td>\n";
-        }
-        print "$i    </tr>\n";
-
-    }
-
-    function headRow() {
-        $i = $this->indent;
-        print "$i    <tr>\n";
-        for ($j = 0; $j < $this->cols; $j++) {
-            print "$i     <th valign=\"top\" bgcolor=\"#ffffff\">";
-            $data = @func_get_arg($j);
-            if (empty($data)) {
-                print "&nbsp;";
-            } else {
-                print $data;
-            }
-            print "</th>\n";
-        }
-        print "$i    </tr>\n";
-    }
-
-    function plainRow(/* ... */) {
-        $i = $this->indent;
-        print "$i    <tr>\n";
-        for ($j = 0; $j < $this->cols; $j++) {
-            print "$i     <td valign=\"top\" bgcolor=\"#ffffff\">";
-            $data = @func_get_arg($j);
-            if (empty($data)) {
-                print "&nbsp;";
-            } else {
-                print $data;
-            }
-            print "</td>\n";
-        }
-        print "$i    </tr>\n";
-    }
-
-    function fullRow($text) {
-        $i = $this->indent;
-        print "$i    <tr>\n";
-        print "$i     <td bgcolor=\"#e8e8e8\"";
-        if ($this->cols > 1) {
-            print " colspan=\"$this->cols\"";
-        }
-        print ">$text</td>\n";
-        print "$i    </tr>\n";
-
-    }
 }
 
 /**

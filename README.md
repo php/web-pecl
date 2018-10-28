@@ -75,7 +75,6 @@ Source code of this application is structured in the following directories:
 <web-pecl>/
  ├─ .git/           # Git configuration and source directory
  ├─ cron/           # Various systems scripts to run periodically on server
- ├─ doc/            # Internal project application specific documentation
  ├─ include/        # Application classes, functions, and configuration
  └─ public_html/    # Publicly accessible directory for online pecl.php.net
     ├─ css/         # Stylesheets
@@ -159,7 +158,7 @@ This installation has PEAR dependencies installed in `/usr/share/pear`.
 ## Credits
 
 This page would not be possible without a continuous effort of maintainers of
-PECL extensions, open source contributors, hosting infrastructure sponsors, and 
+PECL extensions, open source contributors, hosting infrastructure sponsors, and
 people involved in maintaining this site. Big thanks to
 [everyone involved](https://pecl.php.net/credits.php).
 

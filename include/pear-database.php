@@ -2561,20 +2561,6 @@ class PEAR_Package extends DB_storage
 }
 
 // }}}
-// {{{ class PEAR_Release
-
-class PEAR_Release extends DB_storage
-{
-    public function __construct(&$dbh, $release)
-    {
-        parent::__construct("releases", "id", $dbh);
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $this->setup($release);
-        $this->popErrorHandling();
-    }
-}
-
-// }}}
 
 /**
  * Converts a Unix timestamp to a date() formatted string in the UTC time zone

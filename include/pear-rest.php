@@ -607,8 +607,11 @@ class pear_rest
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allmaintainers
     http://pear.php.net/dtd/rest.allmaintainers.xsd">' . "\n";
         // package information
-        require_once 'Damblan/Karma.php';
-        $karma = new Damblan_Karma($GLOBALS['dbh']);
+
+        require_once __DIR__.'/../src/Karma.php';
+
+        $karma = new Karma($GLOBALS['dbh']);
+
         foreach ($maintainers as $maintainer) {
             if (!$karma->has($maintainer['handle'], 'pear.dev')) {
                 continue;

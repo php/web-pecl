@@ -146,7 +146,7 @@ function auth_check($atom)
     global $dbh;
     static $karma;
 
-    require_once "Damblan/Karma.php";
+    require_once __DIR__.'/../src/Karma.php';
 
     global $auth_user;
 
@@ -170,7 +170,7 @@ function auth_check($atom)
     }
 
     if (!isset($karma)) {
-        $karma = new Damblan_Karma($dbh);
+        $karma = new Karma($dbh);
     }
     $a = $karma->has($auth_user->handle, $atom);
     if (PEAR::isError($a)) {

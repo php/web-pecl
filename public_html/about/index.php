@@ -31,10 +31,7 @@ If you would like to contact them, you can write to
 <p>It has been built with <?php echo make_link("https://httpd.apache.org/", "Apache"); ?>,
 <?php echo make_link("https://php.net/", "PHP"); ?>,
 <?php echo make_link("https://www.mysql.com/", "MySQL"); ?> and some
-(as you might have guessed) PEAR packages. Additionally we have started
-to use a set of utility classes. We call it
-<?php echo make_link("damblan.php", "Damblan"); ?>. The source code of
-the website is
+(as you might have guessed) PEAR packages. The source code of the website is
 <?php echo make_link("https://git.php.net/?p=web/pecl.git", "available via git"); ?>.
 </p>
 

@@ -17,19 +17,10 @@ is hosted online at [pecl.php.net](https://pecl.php.net).
   * [2. Database](#2-database)
   * [3. Apache configuration](#3-apache-configuration)
 * [Credits](#credits)
+* [Evolution](#evolution)
 * [License and copyrights](#license-and-copyrights)
 
 ## About
-
-PECL, formerly known as *PHP Extension Code Library*, has been initially started
-under the PEAR umbrella. In October 2003 it has been renamed to
-*PHP Extension Community Library* and it has evolved from the
-[pearweb](https://github.com/pear/pearweb) application. Since then PECL related
-services have been moved to online community repository
-[pecl.php.net](https://pecl.php.net/) exclusively dedicated to extensions written
-in C programming language to efficiently extend the PHP language. Today, many
-widely used PECL extensions written in C and C++ are hosted and distributed via
-PECL.
 
 To learn more how to add new PECL extensions or how to install PECL extensions
 using command line tools visit pecl.php.net and PHP manual.
@@ -162,6 +153,22 @@ This page would not be possible without a continuous effort of maintainers of
 PECL extensions, open source contributors, hosting infrastructure sponsors, and
 people involved in maintaining this site. Big thanks to
 [everyone involved](https://pecl.php.net/credits.php).
+
+## Evolution
+
+PECL, formerly known as *PHP Extension Code Library*, has been initially started
+under the [PEAR](https://pear.php.net) umbrella. In October 2003 it has been
+renamed to *PHP Extension Community Library* and has evolved from the
+[pearweb](https://github.com/pear/pearweb) application. Under the hood, pearweb
+uses a set of utility classes called *Damblan* (name derived from the
+Nepalese summit [Ama Dablam](https://www.summitpost.org/ama-dablam/150234)) by a
+lead developer Martin Jansen.
+
+Since then, PECL related services have been moved to online community repository
+[pecl.php.net](https://pecl.php.net/) exclusively dedicated to extensions written
+in C programming language to efficiently extend the PHP language. Today, many
+widely used PECL extensions written in C and C++ are hosted and distributed via
+PECL.
 
 ## License and copyrights
 

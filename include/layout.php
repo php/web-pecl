@@ -52,17 +52,6 @@ function make_image($file, $alt = '', $align = '', $extras = '', $dir = '',
     return $image;
 }
 
-/**
- * Print a pipe delimiter
- */
-function delim($color = false, $delimiter = '&nbsp;|&nbsp;')
-{
-    if (!$color) {
-        return $delimiter;
-    }
-    return sprintf('<span style="color: %s;">%s</span>', $color, $delimiter);
-}
-
 // make_link()
 // return a hyperlink to something, within the site
 //

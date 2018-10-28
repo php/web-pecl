@@ -137,11 +137,11 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
         print ")</small><br />\n";
         print_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
     }
-    echo delim();
+    echo '&nbsp;|&nbsp;';
     print_link('/packages.php', 'Packages', false, 'class="menuBlack"');
-    echo delim();
+    echo '&nbsp;|&nbsp;';
     print_link('/support.php', 'Support', false, 'class="menuBlack"');
-    echo delim();
+    echo '&nbsp;|&nbsp;';
     print_link('/bugs/', 'Bugs', false, 'class="menuBlack"');
       ?>
   </td>
@@ -243,7 +243,7 @@ function response_footer($style = false)
   <td class="foot-bar" colspan="2">
 <?php
 print_link('/about/privacy.php', 'PRIVACY POLICY', false, 'class="menuBlack"');
-echo delim();
+echo '&nbsp;|&nbsp;';
 print_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
 ?>
    <br />

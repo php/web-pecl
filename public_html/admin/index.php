@@ -61,7 +61,7 @@ if (!empty($_REQUEST['cmd'])) {
         // another hack to remove the temporary "purpose" field
         // from the user's "userinfo"
         if (user::activate($_REQUEST['uid'])) {
-            print "<p>Opened account $uid...</p>\n";
+            print '<p>Opened account '.htmlspecialchars($_REQUEST['uid'], ENT_QUOTES)."...</p>\n";
         }
 
     } elseif ($_REQUEST['cmd'] == "Reject Request" && !empty($_REQUEST['uid'])) {
@@ -75,7 +75,7 @@ if (!empty($_REQUEST['cmd'])) {
             }
 
         } elseif (user::rejectRequest($_REQUEST['uid'], $_REQUEST['reason'])) {
-            print "<p>Rejected account request for $uid...</p>\n";
+            print '<p>Rejected account request for '.htmlspecialchars($_REQUEST['uid'], ENT_QUOTES)."...</p>\n";
         }
 
     } elseif ($_REQUEST['cmd'] == "Delete Request" && !empty($_REQUEST['uid'])) {
@@ -90,7 +90,7 @@ if (!empty($_REQUEST['cmd'])) {
 
 
         } elseif (user::remove($_REQUEST['uid'])) {
-            print "<p>Deleted account request for \"$uid\"...</p>";
+            print '<p>Deleted account request for "'.htmlspecialchars($_REQUEST['uid'], ENT_QUOTES). '"...</p>';
         }
     }
 }

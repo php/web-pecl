@@ -919,128 +919,6 @@ class package
     }
 
     // }}}
-    // {{{  proto struct package::listAllwithReleases() API 1.0
-
-    /**
-     * Get list of packages and their releases
-     *
-     * @access public
-     * @return array
-     * @static
-     */
-    function listAllwithReleases()
-    {
-        global $dbh;
-
-        $query = "SELECT
-                      p.id AS pid, p.name, r.id AS rid, r.version, r.state
-                  FROM packages p, releases r
-                  WHERE p.package_type = 'pecl' AND p.approved = 1 AND p.id = r.package
-                  ORDER BY p.name, r.version DESC";
-        $sth = $dbh->query($query);
-
-        if (DB::isError($sth)) {
-            return $sth;
-        }
-
-        while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
-            $packages[$row['pid']]['name'] = $row['name'];
-            $packages[$row['pid']]['releases'][] = ['id' => $row['rid'],
-                                                         'version' => $row['version'],
-                                                         'state' => $row['state']
-                                                         ];
-        }
-
-        return $packages;
-    }
-
-    // }}}
-    // {{{  proto struct package::listLatestReleases([string]) API 1.0
-
-    /**
-     * List latest releases
-     *
-     * @static
-     * @param  string Only list release with specific state (Optional)
-     * @return array
-     */
-    function listLatestReleases($state = '')
-    {
-        global $dbh;
-        $query =
-             "SELECT ".
-             "p.name AS package, ".
-             "r.version AS version, ".
-             "r.state AS state, ".
-             "f.fullpath AS fullpath ".
-             "FROM packages p, releases r, files f ".
-             "WHERE p.package_type = 'pecl' AND p.approved = 1 AND p.id = r.package ".
-             "AND f.package = p.id ".
-             "AND f.release = r.id ";
-        if (release::isValidState($state)) {
-            $better = release::betterStates($state);
-            $query .= " AND (r.state = '$state'";
-            $i = 0;
-            if (is_array($better)) {
-                foreach ($better as $b) {
-                    $query .= " OR r.state = '$b'";
-                }
-            }
-            $query .= ")";
-        }
-        $query .= " ORDER BY p.name";
-        $sortfunc = "version_compare_firstelem";
-        $res = $dbh->getAssoc($query, false, null, DB_FETCHMODE_ASSOC, true);
-        foreach ($res as $pkg => $ver) {
-            if (sizeof($ver) > 1) {
-                usort($ver, $sortfunc);
-            }
-            $res[$pkg] = array_pop($ver);
-            $res[$pkg]['filesize'] = (int)@filesize($res[$pkg]['fullpath']);
-            unset($res[$pkg]['fullpath']);
-        }
-        return $res;
-    }
-
-    // }}}
-    // {{{  proto struct package::listUpgrades(struct) API 1.0
-
-    /**
-     * List available upgrades
-     *
-     * @static
-     * @param array Array containing the currently installed packages
-     * @return array
-     */
-    function listUpgrades($currently_installed)
-    {
-        global $dbh;
-        if (sizeof($currently_installed) == 0) {
-            return [];
-        }
-        $query = "SELECT ".
-             "p.name AS package, ".
-             "r.id AS releaseid, ".
-             "r.package AS packageid, ".
-             "r.version AS version, ".
-             "r.state AS state, ".
-             "r.doneby AS doneby, ".
-             "r.license AS license, ".
-             "r.summary AS summary, ".
-             "r.description AS description, ".
-             "r.releasedate AS releasedate, ".
-             "r.releasenotes AS releasenotes ".
-             "FROM releases r, packages p WHERE p.package_type = 'pecl' AND p.approved = 1 AND r.package = p.id AND (";
-        $conditions = [];
-        foreach ($currently_installed as $package => $info) {
-            extract($info); // state, version
-            $conditions[] = "(package = '$package' AND state = '$state')";
-        }
-        $query .= implode(" OR ", $conditions) . ")";
-        return $dbh->getAssoc($query, false, null, DB_FETCHMODE_ASSOC);
-    }
-
-    // }}}
     // {{{ +proto bool   package::updateInfo(string|int, struct) API 1.0
 
     /**
@@ -1247,23 +1125,6 @@ class maintainer
     }
 
     // }}}
-    // {{{  proto struct maintainer::getByUser(string) API 1.0
-
-    /**
-     * Get the roles of a specific user
-     *
-     * @static
-     * @param  string Handle of the user
-     * @return array
-     */
-    function getByUser($user)
-    {
-        global $dbh;
-        $query = 'SELECT p.name, m.role FROM packages p, maintains m WHERE p.package_type = ? AND p.approved = 1 AND m.package = p.id AND m.handle = ?';
-        return $dbh->getAssoc($query, ['pecl'], [$user]);
-    }
-
-    // }}}
     // {{{  proto bool   maintainer::isValidRole(string) API 1.0
 
     /**
@@ -1464,51 +1325,6 @@ class release
                                 "ORDER BY releases.releasedate DESC", 0, $n);
         $recent = [];
         // XXX Fixme when DB gets limited getAll()
-        while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
-            $recent[] = $row;
-        }
-        return $recent;
-    }
-
-    // }}}
-    // {{{  proto array  release::getDateRange(int,int) API 1.0
-
-    /**
-     * Get release in a specific time range
-     *
-     * @static
-     * @param integer Timestamp of start date
-     * @param integer Timestamp of end date
-     * @return array
-     */
-    function getDateRange($start,$end)
-    {
-        global $dbh;
-
-        $recent = [];
-        if (!is_numeric($start)) {
-            return $recent;
-        }
-        if (!is_numeric($end)) {
-            return $recent;
-        }
-        $start_f = date('Y-m-d 00:00:00',$start);
-        $end_f = date('Y-m-d 00:00:00',$end);
-        // limited to 50 to stop overkill on the server!
-        $sth = $dbh->limitQuery("SELECT packages.id AS id, ".
-                                "packages.name AS name, ".
-                                "packages.summary AS summary, ".
-                                "packages.description AS description, ".
-                                "releases.version AS version, ".
-                                "releases.releasedate AS releasedate, ".
-                                "releases.releasenotes AS releasenotes, ".
-                                "releases.doneby AS doneby, ".
-                                "releases.state AS state ".
-                                "FROM packages, releases ".
-                                "WHERE packages.id = releases.package ".
-                                "AND releases.releasedate > '{$start_f}' AND releases.releasedate < '{$end_f}'".
-                                "ORDER BY releases.releasedate DESC",0,50);
-
         while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
             $recent[] = $row;
         }
@@ -1830,20 +1646,6 @@ class release
         }
 
         return $file;
-    }
-
-    // }}}
-    // {{{ +proto bool   release::dismissUpload(string) API 1.0
-
-    /**
-     * Dismiss release upload
-     *
-     * @param string
-     * @return boolean
-     */
-    function dismissUpload($upload_ref)
-    {
-        return (bool)@unlink($upload_ref);
     }
 
     // }}}
@@ -2364,17 +2166,6 @@ class user
     }
 
     // }}}
-    // {{{  proto bool   user::listAdmins() API 1.0
-
-    function listAdmins()
-    {
-        global $dbh;
-
-        $query = "SELECT email FROM users WHERE admin = 1";
-        return $dbh->getCol($query);
-    }
-
-    // }}}
     // {{{ +proto bool   user::exists(string) API 1.0
 
     function exists($handle)
@@ -2730,38 +2521,6 @@ class statistics
 
     // }}}
 }
-
-// {{{ +proto string logintest() API 1.0
-
-function logintest()
-{
-    return true;
-}
-
-// }}}
-
-// {{{ mail_pear_admins()
-
-function mail_pear_admins($subject = "PEAR Account Request", $msg, $xhdr = '')
-{
-    global $dbh;
-    $admins = $dbh->getAll("SELECT name,email FROM users WHERE admin = 1",
-                           DB_FETCHMODE_ASSOC);
-    if (count($admins) > 0) {
-        foreach ($admins as $value) {
-            if ($value['name'] == "") {
-                $rcpt[] = "<" . $value['email'] . ">";
-            } else {
-                $rcpt[] = "\"" . $value['name'] . "\" <" . $value['email'] . ">";
-            }
-        }
-        $rcpt = implode(", ", $rcpt);
-        return mail($rcpt, $subject, $msg, $xhdr, "-f noreply@php.net");
-    }
-    return false;
-}
-
-// }}}
 
 // {{{ class PEAR_User
 

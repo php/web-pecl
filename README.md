@@ -75,7 +75,7 @@ Source code of this application is structured in the following directories:
 <web-pecl>/
  ├─ .git/           # Git configuration and source directory
  ├─ cron/           # Various systems scripts to run periodically on server
- ├─ include/        # Application classes, functions, and configuration
+ ├─ include/        # Application helper functions and configuration
  └─ public_html/    # Publicly accessible directory for online pecl.php.net
     ├─ css/         # Stylesheets
     ├─ img/         # Images
@@ -83,6 +83,7 @@ Source code of this application is structured in the following directories:
     └─ ...
  ├─ script/         # Command line development tools and scripts
  ├─ sql/            # Database schema and development fixtures
+ ├─ src/            # Application source code classes
  ├─ templates/      # Application templates
  └─ ...
 ```

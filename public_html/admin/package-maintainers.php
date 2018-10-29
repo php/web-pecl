@@ -106,7 +106,7 @@ if (empty($id)) {
         }
     }
 
-    $pear_rest->savePackageMaintainerREST($package);
+    $rest->savePackageMaintainer($package);
     $url = $self;
     if (!empty($_GET['pid'])) {
         $url .= "?pid=" . urlencode(strip_tags($_GET['pid']));

@@ -109,8 +109,8 @@ if (!isset($_POST['confirm'])) {
         echo "<b>" . $dbh->affectedRows() . "</b> rows affected.\n";
     }
 
-    $pear_rest->deletePackageREST($packagename);
-    $pear_rest->savePackagesCategoryREST($catname);
+    $rest->deletePackage($packagename);
+    $rest->savePackagesCategory($catname);
     echo "</pre>\nPackage " . $_GET['id'] . " has been deleted.\n";
 
 } else if ($_POST['confirm'] == "no") {

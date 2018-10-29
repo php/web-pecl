@@ -213,7 +213,7 @@ do {
                     $errors[] = $e->getMessage();
                     break;
                 }
-                $pear_rest->savePackageMaintainerREST($info->getPackage());
+                $rest->savePackageMaintainer($info->getPackage());
                 $file = release::upload($info->getPackage(), $info->getVersion(),
                                         $info->getState(), $info->getNotes(),
                                         $distfile, md5_file($distfile));

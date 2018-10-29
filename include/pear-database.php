@@ -135,8 +135,8 @@ class category
         if (PEAR::isError($err)) {
             return $err;
         }
-        $GLOBALS['pear_rest']->saveCategoryREST($name);
-        $GLOBALS['pear_rest']->saveAllCategoriesREST();
+        $GLOBALS['rest']->saveCategory($name);
+        $GLOBALS['rest']->saveAllCategories();
         return $id;
     }
 
@@ -192,7 +192,7 @@ class category
         // Update any child categories
         $GLOBALS['dbh']->query(sprintf('UPDATE categories SET parent = %s WHERE parent = %d', ($parentID ? $parentID : 'NULL'), $id));
 
-        $GLOBALS['pear_rest']->deleteCategoryREST($name);
+        $GLOBALS['rest']->deleteCategory($name);
         return true;
     }
 
@@ -309,7 +309,7 @@ class package
      */
     function add($data)
     {
-        global $dbh, $pear_rest;
+        global $dbh, $rest;
         // name, category
         // license, summary, description
         // lead
@@ -339,12 +339,12 @@ class package
         if (DB::isError($err = $dbh->query($sql))) {
             return $err;
         }
-        $pear_rest->savePackageREST($name);
+        $rest->savePackage($name);
         if (isset($lead) && DB::isError($err = maintainer::add($id, $lead, 'lead'))) {
             return $err;
         }
-        $pear_rest->saveAllPackagesREST();
-        $pear_rest->savePackagesCategoryREST(package::info($name, 'category'));
+        $rest->saveAllPackages();
+        $rest->savePackagesCategory(package::info($name, 'category'));
         return $id;
     }
 
@@ -946,9 +946,9 @@ class package
         $sql = 'UPDATE packages SET ' . implode(', ', $fields) .
                " WHERE id=$package_id";
         $row = package::info($pkgid, 'name');
-        $GLOBALS['pear_rest']->saveAllPackagesREST();
-        $GLOBALS['pear_rest']->savePackageREST($row);
-        $GLOBALS['pear_rest']->savePackagesCategoryREST(package::info($pkgid, 'category'));
+        $GLOBALS['rest']->saveAllPackages();
+        $GLOBALS['rest']->savePackage($row);
+        $GLOBALS['rest']->savePackagesCategory(package::info($pkgid, 'category'));
         return $dbh->query($sql, $prep);
     }
 
@@ -1068,7 +1068,7 @@ class maintainer
      */
     function add($package, $user, $role, $active = 1)
     {
-        global $dbh, $pear_rest;
+        global $dbh, $rest;
 
         if (!user::exists($user)) {
             return PEAR::raiseError("User $user does not exist");
@@ -1084,7 +1084,7 @@ class maintainer
             return $err;
         }
         $packagename = package::info($package, 'name');
-        $pear_rest->savePackageMaintainerREST($packagename);
+        $rest->savePackageMaintainer($packagename);
         return true;
     }
 
@@ -1605,7 +1605,7 @@ class release
                 }
             }
         }
-        $res = $GLOBALS['pear_rest']->saveAllReleasesREST($package);
+        $res = $GLOBALS['rest']->saveAllReleases($package);
         if (PEAR::isError($res)) {
             $dbh->query('DELETE FROM deps WHERE ' .
                 "`release` = $release_id");
@@ -1615,7 +1615,7 @@ class release
             return $res;
         }
 
-        $res = $GLOBALS['pear_rest']->saveReleaseREST($file, $packagexml, $pkg_info, $auth_user->handle, $release_id);
+        $res = $GLOBALS['rest']->saveRelease($file, $packagexml, $pkg_info, $auth_user->handle, $release_id);
         if (PEAR::isError($res)) {
             $dbh->query('DELETE FROM deps WHERE ' .
                 "`release` = $release_id");
@@ -1625,7 +1625,7 @@ class release
             return $res;
         }
 
-        $res = $GLOBALS['pear_rest']->savePackagesCategoryREST(package::info($package, 'category'));
+        $res = $GLOBALS['rest']->savePackagesCategory(package::info($package, 'category'));
         if (PEAR::isError($res)) {
             $dbh->query('DELETE FROM deps WHERE ' .
                 "`release` = $release_id");
@@ -2004,9 +2004,9 @@ Authors
                          $release
                          );
         $sth = $dbh->query($query);
-        $GLOBALS['pear_rest']->saveAllReleasesREST($pname);
-        $GLOBALS['pear_rest']->deleteReleaseREST($pname, $version);
-        $GLOBALS['pear_rest']->savePackagesCategoryREST(package::info($pname, 'category'));
+        $GLOBALS['rest']->saveAllReleases($pname);
+        $GLOBALS['rest']->deleteRelease($pname, $version);
+        $GLOBALS['rest']->savePackagesCategory(package::info($pname, 'category'));
 
         if (PEAR::isError($sth)) {
             return false;
@@ -2088,8 +2088,8 @@ class user
     {
         global $dbh;
         note::removeAll("uid", $uid);
-        $GLOBALS['pear_rest']->deleteMaintainerREST($uid);
-        $GLOBALS['pear_rest']->saveAllMaintainersREST();
+        $GLOBALS['rest']->deleteMaintainerREST($uid);
+        $GLOBALS['rest']->saveAllMaintainers();
         $dbh->query('DELETE FROM users WHERE handle = '. $dbh->quote($uid));
         return ($dbh->affectedRows() > 0);
     }
@@ -2132,8 +2132,8 @@ class user
         $user->set('registered', 1);
         $user->store();
         note::add("uid", $uid, "Account opened");
-        $GLOBALS['pear_rest']->saveMaintainerREST($user->handle);
-        $GLOBALS['pear_rest']->saveAllmaintainersREST();
+        $GLOBALS['rest']->saveMaintainer($user->handle);
+        $GLOBALS['rest']->saveAllmaintainers();
         $msg = "Your PECL/PEAR account request has been opened.\n".
              "To log in, go to https://pecl.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";

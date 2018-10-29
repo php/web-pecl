@@ -39,14 +39,16 @@ if ($_SERVER['SERVER_NAME'] != PEAR_CHANNELNAME) {
 require_once "PEAR.php";
 
 include_once "pear-database.php";
-include_once "pear-rest.php";
-if (!isset($pear_rest)) {
+include_once __DIR__.'/src/Rest.php';
+
+if (!isset($rest)) {
     if (isset($_SERVER['argv']) && $_SERVER['argv'][1] == 'pecl') {
-        $pear_rest = new pear_rest(PEAR_REST_DIR);
+        $restDir = PEAR_REST_DIR;
     } else {
-        $pear_rest = new pear_rest(__DIR__ . DIRECTORY_SEPARATOR . 'public_html' .
-            DIRECTORY_SEPARATOR . 'rest');
+        $restDir = __DIR__.DIRECTORY_SEPARATOR.'public_html'.DIRECTORY_SEPARATOR.'rest';
     }
+
+    $rest = new Rest($restDir);
 }
 
 include_once "DB.php";
@@ -63,42 +65,42 @@ if (empty($dbh)) {
 ob_end_clean();
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 require_once 'System.php';
-System::rm(['-r', $pear_rest->_restdir]);
-System::mkdir(['-p', $pear_rest->_restdir]);
-chmod($pear_rest->_restdir, 0777);
+System::rm(['-r', $restDir]);
+System::mkdir(['-p', $restDir]);
+chmod($restDir, 0777);
 echo "Generating Category REST...\n";
 foreach (category::listAll() as $category) {
     echo "  $category[name]...";
-    $pear_rest->saveCategoryREST($category['name']);
+    $rest->saveCategory($category['name']);
     echo "done\n";
 }
-$pear_rest->saveAllCategoriesREST();
+$rest->saveAllCategories();
 echo "Generating Maintainer REST...\n";
 $maintainers = $dbh->getAll('SELECT * FROM users', [], DB_FETCHMODE_ASSOC);
 foreach ($maintainers as $maintainer) {
     echo "  $maintainer[handle]...";
-    $pear_rest->saveMaintainerREST($maintainer['handle']);
+    $rest->saveMaintainer($maintainer['handle']);
     echo "done\n";
 }
 echo "Generating All Maintainers REST...\n";
-$pear_rest->saveAllMaintainersREST();
+$rest->saveAllMaintainers();
 echo "done\n";
 echo "Generating Package REST...\n";
-$pear_rest->saveAllPackagesREST();
+$rest->saveAllPackages();
 require_once 'Archive/Tar.php';
 require_once 'PEAR/PackageFile.php';
 $config = PEAR_Config::singleton();
 $pkg = new PEAR_PackageFile($config);
 foreach (package::listAll(false, false, false) as $package => $info) {
     echo "  $package\n";
-    $pear_rest->savePackageREST($package);
+    $rest->savePackage($package);
     echo "     Maintainers...";
-    $pear_rest->savePackageMaintainerREST($package);
+    $rest->savePackageMaintainer($package);
     echo "...done\n";
     $releases = package::info($package, 'releases');
     if ($releases) {
         echo "     Processing All Releases...";
-        $pear_rest->saveAllReleasesREST($package);
+        $rest->saveAllReleases($package);
         echo "done\n";
         foreach ($releases as $version => $blah) {
             $fileinfo = $dbh->getOne('SELECT fullpath FROM files WHERE release = ?',
@@ -115,7 +117,7 @@ foreach (package::listAll(false, false, false) as $package => $info) {
             PEAR::popErrorHandling();
             if (!PEAR::isError($pf)) {
                 echo "     Version $version...";
-                $pear_rest->saveReleaseREST($fileinfo, $pxml, $pf, $blah['doneby'],
+                $rest->saveRelease($fileinfo, $pxml, $pf, $blah['doneby'],
                     $blah['id']);
                 echo "done\n";
             } else {
@@ -130,6 +132,6 @@ foreach (package::listAll(false, false, false) as $package => $info) {
 echo "Generating Category Package REST...\n";
 foreach (category::listAll() as $category) {
     echo "  $category[name]...";
-    $pear_rest->savePackagesCategoryREST($category['name']);
+    $rest->savePackagesCategory($category['name']);
     echo "done\n";
 }

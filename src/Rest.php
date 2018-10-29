@@ -18,20 +18,30 @@
   +----------------------------------------------------------------------+
 */
 
-class pear_rest
+require_once 'System.php';
+
+/**
+ * The PECL REST API management service class.
+ */
+class Rest
 {
-    var $_restdir;
-    public function __construct($base)
+    private $dir;
+
+    /**
+     * Class constructor.
+     */
+    public function __construct($dir)
     {
-        $this->_restdir = $base;
+        $this->dir = $dir;
     }
 
-    function saveAllCategoriesREST()
+    /**
+     * Regenerate all categories info.
+     */
+    public function saveAllCategories()
     {
-        require_once 'System.php';
-
         $extra = '/rest/';
-        $cdir = $this->_restdir . DIRECTORY_SEPARATOR . 'c';
+        $cdir = $this->dir . DIRECTORY_SEPARATOR . 'c';
         if (!is_dir($cdir)) {
             System::mkdir(['-p', $cdir]);
             @chmod($cdir, 0777);
@@ -58,12 +68,14 @@ class pear_rest
         @chmod($cdir . DIRECTORY_SEPARATOR . 'categories.xml', 0666);
     }
 
-    function saveCategoryREST($category)
+    /**
+     * Save category info.
+     */
+    public function saveCategory($category)
     {
-        require_once 'System.php';
         global $dbh;
         $extra = '/rest/';
-        $cdir = $this->_restdir . DIRECTORY_SEPARATOR . 'c';
+        $cdir = $this->dir . DIRECTORY_SEPARATOR . 'c';
         if (!is_dir($cdir)) {
             System::mkdir(['-p', $cdir]);
             @chmod($cdir, 0777);
@@ -120,14 +132,17 @@ class pear_rest
             DIRECTORY_SEPARATOR . 'packages.xml', 0666);
     }
 
-    function savePackagesCategoryREST($category)
+    /**
+     * Regenerate packages category info.
+     */
+    public function savePackagesCategory($category)
     {
-        $cdir = $this->_restdir . DIRECTORY_SEPARATOR . 'c';
+        $cdir = $this->dir . DIRECTORY_SEPARATOR . 'c';
         if (!is_dir($cdir)) {
             return;
         }
-        $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
-        $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
+        $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
+        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
         $packages = category::listPackages($category);
         $fullpackageinfo = '<?xml version="1.0" encoding="UTF-8" ?>
 <f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo"
@@ -150,7 +165,7 @@ class pear_rest
             if (file_exists($rdir . DIRECTORY_SEPARATOR . strtolower($package['name']) .
                     DIRECTORY_SEPARATOR . 'allreleases.xml')) {
                 $fullpackageinfo .= str_replace(
-                    $this->_getAllReleasesRESTProlog($package['name']), '
+                    $this->getAllReleasesRESTProlog($package['name']), '
 <a>
 ',
                     file_get_contents($rdir . DIRECTORY_SEPARATOR .
@@ -186,10 +201,12 @@ class pear_rest
             DIRECTORY_SEPARATOR . 'packagesinfo.xml', 0666);
     }
 
-    function deleteCategoryREST($category)
+    /**
+     * Delete category info.
+     */
+    public function deleteCategory($category)
     {
-        require_once 'System.php';
-        $cdir = $this->_restdir . DIRECTORY_SEPARATOR . 'c';
+        $cdir = $this->dir . DIRECTORY_SEPARATOR . 'c';
         if (!is_dir($cdir . DIRECTORY_SEPARATOR . urlencode($category))) {
             return;
         }
@@ -197,10 +214,12 @@ class pear_rest
         System::rm(['-r', $cdir . DIRECTORY_SEPARATOR . urlencode($category)]);
     }
 
-    function saveAllPackagesREST()
+    /**
+     * Regenerate all packages info.
+     */
+    public function saveAllPackages()
     {
-        require_once 'System.php';
-        $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
+        $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
         if (!is_dir($pdir)) {
             System::mkdir(['-p', $pdir]);
             @chmod($pdir, 0777);
@@ -224,7 +243,10 @@ class pear_rest
         @chmod($pdir . DIRECTORY_SEPARATOR . 'packages.xml', 0666);
     }
 
-    function _getPackageRESTProlog()
+    /**
+     * Return the XML prolog.
+     */
+    private function getPackageProlog()
     {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" .
 "<p xmlns=\"http://pear.php.net/dtd/rest.package\"" .
@@ -234,14 +256,16 @@ class pear_rest
 '    http://pear.php.net/dtd/rest.package.xsd">';
     }
 
-    function savePackageREST($package)
+    /**
+     * Save package info.
+     */
+    public function savePackage($package)
     {
-        require_once 'System.php';
         global $dbh;
         $extra = '/rest/';
         $package = package::info($package);
 
-        $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
+        $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
         if (!is_dir($pdir)) {
             System::mkdir(['-p', $pdir]);
             @chmod($pdir, 0777);
@@ -271,7 +295,7 @@ class pear_rest
         }
         $package['summary'] = htmlspecialchars($package['summary']);
         $package['description'] = htmlspecialchars($package['description']);
-        $info = $this->_getPackageRESTProlog() . '
+        $info = $this->getPackageProlog() . '
  <n>' . $package['name'] . '</n>
  <c>' . PEAR_CHANNELNAME . '</c>
  <ca xlink:href="' . $extra . 'c/' . htmlspecialchars(urlencode($catinfo)) . '">' .
@@ -292,21 +316,24 @@ class pear_rest
             DIRECTORY_SEPARATOR . 'info.xml', 0666);
     }
 
-    function deletePackageREST($package)
+    /**
+     * Remove package info.
+     */
+    public function deletePackage($package)
     {
         if (!$package) {
             // don't delete the entire package/release info
             return;
         }
-        require_once 'System.php';
-        $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
-        $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
+
+        $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
+        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
         // remove all package/release info for this package
         System::rm(['-r', $pdir . DIRECTORY_SEPARATOR . $package]);
         System::rm(['-r', $rdir . DIRECTORY_SEPARATOR . $package]);
     }
 
-    function _getAllReleasesRESTProlog($package)
+    private function getAllReleasesRESTProlog($package)
     {
         return '<?xml version="1.0" encoding="UTF-8" ?>' . "\n" .
 '<a xmlns="http://pear.php.net/dtd/rest.allreleases"' . "\n" .
@@ -317,9 +344,11 @@ class pear_rest
 ' <c>' . PEAR_CHANNELNAME . '</c>' . "\n";
     }
 
-    function saveAllReleasesREST($package)
+    /**
+     * Regenerate all releases info.
+     */
+    public function saveAllReleases($package)
     {
-        require_once 'System.php';
         require_once 'PEAR/PackageFile/Parser/v2.php';
         require_once 'PEAR/Config.php';
         global $dbh;
@@ -327,7 +356,7 @@ class pear_rest
         $pid = package::info($package, 'id');
         $releases = $dbh->getAll('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC',
             [$pid], DB_FETCHMODE_ASSOC);
-        $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
+        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
         if (!is_dir($rdir)) {
             System::mkdir(['-p', $rdir]);
             @chmod($rdir, 0777);
@@ -337,7 +366,7 @@ class pear_rest
             System::rm(['-r', $rdir . DIRECTORY_SEPARATOR . strtolower($package)]);
             return;
         }
-        $info = $this->_getAllReleasesRESTProlog($package);
+        $info = $this->getAllReleasesRESTProlog($package);
         foreach ($releases as $release) {
             $packagexml = $dbh->getOne('SELECT packagexml FROM files WHERE package = ? AND
                 `release` = ?', [$pid, $release['id']]);
@@ -430,10 +459,12 @@ class pear_rest
         }
     }
 
-    function deleteReleaseREST($package, $version)
+    /**
+     * Regenerate info by removing release information.
+     */
+    public function deleteRelease($package, $version)
     {
-        require_once 'System.php';
-        $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
+        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
         if (@is_dir($rdir . DIRECTORY_SEPARATOR . strtolower($package))) {
             @unlink($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
                 DIRECTORY_SEPARATOR . $version . '.xml');
@@ -444,12 +475,14 @@ class pear_rest
         }
     }
 
-    function saveReleaseREST($filepath, $packagexml, $pkgobj, $releasedby, $id)
+    /**
+     * Regenerate release info.
+     */
+    public function saveRelease($filepath, $packagexml, $pkgobj, $releasedby, $id)
     {
-        require_once 'System.php';
         global $dbh;
         $extra = '/rest/';
-        $rdir = $this->_restdir . DIRECTORY_SEPARATOR . 'r';
+        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
         if (!is_dir($rdir)) {
             System::mkdir(['-p', $rdir]);
             @chmod($rdir, 0777);
@@ -504,25 +537,26 @@ class pear_rest
             DIRECTORY_SEPARATOR . 'deps.' . $pkgobj->getVersion() . '.txt', 0666);
     }
 
-    function deleteMaintainerREST($handle)
+    public function deleteMaintainerREST($handle)
     {
-        require_once 'System.php';
-        $mdir = $this->_restdir . DIRECTORY_SEPARATOR . 'm';
+        $mdir = $this->dir . DIRECTORY_SEPARATOR . 'm';
         if (is_dir($mdir . DIRECTORY_SEPARATOR . $handle)) {
             System::rm(['-r', $mdir . DIRECTORY_SEPARATOR . $handle]);
         }
     }
 
-    function savePackageMaintainerREST($package)
+    /**
+     * Regenerate package maintainer info.
+     */
+    public function savePackageMaintainer($package)
     {
-        require_once 'System.php';
         global $dbh;
         $pid = package::info($package, 'id');
         $maintainers = $dbh->getAll('SELECT * FROM maintains WHERE package = ?', [$pid],
             DB_FETCHMODE_ASSOC);
         $extra = '/rest/';
         if (count($maintainers)) {
-            $pdir = $this->_restdir . DIRECTORY_SEPARATOR . 'p';
+            $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
             if (!is_dir($pdir)) {
                 System::mkdir(['-p', $pdir]);
                 @chmod($pdir, 0777);
@@ -555,15 +589,17 @@ class pear_rest
         }
     }
 
-    function saveMaintainerREST($maintainer)
+    /**
+     * Regenerate maintainer info.
+     */
+    public function saveMaintainer($maintainer)
     {
-        require_once 'System.php';
         global $dbh;
         $maintainer = $dbh->getAll('SELECT * FROM users WHERE handle = ?',
             [$maintainer], DB_FETCHMODE_ASSOC);
         $maintainer = $maintainer[0];
         $extra = '/rest/';
-        $mdir = $this->_restdir . DIRECTORY_SEPARATOR . 'm';
+        $mdir = $this->dir . DIRECTORY_SEPARATOR . 'm';
         if (!is_dir($mdir)) {
             System::mkdir(['-p', $mdir]);
             @chmod($mdir, 0777);
@@ -597,7 +633,10 @@ class pear_rest
             DIRECTORY_SEPARATOR . 'info.xml', 0666);
     }
 
-    function saveAllMaintainersREST()
+    /**
+     * Regenerate list of all maintainers.
+     */
+    public function saveAllMaintainers()
     {
         $maintainers = user::listAll();
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
@@ -620,7 +659,7 @@ class pear_rest
                 $maintainer['handle'] . '</h>' . "\n";
         }
         $info .= '</m>';
-        $mdir = $this->_restdir . DIRECTORY_SEPARATOR . 'm';
+        $mdir = $this->dir . DIRECTORY_SEPARATOR . 'm';
         if (!is_dir($mdir)) {
             System::mkdir(['-p', $mdir]);
             @chmod($mdir, 0777);

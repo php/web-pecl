@@ -114,8 +114,8 @@ if (isset($_POST['submit'])) {
     if (PEAR::isError($sth)) {
         PEAR::raiseError("Unable to save data!");
     } else {
-        $pear_rest->savePackageREST($_POST['name']);
-        $pear_rest->savePackagesCategoryREST(package::info($_POST['name'], 'category'));
+        $rest->savePackage($_POST['name']);
+        $rest->savePackagesCategory(package::info($_POST['name'], 'category'));
         echo "<b>Package information successfully updated.</b><br /><br />\n";
     }
 } else if (isset($_GET['action'])) {

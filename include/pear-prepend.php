@@ -35,7 +35,7 @@ include_once "DB.php";
 include_once "DB/storage.php";
 include_once "pear-auth.php";
 include_once "pear-database.php";
-include_once "pear-rest.php";
+include_once __DIR__.'/../src/Rest.php';
 include_once "pear-win-package.php";
 
 function get($name)
@@ -59,13 +59,14 @@ if (empty($dbh)) {
     $dbh->query('SET NAMES utf8');
     $GLOBALS['_NODB'] = false;
 }
-if (!isset($pear_rest)) {
+if (!isset($rest)) {
     if (!DEVBOX) {
-        $pear_rest = new pear_rest(PEAR_REST_DIR);
+        $restDir = PEAR_REST_DIR;
     } else {
-        $pear_rest = new pear_rest(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'public_html' .
-            DIRECTORY_SEPARATOR . 'rest');
+        $restDir = dirname(__DIR__).DIRECTORY_SEPARATOR.'public_html'.DIRECTORY_SEPARATOR.'rest';
     }
+
+    $rest = new Rest($restDir);
 }
 
 $tmp = filectime($_SERVER['SCRIPT_FILENAME']);

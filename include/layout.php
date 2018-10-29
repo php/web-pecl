@@ -52,10 +52,9 @@ function make_image($file, $alt = '', $align = '', $extras = '', $dir = '',
     return $image;
 }
 
-// make_link()
-// return a hyperlink to something, within the site
-//
-
+/**
+ * Return a hyperlink to something, within the site
+ */
 function make_link ($url, $linktext=false, $target=false, $extras=false) {
     return sprintf("<a href=\"%s\"%s%s>%s</a>",
         $url,
@@ -65,17 +64,16 @@ function make_link ($url, $linktext=false, $target=false, $extras=false) {
     );
 }
 
-// make_mailto_link()
-// return a mailto-hyperlink
-//
-
+/**
+ * Return a mailto-hyperlink
+ */
 function make_mailto_link ($url, $linktext=false, $extras=false) {
     return make_link("mailto:" . $url, ($linktext ? $linktext : $url), false, $extras);
 }
 
-// make_bug_link()
-// creates a link for the bug system
-
+/**
+ * Creates a link for the bug system
+ */
 function make_bug_link($package, $type = 'list', $linktext = false) {
     switch ($type) {
         case 'list':

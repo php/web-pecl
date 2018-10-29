@@ -36,7 +36,7 @@ include_once "DB/storage.php";
 include_once "pear-auth.php";
 include_once "pear-database.php";
 include_once __DIR__.'/../src/Rest.php';
-include_once "pear-win-package.php";
+include_once __DIR__.'/../src/PackageDll.php';
 
 function get($name)
 {

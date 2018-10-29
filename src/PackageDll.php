@@ -24,11 +24,8 @@ define("PECL_DLL_URL_CACHE_DB_RESET_LOCK", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "
 
 /**
  * Class to handle package DLL builds
- *
- * @class   package_dll
- * @package pearweb
  */
-class package_dll
+class PackageDll
 {
 	protected static $build_gap = 7200; /* 2 hours */
 

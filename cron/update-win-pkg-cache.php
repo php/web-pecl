@@ -33,15 +33,15 @@ $data = $dbh->getAll("SELECT packages.name, releases.version, releases.releaseda
 					NULL,
 					DB_FETCHMODE_ASSOC);
 
-if (package_dll::isResetOverdue()) {
-	if (!package_dll::resetDllDownloadCache()) {
+if (PackageDll::isResetOverdue()) {
+	if (!PackageDll::resetDllDownloadCache()) {
 		/* some reset running, just sleep and do our thing*/
 		sleep(10);
 	}
 }
 
 foreach ($data as $pkg) {
-	if (!package_dll::updateDllDownloadCache($pkg['name'], $pkg['version'])) {
+	if (!PackageDll::updateDllDownloadCache($pkg['name'], $pkg['version'])) {
 		echo "Failed to update cache for $pkg[name]-$pkg[version]\n";
 	}
 }

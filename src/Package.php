@@ -75,7 +75,7 @@ class Package
 
         $rest->savePackage($name);
 
-        if (isset($lead) && DB::isError($err = maintainer::add($id, $lead, 'lead'))) {
+        if (isset($lead) && DB::isError($err = Maintainer::add($id, $lead, 'lead'))) {
             return $err;
         }
 

@@ -208,7 +208,7 @@ do {
                                                                 $user['active'] == 'yes',
                                                           ];
                 }
-                $e = maintainer::updateAll($pacid, $users);
+                $e = Maintainer::updateAll($pacid, $users);
                 if (PEAR::isError($e)) {
                     $errors[] = $e->getMessage();
                     break;
@@ -250,7 +250,7 @@ do {
                                                       ];
             }
 
-            $e = maintainer::updateAll($pacid, $users);
+            $e = Maintainer::updateAll($pacid, $users);
             if (PEAR::isError($e)) {
                 $errors[] = $e->getMessage();
                 break;

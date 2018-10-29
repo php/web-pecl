@@ -53,7 +53,7 @@ if (empty($id)) {
         exit();
     }
 
-    $all = maintainer::get($id);
+    $all = Maintainer::get($id);
 
     // Transform
     $new_list = [];
@@ -167,7 +167,7 @@ if (empty($id)) {
     echo '  <td>';
     echo '  <select multiple="yes" name="maintainers[]" onChange="activateRemove();" size="10">';
 
-    $maintainers = maintainer::get($id);
+    $maintainers = Maintainer::get($id);
     foreach ($maintainers as $handle => $role) {
         $info = user::info($handle, "name");   // XXX: This sucks
         printf('<option value="%s||%s">%s (%s, %s)</option>',
@@ -200,7 +200,7 @@ function isAllowed($package)
 {
 	global $auth_user;
     auth_require();
-    $lead = in_array($auth_user->handle, array_keys(maintainer::get($package, true)));
+    $lead = in_array($auth_user->handle, array_keys(Maintainer::get($package, true)));
     $admin = $auth_user->isAdmin();
 
     return ($lead || $admin);

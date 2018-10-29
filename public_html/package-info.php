@@ -344,12 +344,6 @@ if ($sth->numRows() == 0) {
         'ne' => 'any version but %s',
         'gt' => 'newer than %s',
         'ge' => '%s or newer',
-/*      'lt' => '<',
-        'le' => '<=',
-        'eq' => '=',
-        'ne' => '!=',
-        'gt' => '>',
-        'ge' => '>=', */
     ];
     $dep_type_desc = [
         'pkg'         => 'PEAR Package',

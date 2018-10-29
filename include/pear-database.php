@@ -2372,7 +2372,6 @@ class user
 
         $xhdr = "From: $name <{$data['email']}>\nMessage-Id: <account-request-{$handle}@" .
             PEAR_CHANNELNAME . ">\n";
-        // $xhdr .= "\nBCC: pear-group@php.net";
         $subject = "PEAR Account Request: {$handle}";
 
         if (DEVBOX == false) {

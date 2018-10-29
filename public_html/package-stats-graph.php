@@ -97,7 +97,6 @@ foreach ($releases as $release) {
     $bplots[$rid] = new BarPlot(array_values($y_axis));
     $bplots[$rid]->SetWidth(0.6);
     $bplots[$rid]->SetFillGradient("white", $colour, GRAD_HOR);
-    //$bplot->setFillColor("#339900");
     $bplots[$rid]->SetColor("black");
     $bplots[$rid]->value->setFormat('%d');
     $bplots[$rid]->value->Show();

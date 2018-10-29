@@ -22,7 +22,7 @@ if (isset($showmsg)) {
     $delay = 3;
     header("Refresh: $delay; url=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\"");
     response_header("Logging Out...");
-//	$ua = $HTTP_USER_AGENT;
+
 	$logoutmsg = "Authorization failed. Retry?";
     report_error("Press 'Cancel' when presented a new login box or ".
 		 "one saying '$logoutmsg'<br />");

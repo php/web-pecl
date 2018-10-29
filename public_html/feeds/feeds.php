@@ -58,7 +58,6 @@ EOT;
                 $title = $item['name'];
             }
 
-            //$node = $this->newItem($title, $url, $item['releasenotes'], $date);
             $items_xml .= '<rdf:li rdf:resource="' . $url . '"/>' . "\n";
             $item_entries .= "<item rdf:about=" . '"' .$url . '"' . ">
 <title>$title</title>

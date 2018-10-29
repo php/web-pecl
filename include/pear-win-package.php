@@ -128,7 +128,6 @@ class package_dll
 				}
 
 				if (is_array($data) && array_key_exists($version, $data)) {
-					//echo "deliver cached\n";
 					$ret = $data[$version];
 					$cached_found = true;
 					break;
@@ -138,13 +137,11 @@ class package_dll
 
 		/* not cached yet */
 		if (!$ret && !$cached_found) {
-			//echo "fetching\n";
 			$do_cache = true;
 			$ret = self::fetchDllDownloadUrls($name, $version);
 		}
 
 		if ($cache && $do_cache) {
-			//echo "caching\n";
 			self::cacheDllDownloadInfo($name, $version, $ret);
 		}
 
@@ -188,7 +185,6 @@ class package_dll
 		}
 
 		$db[$name][$version] = $data;
-		//$db[0][0] = md5(uniqid());
 
 		return false !== file_put_contents(self::$cache_db, serialize($db), LOCK_EX);
 	}

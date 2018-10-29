@@ -41,7 +41,6 @@ defaults('ADMIN_PASSWORD','password');  	// Admin Password - CHANGE THIS TO ENAB
 // (beckerr) I'm using a clear text password here, because I've no good idea how to let
 //           users generate a md5 or crypt password in a easy way to fill it in above
 
-//defaults('DATE_FORMAT', "d.m.Y H:i:s");	// German
 defaults('DATE_FORMAT', 'Y/m/d H:i:s'); 	// US
 
 defaults('GRAPH_SIZE',200);					// Image size

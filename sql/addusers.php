@@ -84,8 +84,6 @@ if (is_resource($fp)) {
 	fclose($fp);
 }
 
-//print_r($users);exit;
-
 $sth = $dbh->prepare("INSERT INTO users ".
 		     "(handle,password,name,email,registered,showemail," .
 		     "created,createdby,admin)".

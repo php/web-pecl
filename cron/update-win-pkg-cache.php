@@ -21,11 +21,6 @@
 
 require_once __DIR__ . '/../include/pear-prepend.php';
 
-/*require_once "PEAR.php";
-require_once "DB.php";
-
-require_once __DIR__ . '/../include/pear-win-package.php';*/
-
 $dbh = DB::connect("mysql://pear:pear@localhost/pear");
 if (DB::isError($dbh)) {
 	die("could not connect to database");
@@ -46,7 +41,6 @@ if (package_dll::isResetOverdue()) {
 }
 
 foreach ($data as $pkg) {
-	//$urls = package_dll::getDllDownloadUrls($pkg['name'], $pkg['version'], $pkg['releasedate'], true);
 	if (!package_dll::updateDllDownloadCache($pkg['name'], $pkg['version'])) {
 		echo "Failed to update cache for $pkg[name]-$pkg[version]\n";
 	}

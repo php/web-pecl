@@ -47,7 +47,7 @@ EOT;
 
             /* allows to override the default link */
             if (!isset($item['link'])) {
-                $url = 'http://' . PEAR_CHANNELNAME . '/get/' . $item['name'] . '/' . $item['version'];
+                $url = 'http://' . PEAR_CHANNELNAME . '/package-changelog.php?package=' . $item['name'] . '&release=' . $item['version'];
             } else {
                 $url = $item['link'];
             }

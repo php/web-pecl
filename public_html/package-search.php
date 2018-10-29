@@ -56,7 +56,7 @@ $months[12] = 'December';
 /**
 * Code to fetch the current category list
 */
-$category_rows = category::listAll();
+$category_rows = Category::listAll();
 if (!empty($_GET['pkg_category'])) {
     for ($i=0; $i<count($category_rows); $i++) {
         if ($_GET['pkg_category'] == $category_rows[$i]['id']) {

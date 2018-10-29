@@ -61,7 +61,7 @@ foreach (explode("\n", $categories) as $line) {
 	if (!empty($parent)) {
 		$params['parent'] = $catids[$parent];
 	}
-	$catid = category::add($params);
+	$catid = Category::add($params);
 	$catids[$name] = $catid;
 	print "Category: $name\n";
 }

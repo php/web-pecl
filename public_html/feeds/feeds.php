@@ -149,14 +149,14 @@ switch ($type) {
 
     case 'cat':
         $category = $argument;
-        if (category::isValid($category) == false) {
+        if (Category::isValid($category) == false) {
             rss_bailout();
         }
 
         $channel_title = $channel_base . ": Latest releases in category " . $category;
         $channel_description = "The latest releases in the category " . $category;
 
-        $items = category::getRecent(10, $category);
+        $items = Category::getRecent(10, $category);
         break;
 
     case 'bugs':

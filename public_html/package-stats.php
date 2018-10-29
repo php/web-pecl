@@ -69,7 +69,7 @@ echo '  <tr>'."\n";
 echo '  <td>'."\n";
 echo '   <select name="cid" onchange="javascript:reloadMe();">'."\n";
 echo '    <option value="">Select category ...</option>'."\n";
-foreach (category::listAll() as $value) {
+foreach (Category::listAll() as $value) {
     $selected = '';
     if (isset($_GET['cid']) && $_GET['cid'] == $value['id']) {
         $selected = ' selected="selected"';

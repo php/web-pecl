@@ -69,7 +69,7 @@ System::rm(['-r', $restDir]);
 System::mkdir(['-p', $restDir]);
 chmod($restDir, 0777);
 echo "Generating Category REST...\n";
-foreach (category::listAll() as $category) {
+foreach (Category::listAll() as $category) {
     echo "  $category[name]...";
     $rest->saveCategory($category['name']);
     echo "done\n";
@@ -130,7 +130,7 @@ foreach (package::listAll(false, false, false) as $package => $info) {
     }
 }
 echo "Generating Category Package REST...\n";
-foreach (category::listAll() as $category) {
+foreach (Category::listAll() as $category) {
     echo "  $category[name]...";
     $rest->savePackagesCategory($category['name']);
     echo "done\n";

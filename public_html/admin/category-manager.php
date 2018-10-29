@@ -66,7 +66,7 @@ if (!empty($_POST)) {
     switch (@$_POST['action']) {
     case 'add':
         if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {
-            $result = category::add(['name'   => $_POST['catName'],
+            $result = Category::add(['name'   => $_POST['catName'],
                                           'desc'   => $_POST['catDesc'],
                                           'parent' => !empty($_POST['cat_parent']) ? (int)$_POST['cat_parent'] : null]);
             $_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to insert category: ' . $result->message : 'Category added';
@@ -78,7 +78,7 @@ if (!empty($_POST)) {
 
     case 'update':
         if (!empty($_POST['catDesc']) AND !empty($_POST['catName'])) {
-            $result = category::update((int)$_POST['cat_parent'], $_POST['catName'], $_POST['catDesc']);
+            $result = Category::update((int)$_POST['cat_parent'], $_POST['catName'], $_POST['catDesc']);
             $_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to insert category: ' . $result->message : 'Category updated';
         } else {
             $_SESSION['category_manager']['error_msg'] = 'Please enter a name and description!';
@@ -88,7 +88,7 @@ if (!empty($_POST)) {
 
     case 'delete':
         if (!empty($_POST['cat_parent'])) {
-            $result = category::delete($_POST['cat_parent']);
+            $result = Category::delete($_POST['cat_parent']);
             $_SESSION['category_manager']['error_msg'] = PEAR::isError($result) ? 'Failed to delete category: ' . $result->message : 'Category deleted';
         } else {
             $_SESSION['category_manager']['error_msg'] = 'Please select a category';

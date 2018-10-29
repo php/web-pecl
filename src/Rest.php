@@ -47,7 +47,7 @@ class Rest
             @chmod($cdir, 0777);
         }
 
-        $categories = category::listAll();
+        $categories = Category::listAll();
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <a xmlns="http://pear.php.net/dtd/rest.allcategories"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -143,7 +143,7 @@ class Rest
         }
         $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
         $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
-        $packages = category::listPackages($category);
+        $packages = Category::listPackages($category);
         $fullpackageinfo = '<?xml version="1.0" encoding="UTF-8" ?>
 <f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

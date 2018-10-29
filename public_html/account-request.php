@@ -67,7 +67,7 @@ if (isset($_POST['submit'])) {
             "email"     => "your email address",
             "purpose"   => "the purpose of your PECL account",
             "sponsor"   => "references to current users sponsoring your request",
-            "language"  => "programmng language being developed",
+            "language"  => "programming language being developed",
         ];
 
             $name = $firstname . " " . $lastname;

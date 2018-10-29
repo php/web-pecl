@@ -89,16 +89,6 @@ function renumber_visitations($id, $parent = null)
 }
 
 // }}}
-// {{{ version_compare_firstelem()
-
-function version_compare_firstelem($a, $b)
-{
-    reset($a);
-    $elem = key($a);
-    return version_compare($a[$elem], $b[$elem]);
-}
-
-// }}}
 
 // These classes correspond to tables and methods define operations on
 // each.

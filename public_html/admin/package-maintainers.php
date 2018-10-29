@@ -34,7 +34,7 @@ $self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 if (empty($id)) {
     auth_require(true);
 
-    $values = package::listAllNames();
+    $values = Package::listAllNames();
 
     $bb = new BorderBox("Select package");
 

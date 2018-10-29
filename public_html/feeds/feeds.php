@@ -136,7 +136,7 @@ switch ($type) {
 
     case 'pkg':
         $package = $argument;
-        if (package::isValid($package) == false) {
+        if (Package::isValid($package) == false) {
             rss_bailout();
             return PEAR::raiseError("The requested URL " . $_SERVER['REQUEST_URI'] . " was not found on this server.");
         }
@@ -144,7 +144,7 @@ switch ($type) {
         $channel_title = "Latest releases";
         $channel_description = "The latest releases for the package " . $package;
 
-        $items = package::getRecent(10, $package);
+        $items = Package::getRecent(10, $package);
         break;
 
     case 'cat':

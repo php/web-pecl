@@ -136,7 +136,7 @@ $bb->end();
 
 if (isset($_GET['pid']) && (int)$_GET['pid']) {
 
-    $info = package::info($_GET['pid'],null,false);
+    $info = Package::info($_GET['pid'],null,false);
 
     if (isset($info['releases']) && sizeof($info['releases'])>0) {
         echo '<h2>&raquo; Statistics for Package &quot;<a href="/package/' . $info['name'] . '">' . $info['name'] . "</a>&quot;</h2>\n";

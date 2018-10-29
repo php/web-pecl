@@ -115,7 +115,7 @@ if (isset($_POST['submit'])) {
         PEAR::raiseError("Unable to save data!");
     } else {
         $rest->savePackage($_POST['name']);
-        $rest->savePackagesCategory(package::info($_POST['name'], 'category'));
+        $rest->savePackagesCategory(Package::info($_POST['name'], 'category'));
         echo "<b>Package information successfully updated.</b><br /><br />\n";
     }
 } else if (isset($_GET['action'])) {
@@ -139,7 +139,7 @@ if (isset($_POST['submit'])) {
     }
 }
 
-$row = package::info((int)$_GET['id']);
+$row = Package::info((int)$_GET['id']);
 
 if (empty($row['name'])) {
     PEAR::raiseError("Illegal package id");

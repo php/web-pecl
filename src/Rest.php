@@ -233,7 +233,7 @@ class Rest
     http://pear.php.net/dtd/rest.allpackages.xsd">
 <c>' . PEAR_CHANNELNAME . '</c>
 ';
-        foreach (package::listAllNames() as $package)
+        foreach (Package::listAllNames() as $package)
         {
             $info .= ' <p>' . $package . '</p>
 ';
@@ -263,7 +263,7 @@ class Rest
     {
         global $dbh;
         $extra = '/rest/';
-        $package = package::info($package);
+        $package = Package::info($package);
 
         $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
         if (!is_dir($pdir)) {
@@ -353,7 +353,7 @@ class Rest
         require_once 'PEAR/Config.php';
         global $dbh;
         $extra = '/rest/';
-        $pid = package::info($package, 'id');
+        $pid = Package::info($package, 'id');
         $releases = $dbh->getAll('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC',
             [$pid], DB_FETCHMODE_ASSOC);
         $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
@@ -551,7 +551,7 @@ class Rest
     public function savePackageMaintainer($package)
     {
         global $dbh;
-        $pid = package::info($package, 'id');
+        $pid = Package::info($package, 'id');
         $maintainers = $dbh->getAll('SELECT * FROM maintains WHERE package = ?', [$pid],
             DB_FETCHMODE_ASSOC);
         $extra = '/rest/';

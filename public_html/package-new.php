@@ -71,7 +71,7 @@ do {
         }
 
         $dbh->expectError(DB_ERROR_ALREADY_EXISTS);
-        $pkg = package::add([
+        $pkg = Package::add([
                                   'name'        => $_POST['name'],
                                   'type'        => 'pecl',
                                   'category'    => $_POST['category'],

@@ -176,7 +176,7 @@ do {
                 }
                 break;
             } else {
-                $pacid = package::info($info->getPackage(), 'id');
+                $pacid = Package::info($info->getPackage(), 'id');
                 if (PEAR::isError($pacid)) {
                     $errors[] = $pacid->getMessage();
                     break;
@@ -190,7 +190,7 @@ do {
                 if (is_array($license)) {
                     $license = $license['_content'];
                 }
-                $e = package::updateInfo($pacid,
+                $e = Package::updateInfo($pacid,
                         [
                             'summary'     => $info->getSummary(),
                             'description' => $info->getDescription(),
@@ -220,7 +220,7 @@ do {
             }
         } else {
 
-            $pacid = package::info($info['package'], 'id');
+            $pacid = Package::info($info['package'], 'id');
             if (PEAR::isError($pacid)) {
                 $errors[] = $pacid->getMessage();
                 break;
@@ -231,7 +231,7 @@ do {
                 break;
             }
 
-            $e = package::updateInfo($pacid,
+            $e = Package::updateInfo($pacid,
                     [
                         'summary'     => $info['summary'],
                         'description' => $info['description'],

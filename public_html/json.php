@@ -28,7 +28,7 @@ if (!$package) {
 }
 
 // Package data
-$pkg   = package::info($package);
+$pkg = Package::info($package);
 if (!$pkg) {
 	header("HTTP/1.0 404 Not Found");
 	echo "$package not found";

@@ -35,7 +35,7 @@ if (is_numeric($package)) {
 }
 
 // Package data
-$pkg = package::info($package);
+$pkg = Package::info($package);
 
 if (!empty($version)) {
     foreach ($pkg['releases'] as $ver => $release) {
@@ -419,7 +419,7 @@ $bb->end();
 // }}}
 // {{{ Dependants
 
-$dependants = package::getDependants($name);
+$dependants = Package::getDependants($name);
 
 if (count($dependants) > 0) {
 

@@ -91,13 +91,13 @@ require_once 'Archive/Tar.php';
 require_once 'PEAR/PackageFile.php';
 $config = PEAR_Config::singleton();
 $pkg = new PEAR_PackageFile($config);
-foreach (package::listAll(false, false, false) as $package => $info) {
+foreach (Package::listAll(false, false, false) as $package => $info) {
     echo "  $package\n";
     $rest->savePackage($package);
     echo "     Maintainers...";
     $rest->savePackageMaintainer($package);
     echo "...done\n";
-    $releases = package::info($package, 'releases');
+    $releases = Package::info($package, 'releases');
     if ($releases) {
         echo "     Processing All Releases...";
         $rest->saveAllReleases($package);

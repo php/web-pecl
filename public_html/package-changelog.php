@@ -25,7 +25,7 @@ if (isset($_GET['package']) && empty($_GET['pacid'])) {
     $pacid = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
 }
 
-$pkg = package::info($pacid);
+$pkg = Package::info($pacid);
 
 if (empty($pkg['name'])) {
     response_header("Error");

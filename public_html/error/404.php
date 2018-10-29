@@ -40,12 +40,12 @@ $pkg = strtr($_SERVER['REDIRECT_URL'], '-','_');
 $pinfo_url = '/package/';
 
 // Check strictly
-$name = package::info(basename($pkg), 'name');
+$name = Package::info(basename($pkg), 'name');
 if (!DB::isError($name) && !empty($name)) {
     if (!empty($name)) {
         localRedirect($pinfo_url . $name);
     } else {
-        $name = package::info(basename($pkg), 'name', true);
+        $name = Package::info(basename($pkg), 'name', true);
         if (!empty($name)) {
             header('HTTP/1.0 301 Moved Permanently');
             header('Location: https://pear.php.net/package/' . $name);

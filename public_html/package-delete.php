@@ -91,9 +91,9 @@ if (!isset($_POST['confirm'])) {
 
     echo "\n" . $file_rm . " file(s) deleted\n\n";
 
-    $catid = package::info($_GET['id'], 'categoryid');
-    $catname = package::info($_GET['id'], 'category');
-    $packagename = package::info($_GET['id'], 'name');
+    $catid = Package::info($_GET['id'], 'categoryid');
+    $catname = Package::info($_GET['id'], 'category');
+    $packagename = Package::info($_GET['id'], 'name');
     $dbh->query("UPDATE categories SET npackages = npackages-1 WHERE id=$catid");
 
     foreach ($tables as $table => $field) {

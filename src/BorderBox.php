@@ -84,18 +84,18 @@ class BorderBox
     /**
      * Table header.
      */
-    public function horizHeadRow($heading)
+    public function horizHeadRow($heading, ...$data)
     {
         $i = $this->indent;
         print "$i    <tr>\n";
         print "$i     <th valign=\"top\" bgcolor=\"#cccccc\">$heading</th>\n";
         for ($j = 0; $j < $this->cols-1; $j++) {
             print "$i     <td valign=\"top\" bgcolor=\"#e8e8e8\">";
-            $data = @func_get_arg($j + 1);
-            if (empty($data)) {
+
+            if (empty($data[$j])) {
                 print "&nbsp;";
             } else {
-                print $data;
+                print $data[$j];
             }
             print "</td>\n";
         }
@@ -105,17 +105,17 @@ class BorderBox
     /**
      * Table additional header used as a subheader.
      */
-    public function headRow()
+    public function headRow(...$data)
     {
         $i = $this->indent;
         print "$i    <tr>\n";
         for ($j = 0; $j < $this->cols; $j++) {
             print "$i     <th valign=\"top\" bgcolor=\"#ffffff\">";
-            $data = @func_get_arg($j);
-            if (empty($data)) {
+
+            if (empty($data[$j])) {
                 print "&nbsp;";
             } else {
-                print $data;
+                print $data[$j];
             }
             print "</th>\n";
         }
@@ -125,17 +125,17 @@ class BorderBox
     /**
      * Table row with white background.
      */
-    public function plainRow()
+    public function plainRow(...$data)
     {
         $i = $this->indent;
         print "$i    <tr>\n";
         for ($j = 0; $j < $this->cols; $j++) {
             print "$i     <td valign=\"top\" bgcolor=\"#ffffff\">";
-            $data = @func_get_arg($j);
-            if (empty($data)) {
+
+            if (empty($data[$j])) {
                 print "&nbsp;";
             } else {
-                print $data;
+                print $data[$j];
             }
             print "</td>\n";
         }

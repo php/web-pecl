@@ -18,7 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
-$recent = release::getRecent();
+$recent = Release::getRecent();
 if (@sizeof($recent) > 0) {
     $RSIDEBAR_DATA = "<strong>Recent&nbsp;Releases:</strong>\n";
     $RSIDEBAR_DATA .= '<table class="sidebar-releases">' . "\n";

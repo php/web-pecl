@@ -79,17 +79,17 @@ switch (sizeof($opts)) {
     case 2: {
         if (preg_match('/^([a-zA-Z0-9_]+)-(.+)\.(tar|tgz)$/', $opts[1], $matches)) {
             list(, $package, $version) = $matches;
-            $ok = release::HTTPdownload($package, $version, $opts[1], $uncompress);
+            $ok = Release::HTTPdownload($package, $version, $opts[1], $uncompress);
         } elseif (preg_match('/^([a-zA-Z0-9_]+)-(.+)$/', $opts[1], $matches)) {
             list(, $package, $version) = $matches;
-            $ok = release::HTTPdownload($package, $version, null, $uncompress);
+            $ok = Release::HTTPdownload($package, $version, null, $uncompress);
         } else {
-            $ok = release::HTTPdownload($opts[1], null, null, $uncompress);
+            $ok = Release::HTTPdownload($opts[1], null, null, $uncompress);
         }
         break;
     }
     case 3: {
-        $ok = release::HTTPdownload($opts[1], $opts[2], null, $uncompress);
+        $ok = Release::HTTPdownload($opts[1], $opts[2], null, $uncompress);
         break;
     }
     default: {

@@ -25,7 +25,7 @@ echo "<h1>PECL news</h1>";
 echo "<h2><a name=\"recent_releases\"></a>Recent Releases</h2>";
 echo "<ul>";
 
-$recent = release::getRecent();
+$recent = Release::getRecent();
 foreach ($recent as $release) {
     $releasedate = make_utc_date(strtotime($release['releasedate']), 'Y-m-d');
     $desc = nl2br(htmlentities(substr($release['releasenotes'], 0, 400)));

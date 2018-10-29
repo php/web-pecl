@@ -214,7 +214,7 @@ do {
                     break;
                 }
                 $rest->savePackageMaintainer($info->getPackage());
-                $file = release::upload($info->getPackage(), $info->getVersion(),
+                $file = Release::upload($info->getPackage(), $info->getVersion(),
                                         $info->getState(), $info->getNotes(),
                                         $distfile, md5_file($distfile));
             }
@@ -255,7 +255,7 @@ do {
                 $errors[] = $e->getMessage();
                 break;
             }
-            $file = release::upload($info['package'], $info['version'],
+            $file = Release::upload($info['package'], $info['version'],
                                     $info['release_state'], $info['release_notes'],
                                     $distfile, md5_file($distfile));
         }
@@ -269,9 +269,9 @@ do {
 
         PEAR::pushErrorHandling(PEAR_ERROR_CALLBACK, 'report_warning');
         if (is_a($info, 'PEAR_PackageFile_v1') || is_a($info, 'PEAR_PackageFile_v2')) {
-            release::promote_v2($info, $file);
+            Release::promote_v2($info, $file);
         } else {
-            release::promote($info, $file);
+            Release::promote($info, $file);
         }
         PEAR::popErrorHandling();
 

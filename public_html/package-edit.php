@@ -128,7 +128,7 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            if (release::remove($_GET['id'], $_GET['release'])) {
+            if (Release::remove($_GET['id'], $_GET['release'])) {
                 echo "<b>Release successfully deleted.</b><br /><br />\n";
             } else {
                 PEAR::raiseError("An error occured while deleting the

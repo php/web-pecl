@@ -117,7 +117,7 @@ if (PEAR_CHANNELNAME=='pecl.php.net') {
 switch ($type) {
     case 'latest':
         include_once 'pear-database.php';
-        $items = release::getRecent(10);
+        $items = Release::getRecent(10);
         $channel_title = $channel_base . ': Latest releases';
         $channel_description = 'The latest releases in ' . $channel_base . '.';
         break;

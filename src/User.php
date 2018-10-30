@@ -34,7 +34,7 @@ class User
     {
         global $dbh, $rest;
 
-        note::removeAll("uid", $uid);
+        Note::removeAll("uid", $uid);
 
         $rest->deleteMaintainerREST($uid);
         $rest->saveAllMaintainers();
@@ -53,7 +53,7 @@ class User
 
         list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?', [$uid]);
 
-        note::add("uid", $uid, "Account rejected: $reason");
+        Note::add("uid", $uid, "Account rejected: $reason");
 
         $msg = "Your PECL account request was rejected by " . $auth_user->handle . ":\n"."$reason\n";
         $xhdr = "From: " . $auth_user->handle . "@php.net";
@@ -77,7 +77,7 @@ class User
         }
 
         @$arr = unserialize($user->userinfo);
-        note::removeAll("uid", $uid);
+        Note::removeAll("uid", $uid);
         $user->set('registered', 1);
 
         if (is_array($arr)) {
@@ -88,7 +88,7 @@ class User
         $user->set('createdby', $auth_user->handle);
         $user->set('registered', 1);
         $user->store();
-        note::add("uid", $uid, "Account opened");
+        Note::add("uid", $uid, "Account opened");
 
         $rest->saveMaintainer($user->handle);
         $rest->saveAllmaintainers();

@@ -45,14 +45,14 @@ echo '<hr>';
 
 if (!empty($_REQUEST['cmd'])) {
     if ($_REQUEST['cmd'] == "Add note" && !empty($_REQUEST['note']) && !empty($_REQUEST['key']) && !empty($_REQUEST['id'])) {
-        note::add($_REQUEST['key'], $_REQUEST['id'], $_REQUEST['note']);
+        Note::add($_REQUEST['key'], $_REQUEST['id'], $_REQUEST['note']);
         unset($_REQUEST['cmd']);
 
     } elseif ($_REQUEST['cmd'] == "Delete note" && !empty($_REQUEST['id'])) {
 		/**
          * Delete note
          */
-        note::remove($_REQUEST['id']);
+        Note::remove($_REQUEST['id']);
 
     } elseif ($_REQUEST['cmd'] == "Open Account" && !empty($_REQUEST['uid'])) {
         /**

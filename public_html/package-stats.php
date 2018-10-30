@@ -142,7 +142,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         echo '<h2>&raquo; Statistics for Package &quot;<a href="/package/' . $info['name'] . '">' . $info['name'] . "</a>&quot;</h2>\n";
         $bb = new Borderbox("General Statistics");
         echo "Number of releases: <strong>" . count($info['releases']) . "</strong><br />\n";
-        echo 'Total downloads: <strong>' . number_format(statistics::package($_GET['pid']), 0, '.', ',') . "</strong><br />\n";
+        echo 'Total downloads: <strong>' . number_format(Statistics::package($_GET['pid']), 0, '.', ',') . "</strong><br />\n";
         $bb->end();
     } else {
         $bb = new Borderbox('General Statistics');
@@ -162,7 +162,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         <th style="text-align: left;">Last Download</th>
     </tr>
 <?php
-        $release_statistics = statistics::activeRelease($_GET['pid'],
+        $release_statistics = Statistics::activeRelease($_GET['pid'],
                 (isset($_GET['rid']) ? $_GET['rid'] : ''));
         foreach ($release_statistics as $key => $value) {
             $version = make_link('/package/' . $info['name'] .

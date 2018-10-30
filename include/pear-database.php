@@ -27,15 +27,13 @@ require_once 'PEAR/Common.php';
 require_once 'HTTP.php';
 require_once __DIR__.'/../src/Category.php';
 require_once __DIR__.'/../src/Maintainer.php';
+require_once __DIR__.'/../src/Note.php';
 require_once __DIR__.'/../src/Package.php';
 require_once __DIR__.'/../src/Release.php';
+require_once __DIR__.'/../src/Statistics.php';
 require_once __DIR__.'/../src/User.php';
 
-// {{{ renumber_visitations()
-
 /**
- *
- *
  * Some useful "visitation model" tricks:
  *
  * To find the number of child elements:
@@ -47,7 +45,6 @@ require_once __DIR__.'/../src/User.php';
  * To get all child nodes:
  *
  *  SELECT * FROM table WHERE left > <self.left> AND left < <self.right>
- *
  *
  * To get all child nodes, including self:
  *
@@ -93,133 +90,6 @@ function renumber_visitations($id, $parent = null)
     return true;
 }
 
-// }}}
-
-// These classes correspond to tables and methods define operations on
-// each.
-
-
-/**
- * Class to handle notes
- *
- * @class   note
- * @package pearweb
- */
-class note
-{
-    // {{{ +proto bool   note::add(string, int, string, string) API 1.0
-
-    function add($key, $value, $note, $author = "")
-    {
-        global $dbh, $auth_user;
-        if (empty($author)) {
-            $author = $auth_user->handle;
-        }
-        if (!in_array($key, ['uid', 'rid', 'cid', 'pid'], true)) {
-            // bad hackers not allowed
-            $key = 'uid';
-        }
-        $nid = $dbh->nextId("notes");
-        $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
-                              "VALUES(?,?,?,?,?)");
-        $res = $dbh->execute($stmt, [$nid, $value, $author,
-                             gmdate('Y-m-d H:i'), $note]);
-        if (DB::isError($res)) {
-            return $res;
-        }
-        return true;
-    }
-
-    // }}}
-    // {{{ +proto bool   note::remove(int) API 1.0
-
-    function remove($id)
-    {
-        global $dbh;
-        $id = (int)$id;
-        $res = $dbh->query("DELETE FROM notes WHERE id = $id");
-        if (DB::isError($res)) {
-            return $res;
-        }
-        return true;
-    }
-
-    // }}}
-    // {{{ +proto bool   note::removeAll(string, int) API 1.0
-
-    function removeAll($key, $value)
-    {
-        global $dbh;
-        $res = $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
-        if (DB::isError($res)) {
-            return $res;
-        }
-        return true;
-    }
-
-    // }}}
-}
-
-class statistics
-{
-    // {{{ package()
-
-    /**
-     * Get general package statistics
-     *
-     * @param  integer ID of the package
-     * @return array
-     */
-    function package($id)
-    {
-        global $dbh;
-        $query = "SELECT SUM(dl_number) FROM package_stats WHERE pid = " . (int)$id;
-        return $dbh->getOne($query);
-    }
-
-    // }}}
-    // {{{ release()
-
-    function release($id, $rid = "")
-    {
-        global $dbh;
-
-         $query = 'SELECT s.release, s.dl_number, s.last_dl, r.releasedate '
-            . 'FROM package_stats AS s '
-            . 'LEFT JOIN releases AS r ON (s.rid = r.id) '
-            . "WHERE pid = " . (int)$id;
-        if (!empty($rid)) {
-            $query .= " AND rid = " . (int)$rid;
-        }
-        $query .= " GROUP BY rid ORDER BY rid DESC";
-
-        return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
-    }
-
-    // }}}
-    // {{{ activeRelease()
-
-    function activeRelease($id, $rid = "")
-    {
-        global $dbh;
-
-         $query = 'SELECT s.release, SUM(s.dl_number) AS dl_number, MAX(s.last_dl) AS last_dl, MIN(r.releasedate) AS releasedate '
-            . 'FROM package_stats AS s '
-            . 'LEFT JOIN releases AS r ON (s.rid = r.id) '
-            . "WHERE pid = " . (int)$id;
-        if (!empty($rid)) {
-            $query .= " AND rid = " . (int)$rid;
-        }
-        $query .= " GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY r.releasedate DESC";
-
-        return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
-    }
-
-    // }}}
-}
-
-// {{{ class PEAR_User
-
 class PEAR_User extends DB_storage
 {
     public function __construct(&$dbh, $user)
@@ -242,9 +112,6 @@ class PEAR_User extends DB_storage
     }
 }
 
-// }}}
-// {{{ class PEAR_Package
-
 class PEAR_Package extends DB_storage
 {
     public function __construct(&$dbh, $package, $keycol = "id")
@@ -255,8 +122,6 @@ class PEAR_Package extends DB_storage
         $this->popErrorHandling();
     }
 }
-
-// }}}
 
 /**
  * Converts a Unix timestamp to a date() formatted string in the UTC time zone

@@ -117,7 +117,7 @@ if (isset($_POST['submit'])) {
     echo '<p>If you want to get in contact with one of the PECL contributors,'
         . ' you can do this by filling out the following form.</p>';
 
-    /** Guess the user if he is logged in */
+    /** Guess the user if they are logged in */
     if (!empty($auth_user)) {
         $data = ['email' => $auth_user->email, 'name' => $auth_user->name];
     } else {

@@ -59,6 +59,7 @@ if (empty($dbh)) {
     $dbh->query('SET NAMES utf8');
     $GLOBALS['_NODB'] = false;
 }
+
 if (!isset($rest)) {
     if (!DEVBOX) {
         $restDir = PEAR_REST_DIR;
@@ -66,7 +67,7 @@ if (!isset($rest)) {
         $restDir = dirname(__DIR__).DIRECTORY_SEPARATOR.'public_html'.DIRECTORY_SEPARATOR.'rest';
     }
 
-    $rest = new Rest($restDir);
+    $rest = new Rest($restDir, $dbh);
 }
 
 $tmp = filectime($_SERVER['SCRIPT_FILENAME']);

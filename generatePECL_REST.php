@@ -40,17 +40,6 @@ require_once "PEAR.php";
 
 include_once "pear-database.php";
 include_once __DIR__.'/src/Rest.php';
-
-if (!isset($rest)) {
-    if (isset($_SERVER['argv']) && $_SERVER['argv'][1] == 'pecl') {
-        $restDir = PEAR_REST_DIR;
-    } else {
-        $restDir = __DIR__.DIRECTORY_SEPARATOR.'public_html'.DIRECTORY_SEPARATOR.'rest';
-    }
-
-    $rest = new Rest($restDir);
-}
-
 include_once "DB.php";
 include_once "DB/storage.php";
 
@@ -62,6 +51,17 @@ if (empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, $options);
     $dbh->query('SET NAMES utf8');
 }
+
+if (!isset($rest)) {
+    if (isset($_SERVER['argv']) && $_SERVER['argv'][1] == 'pecl') {
+        $restDir = PEAR_REST_DIR;
+    } else {
+        $restDir = __DIR__.DIRECTORY_SEPARATOR.'public_html'.DIRECTORY_SEPARATOR.'rest';
+    }
+
+    $rest = new Rest($restDir, $dbh);
+}
+
 ob_end_clean();
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 require_once 'System.php';

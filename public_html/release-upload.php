@@ -182,7 +182,7 @@ do {
                     break;
                 }
                 if (!$auth_user->isAdmin() &&
-                    !user::maintains($auth_user->handle, $pacid, 'lead')) {
+                    !User::maintains($auth_user->handle, $pacid, 'lead')) {
                     $errors[] = 'You don\'t have permissions to upload this release.';
                     break;
                 }
@@ -226,7 +226,7 @@ do {
                 break;
             }
             if (!$auth_user->isAdmin() &&
-                !user::maintains($auth_user->handle, $pacid, 'lead')) {
+                !User::maintains($auth_user->handle, $pacid, 'lead')) {
                 $errors[] = 'You don\'t have permissions to upload this release.';
                 break;
             }
@@ -471,6 +471,6 @@ function checkUser($user, $pacid = null)
         return true;
     }
     // Try to see if the user is an admin
-    $res = user::isAdmin($user);
+    $res = User::isAdmin($user);
     return ($res === true);
 }

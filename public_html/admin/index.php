@@ -61,7 +61,7 @@ if (!empty($_REQUEST['cmd'])) {
 
         // another hack to remove the temporary "purpose" field
         // from the user's "userinfo"
-        if (user::activate($_REQUEST['uid'])) {
+        if (User::activate($_REQUEST['uid'])) {
             print '<p>Opened account '.htmlspecialchars($_REQUEST['uid'], ENT_QUOTES)."...</p>\n";
         }
 
@@ -71,11 +71,11 @@ if (!empty($_REQUEST['cmd'])) {
          */
         if (is_array($_REQUEST['uid'])) {
             foreach ($_REQUEST['uid'] as $uid) {
-                user::rejectRequest($uid, $_REQUEST['reason']);
+                User::rejectRequest($uid, $_REQUEST['reason']);
                 echo 'Account rejected: ' . $uid . '<br />';
             }
 
-        } elseif (user::rejectRequest($_REQUEST['uid'], $_REQUEST['reason'])) {
+        } elseif (User::rejectRequest($_REQUEST['uid'], $_REQUEST['reason'])) {
             print '<p>Rejected account request for '.htmlspecialchars($_REQUEST['uid'], ENT_QUOTES)."...</p>\n";
         }
 
@@ -85,12 +85,12 @@ if (!empty($_REQUEST['cmd'])) {
          */
         if (is_array($_REQUEST['uid'])) {
             foreach ($_REQUEST['uid'] as $uid) {
-                user::remove($uid);
+                User::remove($uid);
                 echo 'Account request deleted: ' . $uid . '<br />';
             }
 
 
-        } elseif (user::remove($_REQUEST['uid'])) {
+        } elseif (User::remove($_REQUEST['uid'])) {
             print '<p>Deleted account request for "'.htmlspecialchars($_REQUEST['uid'], ENT_QUOTES). '"...</p>';
         }
     }

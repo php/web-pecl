@@ -374,7 +374,7 @@ class Package
         }
 
         if ($auth_user->isAdmin() == false) {
-            $role = user::maintains($auth_user->handle, $package_id);
+            $role = User::maintains($auth_user->handle, $package_id);
             if ($role != 'lead' && $role != 'developer') {
                 return PEAR::raiseError('Package::updateInfo: insufficient privileges');
             }

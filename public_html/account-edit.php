@@ -89,7 +89,7 @@ switch ($command) {
             }
         }
 
-        $user = user::update($user_data_post);
+        $user = User::update($user_data_post);
 
         $old_acl = $dbh->getCol('SELECT path FROM cvs_acl '.
                                 'WHERE username = ' . "'$handle'" . ' AND access = 1', 0);

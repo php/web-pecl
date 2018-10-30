@@ -140,7 +140,7 @@ if (empty($id)) {
     echo '  <td>';
     echo '  <select onChange="activateAdd();" name="accounts" size="10">';
 
-    $users = user::listAll();
+    $users = User::listAll();
     foreach ($users as $user) {
         if (empty($user['handle'])) {
             continue;
@@ -169,7 +169,7 @@ if (empty($id)) {
 
     $maintainers = Maintainer::get($id);
     foreach ($maintainers as $handle => $role) {
-        $info = user::info($handle, "name");   // XXX: This sucks
+        $info = User::info($handle, "name");   // XXX: This sucks
         printf('<option value="%s||%s">%s (%s, %s)</option>',
                $handle,
                $role['role'],

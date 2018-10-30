@@ -638,7 +638,7 @@ class Rest
      */
     public function saveAllMaintainers()
     {
-        $maintainers = user::listAll();
+        $maintainers = User::listAll();
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <m xmlns="http://pear.php.net/dtd/rest.allmaintainers"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

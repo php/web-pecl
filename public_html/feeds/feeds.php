@@ -124,14 +124,14 @@ switch ($type) {
 
     case 'user':
         $user = $argument;
-        if (!user::exists($user)) {
+        if (!User::exists($user)) {
             rss_bailout();
         }
 
-        $name = user::info($user, "name");
+        $name = User::info($user, "name");
         $channel_title = $channel_base . ": Latest releases for " . $user;
         $channel_description = "The latest releases for the developer " . $user . " (" . $name['name'] . ")";
-        $items = user::getRecentReleases($user);
+        $items = User::getRecentReleases($user);
         break;
 
     case 'pkg':

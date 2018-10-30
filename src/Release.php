@@ -74,7 +74,7 @@ class Release
     {
         global $auth_user;
 
-        $role = user::maintains($auth_user->handle, $package);
+        $role = User::maintains($auth_user->handle, $package);
 
         if ($role != 'lead' && $role != 'developer' && !$auth_user->isAdmin()) {
             return PEAR::raiseError('Release::upload: insufficient privileges');
@@ -104,7 +104,7 @@ class Release
     {
         global $dbh, $auth_user;
 
-        $role = user::maintains($auth_user->handle, $package);
+        $role = User::maintains($auth_user->handle, $package);
         if ($role != 'lead' && $role != 'developer' && !$auth_user->isAdmin()) {
             return PEAR::raiseError('Release::validateUpload: insufficient privileges');
         }
@@ -696,7 +696,7 @@ Authors
     {
         global $dbh, $auth_user, $rest;
 
-        if (!$auth_user->isAdmin() && !user::maintains($auth_user->handle, $package, 'lead')) {
+        if (!$auth_user->isAdmin() && !User::maintains($auth_user->handle, $package, 'lead')) {
             return PEAR::raiseError('Release::remove: insufficient privileges');
         }
 

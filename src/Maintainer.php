@@ -40,7 +40,7 @@ class Maintainer
     {
         global $dbh, $rest;
 
-        if (!user::exists($user)) {
+        if (!User::exists($user)) {
             return PEAR::raiseError("User $user does not exist");
         }
 
@@ -117,7 +117,7 @@ class Maintainer
     {
         global $dbh, $auth_user;
 
-        if (!$auth_user->isAdmin() && !user::maintains($auth_user->handle, $package, 'lead')) {
+        if (!$auth_user->isAdmin() && !User::maintains($auth_user->handle, $package, 'lead')) {
             return PEAR::raiseError('Maintainer::remove: insufficient privileges');
         }
 
@@ -243,7 +243,7 @@ class Maintainer
 
         $admin = $auth_user->isAdmin();
 
-        if (!$admin && !user::maintains($auth_user->handle, $package, 'lead')) {
+        if (!$admin && !User::maintains($auth_user->handle, $package, 'lead')) {
             return false;
         }
 

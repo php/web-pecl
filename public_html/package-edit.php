@@ -51,7 +51,7 @@ if (!isset($_GET['id'])) {
  * The user has to be either a lead developer of the package or
  * a PEAR administrator.
  */
-$lead = user::maintains($auth_user->handle, $_GET['id'], "lead");
+$lead = User::maintains($auth_user->handle, $_GET['id'], "lead");
 $admin = $auth_user->isAdmin();
 
 if (!$lead && !$admin) {

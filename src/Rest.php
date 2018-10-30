@@ -18,7 +18,9 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'System.php';
+require_once __DIR__.'/Utils/Filesystem.php';
+
+use App\Utils\Filesystem;
 
 /**
  * The PECL REST API management service class.
@@ -27,14 +29,16 @@ class Rest
 {
     private $dir;
     private $dbh;
+    private $filesystem;
 
     /**
      * Class constructor.
      */
-    public function __construct($dir, $dbh)
+    public function __construct($dir, $dbh, Filesystem $filesystem)
     {
         $this->dir = $dir;
         $this->dbh = $dbh;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -43,9 +47,10 @@ class Rest
     public function saveAllCategories()
     {
         $extra = '/rest/';
-        $cdir = $this->dir . DIRECTORY_SEPARATOR . 'c';
-        if (!is_dir($cdir)) {
-            System::mkdir(['-p', $cdir]);
+        $cdir = $this->dir.'/c';
+
+        if (!file_exists($cdir)) {
+            mkdir($cdir, 0777, true);
             @chmod($cdir, 0777);
         }
 
@@ -65,9 +70,11 @@ class Rest
                 htmlspecialchars(utf8_encode($category['name'])) . '</c>
 ';
         }
+
         $info .= '</a>';
-        file_put_contents($cdir . DIRECTORY_SEPARATOR . 'categories.xml', $info);
-        @chmod($cdir . DIRECTORY_SEPARATOR . 'categories.xml', 0666);
+
+        file_put_contents($cdir.'/categories.xml', $info);
+        @chmod($cdir.'/categories.xml', 0666);
     }
 
     /**
@@ -76,19 +83,20 @@ class Rest
     public function saveCategory($category)
     {
         $extra = '/rest/';
-        $cdir = $this->dir . DIRECTORY_SEPARATOR . 'c';
+        $cdir = $this->dir.'/c';
 
-        if (!is_dir($cdir)) {
-            System::mkdir(['-p', $cdir]);
+        if (!file_exists($cdir)) {
+            mkdir($cdir, 0777, true);
             @chmod($cdir, 0777);
         }
 
         $category = $this->dbh->getAll('SELECT * FROM categories WHERE name = ?', [$category], DB_FETCHMODE_ASSOC);
         $category = $category[0];
 
-        if (!is_dir($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']))) {
-            System::mkdir(['-p', $cdir . DIRECTORY_SEPARATOR . urlencode($category['name'])]);
-            @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']), 0777);
+        $categoryDir = $cdir.'/'.urlencode($category['name']);
+        if (!file_exists($categoryDir)) {
+            mkdir($categoryDir, 0777, true);
+            @chmod($categoryDir, 0777);
         }
 
         $category['description'] = htmlspecialchars($category['description']);
@@ -104,10 +112,9 @@ class Rest
  <d>' . $category['description'] . '</d>
 </c>';
         // category info
-        file_put_contents($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']) .
-            DIRECTORY_SEPARATOR . 'info.xml', $info);
-        @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']) .
-            DIRECTORY_SEPARATOR . 'info.xml', 0666);
+        file_put_contents($categoryDir.'/info.xml', $info);
+        @chmod($categoryDir.'/info.xml', 0666);
+
         $list = '<?xml version="1.0" encoding="UTF-8" ?>
 <l xmlns="http://pear.php.net/dtd/rest.categorypackages"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -130,10 +137,8 @@ class Rest
 
         $list .= '</l>';
         // list packages in a category
-        file_put_contents($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']) .
-            DIRECTORY_SEPARATOR . 'packages.xml', $list);
-        @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category['name']) .
-            DIRECTORY_SEPARATOR . 'packages.xml', 0666);
+        file_put_contents($categoryDir.'/packages.xml', $list);
+        @chmod($categoryDir.'/packages.xml', 0666);
     }
 
     /**
@@ -141,14 +146,14 @@ class Rest
      */
     public function savePackagesCategory($category)
     {
-        $cdir = $this->dir . DIRECTORY_SEPARATOR . 'c';
+        $cdir = $this->dir.'/c';
 
         if (!is_dir($cdir)) {
             return;
         }
 
-        $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
-        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
+        $pdir = $this->dir.'/p';
+        $rdir = $this->dir.'/r';
         $packages = Category::listPackages($category);
         $fullpackageinfo = '<?xml version="1.0" encoding="UTF-8" ?>
 <f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo"
@@ -159,37 +164,31 @@ class Rest
 ';
         clearstatcache();
         foreach ($packages as $package) {
-            if (!file_exists($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']) .
-                    DIRECTORY_SEPARATOR . 'info.xml')) {
+            if (!file_exists($pdir.'/'.strtolower($package['name']).'/info.xml')) {
                 continue;
             }
 
             $fullpackageinfo .= '<pi>
 ';
-            $contents = file_get_contents($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']) .
-                    DIRECTORY_SEPARATOR . 'info.xml');
+            $contents = file_get_contents($pdir.'/'.strtolower($package['name']).'/info.xml');
             $fullpackageinfo .= '<p>' . substr($contents, strpos($contents, '<n>'));
 
-            if (file_exists($rdir . DIRECTORY_SEPARATOR . strtolower($package['name']) .
-                    DIRECTORY_SEPARATOR . 'allreleases.xml')) {
+            if (file_exists($rdir.'/'.strtolower($package['name']).'/allreleases.xml')) {
                 $fullpackageinfo .= str_replace(
                     $this->getAllReleasesRESTProlog($package['name']), '
 <a>
 ',
-                    file_get_contents($rdir . DIRECTORY_SEPARATOR .
-                        strtolower($package['name']) . DIRECTORY_SEPARATOR .
-                        'allreleases.xml'));
-                $dirhandle = opendir($rdir . DIRECTORY_SEPARATOR .
-                    strtolower($package['name']));
+                file_get_contents($rdir.'/'.strtolower($package['name']).'/allreleases.xml'));
+
+                $dirhandle = opendir($rdir.'/'.strtolower($package['name']));
+
                 while (false !== ($entry = readdir($dirhandle))) {
                     if (strpos($entry, 'deps.') === 0) {
                         $version = str_replace(['deps.', '.txt'], ['', ''], $entry);
                         $fullpackageinfo .= '
 <deps>
  <v>' . $version . '</v>
- <d>' . htmlspecialchars(utf8_encode(file_get_contents($rdir . DIRECTORY_SEPARATOR .
-                        strtolower($package['name']) . DIRECTORY_SEPARATOR .
-                        $entry))) . '</d>
+ <d>'.htmlspecialchars(utf8_encode(file_get_contents($rdir.'/'.strtolower($package['name']).'/'.$entry))).'</d>
 </deps>
 ';
                     }
@@ -201,14 +200,14 @@ class Rest
         $fullpackageinfo .= '</f>';
 
         // list packages in a category
-        if (!is_dir($cdir . DIRECTORY_SEPARATOR . urlencode($category))) {
-            mkdir($cdir . DIRECTORY_SEPARATOR . urlencode($category));
+        $categoryDir = $cdir.'/'.urlencode($category);
+        if (!file_exists($categoryDir)) {
+            mkdir($categoryDir, 0777, true);
+            @chmod($categoryDir, 0777);
         }
 
-        file_put_contents($cdir . DIRECTORY_SEPARATOR . urlencode($category) .
-            DIRECTORY_SEPARATOR . 'packagesinfo.xml', $fullpackageinfo);
-        @chmod($cdir . DIRECTORY_SEPARATOR . urlencode($category) .
-            DIRECTORY_SEPARATOR . 'packagesinfo.xml', 0666);
+        file_put_contents($categoryDir.'/packagesinfo.xml', $fullpackageinfo);
+        @chmod($categoryDir.'/packagesinfo.xml', 0666);
     }
 
     /**
@@ -216,14 +215,14 @@ class Rest
      */
     public function deleteCategory($category)
     {
-        $cdir = $this->dir . DIRECTORY_SEPARATOR . 'c';
+        $cdir = $this->dir.'/c';
 
-        if (!is_dir($cdir . DIRECTORY_SEPARATOR . urlencode($category))) {
+        if (!is_dir($cdir.'/'.urlencode($category))) {
             return;
         }
 
         // remove all category info
-        System::rm(['-r', $cdir . DIRECTORY_SEPARATOR . urlencode($category)]);
+        $this->filesystem->delete($cdir.'/'.urlencode($category));
     }
 
     /**
@@ -231,10 +230,10 @@ class Rest
      */
     public function saveAllPackages()
     {
-        $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
+        $pdir = $this->dir.'/p';
 
-        if (!is_dir($pdir)) {
-            System::mkdir(['-p', $pdir]);
+        if (!file_exists($pdir)) {
+            mkdir($pdir, 0777, true);
             @chmod($pdir, 0777);
         }
 
@@ -252,8 +251,8 @@ class Rest
 ';
         }
         $info .= '</a>';
-        file_put_contents($pdir . DIRECTORY_SEPARATOR . 'packages.xml', $info);
-        @chmod($pdir . DIRECTORY_SEPARATOR . 'packages.xml', 0666);
+        file_put_contents($pdir.'/packages.xml', $info);
+        @chmod($pdir.'/packages.xml', 0666);
     }
 
     /**
@@ -277,17 +276,17 @@ class Rest
         $extra = '/rest/';
         $package = Package::info($package);
 
-        $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
+        $pdir = $this->dir.'/p';
 
-        if (!is_dir($pdir)) {
-            System::mkdir(['-p', $pdir]);
+        if (!file_exists($pdir)) {
+            mkdir($pdir, 0777, true);
             @chmod($pdir, 0777);
         }
 
-        if (!is_dir($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']))) {
-            System::mkdir(['-p', $pdir . DIRECTORY_SEPARATOR .
-                strtolower($package['name'])]);
-            @chmod($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']), 0777);
+        $packageDir = $pdir.'/'.strtolower($package['name']);
+        if (!file_exists($packageDir)) {
+            mkdir($packageDir, 0777, true);
+            @chmod($packageDir, 0777);
         }
 
         $catinfo = $this->dbh->getOne('SELECT c.name FROM packages, categories c WHERE
@@ -322,11 +321,10 @@ class Rest
  <d>' . $package['description'] . '</d>
  <r xlink:href="' . $extra . 'r/' . strtolower($package['name']) . '"/>' . $parent . $deprecated . '
 </p>';
+
         // package information
-        file_put_contents($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']) .
-            DIRECTORY_SEPARATOR . 'info.xml', $info);
-        @chmod($pdir . DIRECTORY_SEPARATOR . strtolower($package['name']) .
-            DIRECTORY_SEPARATOR . 'info.xml', 0666);
+        file_put_contents($packageDir.'/info.xml', $info);
+        @chmod($packageDir.'/info.xml', 0666);
     }
 
     /**
@@ -339,12 +337,12 @@ class Rest
             return;
         }
 
-        $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
-        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
+        $pdir = $this->dir.'/p';
+        $rdir = $this->dir.'/r';
 
         // remove all package/release info for this package
-        System::rm(['-r', $pdir . DIRECTORY_SEPARATOR . $package]);
-        System::rm(['-r', $rdir . DIRECTORY_SEPARATOR . $package]);
+        $this->filesystem->delete($pdir.'/'.$package);
+        $this->filesystem->delete($rdir.'/'.$package);
     }
 
     private function getAllReleasesRESTProlog($package)
@@ -369,16 +367,17 @@ class Rest
         $extra = '/rest/';
         $pid = Package::info($package, 'id');
         $releases = $this->dbh->getAll('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC', [$pid], DB_FETCHMODE_ASSOC);
-        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
+        $rdir = $this->dir.'/r';
 
-        if (!is_dir($rdir)) {
-            System::mkdir(['-p', $rdir]);
+        if (!file_exists($rdir)) {
+            mkdir($rdir, 0777, true);
             @chmod($rdir, 0777);
         }
 
         if (!$releases || !count($releases)) {
             // start from scratch, so that any pulled releases have their REST deleted
-            System::rm(['-r', $rdir . DIRECTORY_SEPARATOR . strtolower($package)]);
+            $this->filesystem->delete($rdir.'/'.strtolower($package));
+
             return;
         }
 
@@ -449,47 +448,36 @@ class Rest
         }
         $info .= '</a>';
 
-        if (!is_dir($rdir . DIRECTORY_SEPARATOR . strtolower($package))) {
-            System::mkdir(['-p', $rdir . DIRECTORY_SEPARATOR . strtolower($package)]);
-            @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package), 0777);
+        $packageDir = $rdir.'/'.strtolower($package);
+        if (!file_exists($packageDir)) {
+            mkdir($packageDir, 0777, true);
+            @chmod($packageDir, 0777);
         }
 
-        file_put_contents($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'allreleases.xml', $info);
-        @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'allreleases.xml', 0666);
+        file_put_contents($packageDir.'/allreleases.xml', $info);
+        @chmod($packageDir.'/allreleases.xml', 0666);
 
-        file_put_contents($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'latest.txt', $latest);
-        @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'latest.txt', 0666);
+        file_put_contents($packageDir.'/latest.txt', $latest);
+        @chmod($packageDir.'/latest.txt', 0666);
+
         // remove .txt in case all releases of this stability were deleted
-        @unlink($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'stable.txt');
-        @unlink($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'beta.txt');
-        @unlink($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'alpha.txt');
+        @unlink($packageDir.'/stable.txt');
+        @unlink($packageDir.'/beta.txt');
+        @unlink($packageDir.'/alpha.txt');
 
         if (isset($stable)) {
-            file_put_contents($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'stable.txt', $stable);
-            @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'stable.txt', 0666);
+            file_put_contents($packageDir.'/stable.txt', $stable);
+            @chmod($packageDir.'/stable.txt', 0666);
         }
 
         if (isset($beta)) {
-            file_put_contents($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'beta.txt', $beta);
-            @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'beta.txt', 0666);
+            file_put_contents($packageDir.'/beta.txt', $beta);
+            @chmod($packageDir.'/beta.txt', 0666);
         }
 
         if (isset($alpha)) {
-            file_put_contents($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'alpha.txt', $alpha);
-            @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'alpha.txt', 0666);
+            file_put_contents($packageDir.'/alpha.txt', $alpha);
+            @chmod($packageDir.'/alpha.txt', 0666);
         }
     }
 
@@ -498,15 +486,12 @@ class Rest
      */
     public function deleteRelease($package, $version)
     {
-        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
+        $rdir = $this->dir.'/r';
 
-        if (@is_dir($rdir . DIRECTORY_SEPARATOR . strtolower($package))) {
-            @unlink($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . $version . '.xml');
-            @unlink($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'package.' . $version . '.xml');
-            @unlink($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'deps.' . $version . '.txt');
+        if (@is_dir($rdir.'/'.strtolower($package))) {
+            @unlink($rdir.'/'.strtolower($package).'/'.$version.'.xml');
+            @unlink($rdir.'/'.strtolower($package).'/package.'.$version.'.xml');
+            @unlink($rdir.'/'.strtolower($package).'/deps.'.$version.'.txt');
         }
     }
 
@@ -516,18 +501,19 @@ class Rest
     public function saveRelease($filepath, $packagexml, $pkgobj, $releasedby, $id)
     {
         $extra = '/rest/';
-        $rdir = $this->dir . DIRECTORY_SEPARATOR . 'r';
+        $rdir = $this->dir.'/r';
 
-        if (!is_dir($rdir)) {
-            System::mkdir(['-p', $rdir]);
+        if (!file_exists($rdir)) {
+            mkdir($rdir, 0777, true);
             @chmod($rdir, 0777);
         }
 
         $package = $pkgobj->getPackage();
 
-        if (!is_dir($rdir . DIRECTORY_SEPARATOR . strtolower($package))) {
-            System::mkdir(['-p', $rdir . DIRECTORY_SEPARATOR . strtolower($package)]);
-            @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package), 0777);
+        $packageDir = $rdir.'/'.strtolower($package);
+        if (!file_exists($packageDir)) {
+            mkdir($packageDir, 0777, true);
+            @chmod($packageDir, 0777);
         }
 
         $releasedate = $this->dbh->getOne('SELECT releasedate FROM releases WHERE id = ?', [$id]);
@@ -551,26 +537,22 @@ class Rest
  <g>http://' . PEAR_CHANNELNAME . '/get/' . $package . '-' . $pkgobj->getVersion() . '</g>
  <x xlink:href="package.' . $pkgobj->getVersion() . '.xml"/>
 </r>';
-        file_put_contents($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . $pkgobj->getVersion() . '.xml', $info);
-        @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . $pkgobj->getVersion() . '.xml', 0666);
-        file_put_contents($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'package.' .
-            $pkgobj->getVersion() . '.xml', $packagexml);
-        @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'package.' . $pkgobj->getVersion() . '.xml', 0666);
-        file_put_contents($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'deps.' . $pkgobj->getVersion() . '.txt', serialize($pkgobj->getDeps(true)));
-        @chmod($rdir . DIRECTORY_SEPARATOR . strtolower($package) .
-            DIRECTORY_SEPARATOR . 'deps.' . $pkgobj->getVersion() . '.txt', 0666);
+        file_put_contents($packageDir.'/'.$pkgobj->getVersion().'.xml', $info);
+        @chmod($packageDir.'/'.$pkgobj->getVersion().'.xml', 0666);
+
+        file_put_contents($packageDir.'/package.'.$pkgobj->getVersion().'.xml', $packagexml);
+        @chmod($packageDir.'/package.'.$pkgobj->getVersion().'.xml', 0666);
+
+        file_put_contents($packageDir.'/deps.'.$pkgobj->getVersion().'.txt', serialize($pkgobj->getDeps(true)));
+        @chmod($packageDir.'/deps.'.$pkgobj->getVersion().'.txt', 0666);
     }
 
     public function deleteMaintainerREST($handle)
     {
-        $mdir = $this->dir . DIRECTORY_SEPARATOR . 'm';
-        if (is_dir($mdir . DIRECTORY_SEPARATOR . $handle)) {
-            System::rm(['-r', $mdir . DIRECTORY_SEPARATOR . $handle]);
+        $mdir = $this->dir.'/m';
+
+        if (is_dir($mdir.'/'.$handle)) {
+            $this->filesystem->delete($mdir.'/'.$handle);
         }
     }
 
@@ -584,16 +566,17 @@ class Rest
         $extra = '/rest/';
 
         if (count($maintainers)) {
-            $pdir = $this->dir . DIRECTORY_SEPARATOR . 'p';
+            $pdir = $this->dir.'/p';
 
-            if (!is_dir($pdir)) {
-                System::mkdir(['-p', $pdir]);
+            if (!file_exists($pdir)) {
+                mkdir($pdir, 0777, true);
                 @chmod($pdir, 0777);
             }
 
-            if (!is_dir($pdir . DIRECTORY_SEPARATOR . strtolower($package))) {
-                System::mkdir(['-p', $pdir . DIRECTORY_SEPARATOR . strtolower($package)]);
-                @chmod($pdir . DIRECTORY_SEPARATOR . strtolower($package), 0777);
+            $packageDir = $pdir.'/'.strtolower($package);
+            if (!file_exists($packageDir)) {
+                mkdir($packageDir, 0777, true);
+                @chmod($packageDir, 0777);
             }
 
             $info = '<?xml version="1.0" encoding="UTF-8" ?>
@@ -611,13 +594,10 @@ class Rest
             }
 
             $info .= '</m>';
-            file_put_contents($pdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'maintainers.xml', $info);
-            @chmod($pdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'maintainers.xml', 0666);
+            file_put_contents($packageDir.'/maintainers.xml', $info);
+            @chmod($packageDir.'/maintainers.xml', 0666);
         } else {
-            @unlink($pdir . DIRECTORY_SEPARATOR . strtolower($package) .
-                DIRECTORY_SEPARATOR . 'maintainers.xml');
+            @unlink($packageDir.'/maintainers.xml');
         }
     }
 
@@ -630,16 +610,17 @@ class Rest
             [$maintainer], DB_FETCHMODE_ASSOC);
         $maintainer = $maintainer[0];
         $extra = '/rest/';
-        $mdir = $this->dir . DIRECTORY_SEPARATOR . 'm';
+        $mdir = $this->dir.'/m';
 
-        if (!is_dir($mdir)) {
-            System::mkdir(['-p', $mdir]);
+        if (!file_exists($mdir)) {
+            mkdir($mdir, 0777, true);
             @chmod($mdir, 0777);
         }
 
-        if (!is_dir($mdir . DIRECTORY_SEPARATOR . $maintainer['handle'])) {
-            System::mkdir(['-p', $mdir . DIRECTORY_SEPARATOR . $maintainer['handle']]);
-            @chmod($mdir . DIRECTORY_SEPARATOR . $maintainer['handle'], 0777);
+        $handleDir = $mdir.'/'.$maintainer['handle'];
+        if (!file_exists($handleDir)) {
+            mkdir($handleDir, 0777, true);
+            @chmod($handleDir, 0777);
         }
 
         if ($maintainer['homepage']) {
@@ -659,11 +640,10 @@ class Rest
  <h>' . $maintainer['handle'] . '</h>
  <n>' . $maintainer['name'] . '</n>
 ' . $uri . '</m>';
+
         // package information
-        file_put_contents($mdir . DIRECTORY_SEPARATOR . $maintainer['handle'] .
-            DIRECTORY_SEPARATOR . 'info.xml', $info);
-        @chmod($mdir . DIRECTORY_SEPARATOR . $maintainer['handle'] .
-            DIRECTORY_SEPARATOR . 'info.xml', 0666);
+        file_put_contents($handleDir.'/info.xml', $info);
+        @chmod($handleDir.'/info.xml', 0666);
     }
 
     /**
@@ -692,12 +672,15 @@ class Rest
                 $maintainer['handle'] . '</h>' . "\n";
         }
         $info .= '</m>';
-        $mdir = $this->dir . DIRECTORY_SEPARATOR . 'm';
-        if (!is_dir($mdir)) {
-            System::mkdir(['-p', $mdir]);
+
+        $mdir = $this->dir.'/m';
+
+        if (!file_exists($mdir)) {
+            mkdir($mdir, 0777, true);
             @chmod($mdir, 0777);
         }
-        file_put_contents($mdir . DIRECTORY_SEPARATOR . 'allmaintainers.xml', $info);
-        @chmod($mdir . DIRECTORY_SEPARATOR . 'allmaintainers.xml', 0666);
+
+        file_put_contents($mdir.'/allmaintainers.xml', $info);
+        @chmod($mdir.'/allmaintainers.xml', 0666);
     }
 }

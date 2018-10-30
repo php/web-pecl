@@ -37,6 +37,9 @@ include_once "pear-auth.php";
 include_once "pear-database.php";
 include_once __DIR__.'/../src/Rest.php';
 include_once __DIR__.'/../src/PackageDll.php';
+include_once __DIR__.'/../src/Utils/Filesystem.php';
+
+use App\Utils\Filesystem;
 
 function get($name)
 {
@@ -60,14 +63,16 @@ if (empty($dbh)) {
     $GLOBALS['_NODB'] = false;
 }
 
+$filesystem = new Filesystem();
+
 if (!isset($rest)) {
     if (!DEVBOX) {
         $restDir = PEAR_REST_DIR;
     } else {
-        $restDir = dirname(__DIR__).DIRECTORY_SEPARATOR.'public_html'.DIRECTORY_SEPARATOR.'rest';
+        $restDir = dirname(__DIR__).'/public_html/rest';
     }
 
-    $rest = new Rest($restDir, $dbh);
+    $rest = new Rest($restDir, $dbh, $filesystem);
 }
 
 $tmp = filectime($_SERVER['SCRIPT_FILENAME']);

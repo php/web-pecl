@@ -39,9 +39,12 @@ if ($_SERVER['SERVER_NAME'] != PEAR_CHANNELNAME) {
 require_once "PEAR.php";
 
 include_once "pear-database.php";
-include_once __DIR__.'/src/Rest.php';
+require_once __DIR__.'/src/Rest.php';
+require_once __DIR__.'/src/Utils/Filesystem.php';
 include_once "DB.php";
 include_once "DB/storage.php";
+
+use App\Utils\Filesystem;
 
 if (empty($dbh)) {
     $options = [
@@ -52,22 +55,26 @@ if (empty($dbh)) {
     $dbh->query('SET NAMES utf8');
 }
 
+$filesystem = new Filesystem();
+
 if (!isset($rest)) {
     if (isset($_SERVER['argv']) && $_SERVER['argv'][1] == 'pecl') {
         $restDir = PEAR_REST_DIR;
     } else {
-        $restDir = __DIR__.DIRECTORY_SEPARATOR.'public_html'.DIRECTORY_SEPARATOR.'rest';
+        $restDir = __DIR__.'/public_html/rest';
     }
 
-    $rest = new Rest($restDir, $dbh);
+    $rest = new Rest($restDir, $dbh, $filesystem);
 }
 
 ob_end_clean();
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
-require_once 'System.php';
-System::rm(['-r', $restDir]);
-System::mkdir(['-p', $restDir]);
+
+$filesystem->delete($restDir);
+
+mkdir($restDir, 0777, true);
 chmod($restDir, 0777);
+
 echo "Generating Category REST...\n";
 foreach (Category::listAll() as $category) {
     echo "  $category[name]...";

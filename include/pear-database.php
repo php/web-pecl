@@ -112,17 +112,6 @@ class PEAR_User extends DB_storage
     }
 }
 
-class PEAR_Package extends DB_storage
-{
-    public function __construct(&$dbh, $package, $keycol = "id")
-    {
-        parent::__construct("packages", $keycol, $dbh);
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $this->setup($package);
-        $this->popErrorHandling();
-    }
-}
-
 /**
  * Converts a Unix timestamp to a date() formatted string in the UTC time zone
  *

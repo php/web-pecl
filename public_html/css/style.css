@@ -287,25 +287,9 @@ a:active {
     color: #cc00cc;
 }
 
-th.headrow {
-    text-align: left;
-    border-bottom: 1px solid #000;
-    white-space: nowrap;
-}
-
 th.others {
     color: #000066;
     text-align: left;
-}
-
-td.textcell {
-    vertical-align: top;
-    padding-left: 1.2em;
-    padding-bottom: 1em;
-}
-
-td.textcell p {
-    margin-top: 0em;
 }
 
 td.ulcell {
@@ -321,12 +305,6 @@ hr {
     border: 0px;
     height: 1px;
     background-color: #ccc;
-}
-
-.newsDate {
-    font-size: 85%;
-    font-style: italic;
-    color: #66cc66;
 }
 
 code, pre, tt {
@@ -377,15 +355,6 @@ a.small {
     text-decoration: none;
 }
 
-.tableTitle {
-    font-weight: bold;
-}
-
-.tableExtras {
-    font-size: 85%;
-    color: #FFFFFF;
-}
-
 .tip {
     border: 1px solid #00c;
     color: #006;
@@ -403,12 +372,6 @@ ul.spaced li {
 
 .indent {
     margin-left: 20px;
-}
-
-hr.greyline {
-    border-top: thin solid #CCCCCC;
-    margin-top: 0px;
-    margin-bottom: 0px;
 }
 
 .indent {

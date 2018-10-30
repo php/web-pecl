@@ -18,14 +18,14 @@
   +----------------------------------------------------------------------+
 */
 
-$extra_styles[] = '/javascript/calendar/dynCalendar.css';
+$extra_styles[] = '/js/calendar/dynCalendar.css';
 response_header('Package Search');
 ?>
 
 <h1>Package Search</h1>
 
-<script src="javascript/calendar/browserSniffer.js"></script>
-<script src="javascript/calendar/dynCalendar.js"></script>
+<script src="js/calendar/browserSniffer.js"></script>
+<script src="js/calendar/dynCalendar.js"></script>
 
 <script>
     date_updated_released_on     = false;

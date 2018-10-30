@@ -22,7 +22,7 @@ response_header();
 
 ?>
 
-<script src="/javascript/TreeMenu/TreeMenu.js"></script>
+<script src="/js/TreeMenu/TreeMenu.js"></script>
 <script>
     currentHighlight = null;
 

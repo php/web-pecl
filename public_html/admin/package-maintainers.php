@@ -125,7 +125,7 @@ if (empty($id)) {
 
     $bb = new BorderBox("Manage maintainers for $package", "100%");
 
-    echo '<script src="/javascript/package-maintainers.js"></script>';
+    echo '<script src="/js/package-maintainers.js"></script>';
     echo '<form onSubmit="beforeSubmit()" name="form" method="get" action="' . $self . '">';
     echo '<input type="hidden" name="update" value="yes" />';
     echo '<input type="hidden" name="pid" value="' . $id . '" />';

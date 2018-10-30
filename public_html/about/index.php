@@ -38,29 +38,4 @@ If you would like to contact them, you can write to
 <p>Read the <?php echo make_link("privacy.php", "privacy policy"); ?>.</p>
 
 <?php
-
-// PDO connection
-require_once __DIR__.'/../../src/Database.php';
-use App\Database;
-
-$dsn = 'mysql:host='.PECL_DB_HOST.';dbname='.PECL_DB_NAME.';charset=utf8';
-
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-
-try {
-    $database = new Database($dsn, PECL_DB_USER, PECL_DB_PASSWORD, $options);
-
-    $sql = "SELECT COUNT(*) FROM packages WHERE package_type = 'pecl'";
-
-    if ($res = $database->query($sql)) {
-        echo '<p>Total number of packages: '.$res->fetchColumn().'</p>';
-    }
-} catch (\PDOException $e) {
-    throw new \PDOException($e->getMessage(), (int)$e->getCode());
-}
-
 response_footer();

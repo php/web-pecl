@@ -232,22 +232,6 @@ response_header('Package Search');
         document.forms['search_form'].submitButton.value    = 'Sending request...';
         document.forms['search_form'].submitButton.disabled = true;
     }
-
-    function addEngine()
-    {
-        if ((typeof window.sidebar == "object") && (typeof window.sidebar.addSearchEngine == "function"))
-        {
-            window.sidebar.addSearchEngine(
-                "http://<?php echo PEAR_CHANNELNAME; ?>/sidebar/pear.src",    /* engine URL */
-                "http://<?php echo PEAR_CHANNELNAME; ?>/sidebar/pear.gif",    /* icon URL */
-                "PEAR",                                    /* engine name */
-                "Web" );                                   /* category name */
-        }
-        else
-        {
-            alert("Mozilla M15 or later is required to add a search engine.");
-        }
-    }
 </script>
 <!-- This class prints stuff as part of it's constructor. -->
 

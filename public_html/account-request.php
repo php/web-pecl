@@ -78,7 +78,7 @@ if (isset($_POST['submit'])) {
                     $jumpto = $field;
                     break 2;
                 }
-	    }
+        }
 
             if (strtolower(trim($_POST['language'])) !== 'php') {
                 display_error('That was the wrong language choice');
@@ -285,54 +285,54 @@ if ($display_form) {
 </p>
 
 <script defer=\"defer\">
-	function reasonClick(option)
-	{
-		if (option == 'pkg') {
-			enableForm(true);
+    function reasonClick(option)
+    {
+        if (option == 'pkg') {
+            enableForm(true);
 
-			// Lose border
-			if (document.getElementById) {
-				document.getElementById('reason_table').style.border = '2px dashed green';
-			}
-		} else {
-			// Gain border
-			if (document.getElementById) {
-				document.getElementById('reason_table').style.border = '2px dashed red';
-			}
+            // Lose border
+            if (document.getElementById) {
+                document.getElementById('reason_table').style.border = '2px dashed green';
+            }
+        } else {
+            // Gain border
+            if (document.getElementById) {
+                document.getElementById('reason_table').style.border = '2px dashed red';
+            }
 
-			alert('Reminder: please only request a PECL account if you will maintain a PECL extension, and have followed the guidelines above.');
-			enableForm(false);
-		}
-	}
+            alert('Reminder: please only request a PECL account if you will maintain a PECL extension, and have followed the guidelines above.');
+            enableForm(false);
+        }
+    }
 
-	function enableForm(disabled)
-	{
-		for (var i=0; i<document.forms['request_form'].elements.length; i++) {
-			document.forms['request_form'].elements[i].disabled = !disabled;
-			//document.forms['request_form'].elements[i].style.backgroundColor = '#c0c0c0';
-		}
-	}
+    function enableForm(disabled)
+    {
+        for (var i=0; i<document.forms['request_form'].elements.length; i++) {
+            document.forms['request_form'].elements[i].disabled = !disabled;
+            //document.forms['request_form'].elements[i].style.backgroundColor = '#c0c0c0';
+        }
+    }
 
-	enableForm(false);
+    enableForm(false);
 </script>
 
 <table border=\"0\" style=\"border: 2px #ff0000 dashed; padding: 0px\" id=\"reason_table\">
-	<tr>
-		<td valign=\"top\"><input type=\"radio\" name=\"reason\" value=\"pkg\" id=\"reason_pkg\" onclick=\"reasonClick('pkg')\" /></td>
-		<td>
-			<label for=\"reason_pkg\">
-				I have already discussed the topic of maintaining and/or adding a PECL extension on the
-				pecl-dev@lists.php.net mailing list, and we determined it's time for me to have a PECL account.
-			</label>
-		</td>
-	</tr>
+    <tr>
+        <td valign=\"top\"><input type=\"radio\" name=\"reason\" value=\"pkg\" id=\"reason_pkg\" onclick=\"reasonClick('pkg')\" /></td>
+        <td>
+            <label for=\"reason_pkg\">
+                I have already discussed the topic of maintaining and/or adding a PECL extension on the
+                pecl-dev@lists.php.net mailing list, and we determined it's time for me to have a PECL account.
+            </label>
+        </td>
+    </tr>
 
-	<tr>
-		<td valign=\"top\"><input type=\"radio\" name=\"reason\" value=\"other\" id=\"reason_other\" onclick=\"reasonClick('other')\" /></td>
-		<td>
-			<label for=\"reason_other\">I desire this PECL account for another reason.</label>
-		</td>
-	</tr>
+    <tr>
+        <td valign=\"top\"><input type=\"radio\" name=\"reason\" value=\"other\" id=\"reason_other\" onclick=\"reasonClick('other')\" /></td>
+        <td>
+            <label for=\"reason_other\">I desire this PECL account for another reason.</label>
+        </td>
+    </tr>
 </table>
 ";
 

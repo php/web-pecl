@@ -59,14 +59,14 @@ if ($row['showemail'] != 0) {
 }
 if ($row['homepage'] != "") {
 
-	$url = parse_url($row['homepage']);
-	if (empty($url['scheme'])) {
-		$row['homepage'] = 'http://' . $row['homepage'];
-	}
+    $url = parse_url($row['homepage']);
+    if (empty($url['scheme'])) {
+        $row['homepage'] = 'http://' . $row['homepage'];
+    }
 
-	$bb->horizHeadRow("Homepage:",
-					  "<a href=\"$row[homepage]\" target=\"_blank\">".
-					  "$row[homepage]</a></td>\n");
+    $bb->horizHeadRow("Homepage:",
+                      "<a href=\"$row[homepage]\" target=\"_blank\">".
+                      "$row[homepage]</a></td>\n");
 }
 
 //XXX: Remove entirely?
@@ -79,7 +79,7 @@ if ($row['wishlist'] != "") {
 }
 
 if ($row['admin'] == 1) {
-	$bb->fullRow("$row[name] is a PECL administrator.");
+    $bb->fullRow("$row[name] is a PECL administrator.");
 }
 
 $query = "SELECT p.id, p.name, m.role
@@ -98,10 +98,10 @@ print "</td><td valign=\"top\">\n";
 $bb = new BorderBox("Maintaining These Packages:", "100%", "", 2, true);
 
 if ($sth->numRows() > 0) {
-	$bb->headRow("Package Name", "Role");
+    $bb->headRow("Package Name", "Role");
     while (is_array($row = $sth->fetchRow())) {
-		$bb->plainRow("<a href=\"/package/" . $row['name'] . "\">" . $row['name'] . "</a>",
-					  $row['role']);
+        $bb->plainRow("<a href=\"/package/" . $row['name'] . "\">" . $row['name'] . "</a>",
+                      $row['role']);
     }
 }
 

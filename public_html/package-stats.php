@@ -116,10 +116,10 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         }
         echo '    <option value="' . $row['id'] . '"' . $selected . '>' . $row['version'] . "</option>\n";
     }
-	$releases = $rows;
+    $releases = $rows;
     echo "  </select>\n";
 } else {
-	$releases = [];
+    $releases = [];
     echo '<input type="hidden" name="rid" value="" />'."\n";
 }
 
@@ -307,17 +307,17 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
  */
 } elseif (!empty($_GET['cid'])) {
 
-	$category_name     = $dbh->getOne(sprintf("SELECT name FROM categories WHERE id = %d", $_GET['cid']));
-	$total_packages    = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT pid) FROM package_stats WHERE cid = %d", $_GET['cid']));
-	$total_maintainers = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT m.handle) FROM maintains m, packages p WHERE m.package = p.id AND p.category = %d", $_GET['cid']));
-	$total_releases    = $dbh->getOne(sprintf("SELECT COUNT(*) FROM package_stats WHERE cid = %d", $_GET['cid']));
-	$total_categories  = $dbh->getOne(sprintf("SELECT COUNT(*) FROM categories WHERE parent = %d", $_GET['cid']));
+    $category_name     = $dbh->getOne(sprintf("SELECT name FROM categories WHERE id = %d", $_GET['cid']));
+    $total_packages    = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT pid) FROM package_stats WHERE cid = %d", $_GET['cid']));
+    $total_maintainers = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT m.handle) FROM maintains m, packages p WHERE m.package = p.id AND p.category = %d", $_GET['cid']));
+    $total_releases    = $dbh->getOne(sprintf("SELECT COUNT(*) FROM package_stats WHERE cid = %d", $_GET['cid']));
+    $total_categories  = $dbh->getOne(sprintf("SELECT COUNT(*) FROM categories WHERE parent = %d", $_GET['cid']));
 
-	// Query to get package list from package_stats_table
-	$query = sprintf("SELECT SUM(ps.dl_number) AS dl_number, ps.package, ps.release, ps.pid, ps.rid, ps.cid
-	                  FROM package_stats ps, packages p
-	                  WHERE p.package_type = 'pecl' AND p.id = ps.pid AND
-	                  p.category = %s GROUP BY ps.pid ORDER BY ps.dl_number DESC",
+    // Query to get package list from package_stats_table
+    $query = sprintf("SELECT SUM(ps.dl_number) AS dl_number, ps.package, ps.release, ps.pid, ps.rid, ps.cid
+                      FROM package_stats ps, packages p
+                      WHERE p.package_type = 'pecl' AND p.id = ps.pid AND
+                      p.category = %s GROUP BY ps.pid ORDER BY ps.dl_number DESC",
                      $_GET['cid']
                      );
 
@@ -326,17 +326,17 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
  */
 } else {
 
-	$total_packages    = number_format($dbh->getOne('SELECT COUNT(id) FROM packages WHERE package_type="pecl"'), 0, '.', ',');
-	$total_maintainers = number_format($dbh->getOne('SELECT COUNT(DISTINCT handle) FROM maintains'), 0, '.', ',');
-	$total_releases    = number_format($dbh->getOne('SELECT COUNT(*) FROM releases r, packages p
-	                   WHERE r.package = p.id AND p.package_type="pecl"'), 0, '.', ',');
-	$total_categories  = number_format($dbh->getOne('SELECT COUNT(*) FROM categories'), 0, '.', ',');
+    $total_packages    = number_format($dbh->getOne('SELECT COUNT(id) FROM packages WHERE package_type="pecl"'), 0, '.', ',');
+    $total_maintainers = number_format($dbh->getOne('SELECT COUNT(DISTINCT handle) FROM maintains'), 0, '.', ',');
+    $total_releases    = number_format($dbh->getOne('SELECT COUNT(*) FROM releases r, packages p
+                       WHERE r.package = p.id AND p.package_type="pecl"'), 0, '.', ',');
+    $total_categories  = number_format($dbh->getOne('SELECT COUNT(*) FROM categories'), 0, '.', ',');
     $total_downloads   = number_format($dbh->getOne('SELECT SUM(dl_number) FROM package_stats, packages p
                        WHERE package_stats.pid = p.id AND p.package_type="pecl"'), 0, '.', ',');
-	$query             = "SELECT sum(ps.dl_number) as dl_number, ps.package, ps.pid, ps.rid, ps.cid
-	                      FROM package_stats ps, packages p
-	                      WHERE p.id = ps.pid AND p.package_type = 'pecl'
-	                      GROUP BY ps.pid ORDER BY dl_number DESC";
+    $query             = "SELECT sum(ps.dl_number) as dl_number, ps.package, ps.pid, ps.rid, ps.cid
+                          FROM package_stats ps, packages p
+                          WHERE p.id = ps.pid AND p.package_type = 'pecl'
+                          GROUP BY ps.pid ORDER BY dl_number DESC";
 
 }
 
@@ -344,9 +344,9 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
  * Display this for Global and Category stats pages only
  */
 if (@!$_GET['pid']) {
-	echo '<br />';
-	$bb = new BorderBox(!empty($_GET['cid']) ? 'Category Statistics for: <i><a href="packages.php?catpid='.$_GET['cid'].'&amp;catname='.str_replace(' ', '+', $category_name).'">' . $category_name . '</a></i>' : 'Global Statistics');
-	?>
+    echo '<br />';
+    $bb = new BorderBox(!empty($_GET['cid']) ? 'Category Statistics for: <i><a href="packages.php?catpid='.$_GET['cid'].'&amp;catname='.str_replace(' ', '+', $category_name).'">' . $category_name . '</a></i>' : 'Global Statistics');
+    ?>
 <table border="0" width="100%">
  <tr>
   <td style="width: 25%;">Total&nbsp;Packages:</td>
@@ -366,48 +366,48 @@ if (@!$_GET['pid']) {
      }
    ?>
 </table>
-	<?php
-	$bb->end();
+    <?php
+    $bb->end();
 
-	echo '<br />';
+    echo '<br />';
 
-	$bb = new BorderBox('Package Statistics');
+    $bb = new BorderBox('Package Statistics');
 
-	$sth  = $dbh->query($query); //$query defined above
-	$rows = $sth->numRows();
+    $sth  = $dbh->query($query); //$query defined above
+    $rows = $sth->numRows();
 
-	if (PEAR::isError($sth)) {
-	    PEAR::raiseError('unable to generate stats');
-	}
+    if (PEAR::isError($sth)) {
+        PEAR::raiseError('unable to generate stats');
+    }
 
-	echo " <table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"2\">\n";
-	echo "  <tr align=\"left\" bgcolor=\"#cccccc\">\n";
-	echo "   <th>Package Name</th>\n";
-	echo '   <th><span class="accesskey"># of downloads</span></th>' . "\n";
-	echo "   <th>&nbsp;</th>\n";
-	echo "  </tr>\n";
+    echo " <table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"2\">\n";
+    echo "  <tr align=\"left\" bgcolor=\"#cccccc\">\n";
+    echo "   <th>Package Name</th>\n";
+    echo '   <th><span class="accesskey"># of downloads</span></th>' . "\n";
+    echo "   <th>&nbsp;</th>\n";
+    echo "  </tr>\n";
 
-	$lastPackage = "";
+    $lastPackage = "";
 
-	while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
-	    if ($row['package'] == $lastPackage) {
-	        $row['package'] = '';
-	    } else {
-	        $lastPackage = $row['package'];
-	        $row['package'] = '<a href="/package/' .
-	                            $row['package'] . '">' .
-	                            $row['package'] . "</a>";
-	    }
+    while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+        if ($row['package'] == $lastPackage) {
+            $row['package'] = '';
+        } else {
+            $lastPackage = $row['package'];
+            $row['package'] = '<a href="/package/' .
+                                $row['package'] . '">' .
+                                $row['package'] . "</a>";
+        }
 
-	    echo "  <tr bgcolor=\"#eeeeee\">\n";
-	    echo "   <td>" . $row['package'] .  "</td>\n";
-	    echo "   <td>" . number_format($row['dl_number'], 0, '.', ',') . "</td>\n";
-	    echo "   <td>[". make_link("/package-stats.php?cid=" . $row['cid'] . "&amp;pid=" . $row['pid'] , 'Details') . "]</td>\n";
-	    echo "  </tr>\n";
-	}
-	echo " </table>\n";
+        echo "  <tr bgcolor=\"#eeeeee\">\n";
+        echo "   <td>" . $row['package'] .  "</td>\n";
+        echo "   <td>" . number_format($row['dl_number'], 0, '.', ',') . "</td>\n";
+        echo "   <td>[". make_link("/package-stats.php?cid=" . $row['cid'] . "&amp;pid=" . $row['pid'] , 'Details') . "]</td>\n";
+        echo "  </tr>\n";
+    }
+    echo " </table>\n";
 
-	$bb->end();
+    $bb->end();
 }
 
 response_footer();

@@ -53,15 +53,15 @@ XML-RPC;;XML
 
 $catids = [];
 foreach (explode("\n", $categories) as $line) {
-	if (trim($line) == '') {
-		continue;
+    if (trim($line) == '') {
+        continue;
     }
-	list($name, $desc, $parent) = explode(";", trim($line));
-	$params = ['name' => $name, 'desc' => $desc];
-	if (!empty($parent)) {
-		$params['parent'] = $catids[$parent];
-	}
-	$catid = Category::add($params);
-	$catids[$name] = $catid;
-	print "Category: $name\n";
+    list($name, $desc, $parent) = explode(";", trim($line));
+    $params = ['name' => $name, 'desc' => $desc];
+    if (!empty($parent)) {
+        $params['parent'] = $catids[$parent];
+    }
+    $catid = Category::add($params);
+    $catids[$name] = $catid;
+    print "Category: $name\n";
 }

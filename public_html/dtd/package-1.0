@@ -77,6 +77,6 @@
 
 <!ELEMENT dep (#PCDATA)>
 <!ATTLIST dep
-	type    (pkg|ext|php|prog|ldlib|ltlib|os|websrv|sapi) #REQUIRED
-	rel     (has|eq|lt|le|gt|ge)                          #IMPLIED
-	version CDATA                                         #IMPLIED>
+    type    (pkg|ext|php|prog|ldlib|ltlib|os|websrv|sapi) #REQUIRED
+    rel     (has|eq|lt|le|gt|ge)                          #IMPLIED
+    version CDATA                                         #IMPLIED>

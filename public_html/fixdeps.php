@@ -39,42 +39,42 @@ print "$ar rows deleted<br />\n";
 print "<h2>Inserting New Dependencies...</h2>\n";
 $sth = $dbh->query("SELECT package, release, fullpath FROM files");
 while ($sth->fetchInto($row)) {
-	list($package, $release, $fullpath) = $row;
-	printf("<h3>%s (package %d, release %d):</h3>\n",
-		   basename($fullpath), $package, $release);
-	if (!@file_exists($fullpath)) {
-		continue;
-	}
-	$pkginfo = $pc->infoFromTgzFile($fullpath);
-	if (empty($pkginfo['release_deps'])) {
-		printf("%s : no dependencies<br />\n", $rel_id2name[$release]);
-		continue;
-	}
-	foreach ($pkginfo['release_deps'] as $dep) {
-		if ($dep['rel']) {
-			$dep['relation'] = $dep['rel'];
-			unset($dep['rel']);
-		}
-		$i = 0;
-		$fields = implode(',', array_keys($dep));
-		$values = array_values($dep);
-		$phs = substr(str_repeat('?,', sizeof($values) + 2), 0, -1);
-		$query = "INSERT INTO deps (package,release,$fields) VALUES($phs)";
-		$pq = $dbh->prepare($query);
-		$values = array_merge([$package, $release], $values);
-		if ($dep['type'] == 'php') {
-			printf("%s : php %s %s %s<br />\n", $rel_id2name[$release],
-				   $dep['relation'], $dep['version']);
-		} elseif ($dep['relation'] == 'has') {
-			printf("%s : (%s) %s %s<br />\n", $rel_id2name[$release],
-				   $dep['type'], $dep['name']);
-		} else {
-			printf("%s : (%s) %s %s %s<br />\n", $rel_id2name[$release],
-				   $dep['type'], $dep['name'], $dep['relation'],
-				   @$dep['version']);
-		}
-		$dbh->execute($pq, $values);
-	}
+    list($package, $release, $fullpath) = $row;
+    printf("<h3>%s (package %d, release %d):</h3>\n",
+           basename($fullpath), $package, $release);
+    if (!@file_exists($fullpath)) {
+        continue;
+    }
+    $pkginfo = $pc->infoFromTgzFile($fullpath);
+    if (empty($pkginfo['release_deps'])) {
+        printf("%s : no dependencies<br />\n", $rel_id2name[$release]);
+        continue;
+    }
+    foreach ($pkginfo['release_deps'] as $dep) {
+        if ($dep['rel']) {
+            $dep['relation'] = $dep['rel'];
+            unset($dep['rel']);
+        }
+        $i = 0;
+        $fields = implode(',', array_keys($dep));
+        $values = array_values($dep);
+        $phs = substr(str_repeat('?,', sizeof($values) + 2), 0, -1);
+        $query = "INSERT INTO deps (package,release,$fields) VALUES($phs)";
+        $pq = $dbh->prepare($query);
+        $values = array_merge([$package, $release], $values);
+        if ($dep['type'] == 'php') {
+            printf("%s : php %s %s %s<br />\n", $rel_id2name[$release],
+                   $dep['relation'], $dep['version']);
+        } elseif ($dep['relation'] == 'has') {
+            printf("%s : (%s) %s %s<br />\n", $rel_id2name[$release],
+                   $dep['type'], $dep['name']);
+        } else {
+            printf("%s : (%s) %s %s %s<br />\n", $rel_id2name[$release],
+                   $dep['type'], $dep['name'], $dep['relation'],
+                   @$dep['version']);
+        }
+        $dbh->execute($pq, $values);
+    }
 }
 
 response_footer();

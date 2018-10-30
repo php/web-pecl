@@ -69,7 +69,7 @@ $unmaintained = ($pkg['unmaintained'] ? 'Y' : 'N');
 $superseded   = ((bool) $pkg['new_package']  ? 'Y' : 'N');
 $moved_out  = (!empty($pkg['new_channel'])  ? TRUE : FALSE);
 if ($moved_out) {
-	$superseded = 'Y';
+    $superseded = 'Y';
 }
 
 // Accounts data
@@ -115,7 +115,7 @@ if ($version) {
 
 html_category_urhere($pkg['categoryid'], true);
 if ($relid) {
-	echo " :: " . make_link("/package/$name", $name) ;
+    echo " :: " . make_link("/package/$name", $name) ;
 }
 
 print "<h2 align=\"center\">$name";
@@ -157,14 +157,14 @@ if (!is_null($apply_rule) && isset($dec_messages[$apply_rule])) {
     $str  = '<div class="warnings">';
     $str .= $dec_messages[$apply_rule];
 
-		if ($pkg['new_channel'] == PEAR_CHANNELNAME) {
-			$str .= '  Use <a href="/package/' . $pkg['new_package'] .
-				'">' . htmlspecialchars($pkg['new_package']) . '</a> instead.';
-		} elseif ($pkg['new_channel']) {
-			$str .= '  Package has moved to channel <a href="' . $pkg['new_channel'] .
-				'">' . htmlspecialchars($pkg['new_channel']) . '</a>, package ' .
-				$pkg['new_package'] . '.';
-		}
+        if ($pkg['new_channel'] == PEAR_CHANNELNAME) {
+            $str .= '  Use <a href="/package/' . $pkg['new_package'] .
+                '">' . htmlspecialchars($pkg['new_package']) . '</a> instead.';
+        } elseif ($pkg['new_channel']) {
+            $str .= '  Package has moved to channel <a href="' . $pkg['new_channel'] .
+                '">' . htmlspecialchars($pkg['new_channel']) . '</a>, package ' .
+                $pkg['new_package'] . '.';
+        }
 
     $str .= '</div>';
     echo $str;
@@ -258,7 +258,7 @@ if (!empty($doc_link)) {
 if (empty($bug_link)) {
 ?>
 <tr>
-	<td align="center">[ <?php echo make_bug_link($pkg['name'], 'report', 'Report new bug'); ?> ]</td>
+    <td align="center">[ <?php echo make_bug_link($pkg['name'], 'report', 'Report new bug'); ?> ]</td>
 </tr>
 <?php
 }
@@ -291,11 +291,11 @@ if (!$relid) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
                                    "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")";
 
-				$urls = PackageDll::getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
-				if ($urls) {
-					$downloads_html .= "&nbsp;&nbsp;<a href=\"/package/$pkg[name]/$r_version/windows\">"
-									. "<img src=\"/gifs/windows-icon.png\" />DLL</a>";
-				}
+                $urls = PackageDll::getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
+                if ($urls) {
+                    $downloads_html .= "&nbsp;&nbsp;<a href=\"/package/$pkg[name]/$r_version/windows\">"
+                                    . "<img src=\"/gifs/windows-icon.png\" />DLL</a>";
+                }
             }
 
             $link_changelog = "<small>[" . make_link("/package-changelog.php?package=" .

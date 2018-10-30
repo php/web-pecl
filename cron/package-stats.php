@@ -24,29 +24,29 @@
  * via cron.
  */
 
-	require_once('DB.php');
+require_once('DB.php');
 /**
 * DSN for pear packages database
 */
-	$dsn = "mysql://pear:pear@localhost/pear";
-	$dbh = DB::connect($dsn);
-	if (DB::isError($db = DB::connect($dsn))) {
-		die ("Failed to connect: $dsn\n");
-	}
-	$dbh->query('SET NAMES utf8');
+$dsn = "mysql://pear:pear@localhost/pear";
+$dbh = DB::connect($dsn);
+if (DB::isError($db = DB::connect($dsn))) {
+    die ("Failed to connect: $dsn\n");
+}
+$dbh->query('SET NAMES utf8');
 
 /**
 * Query the packages info and insert the results into
 * the package_stats page. First deletes the current
 * data.
 */
-	$db->query('DELETE FROM package_stats');
+$db->query('DELETE FROM package_stats');
 
-	$sql = 'INSERT INTO package_stats SELECT COUNT(d.id) AS dl_number, p.name AS package, r.version AS release, p.id AS pid, r.id AS rid, p.category AS cid
-	            FROM downloads d, packages p, releases r
-	            WHERE d.package = p.id AND d.release = r.id
-	          GROUP BY d.package, d.release ORDER BY dl_number DESC';
+$sql = 'INSERT INTO package_stats SELECT COUNT(d.id) AS dl_number, p.name AS package, r.version AS release, p.id AS pid, r.id AS rid, p.category AS cid
+        FROM downloads d, packages p, releases r
+        WHERE d.package = p.id AND d.release = r.id
+        GROUP BY d.package, d.release ORDER BY dl_number DESC';
 
-	if (DB::isError($db->query($sql))) {
-		die('Query failed');
-	}
+if (DB::isError($db->query($sql))) {
+    die('Query failed');
+}

@@ -186,14 +186,14 @@ if (!empty($_GET)) {
                                $links['next']);
 
         while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC, $rownum++) AND $rownum <= $to) {
-			/**
+            /**
             * If name or summary was searched on, highlight the search string
             */
-			$row['raw_name']    = $row['name'];
-			if (!empty($_GET['pkg_name'])) {
-				$row['name']    = str_ireplace($_GET['pkg_name'], '<span style="background-color: #d5ffc1">'.$_GET['pkg_name'].'</span>', $row['name']);
-				$row['summary'] = str_ireplace($_GET['pkg_name'], '<span style="background-color: #d5ffc1">'.$_GET['pkg_name'].'</span>', $row['summary']);
-			}
+            $row['raw_name']    = $row['name'];
+            if (!empty($_GET['pkg_name'])) {
+                $row['name']    = str_ireplace($_GET['pkg_name'], '<span style="background-color: #d5ffc1">'.$_GET['pkg_name'].'</span>', $row['name']);
+                $row['summary'] = str_ireplace($_GET['pkg_name'], '<span style="background-color: #d5ffc1">'.$_GET['pkg_name'].'</span>', $row['summary']);
+            }
 
             $search_results[] = $row;
         }

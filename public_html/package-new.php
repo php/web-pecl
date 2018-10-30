@@ -55,14 +55,14 @@ do {
             }
         }
 
-		  $_POST['license'] = trim($_POST['license']);
+          $_POST['license'] = trim($_POST['license']);
 
-		  if (!strcasecmp($_POST['license'], "GPL") ||
-			  	!strcasecmp($_POST['license'], "LGPL")) {
-			  display_error("Illegal license type.  PECL packages CANNOT be GPL/LGPL licensed and thus MUST NOT be linked to GPL code.  Talk to pecl-dev@lists.php.net for more information.");
-			  $jumpto = 'license';
-			  break;
-		  }
+          if (!strcasecmp($_POST['license'], "GPL") ||
+                  !strcasecmp($_POST['license'], "LGPL")) {
+              display_error("Illegal license type.  PECL packages CANNOT be GPL/LGPL licensed and thus MUST NOT be linked to GPL code.  Talk to pecl-dev@lists.php.net for more information.");
+              $jumpto = 'license';
+              break;
+          }
 
         if (!preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $_POST['name'])) {
             display_error("Invalid package name.  PECL package names must be ".

@@ -28,10 +28,10 @@ if (!isset($_POST['search_in'])) {
 
 switch ($_POST['search_in']) {
 
-	case "packages":
-		header('Location: /package-search.php?pkg_name='.urlencode($_POST['search_string']).'&bool=AND&submit=Search');
-		exit;
-		break;
+    case "packages":
+        header('Location: /package-search.php?pkg_name='.urlencode($_POST['search_string']).'&bool=AND&submit=Search');
+        exit;
+        break;
 
     case 'developers':
         // XXX: Enable searching for names instead of handles

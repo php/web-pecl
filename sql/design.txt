@@ -1,45 +1,45 @@
-		     PEAR BACKEND DATABASE DESIGN
+             PEAR BACKEND DATABASE DESIGN
 
 TERMINOLOGY
 
 Author
-	An author is a contributor to PEAR.  An author is usually
-	referred with a name usually based on initials.  This name is
-	the identifier used in the database and XML description files.
+    An author is a contributor to PEAR.  An author is usually
+    referred with a name usually based on initials.  This name is
+    the identifier used in the database and XML description files.
 
 Domain
-	A _domain_ is a section of the file namespace allocated to a
-	package or a collection of related packages.  For example,
-	"DB" is the domain for packages for database-independent
-	connectivity.  Other domains may be "XML" or "Net/HTTP".
+    A _domain_ is a section of the file namespace allocated to a
+    package or a collection of related packages.  For example,
+    "DB" is the domain for packages for database-independent
+    connectivity.  Other domains may be "XML" or "Net/HTTP".
 
-	A new domain may be created by the administrator of any parent
-	domain.  New top-level domains are created by the
-	administrator of the root domain.
+    A new domain may be created by the administrator of any parent
+    domain.  New top-level domains are created by the
+    administrator of the root domain.
 
 Package
-	A PEAR _package_ is a collection of C code (extensions) and
-	PHP code within a certain _domain_.  Any number of packages
-	can use the same domain.
+    A PEAR _package_ is a collection of C code (extensions) and
+    PHP code within a certain _domain_.  Any number of packages
+    can use the same domain.
 
 Release
-	A PEAR _package_ is made available through a _release_.  Each
-	release has a version number (see version section below).
+    A PEAR _package_ is made available through a _release_.  Each
+    release has a version number (see version section below).
 
 Distribution
-	A package _distribution_ is the officially supported way of
-	installing a package automatically.  The distribution is a
-	gzip-compressed tar file with a file called "package.xml"
-	within it describing the package.  See the "XML DESCRIPTION
-	FILE FORMAT" section below for more details.
+    A package _distribution_ is the officially supported way of
+    installing a package automatically.  The distribution is a
+    gzip-compressed tar file with a file called "package.xml"
+    within it describing the package.  See the "XML DESCRIPTION
+    FILE FORMAT" section below for more details.
 
-	There are two types of distributions: source distributions and
-	binary distributions.  A binary distribution is one with only
-	platform-indepdenent files (meaning no C code, only PHP code)
-	or one where the C-code has been compiled for a specific
-	platform (both debug and non-debug versions of the binary code
-	should be included).  A source distribution contains only the
-	PHP and C code.  The installer then needs to compile the C code.
+    There are two types of distributions: source distributions and
+    binary distributions.  A binary distribution is one with only
+    platform-indepdenent files (meaning no C code, only PHP code)
+    or one where the C-code has been compiled for a specific
+    platform (both debug and non-debug versions of the binary code
+    should be included).  A source distribution contains only the
+    PHP and C code.  The installer then needs to compile the C code.
 
 DATA ENTITIES AND ATTRIBUTES
 
@@ -49,46 +49,46 @@ foreign key (in principle, because some of them are circular, they
 will not be implemented with "REFERENCES" in MySQL).
 
 Aliases
-	Package		-> Packages(Name)
-	Alias		Varchar
+    Package        -> Packages(Name)
+    Alias        Varchar
 
 Authors
 
-	Handle		Varchar
-	Password	Varchar
-	Name		Varchar
-	Email		Varchar
-	Homepage	Varchar
-	Created		Integer (UNIX timestamp when created)
-	Modified	Integer (UNIX timestamp when last modified)
-	Createdby	-> Authors(Handle)
-	ShowEmail	Bool (whether to show email address to the public)
-	Registered	Bool
-	Admin		Bool (an admin can create/accept new authors and
-			      set domain adminsitrators)
-	AuthorInfo	Text (additional info by the author)
+    Handle        Varchar
+    Password    Varchar
+    Name        Varchar
+    Email        Varchar
+    Homepage    Varchar
+    Created        Integer (UNIX timestamp when created)
+    Modified    Integer (UNIX timestamp when last modified)
+    Createdby    -> Authors(Handle)
+    ShowEmail    Bool (whether to show email address to the public)
+    Registered    Bool
+    Admin        Bool (an admin can create/accept new authors and
+                  set domain adminsitrators)
+    AuthorInfo    Text (additional info by the author)
 
 Domains
-	Domain		Varchar
-	Administrator	-> Authors(Handle)
+    Domain        Varchar
+    Administrator    -> Authors(Handle)
 
 Packages
-	Name		Varchar
-	Domain		-> Domains(Domain) (also implied by Name)
-	Originator	-> Authors(Handle)
-	Maintainer	-> Authors(Handle)
-	CurrentStable	-> Versions(Id)
-	CurrentDevel	-> Versions(Id)
-	Copyright	Varchar
-	Summary		Text (short description)
-	Description	Text (full description)
+    Name        Varchar
+    Domain        -> Domains(Domain) (also implied by Name)
+    Originator    -> Authors(Handle)
+    Maintainer    -> Authors(Handle)
+    CurrentStable    -> Versions(Id)
+    CurrentDevel    -> Versions(Id)
+    Copyright    Varchar
+    Summary        Text (short description)
+    Description    Text (full description)
 
 Versions
-	Id		Integer
-	Package		-> Packages(Name)
-	Version		Varchar
-	ReleaseDate	Integer (YYYYMMDD)
-	ReleaseNotes	Text
+    Id        Integer
+    Package        -> Packages(Name)
+    Version        Varchar
+    ReleaseDate    Integer (YYYYMMDD)
+    ReleaseNotes    Text
 
 XML DESCRIPTION FILE FORMAT
 
@@ -144,10 +144,10 @@ VERSIONING
 It is strongly recommended that package maintainers select one of the
 following versioning schemes:
 
-    YYYYMMDD		(YYYY = year, MM = month, DD = day)
-    V[{a,b}N]		(V = version) [ alpha or beta release N ]
-    V.R[{a,b}N]		(R = release)
-    V.R.P[{a,b}N]	(P = patchlevel)
+    YYYYMMDD        (YYYY = year, MM = month, DD = day)
+    V[{a,b}N]        (V = version) [ alpha or beta release N ]
+    V.R[{a,b}N]        (R = release)
+    V.R.P[{a,b}N]    (P = patchlevel)
 
 PEAR tools follow these rules to compare versions:
 

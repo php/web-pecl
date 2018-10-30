@@ -23,7 +23,7 @@ require_once "DB.php";
 require_once "../include/pear-database.php";
 
 if(!ini_get('register_globals')){
-	extract($_SERVER);
+    extract($_SERVER);
 }
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "data_error_handler");
@@ -39,10 +39,10 @@ include "./addpackages.php";
 include "./addacls.php";
 
 function data_error_handler($obj) {
-	print "Error when adding users: ";
-	print $obj->getMessage();
-	print "\nMore info: ";
-	print $obj->getUserInfo();
-	print "\n";
-	exit;
+    print "Error when adding users: ";
+    print $obj->getMessage();
+    print "\nMore info: ";
+    print $obj->getUserInfo();
+    print "\n";
+    exit;
 }

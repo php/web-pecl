@@ -64,10 +64,10 @@ $term = "%" . basename($pkg) . "%";
 $packages = $dbh->getAll($sql, [$term], DB_FETCHMODE_ASSOC);
 
 if (count($packages) > 3) {
-	$packages = [$packages[0], $packages[1], $packages[2]];
-	$show_search_link = true;
+    $packages = [$packages[0], $packages[1], $packages[2]];
+    $show_search_link = true;
 } else {
-	$show_search_link = false;
+    $show_search_link = false;
 }
 
 response_header("Error 404");
@@ -79,23 +79,23 @@ response_header("Error 404");
 found on this server.</p>
 
 <?php if (is_array($packages) && count($packages) > 0) { ?>
-	Searching the current list of packages for
-	<i><?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)); ?></i> included the
-	following results:
+    Searching the current list of packages for
+    <i><?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)); ?></i> included the
+    following results:
 
-	<ul>
-	<?php foreach($packages as $p) { ?>
-		<li>
-			<?php echo make_link(getURL($pinfo_url . $p['name']), $p['name']); ?><br />
-			<i><?php echo $p['summary']; ?></i><br /><br />
-		</li>
-	<?php } ?>
-	</ul>
+    <ul>
+    <?php foreach($packages as $p) { ?>
+        <li>
+            <?php echo make_link(getURL($pinfo_url . $p['name']), $p['name']); ?><br />
+            <i><?php echo $p['summary']; ?></i><br /><br />
+        </li>
+    <?php } ?>
+    </ul>
 
-	<?php if($show_search_link) { ?>
-		<p align="center">
-			<?php echo make_link(getURL('/package-search.php?pkg_name=' . htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)) . '&amp;bool=AND&amp;submit=Search'), 'View full search results...'); ?>
-		</p>
+    <?php if($show_search_link) { ?>
+        <p align="center">
+            <?php echo make_link(getURL('/package-search.php?pkg_name=' . htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)) . '&amp;bool=AND&amp;submit=Search'), 'View full search results...'); ?>
+        </p>
 <?php
     }
 }

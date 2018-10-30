@@ -49,7 +49,7 @@ if (!empty($version)) {
 
 /* Sanity check&cleanup if given version does not exist */
 if ($relid === FALSE) {
-	$version = FALSE;
+    $version = FALSE;
 }
 
 if (empty($package) || !isset($pkg['name'])) {
@@ -75,7 +75,7 @@ $unmaintained = ($pkg['unmaintained'] ? 'Y' : 'N');
 $superseded   = ((bool) $pkg['new_package']  ? 'Y' : 'N');
 $moved_out  = (!empty($pkg['new_channel'])  ? TRUE : FALSE);
 if ($moved_out) {
-	$superseded = 'Y';
+    $superseded = 'Y';
 }
 
 // Accounts data
@@ -121,7 +121,7 @@ if ($version) {
 
 html_category_urhere($pkg['categoryid'], true);
 if ($relid) {
-	echo " :: " . make_link("/package/$name", $name) . " :: <b>Windows</b>";
+    echo " :: " . make_link("/package/$name", $name) . " :: <b>Windows</b>";
 }
 
 print "<h2 align=\"center\">$name";
@@ -163,14 +163,14 @@ if (!is_null($apply_rule) && isset($dec_messages[$apply_rule])) {
     $str  = '<div class="warnings">';
     $str .= $dec_messages[$apply_rule];
 
-		if ($pkg['new_channel'] == PEAR_CHANNELNAME) {
-			$str .= '  Use <a href="/package/' . $pkg['new_package'] .
-				'">' . htmlspecialchars($pkg['new_package']) . '</a> instead.';
-		} elseif ($pkg['new_channel']) {
-			$str .= '  Package has moved to channel <a href="' . $pkg['new_channel'] .
-				'">' . htmlspecialchars($pkg['new_channel']) . '</a>, package ' .
-				$pkg['new_package'] . '.';
-		}
+        if ($pkg['new_channel'] == PEAR_CHANNELNAME) {
+            $str .= '  Use <a href="/package/' . $pkg['new_package'] .
+                '">' . htmlspecialchars($pkg['new_package']) . '</a> instead.';
+        } elseif ($pkg['new_channel']) {
+            $str .= '  Package has moved to channel <a href="' . $pkg['new_channel'] .
+                '">' . htmlspecialchars($pkg['new_channel']) . '</a>, package ' .
+                $pkg['new_package'] . '.';
+        }
 
     $str .= '</div>';
     echo $str;
@@ -221,23 +221,23 @@ $bb->end();
 // {{{ DLL List
 echo '<div>&nbsp;</div>';
 if ($version) {
-	$bb = new BorderBox("DLL List", "90%", "", 2, true);
+    $bb = new BorderBox("DLL List", "90%", "", 2, true);
 
-	$urls = PackageDll::getDllDownloadUrls($pkg['name'], $version, $pkg['releases'][$version]['releasedate']);
-	if (!$urls) {
-		$bb->fullRow("No DLL available");
-	} else {
-		foreach ($urls as $desc => $set) {
-			$links = [];
-			foreach ($set as $url) {
-				$link_txt = PackageDll::makeNiceLinkNameFromZipName(basename($url));
-				$links[] = "<a href=\"$url\">$link_txt</a>";
-			}
-			$bb->horizHeadRow("PHP $desc", implode("<br/>", $links));
-		}
-	}
+    $urls = PackageDll::getDllDownloadUrls($pkg['name'], $version, $pkg['releases'][$version]['releasedate']);
+    if (!$urls) {
+        $bb->fullRow("No DLL available");
+    } else {
+        foreach ($urls as $desc => $set) {
+            $links = [];
+            foreach ($set as $url) {
+                $link_txt = PackageDll::makeNiceLinkNameFromZipName(basename($url));
+                $links[] = "<a href=\"$url\">$link_txt</a>";
+            }
+            $bb->horizHeadRow("PHP $desc", implode("<br/>", $links));
+        }
+    }
 
-	$bb->end();
+    $bb->end();
 }
 // }}}
 
@@ -289,7 +289,7 @@ if (!empty($doc_link)) {
 if (empty($bug_link)) {
 ?>
 <tr>
-	<td align="center">[ <?php echo make_bug_link($pkg['name'], 'report', 'Report new bug'); ?> ]</td>
+    <td align="center">[ <?php echo make_bug_link($pkg['name'], 'report', 'Report new bug'); ?> ]</td>
 </tr>
 <?php
 }
@@ -322,11 +322,11 @@ if (!$relid) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
                                    "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")";
 
-				$urls = PackageDll::getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
-				if ($urls) {
-					$downloads_html .= "&nbsp;&nbsp;<a href=\"/package/$pkg[name]/$r_version/windows\">"
-									. "<img src=\"/gifs/windows-icon.png\" />DLL</a>";
-				}
+                $urls = PackageDll::getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
+                if ($urls) {
+                    $downloads_html .= "&nbsp;&nbsp;<a href=\"/package/$pkg[name]/$r_version/windows\">"
+                                    . "<img src=\"/gifs/windows-icon.png\" />DLL</a>";
+                }
             }
 
             $link_changelog = "<small>[" . make_link("/package-changelog.php?package=" .

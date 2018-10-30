@@ -198,7 +198,7 @@ if (empty($id)) {
 
 function isAllowed($package)
 {
-	global $auth_user;
+    global $auth_user;
     auth_require();
     $lead = in_array($auth_user->handle, array_keys(Maintainer::get($package, true)));
     $admin = $auth_user->isAdmin();

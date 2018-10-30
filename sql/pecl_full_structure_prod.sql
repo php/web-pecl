@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: peclweb
 -- ------------------------------------------------------
--- Server version	5.5.41-0+wheezy1
+-- Server version    5.5.41-0+wheezy1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;

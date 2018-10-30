@@ -22,17 +22,17 @@
 $package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 
 if (!$package) {
-	header("HTTP/1.0 404 Not Found");
-	echo "$package not found";
-	exit();
+    header("HTTP/1.0 404 Not Found");
+    echo "$package not found";
+    exit();
 }
 
 // Package data
 $pkg = Package::info($package);
 if (!$pkg) {
-	header("HTTP/1.0 404 Not Found");
-	echo "$package not found";
-	exit();
+    header("HTTP/1.0 404 Not Found");
+    echo "$package not found";
+    exit();
 }
 $pacid = $pkg['packageid'];
 $dbh->setFetchmode(DB_FETCHMODE_OBJECT);
@@ -42,6 +42,6 @@ $sth = $dbh->query("SELECT u.handle".
                    " AND m.handle = u.handle");
 $maintainers = [];
 while ($row = $sth->fetchRow()) {
-	$maintainers[] = $row->handle;
+    $maintainers[] = $row->handle;
 }
 echo json_encode($maintainers);

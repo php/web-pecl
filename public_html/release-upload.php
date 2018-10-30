@@ -36,7 +36,7 @@ $errors               = [];
 PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
 
 if (!file_exists(PEAR_UPLOAD_TMPDIR)) {
-	mkdir(PEAR_UPLOAD_TMPDIR, 0777, true);
+    mkdir(PEAR_UPLOAD_TMPDIR, 0777, true);
 }
 
 do {
@@ -67,89 +67,89 @@ do {
             $errors[] = $file->errorMsg();
             break;
         }
-	include_once 'PEAR/PackageFile.php';
-	include_once 'PEAR/Config.php';
+    include_once 'PEAR/PackageFile.php';
+    include_once 'PEAR/Config.php';
 
-	$config = PEAR_Config::singleton();
-	$pkg = new PEAR_PackageFile($config);
-	$info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
-	$errors = $warnings = [];
+    $config = PEAR_Config::singleton();
+    $pkg = new PEAR_PackageFile($config);
+    $info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
+    $errors = $warnings = [];
 
-	if (PEAR::isError($info)) {
-		if (is_array($info->getUserInfo())) {
-			foreach ($info->getUserInfo() as $err) {
-				if ($err['level'] == 'error') {
-					$errors[] = $err['message'];
-				} else {
-					$warnings[] = $err['message'];
-				}
-			}
-		}
-		$errors[] = $info->getMessage();
-		break;
-	}
+    if (PEAR::isError($info)) {
+        if (is_array($info->getUserInfo())) {
+            foreach ($info->getUserInfo() as $err) {
+                if ($err['level'] == 'error') {
+                    $errors[] = $err['message'];
+                } else {
+                    $warnings[] = $err['message'];
+                }
+            }
+        }
+        $errors[] = $info->getMessage();
+        break;
+    }
 
-	if (version_compare($info->getPackageXmlVersion(), '2.0', '<')) {
-		$errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
-		break;
-	}
+    if (version_compare($info->getPackageXmlVersion(), '2.0', '<')) {
+        $errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
+        break;
+    }
 
-	$pkg_version_ok = true;
-	$pkg_version_macros_found = false;
-	$pkg_xml_ext_version = $info->getVersion();
-	$pkg_name = $info->getName();
-	$pkg_extname = $info->getProvidesExtension();
-	foreach ($info->getFileList() as $file_name => $file_data) {
-		/* The file we're looking for is usually named like php_myextname.h,
-		 	but lets check any .h file in the pkg root. */
-		if ("src" != $file_data["role"] ||
-			false !== strstr($file_data["name"], "/") ||
-			".h" != substr($file_data["name"], -2)) {
-			continue;
-		}
+    $pkg_version_ok = true;
+    $pkg_version_macros_found = false;
+    $pkg_xml_ext_version = $info->getVersion();
+    $pkg_name = $info->getName();
+    $pkg_extname = $info->getProvidesExtension();
+    foreach ($info->getFileList() as $file_name => $file_data) {
+        /* The file we're looking for is usually named like php_myextname.h,
+             but lets check any .h file in the pkg root. */
+        if ("src" != $file_data["role"] ||
+            false !== strstr($file_data["name"], "/") ||
+            ".h" != substr($file_data["name"], -2)) {
+            continue;
+        }
 
-		$file_contents = $info->getFileContents($file_data["name"]);
+        $file_contents = $info->getFileContents($file_data["name"]);
 
-		$pat = ',define\s+PHP_(' . $pkg_name . '|' . $pkg_extname . ')_VERSION\s+"(.*)",i';
-		if (preg_match($pat, $file_contents, $m)) {
-			$pkg_version_macros_found = true;
-			$pkg_found_ext_name = $m[1];
-			$pkg_found_ext_version = $m[2];
-		} else {
-			unset($file_contents);
-			continue;
-		}
+        $pat = ',define\s+PHP_(' . $pkg_name . '|' . $pkg_extname . ')_VERSION\s+"(.*)",i';
+        if (preg_match($pat, $file_contents, $m)) {
+            $pkg_version_macros_found = true;
+            $pkg_found_ext_name = $m[1];
+            $pkg_found_ext_version = $m[2];
+        } else {
+            unset($file_contents);
+            continue;
+        }
 
-		if ($pkg_xml_ext_version == $pkg_found_ext_version) {
-			$pkg_version_ok = true;
-			break;
-		} else {
-			$pkg_version_ok = false;
-		}
-	}
+        if ($pkg_xml_ext_version == $pkg_found_ext_version) {
+            $pkg_version_ok = true;
+            break;
+        } else {
+            $pkg_version_ok = false;
+        }
+    }
 
-	if (!$pkg_version_ok) {
-		$name_to_show = $pkg_version_macros_found ? $pkg_found_ext_name : "MYEXTNAME";
+    if (!$pkg_version_ok) {
+        $name_to_show = $pkg_version_macros_found ? $pkg_found_ext_name : "MYEXTNAME";
 
-		if ($pkg_version_macros_found) {
-			$errors[] = "Extension version mismatch between the package.xml ($pkg_xml_ext_version) "
-				. "and the source code ($pkg_found_ext_version). ";
-			$errors[] = "Both version strings have to match. ";
-			break;
-		} else {
-			$warnings[] = "The compliance between the package version in package.xml and extension source code "
-				. "couldn't be reliably determined. This check fixes the (unintended) "
-				. "version mismatch in phpinfo() and the PECL website. ";
-			$warnings[] = "To pass please "
-				. "#define PHP_" . strtoupper($name_to_show) . "_VERSION \"$pkg_xml_ext_version\" "
-				. "in your php_" . strtolower($name_to_show) . ".h or any other header file "
-				. "and use it for zend_module_entry definition. ";
-			$warnings[] = "Both version strings have to match. ";
-		}
-	}
+        if ($pkg_version_macros_found) {
+            $errors[] = "Extension version mismatch between the package.xml ($pkg_xml_ext_version) "
+                . "and the source code ($pkg_found_ext_version). ";
+            $errors[] = "Both version strings have to match. ";
+            break;
+        } else {
+            $warnings[] = "The compliance between the package version in package.xml and extension source code "
+                . "couldn't be reliably determined. This check fixes the (unintended) "
+                . "version mismatch in phpinfo() and the PECL website. ";
+            $warnings[] = "To pass please "
+                . "#define PHP_" . strtoupper($name_to_show) . "_VERSION \"$pkg_xml_ext_version\" "
+                . "in your php_" . strtolower($name_to_show) . ".h or any other header file "
+                . "and use it for zend_module_entry definition. ";
+            $warnings[] = "Both version strings have to match. ";
+        }
+    }
 
-	$display_form = false;
-	$display_verification = true;
+    $display_form = false;
+    $display_verification = true;
 
     } elseif (isset($_POST['verify'])) {
         // Verify Button
@@ -403,27 +403,27 @@ if ($display_verification) {
 
     $license_found = false;
     foreach ($info->getFileList() as $file_name => $file_data) {
-	    if ("doc" != $file_data["role"]) {
-		    continue;
-	    }
+        if ("doc" != $file_data["role"]) {
+            continue;
+        }
 
-	    /* Don't compare with basename($file_data["name"]), the license has
-	       to be in the package root. */
-	    $lic_fnames = [
-			    "LICENSE", "license",
-			    "LICENSE.md", "license.md",
-			    "COPYING", "copying",
-			    "COPYING.md", "copying.md",
-			    "LICENSE.txt", "license.txt",
-			    "COPYING.txt", "copying.txt"
+        /* Don't compare with basename($file_data["name"]), the license has
+           to be in the package root. */
+        $lic_fnames = [
+                "LICENSE", "license",
+                "LICENSE.md", "license.md",
+                "COPYING", "copying",
+                "COPYING.md", "copying.md",
+                "LICENSE.txt", "license.txt",
+                "COPYING.txt", "copying.txt"
         ];
-	    if (in_array($file_data["name"], $lic_fnames)) {
-		    $license_found = true;
-		    break;
-	    }
+        if (in_array($file_data["name"], $lic_fnames)) {
+            $license_found = true;
+            break;
+        }
     }
     if (!$license_found) {
-	    $warnings[] = "No LICENSE or COPYING file was found in the root of the package. ";
+        $warnings[] = "No LICENSE or COPYING file was found in the root of the package. ";
     }
 
     report_error($errors, 'errors','ERRORS:<br />'

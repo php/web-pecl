@@ -23,9 +23,9 @@ if (isset($showmsg)) {
     header("Refresh: $delay; url=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\"");
     response_header("Logging Out...");
 
-	$logoutmsg = "Authorization failed. Retry?";
+    $logoutmsg = "Authorization failed. Retry?";
     report_error("Press 'Cancel' when presented a new login box or ".
-		 "one saying '$logoutmsg'<br />");
+         "one saying '$logoutmsg'<br />");
     response_footer();
 } else {
     header("HTTP/1.0 401 Unauthorized");

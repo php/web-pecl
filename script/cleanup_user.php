@@ -37,9 +37,9 @@ $res = $dh->query($sql);
 $sql_del = 'DELETE FROM users WHERE handle=';
 $del = 0;
 foreach ($res as $row) {
-	if (!in_array($row['handle'], $svn_accounts)) {
-		$res = $dh->query($sql_del . "'" . $row['handle'] . "'");
-		if ($res) $del++;
-	}
+    if (!in_array($row['handle'], $svn_accounts)) {
+        $res = $dh->query($sql_del . "'" . $row['handle'] . "'");
+        if ($res) $del++;
+    }
 }
 echo "$del accounts deleted.\n";

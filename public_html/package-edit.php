@@ -75,22 +75,22 @@ if (isset($_POST['submit'])) {
               newpackagename = ?, newchannel = ?
               WHERE id = ?';
 
-		if (!empty($_POST['newpk_id'])) {
-			$_POST['new_channel'] = 'pecl.php.net';
-			$_POST['new_package'] = $dbh->getOne('SELECT name from packages WHERE id = ?',
-					[$_POST['newpk_id']]);
-			if (!$_POST['new_package']) {
-				$_POST['new_channel'] = $_POST['newpk_id'] = null;
-			}
-		} else {
-			if ($_POST['new_channel'] == 'pecl.php.net') {
-				$_POST['newpk_id'] = $dbh->getOne('SELECT id from packages WHERE name = ?',
-						[$_POST['new_package']]);
-				if (!$_POST['newpk_id']) {
-					$_POST['new_channel'] = $_POST['new_package'] = null;
-				}
-			}
-		}
+        if (!empty($_POST['newpk_id'])) {
+            $_POST['new_channel'] = 'pecl.php.net';
+            $_POST['new_package'] = $dbh->getOne('SELECT name from packages WHERE id = ?',
+                    [$_POST['newpk_id']]);
+            if (!$_POST['new_package']) {
+                $_POST['new_channel'] = $_POST['newpk_id'] = null;
+            }
+        } else {
+            if ($_POST['new_channel'] == 'pecl.php.net') {
+                $_POST['newpk_id'] = $dbh->getOne('SELECT id from packages WHERE name = ?',
+                        [$_POST['new_package']]);
+                if (!$_POST['newpk_id']) {
+                    $_POST['new_channel'] = $_POST['new_package'] = null;
+                }
+            }
+        }
 
 
     $qparams = [

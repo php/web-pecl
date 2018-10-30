@@ -49,7 +49,7 @@ if (!empty($_REQUEST['cmd'])) {
         unset($_REQUEST['cmd']);
 
     } elseif ($_REQUEST['cmd'] == "Delete note" && !empty($_REQUEST['id'])) {
-		/**
+        /**
          * Delete note
          */
         Note::remove($_REQUEST['id']);
@@ -66,7 +66,7 @@ if (!empty($_REQUEST['cmd'])) {
         }
 
     } elseif ($_REQUEST['cmd'] == "Reject Request" && !empty($_REQUEST['uid'])) {
-		/**
+        /**
          * Reject account request
          */
         if (is_array($_REQUEST['uid'])) {
@@ -80,7 +80,7 @@ if (!empty($_REQUEST['cmd'])) {
         }
 
     } elseif ($_REQUEST['cmd'] == "Delete Request" && !empty($_REQUEST['uid'])) {
-		/**
+        /**
          * Delete account request
          */
         if (is_array($_REQUEST['uid'])) {
@@ -142,59 +142,59 @@ do {
         list($purpose, $moreinfo) = @unserialize($requser->userinfo);
 
         $bb = new BorderBox("Account request from " . htmlspecialchars($requser->name, ENT_QUOTES)
-		  	. "&lt;" . htmlspecialchars($requser->email, ENT_QUOTES) . "&gt;", "100%", "", 2, true);
+              . "&lt;" . htmlspecialchars($requser->email, ENT_QUOTES) . "&gt;", "100%", "", 2, true);
         $bb->horizHeadRow("Requested username:", htmlspecialchars($requser->handle, ENT_QUOTES));
         $bb->horizHeadRow("Realname:", htmlspecialchars($requser->name, ENT_QUOTES));
         $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . htmlspecialchars($requser->email, ENT_QUOTES) . "\">" .
-		  		htmlspecialchars($requser->email, ENT_QUOTES) . "</a>");
+                  htmlspecialchars($requser->email, ENT_QUOTES) . "</a>");
         $bb->horizHeadRow("Purpose of account:", nl2br(htmlspecialchars($purpose, ENT_QUOTES)));
         $bb->horizHeadRow("More information:", htmlspecialchars($moreinfo, ENT_QUOTES));
         $bb->end();
 
-	    print "<br />\n";
-	    $bb = new BorderBox("Notes for user " . htmlspecialchars($requser->handle, ENT_QUOTES));
-	    $notes = $dbh->getAssoc("SELECT id,nby,UNIX_TIMESTAMP(ntime) AS ntime,note FROM notes ".
-	                "WHERE uid = ? ORDER BY ntime", true,
-	                [$requser->handle]);
-	    $i = "      ";
-	    if (is_array($notes) && sizeof($notes) > 0) {
-	        print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
-	        foreach ($notes as $nid => $data) {
-	            list($nby, $ntime, $note) = $data;
-	            print "$i <tr>\n";
-	            print "$i  <td>\n";
-	            print "$i   <b>$nby " . date('H:i jS F Y', $ntime) . ":</b>";
-	            if ($nby == $auth_user->handle) {
-	                $url = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$acreq&cmd=Delete+note&id=$nid";
-	                $msg = "Are you sure you want to delete this note?";
-	                print "[<a href=\"javascript:confirmed_goto('$url', '$msg')\">delete your note</a>]";
-	            }
-	            print "<br />\n";
-	            print "$i   ".htmlspecialchars($note, ENT_QUOTES)."\n";
-	            print "$i  </td>\n";
-	            print "$i </tr>\n";
-	            print "$i <tr><td>&nbsp;</td></tr>\n";
-	        }
-	        print "$i</table>\n";
-	    } else {
-	        print "No notes.";
-	    }
-	    print "$i<form action=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "\" method=\"POST\">\n";
-	    print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
-	    print "$i <tr>\n";
-	    print "$i  <td>\n";
-	    print "$i   To add a note, enter it here:<br />\n";
-	    print "$i    <textarea rows=\"3\" cols=\"55\" name=\"note\"></textarea><br />\n";
-	    print "$i   <input type=\"submit\" value=\"Add note\" name=\"cmd\" />\n";
-	    print "$i   <input type=\"hidden\" name=\"key\" value=\"uid\" />\n";
-	    print "$i   <input type=\"hidden\" name=\"id\" value=\"$requser->handle\" />\n";
-	    print "$i   <input type=\"hidden\" name=\"acreq\" value=\"$acreq\" />\n";
-	    print "$i  </td>\n";
-	    print "$i </tr>\n";
-	    print "$i</table>\n";
-	    print "$i</form>\n";
+        print "<br />\n";
+        $bb = new BorderBox("Notes for user " . htmlspecialchars($requser->handle, ENT_QUOTES));
+        $notes = $dbh->getAssoc("SELECT id,nby,UNIX_TIMESTAMP(ntime) AS ntime,note FROM notes ".
+                    "WHERE uid = ? ORDER BY ntime", true,
+                    [$requser->handle]);
+        $i = "      ";
+        if (is_array($notes) && sizeof($notes) > 0) {
+            print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
+            foreach ($notes as $nid => $data) {
+                list($nby, $ntime, $note) = $data;
+                print "$i <tr>\n";
+                print "$i  <td>\n";
+                print "$i   <b>$nby " . date('H:i jS F Y', $ntime) . ":</b>";
+                if ($nby == $auth_user->handle) {
+                    $url = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$acreq&cmd=Delete+note&id=$nid";
+                    $msg = "Are you sure you want to delete this note?";
+                    print "[<a href=\"javascript:confirmed_goto('$url', '$msg')\">delete your note</a>]";
+                }
+                print "<br />\n";
+                print "$i   ".htmlspecialchars($note, ENT_QUOTES)."\n";
+                print "$i  </td>\n";
+                print "$i </tr>\n";
+                print "$i <tr><td>&nbsp;</td></tr>\n";
+            }
+            print "$i</table>\n";
+        } else {
+            print "No notes.";
+        }
+        print "$i<form action=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "\" method=\"POST\">\n";
+        print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
+        print "$i <tr>\n";
+        print "$i  <td>\n";
+        print "$i   To add a note, enter it here:<br />\n";
+        print "$i    <textarea rows=\"3\" cols=\"55\" name=\"note\"></textarea><br />\n";
+        print "$i   <input type=\"submit\" value=\"Add note\" name=\"cmd\" />\n";
+        print "$i   <input type=\"hidden\" name=\"key\" value=\"uid\" />\n";
+        print "$i   <input type=\"hidden\" name=\"id\" value=\"$requser->handle\" />\n";
+        print "$i   <input type=\"hidden\" name=\"acreq\" value=\"$acreq\" />\n";
+        print "$i  </td>\n";
+        print "$i </tr>\n";
+        print "$i</table>\n";
+        print "$i</form>\n";
 
-	    $bb->end();
+        $bb->end();
 ?>
 
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" method="POST" name="account_form">
@@ -213,11 +213,11 @@ do {
    <textarea rows="3" cols="60" name="reason"></textarea><br />
 
     <select onchange="return updateRejectReason(this)">
-   		<option>Select reason...</option>
-   		<option value="You don't need a PECL account to use PECL or PECL packages.">You don't need a PECL account to use PECL or PECL packages.</option>
-		<option value="Please propose all new packages to the mailing list pecl-dev@lists.php.net first.">Please propose all new packages to the mailing list pecl-dev@lists.php.net first.</option>
-		<option value="Please send all bug fixes to the mailing list pecl-dev@lists.php.net and post a bug at the pecl.php.net package homepage.">Please send all bug fixes to the mailing list pecl-dev@lists.php.net.</option>
-		<option value="Please supply valid credentials, including your full name and a descriptive reason for an account.">Please supply valid credentials, including your full name and a descriptive reason for an account.</option>
+           <option>Select reason...</option>
+           <option value="You don't need a PECL account to use PECL or PECL packages.">You don't need a PECL account to use PECL or PECL packages.</option>
+        <option value="Please propose all new packages to the mailing list pecl-dev@lists.php.net first.">Please propose all new packages to the mailing list pecl-dev@lists.php.net first.</option>
+        <option value="Please send all bug fixes to the mailing list pecl-dev@lists.php.net and post a bug at the pecl.php.net package homepage.">Please send all bug fixes to the mailing list pecl-dev@lists.php.net.</option>
+        <option value="Please supply valid credentials, including your full name and a descriptive reason for an account.">Please supply valid credentials, including your full name and a descriptive reason for an account.</option>
    </select>
 
   </td>
@@ -228,78 +228,78 @@ do {
     // }}}
     // {{{ admin menu
     } else {
-		?>
-		<script>
-			/**
+        ?>
+        <script>
+            /**
             * This code is *nasty* (nastyCode™)
             */
 
-        	function highlightAccountRow(spanObj)
-			{
+            function highlightAccountRow(spanObj)
+            {
                 return true;
-				var highlightColor = '#cfffb7';
+                var highlightColor = '#cfffb7';
 
-				if (typeof(arguments[1]) == 'undefined') {
-					action = (spanObj.parentNode.parentNode.childNodes[0].style.backgroundColor == highlightColor);
-				} else {
-					action = !arguments[1];
-				}
+                if (typeof(arguments[1]) == 'undefined') {
+                    action = (spanObj.parentNode.parentNode.childNodes[0].style.backgroundColor == highlightColor);
+                } else {
+                    action = !arguments[1];
+                }
 
-				if (document.getElementById) {
-					for (var i=0; i<spanObj.parentNode.parentNode.childNodes.length; i++) {
-						if (action) {
-							spanObj.parentNode.parentNode.childNodes[i].style.backgroundColor = '#ffffff';
-							spanObj.parentNode.parentNode.childNodes[0].childNodes[0].checked = false;
-						} else {
-							spanObj.parentNode.parentNode.childNodes[i].style.backgroundColor = highlightColor;
-							spanObj.parentNode.parentNode.childNodes[0].childNodes[0].checked = true;
-						}
-					}
-				}
-			}
+                if (document.getElementById) {
+                    for (var i=0; i<spanObj.parentNode.parentNode.childNodes.length; i++) {
+                        if (action) {
+                            spanObj.parentNode.parentNode.childNodes[i].style.backgroundColor = '#ffffff';
+                            spanObj.parentNode.parentNode.childNodes[0].childNodes[0].checked = false;
+                        } else {
+                            spanObj.parentNode.parentNode.childNodes[i].style.backgroundColor = highlightColor;
+                            spanObj.parentNode.parentNode.childNodes[0].childNodes[0].checked = true;
+                        }
+                    }
+                }
+            }
 
-			allSelected = false;
+            allSelected = false;
 
-			function toggleSelectAll(linkElement)
-			{
-				tableBodyElement = linkElement.parentNode.parentNode.parentNode.parentNode;
+            function toggleSelectAll(linkElement)
+            {
+                tableBodyElement = linkElement.parentNode.parentNode.parentNode.parentNode;
 
-				for (var i=0; i<tableBodyElement.childNodes.length; i++) {
-					if (tableBodyElement.childNodes[i].childNodes[0].childNodes[0].tagName == 'INPUT') {
-						highlightAccountRow(tableBodyElement.childNodes[i].childNodes[1].childNodes[0], !allSelected);
-					}
-				}
+                for (var i=0; i<tableBodyElement.childNodes.length; i++) {
+                    if (tableBodyElement.childNodes[i].childNodes[0].childNodes[0].tagName == 'INPUT') {
+                        highlightAccountRow(tableBodyElement.childNodes[i].childNodes[1].childNodes[0], !allSelected);
+                    }
+                }
 
-				allSelected = !allSelected;
-			}
+                allSelected = !allSelected;
+            }
 
-			function setCmdInput(mode)
-			{
-				switch (mode) {
-					case 'reject':
-						if (document.forms['mass_reject_form'].reason.selectedIndex == 0) {
-							alert('Please select a reason to reject the accounts!');
+            function setCmdInput(mode)
+            {
+                switch (mode) {
+                    case 'reject':
+                        if (document.forms['mass_reject_form'].reason.selectedIndex == 0) {
+                            alert('Please select a reason to reject the accounts!');
 
-						} else if (confirm('Are you sure you want to reject these account requests ?')) {
-							document.forms['mass_reject_form'].cmd.value = 'Reject Request';
-							return true;
-						}
-						break;
+                        } else if (confirm('Are you sure you want to reject these account requests ?')) {
+                            document.forms['mass_reject_form'].cmd.value = 'Reject Request';
+                            return true;
+                        }
+                        break;
 
-					case 'delete':
-						if (confirm('Are you sure you want to delete these account requests ?')) {
-							document.forms['mass_reject_form'].cmd.value = 'Delete Request';
-							return true;
-						}
-						break;
-				}
+                    case 'delete':
+                        if (confirm('Are you sure you want to delete these account requests ?')) {
+                            document.forms['mass_reject_form'].cmd.value = 'Delete Request';
+                            return true;
+                        }
+                        break;
+                }
 
-				return false;
-			}
+                return false;
+            }
         </script>
-		<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" name="mass_reject_form" method="post">
-		<input type="hidden" value="" name="cmd"/>
-		<?php
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" name="mass_reject_form" method="post">
+        <input type="hidden" value="" name="cmd"/>
+        <?php
         $bb = new BorderBox("Account Requests", "100%", "", 7, true);
         $requests = $dbh->getAssoc("SELECT u.handle,u.name,n.note,u.userinfo,u.created FROM users u ".
                                    "LEFT JOIN notes n ON n.uid = u.handle ".
@@ -311,22 +311,22 @@ do {
             foreach ($requests as $handle => $data) {
                 list($name, $note, $userinfo,$created_at) = $data;
 
-				// Grab userinfo/request purpose
-				if (@unserialize($userinfo)) {
-					$userinfo = @unserialize($userinfo);
-					$account_purpose = $userinfo[0];
-				} else {
-					$account_purpose = $userinfo;
-				}
+                // Grab userinfo/request purpose
+                if (@unserialize($userinfo)) {
+                    $userinfo = @unserialize($userinfo);
+                    $account_purpose = $userinfo[0];
+                } else {
+                    $account_purpose = $userinfo;
+                }
 
                 $rejected = (preg_match("/^Account rejected:/", $note));
                 if ($rejected) {
                     continue;
                 }
                 $bb->plainRow('<input type="checkbox" value="' . $handle . '" name="uid[]" onmousedown="highlightAccountRow(this)"/>',
-							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $name),
+                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $name),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $handle),
-							  sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', nl2br($account_purpose)),
+                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', nl2br($account_purpose)),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', ($rejected ? "rejected" : "<font color=\"#c00000\"><strong>Outstanding</strong></font>")),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $created_at),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', "<a onmousedown=\"event.cancelBubble = true\" href=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$handle\">" . make_image("edit.gif") . "</a>")
@@ -338,25 +338,25 @@ do {
         }
         $bb->end();
 
-		?>
-		<br />
-		<table align="center">
-		<tr>
-			<td>
-				<select name="reason">
-					<option value="">Select rejection reason...</option>
-					<option value="Account not needed">Account not needed</option>
-				</select>
-			</td>
-			<td><input type="submit" value="Reject selected accounts" onclick="return setCmdInput('reject')" /></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td><input type="submit" value="Delete selected accounts" onclick="return setCmdInput('delete')" /></td>
-		</tr>
-		</table>
+        ?>
+        <br />
+        <table align="center">
+        <tr>
+            <td>
+                <select name="reason">
+                    <option value="">Select rejection reason...</option>
+                    <option value="Account not needed">Account not needed</option>
+                </select>
+            </td>
+            <td><input type="submit" value="Reject selected accounts" onclick="return setCmdInput('reject')" /></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" value="Delete selected accounts" onclick="return setCmdInput('delete')" /></td>
+        </tr>
+        </table>
 
-		</form>
+        </form>
 <?php
     }
 

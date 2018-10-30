@@ -34,21 +34,21 @@ if (!isset($_COOKIE[session_name()]) &&
  * If they're already logged in, say so.
  */
 if (!empty($auth_user)) {
-	response_header('Login');
-	echo '<div class="warnings">You are already logged in.</div>';
-	response_footer();
-	exit;
+    response_header('Login');
+    echo '<div class="warnings">You are already logged in.</div>';
+    response_footer();
+    exit;
 }
 
 if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_USER'], @$_POST['PEAR_PW'])) {
-	if (!empty($_POST['PEAR_PERSIST'])) {
-		setcookie('REMEMBER_ME', 1, 2147483647, '/');
-		setcookie(session_name(), session_id(), 2147483647, '/');
-	} else {
-	    $expire = 0;
-	    setcookie('REMEMBER_ME', 0, 2147483647, '/');
-	    setcookie(session_name(), session_id(), null, '/');
-	}
+    if (!empty($_POST['PEAR_PERSIST'])) {
+        setcookie('REMEMBER_ME', 1, 2147483647, '/');
+        setcookie(session_name(), session_id(), 2147483647, '/');
+    } else {
+        $expire = 0;
+        setcookie('REMEMBER_ME', 0, 2147483647, '/');
+        setcookie(session_name(), session_id(), null, '/');
+    }
 
     $_SESSION['PEAR_USER'] = $_POST['PEAR_USER'];
 
@@ -75,7 +75,7 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
     {
         localRedirect($_POST['PEAR_OLDURL']);
     } else {
-	    localRedirect('index.php');
+        localRedirect('index.php');
     }
 
     exit;

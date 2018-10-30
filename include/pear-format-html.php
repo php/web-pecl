@@ -254,7 +254,7 @@ echo make_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
  <tr>
   <td class="foot-copy">
    <small>
-	<?php echo make_link('/copyright.php', 'Copyright &copy; 2001-'.date('Y').' The PHP Group'); ?><br />
+    <?php echo make_link('/copyright.php', 'Copyright &copy; 2001-'.date('Y').' The PHP Group'); ?><br />
      All rights reserved.<br />
    </small>
   </td>
@@ -445,9 +445,9 @@ function html_category_urhere($id, $link_lastest = false)
 */
 function getURL($url)
 {
-	include_once 'Net/URL2.php';
-	$obj = new Net_URL2($url);
-	return $obj->getURL();
+    include_once 'Net/URL2.php';
+    $obj = new Net_URL2($url);
+    return $obj->getURL();
 }
 
 /**
@@ -460,8 +460,8 @@ function getURL($url)
 */
 function localRedirect($url)
 {
-	header('Location: ' . getURL($url));
-	exit;
+    header('Location: ' . getURL($url));
+    exit;
 }
 
 /**

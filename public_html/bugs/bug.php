@@ -18,6 +18,13 @@
   +----------------------------------------------------------------------+
 */
 
+/**
+ * This page serves as a redirection map from an old PECL standalone bugs system
+ * prior to the migration to the main bugs.php.net in 2012. These PECL bugs IDs
+ * have their corresponding IDs in the bugs.php.net. Possibly it can be also
+ * removed one day in the future.
+ */
+
 $bugs = [
   5 => '55880',
   11 => '55881',
@@ -4159,11 +4166,13 @@ $bugs = [
   24439 => '60017',
   24440 => '60018',
 ];
+
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!$id) {
-    localRedirect('https://bugs.php.net/search.php');
+    header('Location: https://bugs.php.net/search.php', true, 301);
 } else {
-    header('location: https://bugs.php.net/'. $bugs[$id]);
+    header('location: https://bugs.php.net/'. $bugs[$id], true, 301);
 }
+
 exit();

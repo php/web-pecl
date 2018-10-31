@@ -308,7 +308,6 @@ if ($display_form) {
     {
         for (var i=0; i<document.forms['request_form'].elements.length; i++) {
             document.forms['request_form'].elements[i].disabled = !disabled;
-            //document.forms['request_form'].elements[i].style.backgroundColor = '#c0c0c0';
         }
     }
 

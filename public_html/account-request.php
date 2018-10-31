@@ -18,7 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once "HTML/Form.php";
 include '../include/posttohost.php';
 
 function display_error($msg)
@@ -347,19 +346,18 @@ if ($display_form) {
 
     print "<form action=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\" method=\"post\" name=\"request_form\">\n";
     $bb = new BorderBox("Request a PECL account", "90%", "", 2, true);
-    $bb->horizHeadRow("Username:", HTML_Form::returnText("handle", $handle, 12));
-    $bb->horizHeadRow("First Name:", HTML_Form::returnText("firstname", $firstname));
-    $bb->horizHeadRow("Last Name:", HTML_Form::returnText("lastname", $lastname));
-    $bb->horizHeadRow("Password:", HTML_Form::returnPassword("password", null, 10) . "   Again: " . HTML_Form::returnPassword("password2", null, 10));
-    $bb->horizHeadRow("Need a php.net account?", HTML_Form::returnCheckbox("needsvn", $needsvn));
-
-    $bb->horizHeadRow("Email address:", HTML_Form::returnText("email", $email));
-    $bb->horizHeadRow("Show email address?", HTML_Form::returnCheckbox("showemail", $showemail));
-    $bb->horizHeadRow("Homepage", HTML_Form::returnText("homepage", $homepage));
-    $bb->horizHeadRow("Purpose of your PECL account<br />(No account is needed for using PECL or PECL packages):", HTML_Form::returnTextarea("purpose", stripslashes($purpose)));
-    $bb->horizHeadRow("Sponsoring users<br />(Current php.net users who suggested you request an account and reviewed your extension/patch):", HTML_Form::returnTextarea("sponsor", stripslashes($sponsor)));
-    $bb->horizHeadRow("More relevant information<br />about you (optional):", HTML_Form::returnTextarea("moreinfo", stripslashes($moreinfo)));
-    $bb->horizHeadRow("Which programming language is developed at php.net (spam protection):", HTML_Form::returnText("language", ""));
+    $bb->horizHeadRow("Username:", '<input type="text" name="handle" value="'.$handle.'" size="12" />');
+    $bb->horizHeadRow("First Name:", '<input type="text" name="firstname" value="'.$firstname.'" size="20" />');
+    $bb->horizHeadRow("Last Name:", '<input type="text" name="lastname" value="'.$lastname.'" size="20" />');
+    $bb->horizHeadRow("Password:", '<input type="password" name="password" value="" size="10" />   Again: <input type="password" name="password2" value="" size="10" />');
+    $bb->horizHeadRow("Need a php.net account?", '<input type="checkbox" name="needsvn" '.($needsvn ? 'checked="checked"' : '').' />');
+    $bb->horizHeadRow("Email address:", '<input type="text" name="email" value="'.$email.'" size="20" />');
+    $bb->horizHeadRow("Show email address?", '<input type="checkbox" name="showemail" '.($showemail ? 'checked="checked"' : '').' />');
+    $bb->horizHeadRow("Homepage", '<input type="text" name="homepage" value="'.$homepage.'" size="20" />');
+    $bb->horizHeadRow("Purpose of your PECL account<br />(No account is needed for using PECL or PECL packages):", '<textarea name="purpose" cols="40" rows="5">'.stripslashes($purpose).'</textarea>');
+    $bb->horizHeadRow("Sponsoring users<br />(Current php.net users who suggested you request an account and reviewed your extension/patch):", '<textarea name="sponsor" cols="40" rows="5">'.stripslashes($sponsor).'</textarea>');
+    $bb->horizHeadRow("More relevant information<br />about you (optional):", '<textarea name="moreinfo" cols="40" rows="5">'.stripslashes($moreinfo).'</textarea>');
+    $bb->horizHeadRow("Which programming language is developed at php.net (spam protection):", '<input type="text" name="language" value="" size="20" />');
     $bb->horizHeadRow("Requested from IP address:", $_SERVER['REMOTE_ADDR']);
     $bb->horizHeadRow("<input type=\"submit\" name=\"submit\" value=\"Submit\" />");
     $bb->end();

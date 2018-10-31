@@ -19,8 +19,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'HTML/Form.php';
-
 response_header('Package Statistics');
 ?>
 
@@ -60,8 +58,6 @@ while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
 }
 
 $bb = new Borderbox('Select Package');
-
-// Don't use HTML_Form here since we need to use some custom javascript here
 
 echo ' <form action="package-stats.php" method="get">'."\n";
 echo ' <table>'."\n";

@@ -249,7 +249,7 @@ response_header('Package Search');
  <tr>
   <th class="form-label_left">Maintainer:</th>
   <td class="form-input">
-   <input name="pkg_maintainer" type="text" value="<?php echo htmlspecialchars($_GET['pkg_maintainer'], ENT_QUOTES); ?>" />
+   <input name="pkg_maintainer" type="text" value="<?php echo htmlspecialchars(!empty($_GET['pkg_maintainer']) ? $_GET['pkg_maintainer'] : '', ENT_QUOTES); ?>" />
    <select onchange="document.forms['search_form'].pkg_maintainer.value = this.options[this.selectedIndex].value; this.selectedIndex = 0">
     <option value="">Select user...</option>
     <?php foreach($users as $u):?>

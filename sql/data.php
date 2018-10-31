@@ -22,9 +22,7 @@ require_once 'DB.php';
 require_once __DIR__.'/../include/pear-prepend.php';
 require_once __DIR__.'/../include/pear-database.php';
 
-if(!ini_get('register_globals')){
-    extract($_SERVER);
-}
+extract($_SERVER);
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "data_error_handler");
 list($progname, $type, $user, $pass, $db) = $argv;

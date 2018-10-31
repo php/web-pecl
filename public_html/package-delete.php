@@ -27,32 +27,25 @@ auth_require(true);
 response_header('Delete Package');
 echo '<h1>Delete Package</h1>';
 
-require_once "HTML/Form.php";
-
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     report_error('No package ID specified.');
     response_footer();
     exit;
 }
 
-$form = new HTML_Form("/package-delete.php?id=" . $_GET['id'], "POST");
-
 if (!isset($_POST['confirm'])) {
 
     $bb = new Borderbox("Confirmation");
 
-    $form->start();
-
+    echo '<form action="/package-delete.php?id='.htmlspecialchars($_GET['id'], ENT_QUOTES).'" method="post">'."\n";
     echo "Are you sure that you want to delete the package?<br /><br />";
-    $form->displaySubmit("yes", "confirm");
+    echo '<input type="submit" name="confirm" value="yes" />'."\n";
     echo "&nbsp;";
-    $form->displaySubmit("no", "confirm");
-
+    echo '<input type="submit" name="confirm" value="no" />'."\n";
     echo "<br /><br /><font color=\"#ff0000\"><b>Warning:</b> Deleting
           the package will remove all package information and all
           releases!</font>";
-
-    $form->end();
+    echo '</form>'."\n";
 
     $bb->end();
 
@@ -111,11 +104,11 @@ if (!isset($_POST['confirm'])) {
 
     $rest->deletePackage($packagename);
     $rest->savePackagesCategory($catname);
-    echo "</pre>\nPackage " . $_GET['id'] . " has been deleted.\n";
+    echo "</pre>\nPackage " . htmlspecialchars($_GET['id'], ENT_QUOTES) . " has been deleted.\n";
 
 } else if ($_POST['confirm'] == "no") {
     echo "The package has not been deleted.\n<br /><br />\n";
-    echo "Go back to the " . make_link("/package-info.php?pacid=" . $_GET['id'], "package details") . ".";
+    echo "Go back to the " . make_link("/package-info.php?package=".htmlspecialchars($_GET['id'], ENT_QUOTES), "package details") . ".";
 }
 
 response_footer();

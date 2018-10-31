@@ -19,22 +19,18 @@
 */
 
 /**
- * Send mail to PEAR contributor
+ * Send mail to PECL contributor
  */
 
 /**
  * Redirect to the accounts list if no handle was specified
  */
 if (!isset($_GET['handle']) || !preg_match('@^[0-9A-Za-z_]{2,20}$@', $_GET['handle'])) {
-    localRedirect('/accounts.php');
+    header('Location: /accounts.php', true, 301);
 } else {
     $handle = $_GET['handle'];
     $message = '';
 }
-
-require_once 'HTML/Form.php';
-
-// {{{ printForm
 
 function printForm($data = [])
 {
@@ -49,14 +45,16 @@ function printForm($data = [])
     }
 
     $bb = new BorderBox('Send email');
-    $form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . '?handle=' . htmlspecialchars($_GET['handle'], ENT_QUOTES), 'post', 'contact');
 
-    $form->addText('name', 'Your name:', $data['name'], 30);
-    $form->addText('email', 'EMail address:', $data['email'], 30);
-    $form->addText('subject', 'Subject:', $data['subject'], 30);
-    $form->addTextarea('text', 'Text:', $data['text'], 35, 10);
-    $form->addSubmit('submit', 'Submit');
-    $form->display();
+    $vars = [
+        'handle' => $_GET['handle'],
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'subject' => $data['subject'],
+        'text' => $data['text'],
+    ];
+
+    include __DIR__.'/../templates/forms/send_email.php';
 
     $bb->end();
 
@@ -64,8 +62,6 @@ function printForm($data = [])
     echo "document.forms.contact." . $focus . ".focus();\n";
     echo "</script>";
 }
-
-// }}}
 
 response_header('Contact');
 
@@ -106,7 +102,7 @@ if (isset($_POST['submit'])) {
         if (@mail($row['email'], $_POST['subject'], $text, 'From: "' . $_POST['name'] . '" <' . $_POST['email'] . '>', '-f noreply@php.net')) {
             echo '<p>Your message has been sent successfully.</p>';
         } else {
-            PEAR::raiseError('An error occured while sending the message!');
+            PEAR::raiseError('An error occurred while sending the message!');
         }
     } else {
         echo '<p><font color=\'#FF0000\'>An error has occurred:<ul>'

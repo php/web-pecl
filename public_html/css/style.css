@@ -453,3 +453,15 @@ td.moreInfo {
     cursor: pointer;
     cursor: hand;
 }
+
+.pecl-form div {
+    margin-bottom: 10px;
+}
+
+.pecl-form label {
+    font-weight: bold;
+    text-align: right;
+    float: left;
+    width: 150px;
+    margin-right: 15px;
+}

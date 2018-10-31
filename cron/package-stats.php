@@ -24,7 +24,8 @@
  * via cron.
  */
 
-require_once('DB.php');
+require_once 'DB.php';
+
 /**
 * DSN for pear packages database
 */

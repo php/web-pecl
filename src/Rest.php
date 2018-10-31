@@ -18,7 +18,10 @@
   +----------------------------------------------------------------------+
 */
 
+require_once 'PEAR/PackageFile/Parser/v2.php';
+require_once 'PEAR/Config.php';
 require_once __DIR__.'/Utils/Filesystem.php';
+require_once __DIR__.'/Karma.php';
 
 use App\Utils\Filesystem;
 
@@ -361,9 +364,6 @@ class Rest
      */
     public function saveAllReleases($package)
     {
-        require_once 'PEAR/PackageFile/Parser/v2.php';
-        require_once 'PEAR/Config.php';
-
         $extra = '/rest/';
         $pid = Package::info($package, 'id');
         $releases = $this->dbh->getAll('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC', [$pid], DB_FETCHMODE_ASSOC);
@@ -659,8 +659,6 @@ class Rest
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allmaintainers
     http://pear.php.net/dtd/rest.allmaintainers.xsd">' . "\n";
         // package information
-
-        require_once __DIR__.'/../src/Karma.php';
 
         $karma = new Karma($this->dbh);
 

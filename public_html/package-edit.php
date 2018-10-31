@@ -24,7 +24,7 @@
 
 auth_require();
 
-require_once "HTML/Form.php";
+require_once 'HTML/Form.php';
 $form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES));
 
 response_header("Edit package");

@@ -24,13 +24,10 @@
 * o Make headers in package list clickable for ordering
 */
 
-$template_dir = dirname(__DIR__) . '/templates/';
 $script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
-
-require_once('HTML/Table.php');
-require_once('Pager/Pager.php');
-require_once('Net/URL.php');
+require_once 'HTML/Table.php';
+require_once 'Pager/Pager.php';
 
 /**
 * Returns an appropriate query string
@@ -278,4 +275,5 @@ if ($moreinfo) {
  * Template
  */
 error_reporting(E_ALL & ~E_NOTICE);
-include($template_dir . 'packages.php');
+
+include __DIR__.'/../templates/packages.php';

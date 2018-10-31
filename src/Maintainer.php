@@ -22,6 +22,8 @@
   +----------------------------------------------------------------------+
 */
 
+require_once 'PEAR/Common.php';
+
 /**
  * Class to handle maintainers
  */
@@ -95,8 +97,6 @@ class Maintainer
      */
     private static function isValidRole($role)
     {
-        require_once "PEAR/Common.php";
-
         static $roles;
 
         if (empty($roles)) {

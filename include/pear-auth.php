@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+require_once __DIR__.'/../src/Karma.php';
+
 function auth_reject($realm = null, $message = null)
 {
     if ($realm === null) {
@@ -145,8 +147,6 @@ function auth_check($atom)
 {
     global $dbh;
     static $karma;
-
-    require_once __DIR__.'/../src/Karma.php';
 
     global $auth_user;
 

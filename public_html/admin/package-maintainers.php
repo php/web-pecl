@@ -18,7 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
-require_once "HTML/Form.php";
+require_once 'HTML/Form.php';
 
 response_header("PEAR Administration - Package maintainers");
 

@@ -27,7 +27,7 @@ auth_require(true);
  *   deleting categories.
  */
 
-$template_dir = dirname(__DIR__) . '/../templates/';
+require_once 'HTML/TreeMenu.php';
 
 /**
  * Function to recurse thru the tree adding nodes to treemenu
@@ -104,7 +104,6 @@ if (!empty($_POST)) {
 /**
  * Create the menu, set the db to assoc mode
  */
-require_once('HTML/TreeMenu.php');
 $treeMenu = new HTML_TreeMenu();
 
 /**
@@ -124,4 +123,4 @@ if (!empty($_SESSION['category_manager']['error_msg'])) {
 $categories   = $dbh->getAll('SELECT id, name, description FROM categories ORDER BY id', null, DB_FETCHMODE_ASSOC);
 $treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, ['images' => '../gifs/TreeMenu', 'defaultClass' => 'treeMenuOff']);
 
-include($template_dir . 'category-manager.php');
+include __DIR__.'/../../templates/category-manager.php';

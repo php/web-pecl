@@ -25,9 +25,11 @@
 /**
  * Useful files to have
  */
-set_include_path(__DIR__ . '/include' . PATH_SEPARATOR . get_include_path());
+set_include_path(__DIR__.'/include'.PATH_SEPARATOR.get_include_path());
+
 ob_start();
-require_once "pear-config.php";
+require_once __DIR__.'/include/pear-config.php';
+
 if ($_SERVER['SERVER_NAME'] != PEAR_CHANNELNAME) {
     error_reporting(E_ALL);
     define('DEVBOX', true);
@@ -36,13 +38,14 @@ if ($_SERVER['SERVER_NAME'] != PEAR_CHANNELNAME) {
     define('DEVBOX', false);
 }
 
-require_once "PEAR.php";
-
-include_once "pear-database.php";
+require_once 'PEAR.php';
+require_once 'PEAR/PackageFile.php';
+require_once 'Archive/Tar.php';
+require_once 'DB.php';
+require_once 'DB/storage.php';
+require_once __DIR__.'/include/pear-database.php';
 require_once __DIR__.'/src/Rest.php';
 require_once __DIR__.'/src/Utils/Filesystem.php';
-include_once "DB.php";
-include_once "DB/storage.php";
 
 use App\Utils\Filesystem;
 
@@ -94,8 +97,7 @@ $rest->saveAllMaintainers();
 echo "done\n";
 echo "Generating Package REST...\n";
 $rest->saveAllPackages();
-require_once 'Archive/Tar.php';
-require_once 'PEAR/PackageFile.php';
+
 $config = PEAR_Config::singleton();
 $pkg = new PEAR_PackageFile($config);
 foreach (Package::listAll(false, false, false) as $package => $info) {

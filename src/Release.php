@@ -22,6 +22,11 @@
   +----------------------------------------------------------------------+
 */
 
+require_once 'PEAR/Common.php';
+require_once 'Archive/Tar.php';
+require_once 'PEAR/PackageFile.php';
+require_once 'PEAR/Config.php';
+
 /**
  * Class to handle releases
  */
@@ -193,11 +198,7 @@ class Release
      */
     private static function confirmUpload($package, $version, $state, $relnotes, $md5sum, $package_id, $file)
     {
-        require_once "PEAR/Common.php";
-
         global $dbh, $auth_user, $_PEAR_Common_dependency_types, $_PEAR_Common_dependency_relations, $rest;
-
-        require_once 'Archive/Tar.php';
 
         $tar = new Archive_Tar($file);
 
@@ -245,9 +246,6 @@ class Release
             "(`package`, `release`, `type`, `relation`, `version`, `name`, `optional`) " .
             "VALUES (?,?,?,?,?,?,?)";
         $sth = $dbh->prepare($query);
-
-        require_once 'PEAR/PackageFile.php';
-        require_once 'PEAR/Config.php';
 
         $config = PEAR_Config::singleton();
         $pf = new PEAR_PackageFile($config);
@@ -396,8 +394,6 @@ class Release
     public static function HTTPdownload($package, $version = null, $file = null, $uncompress = false)
     {
         global $dbh;
-
-        require_once "HTTP.php";
 
         $package_id = Package::info($package, 'packageid', true);
         if (!$package_id) {

@@ -19,7 +19,7 @@
   +----------------------------------------------------------------------+
 */
 
-require_once __DIR__ . '/../include/pear-prepend.php';
+require_once __DIR__.'/../include/pear-prepend.php';
 
 $dbh = DB::connect("mysql://pear:pear@localhost/pear");
 if (DB::isError($dbh)) {

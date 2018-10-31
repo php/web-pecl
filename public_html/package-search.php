@@ -28,8 +28,8 @@
 *  o Release date (on/before/after)
 */
 
-$template_dir = dirname(__DIR__) . '/templates/';
-require_once "HTML/Form.php";
+require_once 'HTML/Form.php';
+require_once 'Pager/Pager.php';
 
 /**
 * Setup code for the form
@@ -159,7 +159,6 @@ if (!empty($_GET)) {
     if (($numrows = $result->numRows()) > 0) {
 
         // Paging
-        include_once('Pager/Pager.php');
         $params['itemData'] = range(0, $numrows - 1);
         $pager = Pager::factory($params);
         list($from, $to) = $pager->getOffsetByPageId();
@@ -203,4 +202,4 @@ if (!empty($_GET)) {
 /**
  * Template stuff
  */
-@include($template_dir . 'package-search.php');
+include __DIR__.'/../templates/package-search.php';

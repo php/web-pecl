@@ -24,7 +24,7 @@
  * Drop unused tables
  */
 
-include __DIR__ . '/../include/pear-config.php';
+require_once __DIR__.'/../include/pear-config.php';
 
 $drop_elections = '
 DROP TABLE IF EXISTS

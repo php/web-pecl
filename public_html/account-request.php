@@ -18,7 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
-include '../include/posttohost.php';
+require_once __DIR__.'/../include/posttohost.php';
 
 function display_error($msg)
 {

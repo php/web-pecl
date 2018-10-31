@@ -18,9 +18,9 @@
   +----------------------------------------------------------------------+
 */
 
-require_once "../include/pear-prepend.php";
-require_once "DB.php";
-require_once "../include/pear-database.php";
+require_once 'DB.php';
+require_once __DIR__.'/../include/pear-prepend.php';
+require_once __DIR__.'/../include/pear-database.php';
 
 if(!ini_get('register_globals')){
     extract($_SERVER);
@@ -33,10 +33,10 @@ $dbh->query('SET NAMES utf8');
 $me = getenv("USER");
 $now = gmdate("Y-m-d H:i:s");
 
-include "./addusers.php";
-include "./addcategories.php";
-include "./addpackages.php";
-include "./addacls.php";
+include __DIR__.'/addusers.php';
+include __DIR__.'/addcategories.php';
+include __DIR__.'/addpackages.php';
+include __DIR__.'/addacls.php';
 
 function data_error_handler($obj) {
     print "Error when adding users: ";

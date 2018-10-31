@@ -27,6 +27,10 @@ define('HTML_FORM_TD_ATTR', 'class="form-input"');
 $script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
 require_once 'HTML/Form.php';
+require_once 'HTTP/Upload.php';
+require_once 'PEAR/PackageFile.php';
+require_once 'PEAR/Config.php';
+require_once 'PEAR/Common.php';
 
 $display_form         = true;
 $display_verification = false;
@@ -42,8 +46,6 @@ if (!file_exists(PEAR_UPLOAD_TMPDIR)) {
 do {
     if (isset($_POST['upload'])) {
         // Upload Button
-
-        include_once 'HTTP/Upload.php';
         $upload_obj = new HTTP_Upload('en');
         $file = $upload_obj->getFiles('distfile');
         if (PEAR::isError($file)) {
@@ -67,8 +69,6 @@ do {
             $errors[] = $file->errorMsg();
             break;
         }
-    include_once 'PEAR/PackageFile.php';
-    include_once 'PEAR/Config.php';
 
     $config = PEAR_Config::singleton();
     $pkg = new PEAR_PackageFile($config);
@@ -160,7 +160,6 @@ do {
             break;
         }
 
-        include_once 'PEAR/Common.php';
         $util = new PEAR_Common;
         $info = $util->infoFromTgzFile($distfile);
         if (class_exists('PEAR_PackageFile')) {
@@ -349,9 +348,6 @@ MSG;
 
 
 if ($display_verification) {
-    include_once 'PEAR/PackageFile.php';
-    include_once 'PEAR/Config.php';
-
     response_header('Upload New Release :: Verify');
 
     $config = PEAR_Config::singleton();

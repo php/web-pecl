@@ -89,7 +89,7 @@ To install PEAR dependencies:
 
 ```bash
 pear channel-update pear.php.net
-pear install --alldeps DB HTTP HTTP_Upload-1.0.0b4 HTML_Table Pager Net_URL HTML_Form
+pear install --alldeps DB HTTP HTTP_Upload-1.0.0b4 HTML_Table Pager Net_URL2 HTML_TreeMenu
 pear install --ignore-errors HTML_Form
 ```
 

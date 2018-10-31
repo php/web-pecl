@@ -25,7 +25,8 @@ PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
 $extra_styles = [];
 
-require_once 'layout.php';
+require_once 'Net/URL2.php';
+require_once __DIR__.'/layout.php';
 require_once __DIR__.'/../src/BorderBox.php';
 
 $GLOBALS['main_menu'] = [
@@ -438,14 +439,13 @@ function html_category_urhere($id, $link_lastest = false)
 }
 
 /**
-* Returns an absolute URL using Net_URL
+* Returns an absolute URL using Net_URL2
 *
 * @param  string $url All/part of a url
 * @return string      Full url
 */
 function getURL($url)
 {
-    include_once 'Net/URL2.php';
     $obj = new Net_URL2($url);
     return $obj->getURL();
 }

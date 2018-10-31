@@ -19,7 +19,7 @@
   +----------------------------------------------------------------------+
 */
 
-include __DIR__ . '/../include/pear-config.php';
+require_once __DIR__.'/../include/pear-config.php';
 
 $sql_movetosvn = "UPDATE packages SET cvs_link =
 IF (cvs_link REGEXP('cvs.php.net\/cvs.php(.*)'),

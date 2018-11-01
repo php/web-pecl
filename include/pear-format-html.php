@@ -253,7 +253,7 @@ function response_footer($style = false)
  <tr>
   <td class="foot-copy">
    <small>
-     <a href="/copyright.php">Copyright &copy; 2001-<?= date('Y'); ?>The PHP Group</a><br />
+     <a href="/copyright.php">Copyright &copy; 2001-<?= date('Y'); ?> The PHP Group</a><br />
      All rights reserved.<br />
    </small>
   </td>

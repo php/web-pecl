@@ -65,7 +65,7 @@ searchable.
 <table cellpadding="5" cellspacing="1">
 <?php
 
-while ( list(, $listinfo) = each($mailing_lists)) {
+foreach ($mailing_lists as $listinfo) {
     if (!is_array($listinfo)) {
 
         echo '<tr bgcolor="#cccccc">';

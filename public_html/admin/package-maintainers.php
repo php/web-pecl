@@ -18,8 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'HTML/Form.php';
-
 response_header("PEAR Administration - Package maintainers");
 
 if (isset($_GET['pid'])) {
@@ -38,10 +36,7 @@ if (empty($id)) {
 
     $bb = new BorderBox("Select package");
 
-    $form = new HTML_Form($self);
-    $form->addSelect("pid", "Package:", $values);
-    $form->addSubmit();
-    $form->display();
+    include __DIR__.'/../../templates/forms/admin_select_package.php';
 
     $bb->end();
 

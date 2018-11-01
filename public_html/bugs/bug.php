@@ -4172,7 +4172,7 @@ $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id) {
     header('Location: https://bugs.php.net/search.php', true, 301);
 } else {
-    header('location: https://bugs.php.net/'. $bugs[$id], true, 301);
+    header('Location: https://bugs.php.net/'. $bugs[$id], true, 301);
 }
 
 exit();

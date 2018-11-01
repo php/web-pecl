@@ -27,6 +27,7 @@
  */
 if (!isset($_GET['handle']) || !preg_match('@^[0-9A-Za-z_]{2,20}$@', $_GET['handle'])) {
     header('Location: /accounts.php', true, 301);
+    exit;
 } else {
     $handle = $_GET['handle'];
     $message = '';

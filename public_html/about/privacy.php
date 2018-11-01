@@ -41,7 +41,7 @@ but we do only use those files for statistical purposes.</p>
 you login on the site, the cookies will not be used to store personal
 information and we do not give away the information from the cookies.</p>
 
-<p><?php echo make_link("/about/", "Back"); ?></p>
+<p><a href="/about/">Return to page about PECL website.</a></p>
 
 <?php
 response_footer();

@@ -75,7 +75,7 @@ $bb->horizHeadRow("Additional information:", empty($row['userinfo'])?"&nbsp;":$r
 $bb->horizHeadRow("VCS Access:", implode("<br />", $access));
 
 if ($row['wishlist'] != "") {
-    $bb->horizHeadRow("Wishlist:", make_link("/wishlist.php/" . $row['handle'], "Click here to be redirected."));
+    $bb->horizHeadRow("Wishlist:", '<a href="/wishlist.php/'.$row['handle'].'">Click here to be redirected.</a>');
 }
 
 if ($row['admin'] == 1) {

@@ -161,8 +161,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         $release_statistics = Statistics::activeRelease($_GET['pid'],
                 (isset($_GET['rid']) ? $_GET['rid'] : ''));
         foreach ($release_statistics as $key => $value) {
-            $version = make_link('/package/' . $info['name'] .
-                '/' . $value['release'], $value['release']);
+            $version = '<a href="/package/'.$info['name'].'/'.$value['release'].'">'.$value['release'].'</a>';
             echo ' <tr>';
             echo '  <td>' . $version . "</td>\n";
             echo '  <td>' . number_format($value['dl_number'], 0, '.', ',');
@@ -398,7 +397,7 @@ if (@!$_GET['pid']) {
         echo "  <tr bgcolor=\"#eeeeee\">\n";
         echo "   <td>" . $row['package'] .  "</td>\n";
         echo "   <td>" . number_format($row['dl_number'], 0, '.', ',') . "</td>\n";
-        echo "   <td>[". make_link("/package-stats.php?cid=" . $row['cid'] . "&amp;pid=" . $row['pid'] , 'Details') . "]</td>\n";
+        echo '   <td>[<a href="/package-stats.php?cid='.$row['cid'].'&amp;pid='.$row['pid'].'">Details</a>]</td>'."\n";
         echo "  </tr>\n";
     }
     echo " </table>\n";

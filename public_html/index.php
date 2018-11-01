@@ -55,7 +55,7 @@ sister, <acronym title="PHP Extension and Application Repository"
 >PEAR</acronym>.
 </p>';
 
-echo '<h3>'; echo make_link('/news/', 'News'); echo '</h3>';
+echo '<h3><a href="/news/">News</a></h3>';
 echo '<h3>Documentation</h3>';
 echo '<div class="indent">';
 echo menu_link("PECL specific docs", "/doc/index.php");

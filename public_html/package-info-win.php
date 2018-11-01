@@ -121,7 +121,7 @@ if ($version) {
 
 html_category_urhere($pkg['categoryid'], true);
 if ($relid) {
-    echo " :: " . make_link("/package/$name", $name) . " :: <b>Windows</b>";
+    echo ' :: <a href="/package/'.$name.'">'.$name.'</a> :: <b>Windows</b>';
 }
 
 print "<h2 align=\"center\">$name";
@@ -187,7 +187,7 @@ $bb->horizHeadRow("License", get_license_link($license));
 $bb->horizHeadRow("Description", nl2br($description));
 
 if (!empty($homepage)) {
-    $bb->horizHeadRow("Homepage", make_link($homepage));
+    $bb->horizHeadRow("Homepage", '<a href="'.$homepage.'">'.$homepage.'</a>');
 }
 
 if ($relid) {
@@ -204,13 +204,11 @@ if ($relid) {
 
 if (!empty($auth_user)) {
     $bb->fullRow("<div align=\"right\">" .
-                 make_link("/package-edit.php?id=$pacid",
-                           make_image("edit.gif", "Edit package information")) .
-                 ($auth_user->isAdmin()?"&nbsp;" . make_link("/package-delete.php?id=$pacid",
-                                      make_image("delete.gif", "Delete package")):"") .
-                 "&nbsp;[" . make_link("/admin/package-maintainers.php?pid=$pacid",
-                                       "Edit maintainers") .
-                 "]</div>");
+                 '<a href="/package-edit.php?id='.$pacid.'">'.
+                           make_image("edit.gif", "Edit package information").'</a>'.
+                 ($auth_user->isAdmin() ? '&nbsp;<a href="/package-delete.php?id='.$pacid.'">'.
+                                      make_image("delete.gif", "Delete package").'</a>' : '') .
+                 '&nbsp;[<a href="/admin/package-maintainers.php?pid='.$pacid.'">Edit maintainers</a>]</div>');
 }
 
 $bb->end();
@@ -249,17 +247,13 @@ if ($version) {
 <table border="0" cellspacing="3" cellpadding="3" height="48" width="90%" align="center">
 <tr>
 <?php
-$get_link = make_link("/get/$name", 'Latest Tarball');
+$get_link = '<a href="/get/'.$name.'">Latest Tarball</a>';
 if ($version) {
-    $changelog_link = make_link("/package-changelog.php?package=" .
-                                $pkg['name'] . '&amp;release=' . $version,
-                                'Changelog');
+    $changelog_link = '<a href="/package-changelog.php?package='.$pkg['name'].'&amp;release='.$version.'">Changelog</a>';
 } else {
-    $changelog_link = make_link("/package-changelog.php?package=" . $pkg['name'],
-                                'Changelog');
+    $changelog_link = '<a href="/package-changelog.php?package='.$pkg['name'].'">Changelog</a>';
 }
-$stats_link = make_link("/package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=" . $pkg['categoryid'],
-                        "View Statistics");
+$stats_link = '<a href="/package-stats.php?pid='.$pacid.'&amp;rid=&amp;cid='.$pkg['categoryid'].'">View Statistics</a>';
 ?>
     <td align="center">[ <?php print $get_link; ?> ]</td>
     <td align="center">[ <?php print $changelog_link; ?> ]</td>
@@ -269,17 +263,17 @@ $stats_link = make_link("/package-stats.php?pid=" . $pacid . "&amp;rid=&amp;cid=
 <td align="center">
 <?php
 if (!empty($cvs_link)) {
-    print '[ ' . make_link($cvs_link, 'Browse Source', 'top') . ' ]';
+    print '[ <a href="'.$cvs_link.'" target="_blank">Browse Source</a> ]';
 }
 print '&nbsp;</td>';
 
 if (!empty($bug_link)) {
-    print '<td align="center">[ ' . make_link($bug_link, "Package Bugs") . ' ]</td>';
+    print '<td align="center">[ <a href="'.$bug_link.'">Package Bugs</a> ]</td>';
 } else {
-    print '<td align="center">[ ' . make_bug_link($pkg['name']) . ' ]</td>';
+    print '<td align="center">[ <a href="https://bugs.php.net/search.php?cmd=display&status=Open&package_name[]='.$pkg['name'].'">Package Bugs</a> ]</td>';
 }
 if (!empty($doc_link)) {
-    print '<td align="center">[ ' . make_link($doc_link, "View Documentation") . ' ]</td>';
+    print '<td align="center">[ <a href="'.$doc_link.'">View Documentation</a> ]</td>';
 } else {
     print '<td />';
 }
@@ -289,7 +283,7 @@ if (!empty($doc_link)) {
 if (empty($bug_link)) {
 ?>
 <tr>
-    <td align="center">[ <?php echo make_bug_link($pkg['name'], 'report', 'Report new bug'); ?> ]</td>
+    <td align="center">[ <a href="https://bugs.php.net/report.php?package=<?= $pkg['name']; ?>">Report new bug</a> ]</td>
 </tr>
 <?php
 }
@@ -329,15 +323,17 @@ if (!$relid) {
                 }
             }
 
-            $link_changelog = "<small>[" . make_link("/package-changelog.php?package=" .
-                                                     $pkg['name'] . "&release=" .
-                                                     $r_version, "Changelog")
-                . "]</small>";
+            $link_changelog = '<small>[<a href="/package-changelog.php?package='.$pkg['name'].'&release='.$r_version.'">Changelog</a>]</small>';
 
             $href_release = "/package/" . $pkg['name'] . "/" . $r_version;
 
-            $bb->horizHeadRow(make_link($href_release, $r_version), $r['state'],
-                          $r['releasedate'], $downloads_html, $link_changelog);
+            $bb->horizHeadRow(
+                '<a href="'.$href_release.'">'.$r_version.'</a>',
+                $r['state'],
+                $r['releasedate'],
+                $downloads_html,
+                $link_changelog
+            );
 
         }
     }
@@ -458,7 +454,7 @@ if (count($dependants) > 0) {
     $bb = new BorderBox("Packages that depend on " . $name);
 
     foreach ($dependants as $dep) {
-        $bb->plainRow(make_link("/package/" . $dep['p_name'], $dep['p_name']));
+        $bb->plainRow('<a href="/package/'.$dep['p_name'].'">'.$dep['p_name'].'</a>');
     }
 
     $bb->end();

@@ -24,18 +24,18 @@ response_header("About this site");
 <h1>About this site</h1>
 
 <p>This site has been created and is maintained by a number of people,
-which are listed on the <?php echo make_link("/credits.php", "credits page"); ?>.
-If you would like to contact them, you can write to
-<?php echo make_mailto_link("php-webmaster@lists.php.net"); ?>.</p>
-
-<p>It has been built with <?php echo make_link("https://httpd.apache.org/", "Apache"); ?>,
-<?php echo make_link("https://php.net/", "PHP"); ?>,
-<?php echo make_link("https://www.mysql.com/", "MySQL"); ?> and some
-(as you might have guessed) PEAR packages. The source code of the website is
-<?php echo make_link("https://git.php.net/?p=web/pecl.git", "available via git"); ?>.
+which are listed on the <a href="/credits.php">credits page</a>. If you would
+like to contact them, you can write to
+<a href="mailto:php-webmaster@lists.php.net">php-webmaster@lists.php.net</a>.
 </p>
 
-<p>Read the <?php echo make_link("privacy.php", "privacy policy"); ?>.</p>
+<p>It has been built with <a href="https://httpd.apache.org">Apache</a>,
+<a href="https://php.net">PHP</a>, <a href="https://www.mysql.com">MySQL</a>
+and some (as you might have guessed) PEAR packages. The source code of the
+website is <a href="https://git.php.net/?p=web/pecl.git">available via git</a>.
+</p>
+
+<p>Read the <a href="privacy.php">privacy policy</a>.</p>
 
 <?php
 response_footer();

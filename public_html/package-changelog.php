@@ -36,7 +36,7 @@ if (empty($pkg['name'])) {
 
 $name = $pkg['name'];
 response_header("$name Changelog");
-print '<p>' . make_link("/" . $name, 'Return') . '</p>';
+print '<p><a href="/'.$name.'">Return</a></p>';
 $bb = new Borderbox("Changelog for " . $name, "90%", "", 2, true);
 
 if (count($pkg['releases']) == 0) {
@@ -45,8 +45,7 @@ if (count($pkg['releases']) == 0) {
     $bb->headRow("Release", "What has changed?");
 
     foreach ($pkg['releases'] as $version => $release) {
-        $link = make_link("package-info.php?package=" . $pkg['name'] .
-                          "&amp;version=" . urlencode($version), $version);
+        $link = '<a href="package-info.php?package='.$pkg['name'].'&amp;version='.urlencode($version).'">'.$version.'</a>';
 
         if (!empty($_GET['release']) && $version == $_GET['release']) {
             $bb->horizHeadRow($link, nl2br($release['releasenotes']));
@@ -56,5 +55,5 @@ if (count($pkg['releases']) == 0) {
     }
 }
 $bb->end();
-print '<p>' . make_link("/" . $name, 'Return') . '</p>';
+print '<p><a href="/'.$name.'">Return</a></p>';
 response_footer();

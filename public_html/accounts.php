@@ -127,7 +127,7 @@ while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
     } else {
         print " <tr bgcolor=\"#e0e0e0\">\n";
     }
-    print "  <td>" . make_link("/user/" . $handle, $handle) . "</td>\n";
+    print '  <td><a href="/user/'.$handle.'">'.$handle.'</a></td>'."\n";
     print "  <td>$name</td>\n";
 
     if ($showemail) {

@@ -122,14 +122,14 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
 <table class="head" cellspacing="0" cellpadding="0" width="100%">
  <tr>
   <td class="head-logo">
-<?php echo make_link('/', make_image('peclsmall.gif', 'PECL :: The PHP Extension Community Library', false, false, false, false, 'margin: 5px;')); ?><br />
+    <a href="/"><?php echo make_image('peclsmall.gif', 'PECL :: The PHP Extension Community Library', false, false, false, false, 'margin: 5px;'); ?></a><br />
   </td>
 
   <td class="head-menu">
       <?php
 
     if (empty($auth_user)) {
-        echo make_link('/login.php', 'Login', false, 'class="menuBlack"');
+        echo '<a href="/login.php" class="menuBlack">Login</a>';
     } else {
         print '<small class="menuWhite">';
         print 'Logged in as ' . strtoupper($auth_user->handle) . ' (';
@@ -137,14 +137,14 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
         print '<a class="menuWhite" href="/account-edit.php?handle=' . $auth_user->handle . '">Profile</a> | ';
         print '<a class="menuWhite" href="https://bugs.php.net/search.php?cmd=display&amp;status=Open&amp;assign=' . $auth_user->handle . '">Bugs</a>';
         print ")</small><br />\n";
-        echo make_link('/?logout=1', 'Logout', false, 'class="menuBlack"');
+        echo '<a href="/?logout=1" class="menuBlack">Logout</a>';
     }
     echo '&nbsp;|&nbsp;';
-    echo make_link('/packages.php', 'Packages', false, 'class="menuBlack"');
+    echo '<a href="/packages.php" class="menuBlack">Packages</a>';
     echo '&nbsp;|&nbsp;';
-    echo make_link('/support.php', 'Support', false, 'class="menuBlack"');
+    echo '<a href="/support.php" class="menuBlack">Support</a>';
     echo '&nbsp;|&nbsp;';
-    echo make_link('/bugs/', 'Bugs', false, 'class="menuBlack"');
+    echo '<a href="/bugs/" class="menuBlack">Bugs</a>';
       ?>
   </td>
  </tr>
@@ -243,11 +243,9 @@ function response_footer($style = false)
 <table class="foot" cellspacing="0" cellpadding="0">
  <tr>
   <td class="foot-bar" colspan="2">
-<?php
-echo make_link('/about/privacy.php', 'PRIVACY POLICY', false, 'class="menuBlack"');
-echo '&nbsp;|&nbsp;';
-echo make_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
-?>
+    <a href="/about/privacy.php" class="menuBlack">PRIVACY POLICY</a>
+    &nbsp;|&nbsp;
+    <a href="/credits.php" class="menuBlack">CREDITS</a>
    <br />
   </td>
  </tr>
@@ -255,14 +253,14 @@ echo make_link('/credits.php', 'CREDITS', false, 'class="menuBlack"');
  <tr>
   <td class="foot-copy">
    <small>
-    <?php echo make_link('/copyright.php', 'Copyright &copy; 2001-'.date('Y').' The PHP Group'); ?><br />
+     <a href="/copyright.php">Copyright &copy; 2001-<?= date('Y'); ?>The PHP Group</a><br />
      All rights reserved.<br />
    </small>
   </td>
   <td class="foot-source">
    <small>
     Last updated: <?php echo $LAST_UPDATED; ?><br />
-    Bandwidth and hardware provided by: <?php echo make_link("https://www.pair.com/", "pair Networks"); ?>
+    Bandwidth and hardware provided by: <a href="https://www.pair.com/">pair Networks</a>
    </small>
   </td>
  </tr>
@@ -299,9 +297,9 @@ function &draw_navigation($data, $menu_title = '')
 
 function menu_link($text, $url) {
     echo "<p>\n";
-    echo make_link($url, make_image('pecl_item.gif', $text) );
+    echo '<a href="'.$url.'">'.make_image('pecl_item.gif', $text).'</a>';
     echo '&nbsp;';
-    echo make_link($url, '<b>' . $text . '</b>' );
+    echo '<a href="'.$url.'"><b>'.$text.'</b></a>';
     echo "</p>\n";
 }
 

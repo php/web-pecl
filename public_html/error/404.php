@@ -86,7 +86,7 @@ found on this server.</p>
     <ul>
     <?php foreach($packages as $p) { ?>
         <li>
-            <?php echo make_link(getURL($pinfo_url . $p['name']), $p['name']); ?><br />
+            <a href="<?= getURL($pinfo_url . $p['name']); ?>"><?= $p['name']; ?></a><br />
             <i><?php echo $p['summary']; ?></i><br /><br />
         </li>
     <?php } ?>
@@ -94,7 +94,7 @@ found on this server.</p>
 
     <?php if($show_search_link) { ?>
         <p align="center">
-            <?php echo make_link(getURL('/package-search.php?pkg_name=' . htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)) . '&amp;bool=AND&amp;submit=Search'), 'View full search results...'); ?>
+            <a href="<?= getURL('/package-search.php?pkg_name='.htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)).'&amp;bool=AND&amp;submit=Search'); ?>">View full search results...</a>
         </p>
 <?php
     }
@@ -103,7 +103,7 @@ found on this server.</p>
 
 <p>If you think that this error message is caused by an error in the
 configuration of the server, please contact
-<?php echo make_mailto_link("pecl-dev@lists.php.net"); ?>.
+<a href="mailto:pecl-dev@lists.php.net">pecl-dev@lists.php.net</a>.
 
 <?php
 

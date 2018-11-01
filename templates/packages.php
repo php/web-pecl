@@ -148,7 +148,7 @@
 <p align="center">
     <?php if(!$catpid) {?>
         Total number of packages: <?php echo $totalpackages; ?><br />
-        <?php make_link('/package-stats.php', 'View package statistics'); ?>
+        <a href="/package-stats.php">View package statistics</a>
     <?php } else { ?>
         <a href="/package-stats.php?cid=<?php echo $catpid; ?>">Statistics for category "<?php echo $catname; ?>"</a>
     <?php } ?>

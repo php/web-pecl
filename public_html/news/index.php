@@ -41,7 +41,7 @@ echo "</ul>\n<a href=\"/feeds/\">Syndicate this</a>";
 
 echo "<h2><a name=\"2003\"></a>Year 2003</h2>";
 echo "<ul>";
-echo "<li>" . make_link("https://news.php.net/article.php?group=php.pecl.dev&article=5", "Call for PHP Extension authors") . " (September)</li>";
+echo '<li><a href="https://news.php.net/article.php?group=php.pecl.dev&article=5">Call for PHP Extension authors</a> (September)</li>';
 echo "</ul>";
 
 response_footer();

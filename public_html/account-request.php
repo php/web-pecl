@@ -209,10 +209,10 @@ if ($display_form) {
 
     response_header("Request Account");
 
-    $cs_link        = make_link('https://git.php.net/?p=php-src.git;a=blob_plain;f=CODING_STANDARDS;hb=HEAD', 'PHP Coding Standards');
-    $lic_link_pecl  = make_link('https://php.net/license/3_01.txt', 'PHP License 3.01');
-    $lic_link_doc   = make_link('https://php.net/manual/en/cc.license.php', 'Creative Commons Attribution License');
-    $doc_howto_pecl = make_link('https://wiki.php.net/doc/howto/pecldocs', 'PECL Docs Howto');
+    $cs_link        = '<a href="https://git.php.net/?p=php-src.git;a=blob_plain;f=CODING_STANDARDS;hb=HEAD">PHP Coding Standards</a>';
+    $lic_link_pecl  = '<a href="https://php.net/license/3_01.txt">PHP License 3.01</a>';
+    $lic_link_doc   = '<a href="https://php.net/manual/en/cc.license.php">Creative Commons Attribution License</a>';
+    $doc_howto_pecl = '<a href="https://wiki.php.net/doc/howto/pecldocs">PECL Docs Howto</a>';
 
     print "<h1>Publishing in PECL</h1>
 

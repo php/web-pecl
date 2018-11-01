@@ -108,7 +108,7 @@ if (!isset($_POST['confirm'])) {
 
 } else if ($_POST['confirm'] == "no") {
     echo "The package has not been deleted.\n<br /><br />\n";
-    echo "Go back to the " . make_link("/package-info.php?package=".htmlspecialchars($_GET['id'], ENT_QUOTES), "package details") . ".";
+    echo 'Go back to the <a href="/package-info.php?package='.htmlspecialchars($_GET['id'], ENT_QUOTES).'">package details</a>.';
 }
 
 response_footer();

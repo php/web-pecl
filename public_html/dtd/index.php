@@ -34,7 +34,7 @@ response_header("Document Type Definitions");
   that defines the legal building blocks of the <tt>package.xml</tt>
   file that comes with each package. More information about
   <tt>package.xml</tt> can be found
-  <a href="/manual/en/developers.packagedef.php">in the manual</a>.
+  <a href="https://pear.php.net/manual/en/developers.packagedef.php">in the manual</a>.
   <br /><br />A <a href="/dtd/package-1.0.xsd">
   <acronym title="XML Schema Definition">XSD</acronym> file</a> is
   available as well. (Slightly outdated)

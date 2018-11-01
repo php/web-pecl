@@ -60,6 +60,7 @@ require_once __DIR__.'/../src/Utils/Filesystem.php';
 require_once __DIR__.'/../src/Utils/FormatDate.php';
 require_once __DIR__.'/../src/Utils/ImageSize.php';
 require_once __DIR__.'/../src/Utils/Licenser.php';
+require_once __DIR__.'/../src/Utils/PhpMasterClient.php';
 
 // Configuration
 if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {

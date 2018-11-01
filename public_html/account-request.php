@@ -19,8 +19,7 @@
 */
 
 use App\Entity\User as UserEntity;
-
-require_once __DIR__.'/../include/posttohost.php';
+use App\Utils\PhpMasterClient;
 
 function display_error($msg)
 {
@@ -147,18 +146,17 @@ if (isset($_POST['submit'])) {
 
             // Now do the SVN stuff
             if ($needsvn) {
-                $error = posttohost(
-                    'http://master.php.net/entry/svn-account.php',
-                    [
-                        "username" => $handle,
-                        "name"     => $name,
-                        "email"    => $email,
-                        "passwd"   => $password,
-                        "note"     => $purpose,
-                        "group"    => 'pecl',
-                        "yesno"    => 'yes',
-                    ]
-                );
+                $client = new PhpMasterClient($config->get('php_master_api_url'));
+
+                $error = $client->post([
+                    'username' => $handle,
+                    'name'     => $name,
+                    'email'    => $email,
+                    'passwd'   => $password,
+                    'note'     => $purpose,
+                    'group'    => 'pecl',
+                    'yesno'    => 'yes',
+                ]);
 
                 if ($error) {
                     display_error("Problem submitting the php.net account request: $error");

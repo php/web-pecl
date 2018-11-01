@@ -40,6 +40,9 @@ return [
     // Temporary directory for uploaded files
     'tmp_uploads_dir' => isset($_SERVER['PECL_TMP_UPLOADS_DIR']) ? $_SERVER['PECL_TMP_UPLOADS_DIR'] : __DIR__.'/../var/uploads',
 
+    // Path where new PECL account requests are sent when requesting a SVN account
+    'php_master_api_url' => isset($_SERVER['PECL_MASTER_API_URL']) ? $_SERVER['PECL_MASTER_API_URL'] : 'https://master.php.net/entry/svn-account.php',
+
     // Regex pattern for matching valid PECL accounts usernames
     'valid_usernames_regex' => '/^[a-z][a-z0-9]+$/i',
 ];

@@ -26,49 +26,45 @@
 
 $script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
-require_once 'HTML/Table.php';
 require_once 'Pager/Pager.php';
 
 /**
-* Returns an appropriate query string
-* for a self referencing link
+* Returns an appropriate query string for a self referencing link
 */
 function getQueryString($catpid, $catname, $showempty = false, $moreinfo = false)
 {
     $querystring = [];
     $entries_cnt = 0;
+
     if ($catpid) {
-        $querystring[] = 'catpid=' . (int)$catpid;
+        $querystring[] = 'catpid='.(int)$catpid;
         $entries_cnt++;
     }
 
     if ($catname) {
-        $querystring[] = 'catname=' . urlencode($catname);
+        $querystring[] = 'catname='.urlencode($catname);
         $entries_cnt++;
     }
 
     if ($showempty) {
-        $querystring[] = 'showempty=' . (int)$showempty;
+        $querystring[] = 'showempty='.(int)$showempty;
         $entries_cnt++;
     }
 
     if ($moreinfo) {
-        $querystring[] = 'moreinfo=' . (int)$moreinfo;
+        $querystring[] = 'moreinfo='.(int)$moreinfo;
         $entries_cnt++;
     }
 
 
     if ($entries_cnt) {
-        return '?' . implode('&amp;', $querystring);
+        return '?'.implode('&amp;', $querystring);
     } else {
         return '';
     }
 }
 
-/*
- * Check input variables
- * Expected url vars: catpid (category parent id), catname, showempty
- */
+// Check input variables. Expected url vars: catpid (category parent id), catname, showempty
 $moreinfo = isset($_GET['moreinfo']) ? (int)$_GET['moreinfo'] : false;
 $catpid  = isset($_GET['catpid'])  ? (int)$_GET['catpid']   : null;
 $showempty = isset($_GET['showempty']) ? (bool)$_GET['showempty'] : false;
@@ -78,6 +74,7 @@ if (empty($catpid)) {
     $catname = "Top Level";
 } else {
     $category_where = "= " . $catpid;
+
     if (isset($_GET['catname']) && preg_match('/^[0-9a-z_ ]{1,80}$/i', $_GET['catname'])) {
         $catname = $_GET['catname'];
     } else {
@@ -116,10 +113,6 @@ $sth = $dbh->query('SELECT c.*, COUNT(p.id) AS npackages' .
                    ' GROUP BY c.id ' .
                    'ORDER BY name');
 
-$table   = new HTML_Table('border="0" cellpadding="6" cellspacing="2" width="100%"');
-$nrow    = 0;
-$catdata = [];
-
 // Get names of sub-categories
 $subcats = $dbh->getAssoc("SELECT p.id AS pid, c.id AS id, c.name AS name, c.summary AS summary".
                           "  FROM categories c, categories p ".
@@ -137,15 +130,16 @@ $subpkgs = $dbh->getAssoc("SELECT p.category, p.id AS id, p.name AS name, p.summ
 
 $max_sub_links = 4;
 $totalpackages = 0;
+$categories = [];
+
 while ($sth->fetchInto($row)) {
     extract($row);
     $ncategories = ($cat_right - $cat_left - 1) / 2;
 
+    // Show only categories with packages
     if (!$showempty AND $npackages < 1) {
-        continue;  // Show categories with packages
+        continue;
     }
-
-    $sub_items = 0;
 
     $sub_links = [];
     if (isset($subcats[$id])) {
@@ -177,37 +171,21 @@ while ($sth->fetchInto($row)) {
     settype($npackages, 'string');
     settype($ncategories, 'string');
 
-    $data  = '<font size="+1"><b><a href="'. $script_name .'?catpid='.$id.'&amp;catname='.urlencode($name).'">'.$name.'</a></b></font> ('.$npackages.')<br />';//$name; //[$name, $npackages, $ncategories, $summary];
+    $data  = '<font size="+1"><b><a href="'. $script_name .'?catpid='.$id.'&amp;catname='.urlencode($name).'">'.$name.'</a></b></font> ('.$npackages.')<br />';
     $data .= $sub_links.'<br />';
-    $catdata[] = $data;
+
+    $categories[] = $data;
 
     $totalpackages += $npackages;
-
-    if ($nrow++ % 2 == 1) {
-        $table->addRow([$catdata[0], $catdata[1]]);
-        $table->setCellAttributes($table->getRowCount()-1, 0, 'width="50%"');
-        $table->setCellAttributes($table->getRowCount()-1, 1, 'width="50%"');
-        $catdata = [];
-    }
-} // End while
-
-// Any left over (odd number of categories).
-if (count($catdata) > 0){
-    $table->addRow([$catdata[0]]);
-    $table->setCellAttributes($table->getRowCount()-1, 0, 'width="50%"');
-    $table->setCellAttributes($table->getRowCount()-1, 1, 'width="50%"');
 }
 
-/**
-* Begin code for showing packages if we
-* aren't at the top level.
-*/
+// Begin code for showing packages if we aren't at the top level.
 if (!empty($catpid)) {
-    $nrow = 0;
     // Subcategories list
     $minPackages = ($showempty) ? 0 : 1;
     $subcats = $dbh->getAll("SELECT id, name, summary FROM categories WHERE " .
                             "parent = $catpid AND npackages >= $minPackages", DB_FETCHMODE_ASSOC);
+
     if (count($subcats) > 0) {
         foreach ($subcats as $subcat) {
             $subCategories[] = sprintf('<b><a href="%s?catpid=%d&catname=%s" title="%s">%s</a></b>',
@@ -217,6 +195,7 @@ if (!empty($catpid)) {
                                        htmlspecialchars($subcat['summary'], ENT_QUOTES),
                                        $subcat['name']);
         }
+
         $subCategories = implode(', ', $subCategories);
     }
 
@@ -256,24 +235,20 @@ if (!empty($catpid)) {
 
         $packages[$key]['eInfo'] = $extendedInfo;
     }
+
     $defaultMoreInfoVis = $moreinfo ? 'inline' : 'none';
 }
 
-/**
- * Build URLs for hide/show all links
- */
+// Build URLs for hide/show all links
 if ($moreinfo) {
     $showMoreInfoLink = '#';
     $hideMoreInfoLink = getQueryString($catpid, $catname, $showempty, 0);
-
 } else {
     $showMoreInfoLink = getQueryString($catpid, $catname, $showempty, 1);
     $hideMoreInfoLink = '#';
 }
 
-/*
- * Template
- */
+// Template
 error_reporting(E_ALL & ~E_NOTICE);
 
 include __DIR__.'/../templates/packages.php';

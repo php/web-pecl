@@ -123,7 +123,6 @@ This installation has PEAR dependencies installed in `/usr/share/pear`.
     Alias /package /path/to/pecl/public_html/package-info.php
 
     RewriteEngine On
-    RewriteRule   /download-docs.php    /manual/index.php [R=301]
     RewriteRule   /rss.php              /feeds/latest.rss [R=301]
 
     # Rewrite rules for the RSS feeds
@@ -139,10 +138,6 @@ This installation has PEAR dependencies installed in `/usr/share/pear`.
 
     <Location /get>
         ForceType application/x-httpd-php
-    </Location>
-
-    <Location /manual>
-        ErrorDocument 404 /error/404-manual.php
     </Location>
 </VirtualHost>
 ```

@@ -28,13 +28,7 @@
 *  o Release date (on/before/after)
 */
 
-require_once 'HTML/Form.php';
 require_once 'Pager/Pager.php';
-
-/**
-* Setup code for the form
-*/
-$form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES));
 
 /**
 * Months for released date dropdowns

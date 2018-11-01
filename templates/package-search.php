@@ -242,7 +242,7 @@ response_header('Package Search');
  <tr>
   <th class="form-label_left">Sear<span class="accesskey">c</span>h for:</th>
   <td class="form-input">
-   <?php $form->displayText('pkg_name', htmlspecialchars(@$_GET['pkg_name'], ENT_QUOTES), 0, 0, 'accesskey="c"'); ?>
+    <input type="text" name="pkg_name" size="0" value="<?= (!empty($_GET['pkg_name'])) ? htmlspecialchars($_GET['pkg_name'], ENT_QUOTES) : ''; ?>" accesskey="c">
   </td>
  </tr>
 

@@ -48,9 +48,24 @@
     </tr>
 </table>
 
-<?php if($nrow) { ?>
-    <?php echo $table->toHtml(); ?>
-<?php } ?>
+<?php if (count($categories) > 0): ?>
+    <table border="0" cellpadding="6" cellspacing="2" width="100%">
+        <?php for ($i = 0; $i < ceil(count($categories)/2); $i++): ?>
+            <tr>
+                <td width="50%">
+                    <?php if (!empty($categories[2 * $i])): ?>
+                        <?= $categories[2 * $i]; ?>
+                    <?php endif; ?>
+                </td>
+                <td width="50%">
+                    <?php if (!empty($categories[2 * $i + 1])): ?>
+                        <?= $categories[2 * $i + 1]; ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endfor; ?>
+    </table>
+<?php endif; ?>
 
 <?php if($catpid and $packages) { ?>
 

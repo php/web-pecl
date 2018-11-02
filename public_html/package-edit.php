@@ -219,12 +219,11 @@ $bb = new Borderbox("Edit package information");
     <td>Superseded by:</td>
     <td valign="middle">
         <select name="new_package" size="1">
-        <option value="">Select package</option>
+        <option value="" <?= $row['new_package'] == '' ? 'selected' : ''; ?>>Select package</option>
         <?php
         $sth = $dbh->query('SELECT name FROM packages WHERE package_type="pecl" ORDER BY name');
-        $rows = ['' => 'Select package'];
         while ($package = $sth->fetchRow(DB_FETCHMODE_ASSOC)): ?>
-        <option value="<?= $package['name']; ?>" <?= htmlspecialchars($row['new_package']) == $package['name'] ? ' selected' : '';?>><?= $package['name']; ?></option>
+        <option value="<?= $package['name']; ?>" <?= $row['new_package'] == $package['name'] ? 'selected' : '';?>><?= $package['name']; ?></option>
         <?php endwhile; ?>
         </select>
     </td>

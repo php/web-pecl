@@ -20,13 +20,6 @@
 
 auth_require('pear.dev');
 
-define('HTML_FORM_MAX_FILE_SIZE', 16 * 1024 * 1024); // 16 MB
-define('HTML_FORM_TH_ATTR', 'class="form-label_left"');
-define('HTML_FORM_TD_ATTR', 'class="form-input"');
-
-$script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
-
-require_once 'HTML/Form.php';
 require_once 'HTTP/Upload.php';
 require_once 'PEAR/PackageFile.php';
 require_once 'PEAR/Config.php';
@@ -48,8 +41,10 @@ do {
         // Upload Button
         $upload_obj = new HTTP_Upload('en');
         $file = $upload_obj->getFiles('distfile');
+
         if (PEAR::isError($file)) {
             $errors[] = $file->getMessage();
+
             break;
         }
 
@@ -57,16 +52,21 @@ do {
             $file->setName('uniq', 'pear-');
             $file->setValidExtensions('tgz', 'accept');
             $tmpfile = $file->moveTo(PEAR_UPLOAD_TMPDIR);
+
             if (PEAR::isError($tmpfile)) {
                 $errors[] = $tmpfile->getMessage();
+
                 break;
             }
+
             $tmpsize = $file->getProp('size');
         } elseif ($file->isMissing()) {
             $errors[] = 'No file has been uploaded.';
+
             break;
         } elseif ($file->isError()) {
             $errors[] = $file->errorMsg();
+
             break;
         }
 
@@ -105,6 +105,7 @@ do {
         if ("src" != $file_data["role"] ||
             false !== strstr($file_data["name"], "/") ||
             ".h" != substr($file_data["name"], -2)) {
+
             continue;
         }
 
@@ -117,11 +118,13 @@ do {
             $pkg_found_ext_version = $m[2];
         } else {
             unset($file_contents);
+
             continue;
         }
 
         if ($pkg_xml_ext_version == $pkg_found_ext_version) {
             $pkg_version_ok = true;
+
             break;
         } else {
             $pkg_version_ok = false;
@@ -171,117 +174,151 @@ do {
                     foreach ($info->getUserInfo() as $err) {
                         $errors[] = $err['message'];
                     }
+
                     $errors[] = $info->getMessage();
                 }
+
                 break;
             } else {
                 $pacid = Package::info($info->getPackage(), 'id');
+
                 if (PEAR::isError($pacid)) {
                     $errors[] = $pacid->getMessage();
+
                     break;
                 }
+
                 if (!$auth_user->isAdmin() &&
                     !User::maintains($auth_user->handle, $pacid, 'lead')) {
                     $errors[] = 'You don\'t have permissions to upload this release.';
                     break;
                 }
+
                 $license = $info->getLicense();
+
                 if (is_array($license)) {
                     $license = $license['_content'];
                 }
-                $e = Package::updateInfo($pacid,
-                        [
-                            'summary'     => $info->getSummary(),
-                            'description' => $info->getDescription(),
-                            'license'     => $license,
-                        ]);
+
+                $e = Package::updateInfo($pacid, [
+                    'summary'     => $info->getSummary(),
+                    'description' => $info->getDescription(),
+                    'license'     => $license,
+                ]);
+
                 if (PEAR::isError($e)) {
                     $errors[] = $e->getMessage();
                     break;
                 }
+
                 $users = [];
+
                 foreach ($info->getMaintainers() as $user) {
                     $users[strtolower($user['handle'])] = [
-                                                            'role'   => $user['role'],
-                                                            'active' => !isset($user['active']) ||
-                                                                $user['active'] == 'yes',
-                                                          ];
+                        'role'   => $user['role'],
+                        'active' => !isset($user['active']) || $user['active'] == 'yes',
+                    ];
                 }
+
                 $e = Maintainer::updateAll($pacid, $users);
+
                 if (PEAR::isError($e)) {
                     $errors[] = $e->getMessage();
+
                     break;
                 }
+
                 $rest->savePackageMaintainer($info->getPackage());
-                $file = Release::upload($info->getPackage(), $info->getVersion(),
-                                        $info->getState(), $info->getNotes(),
-                                        $distfile, md5_file($distfile));
+                $file = Release::upload(
+                    $info->getPackage(),
+                    $info->getVersion(),
+                    $info->getState(),
+                    $info->getNotes(),
+                    $distfile,
+                    md5_file($distfile)
+                );
             }
         } else {
-
             $pacid = Package::info($info['package'], 'id');
+
             if (PEAR::isError($pacid)) {
                 $errors[] = $pacid->getMessage();
+
                 break;
             }
+
             if (!$auth_user->isAdmin() &&
                 !User::maintains($auth_user->handle, $pacid, 'lead')) {
                 $errors[] = 'You don\'t have permissions to upload this release.';
+
                 break;
             }
 
-            $e = Package::updateInfo($pacid,
-                    [
-                        'summary'     => $info['summary'],
-                        'description' => $info['description'],
-                        'license'     => $info['release_license'],
-                    ]);
+            $e = Package::updateInfo($pacid, [
+                'summary'     => $info['summary'],
+                'description' => $info['description'],
+                'license'     => $info['release_license'],
+            ]);
+
             if (PEAR::isError($e)) {
                 $errors[] = $e->getMessage();
+
                 break;
             }
 
             $users = [];
+
             foreach ($info['maintainers'] as $user) {
                 $users[strtolower($user['handle'])] = [
-                                                        'role'   => $user['role'],
-                                                        'active' => 1,
-                                                      ];
+                    'role'   => $user['role'],
+                    'active' => 1,
+                ];
             }
 
             $e = Maintainer::updateAll($pacid, $users);
+
             if (PEAR::isError($e)) {
                 $errors[] = $e->getMessage();
+
                 break;
             }
-            $file = Release::upload($info['package'], $info['version'],
-                                    $info['release_state'], $info['release_notes'],
-                                    $distfile, md5_file($distfile));
+
+            $file = Release::upload(
+                $info['package'],
+                $info['version'],
+                $info['release_state'],
+                $info['release_notes'],
+                $distfile,
+                md5_file($distfile)
+            );
         }
+
         if (PEAR::isError($file)) {
             $ui = $file->getUserInfo();
-            $errors[] = 'Error while uploading package: ' .
-                         $file->getMessage() . ($ui ? " ($ui)" : '');
+            $errors[] = 'Error while uploading package: '.$file->getMessage().($ui ? " ($ui)" : '');
+
             break;
         }
+
         @unlink($distfile);
 
         PEAR::pushErrorHandling(PEAR_ERROR_CALLBACK, 'report_warning');
+
         if (is_a($info, 'PEAR_PackageFile_v1') || is_a($info, 'PEAR_PackageFile_v2')) {
             Release::promote_v2($info, $file);
         } else {
             Release::promote($info, $file);
         }
+
         PEAR::popErrorHandling();
 
         $success              = true;
         $display_form         = true;
         $display_verification = false;
-
     } elseif (isset($cancel)) {
         // Cancel Button
-
         $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
+
         if (@is_file($distfile)) {
             @unlink($distfile);
         }
@@ -292,7 +329,6 @@ do {
 } while (false);
 
 PEAR::popErrorHandling();
-
 
 if ($display_form) {
     $title = 'Upload New Release';
@@ -316,6 +352,7 @@ if ($display_form) {
                            . $info->getPackage() . ' has been successfully released, '
                            . 'and its promotion cycle has started.');
         }
+
         print '</p>';
         print '</div>';
     } else {
@@ -335,25 +372,16 @@ Uploading new releases is restricted to each package's lead developer(s).
 </p>
 MSG;
 
-    $form = new HTML_Form($script_name, 'post', '', '',
-            'multipart/form-data');
-    $form->addFile('distfile',
-            '<label for="f" accesskey="i">D<span class="accesskey">i</span>'
-            . 'stribution File</label>',
-            HTML_FORM_MAX_FILE_SIZE, 40, '', 'id="f"');
-    $form->addSubmit('upload', 'Upload!');
-    $form->display('class="form-holder" cellspacing="1"',
-            'Upload', 'class="form-caption"');
+    include __DIR__.'/../templates/forms/release_upload.php';
 }
-
 
 if ($display_verification) {
     response_header('Upload New Release :: Verify');
-
     $config = PEAR_Config::singleton();
     $pkg = new PEAR_PackageFile($config);
-    $info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
+    $info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR.'/'.$tmpfile, PEAR_VALIDATE_NORMAL);
     $errors = $warnings = [];
+
     if (PEAR::isError($info)) {
         if (is_array($info->getUserInfo())) {
             foreach ($info->getUserInfo() as $err) {
@@ -364,12 +392,15 @@ if ($display_verification) {
                 }
             }
         }
+
         $errors[] = $info->getMessage();
     }
+
     if ($info->getChannel() != 'pecl.php.net') {
         $warnings[] = 'Your package uses package.xml 1.0.  With the release of PEAR 1.4.0 stable, '
             . 'PECL packages will require package.xml 2.0 and channel name "pecl.php.net"';
     }
+
     // this next switch may never be used, but is here in case it turns out to be a good move
     switch ($info->getPackageType()) {
         case 'extsrc' :
@@ -386,9 +417,9 @@ if ($display_verification) {
         break;
         case 'php' :
             $type = 'PHP package';
+
             if ($info->getPackagexmlVersion() == '1.0') {
-                $warnings[] = 'package.xml 1.0 cannot distinguish between different release ' .
-                    'types';
+                $warnings[] = 'package.xml 1.0 cannot distinguish between different release types';
             }
         break;
         default :
@@ -398,13 +429,14 @@ if ($display_verification) {
     }
 
     $license_found = false;
+
     foreach ($info->getFileList() as $file_name => $file_data) {
         if ("doc" != $file_data["role"]) {
             continue;
         }
 
-        /* Don't compare with basename($file_data["name"]), the license has
-           to be in the package root. */
+        // Don't compare with basename($file_data['name']), the license has to
+        // be in the package root.
         $lic_fnames = [
                 "LICENSE", "license",
                 "LICENSE.md", "license.md",
@@ -413,48 +445,44 @@ if ($display_verification) {
                 "LICENSE.txt", "license.txt",
                 "COPYING.txt", "copying.txt"
         ];
+
         if (in_array($file_data["name"], $lic_fnames)) {
             $license_found = true;
             break;
         }
     }
+
     if (!$license_found) {
         $warnings[] = "No LICENSE or COPYING file was found in the root of the package. ";
     }
 
-    report_error($errors, 'errors','ERRORS:<br />'
-                 . 'You must correct your package.xml file:');
-    report_error($warnings, 'warnings', 'RECOMMENDATIONS:<br />'
-                 . 'You may want to correct your package.xml file:');
-    $form = new HTML_Form($script_name, 'post');
-    $form->addPlaintext('Package:', $info->getPackage());
-    $form->addPlaintext('Version:', $info->getVersion());
-    $form->addPlaintext('Summary:', htmlspecialchars($info->getSummary(), ENT_QUOTES));
-    $form->addPlaintext('Description:', nl2br(htmlspecialchars($info->getDescription(), ENT_QUOTES)));
-    $form->addPlaintext('Release State:', $info->getState());
-    $form->addPlaintext('Release Date:', $info->getDate());
-    $form->addPlaintext('Release Notes:', nl2br(htmlspecialchars($info->getNotes(), ENT_QUOTES)));
-    $form->addPlaintext('Package Type:', $type);
+    report_error($errors, 'errors','ERRORS:<br>You must correct your package.xml file:');
+    report_error($warnings, 'warnings', 'RECOMMENDATIONS:<br>You may want to correct your package.xml file:');
 
-    // Don't show the next step button when errors found
-    if (!count($errors)) {
-        $form->addSubmit('verify', 'Verify Release');
-    }
+    $vars = [
+        'package' => $info->getPackage(),
+        'version' => $info->getVersion(),
+        'summary' => $info->getSummary(),
+        'description' => $info->getDescription(),
+        'state' => $info->getState(),
+        'date' => $info->getDate(),
+        'notes' => $info->getNotes(),
+        'type' => $type,
+        'errors' => $errors,
+        'tmpfile' => $tmpfile,
+    ];
 
-    $form->addSubmit('cancel', 'Cancel');
-    $form->addHidden('distfile', $tmpfile);
-    $form->display('class="form-holder" cellspacing="1"',
-            'Please verify that the following release information is correct:',
-            'class="form-caption"');
+    include __DIR__.'/../templates/forms/release_verify.php';
 }
 
 response_footer();
 
-
 function checkUser($user, $pacid = null)
 {
     global $dbh;
+
     $add = ($pacid) ? 'AND p.id = ' . $dbh->quoteSmart($pacid) : '';
+
     // It's a lead or user of the package
     $query = "SELECT m.handle
               FROM packages p, maintains m
@@ -463,10 +491,13 @@ function checkUser($user, $pacid = null)
                  p.id = m.package $add AND
                  (m.role IN ('lead', 'developer'))";
     $res = $dbh->getOne($query, [$user]);
+
     if ($res !== null) {
         return true;
     }
+
     // Try to see if the user is an admin
     $res = User::isAdmin($user);
+
     return ($res === true);
 }

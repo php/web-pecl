@@ -473,3 +473,9 @@ form.pecl-form label {
     margin-right: 15px;
     padding-top: 5px;
 }
+
+form.pecl-form div.info {
+    display: inline-block;
+    padding-top: 5px;
+    margin: 0;
+}

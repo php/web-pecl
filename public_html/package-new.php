@@ -18,8 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'HTML/Form.php';
-
 if (!defined('PEAR_COMMON_PACKAGE_NAME_PREG')) {
     define('PEAR_COMMON_PACKAGE_NAME_PREG', '/^([A-Z][a-zA-Z0-9_]+|[a-z][a-z0-9_]+)$/');
 }
@@ -27,7 +25,6 @@ if (!defined('PEAR_COMMON_PACKAGE_NAME_PREG')) {
 auth_require();
 
 $display_form = true;
-$width = 60;
 $errorMsg = "";
 $jumpto = "name";
 
@@ -96,52 +93,11 @@ do {
 } while (false);
 
 if ($display_form) {
-    $title = "New Package";
-    response_header($title);
-
-    print "<h1>$title</h1>
-
-<p>Use this form to register a new package.</p>
-
-
-<p>
-<b>Before proceeding</b>, make sure you pick the right name for your
-package.  This is usually done through \"community consensus\", which
-means posting a suggestion to the pecl-dev mailing list and have
-people agree with you.
-</p>
-
-
-";
-
-    if (isset($errorMsg)) {
-        print "<table>\n";
-        print " <tr>\n";
-        print "  <td>&nbsp;</td>\n";
-        print "  <td><b>$errorMsg</b></td>\n";
-        print " </tr>\n";
-        print "</table>\n";
-    }
+    response_header('New Package');
 
     $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");
-    $form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES), "POST");
 
-    print "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "\">\n";
-
-    $bb = new BorderBox("Register package", "100%", "", 2, true);
-
-    $bb->horizHeadRow("Package Name", $form->returnText("name", get("name"), 20, 80));
-    $bb->horizHeadRow("License", $form->returnText("license", get("license"), 20, 50));
-    $cats = $form->returnSelect("category", $categories, get("category"), 1,
-                                "--Select Category--");
-    $bb->horizHeadRow("Category", $cats);
-    $bb->horizHeadRow("Summary", $form->returnText("summary", get("summary"), $width));
-    $bb->horizHeadRow("Full description", $form->returnTextarea("desc", get("desc"), $width, 3));
-    $bb->horizHeadRow("Additional project homepage", $form->returnText("homepage", get("homepage"), 40, 255));
-    $bb->horizHeadRow("Browse Source URL", $form->returnText("cvs_link", get("cvs_link"), 40, 255) .
-                                     '<br /><small>For example: https://git.php.net/?p=pecl/php/operator.git</small>');
-    $bb->fullRow($form->returnSubmit("Submit Request", "submit"));
-    $bb->end();
+    include __DIR__.'/../templates/forms/new_package.php';
 
     if ($jumpto) {
         print "\n<script>\n";

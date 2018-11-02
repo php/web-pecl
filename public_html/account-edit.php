@@ -20,16 +20,14 @@
 
 auth_require();
 
-define('HTML_FORM_TH_ATTR', 'class="form-label_left"');
-define('HTML_FORM_TD_ATTR', 'class="form-input"');
-require_once 'HTML/Form.php';
-
 if (isset($_GET['handle'])) {
     $handle = $_GET['handle'];
 } elseif (isset($_POST['handle'])) {
     $handle = $_POST['handle'];
 } else {
     $handle = false;
+    header('Location: /accounts.php');
+    exit;
 }
 
 if ($handle && !preg_match('@^[0-9A-Za-z_]{2,20}$@', $handle)) {
@@ -38,7 +36,6 @@ if ($handle && !preg_match('@^[0-9A-Za-z_]{2,20}$@', $handle)) {
     response_footer();
     exit();
 }
-
 
 ob_start();
 response_header('Edit Profile :: ' . $handle);
@@ -168,52 +165,27 @@ if ($row === null) {
     error_handler(htmlspecialchars($handle, ENT_QUOTES) . ' is not a valid account name.', 'Invalid Account');
 }
 
+// Edit account form
+$vars = [
+    'name'      => $row['name'],
+    'email'     => $row['email'],
+    'showemail' => $row['showemail'],
+    'homepage'  => $row['homepage'],
+    'wishlist'  => $row['wishlist'],
+    'pgpkeyid'  => $row['pgpkeyid'],
+    'userinfo'  => $row['userinfo'],
+    'cvs_acl'   => $cvs_acl,
+    'handle'    => $row['handle'],
+];
 
-$form = new HTML_Form(htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES), 'post');
+include __DIR__.'/../templates/forms/account_edit.php';
 
-$form->addText('name', '<span class="accesskey">N</span>ame:',
-        $row['name'], 40, null, 'accesskey="n"');
-$form->addText('email', 'Email:',
-        $row['email'], 40, null);
-$form->addCheckbox('showemail', 'Show email address?',
-        $row['showemail']);
-$form->addText('homepage', 'Homepage:',
-        $row['homepage'], 40, null);
-$form->addText('wishlist', 'Wishlist URI:',
-        $row['wishlist'], 40, null);
-$form->addText('pgpkeyid', 'PGP Key ID:'
-        . '<p class="cell_note">(Without leading 0x)</p>',
-        $row['pgpkeyid'], 40, 20);
-$form->addTextarea('userinfo',
-        'Additional User Information:'
-        . '<p class="cell_note">(limited to 255 chars)</p>',
-        $row['userinfo'], 40, 5, null);
-$form->addTextarea('cvs_acl',
-        'SVN Access:',
-        $cvs_acl, 40, 5, null);
-$form->addSubmit('submit', 'Submit');
-$form->addHidden('handle', $handle);
-$form->addHidden('command', 'update');
-$form->display('class="form-holder" style="margin-bottom: 2em;"'
-               . ' cellspacing="1"',
-               'Edit Your Information', 'class="form-caption"');
+// Change password form
+$vars = [
+    'handle' => $row['handle'],
+];
 
+include __DIR__.'/../templates/forms/account_password.php';
 
-print '<a name="password"></a>' . "\n";
-print '<h2>&raquo; Manage your password</h2>' . "\n";
-
-$form = new HTML_Form(htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES), 'post');
-$form->addPlaintext('<span class="accesskey">O</span>ld Password:',
-        $form->returnPassword('password_old', '', 40, 0,
-                              'accesskey="o"'));
-$form->addPassword('password', 'Password',
-        '', 10, null);
-$form->addCheckbox('PEAR_PERSIST', 'Remember username and password?',
-        '');
-$form->addSubmit('submit', 'Submit');
-$form->addHidden('handle', $handle);
-$form->addHidden('command', 'change_password');
-$form->display('class="form-holder" cellspacing="1"',
-               'Change Password', 'class="form-caption"');
 ob_end_flush();
 response_footer();

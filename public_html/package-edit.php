@@ -24,9 +24,6 @@
 
 auth_require();
 
-require_once 'HTML/Form.php';
-$form = new HTML_Form(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES));
-
 response_header("Edit package");
 ?>
 
@@ -155,83 +152,81 @@ $bb = new Borderbox("Edit package information");
 <tr>
     <td>Package name:</td>
     <td valign="middle">
-    <?php $form->displayText("name", $row['name'], 30); ?>
+        <input type="text" name="name" value="<?= $row['name']; ?>" size="30">
     </td>
 </tr>
 <tr>
     <td>License:</td>
     <td valign="middle">
-    <?php $form->displayText("license", $row['license'], 30); ?>
+        <input type="text" name="license" value="<?= $row['license']; ?>" size="30">
     </td>
 </tr>
 <tr>
     <td valign="top">Summary:</td>
     <td>
-    <?php $form->displayTextarea("summary", $row['summary'], 40, 3, 255); ?>
+        <textarea name="summary" cols="40" rows="3" maxlength="255"><?= $row['summary']; ?></textarea>
     </td>
 </tr>
 <tr>
     <td valign="top">Description:</td>
     <td>
-    <?php $form->displayTextarea("description", $row['description']); ?>
+        <textarea name="description" cols="40" rows="5"><?= $row['description']; ?></textarea>
     </td>
 </tr>
 <tr>
     <td>Category:</td>
     <td>
-<?php
-$sth = $dbh->query('SELECT id, name FROM categories ORDER BY name');
-
-while ($cat_row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
-    $rows[$cat_row['id']] = $cat_row['name'];
-}
-$form->displaySelect("category", $rows, (int)$row['categoryid']);
-?>
+    <select name="category" size="1">
+        <?php
+        $sth = $dbh->query('SELECT id, name FROM categories ORDER BY name');
+        while ($cat_row = $sth->fetchRow(DB_FETCHMODE_ASSOC)): ?>
+        <option value="<?= $cat_row['id']; ?>" <?= (int)$row['categoryid'] == $cat_row['id'] ? ' selected' : ''; ?>><?= $cat_row['name']; ?></option>
+        <?php endwhile; ?>
+    </select>
     </td>
 </tr>
 <tr>
     <td>Homepage:</td>
     <td valign="middle">
-    <?php $form->displayText("homepage", $row['homepage'], 30); ?>
+    <input type="text" name="homepage" value="<?= $row['homepage']; ?>" size="30">
     </td>
 </tr>
 <tr>
     <td>Documentation:</td>
     <td valign="middle">
-    <?php $form->displayText("doc_link", $row['doc_link'], 30); ?>
+    <input type="text" name="doc_link" value="<?= $row['doc_link']; ?>" size="30">
     </td>
 </tr>
 <tr>
     <td>Web CVS Url:</td>
     <td valign="middle">
-    <?php $form->displayText("cvs_link", $row['cvs_link'], 30); ?>
+    <input type="text" name="cvs_link" value="<?= $row['cvs_link']; ?>" size="30">
     </td>
 </tr>
 <tr>
     <td>Bug tracker Url:</td>
     <td valign="middle">
-    <?php $form->displayText("bug_link", $row['bug_link'], 30); ?>
+    <input type="text" name="bug_link" value="<?= $row['bug_link']; ?>" size="30">
     </td>
 </tr>
 <tr>
     <td>Unmaintained package?</td>
     <td valign="middle">
-        <?php $form->displayCheckbox('unmaintained', ($row['unmaintained'] == 1)) ?>
+        <input type="checkbox" name="unmaintained" <?= $row['unmaintained'] == 1 ? 'checked' : ''; ?>>
     </td>
 </tr>
 <tr>
     <td>Superseded by:</td>
     <td valign="middle">
-<?php
-$sth = $dbh->query('SELECT name FROM packages WHERE package_type="pecl" ORDER BY name');
-
-$rows = ['' => 'Select package'];
-while ($package = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
-    $rows[$package['name']] = $package['name'];
-}
-
-$form->displaySelect("new_package", $rows, htmlspecialchars($row['new_package']));
-?>
+        <select name="new_package" size="1">
+        <option value="">Select package</option>
+        <?php
+        $sth = $dbh->query('SELECT name FROM packages WHERE package_type="pecl" ORDER BY name');
+        $rows = ['' => 'Select package'];
+        while ($package = $sth->fetchRow(DB_FETCHMODE_ASSOC)): ?>
+        <option value="<?= $package['name']; ?>" <?= htmlspecialchars($row['new_package']) == $package['name'] ? ' selected' : '';?>><?= $package['name']; ?></option>
+        <?php endwhile; ?>
+        </select>
     </td>
 </tr>
 <!-- to be enabled later, link to the wiki.php.net package page -->
@@ -239,21 +234,21 @@ $form->displaySelect("new_package", $rows, htmlspecialchars($row['new_package'])
 <tr>
     <td>Wiki:</td>
     <td valign="middle">
-    <?php $form->displayText("wiki_link", htmlspecialchars($row['wiki_link'], 30)); ?>
+    <input type="text" name="wiki_link" value="<?= htmlspecialchars($row['wiki_link'], ENT_QUOTES); ?>" size="30">
     </td>
 </tr>
 -->
 <tr>
     <td>New Home Link (if moved out of pecl):</td>
     <td valign="middle">
-    <?php $form->displayText("new_channel", htmlspecialchars($row['new_channel'], 30)); ?>
+    <input type="text" name="new_channel" value="<?= htmlspecialchars($row['new_channel'], ENT_QUOTES); ?>" size="30">
     </td>
 </tr>
 
 <tr>
     <td>&nbsp;</td>
     <td><input type="submit" name="submit" value="Save changes" />&nbsp;
-    <input type="reset" name="cancel" value="Cancel" onClick="javascript:window.location.href='/package-info.php?pacid=<?php echo $_GET['id']; ?>'; return false" />
+    <input type="reset" name="cancel" value="Cancel" onClick="javascript:window.location.href='/package-info.php?package=<?php echo $_GET['id']; ?>'; return false" />
     </td>
 </tr>
 </table>

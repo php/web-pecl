@@ -23,10 +23,7 @@
  * To figure out cookies are REALLY off, check to see if the person came
  * from within the PECL website or just submitted the login form.
  */
-if (!isset($_COOKIE[session_name()]) &&
-    ((strpos(@$_SERVER['HTTP_REFERER'], @$_GET['redirect']) !== false) ||
-     (isset($_POST['PEAR_USER']) && isset($_POST['PEAR_PW']))))
-{
+if (!isset($_COOKIE[session_name()]) && isset($_POST['PEAR_USER']) && isset($_POST['PEAR_PW'])) {
 //    auth_reject(PEAR_AUTH_REALM, 'Cookies must be enabled to log in.');
 }
 

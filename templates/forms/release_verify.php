@@ -74,7 +74,7 @@ foreach ($vars as $key => $var) {
     <div>
         <label>&nbsp;</label>
 
-        <?php // Don't show the next step button when errors found */ ?>
+        <?php // Don't show the next step button when errors found ?>
         <?php if (!count($vars['errors'])): ?>
             <input type="submit" name="verify" value="Verify Release">
         <?php endif; ?>

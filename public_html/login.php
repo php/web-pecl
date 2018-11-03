@@ -70,10 +70,10 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
     /*
      * Determine URL
      */
-    if (isset($_POST['PEAR_OLDURL']) &&
-        basename($_POST['PEAR_OLDURL']) != 'login.php')
+    if (isset($_POST['redirect_to']) &&
+        basename($_POST['redirect_to']) != 'login.php')
     {
-        localRedirect($_POST['PEAR_OLDURL']);
+        localRedirect($_POST['redirect_to']);
     } else {
         localRedirect('index.php');
     }

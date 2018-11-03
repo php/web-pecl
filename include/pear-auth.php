@@ -59,13 +59,11 @@ function auth_reject($realm = null, $message = null)
     print '  <td class="form-input"><input type="submit" value="Log in!" /></td>' . "\n";
     print " </tr>\n";
     print "</table>\n";
-    print '<input type="hidden" name="PEAR_OLDURL" value="';
-    if (isset($_GET['redirect'])) {
-        print htmlspecialchars(urldecode($_GET['redirect']));
-    } elseif (isset($_POST['PEAR_OLDURL'])) {
-        print htmlspecialchars($_POST['PEAR_OLDURL']);
+    print '<input type="hidden" name="redirect_to" value="';
+    if (isset($_POST['redirect_to'])) {
+        print htmlspecialchars($_POST['redirect_to'], ENT_QUOTES);
     } elseif (isset($_SERVER['REQUEST_URI'])) {
-        print htmlspecialchars($_SERVER['REQUEST_URI']);
+        print htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES);
     } else {
         print 'login.php';
     }

@@ -19,7 +19,7 @@
 */
 
 /**
- * PEAR package downloader
+ * PECL package downloader
  *
  * Valid calls recognized:
  * /get/DB         -> Latest version
@@ -32,7 +32,7 @@
  * To all this calls the GET param "?uncompress=yes" would force
  * to download the file without gzip compression
  *
- * other things like: "/PEAR_package/info" could be easily implemented
+ * other things like: "/PECL_package/info" could be easily implemented
  *
  * It requires this to be added to httpd.conf/.htaccess:
  * <Location "/get">

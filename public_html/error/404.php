@@ -22,7 +22,7 @@
  * On 404 error this will search for a package with the same
  * name as the requested document. Thus enabling urls such as:
  *
- * https://pear.php.net/Mail_Mime
+ * https://pecl.php.net/operator
  */
 
 /**

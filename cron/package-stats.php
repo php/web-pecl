@@ -27,7 +27,7 @@
 require_once 'DB.php';
 
 /**
-* DSN for pear packages database
+* DSN for PECL packages database
 */
 $dsn = "mysql://pear:pear@localhost/pear";
 $dbh = DB::connect($dsn);

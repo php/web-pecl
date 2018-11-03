@@ -360,7 +360,7 @@ function report_warning($in)
 }
 
 /**
- * Generates a complete PEAR web page with an error message in it then
+ * Generates a complete PECL web page with an error message in it then
  * calls exit
  *
  * For use with PEAR_ERROR_CALLBACK error handling mode to print fatal

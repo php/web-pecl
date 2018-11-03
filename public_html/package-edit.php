@@ -46,13 +46,13 @@ if (!isset($_GET['id'])) {
 
 /**
  * The user has to be either a lead developer of the package or
- * a PEAR administrator.
+ * a PECL administrator.
  */
 $lead = User::maintains($auth_user->handle, $_GET['id'], "lead");
 $admin = $auth_user->isAdmin();
 
 if (!$lead && !$admin) {
-    PEAR::raiseError("Only the lead maintainer of the package or PEAR
+    PEAR::raiseError("Only the lead maintainer of the package or PECL
                       administrators can edit the package.");
     response_footer();
     exit();

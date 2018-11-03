@@ -214,7 +214,7 @@ class Package
     }
 
     /**
-     * Lists the IDs and names of all approved PEAR packages
+     * Lists the IDs and names of all approved PECL packages
      *
      * Returns an associative array where the key of each element is
      * a package ID, while the value is the name of the corresponding

@@ -1,9 +1,9 @@
-             PEAR BACKEND DATABASE DESIGN
+             PECL BACKEND DATABASE DESIGN
 
 TERMINOLOGY
 
 Author
-    An author is a contributor to PEAR.  An author is usually
+    An author is a contributor to PECL.  An author is usually
     referred with a name usually based on initials.  This name is
     the identifier used in the database and XML description files.
 
@@ -18,12 +18,12 @@ Domain
     administrator of the root domain.
 
 Package
-    A PEAR _package_ is a collection of C code (extensions) and
+    A PECL _package_ is a collection of C code (extensions) and
     PHP code within a certain _domain_.  Any number of packages
     can use the same domain.
 
 Release
-    A PEAR _package_ is made available through a _release_.  Each
+    A PECL _package_ is made available through a _release_.  Each
     release has a version number (see version section below).
 
 Distribution

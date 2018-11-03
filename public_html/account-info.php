@@ -19,7 +19,7 @@
 */
 
 /**
- * Details about PEAR accounts
+ * Details about PECL accounts
  */
 
 $handle = filter_input(INPUT_GET, 'handle', FILTER_SANITIZE_STRING);

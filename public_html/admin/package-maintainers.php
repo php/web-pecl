@@ -18,7 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
-response_header("PEAR Administration - Package maintainers");
+response_header("PECL Administration - Package maintainers");
 
 if (isset($_GET['pid'])) {
     $id = (int)$_GET['pid'];
@@ -42,7 +42,7 @@ if (empty($id)) {
 
 } else if (!empty($_GET['update'])) {
     if (!isAllowed($id)) {
-        PEAR::raiseError("Only the lead maintainer of the package or PEAR
+        PEAR::raiseError("Only the lead maintainer of the package or PECL
                           administrators can edit the maintainers.");
         response_footer();
         exit();
@@ -110,7 +110,7 @@ if (empty($id)) {
     echo '<a href="' . $url . '">Back</a>';
 } else {
     if (!isAllowed($id)) {
-        PEAR::raiseError("Only the lead maintainer of the package or PEAR
+        PEAR::raiseError("Only the lead maintainer of the package or PECL
                           administrators can edit the maintainers.");
         response_footer();
         exit();

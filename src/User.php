@@ -93,7 +93,7 @@ class User
         $rest->saveMaintainer($user->handle);
         $rest->saveAllmaintainers();
 
-        $msg = "Your PECL/PEAR account request has been opened.\n".
+        $msg = "Your PECL account request has been opened.\n".
              "To log in, go to https://pecl.php.net/ and click on \"login\" in\n".
              "the top-right menu.\n";
         $xhdr = "From: " . $auth_user->handle . "@php.net";

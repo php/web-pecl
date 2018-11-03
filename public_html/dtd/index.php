@@ -23,7 +23,7 @@ response_header("Document Type Definitions");
 
 <h2>Document Type Definitions</h2>
 
-<p>The following Document Type Definitions are used in PEAR:</p>
+<p>The following Document Type Definitions are used in PECL:</p>
 
 <?php $bb = new BorderBox("Available DTDs"); ?>
 

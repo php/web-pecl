@@ -21,7 +21,7 @@
 /*
  * If the PHPSESSID cookie isn't set, the user MAY have cookies turned off.
  * To figure out cookies are REALLY off, check to see if the person came
- * from within the PEAR website or just submitted the login form.
+ * from within the PECL website or just submitted the login form.
  */
 if (!isset($_COOKIE[session_name()]) &&
     ((strpos(@$_SERVER['HTTP_REFERER'], @$_GET['redirect']) !== false) ||

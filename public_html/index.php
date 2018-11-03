@@ -24,7 +24,7 @@ if (@sizeof($recent) > 0) {
     $RSIDEBAR_DATA .= '<table class="sidebar-releases">' . "\n";
     foreach ($recent as $release) {
         extract($release);
-        $releasedate = make_utc_date(strtotime($releasedate), 'Y-m-d');
+        $releasedate = $formatDate->utc($releasedate, 'Y-m-d');
         $desc = substr($releasenotes, 0, 40);
         if (strlen($releasenotes) > 40) {
             $desc .= '...';

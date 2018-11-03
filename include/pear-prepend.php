@@ -18,6 +18,10 @@
   +----------------------------------------------------------------------+
 */
 
+/**
+ * Application bootstrap.
+ */
+
 require_once __DIR__.'/pear-config.php';
 
 // silence the notices for production
@@ -28,6 +32,9 @@ if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != 'pecl.php.net')
     define('DEVBOX', false);
 }
 
+// Set application default time zone to UTC for all dates.
+date_default_timezone_set('UTC');
+
 require_once 'PEAR.php';
 require_once 'DB.php';
 require_once 'DB/storage.php';
@@ -37,8 +44,10 @@ require_once __DIR__.'/pear-database.php';
 require_once __DIR__.'/../src/Rest.php';
 require_once __DIR__.'/../src/PackageDll.php';
 require_once __DIR__.'/../src/Utils/Filesystem.php';
+require_once __DIR__.'/../src/Utils/FormatDate.php';
 
 use App\Utils\Filesystem;
+use App\Utils\FormatDate;
 
 function get($name)
 {
@@ -63,6 +72,7 @@ if (empty($dbh)) {
 }
 
 $filesystem = new Filesystem();
+$formatDate = new FormatDate();
 
 if (!isset($rest)) {
     if (!DEVBOX) {

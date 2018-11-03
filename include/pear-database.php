@@ -110,19 +110,3 @@ class PEAR_User extends DB_storage
         return ($this->admin == 1);
     }
 }
-
-/**
- * Converts a Unix timestamp to a date() formatted string in the UTC time zone
- *
- * @param int    $ts      a Unix timestamp from the local machine.  If none
- *                         is provided the current time is used.
- * @param string $format  a format string, as per https://php.net/date
- *
- * @return string  the time formatted time
- */
-function make_utc_date($ts = null, $format = 'Y-m-d H:i \U\T\C') {
-    if (!$ts) {
-        $ts = time();
-    }
-    return gmdate($format, $ts);
-}

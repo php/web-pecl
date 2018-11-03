@@ -14,34 +14,36 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Authors: Martin Jansen <mj@php.net>                                  |
+  | Authors: Peter Kokot <petk@php.net>                                  |
   +----------------------------------------------------------------------+
 */
 
-response_header("News");
+namespace App\Tests\Utils;
 
-echo "<h1>PECL news</h1>";
+use PHPUnit\Framework\TestCase;
+use App\Utils\FormatDate;
 
-echo "<h2><a name=\"recent_releases\"></a>Recent Releases</h2>";
-echo "<ul>";
+class FormatDateTest extends TestCase
+{
+    /**
+     * @dataProvider dateProvider
+     */
+    public function testUtc($date, $expected, $format)
+    {
+        $formatDate = new FormatDate();
 
-$recent = Release::getRecent();
-foreach ($recent as $release) {
-    $releasedate = $formatDate->utc($release['releasedate'], 'Y-m-d');
-    $desc = nl2br(htmlentities(substr($release['releasenotes'], 0, 400)));
-    if (strlen($release['releasenotes']) > 400) {
-        $desc .= ' <a href="/package/' . $release['name'] . '/' . $release['version'] . '">...</a>';
+        $this->assertEquals($expected, $formatDate->utc($date, $format));
     }
 
-    echo "<li><a href=\"/package/" . $release['name'] . "/\">";
-    echo "$release[name] $release[version] ($release[state])</a> <i>$releasedate</i><br/>$desc</li>";
+    public function dateProvider()
+    {
+        return [
+            ['2018-10-10 10:10:10', '2018-10-10 10:10 UTC', null],
+            ['2017-05-02 10:02:10', '2017-05-02', 'Y-m-d'],
+            ['0000-00-00 00:00:00', date('Y-m-d'), 'Y-m-d'],
+            [null, date('Y-m-d'), 'Y-m-d'],
+            ['', date('Y-m-d'), 'Y-m-d'],
+            [0, date('Y-m-d'), 'Y-m-d'],
+        ];
+    }
 }
-
-echo "</ul>\n<a href=\"/feeds/\">Syndicate this</a>";
-
-echo "<h2><a name=\"2003\"></a>Year 2003</h2>";
-echo "<ul>";
-echo '<li><a href="https://news.php.net/article.php?group=php.pecl.dev&article=5">Call for PHP Extension authors</a> (September)</li>';
-echo "</ul>";
-
-response_footer();

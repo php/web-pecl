@@ -167,10 +167,10 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
             echo '  <td>' . number_format($value['dl_number'], 0, '.', ',');
             echo "  </td>\n";
             echo '  <td>';
-            echo make_utc_date(strtotime($value['releasedate']), 'Y-m-d');
+            echo $formatDate->utc($value['releasedate'], 'Y-m-d');
             echo "  </td>\n";
             echo '  <td>';
-            echo make_utc_date(strtotime($value['last_dl']));
+            echo $formatDate->utc($value['last_dl']);
             echo "  </td>\n";
             echo " </tr>\n";
         }

@@ -295,14 +295,6 @@ function &draw_navigation($data, $menu_title = '')
     return $html;
 }
 
-function menu_link($text, $url) {
-    echo "<p>\n";
-    echo '<a href="'.$url.'">'.make_image('pecl_item.gif', $text).'</a>';
-    echo '&nbsp;';
-    echo '<a href="'.$url.'"><b>'.$text.'</b></a>';
-    echo "</p>\n";
-}
-
 /**
  * Display errors or warnings as a <ul> inside a <div>
  *

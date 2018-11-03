@@ -58,31 +58,31 @@ sister, <acronym title="PHP Extension and Application Repository"
 echo '<h3><a href="/news/">News</a></h3>';
 echo '<h3>Documentation</h3>';
 echo '<div class="indent">';
-echo menu_link("PECL specific docs", "/doc/index.php");
-echo menu_link("Mailing Lists &amp; Support Resources", "/support.php");
+echo '<a href="/doc/index.php" class="item">PECL specific docs</a><br>';
+echo '<a href="/support.php" class="item">Mailing Lists &amp; Support Resources</a><br>';
 echo '</div>';
 echo '<h3>Downloads</h3>';
 echo '<div class="indent">';
-echo menu_link("Browse All Packages", "packages.php");
-echo menu_link("Search Packages", "package-search.php");
-echo menu_link("Download Statistics", "package-stats.php");
+echo '<a href="/packages.php" class="item">Browse All Packages</a><br>';
+echo '<a href="/package-search.php" class="item">Search Packages</a><br>';
+echo '<a href="/package-stats.php" class="item">Download Statistics</a><br>';
 echo '</div>';
 if (!empty($auth_user)) {
     echo '<h3>Developers</h3>';
     echo '<div class="indent">';
-    echo menu_link("Upload Release", "release-upload.php");
-    echo menu_link("New Package", "package-new.php");
+    echo '<a href="/release-upload.php" class="item">Upload Release</a><br>';
+    echo '<a href="/package-new.php" class="item">New Package</a><br>';
     echo '</div>';
     if ($auth_user->isAdmin()) {
         echo '<h3>Administrators</h3>';
         echo '<div class="indent">';
-        echo menu_link("Overview", "/admin/");
-        echo menu_link("Maintainers", "/admin/package-maintainers.php");
-        echo menu_link("Categories", "/admin/category-manager.php");
+        echo '<a href="/admin" class="item">Overview</a><br>';
+        echo '<a href="/admin/package-maintainers.php" class="item">Maintainers</a><br>';
+        echo '<a href="/admin/category-manager.php" class="item">Categories</a><br>';
         echo '</div>';
     }
 }
-// XXX Hide for the moment?
-menu_link("I want to publish my PHP Extension in PECL", "account-request.php");
+
+echo '<a href="/account-request.php" class="item">I want to publish my PHP Extension in PECL</a><br>';
 
 response_footer();

@@ -479,3 +479,20 @@ form.pecl-form div.info {
     padding-top: 5px;
     margin: 0;
 }
+
+a.item,
+a.item:visited,
+a.item:link {
+    background-image: url(../gifs/pecl_item.gif);
+    background-repeat: no-repeat;
+    background-position: left center;
+    font-weight: bold;
+    display: inline-block;
+    padding: 5px 5px 5px 25px;
+    text-decoration: underline;
+    margin-bottom: 5px;
+}
+
+a.item:hover {
+    text-decoration: none;
+}

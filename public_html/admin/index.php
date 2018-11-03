@@ -28,17 +28,19 @@ if (!empty($_GET['phpinfo'])) {
 $acreq = isset($_GET['acreq']) ? strip_tags(htmlspecialchars($_GET['acreq'], ENT_QUOTES)) : null;
 
 $SIDEBAR_DATA='
-This is the PEAR administration page.<br />
 <noscript><p>
 <!-- be annoying! -->
 <b><blink>You must enable Javascript to use this page!</blink></b>
 </p></noscript>
 ';
 
-response_header("PEAR Administration");
+response_header("Administration");
 
-menu_link("Package maintainers", "package-maintainers.php");
-menu_link("Manage categories", "category-manager.php");
+echo '<h1>PECL Administration</h1>';
+echo '<p>This is the PECL administration page.</p>';
+echo '<a href="/admin/package-maintainers.php" class="item">Package maintainers</a>';
+echo '<br>';
+echo '<a href="/admin/category-manager.php" class="item">Manage categories</a>';
 echo '<hr>';
 
 // {{{ adding and deleting notes

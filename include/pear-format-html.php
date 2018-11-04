@@ -454,46 +454,6 @@ function localRedirect($url)
     exit;
 }
 
-/**
- * Get URL to license text
- *
- * @todo  Add more licenses here
- * @param string Name of the license
- * @return string Link to license URL
- */
-function get_license_link($license = "")
-{
-    switch ($license) {
-
-        case 'PHP License':
-        case 'PHP 3.01':
-        case 'PHP License 3.01':
-            $link = 'https://php.net/license/3_01.txt';
-            break;
-
-        case 'PHP 3.0':
-        case 'PHP License 3.0':
-            $link = 'https://php.net/license/3_0.txt';
-            break;
-
-        case 'PHP 2.02':
-        case 'PHP License 2.02':
-            $link = 'https://php.net/license/2_02.txt';
-            break;
-
-        case 'LGPL':
-        case 'GNU Lesser General Public License':
-            $link = 'https://www.gnu.org/licenses/lgpl.html';
-            break;
-
-        default:
-            $link = '';
-            break;
-    }
-
-    return ($link != '' ? '<a href="' . $link . '">' . $license . "</a>\n" : $license);
-}
-
 function display_user_notes($user, $width = '50%')
 {
     global $dbh;

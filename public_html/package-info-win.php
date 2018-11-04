@@ -19,6 +19,12 @@
   +----------------------------------------------------------------------+
 */
 
+require_once __DIR__.'/../src/Utils/Licenser.php';
+
+use App\Utils\Licenser;
+
+$licenser = new Licenser();
+
 $package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 $version = filter_input(INPUT_GET, 'version', FILTER_SANITIZE_STRING);
 $relid = filter_input(INPUT_GET, FILTER_VALIDATE_INT);
@@ -178,7 +184,7 @@ $bb = new BorderBox("Package Information", "90%", "", 2, true);
 
 $bb->horizHeadRow("Summary", $summary);
 $bb->horizHeadRow("Maintainers", $accounts);
-$bb->horizHeadRow("License", get_license_link($license));
+$bb->horizHeadRow("License", $licenser->getHtml($license));
 $bb->horizHeadRow("Description", nl2br($description));
 
 if (!empty($homepage)) {

@@ -44,10 +44,8 @@ if (!isset($_GET['id'])) {
     exit();
 }
 
-/**
- * The user has to be either a lead developer of the package or
- * a PECL administrator.
- */
+// The user has to be either a lead developer of the package or a PECL
+// administrator.
 $lead = User::maintains($auth_user->handle, $_GET['id'], "lead");
 $admin = $auth_user->isAdmin();
 
@@ -58,7 +56,7 @@ if (!$lead && !$admin) {
     exit();
 }
 
-/** Update */
+// Update
 if (isset($_POST['submit'])) {
 
     if (!$_POST['name'] || !$_POST['license'] || !$_POST['summary']) {
@@ -89,7 +87,6 @@ if (isset($_POST['submit'])) {
             }
         }
 
-
     $qparams = [
                   $_POST['name'],
                   $_POST['license'],
@@ -116,9 +113,7 @@ if (isset($_POST['submit'])) {
         echo "<b>Package information successfully updated.</b><br /><br />\n";
     }
 } else if (isset($_GET['action'])) {
-
     switch ($_GET['action']) {
-
         case "release_remove" :
             if (!isset($_GET['release'])) {
                 PEAR::raiseError("Missing package ID!");
@@ -128,8 +123,7 @@ if (isset($_POST['submit'])) {
             if (Release::remove($_GET['id'], $_GET['release'])) {
                 echo "<b>Release successfully deleted.</b><br /><br />\n";
             } else {
-                PEAR::raiseError("An error occured while deleting the
-                                  release!");
+                PEAR::raiseError("An error occured while deleting the release!");
             }
 
             break;
@@ -141,6 +135,7 @@ $row = Package::info((int)$_GET['id']);
 if (empty($row['name'])) {
     PEAR::raiseError("Illegal package id");
     response_footer();
+
     exit();
 }
 

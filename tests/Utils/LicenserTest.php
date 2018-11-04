@@ -33,14 +33,14 @@ class LicenserTest extends TestCase
     }
 
     /**
-     * @dataProvider dateProvider
+     * @dataProvider licensesProvider
      */
-    public function testGetLink($license, $expected)
+    public function testGetHtml($license, $expected)
     {
         $this->assertEquals($expected, $this->licenser->getHtml($license));
     }
 
-    public function dateProvider()
+    public function licensesProvider()
     {
         return [
             ['PHP', '<a href="https://php.net/license/3_01.txt">PHP</a>'],
@@ -49,6 +49,7 @@ class LicenserTest extends TestCase
             ['GNU Lesser General Public License', '<a href="https://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>'],
             ['MIT', 'MIT'],
             ['', ''],
+            ['FOO?bar&baz', 'FOO?bar&amp;baz'],
         ];
     }
 }

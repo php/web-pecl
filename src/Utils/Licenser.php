@@ -63,6 +63,8 @@ class Licenser
     {
         $url = $this->getUrl($license);
 
+        $license = htmlspecialchars($license, ENT_QUOTES);
+
         return ($url != '' ? '<a href="'.$url.'">'.$license.'</a>' : $license);
     }
 }

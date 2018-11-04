@@ -205,9 +205,9 @@ if ($relid) {
 if (!empty($auth_user)) {
     $bb->fullRow("<div align=\"right\">" .
                  '<a href="/package-edit.php?id='.$pacid.'">'.
-                           make_image("edit.gif", "Edit package information").'</a>'.
+                           '<img src="/gifs/edit.gif" alt="Edit package information"></a>'.
                  ($auth_user->isAdmin() ? '&nbsp;<a href="/package-delete.php?id='.$pacid.'">'.
-                                      make_image("delete.gif", "Delete package").'</a>' : '') .
+                                      '<img src="/gifs/delete.gif" alt="Delete package"></a>' : '').
                  '&nbsp;[<a href="/admin/package-maintainers.php?pid='.$pacid.'">Edit maintainers</a>]</div>');
 }
 

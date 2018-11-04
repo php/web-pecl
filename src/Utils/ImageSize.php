@@ -18,36 +18,34 @@
   +----------------------------------------------------------------------+
 */
 
+namespace App\Utils;
+
 /**
- * Returns an IMG tag for a given file (relative to the images dir)
+ * Helper class to determine image size.
  */
-function make_image($file, $alt = '', $align = '', $extras = '', $dir = '',
-                    $border = 0, $styles = '')
+class ImageSize
 {
-    if (!$dir) {
-        $dir = '/gifs';
+    private $documentRoot;
+
+    /**
+     * Class constructor.
+     */
+    public function __construct()
+    {
+        $this->documentRoot = realpath(__DIR__.'/../../public_html');
     }
-    if ($size = @getimagesize($_SERVER['DOCUMENT_ROOT'].$dir.'/'.$file)) {
-        $image = sprintf('<img src="%s/%s" style="border: %d;%s%s" %s alt="%s" %s />',
-            $dir,
-            $file,
-            $border,
-            ($styles ? ' '.$styles            : ''),
-            ($align  ? ' float: '.$align.';'  : ''),
-            $size[3],
-            ($alt    ? $alt : ''),
-            ($extras ? ' '.$extras            : '')
-        );
-    } else {
-        $image = sprintf('<img src="%s/%s" style="border: %d;%s%s" alt="%s" %s />',
-            $dir,
-            $file,
-            $border,
-            ($styles ? ' '.$styles            : ''),
-            ($align  ? ' float: '.$align.';'  : ''),
-            ($alt    ? $alt : ''),
-            ($extras ? ' '.$extras            : '')
-        );
+
+    /**
+     * Returns image size attributes (width="..." height="...").
+     */
+    public function getSize($file)
+    {
+        $path = $this->documentRoot.$file;
+
+        if (file_exists($path) && ($size = @getimagesize($path))) {
+            return $size[3];
+        }
+
+        return '';
     }
-    return $image;
 }

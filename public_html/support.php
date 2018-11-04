@@ -158,7 +158,7 @@ echo '<table cellpadding="5" cellspacing="1">';
 
 foreach ($icons as $file => $desc) {
     echo '<tr bgcolor="e0e0e0">';
-    echo '<td>' . make_image($file,$desc) . '<br></td>';
+    echo '<td><img src="/gifs/'.$file.'" alt="'.$desc.'"><br></td>';
     echo '<td>' . $desc . '<br><small>';
     $size = @getimagesize($_SERVER['DOCUMENT_ROOT'].'/gifs/'.$file);
     if ($size) {

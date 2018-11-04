@@ -26,7 +26,6 @@ PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 $extra_styles = [];
 
 require_once 'Net/URL2.php';
-require_once __DIR__.'/layout.php';
 require_once __DIR__.'/../src/BorderBox.php';
 
 $GLOBALS['main_menu'] = [
@@ -60,7 +59,8 @@ $GLOBALS['_style'] = '';
 
 function response_header($title = 'The PHP Extension Community Library', $style = false)
 {
-    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles, $auth_user;
+    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles, $auth_user, $imageSize;
+
     if ($_header_done) {
         return;
     }
@@ -122,7 +122,7 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
 <table class="head" cellspacing="0" cellpadding="0" width="100%">
  <tr>
   <td class="head-logo">
-    <a href="/"><?php echo make_image('peclsmall.gif', 'PECL :: The PHP Extension Community Library', false, false, false, false, 'margin: 5px;'); ?></a><br />
+    <a href="/"><img src="/gifs/peclsmall.gif" alt="PECL :: The PHP Extension Community Library" <?= $imageSize->getSize('/gifs/peclsmall.gif'); ?> style="margin: 5px;"></a><br>
   </td>
 
   <td class="head-menu">

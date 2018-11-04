@@ -163,7 +163,7 @@ while ($sth->fetchInto($row)) {
     }
 
     if (sizeof($sub_links) >= $max_sub_links) {
-        $sub_links = implode(', ', $sub_links) . ' ' . make_image("caret-r.gif", "[more]");
+        $sub_links = implode(', ', $sub_links).' <img src="/gifs/caret-r.gif" alt="[more]">';
     } else {
         $sub_links = implode(', ', $sub_links);
     }

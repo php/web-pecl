@@ -45,9 +45,11 @@ require_once __DIR__.'/../src/Rest.php';
 require_once __DIR__.'/../src/PackageDll.php';
 require_once __DIR__.'/../src/Utils/Filesystem.php';
 require_once __DIR__.'/../src/Utils/FormatDate.php';
+require_once __DIR__.'/../src/Utils/ImageSize.php';
 
 use App\Utils\Filesystem;
 use App\Utils\FormatDate;
+use App\Utils\ImageSize;
 
 function get($name)
 {
@@ -73,6 +75,7 @@ if (empty($dbh)) {
 
 $filesystem = new Filesystem();
 $formatDate = new FormatDate();
+$imageSize = new ImageSize();
 
 if (!isset($rest)) {
     if (!DEVBOX) {

@@ -111,7 +111,7 @@ print "<br />\n";
 
 display_user_notes($handle, "100%");
 
-print "<br /><a href=\"/account-edit.php?handle=$handle\">". make_image("edit.gif", "Edit") . "</a>";
+print '<br><a href="/account-edit.php?handle='.htmlspecialchars($handle, ENT_QUOTES).'"><img src="/gifs/edit.gif" alt="Edit"></a>';
 
 print "</td></tr></table>\n";
 

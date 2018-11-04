@@ -21,7 +21,6 @@
 print "Adding packages...\n";
 
 // Drops all packages and adds sample packages
-
 $dbh->expectError(DB_ERROR_NOSUCHTABLE);
 $dbh->query('DELETE FROM packages');
 $dbh->dropSequence('packages');

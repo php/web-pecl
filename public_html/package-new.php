@@ -28,7 +28,7 @@ $display_form = true;
 $errorMsg = "";
 $jumpto = "name";
 
-/* May seem like overkill, but the prepended get() function checks both GET and POST */
+// May seem like overkill, but the prepended get() function checks both GET and POST
 $valid_args = ['submit', 'name','category','license','summary','desc','homepage','cvs_link'];
 foreach($valid_args as $arg) {
         if(isset($_POST[$arg])) $_POST[$arg] = htmlspecialchars($_POST[$arg], ENT_QUOTES);

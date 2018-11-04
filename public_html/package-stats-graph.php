@@ -32,15 +32,10 @@
 include("../include/jpgraph/jpgraph.php");
 include("../include/jpgraph/jpgraph_bar.php");
 
-/**
- * Cache time in secs
- */
+// Cache time in secs
 $cache_time = 300;
 
-/**
- * This is the x axis labels. May change when
- * selectable dates is added.
- */
+// This is the x axis labels. May change when selectable dates is added.
 $year   = date('Y') - 1;
 $month  = date('n') + 1;
 $x_axis = [];
@@ -49,13 +44,9 @@ for ($i = 0; $i < 12; $i++) {
     $x_axis[date('Ym', $time)] = date('M', $time);
 }
 
-/**
- * Determine the stats based on the supplied
- * package id (pid) and release id (rid).
- * If release id is empty a group bar chart is
- * drawn with each release having a different
- * color.
- */
+// Determine the stats based on the supplied package id (pid) and release id
+// (rid). If release id is empty a group bar chart is drawn with each release
+// having a different color.
 if (!empty($_GET['releases'])) {
     $releases = explode(',', $_GET['releases']);
 }
@@ -105,15 +96,11 @@ foreach ($releases as $release) {
 $x_axis = array_values($x_axis);
 $bplots = array_values($bplots);
 
-/**
- * Get package name
- */
+// Get package name
 $package_name = $dbh->getOne('SELECT name FROM packages WHERE id = ' . (int)$_GET['pid']);
 $package_rel  = !empty($_GET['rid']) ? $dbh->getOne('SELECT version FROM releases WHERE id = ' . (int)$_GET['rid']) : '';
 
-/**
- * Go through setting up the graph
- */
+// Go through setting up the graph
 if (!DEVBOX) {
     // Send some caching headers to prevent unnecessary requests
     header('ETag: ' . md5($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']));

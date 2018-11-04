@@ -27,16 +27,23 @@ define("PECL_DLL_URL_CACHE_DB_RESET_LOCK", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "
  */
 class PackageDll
 {
-    protected static $build_gap = 7200; /* 2 hours */
+    /**
+     * Build gap defaults to 2 hours.
+     */
+    protected static $build_gap = 7200;
 
-    protected static $reset_period = 3600; /* 1 hour */
+    /**
+     * Reset period defaults to 1 hour.
+     */
+    protected static $reset_period = 3600;
 
     protected static $cache_db = PECL_DLL_URL_CACHE_DB;
-
     protected static $last_reset_file = PECL_DLL_URL_CACHE_LAST_RESET;
     protected static $cache_reset_lock = PECL_DLL_URL_CACHE_DB_RESET_LOCK;
 
-    /* NOTE when edit here, don't forget to remove the cache file */
+    /**
+     * NOTE when edit here, don't forget to remove the cache file
+     */
     protected static $zip_name_parts = [
         '7.3' => [
             ['crt' => 'vc15', 'arch' => 'x64'],
@@ -74,9 +81,8 @@ class PackageDll
     {
         clearstatcache();
         if (file_exists(self::$cache_reset_lock)) {
-            /* Reset is started by some other process in that small time gap.
-                That's still not full atomic, but reduces the risks significantly.  */
-            /* yeah, go to ... */
+            // Reset is started by some other process in that small time gap.
+            // That's still not full atomic, but reduces the risks significantly.
             return false;
         }
 
@@ -104,8 +110,8 @@ class PackageDll
             return NULL;
         }
 
-        /* If cache reset lock exists, some reset is running right now. Deliver
-            the live results then and don't cache. */
+        // If cache reset lock exists, some reset is running right now. Deliver
+        // the live results then and don't cache.
         $cache = $cache && !file_exists(self::$cache_reset_lock);
 
         do {
@@ -132,7 +138,7 @@ class PackageDll
             }
         } while (0);
 
-        /* not cached yet */
+        // Not cached yet.
         if (!$ret && !$cached_found) {
             $do_cache = true;
             $ret = self::fetchDllDownloadUrls($name, $version);
@@ -159,7 +165,7 @@ class PackageDll
             }
 
             if (is_array($data) && array_key_exists($version, $data)) {
-                /* found cached, nothing to do */
+                // Found cached, nothing to do.
                 return true;
             }
         }
@@ -186,7 +192,9 @@ class PackageDll
         return false !== file_put_contents(self::$cache_db, serialize($db), LOCK_EX);
     }
 
-    /* need always both ts/nts for each branch */
+    /**
+     * Need always both ts/nts for each branch.
+     */
     public static function getZipFileList($name, $version)
     {
         $ret = [];
@@ -248,21 +256,22 @@ class PackageDll
         return $ret;
     }
 
+    /**
+     * Between the package release and DLL build can be the gap of 30 minutes
+     * (in the best case). Lets give it 2h so we don't cache empty result too
+     * early.
+     */
     public static function buildGapOver($date)
     {
-            /* Between the package release and DLL build can be the gap of
-               30 minutes (in the best case). Lets give it 2h so we don't
-               cache empty result too early. */
+        $dt = date_parse($date);
+        $rel_ts = mktime($dt['hour'], $dt['minute'], $dt['second'], $dt['month'], $dt['day'], $dt['year']);
 
-            $dt = date_parse($date);
-            $rel_ts = mktime($dt['hour'], $dt['minute'], $dt['second'], $dt['month'], $dt['day'], $dt['year']);
-
-            return time() >= $rel_ts+self::$build_gap;
+        return time() >= $rel_ts+self::$build_gap;
     }
 
     public static function makeNiceLinkNameFromZipName($zip_name)
     {
-        /* name looks like php_taint-1.1.0-5.4-nts-vc9-x86.zip*/
+        // Name looks like php_taint-1.1.0-5.4-nts-vc9-x86.zip
         if (!preg_match(",php_([^-]+)-([a-z0-9\.]+)-([0-9\.]+)-(ts|nts)-(vc\d+)-(x86|x64)\.zip,", $zip_name, $part)) {
             return $zip_name;
         }

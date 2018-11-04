@@ -37,7 +37,7 @@ response_header("Support");
 
 <?php
 
-// array of lists (list, name, short desc., moderated, archive, digest, newsgroup)
+// Array of lists (list, name, short desc., moderated, archive, digest, newsgroup)
 $mailing_lists = [
     'PECL mailinglists',
 

@@ -43,8 +43,7 @@ echo '<br>';
 echo '<a href="/admin/category-manager.php" class="item">Manage categories</a>';
 echo '<hr>';
 
-// {{{ adding and deleting notes
-
+// adding and deleting notes
 if (!empty($_REQUEST['cmd'])) {
     if ($_REQUEST['cmd'] == "Add note" && !empty($_REQUEST['note']) && !empty($_REQUEST['key']) && !empty($_REQUEST['id'])) {
         Note::add($_REQUEST['key'], $_REQUEST['id'], $_REQUEST['note']);
@@ -98,10 +97,6 @@ if (!empty($_REQUEST['cmd'])) {
     }
 }
 
-// }}}
-
-// {{{ javascript functions
-
 ?>
 <script>
 function confirmed_goto(url, message) {
@@ -130,12 +125,8 @@ function updateRejectReason(selectObj) {
 </script>
 <?php
 
-// }}}
-
 do {
-
-    // {{{ "approve account request" form
-
+    // approve account request form
     if (!empty($acreq)) {
         $requser = new PEAR_User($dbh, $acreq);
         if (empty($requser->name)) {
@@ -227,15 +218,11 @@ do {
 </form>
 
 <?php
-    // }}}
-    // {{{ admin menu
+    // admin menu
     } else {
         ?>
         <script>
-            /**
-            * This code is *nasty* (nastyCode™)
-            */
-
+            // This code is *nasty* (nastyCode™)
             function highlightAccountRow(spanObj)
             {
                 return true;
@@ -361,9 +348,6 @@ do {
         </form>
 <?php
     }
-
-    // }}}
-
 } while (false);
 
 response_footer();

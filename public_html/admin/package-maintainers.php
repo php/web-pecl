@@ -72,11 +72,8 @@ if (empty($id)) {
     $query  = "DELETE FROM maintains WHERE handle = ? AND package = ?";
     $delete = $dbh->prepare($query);
 
-    /**
-     * In a first run, we delete all maintainers which are not in the
-     * new list.
-     * This isn't the best solution, but for now it works.
-     */
+    // In a first run, we delete all maintainers which are not in the new list.
+    // This isn't the best solution, but for now it works.
     foreach ($all as $handle => $role) {
         if (isset($new_list[$handle])) {
             continue;
@@ -164,7 +161,8 @@ if (empty($id)) {
 
     $maintainers = Maintainer::get($id);
     foreach ($maintainers as $handle => $role) {
-        $info = User::info($handle, "name");   // XXX: This sucks
+        // XXX: This sucks
+        $info = User::info($handle, "name");
         printf('<option value="%s||%s">%s (%s, %s)</option>',
                $handle,
                $role['role'],

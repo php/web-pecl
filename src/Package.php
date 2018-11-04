@@ -294,14 +294,14 @@ class Package
             foreach ($allreleases as $pkg => $stable) {
                 if ($stable['state'] == 'stable') {
                     if (version_compare($packageinfo[$pkg]['stable'], $stable['stable'], '<')) {
-                        // only change it if the version number is newer
+                        // Only change it if the version number is newer
                         $packageinfo[$pkg]['stable'] = $stable['stable'];
                     }
                 } else {
                     if (!isset($packageinfo[$pkg]['unstable'])
                         || version_compare($packageinfo[$pkg]['unstable'], $stable['stable'], '<')
                     ) {
-                        // only change it if the version number is newer
+                        // Only change it if the version number is newer
                         $packageinfo[$pkg]['unstable'] = $stable['stable'];
                     }
                 }

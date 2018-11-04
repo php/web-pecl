@@ -25,10 +25,8 @@
  * https://pecl.php.net/operator
  */
 
-/**
- * Requesting something like /~foobar will redirect to the account
- * information page of the user "foobar".
- */
+// Requesting something like /~foobar will redirect to the account information
+// page of the user "foobar".
 if (strlen($_SERVER['REDIRECT_URL']) > 0 && $_SERVER['REDIRECT_URL']{1} == '~') {
     $user = substr($_SERVER['REDIRECT_URL'], 2);
     if (preg_match(PEAR_COMMON_USER_NAME_REGEX, $user) && User::exists($user)) {

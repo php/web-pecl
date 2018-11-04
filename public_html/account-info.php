@@ -23,9 +23,8 @@
  */
 
 $handle = filter_input(INPUT_GET, 'handle', FILTER_SANITIZE_STRING);
-/**
- * Redirect to the accounts list if no handle was specified
- */
+
+// Redirect to the accounts list if no handle was specified
 if (empty($handle)) {
     localRedirect("/accounts.php");
 }

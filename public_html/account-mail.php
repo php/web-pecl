@@ -22,9 +22,7 @@
  * Send mail to PECL contributor
  */
 
-/**
- * Redirect to the accounts list if no handle was specified
- */
+// Redirect to the accounts list if no handle was specified
 if (!isset($_GET['handle']) || !preg_match('@^[0-9A-Za-z_]{2,20}$@', $_GET['handle'])) {
     header('Location: /accounts.php', true, 301);
     exit;
@@ -79,7 +77,7 @@ echo '<h1>Contact ' . $row['name'] . '</h1>';
 
 if (isset($_POST['submit'])) {
 
-    //XXX: Add email validation here
+    // XXX: Add email validation here
     if ($_POST['name'] == '') {
         $message .= '<li>You have to specify your name.</li>';
     }
@@ -114,7 +112,7 @@ if (isset($_POST['submit'])) {
     echo '<p>If you want to get in contact with one of the PECL contributors,'
         . ' you can do this by filling out the following form.</p>';
 
-    /** Guess the user if they are logged in */
+    // Guess the user if they are logged in
     if (!empty($auth_user)) {
         $data = ['email' => $auth_user->email, 'name' => $auth_user->name];
     } else {

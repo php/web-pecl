@@ -80,7 +80,9 @@ function auth_reject($realm = null, $message = null)
     exit;
 }
 
-// verify user + pass against the database
+/**
+ * Verify user + pass against the database
+ */
 function auth_verify($user, $passwd)
 {
     global $dbh, $auth_user;
@@ -91,7 +93,7 @@ function auth_verify($user, $passwd)
     $error = '';
     $ok = false;
     switch (strlen(@$auth_user->password)) {
-        // handle old-style DES-encrypted passwords
+        // Handle old-style DES-encrypted passwords
         case 13:
             $seed = substr($auth_user->password, 0, 2);
             $crypted = crypt($passwd, $seed);
@@ -102,7 +104,7 @@ function auth_verify($user, $passwd)
             }
             break;
 
-        // handle old MD5-hashed passwords and update them to password_hash()
+        // Handle old MD5-hashed passwords and update them to password_hash()
         case 32:
             $crypted = md5($passwd);
 
@@ -140,7 +142,9 @@ function auth_verify($user, $passwd)
     return false;
 }
 
-// acl check for the given $atom, where true means pear.admin, false pear.dev
+/**
+ * ACL check for the given $atom, where true means pear.admin, false pear.dev
+ */
 function auth_check($atom)
 {
     global $dbh;
@@ -148,7 +152,7 @@ function auth_check($atom)
 
     global $auth_user;
 
-    // admins are almighty
+    // Admins are almighty
     if ($auth_user->isAdmin()) {
         return true;
     }
@@ -162,7 +166,7 @@ function auth_check($atom)
         }
     }
 
-    // every authenticated user has the pear.user and pear.dev karma
+    // Every authenticated user has the pear.user and pear.dev karma
     if (in_array($atom, ["pear.user", "pear.dev"])) {
         return true;
     }
@@ -183,7 +187,8 @@ function auth_require($admin = false)
     $res = true;
 
     if (!is_logged_in()) {
-        auth_reject(); // exits
+        // Exits
+        auth_reject();
     }
 
     $num = func_num_args();
@@ -206,7 +211,7 @@ function auth_require($admin = false)
 }
 
 /**
- * Perform logout for the current user
+ * Perform logout for the current user.
  */
 function auth_logout()
 {
@@ -221,7 +226,7 @@ function auth_logout()
 }
 
 /**
- * check if the user is logged in
+ * Check if the user is logged in.
  */
 function is_logged_in()
 {
@@ -234,9 +239,9 @@ function is_logged_in()
     }
 }
 
-/*
-* setup the $auth_user object
-*/
+/**
+ * Setup the $auth_user object.
+ */
 function init_auth_user()
 {
     global $auth_user, $dbh;

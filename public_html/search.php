@@ -40,10 +40,7 @@ switch ($_POST['search_in']) {
 
     case "pecl-dev" :
     case "pecl-cvs" :
-        /**
-         * We forward the query to the mailing list archive
-         * at marc.thaimsgroup.com
-         */
+        // We forward the query to the mailing list archive at marc.thaimsgroup.com
         $location = "http://marc.info/";
         $query = "l=".$_POST['search_in']."&w=2&r=1&q=b&s=".urlencode($_POST['search_string']);
         header("Location: ".$location."?".$query);

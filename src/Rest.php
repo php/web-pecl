@@ -114,7 +114,7 @@ class Rest
  <a>' . htmlspecialchars($category['name']) . '</a>
  <d>' . $category['description'] . '</d>
 </c>';
-        // category info
+        // Category info
         file_put_contents($categoryDir.'/info.xml', $info);
         @chmod($categoryDir.'/info.xml', 0666);
 
@@ -139,7 +139,8 @@ class Rest
         }
 
         $list .= '</l>';
-        // list packages in a category
+
+        // List packages in a category
         file_put_contents($categoryDir.'/packages.xml', $list);
         @chmod($categoryDir.'/packages.xml', 0666);
     }
@@ -202,7 +203,7 @@ class Rest
         }
         $fullpackageinfo .= '</f>';
 
-        // list packages in a category
+        // List packages in a category
         $categoryDir = $cdir.'/'.urlencode($category);
         if (!file_exists($categoryDir)) {
             mkdir($categoryDir, 0777, true);
@@ -224,7 +225,7 @@ class Rest
             return;
         }
 
-        // remove all category info
+        // Remove all category info
         $this->filesystem->delete($cdir.'/'.urlencode($category));
     }
 
@@ -325,7 +326,7 @@ class Rest
  <r xlink:href="' . $extra . 'r/' . strtolower($package['name']) . '"/>' . $parent . $deprecated . '
 </p>';
 
-        // package information
+        // Package information
         file_put_contents($packageDir.'/info.xml', $info);
         @chmod($packageDir.'/info.xml', 0666);
     }
@@ -336,7 +337,7 @@ class Rest
     public function deletePackage($package)
     {
         if (!$package) {
-            // don't delete the entire package/release info
+            // Don't delete the entire package/release info.
             return;
         }
 
@@ -375,7 +376,7 @@ class Rest
         }
 
         if (!$releases || !count($releases)) {
-            // start from scratch, so that any pulled releases have their REST deleted
+            // Start from scratch, so that any pulled releases have their REST deleted.
             $this->filesystem->delete($rdir.'/'.strtolower($package));
 
             return;
@@ -389,10 +390,11 @@ class Rest
             $extra = '';
 
             if (strpos($packagexml, ' version="2.0"')) {
-                // little quick hack to determine package.xml version
+                // Little quick hack to determine package.xml version.
                 $pkg = new PEAR_PackageFile_Parser_v2;
                 $config = PEAR_Config::singleton();
-                $pkg->setConfig($config); // configuration is unused for this quick parse
+                // Configuration is unused for this quick parse.
+                $pkg->setConfig($config);
                 $pf = $pkg->parse($packagexml, '');
 
                 if (PEAR::isError($pf)) {
@@ -460,7 +462,7 @@ class Rest
         file_put_contents($packageDir.'/latest.txt', $latest);
         @chmod($packageDir.'/latest.txt', 0666);
 
-        // remove .txt in case all releases of this stability were deleted
+        // Remove .txt in case all releases of this stability were deleted
         @unlink($packageDir.'/stable.txt');
         @unlink($packageDir.'/beta.txt');
         @unlink($packageDir.'/alpha.txt');
@@ -641,7 +643,7 @@ class Rest
  <n>' . $maintainer['name'] . '</n>
 ' . $uri . '</m>';
 
-        // package information
+        // Package information
         file_put_contents($handleDir.'/info.xml', $info);
         @chmod($handleDir.'/info.xml', 0666);
     }
@@ -658,7 +660,6 @@ class Rest
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allmaintainers
     http://pear.php.net/dtd/rest.allmaintainers.xsd">' . "\n";
-        // package information
 
         $karma = new Karma($this->dbh);
 

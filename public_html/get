@@ -40,7 +40,7 @@
  * </Location>
  */
 
-// shut up or we risk getting corrupted tgz files
+// Shut up or we risk getting corrupted tgz files.
 error_reporting(0);
 
 function error_404($obj) {
@@ -58,8 +58,8 @@ function error_404($obj) {
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'error_404');
 
-// This is needed to be able to test the downloads with "wget"
-// or the pear installer
+// This is needed to be able to test the downloads with "wget" or the PEAR
+// installer
 if (empty($dbh)) {
     $dbh = DB::connect(PEAR_DATABASE_DSN, ['persistent' => false]);
     $dbh->query('SET NAMES utf8');

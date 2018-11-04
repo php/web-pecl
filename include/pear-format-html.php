@@ -18,7 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
-/* Send charset */
+// Send charset
 header("Content-Type: text/html; charset=utf-8");
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
@@ -345,8 +345,8 @@ function report_error($in, $class = 'errors', $head = 'ERROR:')
 /**
  * Forwards warnings to report_error()
  *
- * For use with PEAR_ERROR_CALLBACK to get messages to be formatted
- * as warnings rather than errors.
+ * For use with PEAR_ERROR_CALLBACK to get messages to be formatted as warnings
+ * rather than errors.
  *
  * @param string|array|PEAR_Error $in  see report_error() for more info
  *
@@ -360,11 +360,11 @@ function report_warning($in)
 }
 
 /**
- * Generates a complete PECL web page with an error message in it then
- * calls exit
+ * Generates a complete PECL web page with an error message in it then calls
+ * exit.
  *
- * For use with PEAR_ERROR_CALLBACK error handling mode to print fatal
- * errors and die.
+ * For use with PEAR_ERROR_CALLBACK error handling mode to print fatal errors
+ * and die.
  *
  * @param string|array|PEAR_Error $in  see report_error() for more info
  * @param string $title  string to be put above the message

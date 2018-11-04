@@ -104,9 +104,7 @@ if (!$relid) {
     }
 }
 
-// }}}
-// {{{ page header
-
+// page header
 if ($version) {
     response_header("Package :: $name :: $version");
 } else {
@@ -125,8 +123,7 @@ if ($version) {
 
 print "</h2>\n";
 
-// }}}
-// {{{ Supeseded checks
+// Supeseded checks
 $dec_messages = [
     'abandoned'    => 'This package is not maintained anymore and has been superseded.',
     'superseded'   => 'This package has been superseded, but is still maintained for bugs and security fixes.',
@@ -170,9 +167,7 @@ if (!is_null($apply_rule) && isset($dec_messages[$apply_rule])) {
     echo $str;
 }
 
-// }}}
-// {{{ "Package Information" box
-
+// Package Information box
 $bb = new BorderBox("Package Information", "90%", "", 2, true);
 
 $bb->horizHeadRow("Summary", $summary);
@@ -207,9 +202,7 @@ if (!empty($auth_user)) {
 
 $bb->end();
 
-// }}}
-// {{{ latest/cvs/changelog links
-
+// latest/cvs/changelog links
 ?>
 
 <br />
@@ -263,9 +256,7 @@ if (empty($bug_link)) {
 
 <?php
 
-// }}}
-// {{{ "Available Releases"
-
+// Available Releases
 if (!$relid) {
     $bb = new BorderBox("Available Releases", "90%", "", 5, true);
 
@@ -312,9 +303,7 @@ if (!$relid) {
     print "<br /><br />\n";
 }
 
-// }}}
-// {{{ "Dependencies"
-
+// Dependencies
 $title = "Dependencies";
 if ($relid) {
     $title .= " for release $version";
@@ -412,9 +401,7 @@ if ($sth->numRows() == 0) {
 }
 $bb->end();
 
-// }}}
-// {{{ Dependants
-
+// Dependants
 $dependants = Package::getDependants($name);
 
 if (count($dependants) > 0) {
@@ -428,7 +415,5 @@ if (count($dependants) > 0) {
 
     $bb->end();
 }
-
-// }}}
 
 response_footer();

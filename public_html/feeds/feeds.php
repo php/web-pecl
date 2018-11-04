@@ -24,7 +24,7 @@ function rss_bailout() {
     exit();
 }
 
-/* if file is given, the file will be used to store the rss feed */
+// If file is given, the file will be used to store the rss feed
 function rss_create($items, $channel_title, $channel_description, $dest_file=false) {
     if (is_array($items) && count($items)>0) {
 
@@ -45,7 +45,7 @@ EOT;
         foreach ($items as $item) {
             $date = date("Y-m-d\TH:i:s-05:00", strtotime($item['releasedate']));
 
-            /* allows to override the default link */
+            // Allows to override the default link
             if (!isset($item['link'])) {
                 $url = 'http://' . PEAR_CHANNELNAME . '/package-changelog.php?package=' . $item['name'] . '&amp;release=' . $item['version'];
             } else {
@@ -79,10 +79,11 @@ EOT;
 $item_entries
 </rdf:RDF>";
 
-        /* lock free write, thx rasmus for the tip */
+        // Lock free write, thx rasmus for the tip
         if($dest_file && (!file_exists($dest_file) || filemtime($dest_file) < (time()-$timeout))) {
             $stream = fopen($url,'r');
             $tmpf = tempnam('/tmp','YWS');
+
             // Note the direct write from the stream here
             file_put_contents($tmpf, $stream);
             fclose($stream);
@@ -159,7 +160,7 @@ switch ($type) {
         break;
 
     case 'bugs':
-        /* to be done, new bug system supports it */
+        // To be done, new bug system supports it
         rss_bailout();
         break;
 
@@ -168,7 +169,7 @@ switch ($type) {
         break;
 }
 
-// we do not use yet static files. It will be activated with the new backends.
+// We do not use yet static files. It will be activated with the new backends.
 // $file = __DIR__ . '/' .  $type . '_' . $argument . '.rss';
 $file = false;
 rss_create($items, $channel_title, $channel_description, $file);

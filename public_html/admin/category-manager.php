@@ -59,9 +59,7 @@ function parseTree(&$structure, $parent = null)
     }
 }
 
-/**
- * Form submitted?
- */
+// Form submitted?
 if (!empty($_POST)) {
     switch (@$_POST['action']) {
     case 'add':
@@ -101,14 +99,10 @@ if (!empty($_POST)) {
     }
 }
 
-/**
- * Create the menu, set the db to assoc mode
- */
+// Create the menu, set the db to assoc mode
 $treeMenu = new HTML_TreeMenu();
 
-/**
- * Get the categories
- */
+// Get the categories
 parseTree($treeMenu);
 
 /**

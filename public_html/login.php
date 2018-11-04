@@ -27,9 +27,7 @@ if (!isset($_COOKIE[session_name()]) && isset($_POST['PEAR_USER']) && isset($_PO
 //    auth_reject(PEAR_AUTH_REALM, 'Cookies must be enabled to log in.');
 }
 
-/*
- * If they're already logged in, say so.
- */
+// If they're already logged in, say so.
 if (!empty($auth_user)) {
     response_header('Login');
     echo '<div class="warnings">You are already logged in.</div>';
@@ -49,24 +47,18 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
 
     $_SESSION['PEAR_USER'] = $_POST['PEAR_USER'];
 
-    /*
-     * Update users lastlogin
-     */
+    // Update users lastlogin
     $query = 'UPDATE users SET lastlogin = NOW() WHERE handle = ?';
     $dbh->query($query, [$_POST['PEAR_USER']]);
 
-    /*
-     * Update users password if it is held in the db
-     * crypt()ed.
-     */
-    if (strlen(@$auth_user->password) == 13) { // $auth_user comes from auth_verify() function
+    // Update users password if it is held in the db crypt()ed. The $auth_user
+    // comes from auth_verify() function.
+    if (strlen(@$auth_user->password) == 13) {
         $query = 'UPDATE users SET password = ? WHERE handle = ?';
         $dbh->query($query, [md5($_POST['PEAR_PW']), $_POST['PEAR_USER']]);
     }
 
-    /*
-     * Determine URL
-     */
+    // Determine URL
     if (isset($_POST['redirect_to']) &&
         basename($_POST['redirect_to']) != 'login.php')
     {

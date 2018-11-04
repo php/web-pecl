@@ -30,9 +30,7 @@
 
 require_once 'Pager/Pager.php';
 
-/**
-* Months for released date dropdowns
-*/
+// Months for released date dropdowns
 $months     = [];
 $months[1]  = 'January';
 $months[2]  = 'February';
@@ -47,9 +45,7 @@ $months[10] = 'October';
 $months[11] = 'November';
 $months[12] = 'December';
 
-/**
-* Code to fetch the current category list
-*/
+// Code to fetch the current category list
 $category_rows = Category::listAll();
 if (!empty($_GET['pkg_category'])) {
     for ($i=0; $i<count($category_rows); $i++) {
@@ -59,9 +55,7 @@ if (!empty($_GET['pkg_category'])) {
     }
 }
 
-/**
-* Fetch list of users/maintainers
-*/
+// Fetch list of users/maintainers
 $users = $dbh->getAll('SELECT u.handle, u.name FROM users u, maintains m WHERE u.handle = m.handle GROUP BY handle ORDER BY u.name', DB_FETCHMODE_ASSOC);
 for ($i=0; $i<count($users); $i++) {
     if (empty($users[$i]['name'])) {
@@ -69,10 +63,7 @@ for ($i=0; $i<count($users); $i++) {
     }
 }
 
-/**
-* Is form submitted? Do search and show
-* results.
-*/
+// Is form submitted? Do search and show results.
 $numrows = 0;
 if (!empty($_GET)) {
     $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
@@ -93,9 +84,7 @@ if (!empty($_GET)) {
         $where[] = sprintf("category = %s", $dbh->quote($_GET['pkg_category']));
     }
 
-    /**
-     * Any release date checking?
-     */
+    // Any release date checking?
     $release_join        = '';
     $set_released_on     = false;
     $set_released_before = false;
@@ -161,10 +150,7 @@ if (!empty($_GET)) {
         // Row number
         $rownum = $from - 1;
 
-        /**
-        * Title html for results borderbox obj
-        * Eww.
-        */
+        // Title html for results borderbox obj. Eww.
         $title_html  = sprintf('<table border="0" width="100%%" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td align="left" width="50"><nobr>%s</nobr></td>
@@ -179,9 +165,7 @@ if (!empty($_GET)) {
                                $links['next']);
 
         while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC, $rownum++) AND $rownum <= $to) {
-            /**
-            * If name or summary was searched on, highlight the search string
-            */
+            // If name or summary was searched on, highlight the search string
             $row['raw_name']    = $row['name'];
             if (!empty($_GET['pkg_name'])) {
                 $row['name']    = str_ireplace($_GET['pkg_name'], '<span style="background-color: #d5ffc1">'.$_GET['pkg_name'].'</span>', $row['name']);
@@ -193,7 +177,5 @@ if (!empty($_GET)) {
     }
 }
 
-/**
- * Template stuff
- */
+// Template stuff
 include __DIR__.'/../templates/package-search.php';

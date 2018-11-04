@@ -100,8 +100,8 @@ do {
     $pkg_name = $info->getName();
     $pkg_extname = $info->getProvidesExtension();
     foreach ($info->getFileList() as $file_name => $file_data) {
-        /* The file we're looking for is usually named like php_myextname.h,
-             but lets check any .h file in the pkg root. */
+        // The file we're looking for is usually named like php_myextname.h, but
+        // lets check any .h file in the pkg root.
         if ("src" != $file_data["role"] ||
             false !== strstr($file_data["name"], "/") ||
             ".h" != substr($file_data["name"], -2)) {

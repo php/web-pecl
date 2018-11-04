@@ -29,8 +29,8 @@ if (isset($_SERVER['PEAR_TMPDIR'])) {
 /**
  * The PEAR::DB DSN connection string
  *
- * To override default, set the value in $_ENV['PEAR_DATABASE_DSN']
- * before this file is included.
+ * To override default, set the value in $_ENV['PEAR_DATABASE_DSN'] before this
+ * file is included.
  */
 if (isset($_SERVER['PEAR_DATABASE_DSN'])) {
     define('PEAR_DATABASE_DSN', $_SERVER['PEAR_DATABASE_DSN']);

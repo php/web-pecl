@@ -41,7 +41,8 @@ andrei;;;;1
 thies;;;;1
 ';
 
-$users = []; // [user=>[user,pw,name,email,admin],...]
+// [user=>[user,pw,name,email,admin],...]
+$users = [];
 foreach (explode("\n", $hardcoded_users) as $line) {
     $line = trim($line);
     if (empty($line)) {

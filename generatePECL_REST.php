@@ -22,9 +22,7 @@
  * Generate static REST files for pecl.php.net from existing data
  */
 
-/**
- * Useful files to have
- */
+// Useful files to have
 set_include_path(__DIR__.'/include'.PATH_SEPARATOR.get_include_path());
 
 ob_start();

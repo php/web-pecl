@@ -51,9 +51,7 @@ response_header('Package Search');
             date_updated_released_before = false;
             date_updated_released_since  = false;
 
-            /**
-            * Re-enable date dropdowns
-            */
+            // Re-enable date dropdowns
             searchForm.released_before_year.disabled  = false;
             searchForm.released_before_month.disabled = false;
             searchForm.released_before_day.disabled   = false;
@@ -70,9 +68,7 @@ response_header('Package Search');
             released_before_disabled = false;
             released_since_disabled  = false;
 
-            /**
-            * Re-enable search button
-            */
+            // Re-enable search button
             searchForm.submitButton.disabled = false;
             return true;
         }
@@ -142,9 +138,7 @@ response_header('Package Search');
     */
     function disableDateOptions(prefix)
     {
-        /**
-        * Disable appropriate option based on what just changed.
-        */
+        // Disable appropriate option based on what just changed.
         searchForm = document.forms['search_form'];
         switch (prefix) {
             case 'released_on':
@@ -233,7 +227,6 @@ response_header('Package Search');
         document.forms['search_form'].submitButton.disabled = true;
     }
 </script>
-<!-- This class prints stuff as part of it's constructor. -->
 
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES); ?>" method="get" name="search_form" onsubmit="validate_form()">
 
@@ -351,14 +344,10 @@ response_header('Package Search');
   </td>
  </tr>
 </table>
-
 </form>
 
-
 <script>
-    /**
-    * Call function to set dropdowns to their search values
-    */
+    // Call function to set dropdowns to their search values.
     setReleaseDropdowns();
 </script>
 
@@ -371,7 +360,7 @@ response_header('Package Search');
     <?php foreach($search_results as $row):?>
         <tr>
             <td>
-                <!-- resultItemStart --><a href="/package/<?php echo $row['raw_name']; ?>"><?php echo $row['name']; ?></a><!-- resultItemEnd -->
+                <a href="/package/<?php echo $row['raw_name']; ?>"><?php echo $row['name']; ?></a>
             </td>
             <td><?php echo $row['summary']; ?></td>
         </tr>

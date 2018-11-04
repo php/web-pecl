@@ -122,8 +122,8 @@ if (isset($_POST['submit'])) {
 
             $needsvn = @(bool)$needsvn;
 
-            // hack to temporarily embed the "purpose" in
-            // the user's "userinfo" column
+            // Hack to temporarily embed the "purpose" in the user's "userinfo"
+            // column
             $userinfo = serialize([$purpose, $moreinfo]);
             $created_at = gmdate('Y-m-d H:i');
             $sth = $dbh->prepare("INSERT INTO users
@@ -132,7 +132,7 @@ if (isset($_POST['submit'])) {
             $res = $dbh->execute($sth, [$handle, $name, $email, $hash, $showemail, $homepage, $userinfo, $created_at]);
 
             if (DB::isError($res)) {
-                //constraint violation, only email and handle(username) is unique
+                // Constraint violation, only email and handle(username) is unique
                 if($res->getCode() == -3){
                     display_error("Username or Email already taken");
                 }
@@ -143,7 +143,7 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            /* Now do the SVN stuff */
+            // Now do the SVN stuff
             if ($needsvn) {
                 $error = posttohost(
                     'http://master.php.net/entry/svn-account.php',

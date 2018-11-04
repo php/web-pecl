@@ -35,7 +35,7 @@ $data = $dbh->getAll("SELECT packages.name, releases.version, releases.releaseda
 
 if (PackageDll::isResetOverdue()) {
     if (!PackageDll::resetDllDownloadCache()) {
-        /* some reset running, just sleep and do our thing*/
+        // some reset running, just sleep and do our thing
         sleep(10);
     }
 }

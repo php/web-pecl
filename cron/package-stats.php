@@ -20,15 +20,13 @@
 */
 
 /**
- * This short script populates the package_stats table and should be run
- * via cron.
+ * This short script populates the package_stats table and should be run via
+ * cron.
  */
 
 require_once 'DB.php';
 
-/**
-* DSN for PECL packages database
-*/
+// DSN for PECL packages database
 $dsn = "mysql://pear:pear@localhost/pear";
 $dbh = DB::connect($dsn);
 if (DB::isError($db = DB::connect($dsn))) {
@@ -36,11 +34,8 @@ if (DB::isError($db = DB::connect($dsn))) {
 }
 $dbh->query('SET NAMES utf8');
 
-/**
-* Query the packages info and insert the results into
-* the package_stats page. First deletes the current
-* data.
-*/
+// Query the packages info and insert the results into the package_stats page.
+// First deletes the current data.
 $db->query('DELETE FROM package_stats');
 
 $sql = 'INSERT INTO package_stats SELECT COUNT(d.id) AS dl_number, p.name AS package, r.version AS release, p.id AS pid, r.id AS rid, p.category AS cid

@@ -177,17 +177,13 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         echo "</table>\n";
         $bb->end();
 
-        /*
-         * Print the graph
-         */
+        // Print the graph
         printf('<br /><img src="package-stats-graph.php?pid=%s&releases=%s_339900" name="stats_graph" width="543" height="200" alt="" />',
                $_GET['pid'],
                isset($_GET['rid']) ? (int)$_GET['rid'] : ''
                );
 
-    /*
-     * Print the graph control stuff
-     */
+    // Print the graph control stuff
     $releases = $dbh->getAll('SELECT id, version FROM releases WHERE package = ' . $_GET['pid'], DB_FETCHMODE_ASSOC);
     ?>
 <br /><br />
@@ -297,9 +293,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         <?php
     }
 
-/*
- * Category based statistics
- */
+// Category based statistics
 } elseif (!empty($_GET['cid'])) {
 
     $category_name     = $dbh->getOne(sprintf("SELECT name FROM categories WHERE id = %d", $_GET['cid']));
@@ -316,9 +310,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
                      $_GET['cid']
                      );
 
-/*
- * Global stats
- */
+// Global stats
 } else {
 
     $total_packages    = number_format($dbh->getOne('SELECT COUNT(id) FROM packages WHERE package_type="pecl"'), 0, '.', ',');
@@ -335,9 +327,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 
 }
 
-/*
- * Display this for Global and Category stats pages only
- */
+// Display this for Global and Category stats pages only
 if (@!$_GET['pid']) {
     echo '<br />';
     $bb = new BorderBox(!empty($_GET['cid']) ? 'Category Statistics for: <i><a href="packages.php?catpid='.$_GET['cid'].'&amp;catname='.str_replace(' ', '+', $category_name).'">' . $category_name . '</a></i>' : 'Global Statistics');

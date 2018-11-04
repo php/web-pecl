@@ -249,6 +249,4 @@ if ($moreinfo) {
 }
 
 // Template
-error_reporting(E_ALL & ~E_NOTICE);
-
 include __DIR__.'/../templates/packages.php';

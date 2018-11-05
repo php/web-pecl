@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            if (!preg_match(PEAR_COMMON_USER_NAME_REGEX, $handle)) {
+            if (!preg_match($config->get('valid_usernames_regex'), $handle)) {
                 display_error("Username must start with a letter and contain only letters and digits.");
                 break;
             }

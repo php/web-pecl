@@ -96,8 +96,8 @@ echo "done\n";
 echo "Generating Package REST...\n";
 $rest->saveAllPackages();
 
-$config = PEAR_Config::singleton();
-$pkg = new PEAR_PackageFile($config);
+$pearConfig = PEAR_Config::singleton();
+$pkg = new PEAR_PackageFile($pearConfig);
 foreach (Package::listAll(false, false, false) as $package => $info) {
     echo "  $package\n";
     $rest->savePackage($package);

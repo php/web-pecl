@@ -41,12 +41,14 @@ require_once 'DB/storage.php';
 require_once __DIR__.'/pear-format-html.php';
 require_once __DIR__.'/pear-auth.php';
 require_once __DIR__.'/pear-database.php';
+require_once __DIR__.'/../src/Config.php';
 require_once __DIR__.'/../src/Rest.php';
 require_once __DIR__.'/../src/PackageDll.php';
 require_once __DIR__.'/../src/Utils/Filesystem.php';
 require_once __DIR__.'/../src/Utils/FormatDate.php';
 require_once __DIR__.'/../src/Utils/ImageSize.php';
 
+use App\Config;
 use App\Utils\Filesystem;
 use App\Utils\FormatDate;
 use App\Utils\ImageSize;
@@ -73,6 +75,7 @@ if (empty($dbh)) {
     $GLOBALS['_NODB'] = false;
 }
 
+$config = new Config(__DIR__.'/../config/app.php');
 $filesystem = new Filesystem();
 $formatDate = new FormatDate();
 $imageSize = new ImageSize();

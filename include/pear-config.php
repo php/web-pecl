@@ -65,5 +65,4 @@ if (isset($_SERVER['PEAR_REST_DIR'])) {
     define('PEAR_REST_DIR', '/var/lib/peclweb/rest');
 }
 
-define('PEAR_COMMON_USER_NAME_REGEX', '/^[a-z][a-z0-9]+$/i');
 define('PEAR_CHANNELNAME', 'pecl.php.net');

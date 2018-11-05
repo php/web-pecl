@@ -29,7 +29,8 @@
 // page of the user "foobar".
 if (strlen($_SERVER['REDIRECT_URL']) > 0 && $_SERVER['REDIRECT_URL']{1} == '~') {
     $user = substr($_SERVER['REDIRECT_URL'], 2);
-    if (preg_match(PEAR_COMMON_USER_NAME_REGEX, $user) && User::exists($user)) {
+
+    if (preg_match($config->get('valid_usernames_regex'), $user) && User::exists($user)) {
         localRedirect("/user/" . urlencode($user));
     }
 }

@@ -66,6 +66,7 @@ Source code of this application is structured in the following directories:
 ```bash
 <web-pecl>/
  ├─ .git/            # Git configuration and source directory
+ ├─ config/          # Application configuration files
  ├─ cron/            # Various systems scripts to run periodically on server
  ├─ include/         # Application helper functions and configuration
  └─ public_html/     # Publicly accessible directory for online pecl.php.net

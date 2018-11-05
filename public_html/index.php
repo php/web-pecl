@@ -18,7 +18,13 @@
   +----------------------------------------------------------------------+
 */
 
-$recent = Release::getRecent();
+require_once __DIR__.'/../src/Repository/Release.php';
+
+use App\Repository\Release;
+
+$releaseRepository = new Release($dbh);
+
+$recent = $releaseRepository->getRecent();
 if (@count($recent) > 0) {
     $RSIDEBAR_DATA = "<strong>Recent&nbsp;Releases:</strong>\n";
     $RSIDEBAR_DATA .= '<table class="sidebar-releases">' . "\n";

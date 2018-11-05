@@ -33,39 +33,6 @@ require_once 'PEAR/Config.php';
 class Release
 {
     /**
-     * Get recent releases
-     *
-     * @param  integer Number of releases to return
-     * @return array
-     */
-    public static function getRecent($n = 5)
-    {
-        global $dbh;
-
-        $sth = $dbh->limitQuery("SELECT packages.id AS id, ".
-                                "packages.name AS name, ".
-                                "packages.summary AS summary, ".
-                                "releases.version AS version, ".
-                                "releases.releasedate AS releasedate, ".
-                                "releases.releasenotes AS releasenotes, ".
-                                "releases.doneby AS doneby, ".
-                                "releases.state AS state ".
-                                "FROM packages, releases ".
-                                "WHERE packages.id = releases.package ".
-                                "AND packages.approved = 1 ".
-                                "AND packages.package_type = 'pecl' ".
-                                "ORDER BY releases.releasedate DESC", 0, $n);
-        $recent = [];
-
-        // XXX Fixme when DB gets limited getAll()
-        while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
-            $recent[] = $row;
-        }
-
-        return $recent;
-    }
-
-    /**
      * Upload new release
      *
      * @param string Name of the package

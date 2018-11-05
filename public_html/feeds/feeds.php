@@ -18,6 +18,10 @@
   +----------------------------------------------------------------------+
 */
 
+require_once __DIR__.'/../../src/Repository/Release.php';
+
+use App\Repository\Release;
+
 function rss_bailout() {
     header('HTTP/1.0 404 Not Found');
     echo "<h1>The requested URL " . (($_SERVER['REQUEST_URI'])) . " was not found on this server.</h1>";
@@ -112,7 +116,8 @@ if (!empty($url_redirect)) {
 
 switch ($type) {
     case 'latest':
-        $items = Release::getRecent(10);
+        $releaseRepository = new Release($dbh);
+        $items = $releaseRepository->getRecent(10);
         $channel_title = 'PECL: Latest releases';
         $channel_description = 'The latest releases in PECL.';
         break;

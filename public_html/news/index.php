@@ -18,6 +18,12 @@
   +----------------------------------------------------------------------+
 */
 
+require_once __DIR__.'/../../src/Repository/Release.php';
+
+use App\Repository\Release;
+
+$releaseRepository = new Release($dbh);
+
 response_header("News");
 
 echo "<h1>PECL news</h1>";
@@ -25,7 +31,7 @@ echo "<h1>PECL news</h1>";
 echo "<h2><a name=\"recent_releases\"></a>Recent Releases</h2>";
 echo "<ul>";
 
-$recent = Release::getRecent();
+$recent = $releaseRepository->getRecent();
 foreach ($recent as $release) {
     $releasedate = $formatDate->utc($release['releasedate'], 'Y-m-d');
     $desc = nl2br(htmlentities(substr($release['releasenotes'], 0, 400)));

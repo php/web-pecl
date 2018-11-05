@@ -22,44 +22,52 @@
   +----------------------------------------------------------------------+
 */
 
+namespace App\Repository;
+
 /**
  * Statistics service class.
  */
-class Statistics
+class PackageStats
 {
+    private $dbh;
+
     /**
-     * Get general package statistics.
+     * Class constructor.
+     */
+    public function __construct($dbh)
+    {
+        $this->dbh = $dbh;
+    }
+
+    /**
+     * Get total number of package downloads.
      *
      * @param  integer ID of the package
      * @return array
      */
-    public static function package($id)
+    public function getTotalDownloads($id)
     {
-        global $dbh;
-
         $query = 'SELECT SUM(dl_number) FROM package_stats WHERE pid = '.(int)$id;
 
-        return $dbh->getOne($query);
+        return $this->dbh->getOne($query);
     }
 
     /**
-     * Get statistics for active release.
+     * Get statistics for releases.
      */
-    public static function activeRelease($id, $rid = "")
+    public function getReleasesStats($id, $releaseId = '')
     {
-        global $dbh;
-
         $query = 'SELECT s.release, SUM(s.dl_number) AS dl_number, MAX(s.last_dl) AS last_dl, MIN(r.releasedate) AS releasedate '
             . 'FROM package_stats AS s '
             . 'LEFT JOIN releases AS r ON (s.rid = r.id) '
             . "WHERE pid = " . (int)$id;
 
-        if (!empty($rid)) {
-            $query .= " AND rid = " . (int)$rid;
+        if (!empty($releaseId)) {
+            $query .= " AND rid = " . (int)$releaseId;
         }
 
         $query .= ' GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY r.releasedate DESC';
 
-        return $dbh->getAll($query, DB_FETCHMODE_ASSOC);
+        return $this->dbh->getAll($query, DB_FETCHMODE_ASSOC);
     }
 }

@@ -29,7 +29,6 @@ require_once __DIR__.'/../src/Maintainer.php';
 require_once __DIR__.'/../src/Note.php';
 require_once __DIR__.'/../src/Package.php';
 require_once __DIR__.'/../src/Release.php';
-require_once __DIR__.'/../src/Statistics.php';
 require_once __DIR__.'/../src/User.php';
 
 /**

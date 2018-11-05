@@ -150,7 +150,7 @@ do {
                     "WHERE uid = ? ORDER BY ntime", true,
                     [$requser->handle]);
         $i = "      ";
-        if (is_array($notes) && sizeof($notes) > 0) {
+        if (is_array($notes) && count($notes) > 0) {
             print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
             foreach ($notes as $nid => $data) {
                 list($nby, $ntime, $note) = $data;
@@ -294,7 +294,7 @@ do {
                                    "LEFT JOIN notes n ON n.uid = u.handle ".
                                    "WHERE u.registered = 0 ".
                                    "ORDER BY created ASC");
-        if (is_array($requests) && sizeof($requests) > 0) {
+        if (is_array($requests) && count($requests) > 0) {
             $bb->headRow("<font face=\"Marlett\"><a href=\"#\" onclick=\"toggleSelectAll(this)\">6</a></font>", "Name", "Handle", "Account Purpose", "Status", "Created at", "&nbsp;");
 
             foreach ($requests as $handle => $data) {

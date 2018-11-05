@@ -143,7 +143,7 @@ while ($sth->fetchInto($row)) {
         foreach ($subcats[$id] as $subcat) {
             $sub_links[] = '<b><a href="'. $script_name .'?catpid='.$subcat['id'].'&amp;catname='.
                             urlencode($subcat['name']).'" title="'.htmlspecialchars($subcat['summary'], ENT_QUOTES).'">'.$subcat['name'].'</a></b>';
-            if (sizeof($sub_links) >= $max_sub_links) {
+            if (count($sub_links) >= $max_sub_links) {
                 break;
             }
         }
@@ -153,13 +153,13 @@ while ($sth->fetchInto($row)) {
         foreach ($subpkgs[$id] as $subpkg) {
             $sub_links[] = '<a href="/package/' . $subpkg['name'] .'" title="'.
                             htmlspecialchars($subpkg['summary'], ENT_QUOTES).'">'.$subpkg['name'].'</a>';
-            if (sizeof($sub_links) >= $max_sub_links) {
+            if (count($sub_links) >= $max_sub_links) {
                 break;
             }
         }
     }
 
-    if (sizeof($sub_links) >= $max_sub_links) {
+    if (count($sub_links) >= $max_sub_links) {
         $sub_links = implode(', ', $sub_links).' <img src="/gifs/caret-r.gif" alt="[more]">';
     } else {
         $sub_links = implode(', ', $sub_links);

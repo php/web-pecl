@@ -96,7 +96,7 @@ switch ($command) {
         $lost_entries = array_diff($old_acl, $new_acl);
         $new_entries = array_diff($new_acl, $old_acl);
 
-        if (sizeof($lost_entries) > 0) {
+        if (count($lost_entries) > 0) {
             $sth = $dbh->prepare("DELETE FROM cvs_acl WHERE username = ? ".
                                  "AND path = ?");
             foreach ($lost_entries as $ent) {
@@ -106,7 +106,7 @@ switch ($command) {
             }
         }
 
-        if (sizeof($new_entries) > 0) {
+        if (count($new_entries) > 0) {
             $sth = $dbh->prepare("INSERT INTO cvs_acl (username,path,access) ".
                                  "VALUES(?,?,?)");
             foreach ($new_entries as $ent) {

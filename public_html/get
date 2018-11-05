@@ -75,7 +75,7 @@ if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], ['1', 'yes', 'on
 } else {
     $uncompress = false;
 }
-switch (sizeof($opts)) {
+switch (count($opts)) {
     case 2: {
         if (preg_match('/^([a-zA-Z0-9_]+)-(.+)\.(tar|tgz)$/', $opts[1], $matches)) {
             list(, $package, $version) = $matches;

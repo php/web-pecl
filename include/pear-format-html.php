@@ -477,5 +477,6 @@ function display_user_notes($user, $width = '50%')
         print "No notes.";
     }
     $bb->end();
-    return sizeof($notes);
+
+    return count($notes);
 }

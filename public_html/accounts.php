@@ -30,7 +30,7 @@ $all_firstletters = $dbh->getCol('SELECT SUBSTRING(handle,1,1) FROM users '.
                                  'WHERE registered = 1 ORDER BY handle');
 // I wish there was a way to do this in mysql...
 $first_letter_offsets = [];
-for ($i = 0; $i < sizeof($all_firstletters); $i++) {
+for ($i = 0; $i < count($all_firstletters); $i++) {
     $l = $all_firstletters[$i];
     if (isset($first_letter_offsets[$l])) {
         continue;

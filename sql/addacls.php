@@ -63,7 +63,7 @@ foreach ($group_comment as $group => $comment) {
         $dbh->popExpect();
     }
     print "$group ($comment): ";
-    print sizeof($members);
+    print count($members);
     print " members added\n";
 }
 print "$dupes duplicate memberships\n";

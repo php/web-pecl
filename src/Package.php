@@ -143,7 +143,7 @@ class Package
             $info['releases'] =
                  $dbh->getAssoc($rel_sql, false, [$info['packageid']],
                  DB_FETCHMODE_ASSOC);
-            $rels = sizeof($info['releases']) ? array_keys($info['releases']) : [''];
+            $rels = count($info['releases']) ? array_keys($info['releases']) : [''];
             $info['stable'] = $rels[0];
             $info['notes'] =
                  $dbh->getAssoc($notes_sql, false, [@$info['packageid']],

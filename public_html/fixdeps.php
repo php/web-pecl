@@ -58,7 +58,7 @@ while ($sth->fetchInto($row)) {
         $i = 0;
         $fields = implode(',', array_keys($dep));
         $values = array_values($dep);
-        $phs = substr(str_repeat('?,', sizeof($values) + 2), 0, -1);
+        $phs = substr(str_repeat('?,', count($values) + 2), 0, -1);
         $query = "INSERT INTO deps (package,release,$fields) VALUES($phs)";
         $pq = $dbh->prepare($query);
         $values = array_merge([$package, $release], $values);

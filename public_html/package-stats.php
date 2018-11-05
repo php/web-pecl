@@ -134,7 +134,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 
     $info = Package::info($_GET['pid'],null,false);
 
-    if (isset($info['releases']) && sizeof($info['releases'])>0) {
+    if (isset($info['releases']) && count($info['releases'])>0) {
         echo '<h2>&raquo; Statistics for Package &quot;<a href="/package/' . $info['name'] . '">' . $info['name'] . "</a>&quot;</h2>\n";
         $bb = new Borderbox("General Statistics");
         echo "Number of releases: <strong>" . count($info['releases']) . "</strong><br />\n";

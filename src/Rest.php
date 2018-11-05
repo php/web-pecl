@@ -33,15 +33,40 @@ class Rest
     private $dir;
     private $dbh;
     private $filesystem;
+    private $scheme = 'http';
+    private $host;
 
     /**
      * Class constructor.
      */
-    public function __construct($dir, $dbh, Filesystem $filesystem)
+    public function __construct($dbh, Filesystem $filesystem)
     {
-        $this->dir = $dir;
         $this->dbh = $dbh;
         $this->filesystem = $filesystem;
+    }
+
+    /**
+     * Set where to generate XML files.
+     */
+    public function setDirectory($dir)
+    {
+        $this->dir = $dir;
+    }
+
+    /**
+     * Set the scheme of the URL (http or https).
+     */
+    public function setScheme($scheme)
+    {
+        $this->scheme = $scheme;
+    }
+
+    /**
+     * Set the host of the URL for linking to packages.
+     */
+    public function setHost($host)
+    {
+        $this->host = $host;
     }
 
     /**
@@ -64,7 +89,7 @@ class Rest
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allcategories
     http://pear.php.net/dtd/rest.allcategories.xsd">
-<ch>' . PEAR_CHANNELNAME . '</ch>
+<ch>'.$this->host.'</ch>
 ';
         foreach ($categories as $category) {
             $info .= ' <c xlink:href="' . $extra . 'c/' .
@@ -110,7 +135,7 @@ class Rest
     xsi:schemaLocation="http://pear.php.net/dtd/rest.category
     http://pear.php.net/dtd/rest.category.xsd">
  <n>' . htmlspecialchars($category['name']) . '</n>
- <c>' . PEAR_CHANNELNAME . '</c>
+ <c>'.$this->host.'</c>
  <a>' . htmlspecialchars($category['name']) . '</a>
  <d>' . $category['description'] . '</d>
 </c>';
@@ -247,7 +272,7 @@ class Rest
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allpackages
     http://pear.php.net/dtd/rest.allpackages.xsd">
-<c>' . PEAR_CHANNELNAME . '</c>
+<c>'.$this->host.'</c>
 ';
         foreach (Package::listAllNames() as $package)
         {
@@ -317,7 +342,7 @@ class Rest
         $package['description'] = htmlspecialchars($package['description']);
         $info = $this->getPackageProlog() . '
  <n>' . $package['name'] . '</n>
- <c>' . PEAR_CHANNELNAME . '</c>
+ <c>'.$this->host.'</c>
  <ca xlink:href="' . $extra . 'c/' . htmlspecialchars(urlencode($catinfo)) . '">' .
         htmlspecialchars($catinfo) . '</ca>
  <l>' . $package['license'] . '</l>
@@ -357,7 +382,7 @@ class Rest
 '    xsi:schemaLocation="http://pear.php.net/dtd/rest.allreleases' . "\n" .
 '    http://pear.php.net/dtd/rest.allreleases.xsd">' . "\n" .
 ' <p>' . $package . '</p>' . "\n" .
-' <c>' . PEAR_CHANNELNAME . '</c>' . "\n";
+' <c>'.$this->host.'</c>'."\n";
     }
 
     /**
@@ -526,7 +551,7 @@ class Rest
     xsi:schemaLocation="http://pear.php.net/dtd/rest.release
     http://pear.php.net/dtd/rest.release.xsd">
  <p xlink:href="' . $extra . 'p/' . strtolower($package) . '">' . $package . '</p>
- <c>' . PEAR_CHANNELNAME . '</c>
+ <c>'.$this->host.'</c>
  <v>' . $pkgobj->getVersion() . '</v>
  <st>' . $pkgobj->getState() . '</st>
  <l>' . $pkgobj->getLicense() . '</l>
@@ -536,7 +561,7 @@ class Rest
  <da>' . $releasedate . '</da>
  <n>' . htmlspecialchars($pkgobj->getNotes()) . '</n>
  <f>' . filesize($filepath) . '</f>
- <g>http://' . PEAR_CHANNELNAME . '/get/' . $package . '-' . $pkgobj->getVersion() . '</g>
+ <g>'.$this->scheme.'://'.$this->host.'/get/'.$package.'-'.$pkgobj->getVersion().'</g>
  <x xlink:href="package.' . $pkgobj->getVersion() . '.xml"/>
 </r>';
         file_put_contents($packageDir.'/'.$pkgobj->getVersion().'.xml', $info);
@@ -588,7 +613,7 @@ class Rest
     xsi:schemaLocation="http://pear.php.net/dtd/rest.packagemaintainers
     http://pear.php.net/dtd/rest.packagemaintainers.xsd">
  <p>' . $package . '</p>
- <c>' . PEAR_CHANNELNAME . '</c>
+ <c>'.$this->host.'</c>
 ';
             foreach ($maintainers as $maintainer) {
                 $info .= ' <m><h>' . $maintainer['handle'] . '</h><a>' . $maintainer['active'] .

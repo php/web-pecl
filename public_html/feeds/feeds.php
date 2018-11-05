@@ -28,8 +28,9 @@ function rss_bailout() {
     exit();
 }
 
+
 // If file is given, the file will be used to store the rss feed
-function rss_create($items, $channel_title, $channel_description, $dest_file=false) {
+function rss_create($items, $channel_title, $channel_description, $dest_file=false, $config) {
     if (is_array($items) && count($items)>0) {
 
         $rss_top = <<<EOT
@@ -51,7 +52,7 @@ EOT;
 
             // Allows to override the default link
             if (!isset($item['link'])) {
-                $url = 'http://' . PEAR_CHANNELNAME . '/package-changelog.php?package=' . $item['name'] . '&amp;release=' . $item['version'];
+                $url = $config->get('scheme').'://'.$config->get('host').'/package-changelog.php?package=' . $item['name'] . '&amp;release=' . $item['version'];
             } else {
                 $url = $item['link'];
             }
@@ -172,4 +173,4 @@ switch ($type) {
 // We do not use yet static files. It will be activated with the new backends.
 // $file = __DIR__ . '/' .  $type . '_' . $argument . '.rss';
 $file = false;
-rss_create($items, $channel_title, $channel_description, $file);
+rss_create($items, $channel_title, $channel_description, $file, $config);

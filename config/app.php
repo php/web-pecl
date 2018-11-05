@@ -23,6 +23,15 @@
  */
 
 return [
+    // Application environment (dev for development, prod for production, etc.)
+    'env' => 'prod',
+
     // Regex pattern for matching valid PECL accounts usernames
     'valid_usernames_regex' => '/^[a-z][a-z0-9]+$/i',
+
+    // PECL channel URL scheme (http or https)
+    'scheme' => 'https',
+
+    // PECL channel URL host (domain name)
+    'host' => 'pecl.php.net',
 ];

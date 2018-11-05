@@ -166,7 +166,7 @@ if (!is_null($apply_rule) && isset($dec_messages[$apply_rule])) {
     $str  = '<div class="warnings">';
     $str .= $dec_messages[$apply_rule];
 
-        if ($pkg['new_channel'] == PEAR_CHANNELNAME) {
+        if ($pkg['new_channel'] == $config->get('host')) {
             $str .= '  Use <a href="/package/' . $pkg['new_package'] .
                 '">' . htmlspecialchars($pkg['new_package']) . '</a> instead.';
         } elseif ($pkg['new_channel']) {

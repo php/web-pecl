@@ -87,7 +87,10 @@ if (!isset($rest)) {
         $restDir = __DIR__.'/../public_html/rest';
     }
 
-    $rest = new Rest($restDir, $dbh, $filesystem);
+    $rest = new Rest($dbh, $filesystem);
+    $rest->setDirectory($restDir);
+    $rest->setScheme($config->get('scheme'));
+    $rest->setHost($config->get('host'));
 }
 
 $tmp = filectime($_SERVER['SCRIPT_FILENAME']);

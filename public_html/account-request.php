@@ -174,7 +174,7 @@ if (isset($_POST['submit'])) {
                    "Need php.net Account: " . (@$needsvn ? "yes" : "no") . "\n".
                    "Purpose:\n".
                    "$purpose\n\n".
-                   "To handle: http://" . PEAR_CHANNELNAME . "/admin/?acreq={$handle}\n";
+                   'To handle: '.$config->get('scheme').'://'.$config->get('host')."/admin/?acreq={$handle}\n";
 
             if ($moreinfo) {
                 $msg .= "\nMore info:\n$moreinfo\n";

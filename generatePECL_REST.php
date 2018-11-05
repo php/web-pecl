@@ -20,16 +20,18 @@
 */
 
 /**
- * Generate static REST files for pecl.php.net from existing data
+ * Generate static REST files for PECL from existing data
  */
 
-// Useful files to have
-set_include_path(__DIR__.'/include'.PATH_SEPARATOR.get_include_path());
-
-ob_start();
+// Application configuration
 require_once __DIR__.'/include/pear-config.php';
+require_once __DIR__.'/src/Config.php';
 
-if ($_SERVER['SERVER_NAME'] != PEAR_CHANNELNAME) {
+use App\Config;
+
+$config = new Config(__DIR__.'/config/app.php');
+
+if ($config->get('env') != 'prod') {
     error_reporting(E_ALL);
     define('DEVBOX', true);
 } else {
@@ -66,10 +68,12 @@ if (!isset($rest)) {
         $restDir = __DIR__.'/public_html/rest';
     }
 
-    $rest = new Rest($restDir, $dbh, $filesystem);
+    $rest = new Rest($dbh, $filesystem);
+    $rest->setDirectory($restDir);
+    $rest->setScheme($config->get('scheme'));
+    $rest->setHost($config->get('host'));
 }
 
-ob_end_clean();
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
 $filesystem->delete($restDir);

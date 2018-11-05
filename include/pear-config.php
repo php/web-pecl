@@ -64,5 +64,3 @@ if (isset($_SERVER['PEAR_REST_DIR'])) {
 } else {
     define('PEAR_REST_DIR', '/var/lib/peclweb/rest');
 }
-
-define('PEAR_CHANNELNAME', 'pecl.php.net');

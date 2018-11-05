@@ -84,7 +84,7 @@ if (!isset($rest)) {
     if (!DEVBOX) {
         $restDir = PEAR_REST_DIR;
     } else {
-        $restDir = dirname(__DIR__).'/public_html/rest';
+        $restDir = __DIR__.'/../public_html/rest';
     }
 
     $rest = new Rest($restDir, $dbh, $filesystem);

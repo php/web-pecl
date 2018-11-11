@@ -14,35 +14,17 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Authors: Peter Kokot <petk@php.net>                                  |
+  | Authors:                                                             |
   +----------------------------------------------------------------------+
 */
 
-namespace App;
-
 /**
- * Configuration handler class.
+ * Main application production settings that override default distributed
+ * config/app.php settings. This allows to have configuration in the file or using
+ * the environment variables.
  */
-class Config
-{
-    /**
-     * @var array
-     */
-    private $values;
 
-    /**
-     * Class constructor.
-     */
-    public function __construct(array $values)
-    {
-        $this->values = $values;
-    }
-
-    /**
-     * Get configuration value by key.
-     */
-    public function get($key)
-    {
-        return $this->values[$key];
-    }
-}
+return [
+    // REST static files directory
+    'rest_dir' => isset($_SERVER['PECL_REST_DIR']) ? $_SERVER['PECL_REST_DIR'] : '/var/lib/peclweb/rest',
+];

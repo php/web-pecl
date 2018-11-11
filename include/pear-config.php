@@ -59,8 +59,3 @@ if (isset($_SERVER['PEAR_TARBALL_DIR'])) {
 } else {
     define('PEAR_TARBALL_DIR', '/var/lib/pear');
 }
-if (isset($_SERVER['PEAR_REST_DIR'])) {
-    define('PEAR_REST_DIR', $_SERVER['PEAR_REST_DIR']);
-} else {
-    define('PEAR_REST_DIR', '/var/lib/peclweb/rest');
-}

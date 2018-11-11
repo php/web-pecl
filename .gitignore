@@ -1,3 +1,6 @@
+# Development configuration
+/.env
+
 # Local specific PHPUnit configuration
 /phpunit.xml
 

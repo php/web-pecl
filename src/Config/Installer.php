@@ -18,31 +18,26 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
+namespace App\Config;
+
+use Composer\Script\Event;
+use Composer\Installer\PackageEvent;
 
 /**
- * Configuration handler class.
+ * Configuration installer for running it as a Composer script.
  */
-class Config
+class Installer
 {
     /**
-     * @var array
+     * Create a default configuration settings for development environment.
      */
-    private $values;
-
-    /**
-     * Class constructor.
-     */
-    public function __construct(array $values)
+    public static function installConfig(Event $event)
     {
-        $this->values = $values;
-    }
+        $distEnvFile = __DIR__.'/../../.env.dist';
+        $targetEnvFile = __DIR__.'/../../.env';
 
-    /**
-     * Get configuration value by key.
-     */
-    public function get($key)
-    {
-        return $this->values[$key];
+        if ($event->isDevMode() && !file_exists($targetEnvFile)) {
+            copy($distEnvFile, $targetEnvFile);
+        }
     }
 }

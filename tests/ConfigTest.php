@@ -30,7 +30,8 @@ class ConfigTest extends TestCase
      */
     public function testGet($file, $key, $expected)
     {
-        $config = new Config($file);
+        $values = require $file;
+        $config = new Config($values);
 
         $this->assertEquals($expected, $config->get($key));
     }

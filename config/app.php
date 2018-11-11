@@ -19,19 +19,24 @@
 */
 
 /**
- * Main application configuration settings.
+ * This is a distributed application and infrastructure configuration file.
+ * These settings can be overridden either via the config/app_prod.php file in
+ * production or the environment variables.
  */
 
 return [
-    // Application environment (dev for development, prod for production, etc.)
-    'env' => 'prod',
+    // Application environment (dev for development, prod for production.)
+    'env' => isset($_SERVER['PECL_ENV']) ? $_SERVER['PECL_ENV'] : 'prod',
+
+    // PECL channel URL scheme (http or https)
+    'scheme' => isset($_SERVER['PECL_SCHEME']) ? $_SERVER['PECL_SCHEME'] : 'https',
+
+    // PECL channel URL host (domain name)
+    'host' => isset($_SERVER['PECL_HOST']) ? $_SERVER['PECL_HOST'] : 'pecl.php.net',
+
+    // REST static files directory
+    'rest_dir' => isset($_SERVER['PECL_REST_DIR']) ? $_SERVER['PECL_REST_DIR'] : __DIR__.'/../public_html/rest',
 
     // Regex pattern for matching valid PECL accounts usernames
     'valid_usernames_regex' => '/^[a-z][a-z0-9]+$/i',
-
-    // PECL channel URL scheme (http or https)
-    'scheme' => 'https',
-
-    // PECL channel URL host (domain name)
-    'host' => 'pecl.php.net',
 ];

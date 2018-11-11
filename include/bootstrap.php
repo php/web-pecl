@@ -14,35 +14,32 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Authors: Peter Kokot <petk@php.net>                                  |
+  | Authors:                                                             |
   +----------------------------------------------------------------------+
 */
 
-namespace App;
-
 /**
- * Configuration handler class.
+ * Application bootstrap, where configuration and main classes get initialized.
  */
-class Config
-{
-    /**
-     * @var array
-     */
-    private $values;
 
-    /**
-     * Class constructor.
-     */
-    public function __construct(array $values)
-    {
-        $this->values = $values;
-    }
+use App\Config;
+use Symfony\Component\Dotenv\Dotenv;
 
-    /**
-     * Get configuration value by key.
-     */
-    public function get($key)
-    {
-        return $this->values[$key];
-    }
+require_once __DIR__.'/../src/Config.php';
+
+if (file_exists(__DIR__.'/../vendor/autoload.php')) {
+    require_once __DIR__.'/../vendor/autoload.php';
 }
+
+if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {
+    $dotenv = new Dotenv();
+    $dotenv->load(__DIR__.'/../.env');
+    $configurations = require __DIR__.'/../config/app.php';
+} else {
+    $configurations = array_merge(
+        require __DIR__.'/../config/app.php',
+        require __DIR__.'/../config/app_prod.php'
+    );
+}
+
+$config = new Config($configurations);

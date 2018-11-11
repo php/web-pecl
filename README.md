@@ -66,6 +66,7 @@ Source code of this application is structured in the following directories:
 ```bash
 <web-pecl>/
  ├─ .git/            # Git configuration and source directory
+ ├─ bin/             # Command line development tools and scripts
  ├─ config/          # Application configuration files
  ├─ cron/            # Various systems scripts to run periodically on server
  ├─ include/         # Application helper functions and configuration
@@ -74,7 +75,6 @@ Source code of this application is structured in the following directories:
     ├─ img/          # Images
     ├─ js/           # JavaScript assets
     └─ ...
- ├─ script/          # Command line development tools and scripts
  ├─ sql/             # Database schema and development fixtures
  ├─ src/             # Application source code classes
  ├─ templates/       # Application templates

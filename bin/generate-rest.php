@@ -24,12 +24,12 @@
  */
 
 // Application configuration
-require_once __DIR__.'/include/pear-config.php';
-require_once __DIR__.'/src/Config.php';
+require_once __DIR__.'/../include/pear-config.php';
+require_once __DIR__.'/../src/Config.php';
 
 use App\Config;
 
-$config = new Config(__DIR__.'/config/app.php');
+$config = new Config(__DIR__.'/../config/app.php');
 
 if ($config->get('env') != 'prod') {
     error_reporting(E_ALL);
@@ -44,9 +44,9 @@ require_once 'PEAR/PackageFile.php';
 require_once 'Archive/Tar.php';
 require_once 'DB.php';
 require_once 'DB/storage.php';
-require_once __DIR__.'/include/pear-database.php';
-require_once __DIR__.'/src/Rest.php';
-require_once __DIR__.'/src/Utils/Filesystem.php';
+require_once __DIR__.'/../include/pear-database.php';
+require_once __DIR__.'/../src/Rest.php';
+require_once __DIR__.'/../src/Utils/Filesystem.php';
 
 use App\Utils\Filesystem;
 
@@ -65,7 +65,7 @@ if (!isset($rest)) {
     if (isset($_SERVER['argv']) && $_SERVER['argv'][1] == 'pecl') {
         $restDir = PEAR_REST_DIR;
     } else {
-        $restDir = __DIR__.'/public_html/rest';
+        $restDir = __DIR__.'/../public_html/rest';
     }
 
     $rest = new Rest($dbh, $filesystem);

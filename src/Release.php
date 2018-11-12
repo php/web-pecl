@@ -22,11 +22,45 @@
   +----------------------------------------------------------------------+
 */
 
+namespace App;
+
+use \Package as Package;
+use \PEAR as PEAR;
+use \User as User;
+use \PEAR_Config as PEAR_Config;
+use \PEAR_PackageFile as PEAR_PackageFile;
+use \Archive_Tar as Archive_Tar;
+
 /**
  * Class to handle releases
  */
 class Release
 {
+    private $dbh;
+    private $authUser;
+    private $rest;
+    private $packagesDir;
+
+    public function setDbh($dbh)
+    {
+        $this->dbh = $dbh;
+    }
+
+    public function setAuthUser($authUser)
+    {
+        $this->authUser = $authUser;
+    }
+
+    public function setRest($rest)
+    {
+        $this->rest = $rest;
+    }
+
+    public function setPackagesDir($dir)
+    {
+        $this->packagesDir = $dir;
+    }
+
     /**
      * Upload new release
      *
@@ -37,23 +71,21 @@ class Release
      * @param string Filename of the release tarball
      * @param string MD5 checksum of the tarball
      */
-    public static function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
+    public function upload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
-        global $auth_user;
+        $role = User::maintains($this->authUser->handle, $package);
 
-        $role = User::maintains($auth_user->handle, $package);
-
-        if ($role != 'lead' && $role != 'developer' && !$auth_user->isAdmin()) {
+        if ($role != 'lead' && $role != 'developer' && !$this->authUser->isAdmin()) {
             return PEAR::raiseError('Release::upload: insufficient privileges');
         }
 
-        $ref = self::validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum);
+        $ref = $this->validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum);
 
         if (PEAR::isError($ref)) {
             return $ref;
         }
 
-        return self::confirmUpload($package, $version, $state, $relnotes, $md5sum, $ref['package_id'], $ref['file']);
+        return $this->confirmUpload($package, $version, $state, $relnotes, $md5sum, $ref['package_id'], $ref['file']);
     }
 
     /**
@@ -67,12 +99,10 @@ class Release
      * @param string MD5 checksum of the tarball
      * @return mixed
      */
-    private static function validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum)
+    private function validateUpload($package, $version, $state, $relnotes, $tarball, $md5sum)
     {
-        global $dbh, $auth_user;
-
-        $role = User::maintains($auth_user->handle, $package);
-        if ($role != 'lead' && $role != 'developer' && !$auth_user->isAdmin()) {
+        $role = User::maintains($this->authUser->handle, $package);
+        if ($role != 'lead' && $role != 'developer' && !$this->authUser->isAdmin()) {
             return PEAR::raiseError('Release::validateUpload: insufficient privileges');
         }
 
@@ -83,7 +113,7 @@ class Release
         }
 
         // (3) verify that version does not exist
-        $test = $dbh->getOne("SELECT version FROM releases ".
+        $test = $this->dbh->getOne("SELECT version FROM releases ".
                              "WHERE package = ? AND version = ?",
                              [$package_id, $version]);
 
@@ -96,8 +126,8 @@ class Release
         }
 
         // (4) store tar ball to temp file
-        $tempfile = sprintf("%s/%s%s-%s.tgz", PEAR_TARBALL_DIR, ".new.", $package, $version);
-        $file = sprintf("%s/%s-%s.tgz", PEAR_TARBALL_DIR, $package, $version);
+        $tempfile = sprintf("%s/%s%s-%s.tgz", $this->packagesDir, ".new.", $package, $version);
+        $file = sprintf("%s/%s-%s.tgz", $this->packagesDir, $package, $version);
         if (!@copy($tarball, $tempfile)) {
             return PEAR::raiseError("writing $tempfile failed: $php_errormsg");
         }
@@ -127,7 +157,7 @@ class Release
             'md5sum'     => $md5sum,
             'file'       => $file
         ];
-        $infofile = sprintf("%s/%s%s-%s", PEAR_TARBALL_DIR, ".info.", $package, $version);
+        $infofile = sprintf("%s/%s%s-%s", $this->packagesDir, ".info.", $package, $version);
         $fp = @fopen($infofile, "w");
         if (!is_resource($fp)) {
             return PEAR::raiseError("writing $infofile failed: $php_errormsg");
@@ -158,9 +188,9 @@ class Release
      * @param string package contents
      * @return string  the file name of the upload or PEAR_Error object if problems
      */
-    private static function confirmUpload($package, $version, $state, $relnotes, $md5sum, $package_id, $file)
+    private function confirmUpload($package, $version, $state, $relnotes, $md5sum, $package_id, $file)
     {
-        global $dbh, $auth_user, $_PEAR_Common_dependency_types, $_PEAR_Common_dependency_relations, $rest;
+        global $_PEAR_Common_dependency_types, $_PEAR_Common_dependency_relations;
 
         $tar = new Archive_Tar($file);
 
@@ -182,23 +212,23 @@ class Release
         // Update releases table
         $query = "INSERT INTO releases (id,package,version,state,doneby,".
              "releasedate,releasenotes) VALUES(?,?,?,?,?,NOW(),?)";
-        $sth = $dbh->prepare($query);
-        $release_id = $dbh->nextId("releases");
-        $dbh->execute($sth, [$release_id, $package_id, $version, $state, $auth_user->handle, $relnotes]);
+        $sth = $this->dbh->prepare($query);
+        $release_id = $this->dbh->nextId("releases");
+        $this->dbh->execute($sth, [$release_id, $package_id, $version, $state, $this->authUser->handle, $relnotes]);
 
         // Update files table
         $query = "INSERT INTO files ".
              "(`id`,`package`,`release`,`md5sum`,`basename`,`fullpath`,`packagexml`) ".
              "VALUES(?,?,?,?,?,?,?)";
-        $sth = $dbh->prepare($query);
-        $file_id = $dbh->nextId("files");
-        $ok = $dbh->execute($sth, [$file_id, $package_id, $release_id, $md5sum, basename($file), $file, $packagexml]);
+        $sth = $this->dbh->prepare($query);
+        $file_id = $this->dbh->nextId("files");
+        $ok = $this->dbh->execute($sth, [$file_id, $package_id, $release_id, $md5sum, basename($file), $file, $packagexml]);
 
         // Code duplication with deps error
         // Should be dropped sooner or later using transaction
         // (and add mysql4 as a pe(ar|cl)web requirement)
         if (PEAR::isError($ok)) {
-            $dbh->query("DELETE FROM releases WHERE id = $release_id");
+            $this->dbh->query("DELETE FROM releases WHERE id = $release_id");
             @unlink($file);
             return $ok;
         }
@@ -207,7 +237,7 @@ class Release
         $query = "INSERT INTO deps " .
             "(`package`, `release`, `type`, `relation`, `version`, `name`, `optional`) " .
             "VALUES (?,?,?,?,?,?,?)";
-        $sth = $dbh->prepare($query);
+        $sth = $this->dbh->prepare($query);
 
         $config = PEAR_Config::singleton();
         $pf = new PEAR_PackageFile($config);
@@ -286,7 +316,7 @@ class Release
                             'were missing or need proper values: ' .
                             implode(', ', $prob));
                 } else {
-                    $res = $dbh->execute($sth, [
+                    $res = $this->dbh->execute($sth, [
                         $package_id,
                         $release_id,
                         $dep['type'],
@@ -298,8 +328,8 @@ class Release
                 }
 
                 if (PEAR::isError($res)) {
-                    $dbh->query('DELETE FROM deps WHERE '."`release` = $release_id");
-                    $dbh->query('DELETE FROM releases WHERE '."id = $release_id");
+                    $this->dbh->query('DELETE FROM deps WHERE '."`release` = $release_id");
+                    $this->dbh->query('DELETE FROM releases WHERE '."id = $release_id");
                     @unlink($file);
 
                     return $res;
@@ -307,35 +337,35 @@ class Release
             }
         }
 
-        $res = $rest->saveAllReleases($package);
+        $res = $this->rest->saveAllReleases($package);
 
         if (PEAR::isError($res)) {
-            $dbh->query('DELETE FROM deps WHERE ' .
+            $this->dbh->query('DELETE FROM deps WHERE ' .
                 "`release` = $release_id");
-            $dbh->query('DELETE FROM releases WHERE ' .
+            $this->dbh->query('DELETE FROM releases WHERE ' .
                 "id = $release_id");
             @unlink($file);
 
             return $res;
         }
 
-        $res = $rest->saveRelease($file, $packagexml, $pkg_info, $auth_user->handle, $release_id);
+        $res = $this->rest->saveRelease($file, $packagexml, $pkg_info, $this->authUser->handle, $release_id);
 
         if (PEAR::isError($res)) {
-            $dbh->query('DELETE FROM deps WHERE ' .
+            $this->dbh->query('DELETE FROM deps WHERE ' .
                 "`release` = $release_id");
-            $dbh->query('DELETE FROM releases WHERE ' .
+            $this->dbh->query('DELETE FROM releases WHERE ' .
                 "id = $release_id");
             @unlink($file);
             return $res;
         }
 
-        $res = $rest->savePackagesCategory(Package::info($package, 'category'));
+        $res = $this->rest->savePackagesCategory(Package::info($package, 'category'));
 
         if (PEAR::isError($res)) {
-            $dbh->query('DELETE FROM deps WHERE ' .
+            $this->dbh->query('DELETE FROM deps WHERE ' .
                 "`release` = $release_id");
-            $dbh->query('DELETE FROM releases WHERE ' .
+            $this->dbh->query('DELETE FROM releases WHERE ' .
                 "id = $release_id");
             @unlink($file);
             return $res;
@@ -353,13 +383,11 @@ class Release
      * @param boolean Uncompress file before downloading?
      * @return mixed
      */
-    public static function HTTPdownload($package, $version = null, $file = null, $uncompress = false)
+    public function HTTPdownload($package, $version = null, $file = null, $uncompress = false)
     {
-        global $dbh;
-
         $package_id = Package::info($package, 'packageid', true);
         if (!$package_id) {
-            $package_id = $dbh->getOne('SELECT package_id FROM package_aliases WHERE alias_name=' . $dbh->quoteSmart($package));
+            $package_id = $this->dbh->getOne('SELECT package_id FROM package_aliases WHERE alias_name=' . $this->dbh->quoteSmart($package));
 
             if (!$package_id) {
                 return PEAR::raiseError("release download:: package '".htmlspecialchars($package)."' does not exist");
@@ -378,7 +406,7 @@ class Release
                 $uncompress = true;
             }
 
-            $row = $dbh->getRow("SELECT `fullpath`, `release`, `id` FROM files ".
+            $row = $this->dbh->getRow("SELECT `fullpath`, `release`, `id` FROM files ".
                                 "WHERE UPPER(basename) = ?", [strtoupper($file)],
                                 DB_FETCHMODE_ASSOC);
 
@@ -393,7 +421,7 @@ class Release
             $log_file = $row['id'];
         } elseif ($version == null) {
             // Get the most recent version
-            $row = $dbh->getRow("SELECT id FROM releases ".
+            $row = $this->dbh->getRow("SELECT id FROM releases ".
                                 "WHERE package = $package_id ".
                                 "ORDER BY releasedate DESC", DB_FETCHMODE_ASSOC);
 
@@ -402,10 +430,10 @@ class Release
             }
 
             $release_id = $row['id'];
-        } elseif (self::isValidState($version)) {
+        } elseif ($this->isValidState($version)) {
             $version = strtolower($version);
             // Get the most recent version with a given state
-            $row = $dbh->getRow("SELECT id FROM releases ".
+            $row = $this->dbh->getRow("SELECT id FROM releases ".
                                 "WHERE package = $package_id ".
                                 "AND state = '$version' ".
                                 "ORDER BY releasedate DESC",
@@ -422,9 +450,9 @@ class Release
             }
         } else {
             // Get a specific release
-            $row = $dbh->getRow("SELECT id FROM releases ".
-                                " WHERE package = " . $dbh->quoteSmart($package_id).
-                                " AND version = " . $dbh->quoteSmart($version),
+            $row = $this->dbh->getRow("SELECT id FROM releases ".
+                                " WHERE package = " . $this->dbh->quoteSmart($package_id).
+                                " AND version = " . $this->dbh->quoteSmart($version),
                                 DB_FETCHMODE_ASSOC);
 
             if (PEAR::isError($row)) {
@@ -436,7 +464,7 @@ class Release
         if (!isset($path) && isset($release_id)) {
             $sql = "SELECT fullpath, basename, `id` FROM files WHERE `release` = ".
                  $release_id;
-            $row = $dbh->getRow($sql, DB_FETCHMODE_ORDERED);
+            $row = $this->dbh->getRow($sql, DB_FETCHMODE_ORDERED);
 
             if (PEAR::isError($row)) {
                 return $row;
@@ -444,7 +472,7 @@ class Release
 
             list($path, $basename, $log_file) = $row;
 
-            if (empty($path) || (!@is_file(PEAR_TARBALL_DIR . '/' . $basename) && !@is_file($path))) {
+            if (empty($path) || (!@is_file($this->packagesDir.'/'.$basename) && !@is_file($path))) {
                 return PEAR::raiseError("release download:: no version information found");
             }
 
@@ -458,14 +486,14 @@ class Release
             $basename .= '.tgz';
         }
 
-        $path = PEAR_TARBALL_DIR . '/' . $basename;
+        $path = $this->packagesDir.'/'.$basename;
 
         if (isset($path)) {
             if (!isset($log_release)) {
                 $log_release = $release_id;
             }
 
-            self::logDownload($package_id, $log_release, $log_file);
+            $this->logDownload($package_id, $log_release, $log_file);
 
             header('Content-Disposition: attachment;filename=' . $basename);
             header('Content-type: application/octet-stream');
@@ -484,7 +512,7 @@ class Release
      * @param string State
      * @return boolean
      */
-    private static function isValidState($state)
+    private function isValidState($state)
     {
         $states = ['devel', 'snapshot', 'alpha', 'beta', 'stable'];
 
@@ -498,11 +526,9 @@ class Release
      * @param integer ID of the release
      * @param string Filename
      */
-    private static function logDownload($package, $release_id, $file = null)
+    private function logDownload($package, $release_id, $file = null)
     {
-        global $dbh;
-
-        $dbh->query('INSERT INTO aggregated_package_stats
+        $this->dbh->query('INSERT INTO aggregated_package_stats
                     (package_id, release_id, yearmonth, downloads)
                     VALUES(?,?,?,1)
                     ON DUPLICATE KEY UPDATE downloads=downloads+1',
@@ -511,7 +537,7 @@ class Release
         $pkg_info = Package::info($package, null);
 
         $query = 'SELECT version FROM releases WHERE package = ? AND id = ?';
-        $version = $dbh->getOne($query, [$package, $release_id]);
+        $version = $this->dbh->getOne($query, [$package, $release_id]);
 
         // Update package_stats table
         $query = 'INSERT INTO package_stats
@@ -521,7 +547,7 @@ class Release
         dl_number=dl_number+1,
         last_dl = "' . date('Y-m-d H:i:s') . '"';
 
-        $dbh->query($query, [
+        $this->dbh->query($query, [
             $pkg_info['name'],
             $version,
             $package,
@@ -538,7 +564,7 @@ class Release
      * @param string Filename of the new uploaded release
      * @return void
      */
-    public static function promote($pkginfo, $upload)
+    public function promote($pkginfo, $upload)
     {
         if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
             return;
@@ -595,7 +621,7 @@ END;
      * @param string Filename of the new uploaded release
      * @return void
      */
-    public static function promote_v2($pkginfo, $upload)
+    public function promote_v2($pkginfo, $upload)
     {
         if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
             return;
@@ -650,11 +676,9 @@ Authors
      * @param integer ID of the release
      * @return boolean
      */
-    public static function remove($package, $release)
+    public function remove($package, $release)
     {
-        global $dbh, $auth_user, $rest;
-
-        if (!$auth_user->isAdmin() && !User::maintains($auth_user->handle, $package, 'lead')) {
+        if (!$this->authUser->isAdmin() && !User::maintains($this->authUser->handle, $package, 'lead')) {
             return PEAR::raiseError('Release::remove: insufficient privileges');
         }
 
@@ -665,7 +689,7 @@ Authors
                          $package,
                          $release);
 
-        $sth = $dbh->query($query);
+        $sth = $this->dbh->query($query);
 
         while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
             if (!@unlink($row['fullpath'])) {
@@ -675,26 +699,26 @@ Authors
             $basename = basename($row['fullpath']);
             $basename = substr($basename, 0, -4);
 
-            @unlink(PEAR_TARBALL_DIR . '/' . $basename . '.tar');
+            @unlink($this->packagesDir.'/'.$basename.'.tar');
         }
 
         $query = sprintf("DELETE FROM `files` WHERE `package` = '%s' AND `release` = '%s'",
                          $package,
                          $release
                          );
-        $sth = $dbh->query($query);
+        $sth = $this->dbh->query($query);
 
         $pname = Package::info($package, 'name');
-        $version = $dbh->getOne('SELECT version from releases WHERE package = ? and id = ?', [$package, $release]);
+        $version = $this->dbh->getOne('SELECT version from releases WHERE package = ? and id = ?', [$package, $release]);
         $query = sprintf("DELETE FROM releases WHERE package = '%s' AND id = '%s'",
                          $package,
                          $release
                          );
-        $sth = $dbh->query($query);
+        $sth = $this->dbh->query($query);
 
-        $rest->saveAllReleases($pname);
-        $rest->deleteRelease($pname, $version);
-        $rest->savePackagesCategory(Package::info($pname, 'category'));
+        $this->rest->saveAllReleases($pname);
+        $this->rest->deleteRelease($pname, $version);
+        $this->rest->savePackagesCategory(Package::info($pname, 'category'));
 
         if (PEAR::isError($sth)) {
             return false;

@@ -18,9 +18,17 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Release;
+
 auth_require('pear.dev');
 
 require_once 'HTTP/Upload.php';
+
+$release = new Release();
+$release->setDbh($dbh);
+$release->setAuthUser($auth_user);
+$release->setRest($rest);
+$release->setPackagesDir($config->get('packages_dir'));
 
 $display_form         = true;
 $display_verification = false;
@@ -227,7 +235,7 @@ do {
                 }
 
                 $rest->savePackageMaintainer($info->getPackage());
-                $file = Release::upload(
+                $file = $release->upload(
                     $info->getPackage(),
                     $info->getVersion(),
                     $info->getState(),
@@ -281,7 +289,7 @@ do {
                 break;
             }
 
-            $file = Release::upload(
+            $file = $release->upload(
                 $info['package'],
                 $info['version'],
                 $info['release_state'],
@@ -303,9 +311,9 @@ do {
         PEAR::pushErrorHandling(PEAR_ERROR_CALLBACK, 'report_warning');
 
         if (is_a($info, 'PEAR_PackageFile_v1') || is_a($info, 'PEAR_PackageFile_v2')) {
-            Release::promote_v2($info, $file);
+            $release->promote_v2($info, $file);
         } else {
-            Release::promote($info, $file);
+            $release->promote($info, $file);
         }
 
         PEAR::popErrorHandling();

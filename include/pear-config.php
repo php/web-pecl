@@ -46,9 +46,3 @@ if (isset($_SERVER['PEAR_DATABASE_DSN'])) {
     define('PEAR_DATABASE_DSN', $driver . '://' . PECL_DB_USER . ':' . PECL_DB_PASSWORD. '@' . PECL_DB_HOST. '/' . PECL_DB_NAME);
     define('PECL_DB_DSN', 'mysql:host=' . PECL_DB_HOST . ';dbname=' . PECL_DB_NAME);
 }
-
-if (isset($_SERVER['PEAR_TARBALL_DIR'])) {
-    define('PEAR_TARBALL_DIR', $_SERVER['PEAR_TARBALL_DIR']);
-} else {
-    define('PEAR_TARBALL_DIR', '/var/lib/pear');
-}

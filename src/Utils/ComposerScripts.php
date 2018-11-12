@@ -20,8 +20,10 @@
 
 namespace App\Utils;
 
+use App\Config;
 use Composer\Script\Event;
 use Composer\Installer\PackageEvent;
+use Symfony\Component\Dotenv\Dotenv;
 
 /**
  * Service class for running composer scripts when installing application.
@@ -46,11 +48,27 @@ class ComposerScripts
      */
     public static function createDirectories(Event $event)
     {
-        require_once __DIR__.'/../../include/bootstrap.php';
+        if (!$event->isDevMode()) {
+            return;
+        }
 
-        if ($event->isDevMode() && !file_exists($config->get('tmp_uploads_dir'))) {
+        $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
+
+        require_once $vendorDir.'/autoload.php';
+
+        $dotenv = new Dotenv();
+        $dotenv->load(__DIR__.'/../../.env');
+        $configurations = require __DIR__.'/../../config/app.php';
+        $config = new Config($configurations);
+
+        if (!file_exists($config->get('tmp_uploads_dir'))) {
             mkdir($config->get('tmp_uploads_dir'), 0777, true);
             chmod($config->get('tmp_uploads_dir'), 0777);
+        }
+
+        if (!file_exists($config->get('packages_dir'))) {
+            mkdir($config->get('packages_dir'), 0777, true);
+            chmod($config->get('packages_dir'), 0777);
         }
     }
 }

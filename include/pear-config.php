@@ -20,10 +20,8 @@
 
 if (isset($_SERVER['PEAR_TMPDIR'])) {
     define('PEAR_TMPDIR', $_SERVER['PEAR_TMPDIR']);
-    define('PEAR_UPLOAD_TMPDIR', $_SERVER['PEAR_TMPDIR'].'/uploads');
 } else {
     define('PEAR_TMPDIR', '/var/tmp/pear');
-    define('PEAR_UPLOAD_TMPDIR', '/var/tmp/pear/uploads');
 }
 
 /**

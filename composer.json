@@ -47,7 +47,8 @@
     },
     "scripts":{
         "post-install-cmd": [
-            "App\\Config\\Installer::installConfig"
+            "App\\Utils\\ComposerScripts::installConfig",
+            "App\\Utils\\ComposerScripts::createDirectories"
         ]
     }
 }

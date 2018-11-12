@@ -32,8 +32,9 @@ $errors               = [];
 
 PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
 
-if (!file_exists(PEAR_UPLOAD_TMPDIR)) {
-    mkdir(PEAR_UPLOAD_TMPDIR, 0777, true);
+if (!file_exists($config->get('tmp_uploads_dir'))) {
+    mkdir($config->get('tmp_uploads_dir'), 0777, true);
+    chmod($config->get('tmp_uploads_dir'), 0777);
 }
 
 do {
@@ -51,7 +52,7 @@ do {
         if ($file->isValid()) {
             $file->setName('uniq', 'pear-');
             $file->setValidExtensions('tgz', 'accept');
-            $tmpfile = $file->moveTo(PEAR_UPLOAD_TMPDIR);
+            $tmpfile = $file->moveTo($config->get('tmp_uploads_dir'));
 
             if (PEAR::isError($tmpfile)) {
                 $errors[] = $tmpfile->getMessage();
@@ -72,7 +73,7 @@ do {
 
     $pearConfig = PEAR_Config::singleton();
     $pkg = new PEAR_PackageFile($pearConfig);
-    $info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR . '/' . $tmpfile, PEAR_VALIDATE_NORMAL);
+    $info = $pkg->fromTgzFile($config->get('tmp_uploads_dir').'/'.$tmpfile, PEAR_VALIDATE_NORMAL);
     $errors = $warnings = [];
 
     if (PEAR::isError($info)) {
@@ -157,7 +158,7 @@ do {
     } elseif (isset($_POST['verify'])) {
         // Verify Button
 
-        $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($_POST['distfile']);
+        $distfile = $config->get('tmp_uploads_dir').'/'.basename($_POST['distfile']);
         if (!@is_file($distfile)) {
             $errors[] = 'No verified file found.';
             break;
@@ -317,7 +318,7 @@ do {
         $display_verification = false;
     } elseif (isset($cancel)) {
         // Cancel Button
-        $distfile = PEAR_UPLOAD_TMPDIR . '/' . basename($distfile);
+        $distfile = $config->get('tmp_uploads_dir').'/'.basename($distfile);
 
         if (@is_file($distfile)) {
             @unlink($distfile);
@@ -379,7 +380,7 @@ if ($display_verification) {
     response_header('Upload New Release :: Verify');
     $pearConfig = PEAR_Config::singleton();
     $pkg = new PEAR_PackageFile($pearConfig);
-    $info = $pkg->fromTgzFile(PEAR_UPLOAD_TMPDIR.'/'.$tmpfile, PEAR_VALIDATE_NORMAL);
+    $info = $pkg->fromTgzFile($config->get('tmp_uploads_dir').'/'.$tmpfile, PEAR_VALIDATE_NORMAL);
     $errors = $warnings = [];
 
     if (PEAR::isError($info)) {

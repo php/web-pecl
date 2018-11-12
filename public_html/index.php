@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+require_once __DIR__.'/../src/Repository/Release.php';
+
 use App\Repository\Release;
 
 $releaseRepository = new Release($dbh);

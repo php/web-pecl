@@ -22,11 +22,6 @@
  * Interface to update package information.
  */
 
-use App\BorderBox;
-use App\Package;
-use App\Release;
-use App\User;
-
 auth_require();
 
 response_header("Edit package");
@@ -144,7 +139,7 @@ if (empty($row['name'])) {
     exit();
 }
 
-$bb = new BorderBox("Edit package information");
+$bb = new Borderbox("Edit package information");
 ?>
 
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES)?>?id=<?php echo (int)$_GET['id']; ?>" method="POST">
@@ -258,7 +253,7 @@ $bb->end();
 
 echo "<br /><br />\n";
 
-$bb = new BorderBox("Manage releases");
+$bb = new Borderbox("Manage releases");
 
 echo "<table border=\"0\">\n";
 

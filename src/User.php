@@ -22,12 +22,6 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
-
-use App\Note;
-use App\Entity\User as UserEntity;
-use App\Package;
-
 /**
  * User service class.
  */
@@ -76,7 +70,7 @@ class User
     {
         global $dbh, $auth_user, $rest;
 
-        $user = new UserEntity($dbh, $uid);
+        $user = new PEAR_User($dbh, $uid);
 
         if (@$user->registered) {
             return false;
@@ -203,7 +197,7 @@ class User
      * Update user information
      *
      * @param  array User information
-     * @return object Instance of UserEntity
+     * @return object Instance of PEAR_User
      */
     public static function update($data)
     {
@@ -211,7 +205,7 @@ class User
 
         $fields = ["name", "email", "homepage", "showemail", "userinfo", "pgpkeyid", "wishlist"];
 
-        $user = new UserEntity($dbh, $data['handle']);
+        $user = new PEAR_User($dbh, $data['handle']);
 
         foreach ($data as $key => $value) {
             if (!in_array($key, $fields)) {

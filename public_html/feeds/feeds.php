@@ -18,16 +18,16 @@
   +----------------------------------------------------------------------+
 */
 
+require_once __DIR__.'/../../src/Repository/Release.php';
+
 use App\Repository\Release;
-use App\Package;
-use App\User;
-use App\Category;
 
 function rss_bailout() {
     header('HTTP/1.0 404 Not Found');
     echo "<h1>The requested URL " . (($_SERVER['REQUEST_URI'])) . " was not found on this server.</h1>";
     exit();
 }
+
 
 // If file is given, the file will be used to store the rss feed
 function rss_create($items, $channel_title, $channel_description, $dest_file=false, $config) {

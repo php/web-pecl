@@ -22,8 +22,6 @@
  * Details about PECL accounts
  */
 
-use App\BorderBox;
-
 $handle = filter_input(INPUT_GET, 'handle', FILTER_SANITIZE_STRING);
 
 // Redirect to the accounts list if no handle was specified

@@ -28,8 +28,7 @@
 *  o Release date (on/before/after)
 */
 
-use App\Category;
-use \Pager as Pager;
+require_once 'Pager/Pager.php';
 
 // Months for released date dropdowns
 $months     = [];

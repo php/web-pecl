@@ -22,9 +22,6 @@
  * Interface to delete a package.
  */
 
-use App\BorderBox;
-use App\Package;
-
 auth_require(true);
 
 response_header('Delete Package');
@@ -38,7 +35,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 if (!isset($_POST['confirm'])) {
 
-    $bb = new BorderBox("Confirmation");
+    $bb = new Borderbox("Confirmation");
 
     echo '<form action="/package-delete.php?id='.htmlspecialchars($_GET['id'], ENT_QUOTES).'" method="post">'."\n";
     echo "Are you sure that you want to delete the package?<br /><br />";

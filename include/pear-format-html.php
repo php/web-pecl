@@ -18,16 +18,15 @@
   +----------------------------------------------------------------------+
 */
 
-use App\BorderBox;
-use \Net_URL2 as Net_URL2;
-use \PEAR as PEAR;
-
 // Send charset
 header("Content-Type: text/html; charset=utf-8");
 
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
 $extra_styles = [];
+
+require_once 'Net/URL2.php';
+require_once __DIR__.'/../src/BorderBox.php';
 
 $GLOBALS['main_menu'] = [
     '/index.php'           => 'Home',

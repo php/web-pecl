@@ -18,16 +18,12 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
+require_once 'PEAR/PackageFile/Parser/v2.php';
+require_once 'PEAR/Config.php';
+require_once __DIR__.'/Utils/Filesystem.php';
+require_once __DIR__.'/Karma.php';
 
-use App\Category;
-use App\Karma;
-use App\Package;
-use App\User;
 use App\Utils\Filesystem;
-use \PEAR as PEAR;
-use \PEAR_Config as PEAR_Config;
-use \PEAR_PackageFile_Parser_v2 as PEAR_PackageFile_Parser_v2;
 
 /**
  * The PECL REST API management service class.

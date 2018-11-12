@@ -18,10 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Category;
-
-require_once __DIR__.'/../include/bootstrap.php';
-
 print "Adding categories...\n";
 
 $dbh->expectError(DB_ERROR_NOSUCHTABLE);

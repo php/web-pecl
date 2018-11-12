@@ -19,9 +19,6 @@
   +----------------------------------------------------------------------+
 */
 
-use App\PackageDll;
-use \DB as DB;
-
 require_once __DIR__.'/../include/pear-prepend.php';
 
 $dbh = DB::connect("mysql://pear:pear@localhost/pear");

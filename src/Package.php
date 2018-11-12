@@ -22,13 +22,6 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
-
-use App\Maintainer;
-use App\User;
-use \DB as DB;
-use \PEAR as PEAR;
-
 /**
  * Class to handle packages.
  */

@@ -18,10 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Package;
-
-require_once __DIR__.'/../include/bootstrap.php';
-
 print "Adding packages...\n";
 
 // Drops all packages and adds sample packages

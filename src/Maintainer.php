@@ -22,13 +22,7 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
-
-use App\Package;
-use App\User;
-use \PEAR as PEAR;
-use \DB as DB;
-use \PEAR_Common as PEAR_Common;
+require_once 'PEAR/Common.php';
 
 /**
  * Class to handle maintainers

@@ -18,8 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
-
 define("PECL_DLL_URL_CACHE_DB", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_url.cache");
 define("PECL_DLL_URL_CACHE_LAST_RESET", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_last_reset");
 define("PECL_DLL_URL_CACHE_DB_RESET_LOCK", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_url_cache_reset.lock");

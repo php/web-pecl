@@ -18,10 +18,9 @@
   +----------------------------------------------------------------------+
 */
 
-use \DB as DB;
-use \PEAR as PEAR;
-
+require_once 'DB.php';
 require_once __DIR__.'/../include/pear-prepend.php';
+require_once __DIR__.'/../include/pear-database.php';
 
 extract($_SERVER);
 

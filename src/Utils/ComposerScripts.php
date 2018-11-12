@@ -18,15 +18,15 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App\Config;
+namespace App\Utils;
 
 use Composer\Script\Event;
 use Composer\Installer\PackageEvent;
 
 /**
- * Configuration installer for running it as a Composer script.
+ * Service class for running composer scripts when installing application.
  */
-class Installer
+class ComposerScripts
 {
     /**
      * Create a default configuration settings for development environment.
@@ -38,6 +38,19 @@ class Installer
 
         if ($event->isDevMode() && !file_exists($targetEnvFile)) {
             copy($distEnvFile, $targetEnvFile);
+        }
+    }
+
+    /**
+     * Create application temporary directories.
+     */
+    public static function createDirectories(Event $event)
+    {
+        require_once __DIR__.'/../../include/bootstrap.php';
+
+        if ($event->isDevMode() && !file_exists($config->get('tmp_uploads_dir'))) {
+            mkdir($config->get('tmp_uploads_dir'), 0777, true);
+            chmod($config->get('tmp_uploads_dir'), 0777);
         }
     }
 }

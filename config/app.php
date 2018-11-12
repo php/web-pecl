@@ -37,6 +37,9 @@ return [
     // REST static files directory
     'rest_dir' => isset($_SERVER['PECL_REST_DIR']) ? $_SERVER['PECL_REST_DIR'] : __DIR__.'/../public_html/rest',
 
+    // Temporary directory for uploaded files
+    'tmp_uploads_dir' => isset($_SERVER['PECL_TMP_UPLOADS_DIR']) ? $_SERVER['PECL_TMP_UPLOADS_DIR'] : __DIR__.'/../var/uploads',
+
     // Regex pattern for matching valid PECL accounts usernames
     'valid_usernames_regex' => '/^[a-z][a-z0-9]+$/i',
 ];

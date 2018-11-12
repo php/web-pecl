@@ -77,6 +77,7 @@ Source code of this application is structured in the following directories:
     ├─ css/          # Stylesheets
     ├─ img/          # Images
     ├─ js/           # JavaScript assets
+    ├─ packages/     # Uploaded packages releases static files
     ├─ rest/         # Static REST API generated XML files
     └─ ...
  ├─ sql/             # Database schema and development fixtures

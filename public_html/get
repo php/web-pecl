@@ -43,6 +43,14 @@
 // Shut up or we risk getting corrupted tgz files.
 error_reporting(0);
 
+use App\Release;
+
+$release = new Release();
+$release->setDbh($dbh);
+$release->setAuthUser($auth_user);
+$release->setRest($rest);
+$release->setPackagesDir($config->get('packages_dir'));
+
 function error_404($obj) {
     header('HTTP/1.0 404 Not Found');
     if (is_object($obj)) {
@@ -79,17 +87,17 @@ switch (count($opts)) {
     case 2: {
         if (preg_match('/^([a-zA-Z0-9_]+)-(.+)\.(tar|tgz)$/', $opts[1], $matches)) {
             list(, $package, $version) = $matches;
-            $ok = Release::HTTPdownload($package, $version, $opts[1], $uncompress);
+            $ok = $release->HTTPdownload($package, $version, $opts[1], $uncompress);
         } elseif (preg_match('/^([a-zA-Z0-9_]+)-(.+)$/', $opts[1], $matches)) {
             list(, $package, $version) = $matches;
-            $ok = Release::HTTPdownload($package, $version, null, $uncompress);
+            $ok = $release->HTTPdownload($package, $version, null, $uncompress);
         } else {
-            $ok = Release::HTTPdownload($opts[1], null, null, $uncompress);
+            $ok = $release->HTTPdownload($opts[1], null, null, $uncompress);
         }
         break;
     }
     case 3: {
-        $ok = Release::HTTPdownload($opts[1], $opts[2], null, $uncompress);
+        $ok = $release->HTTPdownload($opts[1], $opts[2], null, $uncompress);
         break;
     }
     default: {

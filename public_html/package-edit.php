@@ -22,6 +22,14 @@
  * Interface to update package information.
  */
 
+use App\Release;
+
+$release = new Release();
+$release->setDbh($dbh);
+$release->setAuthUser($auth_user);
+$release->setRest($rest);
+$release->setPackagesDir($config->get('packages_dir'));
+
 auth_require();
 
 response_header("Edit package");
@@ -120,7 +128,7 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            if (Release::remove($_GET['id'], $_GET['release'])) {
+            if ($release->remove($_GET['id'], $_GET['release'])) {
                 echo "<b>Release successfully deleted.</b><br /><br />\n";
             } else {
                 PEAR::raiseError("An error occured while deleting the release!");
@@ -259,15 +267,15 @@ echo "<table border=\"0\">\n";
 
 echo "<tr><th>Version</th><th>Releasedate</th><th>Actions</th></tr>\n";
 
-foreach ($row['releases'] as $version => $release) {
+foreach ($row['releases'] as $version => $item) {
     echo "<tr>\n";
     echo "  <td>" . $version . "</td>\n";
-    echo "  <td>" . $release['releasedate'] . "</td>\n";
+    echo "  <td>" . $item['releasedate'] . "</td>\n";
     echo "  <td>\n";
 
     $url = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?id=" .
                      (int)$_GET['id'] . "&release=" .
-                     $release['id'] . "&action=release_remove";
+                     $item['id'] . "&action=release_remove";
     $msg = "Are you sure that you want to delete the release?";
 
     echo "<a href=\"javascript:confirmed_goto('$url', '$msg')\">"

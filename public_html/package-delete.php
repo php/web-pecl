@@ -69,7 +69,7 @@ if (!isset($_POST['confirm'])) {
 
     foreach ($row as $value) {
         $file = sprintf("%s/%s-%s.tgz",
-                        PEAR_TARBALL_DIR,
+                        $config->get('packages_dir'),
                         $value[0],
                         $value[1]);
 

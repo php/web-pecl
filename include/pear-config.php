@@ -49,11 +49,6 @@ if (isset($_SERVER['PEAR_DATABASE_DSN'])) {
     define('PECL_DB_DSN', 'mysql:host=' . PECL_DB_HOST . ';dbname=' . PECL_DB_NAME);
 }
 
-if (isset($_SERVER['PEAR_AUTH_REALM'])) {
-    define('PEAR_AUTH_REALM', $_SERVER['PEAR_AUTH_REALM']);
-} else {
-    define('PEAR_AUTH_REALM', 'PEAR');
-}
 if (isset($_SERVER['PEAR_TARBALL_DIR'])) {
     define('PEAR_TARBALL_DIR', $_SERVER['PEAR_TARBALL_DIR']);
 } else {

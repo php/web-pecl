@@ -24,7 +24,7 @@
  * from within the PECL website or just submitted the login form.
  */
 if (!isset($_COOKIE[session_name()]) && isset($_POST['PEAR_USER']) && isset($_POST['PEAR_PW'])) {
-//    auth_reject(PEAR_AUTH_REALM, 'Cookies must be enabled to log in.');
+//    auth_reject('Cookies must be enabled to log in.');
 }
 
 // If they're already logged in, say so.
@@ -75,4 +75,4 @@ if (isset($_POST['PEAR_USER']) || isset($_POST['PEAR_PW'])) {
     $msg = 'Invalid username or password.';
 }
 
-auth_reject(PEAR_AUTH_REALM, $msg);
+auth_reject($msg);

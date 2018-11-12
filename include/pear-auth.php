@@ -20,11 +20,8 @@
 
 require_once __DIR__.'/../src/Karma.php';
 
-function auth_reject($realm = null, $message = null)
+function auth_reject($message = null)
 {
-    if ($realm === null) {
-        $realm = PEAR_AUTH_REALM;
-    }
     if ($message === null) {
         $message = "Please enter your username and password:";
     }

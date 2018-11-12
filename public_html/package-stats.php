@@ -255,9 +255,9 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
     }
 </script>
 <form name="graph_control" action="#">
- <input type="hidden" name="pid" value="<?php echo @$_GET['pid']; ?>" />
- <input type="hidden" name="rid" value="<?php echo @$_GET['rid']; ?>" />
- <input type="hidden" name="cid" value="<?php echo @$_GET['cid']; ?>" />
+ <input type="hidden" name="pid" value="<?php echo empty($_GET['pid']) ? '' : $_GET['pid']; ?>" />
+ <input type="hidden" name="rid" value="<?php echo empty($_GET['rid']) ? '' : $_GET['rid']; ?>" />
+ <input type="hidden" name="cid" value="<?php echo empty($_GET['cid']) ? '' : $_GET['cid']; ?>" />
  <table border="0">
   <tr>
    <td colspan="2">

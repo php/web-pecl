@@ -19,7 +19,7 @@
 */
 
 if (empty($user)) {
-    $user = @$_GET['handle'];
+    $user = isset($_GET['handle']) ? $_GET['handle'] : null;
 }
 if (empty($user)) {
     $user = basename($_SERVER['PATH_INFO']);

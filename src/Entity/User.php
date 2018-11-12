@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 /*
@@ -15,32 +14,50 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Authors: Pierre Joye <pierre@php.net>                                |
+  | Authors: Stig S. Bakken <ssb@fast.no>                                |
+  |          Tomas V.V.Cox <cox@php.net>                                 |
+  |          Martin Jansen <mj@php.net>                                  |
+  |          Gregory Beaver <cellog@php.net>                             |
+  |          Richard Heyes <richard@php.net>                             |
   +----------------------------------------------------------------------+
 */
 
+namespace App\Entity;
+
+use \DB_storage as DB_storage;
+
 /**
- * Drop all accounts not active in any package and not having a SVN account
+ * User entity class.
  */
+class User extends DB_storage
+{
+    /**
+     * Class constructor.
+     */
+    public function __construct(&$dbh, $user)
+    {
+        parent::__construct("users", "handle", $dbh);
 
-require_once __DIR__.'/../include/pear-config.php';
+        $this->pushErrorHandling(PEAR_ERROR_RETURN);
+        $this->setup($user);
+        $this->popErrorHandling();
+    }
 
-$svnusers = '/home/pierre/project/pecl/migration/svnusers';
-$svn_accounts = file($svnusers);
-function nonl(&$var) {$var = str_replace(["\n","\r", "\r\n"], '', $var);}
-array_walk($svn_accounts, 'nonl');
+    /**
+     * Check if user's username matches.
+     */
+    public function is($handle)
+    {
+        $ret = strtolower($this->handle);
 
-$sql = 'select handle from users  where handle NOT IN (select handle from maintains)';
+        return (strtolower($handle) == $ret);
+    }
 
-$dh = new \PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
-
-$res = $dh->query($sql);
-$sql_del = 'DELETE FROM users WHERE handle=';
-$del = 0;
-foreach ($res as $row) {
-    if (!in_array($row['handle'], $svn_accounts)) {
-        $res = $dh->query($sql_del . "'" . $row['handle'] . "'");
-        if ($res) $del++;
+    /**
+     * Check if user is admin.
+     */
+    public function isAdmin()
+    {
+        return ($this->admin == 1);
     }
 }
-echo "$del accounts deleted.\n";

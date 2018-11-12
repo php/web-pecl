@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+namespace App;
+
 /**
  * Class to manage the user permissions system
  *

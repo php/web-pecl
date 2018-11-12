@@ -24,7 +24,9 @@
  * cron.
  */
 
-require_once 'DB.php';
+use \DB as DB;
+
+require_once __DIR__.'/../include/bootstrap.php';
 
 // DSN for PECL packages database
 $dsn = "mysql://pear:pear@localhost/pear";

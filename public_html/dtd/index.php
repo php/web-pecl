@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\BorderBox;
+
 response_header("Document Type Definitions");
 ?>
 

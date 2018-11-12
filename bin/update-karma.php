@@ -25,7 +25,7 @@
 
 require_once __DIR__.'/../include/pear-config.php';
 
-$dh = new PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
+$dh = new \PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
 
 $sql = "update karma set level='developer' where level='pear.dev' or level='pecl.dev';";
 $res = $dh->query($sql);

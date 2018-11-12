@@ -19,9 +19,10 @@
   +----------------------------------------------------------------------+
 */
 
-require_once __DIR__.'/../src/Utils/Licenser.php';
-
 use App\Utils\Licenser;
+use App\BorderBox;
+use App\Package;
+use App\PackageDll;
 
 $licenser = new Licenser();
 
@@ -342,7 +343,7 @@ $title = "Dependencies";
 if ($relid) {
     $title .= " for release $version";
 }
-$bb = new Borderbox($title, "90%", "", 2, true);
+$bb = new BorderBox($title, "90%", "", 2, true);
 
 $rels = $pkg['releases'];
 

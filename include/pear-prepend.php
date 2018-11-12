@@ -22,8 +22,13 @@
  * Application bootstrap.
  */
 
-require_once __DIR__.'/bootstrap.php';
+use App\Utils\Filesystem;
+use App\Utils\FormatDate;
+use App\Utils\ImageSize;
+use App\Rest;
+use \DB as DB;
 
+require_once __DIR__.'/bootstrap.php';
 require_once __DIR__.'/pear-config.php';
 
 // silence the notices for production
@@ -37,21 +42,9 @@ if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != 'pecl.php.net')
 // Set application default time zone to UTC for all dates.
 date_default_timezone_set('UTC');
 
-require_once 'PEAR.php';
-require_once 'DB.php';
-require_once 'DB/storage.php';
 require_once __DIR__.'/pear-format-html.php';
 require_once __DIR__.'/pear-auth.php';
 require_once __DIR__.'/pear-database.php';
-require_once __DIR__.'/../src/Rest.php';
-require_once __DIR__.'/../src/PackageDll.php';
-require_once __DIR__.'/../src/Utils/Filesystem.php';
-require_once __DIR__.'/../src/Utils/FormatDate.php';
-require_once __DIR__.'/../src/Utils/ImageSize.php';
-
-use App\Utils\Filesystem;
-use App\Utils\FormatDate;
-use App\Utils\ImageSize;
 
 function get($name)
 {

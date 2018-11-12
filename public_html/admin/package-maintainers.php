@@ -18,6 +18,11 @@
   +----------------------------------------------------------------------+
 */
 
+use App\BorderBox;
+use App\Maintainer;
+use App\Package;
+use App\User;
+
 response_header("PECL Administration - Package maintainers");
 
 if (isset($_GET['pid'])) {

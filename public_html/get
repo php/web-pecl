@@ -40,6 +40,10 @@
  * </Location>
  */
 
+use App\Release;
+use \PEAR as PEAR;
+use \DB as DB;
+
 // Shut up or we risk getting corrupted tgz files.
 error_reporting(0);
 

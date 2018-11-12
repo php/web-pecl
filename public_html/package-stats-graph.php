@@ -29,8 +29,9 @@
  *    bar chart.
  */
 
-include("../include/jpgraph/jpgraph.php");
-include("../include/jpgraph/jpgraph_bar.php");
+use \BarPlot as BarPlot;
+use \Graph as Graph;
+use \GroupBarPlot as GroupBarPlot;
 
 // Cache time in secs
 $cache_time = 300;

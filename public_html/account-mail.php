@@ -22,6 +22,8 @@
  * Send mail to PECL contributor
  */
 
+use App\BorderBox;
+
 // Redirect to the accounts list if no handle was specified
 if (!isset($_GET['handle']) || !preg_match('@^[0-9A-Za-z_]{2,20}$@', $_GET['handle'])) {
     header('Location: /accounts.php', true, 301);

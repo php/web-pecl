@@ -18,8 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-auth_require(true);
-
 /**
  * TODO
  *
@@ -27,7 +25,13 @@ auth_require(true);
  *   deleting categories.
  */
 
-require_once 'HTML/TreeMenu.php';
+use App\Category;
+use \PEAR as PEAR;
+use \HTML_TreeMenu as HTML_TreeMenu;
+use \HTML_TreeNode as HTML_TreeNode;
+use \HTML_TreeMenu_DHTML as HTML_TreeMenu_DHTML;
+
+auth_require(true);
 
 /**
  * Function to recurse thru the tree adding nodes to treemenu

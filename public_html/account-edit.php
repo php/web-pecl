@@ -18,6 +18,9 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Entity\User as UserEntity;
+use App\User;
+
 auth_require();
 
 if (isset($_GET['handle'])) {
@@ -119,7 +122,7 @@ switch ($command) {
         break;
 
     case 'change_password':
-        $user = new PEAR_User($dbh, $handle);
+        $user = new UserEntity($dbh, $handle);
 
         if (empty($_POST['password_old']) || empty($_POST['password']) ||
             empty($_POST['password2'])) {

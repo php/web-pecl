@@ -19,9 +19,10 @@
   +----------------------------------------------------------------------+
 */
 
-require_once __DIR__.'/../src/Repository/PackageStats.php';
-
 use App\Repository\PackageStats;
+use App\BorderBox;
+use App\Category;
+use App\Package;
 
 $packageStats = new PackageStats($dbh);
 
@@ -63,7 +64,7 @@ while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
     $packages[$row['id']] = $row['name'];
 }
 
-$bb = new Borderbox('Select Package');
+$bb = new BorderBox('Select Package');
 
 echo ' <form action="package-stats.php" method="get">'."\n";
 echo ' <table>'."\n";
@@ -142,19 +143,19 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 
     if (isset($info['releases']) && count($info['releases'])>0) {
         echo '<h2>&raquo; Statistics for Package &quot;<a href="/package/' . $info['name'] . '">' . $info['name'] . "</a>&quot;</h2>\n";
-        $bb = new Borderbox("General Statistics");
+        $bb = new BorderBox("General Statistics");
         echo "Number of releases: <strong>" . count($info['releases']) . "</strong><br />\n";
         echo 'Total downloads: <strong>' . number_format($packageStats->getTotalDownloads($_GET['pid']), 0, '.', ',') . "</strong><br />\n";
         $bb->end();
     } else {
-        $bb = new Borderbox('General Statistics');
+        $bb = new BorderBox('General Statistics');
         echo 'No package or release found.';
         $bb->end();
     }
 
     if (count($info['releases']) > 0) {
         echo "<br />\n";
-        $bb = new Borderbox('Release Statistics');
+        $bb = new BorderBox('Release Statistics');
 ?>
     <table cellspacing="0" cellpadding="3" style="border: 0px; width: 100%;">
     <tr>

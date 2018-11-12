@@ -18,7 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'PEAR/Common.php';
+use \PEAR_Common as PEAR_Common;
 
 auth_require(true);
 

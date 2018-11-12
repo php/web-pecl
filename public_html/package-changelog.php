@@ -18,6 +18,9 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Package;
+use App\BorderBox;
+
 // expected url vars: pacid package
 if (isset($_GET['package']) && empty($_GET['pacid'])) {
     $pacid = $_GET['package'];
@@ -37,7 +40,7 @@ if (empty($pkg['name'])) {
 $name = $pkg['name'];
 response_header("$name Changelog");
 print '<p><a href="/'.$name.'">Return</a></p>';
-$bb = new Borderbox("Changelog for " . $name, "90%", "", 2, true);
+$bb = new BorderBox("Changelog for " . $name, "90%", "", 2, true);
 
 if (count($pkg['releases']) == 0) {
     $bb->fullRow('There are no releases for ' . $name . ' yet.');

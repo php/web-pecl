@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+namespace App;
+
 /**
  * Template helper class for displaying data in table.
  */

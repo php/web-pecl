@@ -22,10 +22,15 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'PEAR/Common.php';
-require_once 'Archive/Tar.php';
-require_once 'PEAR/PackageFile.php';
-require_once 'PEAR/Config.php';
+namespace App;
+
+use App\User;
+use App\Package;
+use \PEAR as PEAR;
+use \PEAR_Common as PEAR_Common;
+use \Archive_Tar as Archive_Tar;
+use \PEAR_PackageFile as PEAR_PackageFile;
+use \PEAR_Config as PEAR_Config;
 
 /**
  * Class to handle releases

@@ -18,7 +18,9 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'DB.php';
+use \PEAR as PEAR;
+
+require_once __DIR__.'/../include/bootstrap.php';
 
 $acl_paths = [];
 $acl_users = [];

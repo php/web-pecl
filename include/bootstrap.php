@@ -26,11 +26,12 @@
 use App\Config;
 use Symfony\Component\Dotenv\Dotenv;
 
-// Autoloading
+// Dual autoloader until PSR-4 and Composer's autoloader are fully supported.
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
     require_once __DIR__.'/../vendor/autoload.php';
 }
 
+// TODO: check if something better can be done
 require_once 'PEAR.php';
 require_once 'DB.php';
 require_once 'DB/storage.php';
@@ -46,31 +47,18 @@ require_once 'HTTP/Upload.php';
 if (
     isset($_SERVER['REQUEST_URI'])
     && in_array($_SERVER['REQUEST_URI'], [
-        '/news/index.php'
+        '/news/index.php',
+        '/package-stats.php',
     ])
 ) {
-    spl_autoload_register(function ($class) {
-        // Application root namespace for classes in src directory
-        $prefix = 'App\\';
+    require_once __DIR__.'/../src/Autoloader.php';
 
-        $length = strlen($prefix);
+    $loader = new App\Autoloader();
+    $loader->addNamespace('App\\', __DIR__.'/../src/');
 
-        if (0 !== strncmp($prefix, $class, $length)) {
-            // Check if this is JPGraph dependency
-            if (in_array($class, ['BarPlot', 'Graph', 'GroupBarPlot'])) {
-                require_once __DIR__.'/jpgraph/jpgraph.php';
-                require_once __DIR__.'/jpgraph/jpgraph_bar.php';
-            }
-
-            return;
-        }
-
-        $file = __DIR__ .'/../src/'.str_replace('\\', '/', substr($class, $length)).'.php';
-
-        if (file_exists($file)) {
-            require_once $file;
-        }
-    });
+    $loader->addClassmap('Graph', __DIR__.'/jpgraph/jpgraph.php');
+    $loader->addClassmap('BarPlot', __DIR__.'/jpgraph/jpgraph_bar.php');
+    $loader->addClassmap('GroupBarPlot', __DIR__.'/jpgraph/jpgraph_bar.php');
 } else {
     require_once __DIR__.'/../src/BorderBox.php';
     require_once __DIR__.'/../src/Config.php';

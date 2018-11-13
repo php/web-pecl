@@ -36,11 +36,8 @@ if ($config->get('env') != 'prod') {
     define('DEVBOX', false);
 }
 
-require_once 'PEAR.php';
 require_once 'PEAR/PackageFile.php';
 require_once 'Archive/Tar.php';
-require_once 'DB.php';
-require_once 'DB/storage.php';
 require_once __DIR__.'/../include/pear-database.php';
 require_once __DIR__.'/../src/Rest.php';
 require_once __DIR__.'/../src/Utils/Filesystem.php';

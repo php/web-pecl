@@ -22,8 +22,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'DB/storage.php';
-require_once 'PEAR/Common.php';
 require_once __DIR__.'/../src/Category.php';
 require_once __DIR__.'/../src/Maintainer.php';
 require_once __DIR__.'/../src/Note.php';

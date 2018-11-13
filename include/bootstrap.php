@@ -19,18 +19,24 @@
 */
 
 /**
- * Application bootstrap, where configuration and main classes get initialized.
+ * Application bootstrap with loading classes and configuration initialization.
  */
 
 use App\Config;
 use Symfony\Component\Dotenv\Dotenv;
 
-require_once __DIR__.'/../src/Config.php';
-
+// Autoloading
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
     require_once __DIR__.'/../vendor/autoload.php';
 }
 
+require_once 'PEAR.php';
+require_once 'DB.php';
+require_once 'DB/storage.php';
+require_once 'PEAR/Common.php';
+require_once __DIR__.'/../src/Config.php';
+
+// Configuration
 if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {
     $dotenv = new Dotenv();
     $dotenv->load(__DIR__.'/../.env');
@@ -43,3 +49,6 @@ if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {
 }
 
 $config = new Config($configurations);
+
+// Set application default time zone to UTC for all dates.
+date_default_timezone_set('UTC');

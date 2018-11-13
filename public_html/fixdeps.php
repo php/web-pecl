@@ -18,8 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'PEAR/Common.php';
-
 auth_require(true);
 
 response_header('Fix Dependencies');

@@ -23,7 +23,6 @@ auth_require('pear.dev');
 require_once 'HTTP/Upload.php';
 require_once 'PEAR/PackageFile.php';
 require_once 'PEAR/Config.php';
-require_once 'PEAR/Common.php';
 
 $display_form         = true;
 $display_verification = false;

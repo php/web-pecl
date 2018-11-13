@@ -22,8 +22,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'PEAR/Common.php';
-
 /**
  * Class to handle maintainers
  */

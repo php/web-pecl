@@ -32,7 +32,7 @@ array_walk($svn_accounts, 'nonl');
 
 $sql = 'select handle from users  where handle NOT IN (select handle from maintains)';
 
-$dh = new PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
+$dh = new \PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
 
 $res = $dh->query($sql);
 $sql_del = 'DELETE FROM users WHERE handle=';

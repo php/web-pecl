@@ -353,7 +353,7 @@ response_header('Package Search');
 
 <?php if($numrows):?>
 <br /><br />
-    <?php $bb = new Borderbox($title_html)?>
+    <?php $bb = new BorderBox($title_html)?>
 
 <table border="0" cellpadding="2" cellspacing="2">
 <!-- resultListStart -->

@@ -342,7 +342,7 @@ $title = "Dependencies";
 if ($relid) {
     $title .= " for release $version";
 }
-$bb = new Borderbox($title, "90%", "", 2, true);
+$bb = new BorderBox($title, "90%", "", 2, true);
 
 $rels = $pkg['releases'];
 

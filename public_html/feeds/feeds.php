@@ -28,7 +28,6 @@ function rss_bailout() {
     exit();
 }
 
-
 // If file is given, the file will be used to store the rss feed
 function rss_create($items, $channel_title, $channel_description, $dest_file=false, $config) {
     if (is_array($items) && count($items)>0) {

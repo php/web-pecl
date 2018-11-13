@@ -30,6 +30,7 @@ require_once __DIR__.'/../src/Note.php';
 require_once __DIR__.'/../src/Package.php';
 require_once __DIR__.'/../src/Release.php';
 require_once __DIR__.'/../src/User.php';
+require_once __DIR__.'/../src/Entity/User.php';
 
 /**
  * Some useful "visitation model" tricks:
@@ -86,26 +87,4 @@ function renumber_visitations($id, $parent = null)
         return $err;
     }
     return true;
-}
-
-class PEAR_User extends DB_storage
-{
-    public function __construct(&$dbh, $user)
-    {
-        parent::__construct("users", "handle", $dbh);
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $this->setup($user);
-        $this->popErrorHandling();
-    }
-
-    function is($handle)
-    {
-        $ret = strtolower($this->handle);
-        return (strtolower($handle) == $ret);
-    }
-
-    function isAdmin()
-    {
-        return ($this->admin == 1);
-    }
 }

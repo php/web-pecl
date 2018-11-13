@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Entity\User as UserEntity;
+
 auth_require(true);
 
 if (!empty($_GET['phpinfo'])) {
@@ -128,7 +130,7 @@ function updateRejectReason(selectObj) {
 do {
     // approve account request form
     if (!empty($acreq)) {
-        $requser = new PEAR_User($dbh, $acreq);
+        $requser = new UserEntity($dbh, $acreq);
         if (empty($requser->name)) {
             break;
         }

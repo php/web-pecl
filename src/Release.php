@@ -22,10 +22,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'Archive/Tar.php';
-require_once 'PEAR/PackageFile.php';
-require_once 'PEAR/Config.php';
-
 /**
  * Class to handle releases
  */

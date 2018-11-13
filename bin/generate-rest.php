@@ -33,9 +33,6 @@ if ($config->get('env') != 'prod') {
     define('DEVBOX', false);
 }
 
-require_once 'PEAR/PackageFile.php';
-require_once 'Archive/Tar.php';
-
 use App\Utils\Filesystem;
 
 if (empty($dbh)) {

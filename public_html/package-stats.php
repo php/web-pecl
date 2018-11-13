@@ -19,8 +19,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once __DIR__.'/../src/Repository/PackageStats.php';
-
 use App\Repository\PackageStats;
 
 $packageStats = new PackageStats($dbh);

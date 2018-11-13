@@ -21,8 +21,6 @@
 auth_require('pear.dev');
 
 require_once 'HTTP/Upload.php';
-require_once 'PEAR/PackageFile.php';
-require_once 'PEAR/Config.php';
 
 $display_form         = true;
 $display_verification = false;

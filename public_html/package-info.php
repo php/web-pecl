@@ -19,8 +19,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once __DIR__.'/../src/Utils/Licenser.php';
-
 use App\Utils\Licenser;
 
 $licenser = new Licenser();

@@ -37,6 +37,10 @@ require_once 'PEAR.php';
 require_once 'DB.php';
 require_once 'DB/storage.php';
 require_once 'PEAR/Common.php';
+require_once 'PEAR/Config.php';
+require_once 'PEAR/PackageFile/Parser/v2.php';
+require_once 'Archive/Tar.php';
+require_once 'PEAR/PackageFile.php';
 require_once 'Net/URL2.php';
 require_once __DIR__.'/../src/BorderBox.php';
 require_once __DIR__.'/../src/Config.php';
@@ -48,11 +52,14 @@ require_once __DIR__.'/../src/Note.php';
 require_once __DIR__.'/../src/Package.php';
 require_once __DIR__.'/../src/PackageDll.php';
 require_once __DIR__.'/../src/Release.php';
+require_once __DIR__.'/../src/Repository/PackageStats.php';
+require_once __DIR__.'/../src/Repository/Release.php';
 require_once __DIR__.'/../src/Rest.php';
 require_once __DIR__.'/../src/User.php';
 require_once __DIR__.'/../src/Utils/Filesystem.php';
 require_once __DIR__.'/../src/Utils/FormatDate.php';
 require_once __DIR__.'/../src/Utils/ImageSize.php';
+require_once __DIR__.'/../src/Utils/Licenser.php';
 
 // Configuration
 if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {

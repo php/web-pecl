@@ -18,9 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-require_once 'PEAR/PackageFile/Parser/v2.php';
-require_once 'PEAR/Config.php';
-
 use App\Utils\Filesystem;
 
 /**

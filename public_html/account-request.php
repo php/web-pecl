@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Entity\User as UserEntity;
+
 require_once __DIR__.'/../include/posttohost.php';
 
 function display_error($msg)
@@ -109,7 +111,7 @@ if (isset($_POST['submit'])) {
 
             $purpose .= "\n\nSponsor:\n" . $sponsor;
 
-            $obj = new PEAR_User($dbh, $handle);
+            $obj = new UserEntity($dbh, $handle);
 
             if (isset($obj->created)) {
                 display_error("Sorry, that username is already taken");

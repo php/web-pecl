@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Entity\User as UserEntity;
+
 require_once __DIR__.'/../src/Karma.php';
 
 function auth_reject($message = null)
@@ -85,7 +87,7 @@ function auth_verify($user, $passwd)
     global $dbh, $auth_user;
 
     if (empty($auth_user)) {
-        $auth_user = new PEAR_User($dbh, $user);
+        $auth_user = new UserEntity($dbh, $user);
     }
     $error = '';
     $ok = false;
@@ -252,7 +254,7 @@ function init_auth_user()
         return true;
     }
 
-    $auth_user = new PEAR_User($dbh, $_SESSION['PEAR_USER']);
+    $auth_user = new UserEntity($dbh, $_SESSION['PEAR_USER']);
 
     if (is_logged_in()) {
         return true;

@@ -23,7 +23,7 @@
  * Drop all karma not used by pecl and migrate pecl/pear.* to * only
  */
 
-require_once __DIR__.'/../include/pear-config.php';
+require_once __DIR__.'/../include/bootstrap.php';
 
 $dh = new \PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
 

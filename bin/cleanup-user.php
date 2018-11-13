@@ -23,7 +23,7 @@
  * Drop all accounts not active in any package and not having a SVN account
  */
 
-require_once __DIR__.'/../include/pear-config.php';
+require_once __DIR__.'/../include/bootstrap.php';
 
 $svnusers = '/home/pierre/project/pecl/migration/svnusers';
 $svn_accounts = file($svnusers);

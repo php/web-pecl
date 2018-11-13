@@ -25,9 +25,6 @@
 
 require_once __DIR__.'/../include/bootstrap.php';
 
-// Application configuration
-require_once __DIR__.'/../include/pear-config.php';
-
 if ($config->get('env') != 'prod') {
     error_reporting(E_ALL);
     define('DEVBOX', true);
@@ -38,8 +35,6 @@ if ($config->get('env') != 'prod') {
 
 require_once 'PEAR/PackageFile.php';
 require_once 'Archive/Tar.php';
-require_once __DIR__.'/../src/Rest.php';
-require_once __DIR__.'/../src/Utils/Filesystem.php';
 
 use App\Utils\Filesystem;
 

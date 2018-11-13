@@ -20,8 +20,6 @@
 
 use App\Entity\User as UserEntity;
 
-require_once __DIR__.'/../src/Karma.php';
-
 function auth_reject($message = null)
 {
     if ($message === null) {

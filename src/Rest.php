@@ -20,8 +20,6 @@
 
 require_once 'PEAR/PackageFile/Parser/v2.php';
 require_once 'PEAR/Config.php';
-require_once __DIR__.'/Utils/Filesystem.php';
-require_once __DIR__.'/Karma.php';
 
 use App\Utils\Filesystem;
 

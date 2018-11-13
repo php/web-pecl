@@ -25,9 +25,6 @@ PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 
 $extra_styles = [];
 
-require_once 'Net/URL2.php';
-require_once __DIR__.'/../src/BorderBox.php';
-
 $GLOBALS['main_menu'] = [
     '/index.php'           => 'Home',
     '/news/'               => 'News'

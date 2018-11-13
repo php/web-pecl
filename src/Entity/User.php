@@ -34,7 +34,7 @@ class User extends DB_storage
     /**
      * Class constructor.
      */
-    public function __construct(&$dbh, $user)
+    public function __construct($dbh, $user)
     {
         parent::__construct("users", "handle", $dbh);
 
@@ -51,6 +51,9 @@ class User extends DB_storage
         return (strtolower($handle) == strtolower($this->handle));
     }
 
+    /**
+     * Check if user is admin.
+     */
     public function isAdmin()
     {
         return ($this->admin == 1);

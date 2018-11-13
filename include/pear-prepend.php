@@ -35,7 +35,6 @@ if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != 'pecl.php.net')
 
 require_once __DIR__.'/pear-format-html.php';
 require_once __DIR__.'/pear-auth.php';
-require_once __DIR__.'/pear-database.php';
 require_once __DIR__.'/../src/Rest.php';
 require_once __DIR__.'/../src/PackageDll.php';
 require_once __DIR__.'/../src/Utils/Filesystem.php';

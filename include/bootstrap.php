@@ -35,6 +35,13 @@ require_once 'DB.php';
 require_once 'DB/storage.php';
 require_once 'PEAR/Common.php';
 require_once __DIR__.'/../src/Config.php';
+require_once __DIR__.'/../src/Category.php';
+require_once __DIR__.'/../src/Maintainer.php';
+require_once __DIR__.'/../src/Note.php';
+require_once __DIR__.'/../src/Package.php';
+require_once __DIR__.'/../src/Release.php';
+require_once __DIR__.'/../src/User.php';
+require_once __DIR__.'/../src/Entity/User.php';
 
 // Configuration
 if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {

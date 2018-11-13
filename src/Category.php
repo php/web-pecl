@@ -60,7 +60,7 @@ class Category
             return $err;
         }
 
-        $err = renumber_visitations($id, $parent);
+        $err = self::renumberVisitations($id, $parent);
 
         if (PEAR::isError($err)) {
             return $err;
@@ -204,5 +204,67 @@ class Category
         $sth = $dbh->query($query, [$category]);
 
         return ($sth->numRows() > 0);
+    }
+
+    /**
+     * Some useful "visitation model" tricks:
+     *
+     * To find the number of child elements:
+     *  (right - left - 1) / 2
+     *
+     * To find the number of child elements (including self):
+     *  (right - left + 1) / 2
+     *
+     * To get all child nodes:
+     *
+     *  SELECT * FROM table WHERE left > <self.left> AND left < <self.right>
+     *
+     * To get all child nodes, including self:
+     *
+     *  SELECT * FROM table WHERE left BETWEEN <self.left> AND <self.right>
+     *  "ORDER BY left" gives tree view
+     *
+     * To get all leaf nodes:
+     *
+     *  SELECT * FROM table WHERE right-1 = left;
+     */
+    public static function renumberVisitations($id, $parent = null)
+    {
+        global $dbh;
+
+        if ($parent === null) {
+            $left = $dbh->getOne("select max(cat_right) + 1 from categories where parent is null");
+            $left = ($left !== null) ? $left : 1; // first node
+        } else {
+            $left = $dbh->getOne("select cat_right from categories where id = $parent");
+        }
+
+        $right = $left + 1;
+        // update my self
+        $err = $dbh->query("update categories
+                            set cat_left = $left, cat_right = $right
+                            where id = $id");
+        if (PEAR::isError($err)) {
+            return $err;
+        }
+
+        if ($parent === null) {
+            return true;
+        }
+
+        $err = $dbh->query("update categories set cat_left = cat_left+2
+                            where cat_left > $left");
+        if (PEAR::isError($err)) {
+            return $err;
+        }
+
+        // (cat_right >= $left) == update the parent but not the node itself
+        $err = $dbh->query("update categories set cat_right = cat_right+2
+                            where cat_right >= $left and id <> $id");
+        if (PEAR::isError($err)) {
+            return $err;
+        }
+
+        return true;
     }
 }

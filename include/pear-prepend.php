@@ -19,7 +19,7 @@
 */
 
 /**
- * Application bootstrap, database connection, and session initialization.
+ * Application bootstrap and session initialization.
  */
 
 require_once __DIR__.'/bootstrap.php';

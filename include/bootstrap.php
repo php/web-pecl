@@ -19,7 +19,8 @@
 */
 
 /**
- * Application bootstrap with loading classes and configuration initialization.
+ * Application bootstrap file. On this level the classes are autoloaded,
+ * configuration is initialized and database connection is established.
  */
 
 use App\Config;
@@ -56,13 +57,14 @@ require_once __DIR__.'/../src/Repository/PackageStats.php';
 require_once __DIR__.'/../src/Repository/Release.php';
 require_once __DIR__.'/../src/Rest.php';
 require_once __DIR__.'/../src/User.php';
+require_once __DIR__.'/../src/Utils/DsnConverter.php';
 require_once __DIR__.'/../src/Utils/Filesystem.php';
 require_once __DIR__.'/../src/Utils/FormatDate.php';
 require_once __DIR__.'/../src/Utils/ImageSize.php';
 require_once __DIR__.'/../src/Utils/Licenser.php';
 require_once __DIR__.'/../src/Utils/PhpMasterClient.php';
 
-// Configuration
+// Configuration initialization
 if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {
     $dotenv = new Dotenv();
     $dotenv->load(__DIR__.'/../.env');
@@ -80,78 +82,23 @@ $config = new Config($configurations);
 date_default_timezone_set('UTC');
 
 // Database connection
+$dsn = $config->get('db_scheme');
+$dsn .= '://'.$config->get('db_username');
+$dsn .= ':'.$config->get('db_password');
+$dsn .= '@'.$config->get('db_host');
+$dsn .= '/'.$config->get('db_name');
 
-/**
- * Convert 'driver://user:password@hostname/database' DSN string to array of
- * elements.
- */
-function getDsn()
-{
-    $array = [
-        'dsn' => '',
-        'driver' => '',
-        'user' => '',
-        'password' => '',
-        'host' => '',
-        'name' => '',
-    ];
-
-    if (isset($_SERVER['PEAR_DATABASE_DSN'])) {
-        $array['dsn'] = $_SERVER['PEAR_DATABASE_DSN'];
-        $items = preg_split('/\:\/\//', $array['dsn'], -1, PREG_SPLIT_NO_EMPTY);
-        $array['driver'] = $items[0];
-        $subItems = preg_split('/\:/', $items[1], -1, PREG_SPLIT_NO_EMPTY);
-        $array['user'] = $subItems[0];
-        $subSubItems = preg_split('/\@/', $subItems[1], -1, PREG_SPLIT_NO_EMPTY);
-        $array['password'] = $subSubItems[0];
-        $subSubSubItems = preg_split('/\//', $subSubItems[1], -1, PREG_SPLIT_NO_EMPTY);
-        $array['host'] = $subSubSubItems[0];
-        $array['name'] = $subSubSubItems[1];
-    }
-
-    return $array;
-}
-
-if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] === '/news/mysql.php') {
-    $options = [
-        'persistent' => false,
-        'portability' => DB_PORTABILITY_ALL,
-    ];
-    $GLOBALS['_NODB'] = true;
-    $dsn = getDsn();
-
-    $dbh = DB::connect($dsn['driver'].'://'.$dsn['user'].':'.$dsn['password'].'@'.$dsn['host'].'/'.$dsn['name'], $options);
-
-    if (DB::isError($dbh)) {
-        die(DB::errorMessage($dbh));
-    }
-
-    $dbh->query('SET NAMES utf8');
-    $GLOBALS['_NODB'] = false;
-} elseif (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] === '/news/mysqli.php') {
-    $options = [
-        'persistent' => false,
-        'portability' => DB_PORTABILITY_ALL,
-    ];
-    $GLOBALS['_NODB'] = true;
-    $dsn = getDsn();
-
-    $dbh = DB::connect('mysqli://'.$dsn['user'].':'.$dsn['password'].'@'.$dsn['host'].'/'.$dsn['name'], $options);
-
-    if (DB::isError($dbh)) {
-        die(DB::errorMessage($dbh));
-    }
-
-    $dbh->query('SET NAMES utf8');
-    $GLOBALS['_NODB'] = false;
-} elseif (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] === '/news/pdo.php') {
-    $dsn = getDsn();
-
-    // PDO connection
-    $dbhPdo = new \PDO(
-        'mysql:host='.$dsn['host'].';dbname='.$dsn['name'].';charset=utf8',
-        $dsn['user'],
-        $dsn['password'],
+// PDO database access enabled endpoints
+if (
+    isset($_SERVER['REQUEST_URI'])
+    && in_array($_SERVER['REQUEST_URI'], [
+        '/news/pdo.php'
+    ])
+) {
+    $pdo = new \PDO(
+        'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name').';charset=utf8',
+        $config->get('db_username'),
+        $config->get('db_password'),
         [
             \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,

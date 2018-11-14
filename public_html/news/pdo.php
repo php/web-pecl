@@ -43,7 +43,7 @@ $sql = "SELECT packages.id AS id,
             AND packages.package_type = 'pecl'
         ORDER BY releases.releasedate DESC LIMIT 5";
 
-$query = $dbhPdo->prepare($sql);
+$query = $pdo->prepare($sql);
 $query->execute();
 
 foreach ($query as $row) {

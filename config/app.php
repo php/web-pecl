@@ -47,7 +47,12 @@ return [
     'db_host' => isset($_SERVER['PECL_DB_HOST']) ? $_SERVER['PECL_DB_HOST'] : 'localhost',
 
     // Database driver
-    'db_driver' => (function_exists('mysql_connect') ? 'mysql' : (function_exists('mysqli_connect') ? 'mysqli' : '')),
+    'db_scheme' => (function_exists('mysql_connect') ? 'mysql' : (function_exists('mysqli_connect') ? 'mysqli' : '')),
+
+    // Database DSN string. Optional and can be overridden by the environment
+    // variable. Setting the DSN string also overrides other db_* values. Naming
+    // PEAR_DATABASE_DSN key is used historically until production can be changed.
+    'db_dsn' => isset($_SERVER['PEAR_DATABASE_DSN']) ? $_SERVER['PEAR_DATABASE_DSN'] : '',
 
     // REST static files directory
     'rest_dir' => isset($_SERVER['PECL_REST_DIR']) ? $_SERVER['PECL_REST_DIR'] : __DIR__.'/../public_html/rest',

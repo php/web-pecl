@@ -18,55 +18,39 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
-
-use App\Utils\DsnConverter;
+namespace App\Utils;
 
 /**
- * Configuration handler class.
+ * Service class to convert DSN string to array.
  */
-class Config
+class DsnConverter
 {
     /**
-     * @var array
+     * Convert DSN string 'scheme://username:password@host/database' to array.
      */
-    private $values;
-
-    /**
-     * Class constructor.
-     */
-    public function __construct(array $values)
+    public function toArray($dsn)
     {
-        $this->values = $values;
+        $array = [
+            'scheme' => '',
+            'username' => '',
+            'password' => '',
+            'host' => '',
+            'database' => '',
+        ];
 
-        $this->mapDsn();
-    }
+        $scheme = preg_split('/\:\/\//', $dsn, -1, PREG_SPLIT_NO_EMPTY);
+        $array['scheme'] = $scheme[0];
 
-    /**
-     * Map DSN string to database configuration if it has been defined. String
-     * db_dsn 'mysqli://user:password@host/database is mapped to db_*
-     * configuration values.
-     */
-    private function mapDsn()
-    {
-        if (!empty($this->values['db_dsn'])) {
-            $dsnConverter = new DsnConverter();
+        $username = preg_split('/\:/', $scheme[1], -1, PREG_SPLIT_NO_EMPTY);
+        $array['username'] = $username[0];
 
-            $array = $dsnConverter->toArray($this->values['db_dsn']);
+        $password = preg_split('/\@/', $username[1], -1, PREG_SPLIT_NO_EMPTY);
+        $array['password'] = $password[0];
 
-            $this->values['db_scheme'] = $array['scheme'];
-            $this->values['db_username'] = $array['username'];
-            $this->values['db_password'] = $array['password'];
-            $this->values['db_host'] = $array['host'];
-            $this->values['db_name'] = $array['database'];
-        }
-    }
+        $host = preg_split('/\//', $password[1], -1, PREG_SPLIT_NO_EMPTY);
+        $array['host'] = $host[0];
+        $array['database'] = $host[1];
 
-    /**
-     * Get configuration value by key.
-     */
-    public function get($key)
-    {
-        return $this->values[$key];
+        return $array;
     }
 }

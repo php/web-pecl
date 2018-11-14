@@ -18,39 +18,45 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App\Tests;
+namespace App\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
-use App\Config;
+use App\Utils\DsnConverter;
 
-class ConfigTest extends TestCase
+class DsnConverterTest extends TestCase
 {
-    /**
-     * @dataProvider configurationProvider
-     */
-    public function testGet($file, $key, $expected)
-    {
-        $values = require $file;
-        $config = new Config($values);
+    private $dsnConverter;
 
-        $this->assertEquals($expected, $config->get($key));
+    public function setUp()
+    {
+        $this->dsnConverter = new DsnConverter();
     }
 
-    public function configurationProvider()
+    /**
+     * @dataProvider dsnProvider
+     */
+    public function testToArray($dsn, $expected)
+    {
+        $this->assertEquals($expected, $this->dsnConverter->toArray($dsn));
+    }
+
+    public function dsnProvider()
     {
         return [
-            [__DIR__.'/fixtures/config.php', 'some_string', 'foo'],
-            [__DIR__.'/fixtures/config.php', 'array', ['value_1' => 1]],
-            [__DIR__.'/fixtures/config_2.php', 'db_scheme', 'mysqli'],
-            [__DIR__.'/fixtures/config_2.php', 'db_username', 'nobody'],
-            [__DIR__.'/fixtures/config_2.php', 'db_password', 'password'],
-            [__DIR__.'/fixtures/config_2.php', 'db_host', 'localhost'],
-            [__DIR__.'/fixtures/config_2.php', 'db_name', 'pecl'],
-            [__DIR__.'/fixtures/config_3.php', 'db_scheme', 'mysql'],
-            [__DIR__.'/fixtures/config_3.php', 'db_username', 'root'],
-            [__DIR__.'/fixtures/config_3.php', 'db_password', 'secret'],
-            [__DIR__.'/fixtures/config_3.php', 'db_host', 'localhost'],
-            [__DIR__.'/fixtures/config_3.php', 'db_name', 'app'],
+            ['mysql://user:password@localhost/pecl', [
+                'scheme'   => 'mysql',
+                'username' => 'user',
+                'password' => 'password',
+                'host'     => 'localhost',
+                'database' => 'pecl'
+            ]],
+            ['mysqli://nobody:secretPassW0rd@192.168.0.0.1/dbname', [
+                'scheme'   => 'mysqli',
+                'username' => 'nobody',
+                'password' => 'secretPassW0rd',
+                'host'     => '192.168.0.0.1',
+                'database' => 'dbname'
+            ]],
         ];
     }
 }

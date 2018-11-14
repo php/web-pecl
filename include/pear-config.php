@@ -18,12 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-if (isset($_SERVER['PEAR_TMPDIR'])) {
-    define('PEAR_TMPDIR', $_SERVER['PEAR_TMPDIR']);
-} else {
-    define('PEAR_TMPDIR', '/var/tmp/pear');
-}
-
 /**
  * The PEAR::DB DSN connection string
  *

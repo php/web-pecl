@@ -20,8 +20,10 @@
 */
 
 use App\Utils\Licenser;
+use App\PackageDll;
 
 $licenser = new Licenser();
+$packageDll = new PackageDll($config->get('tmp_dir'));
 
 $package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 $version = filter_input(INPUT_GET, 'version', FILTER_SANITIZE_STRING);
@@ -217,14 +219,14 @@ echo '<div>&nbsp;</div>';
 if ($version) {
     $bb = new BorderBox("DLL List", "90%", "", 2, true);
 
-    $urls = PackageDll::getDllDownloadUrls($pkg['name'], $version, $pkg['releases'][$version]['releasedate']);
+    $urls = $packageDll->getDllDownloadUrls($pkg['name'], $version, $pkg['releases'][$version]['releasedate']);
     if (!$urls) {
         $bb->fullRow("No DLL available");
     } else {
         foreach ($urls as $desc => $set) {
             $links = [];
             foreach ($set as $url) {
-                $link_txt = PackageDll::makeNiceLinkNameFromZipName(basename($url));
+                $link_txt = $packageDll->makeNiceLinkNameFromZipName(basename($url));
                 $links[] = "<a href=\"$url\">$link_txt</a>";
             }
             $bb->horizHeadRow("PHP $desc", implode("<br/>", $links));
@@ -308,7 +310,7 @@ if (!$relid) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
                                    "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")";
 
-                $urls = PackageDll::getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
+                $urls = $packageDll->getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
                 if ($urls) {
                     $downloads_html .= "&nbsp;&nbsp;<a href=\"/package/$pkg[name]/$r_version/windows\">"
                                     . "<img src=\"/gifs/windows-icon.png\" />DLL</a>";

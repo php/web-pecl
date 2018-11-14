@@ -18,9 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
-define("PECL_DLL_URL_CACHE_DB", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_url.cache");
-define("PECL_DLL_URL_CACHE_LAST_RESET", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_last_reset");
-define("PECL_DLL_URL_CACHE_DB_RESET_LOCK", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "pecl_dll_url_cache_reset.lock");
+namespace App;
 
 /**
  * Class to handle package DLL builds
@@ -28,23 +26,28 @@ define("PECL_DLL_URL_CACHE_DB_RESET_LOCK", PEAR_TMPDIR . DIRECTORY_SEPARATOR . "
 class PackageDll
 {
     /**
+     * Temporary directory for storing cache files.
+     */
+    private $tmpDir;
+
+    /**
      * Build gap defaults to 2 hours.
      */
-    protected static $build_gap = 7200;
+    private $build_gap = 7200;
 
     /**
      * Reset period defaults to 1 hour.
      */
-    protected static $reset_period = 3600;
+    private $reset_period = 3600;
 
-    protected static $cache_db = PECL_DLL_URL_CACHE_DB;
-    protected static $last_reset_file = PECL_DLL_URL_CACHE_LAST_RESET;
-    protected static $cache_reset_lock = PECL_DLL_URL_CACHE_DB_RESET_LOCK;
+    private $cacheDbFile;
+    private $lastResetFile;
+    private $cacheResetLockFile;
 
     /**
      * NOTE when edit here, don't forget to remove the cache file
      */
-    protected static $zip_name_parts = [
+    private $zip_name_parts = [
         '7.3' => [
             ['crt' => 'vc15', 'arch' => 'x64'],
             ['crt' => 'vc15', 'arch' => 'x86'],
@@ -77,52 +80,63 @@ class PackageDll
         ],
     ];
 
-    public static function resetDllDownloadCache()
+    /**
+     * Class constructor.
+     */
+    public function __construct($tmpDir)
+    {
+        $this->tmpDir = $tmpDir;
+        $this->cacheDbFile = $this->tmpDir.'/pecl_dll_url.cache';
+        $this->lastResetFile = $this->tmpDir.'/pecl_dll_last_reset';
+        $this->cacheResetLockFile = $this->tmpDir.'/pecl_dll_url_cache_reset.lock';
+    }
+
+    public function resetDllDownloadCache()
     {
         clearstatcache();
-        if (file_exists(self::$cache_reset_lock)) {
+        if (file_exists($this->cacheResetLockFile)) {
             // Reset is started by some other process in that small time gap.
             // That's still not full atomic, but reduces the risks significantly.
             return false;
         }
 
-        touch(self::$cache_reset_lock);
+        touch($this->cacheResetLockFile);
 
-        if (!file_exists(self::$last_reset_file)) {
-            touch(self::$last_reset_file);
+        if (!file_exists($this->lastResetFile)) {
+            touch($this->lastResetFile);
         }
-        file_put_contents(self::$last_reset_file, time(), LOCK_EX);
-        file_put_contents(self::$cache_db, serialize([]), LOCK_EX);
+        file_put_contents($this->lastResetFile, time(), LOCK_EX);
+        file_put_contents($this->cacheDbFile, serialize([]), LOCK_EX);
 
-        unlink(self::$cache_reset_lock);
+        unlink($this->cacheResetLockFile);
 
         return true;
     }
 
-    public static function getDllDownloadUrls($name, $version, $date, $cache = true)
+    public function getDllDownloadUrls($name, $version, $date, $cache = true)
     {
         $db = [];
         $ret = NULL;
         $cached_found = false;
         $do_cache = false;
 
-        if (!self::buildGapOver($date)) {
+        if (!$this->buildGapOver($date)) {
             return NULL;
         }
 
         // If cache reset lock exists, some reset is running right now. Deliver
         // the live results then and don't cache.
-        $cache = $cache && !file_exists(self::$cache_reset_lock);
+        $cache = $cache && !file_exists($this->cacheResetLockFile);
 
         do {
             if ($cache) {
-                if (self::isResetOverdue()) {
-                    $cache = self::resetDllDownloadCache();
+                if ($this->isResetOverdue()) {
+                    $cache = $this->resetDllDownloadCache();
                 }
             }
 
-            if (file_exists(self::$cache_db)) {
-                $db = (array)unserialize(file_get_contents(self::$cache_db));
+            if (file_exists($this->cacheDbFile)) {
+                $db = (array)unserialize(file_get_contents($this->cacheDbFile));
             }
 
             foreach($db as $ext => $data) {
@@ -141,22 +155,22 @@ class PackageDll
         // Not cached yet.
         if (!$ret && !$cached_found) {
             $do_cache = true;
-            $ret = self::fetchDllDownloadUrls($name, $version);
+            $ret = $this->fetchDllDownloadUrls($name, $version);
         }
 
         if ($cache && $do_cache) {
-            self::cacheDllDownloadInfo($name, $version, $ret);
+            $this->cacheDllDownloadInfo($name, $version, $ret);
         }
 
         return $ret;
     }
 
-    public static function updateDllDownloadCache($name, $version)
+    public function updateDllDownloadCache($name, $version)
     {
         $db = [];
 
-        if (file_exists(self::$cache_db)) {
-            $db = (array)unserialize(file_get_contents(self::$cache_db));
+        if (file_exists($this->cacheDbFile)) {
+            $db = (array)unserialize(file_get_contents($this->cacheDbFile));
         }
 
         foreach($db as $ext => $data) {
@@ -170,17 +184,17 @@ class PackageDll
             }
         }
 
-        $pkg = self::fetchDllDownloadUrls($name, $version);
+        $pkg = $this->fetchDllDownloadUrls($name, $version);
 
-        return self::cacheDllDownloadInfo($name, $version, $pkg);
+        return $this->cacheDllDownloadInfo($name, $version, $pkg);
     }
 
-    public static function cacheDllDownloadInfo($name, $version, $data)
+    private function cacheDllDownloadInfo($name, $version, $data)
     {
         $db = [];
 
-        if (file_exists(self::$cache_db)) {
-            $db = (array)unserialize(file_get_contents(self::$cache_db));
+        if (file_exists($this->cacheDbFile)) {
+            $db = (array)unserialize(file_get_contents($this->cacheDbFile));
         }
 
         if (!isset($db[$name])) {
@@ -189,17 +203,17 @@ class PackageDll
 
         $db[$name][$version] = $data;
 
-        return false !== file_put_contents(self::$cache_db, serialize($db), LOCK_EX);
+        return false !== file_put_contents($this->cacheDbFile, serialize($db), LOCK_EX);
     }
 
     /**
      * Need always both ts/nts for each branch.
      */
-    public static function getZipFileList($name, $version)
+    private function getZipFileList($name, $version)
     {
         $ret = [];
 
-        foreach (self::$zip_name_parts as $branch => $data) {
+        foreach ($this->zip_name_parts as $branch => $data) {
             foreach ($data as $set) {
                 $pref = "php_" . $name . "-" . $version . "-" . $branch;
                 $suf = $set["crt"] . "-" . $set["arch"] . ".zip";
@@ -218,7 +232,7 @@ class PackageDll
         return $ret;
     }
 
-    public static function fetchDllDownloadUrls($name, $version)
+    private function fetchDllDownloadUrls($name, $version)
     {
         $host = 'windows.php.net';
         $port = 80;
@@ -231,7 +245,7 @@ class PackageDll
             return NULL;
         }
 
-        foreach (self::getZipFileList($name, $version) as $branch => $data) {
+        foreach ($this->getZipFileList($name, $version) as $branch => $data) {
             foreach ($data as $arch => $zips) {
                 $branch_ok = true;
 
@@ -261,15 +275,15 @@ class PackageDll
      * (in the best case). Lets give it 2h so we don't cache empty result too
      * early.
      */
-    public static function buildGapOver($date)
+    private function buildGapOver($date)
     {
         $dt = date_parse($date);
         $rel_ts = mktime($dt['hour'], $dt['minute'], $dt['second'], $dt['month'], $dt['day'], $dt['year']);
 
-        return time() >= $rel_ts+self::$build_gap;
+        return time() >= $rel_ts + $this->build_gap;
     }
 
-    public static function makeNiceLinkNameFromZipName($zip_name)
+    public function makeNiceLinkNameFromZipName($zip_name)
     {
         // Name looks like php_taint-1.1.0-5.4-nts-vc9-x86.zip
         if (!preg_match(",php_([^-]+)-([a-z0-9\.]+)-([0-9\.]+)-(ts|nts)-(vc\d+)-(x86|x64)\.zip,", $zip_name, $part)) {
@@ -288,15 +302,15 @@ class PackageDll
         return "$branch $zts_str (" . strtoupper($zts) . ") $arch";
     }
 
-    public static function isResetOverdue()
+    public function isResetOverdue()
     {
-        if (!file_exists(self::$last_reset_file)) {
-            file_put_contents(self::$last_reset_file, 0, LOCK_EX);
+        if (!file_exists($this->lastResetFile)) {
+            file_put_contents($this->lastResetFile, 0, LOCK_EX);
         }
 
-        $ts = (int)file_get_contents(self::$last_reset_file);
+        $ts = (int)file_get_contents($this->lastResetFile);
 
-        if (time() - $ts > self::$reset_period) {
+        if (time() - $ts > $this->reset_period) {
             return true;
         }
 

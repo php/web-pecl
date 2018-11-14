@@ -19,7 +19,11 @@
   +----------------------------------------------------------------------+
 */
 
+use App\PackageDll;
+
 require_once __DIR__.'/../include/pear-prepend.php';
+
+$packageDll = new PackageDll($config->get('tmp_dir'));
 
 $dbh = DB::connect("mysql://pear:pear@localhost/pear");
 if (DB::isError($dbh)) {
@@ -33,15 +37,15 @@ $data = $dbh->getAll("SELECT packages.name, releases.version, releases.releaseda
                     NULL,
                     DB_FETCHMODE_ASSOC);
 
-if (PackageDll::isResetOverdue()) {
-    if (!PackageDll::resetDllDownloadCache()) {
+if ($packageDll->isResetOverdue()) {
+    if (!$packageDll->resetDllDownloadCache()) {
         // some reset running, just sleep and do our thing
         sleep(10);
     }
 }
 
 foreach ($data as $pkg) {
-    if (!PackageDll::updateDllDownloadCache($pkg['name'], $pkg['version'])) {
+    if (!$packageDll->updateDllDownloadCache($pkg['name'], $pkg['version'])) {
         echo "Failed to update cache for $pkg[name]-$pkg[version]\n";
     }
 }

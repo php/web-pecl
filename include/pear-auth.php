@@ -82,7 +82,7 @@ function auth_reject($message = null)
  */
 function auth_verify($user, $passwd)
 {
-    global $dbh, $auth_user;
+    global $dbh, $auth_user, $config;
 
     if (empty($auth_user)) {
         $auth_user = new UserEntity($dbh, $user);
@@ -133,7 +133,7 @@ function auth_verify($user, $passwd)
         return auth_check("pear.user");
     }
     if ($error) {
-        error_log("$error\n", 3, PEAR_TMPDIR . DIRECTORY_SEPARATOR . 'pear-errors.log');
+        error_log("$error\n", 3, $config->get('tmp_dir').'/pear-errors.log');
     }
     $auth_user = null;
     return false;

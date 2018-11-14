@@ -61,6 +61,11 @@ class ComposerScripts
         $configurations = require __DIR__.'/../../config/app.php';
         $config = new Config($configurations);
 
+        if (!file_exists($config->get('tmp_dir'))) {
+            mkdir($config->get('tmp_dir'), 0777, true);
+            chmod($config->get('tmp_dir'), 0777);
+        }
+
         if (!file_exists($config->get('tmp_uploads_dir'))) {
             mkdir($config->get('tmp_uploads_dir'), 0777, true);
             chmod($config->get('tmp_uploads_dir'), 0777);

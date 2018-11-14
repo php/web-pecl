@@ -37,6 +37,9 @@ return [
     // REST static files directory
     'rest_dir' => isset($_SERVER['PECL_REST_DIR']) ? $_SERVER['PECL_REST_DIR'] : __DIR__.'/../public_html/rest',
 
+    // Temporary generated application files
+    'tmp_dir' => isset($_SERVER['PECL_TMP_DIR']) ? $_SERVER['PECL_TMP_DIR'] : __DIR__.'/../var',
+
     // Temporary directory for uploaded files
     'tmp_uploads_dir' => isset($_SERVER['PECL_TMP_UPLOADS_DIR']) ? $_SERVER['PECL_TMP_UPLOADS_DIR'] : __DIR__.'/../var/uploads',
 

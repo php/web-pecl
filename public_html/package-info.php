@@ -20,8 +20,10 @@
 */
 
 use App\Utils\Licenser;
+use App\PackageDll;
 
 $licenser = new Licenser();
+$packageDll = new PackageDll($config->get('tmp_dir'));
 
 $package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 $version = filter_input(INPUT_GET, 'version', FILTER_SANITIZE_STRING);
@@ -280,7 +282,7 @@ if (!$relid) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
                                    "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")";
 
-                $urls = PackageDll::getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
+                $urls = $packageDll->getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
                 if ($urls) {
                     $downloads_html .= "&nbsp;&nbsp;<a href=\"/package/$pkg[name]/$r_version/windows\">"
                                     . "<img src=\"/gifs/windows-icon.png\" />DLL</a>";

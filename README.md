@@ -135,8 +135,9 @@ pecl.php.net. Configuration precedence order is (first that is encountered):
 
 ### 3. Database
 
-Initial database schema and development data fixtures can be created using the
-scripts in the `sql` directory.
+Historically the database of this web application is named `pear`. Initial
+database schema and development data fixtures can be created using the scripts
+in the `sql` directory.
 
 To create the database, run `make create`. To remove the created database run
 `make destroy` in the `sql` directory. On systems where `make` is not available,

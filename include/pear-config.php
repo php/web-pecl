@@ -18,27 +18,25 @@
   +----------------------------------------------------------------------+
 */
 
-require_once __DIR__.'/../include/pear-prepend.php';
+/**
+ * The PEAR::DB DSN connection string
+ *
+ * To override default, set the value in $_ENV['PEAR_DATABASE_DSN'] before this
+ * file is included.
+ */
+if (isset($_SERVER['PEAR_DATABASE_DSN'])) {
+    define('PEAR_DATABASE_DSN', $_SERVER['PEAR_DATABASE_DSN']);
+} else {
+    define('PECL_DB_USER', 'pear');
+    define('PECL_DB_PASSWORD', 'pear');
+    define('PECL_DB_HOST', 'localhost');
+    define('PECL_DB_NAME', 'pear');
 
-extract($_SERVER);
-
-PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "data_error_handler");
-list($progname, $type, $user, $pass, $db) = $argv;
-$dbh = DB::connect("$type://$user:$pass@localhost/$db");
-$dbh->query('SET NAMES utf8');
-$me = getenv("USER");
-$now = gmdate("Y-m-d H:i:s");
-
-include __DIR__.'/addusers.php';
-include __DIR__.'/addcategories.php';
-include __DIR__.'/addpackages.php';
-include __DIR__.'/addacls.php';
-
-function data_error_handler($obj) {
-    print "Error when adding users: ";
-    print $obj->getMessage();
-    print "\nMore info: ";
-    print $obj->getUserInfo();
-    print "\n";
-    exit;
+    if (function_exists('mysql_connect')) {
+        $driver = 'mysql';
+    } elseif (function_exists('mysqli_connect')) {
+        $driver = 'mysqli';
+    }
+    define('PEAR_DATABASE_DSN', $driver . '://' . PECL_DB_USER . ':' . PECL_DB_PASSWORD. '@' . PECL_DB_HOST. '/' . PECL_DB_NAME);
+    define('PECL_DB_DSN', 'mysql:host=' . PECL_DB_HOST . ';dbname=' . PECL_DB_NAME);
 }

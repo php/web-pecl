@@ -19,7 +19,7 @@
 */
 
 /**
- * Application bootstrap and session initialization.
+ * Application bootstrap, database connection, and session initialization.
  */
 
 require_once __DIR__.'/bootstrap.php';
@@ -48,6 +48,17 @@ function get($name)
     } else {
         return "";
     }
+}
+
+if (empty($dbh)) {
+    $options = [
+        'persistent' => false,
+        'portability' => DB_PORTABILITY_ALL,
+    ];
+    $GLOBALS['_NODB'] = true;
+    $dbh = DB::connect(PEAR_DATABASE_DSN, $options);
+    $dbh->query('SET NAMES utf8');
+    $GLOBALS['_NODB'] = false;
 }
 
 $filesystem = new Filesystem();

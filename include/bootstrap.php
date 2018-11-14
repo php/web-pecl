@@ -19,13 +19,14 @@
 */
 
 /**
- * Application bootstrap file. On this level the classes are autoloaded,
- * application configuration is initialized and database connection is
- * established.
+ * Application bootstrap with loading classes and configuration initialization.
  */
 
 use App\Config;
 use Symfony\Component\Dotenv\Dotenv;
+
+// TODO: Refactor these constants in a global scope to a configuration level
+require_once __DIR__.'/pear-config.php';
 
 // Autoloading
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
@@ -77,27 +78,3 @@ $config = new Config($configurations);
 
 // Set application default time zone to UTC for all dates.
 date_default_timezone_set('UTC');
-
-// Connect to database
-$options = [
-    'persistent' => false,
-    'portability' => DB_PORTABILITY_ALL,
-];
-
-$GLOBALS['_NODB'] = true;
-
-$dsn = $config->get('db_driver');
-$dsn .= '://'.$config->get('db_username');
-$dsn .= ':'.$config->get('db_password');
-$dsn .= '@'.$config->get('db_host');
-$dsn .= '/'.$config->get('db_name');
-
-$dbh = DB::connect($dsn, $options);
-
-if (DB::isError($dbh)) {
-    die('Could not connect to database');
-}
-
-$dbh->query('SET NAMES utf8');
-
-$GLOBALS['_NODB'] = false;

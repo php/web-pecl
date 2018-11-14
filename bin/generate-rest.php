@@ -35,6 +35,15 @@ if ($config->get('env') != 'prod') {
 
 use App\Utils\Filesystem;
 
+if (empty($dbh)) {
+    $options = [
+        'persistent' => false,
+        'portability' => DB_PORTABILITY_ALL,
+    ];
+    $dbh = DB::connect(PEAR_DATABASE_DSN, $options);
+    $dbh->query('SET NAMES utf8');
+}
+
 $filesystem = new Filesystem();
 
 if (!isset($rest)) {

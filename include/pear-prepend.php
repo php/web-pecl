@@ -50,17 +50,6 @@ function get($name)
     }
 }
 
-if (empty($dbh)) {
-    $options = [
-        'persistent' => false,
-        'portability' => DB_PORTABILITY_ALL,
-    ];
-    $GLOBALS['_NODB'] = true;
-    $dbh = DB::connect(PEAR_DATABASE_DSN, $options);
-    $dbh->query('SET NAMES utf8');
-    $GLOBALS['_NODB'] = false;
-}
-
 $filesystem = new Filesystem();
 $formatDate = new FormatDate();
 $imageSize = new ImageSize();

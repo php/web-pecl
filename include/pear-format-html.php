@@ -73,11 +73,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
         $SIDEBAR_DATA .= draw_navigation($main_menu);
         $SIDEBAR_DATA .= draw_navigation($docu_menu, 'Documentation:');
         $SIDEBAR_DATA .= draw_navigation($downloads_menu, 'Downloads:');
-        if (!$GLOBALS['_NODB']) {
-            init_auth_user();
-        } else {
-            $auth_user = null;
-        }
+        init_auth_user();
         if (is_logged_in()) {
             global $developer_menu;
             $SIDEBAR_DATA .= draw_navigation($developer_menu, 'Developers:');

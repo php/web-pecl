@@ -26,9 +26,6 @@
 use App\Config;
 use Symfony\Component\Dotenv\Dotenv;
 
-// TODO: Refactor these constants in a global scope to a configuration level
-require_once __DIR__.'/pear-config.php';
-
 // Autoloading
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
     require_once __DIR__.'/../vendor/autoload.php';
@@ -81,14 +78,7 @@ $config = new Config($configurations);
 // Set application default time zone to UTC for all dates.
 date_default_timezone_set('UTC');
 
-// Database connection
-$dsn = $config->get('db_scheme');
-$dsn .= '://'.$config->get('db_username');
-$dsn .= ':'.$config->get('db_password');
-$dsn .= '@'.$config->get('db_host');
-$dsn .= '/'.$config->get('db_name');
-
-// PDO database access enabled endpoints
+// Database access with PDO enabled endpoints
 if (
     isset($_SERVER['REQUEST_URI'])
     && in_array($_SERVER['REQUEST_URI'], [
@@ -106,3 +96,18 @@ if (
         ]
     );
 }
+
+// Connect to database using PEAR DB for the rest of the site endpoints
+$dsn = $config->get('db_scheme');
+$dsn .= '://'.$config->get('db_username');
+$dsn .= ':'.$config->get('db_password');
+$dsn .= '@'.$config->get('db_host');
+$dsn .= '/'.$config->get('db_name');
+
+$options = [
+    'persistent' => false,
+    'portability' => DB_PORTABILITY_ALL,
+];
+
+$dbh = DB::connect($dsn, $options);
+$dbh->query('SET NAMES utf8');

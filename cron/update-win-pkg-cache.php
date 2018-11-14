@@ -21,15 +21,9 @@
 
 use App\PackageDll;
 
-require_once __DIR__.'/../include/pear-prepend.php';
+require_once __DIR__.'/../include/bootstrap.php';
 
 $packageDll = new PackageDll($config->get('tmp_dir'));
-
-$dbh = DB::connect("mysql://pear:pear@localhost/pear");
-if (DB::isError($dbh)) {
-    die("could not connect to database");
-}
-$dbh->query('SET NAMES utf8');
 
 $data = $dbh->getAll("SELECT packages.name, releases.version, releases.releasedate
                         FROM packages, releases

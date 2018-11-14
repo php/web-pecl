@@ -72,7 +72,7 @@ create: createdb $(SQL_TARGETS) prime
 	fi
 
 prime:
-	@php -q data.php $(SQL_TYPE) $(SQL_USER) $(SQL_PW) $(SQL_DB)
+	@php -q data.php
 
 createdb:
 	@$(SQL_ADMIN_COMMAND) < createdb.sql

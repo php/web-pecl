@@ -234,7 +234,7 @@ class Category
 
         if ($parent === null) {
             $left = $dbh->getOne("select max(cat_right) + 1 from categories where parent is null");
-            $left = ($left !== null) ? $left : 1; // first node
+            $left = (!empty($left)) ? $left : 1; // first node
         } else {
             $left = $dbh->getOne("select cat_right from categories where id = $parent");
         }

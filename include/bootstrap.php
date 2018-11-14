@@ -78,3 +78,84 @@ $config = new Config($configurations);
 
 // Set application default time zone to UTC for all dates.
 date_default_timezone_set('UTC');
+
+// Database connection
+
+/**
+ * Convert 'driver://user:password@hostname/database' DSN string to array of
+ * elements.
+ */
+function getDsn()
+{
+    $array = [
+        'dsn' => '',
+        'driver' => '',
+        'user' => '',
+        'password' => '',
+        'host' => '',
+        'name' => '',
+    ];
+
+    if (isset($_SERVER['PEAR_DATABASE_DSN'])) {
+        $array['dsn'] = $_SERVER['PEAR_DATABASE_DSN'];
+        $items = preg_split('/\:\/\//', $array['dsn'], -1, PREG_SPLIT_NO_EMPTY);
+        $array['driver'] = $items[0];
+        $subItems = preg_split('/\:/', $items[1], -1, PREG_SPLIT_NO_EMPTY);
+        $array['user'] = $subItems[0];
+        $subSubItems = preg_split('/\@/', $subItems[1], -1, PREG_SPLIT_NO_EMPTY);
+        $array['password'] = $subSubItems[0];
+        $subSubSubItems = preg_split('/\//', $subSubItems[1], -1, PREG_SPLIT_NO_EMPTY);
+        $array['host'] = $subSubSubItems[0];
+        $array['name'] = $subSubSubItems[1];
+    }
+
+    return $array;
+}
+
+if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] === '/news/mysql.php') {
+    $options = [
+        'persistent' => false,
+        'portability' => DB_PORTABILITY_ALL,
+    ];
+    $GLOBALS['_NODB'] = true;
+    $dsn = getDsn();
+
+    $dbh = DB::connect($dsn['driver'].'://'.$dsn['user'].':'.$dsn['password'].'@'.$dsn['host'].'/'.$dsn['name'], $options);
+
+    if (DB::isError($dbh)) {
+        die(DB::errorMessage($dbh));
+    }
+
+    $dbh->query('SET NAMES utf8');
+    $GLOBALS['_NODB'] = false;
+} elseif (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] === '/news/mysqli.php') {
+    $options = [
+        'persistent' => false,
+        'portability' => DB_PORTABILITY_ALL,
+    ];
+    $GLOBALS['_NODB'] = true;
+    $dsn = getDsn();
+
+    $dbh = DB::connect('mysqli://'.$dsn['user'].':'.$dsn['password'].'@'.$dsn['host'].'/'.$dsn['name'], $options);
+
+    if (DB::isError($dbh)) {
+        die(DB::errorMessage($dbh));
+    }
+
+    $dbh->query('SET NAMES utf8');
+    $GLOBALS['_NODB'] = false;
+} elseif (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] === '/news/pdo.php') {
+    $dsn = getDsn();
+
+    // PDO connection
+    $dbhPdo = new \PDO(
+        'mysql:host='.$dsn['host'].';dbname='.$dsn['name'].';charset=utf8',
+        $dsn['user'],
+        $dsn['password'],
+        [
+            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+            \PDO::ATTR_EMULATE_PREPARES   => false,
+        ]
+    );
+}

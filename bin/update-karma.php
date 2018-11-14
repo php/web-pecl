@@ -25,7 +25,8 @@
 
 require_once __DIR__.'/../include/bootstrap.php';
 
-$dh = new \PDO(PECL_DB_DSN, PECL_DB_USER, PECL_DB_PASSWORD);
+$dsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name');
+$dh = new \PDO($dsn, $config->get('db_username'), $config->get('db_password'));
 
 $sql = "update karma set level='developer' where level='pear.dev' or level='pecl.dev';";
 $res = $dh->query($sql);

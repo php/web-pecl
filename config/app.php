@@ -34,6 +34,21 @@ return [
     // PECL channel URL host (domain name)
     'host' => isset($_SERVER['PECL_HOST']) ? $_SERVER['PECL_HOST'] : 'pecl.php.net',
 
+    // Database username
+    'db_username' => isset($_SERVER['PECL_DB_USERNAME']) ? $_SERVER['PECL_DB_USERNAME'] : 'nobody',
+
+    // Database password
+    'db_password' => isset($_SERVER['PECL_DB_PASSWORD']) ? $_SERVER['PECL_DB_PASSWORD'] : 'password',
+
+    // Database name
+    'db_name' => isset($_SERVER['PECL_DB_NAME']) ? $_SERVER['PECL_DB_NAME'] : 'pecl',
+
+    // Database host
+    'db_host' => isset($_SERVER['PECL_DB_HOST']) ? $_SERVER['PECL_DB_HOST'] : 'localhost',
+
+    // Database driver
+    'db_driver' => (function_exists('mysql_connect') ? 'mysql' : (function_exists('mysqli_connect') ? 'mysqli' : '')),
+
     // REST static files directory
     'rest_dir' => isset($_SERVER['PECL_REST_DIR']) ? $_SERVER['PECL_REST_DIR'] : __DIR__.'/../public_html/rest',
 

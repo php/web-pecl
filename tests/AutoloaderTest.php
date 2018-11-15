@@ -1,5 +1,23 @@
 <?php
 
+/*
+  +----------------------------------------------------------------------+
+  | The PECL website                                                     |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 1999-2018 The PHP Group                                |
+  +----------------------------------------------------------------------+
+  | This source file is subject to version 3.01 of the PHP license,      |
+  | that is bundled with this package in the file LICENSE, and is        |
+  | available through the world-wide-web at the following url:           |
+  | https://php.net/license/3_01.txt                                     |
+  | If you did not receive a copy of the PHP license and are unable to   |
+  | obtain it through the world-wide-web, please send a note to          |
+  | license@php.net so we can mail you a copy immediately.               |
+  +----------------------------------------------------------------------+
+  | Authors: Peter Kokot <petk@php.net>                                  |
+  +----------------------------------------------------------------------+
+*/
+
 namespace App\Tests;
 
 use App\Autoloader;
@@ -22,13 +40,13 @@ class MockAutoloader extends Autoloader
 
 class AutoloaderTest extends TestCase
 {
-    protected $loader;
+    protected $autoloader;
 
     protected function setUp()
     {
-        $this->loader = new MockAutoloader;
+        $this->autoloader = new MockAutoloader;
 
-        $this->loader->setFiles([
+        $this->autoloader->setFiles([
             '/vendor/foo.bar/src/ClassName.php',
             '/vendor/foo.bar/src/DoomClassName.php',
             '/vendor/foo.bar/tests/ClassNameTest.php',
@@ -39,82 +57,61 @@ class AutoloaderTest extends TestCase
             '/src/libfoo/ClassFoo.php',
         ]);
 
-        $this->loader->addNamespace(
+        $this->autoloader->addNamespace(
             'Foo\Bar',
             '/vendor/foo.bar/src'
         );
 
-        $this->loader->addNamespace(
+        $this->autoloader->addNamespace(
             'Foo\Bar',
             '/vendor/foo.bar/tests'
         );
 
-        $this->loader->addNamespace(
+        $this->autoloader->addNamespace(
             'Foo\\BarDoom',
             '/vendor/foo.bardoom/src/'
         );
 
-        $this->loader->addNamespace(
+        $this->autoloader->addNamespace(
             'Foo\Bar\Baz\Dib',
             '/vendor/foo.bar.baz.dib/src/'
         );
 
-        $this->loader->addNamespace(
+        $this->autoloader->addNamespace(
             'Foo\Bar\Baz\Dib\Zim\Gir',
             '/vendor/foo.bar.baz.dib.zim.gir/src/'
         );
 
-        $this->loader->addClassmap(
+        $this->autoloader->addClassmap(
             'ClassName',
             '/src/lib/ClassName.php'
         );
 
-        $this->loader->addClassmap(
+        $this->autoloader->addClassmap(
             'ClassFoo',
             '/src/libfoo/ClassFoo.php'
         );
     }
 
-    public function testExistingFile()
+    /**
+     * @dataProvider classesProvider
+     */
+    public function testLoad($class, $expected)
     {
-        $actual = $this->loader->load('Foo\Bar\ClassName');
-        $expect = '/vendor/foo.bar/src/ClassName.php';
-        $this->assertSame($expect, $actual);
-
-        $actual = $this->loader->load('Foo\Bar\ClassNameTest');
-        $expect = '/vendor/foo.bar/tests/ClassNameTest.php';
-        $this->assertSame($expect, $actual);
-
-        $actual = $this->loader->load('ClassName');
-        $expect = '/src/lib/ClassName.php';
-        $this->assertSame($expect, $actual);
-
-        $actual = $this->loader->load('ClassFoo');
-        $expect = '/src/libfoo/ClassFoo.php';
-        $this->assertSame($expect, $actual);
+        $this->assertEquals($expected, $this->autoloader->load($class));
     }
 
-    public function testMissingFile()
+    public function classesProvider()
     {
-        $actual = $this->loader->load('No_Vendor\No_Package\NoClass');
-        $this->assertFalse($actual);
-    }
-
-    public function testDeepFile()
-    {
-        $actual = $this->loader->load('Foo\Bar\Baz\Dib\Zim\Gir\ClassName');
-        $expect = '/vendor/foo.bar.baz.dib.zim.gir/src/ClassName.php';
-        $this->assertSame($expect, $actual);
-    }
-
-    public function testConfusion()
-    {
-        $actual = $this->loader->load('Foo\Bar\DoomClassName');
-        $expect = '/vendor/foo.bar/src/DoomClassName.php';
-        $this->assertSame($expect, $actual);
-
-        $actual = $this->loader->load('Foo\BarDoom\ClassName');
-        $expect = '/vendor/foo.bardoom/src/ClassName.php';
-        $this->assertSame($expect, $actual);
+        return [
+            ['Foo\Bar\ClassName', '/vendor/foo.bar/src/ClassName.php'],
+            ['Foo\Bar\ClassNameTest', '/vendor/foo.bar/tests/ClassNameTest.php'],
+            ['ClassName', '/src/lib/ClassName.php'],
+            ['ClassFoo', '/src/libfoo/ClassFoo.php'],
+            ['No_Vendor\No_Package\NoClass', false],
+            ['Foo\Bar\Baz\Dib\Zim\Gir\ClassName', '/vendor/foo.bar.baz.dib.zim.gir/src/ClassName.php'],
+            ['Foo\Bar\DoomClassName', '/vendor/foo.bar/src/DoomClassName.php'],
+            ['Foo\BarDoom\ClassName', '/vendor/foo.bardoom/src/ClassName.php'],
+        ];
     }
 }

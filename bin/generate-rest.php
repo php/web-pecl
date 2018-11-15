@@ -23,6 +23,13 @@
  * Generate static REST files for PECL from existing data
  */
 
+use App\Utils\Filesystem;
+use \DB as DB;
+use \PEAR as PEAR;
+use \PEAR_Config as PEAR_Config;
+use \PEAR_PackageFile as PEAR_PackageFile;
+use \Archive_Tar as Archive_Tar;
+
 require_once __DIR__.'/../include/bootstrap.php';
 
 if ($config->get('env') != 'prod') {
@@ -32,8 +39,6 @@ if ($config->get('env') != 'prod') {
     error_reporting(E_ALL ^ E_NOTICE);
     define('DEVBOX', false);
 }
-
-use App\Utils\Filesystem;
 
 $filesystem = new Filesystem();
 

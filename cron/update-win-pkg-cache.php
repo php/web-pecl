@@ -20,6 +20,7 @@
 */
 
 use App\PackageDll;
+use \DB as DB;
 
 require_once __DIR__.'/../include/bootstrap.php';
 

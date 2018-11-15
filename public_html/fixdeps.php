@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use \PEAR_Common as PEAR_Common;
+
 auth_require(true);
 
 response_header('Fix Dependencies');

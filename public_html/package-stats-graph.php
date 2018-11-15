@@ -33,8 +33,8 @@ use \BarPlot as BarPlot;
 use \Graph as Graph;
 use \GroupBarPlot as GroupBarPlot;
 
-include_once __DIR__.'/../include/jpgraph/jpgraph.php';
-include_once __DIR__.'/../include/jpgraph/jpgraph_bar.php';
+require_once __DIR__.'/../include/jpgraph/jpgraph.php';
+require_once __DIR__.'/../include/jpgraph/jpgraph_bar.php';
 
 // Cache time in secs
 $cache_time = 300;

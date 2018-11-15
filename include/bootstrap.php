@@ -29,9 +29,21 @@ use Symfony\Component\Dotenv\Dotenv;
 // Dual autoloader until PSR-4 and Composer's autoloader are fully supported.
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
     require_once __DIR__.'/../vendor/autoload.php';
+} else {
+    require_once __DIR__.'/../src/Autoloader.php';
+
+    $loader = new App\Autoloader();
+
+    $loader->addNamespace('App\\', __DIR__.'/../src/');
+
+    $loader->addClassmap('Graph', __DIR__.'/jpgraph/jpgraph.php');
+    $loader->addClassmap('BarPlot', __DIR__.'/jpgraph/jpgraph_bar.php');
+    $loader->addClassmap('GroupBarPlot', __DIR__.'/jpgraph/jpgraph_bar.php');
 }
 
-// TODO: check if something better can be done
+// TODO: check if something better can be done.
+// Some of these classes define constants in global scope and need to be included
+// separately before requiring other classes.
 require_once 'PEAR.php';
 require_once 'DB.php';
 require_once 'DB/storage.php';
@@ -43,44 +55,6 @@ require_once 'PEAR/PackageFile.php';
 require_once 'Net/URL2.php';
 require_once 'Pager/Pager.php';
 require_once 'HTTP/Upload.php';
-
-if (
-    isset($_SERVER['REQUEST_URI'])
-    && in_array($_SERVER['REQUEST_URI'], [
-        '/news/index.php',
-        '/package-stats.php',
-    ])
-) {
-    require_once __DIR__.'/../src/Autoloader.php';
-
-    $loader = new App\Autoloader();
-    $loader->addNamespace('App\\', __DIR__.'/../src/');
-
-    $loader->addClassmap('Graph', __DIR__.'/jpgraph/jpgraph.php');
-    $loader->addClassmap('BarPlot', __DIR__.'/jpgraph/jpgraph_bar.php');
-    $loader->addClassmap('GroupBarPlot', __DIR__.'/jpgraph/jpgraph_bar.php');
-} else {
-    require_once __DIR__.'/../src/BorderBox.php';
-    require_once __DIR__.'/../src/Config.php';
-    require_once __DIR__.'/../src/Category.php';
-    require_once __DIR__.'/../src/Entity/User.php';
-    require_once __DIR__.'/../src/Karma.php';
-    require_once __DIR__.'/../src/Maintainer.php';
-    require_once __DIR__.'/../src/Note.php';
-    require_once __DIR__.'/../src/Package.php';
-    require_once __DIR__.'/../src/PackageDll.php';
-    require_once __DIR__.'/../src/Release.php';
-    require_once __DIR__.'/../src/Repository/PackageStats.php';
-    require_once __DIR__.'/../src/Repository/Release.php';
-    require_once __DIR__.'/../src/Rest.php';
-    require_once __DIR__.'/../src/User.php';
-    require_once __DIR__.'/../src/Utils/DsnConverter.php';
-    require_once __DIR__.'/../src/Utils/Filesystem.php';
-    require_once __DIR__.'/../src/Utils/FormatDate.php';
-    require_once __DIR__.'/../src/Utils/ImageSize.php';
-    require_once __DIR__.'/../src/Utils/Licenser.php';
-    require_once __DIR__.'/../src/Utils/PhpMasterClient.php';
-}
 
 // Configuration initialization
 if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {

@@ -31,9 +31,9 @@ use \HTML_TreeMenu as HTML_TreeMenu;
 use \HTML_TreeNode as HTML_TreeNode;
 use \HTML_TreeMenu_DHTML as HTML_TreeMenu_DHTML;
 
-auth_require(true);
-
 require_once 'HTML/TreeMenu.php';
+
+auth_require(true);
 
 /**
  * Function to recurse thru the tree adding nodes to treemenu

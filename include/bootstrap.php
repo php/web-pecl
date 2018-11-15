@@ -40,6 +40,7 @@ require_once 'PEAR/PackageFile/Parser/v2.php';
 require_once 'Archive/Tar.php';
 require_once 'PEAR/PackageFile.php';
 require_once 'Net/URL2.php';
+require_once 'Pager/Pager.php';
 require_once __DIR__.'/../src/BorderBox.php';
 require_once __DIR__.'/../src/Config.php';
 require_once __DIR__.'/../src/Category.php';

@@ -24,12 +24,13 @@
 
 namespace App;
 
-use \Package as Package;
+use App\User;
+use App\Package;
 use \PEAR as PEAR;
-use \User as User;
-use \PEAR_Config as PEAR_Config;
-use \PEAR_PackageFile as PEAR_PackageFile;
+use \PEAR_Common as PEAR_Common;
 use \Archive_Tar as Archive_Tar;
+use \PEAR_PackageFile as PEAR_PackageFile;
+use \PEAR_Config as PEAR_Config;
 
 /**
  * Class to handle releases

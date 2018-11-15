@@ -19,6 +19,9 @@
 */
 
 use App\Repository\Release;
+use App\Package;
+use App\User;
+use App\Category;
 
 function rss_bailout() {
     header('HTTP/1.0 404 Not Found');

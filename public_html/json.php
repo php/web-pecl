@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Package;
+
 // Only support package maintainer for now, needed for bugs.php.net
 $package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 

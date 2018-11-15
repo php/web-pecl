@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Package;
+
 print "Adding packages...\n";
 
 // Drops all packages and adds sample packages

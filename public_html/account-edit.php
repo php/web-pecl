@@ -19,6 +19,7 @@
 */
 
 use App\Entity\User as UserEntity;
+use App\User;
 
 auth_require();
 

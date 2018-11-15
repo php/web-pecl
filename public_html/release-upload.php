@@ -18,7 +18,15 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Maintainer;
+use App\Package;
 use App\Release;
+use App\User;
+use \HTTP_Upload as HTTP_Upload;
+use \PEAR_PackageFile as PEAR_PackageFile;
+use \PEAR as PEAR;
+use \PEAR_Config as PEAR_Config;
+use \PEAR_Common as PEAR_Common;
 
 auth_require('pear.dev');
 

@@ -23,6 +23,9 @@
  * Generate static REST files for PECL from existing data
  */
 
+use App\Category;
+use App\Rest;
+use App\Package;
 use App\Utils\Filesystem;
 use \DB as DB;
 use \PEAR as PEAR;

@@ -24,9 +24,9 @@
 * o Make headers in package list clickable for ordering
 */
 
-$script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
+use \Pager as Pager;
 
-require_once 'Pager/Pager.php';
+$script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
 /**
 * Returns an appropriate query string for a self referencing link

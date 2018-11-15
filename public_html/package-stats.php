@@ -21,6 +21,8 @@
 
 use App\BorderBox;
 use App\Repository\PackageStats;
+use App\Category;
+use App\Package;
 
 $packageStats = new PackageStats($dbh);
 

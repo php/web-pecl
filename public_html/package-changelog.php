@@ -18,6 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Package;
 use App\BorderBox;
 
 // expected url vars: pacid package

@@ -22,7 +22,11 @@
   +----------------------------------------------------------------------+
 */
 
+namespace App;
+
+use App\Note;
 use App\Entity\User as UserEntity;
+use App\Package;
 
 /**
  * User service class.

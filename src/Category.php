@@ -22,6 +22,11 @@
   +----------------------------------------------------------------------+
 */
 
+namespace App;
+
+use \PEAR as PEAR;
+use \DB as DB;
+
 /**
  * Class to handle categories.
  */

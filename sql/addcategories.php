@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Category;
+
 print "Adding categories...\n";
 
 $dbh->expectError(DB_ERROR_NOSUCHTABLE);

@@ -23,7 +23,9 @@
  */
 
 use App\BorderBox;
+use App\Package;
 use App\Release;
+use App\User;
 
 $release = new Release();
 $release->setDbh($dbh);

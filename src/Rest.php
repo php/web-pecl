@@ -18,8 +18,16 @@
   +----------------------------------------------------------------------+
 */
 
+namespace App;
+
+use App\Category;
 use App\Karma;
+use App\Package;
+use App\User;
 use App\Utils\Filesystem;
+use \PEAR as PEAR;
+use \PEAR_Config as PEAR_Config;
+use \PEAR_PackageFile_Parser_v2 as PEAR_PackageFile_Parser_v2;
 
 /**
  * The PECL REST API management service class.

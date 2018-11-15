@@ -18,14 +18,20 @@
   +----------------------------------------------------------------------+
 */
 
-auth_require(true);
-
 /**
  * TODO
  *
  * o Present options of what to do with orphaned packages when
  *   deleting categories.
  */
+
+use App\Category;
+use \PEAR as PEAR;
+use \HTML_TreeMenu as HTML_TreeMenu;
+use \HTML_TreeNode as HTML_TreeNode;
+use \HTML_TreeMenu_DHTML as HTML_TreeMenu_DHTML;
+
+auth_require(true);
 
 require_once 'HTML/TreeMenu.php';
 

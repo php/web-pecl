@@ -22,6 +22,12 @@
  * Application bootstrap and session initialization.
  */
 
+use App\Utils\Filesystem;
+use App\Utils\FormatDate;
+use App\Utils\ImageSize;
+use App\Rest;
+use \DB as DB;
+
 require_once __DIR__.'/bootstrap.php';
 
 // silence the notices for production
@@ -34,10 +40,6 @@ if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != 'pecl.php.net')
 
 require_once __DIR__.'/pear-format-html.php';
 require_once __DIR__.'/pear-auth.php';
-
-use App\Utils\Filesystem;
-use App\Utils\FormatDate;
-use App\Utils\ImageSize;
 
 function get($name)
 {

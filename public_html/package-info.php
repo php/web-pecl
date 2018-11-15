@@ -21,6 +21,7 @@
 
 use App\BorderBox;
 use App\Utils\Licenser;
+use App\Package;
 use App\PackageDll;
 
 $licenser = new Licenser();

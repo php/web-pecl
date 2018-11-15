@@ -23,6 +23,7 @@
  */
 
 use App\BorderBox;
+use App\Package;
 
 auth_require(true);
 

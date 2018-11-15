@@ -47,8 +47,6 @@ use \DB as DB;
 // Shut up or we risk getting corrupted tgz files.
 error_reporting(0);
 
-use App\Release;
-
 $release = new Release();
 $release->setDbh($dbh);
 $release->setAuthUser($auth_user);

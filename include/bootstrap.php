@@ -41,26 +41,57 @@ require_once 'Archive/Tar.php';
 require_once 'PEAR/PackageFile.php';
 require_once 'Net/URL2.php';
 require_once 'Pager/Pager.php';
-require_once __DIR__.'/../src/BorderBox.php';
-require_once __DIR__.'/../src/Config.php';
-require_once __DIR__.'/../src/Category.php';
-require_once __DIR__.'/../src/Entity/User.php';
-require_once __DIR__.'/../src/Karma.php';
-require_once __DIR__.'/../src/Maintainer.php';
-require_once __DIR__.'/../src/Note.php';
-require_once __DIR__.'/../src/Package.php';
-require_once __DIR__.'/../src/PackageDll.php';
-require_once __DIR__.'/../src/Release.php';
-require_once __DIR__.'/../src/Repository/PackageStats.php';
-require_once __DIR__.'/../src/Repository/Release.php';
-require_once __DIR__.'/../src/Rest.php';
-require_once __DIR__.'/../src/User.php';
-require_once __DIR__.'/../src/Utils/DsnConverter.php';
-require_once __DIR__.'/../src/Utils/Filesystem.php';
-require_once __DIR__.'/../src/Utils/FormatDate.php';
-require_once __DIR__.'/../src/Utils/ImageSize.php';
-require_once __DIR__.'/../src/Utils/Licenser.php';
-require_once __DIR__.'/../src/Utils/PhpMasterClient.php';
+
+if (
+    isset($_SERVER['REQUEST_URI'])
+    && in_array($_SERVER['REQUEST_URI'], [
+        '/news/index.php'
+    ])
+) {
+    spl_autoload_register(function ($class) {
+        // Application root namespace for classes in src directory
+        $prefix = 'App\\';
+
+        $length = strlen($prefix);
+
+        if (0 !== strncmp($prefix, $class, $length)) {
+            // Check if this is JPGraph dependency
+            if (in_array($class, ['BarPlot', 'Graph', 'GroupBarPlot'])) {
+                require_once __DIR__.'/jpgraph/jpgraph.php';
+                require_once __DIR__.'/jpgraph/jpgraph_bar.php';
+            }
+
+            return;
+        }
+
+        $file = __DIR__ .'/../src/'.str_replace('\\', '/', substr($class, $length)).'.php';
+
+        if (file_exists($file)) {
+            require_once $file;
+        }
+    });
+} else {
+    require_once __DIR__.'/../src/BorderBox.php';
+    require_once __DIR__.'/../src/Config.php';
+    require_once __DIR__.'/../src/Category.php';
+    require_once __DIR__.'/../src/Entity/User.php';
+    require_once __DIR__.'/../src/Karma.php';
+    require_once __DIR__.'/../src/Maintainer.php';
+    require_once __DIR__.'/../src/Note.php';
+    require_once __DIR__.'/../src/Package.php';
+    require_once __DIR__.'/../src/PackageDll.php';
+    require_once __DIR__.'/../src/Release.php';
+    require_once __DIR__.'/../src/Repository/PackageStats.php';
+    require_once __DIR__.'/../src/Repository/Release.php';
+    require_once __DIR__.'/../src/Rest.php';
+    require_once __DIR__.'/../src/User.php';
+    require_once __DIR__.'/../src/Utils/DsnConverter.php';
+    require_once __DIR__.'/../src/Utils/Filesystem.php';
+    require_once __DIR__.'/../src/Utils/FormatDate.php';
+    require_once __DIR__.'/../src/Utils/ImageSize.php';
+    require_once __DIR__.'/../src/Utils/Licenser.php';
+    require_once __DIR__.'/../src/Utils/PhpMasterClient.php';
+}
 
 // Configuration initialization
 if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {

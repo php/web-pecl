@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\BorderBox;
+
 // Send charset
 header("Content-Type: text/html; charset=utf-8");
 

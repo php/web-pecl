@@ -19,6 +19,7 @@
   +----------------------------------------------------------------------+
 */
 
+use App\BorderBox;
 use App\Repository\PackageStats;
 
 $packageStats = new PackageStats($dbh);

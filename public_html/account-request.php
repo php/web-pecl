@@ -20,6 +20,7 @@
 
 use App\Entity\User as UserEntity;
 use App\Utils\PhpMasterClient;
+use App\BorderBox;
 
 function display_error($msg)
 {

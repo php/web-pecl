@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\BorderBox;
+
 // expected url vars: pacid package
 if (isset($_GET['package']) && empty($_GET['pacid'])) {
     $pacid = $_GET['package'];

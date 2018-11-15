@@ -19,6 +19,7 @@
   +----------------------------------------------------------------------+
 */
 
+use App\BorderBox;
 use App\Utils\Licenser;
 use App\PackageDll;
 

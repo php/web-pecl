@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\BorderBox;
+
 $extra_styles[] = '/js/calendar/dynCalendar.css';
 response_header('Package Search');
 ?>

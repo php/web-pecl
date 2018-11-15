@@ -22,6 +22,8 @@
  * Interface to delete a package.
  */
 
+use App\BorderBox;
+
 auth_require(true);
 
 response_header('Delete Package');

@@ -22,6 +22,7 @@
  * Interface to update package information.
  */
 
+use App\BorderBox;
 use App\Release;
 
 $release = new Release();

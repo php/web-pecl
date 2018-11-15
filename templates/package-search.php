@@ -14,7 +14,10 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Authors:                                                             |
+  | Authors: Richard Heyes <richard@php.net>                             |
+  |          Martin Jansen <mj@php.net>                                  |
+  |          Pierre Joye <pierre@php.net>                                |
+  |          Peter Kokot <petk@php.net>                                  |
   +----------------------------------------------------------------------+
 */
 

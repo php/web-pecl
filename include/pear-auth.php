@@ -14,7 +14,16 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Authors:                                                             |
+  | Authors: Stig S. Bakken <ssb@fast.no>                                |
+  |          Tomas V.V.Cox <cox@php.net>                                 |
+  |          Richard Heyes <richard@php.net>                             |
+  |          Martin Jansen <mj@php.net>                                  |
+  |          Wez Furlong <wez@php.net>                                   |
+  |          Greg Beaver <cellog@php.net>                                |
+  |          Ferenc Kovacs <tyrael@php.net>                              |
+  |          Pierre Joye <pierre@php.net>                                |
+  |          Rasmus Lerdorf <rasmus@php.net>                             |
+  |          Peter Kokot <petk@php.net>                                  |
   +----------------------------------------------------------------------+
 */
 

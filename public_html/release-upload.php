@@ -28,9 +28,9 @@ use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
 use \PEAR_Common as PEAR_Common;
 
-auth_require('pear.dev');
-
 require_once 'HTTP/Upload.php';
+
+auth_require('pear.dev');
 
 $release = new Release();
 $release->setDbh($dbh);

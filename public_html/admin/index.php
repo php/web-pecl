@@ -18,8 +18,10 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Entity\User as UserEntity;
 use App\BorderBox;
+use App\Note;
+use App\Entity\User as UserEntity;
+use App\User;
 
 auth_require(true);
 

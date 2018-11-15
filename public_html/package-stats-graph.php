@@ -33,6 +33,7 @@ use \BarPlot as BarPlot;
 use \Graph as Graph;
 use \GroupBarPlot as GroupBarPlot;
 
+// TODO: these are required manually due to no PSR-4 support yet
 require_once __DIR__.'/../include/jpgraph/jpgraph.php';
 require_once __DIR__.'/../include/jpgraph/jpgraph_bar.php';
 

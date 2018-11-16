@@ -95,10 +95,8 @@ function response_header($title = 'The PHP Extension Community Library', $style 
             }
         }
     }
-
-echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
  <title>PECL :: <?php echo $title; ?></title>
@@ -127,7 +125,7 @@ echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
 <table class="head" cellspacing="0" cellpadding="0" width="100%">
  <tr>
   <td class="head-logo">
-    <a href="/"><img src="/gifs/peclsmall.gif" alt="PECL :: The PHP Extension Community Library" <?= $imageSize->getSize('/gifs/peclsmall.gif'); ?> style="margin: 5px;"></a><br>
+    <a href="/"><img src="/gifs/peclsmall.gif" alt="PECL :: The PHP Extension Community Library" <?= $imageSize->getSize('/gifs/peclsmall.gif'); ?> style="margin: 5px;"></a><br/>
   </td>
 
   <td class="head-menu">

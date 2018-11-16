@@ -24,7 +24,7 @@ if (empty($what)) {
     $what = basename($_SERVER['PATH_INFO']);
 }
 
-header("Content-type: text/plain");
+header("Content-type: text/plain; charset=utf-8");
 
 if ($what == "avail") {
     print "unavail\n";

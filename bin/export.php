@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 /*
@@ -18,13 +19,17 @@
   +----------------------------------------------------------------------+
 */
 
-exit;
+/**
+ * Debugging and development script to export certain data from database.
+ */
 
-if (empty($what)) {
-    $what = basename($_SERVER['PATH_INFO']);
+require_once __DIR__.'/../include/bootstrap.php';
+
+if ($argc < 2) {
+    die('Please provide argument what you want to output'."\n");
 }
 
-header("Content-type: text/plain; charset=utf-8");
+$what = $argv[1];
 
 if ($what == "avail") {
     print "unavail\n";

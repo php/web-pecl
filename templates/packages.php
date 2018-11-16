@@ -74,7 +74,7 @@
 
     <br />
 
-    <?php if ($subCategories) { ?>
+    <?php if (isset($subCategories)) { ?>
         Sub-categories: <?php echo $subCategories; ?><br /><br />
     <?php } ?>
 

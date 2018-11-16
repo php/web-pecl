@@ -54,4 +54,12 @@ class Database
 
         return $statement;
     }
+
+    /**
+     * A proxy to call native PDO methods if needed.
+     */
+    public function __call($method, $args)
+    {
+        return call_user_func_array([$this->adapter, $method], $args);
+    }
 }

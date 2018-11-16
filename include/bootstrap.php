@@ -108,6 +108,7 @@ if (
     && in_array(str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']), [
         '/account-info.php',
         '/news/pdo.php',
+        '/package-stats.php',
     ])
 ) {
     $pdoDsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name').';charset=utf8';

@@ -24,19 +24,24 @@
 
 namespace App\Repository;
 
+use App\Database;
+
 /**
- * Statistics service class.
+ * Statistics repository class for retrieving package_stats results.
  */
-class PackageStats
+class PackageStatsRepository
 {
-    private $dbh;
+    /**
+     * Database handle.
+     */
+    private $database;
 
     /**
      * Class constructor.
      */
-    public function __construct($dbh)
+    public function __construct(Database $database)
     {
-        $this->dbh = $dbh;
+        $this->database = $database;
     }
 
     /**
@@ -45,29 +50,46 @@ class PackageStats
      * @param  integer ID of the package
      * @return array
      */
-    public function getTotalDownloads($id)
+    public function getDownloadsByPackageId($id)
     {
-        $query = 'SELECT SUM(dl_number) FROM package_stats WHERE pid = '.(int)$id;
+        $sql = "SELECT
+                    SUM(dl_number) AS downloads
+                FROM package_stats
+                WHERE pid = :pid
+        ";
 
-        return $this->dbh->getOne($query);
+        $statement = $this->database->run($sql, [':pid' => $id]);
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return $result['downloads'];
     }
 
     /**
      * Get statistics for releases.
      */
-    public function getReleasesStats($id, $releaseId = '')
+    public function getReleasesStats($packageId, $releaseId = null)
     {
-        $query = 'SELECT s.release, SUM(s.dl_number) AS dl_number, MAX(s.last_dl) AS last_dl, MIN(r.releasedate) AS releasedate '
-            . 'FROM package_stats AS s '
-            . 'LEFT JOIN releases AS r ON (s.rid = r.id) '
-            . "WHERE pid = " . (int)$id;
+        $sql = "SELECT
+                    s.release,
+                    SUM(s.dl_number) AS dl_number,
+                    MAX(s.last_dl) AS last_dl,
+                    MIN(r.releasedate) AS releasedate
+                FROM package_stats AS s
+                LEFT JOIN releases AS r ON (s.rid = r.id)
+                WHERE pid = :pid
+        ";
+
+        $arguments = [':pid' => $packageId];
 
         if (!empty($releaseId)) {
-            $query .= " AND rid = " . (int)$releaseId;
+            $sql .= " AND rid = :rid";
+            $arguments[':rid'] = $releaseId;
         }
 
-        $query .= ' GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY r.releasedate DESC';
+        $sql .= " GROUP BY s.release HAVING COUNT(r.id) > 0 ORDER BY r.releasedate DESC";
 
-        return $this->dbh->getAll($query, DB_FETCHMODE_ASSOC);
+        $statement = $this->database->run($sql, $arguments);
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

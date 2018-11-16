@@ -20,11 +20,11 @@
 */
 
 use App\BorderBox;
-use App\Repository\PackageStats;
+use App\Repository\PackageStatsRepository;
 use App\Category;
 use App\Package;
 
-$packageStats = new PackageStats($dbh);
+$packageStatsRepository = new PackageStatsRepository($database);
 
 response_header('Package Statistics');
 ?>
@@ -145,7 +145,7 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         echo '<h2>&raquo; Statistics for Package &quot;<a href="/package/' . $info['name'] . '">' . $info['name'] . "</a>&quot;</h2>\n";
         $bb = new BorderBox("General Statistics");
         echo "Number of releases: <strong>" . count($info['releases']) . "</strong><br />\n";
-        echo 'Total downloads: <strong>' . number_format($packageStats->getTotalDownloads($_GET['pid']), 0, '.', ',') . "</strong><br />\n";
+        echo 'Total downloads: <strong>' . number_format($packageStatsRepository->getDownloadsByPackageId($_GET['pid']), 0, '.', ',') . "</strong><br />\n";
         $bb->end();
     } else {
         $bb = new BorderBox('General Statistics');
@@ -165,9 +165,9 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
         <th style="text-align: left;">Last Download</th>
     </tr>
 <?php
-        $releasesStats = $packageStats->getReleasesStats(
+        $releasesStats = $packageStatsRepository->getReleasesStats(
             $_GET['pid'],
-            (isset($_GET['rid']) ? $_GET['rid'] : '')
+            (isset($_GET['rid']) ? $_GET['rid'] : null)
         );
 
         foreach ($releasesStats as $value) {

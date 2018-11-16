@@ -19,6 +19,7 @@
 */
 
 use App\Package;
+use App\Repository\CategoryRepository;
 
 if (!defined('PEAR_COMMON_PACKAGE_NAME_PREG')) {
     define('PEAR_COMMON_PACKAGE_NAME_PREG', '/^([A-Z][a-zA-Z0-9_]+|[a-z][a-z0-9_]+)$/');
@@ -95,7 +96,8 @@ do {
 if ($display_form) {
     response_header('New Package');
 
-    $categories = $dbh->getAssoc("SELECT id,name FROM categories ORDER BY name");
+    $categoryRepository = new CategoryRepository($database);
+    $categories = $categoryRepository->findAll();
 
     include __DIR__.'/../templates/forms/new_package.php';
 

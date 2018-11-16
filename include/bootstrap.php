@@ -109,6 +109,7 @@ if (
         '/account-info.php',
         '/account-mail.php',
         '/news/pdo.php',
+        '/package-new.php',
         '/package-stats.php',
     ])
 ) {

@@ -20,10 +20,12 @@
 */
 
 use App\BorderBox;
+use App\Repository\PackageRepository;
 use App\Repository\PackageStatsRepository;
 use App\Category;
 use App\Package;
 
+$packageRepository = new PackageRepository($database);
 $packageStatsRepository = new PackageStatsRepository($database);
 
 response_header('Package Statistics');
@@ -53,17 +55,6 @@ $_GET['cid'] = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
 $_GET['pid'] = isset($_GET['pid']) ? (int) $_GET['pid'] : 0;
 $_GET['rid'] = isset($_GET['rid']) ? (int) $_GET['rid'] : 0;
 
-$query = "SELECT * FROM packages"
-         . (!empty($_GET['cid']) ? " WHERE category = '" . $_GET['cid'] . "' AND " : " WHERE ")
-         . " packages.package_type = 'pecl'"
-         . " ORDER BY name";
-
-$sth = $dbh->query($query);
-
-while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
-    $packages[$row['id']] = $row['name'];
-}
-
 $bb = new BorderBox('Select Package');
 
 echo ' <form action="package-stats.php" method="get">'."\n";
@@ -88,12 +79,16 @@ if (isset($_GET['cid']) && $_GET['cid'] != '') {
     echo "  <select name=\"pid\" onchange=\"javascript:reloadMe();\">\n";
     echo '    <option value="">Select package ...</option>'."\n";
 
-    foreach ($packages as $value => $name) {
+    $packages = $packageRepository->findAllByCategory($_GET['cid']);
+
+    foreach ($packages as $id => $name) {
         $selected = '';
-        if (isset($_GET['pid']) && $_GET['pid'] == $value) {
+
+        if (isset($_GET['pid']) && $_GET['pid'] == $id) {
             $selected = ' selected="selected"';
         }
-        echo '    <option value="' . $value . '"' . $selected . '>' . $name . "</option>\n";
+
+        echo '    <option value="'.$id.'"'.$selected.'>'.$name."</option>\n";
     }
 
     echo "</select>\n";

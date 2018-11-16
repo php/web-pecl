@@ -23,6 +23,9 @@
  */
 
 use App\BorderBox;
+use App\Repository\UserRepository;
+
+$userRepository = new UserRepository($database);
 
 // Redirect to the accounts list if no handle was specified
 if (!isset($_GET['handle']) || !preg_match('@^[0-9A-Za-z_]{2,20}$@', $_GET['handle'])) {
@@ -66,16 +69,13 @@ function printForm($data = [])
 
 response_header('Contact');
 
-$dbh->setFetchmode(DB_FETCHMODE_ASSOC);
+$row = $userRepository->findByHandle($handle);
 
-$row = $dbh->getRow('SELECT * FROM users WHERE registered = 1 '.
-                    'AND handle = ?', [$handle]);
-
-if ($row === null) {
+if ($row === false) {
     PEAR::raiseError('No account information found!');
 }
 
-echo '<h1>Contact ' . $row['name'] . '</h1>';
+echo '<h1>Contact ' . htmlspecialchars($row['name'], ENT_QUOTES) . '</h1>';
 
 if (isset($_POST['submit'])) {
 

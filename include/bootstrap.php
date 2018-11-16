@@ -107,6 +107,7 @@ if (
     && isset($_SERVER['SCRIPT_FILENAME'])
     && in_array(str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']), [
         '/account-info.php',
+        '/account-mail.php',
         '/news/pdo.php',
         '/package-stats.php',
     ])

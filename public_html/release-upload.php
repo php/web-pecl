@@ -354,19 +354,21 @@ if ($display_form) {
     echo '<h1>' . $title . "</h1>\n";
 
     if ($success) {
+        echo '<div class="success">';
         if (is_array($info)) {
-            report_success('Version ' . $info['version'] . ' of '
-                           . $info['package'] . ' has been successfully released, '
-                           . 'and its promotion cycle has started.');
-            print '<p>';
+            echo 'Version '
+                . htmlspecialchars($info['version'], ENT_QUOTES)
+                . ' of '
+                . htmlspecialchars($info['package'], ENT_QUITES)
+                . ' has been successfully released, and its promotion cycle has started.';
         } else {
-            report_success('Version ' . $info->getVersion() . ' of '
-                           . $info->getPackage() . ' has been successfully released, '
-                           . 'and its promotion cycle has started.');
+            echo 'Version '
+                . htmlspecialchars($info->getVersion(), ENT_QUOTES)
+                . ' of '
+                . htmlspecialchars($info->getPackage(), ENT_QUOTES)
+                . ' has been successfully released, and its promotion cycle has started.';
         }
-
-        print '</p>';
-        print '</div>';
+        echo '</div>';
     } else {
         report_error($errors);
     }

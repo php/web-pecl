@@ -118,7 +118,8 @@ switch ($command) {
             }
         }
 
-        report_success('Your information was successfully updated.');
+        echo '<div class="success">Your information was successfully updated.</div>';
+
         break;
 
     case 'change_password':
@@ -149,7 +150,7 @@ switch ($command) {
                 $expire = 0;
             }
 
-            report_success('Your password was successfully updated.');
+            echo '<div class="success">Your password was successfully updated.</div>';
         }
         break;
 }

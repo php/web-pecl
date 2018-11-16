@@ -387,20 +387,6 @@ function error_handler($errobj, $title = 'Error')
 }
 
 /**
- * Displays success messages inside a <div>
- *
- * @param string $in  the message to be displayed
- *
- * @return void
- */
-function report_success($in)
-{
-    echo '<div class="success">';
-    echo htmlspecialchars($in);
-    echo "</div>\n";
-}
-
-/**
 * prints "urhere" menu bar
 * Top Level :: XML :: XML_RPC
 * @param bool $link_lastest If the last category should or not be a link

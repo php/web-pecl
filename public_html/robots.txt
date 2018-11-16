@@ -1,6 +1,4 @@
 User-agent: *
-Disallow: /source.php
 Disallow: /get
 Disallow: /search.php
 Disallow: /package-search.php
-Disallow: /distributions

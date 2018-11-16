@@ -67,11 +67,12 @@ Source code of this application is structured in the following directories:
 ```bash
 <web-pecl>/
  ├─ .git/            # Git configuration and source directory
- ├─ bin/             # Command line development tools and scripts
+ └─ bin/             # Command line development tools and scripts
+    ├─ cron/         # Various systems scripts to run periodically on the server
+    └─ ...
  └─ config/          # Application configuration files
     ├─ app_prod.php  # Production specific environment configuration
     └─ app.php       # Default configuration to be overridden
- ├─ cron/            # Various systems scripts to run periodically on server
  └─ include/         # Application helper functions and configuration
     ├─ jpgraph/      # Bundled JpGraph library https://jpgraph.net
     ├─ bootstrap.php # Autoloader, DB connection, container, app initialization

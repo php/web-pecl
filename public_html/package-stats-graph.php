@@ -106,7 +106,7 @@ $package_name = $dbh->getOne('SELECT name FROM packages WHERE id = ' . (int)$_GE
 $package_rel  = !empty($_GET['rid']) ? $dbh->getOne('SELECT version FROM releases WHERE id = ' . (int)$_GET['rid']) : '';
 
 // Go through setting up the graph
-if (!DEVBOX) {
+if ($config->get('env') === 'prod') {
     // Send some caching headers to prevent unnecessary requests
     header('ETag: ' . md5($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']));
     header('Last-Modified: ' . date('c'));

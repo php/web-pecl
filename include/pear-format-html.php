@@ -309,7 +309,7 @@ function &draw_navigation($data, $menu_title = '')
  *             If array is empty, nothing is displayed.
  *             If a value contains a PEAR_Error object,
  *   + PEAR_Error: prints the value of getMessage() and getUserInfo()
- *                 if DEVBOX is true, otherwise prints data from getMessage().
+ *                 if development environment is set, otherwise prints data from getMessage().
  *
  * @param string|array|PEAR_Error $in  see long description
  * @param string $class  name of the HTML class for the <div> tag.
@@ -320,8 +320,10 @@ function &draw_navigation($data, $menu_title = '')
  */
 function report_error($in, $class = 'errors', $head = 'ERROR:')
 {
+    global $config;
+
     if (PEAR::isError($in)) {
-        if (DEVBOX == true) {
+        if ($config->get('env') === 'dev') {
             $in = [$in->getMessage() . '... ' . $in->getUserInfo()];
         } else {
             $in = [$in->getMessage()];
@@ -335,7 +337,7 @@ function report_error($in, $class = 'errors', $head = 'ERROR:')
     echo '<div class="' . $class . '">' . $head . '<ul>';
     foreach ($in as $msg) {
         if (PEAR::isError($msg)) {
-            if (DEVBOX == true) {
+            if ($config->get('env') === 'dev') {
                 $msg = $msg->getMessage() . '... ' . $msg->getUserInfo();
             } else {
                 $msg = $msg->getMessage();

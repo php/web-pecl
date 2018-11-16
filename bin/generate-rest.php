@@ -35,12 +35,10 @@ use \Archive_Tar as Archive_Tar;
 
 require_once __DIR__.'/../include/bootstrap.php';
 
-if ($config->get('env') != 'prod') {
+if ($config->get('env') === 'dev') {
     error_reporting(E_ALL);
-    define('DEVBOX', true);
 } else {
     error_reporting(E_ALL ^ E_NOTICE);
-    define('DEVBOX', false);
 }
 
 $filesystem = new Filesystem();

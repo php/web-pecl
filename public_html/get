@@ -57,9 +57,6 @@ function error_404($obj) {
     header('HTTP/1.0 404 Not Found');
     if (is_object($obj)) {
         echo htmlentities($obj->getMessage());
-        if (DEVBOX) {
-            echo ' ' . htmlentities($obj->getDebugInfo());
-        }
     } else {
         print htmlentities($obj);
     }

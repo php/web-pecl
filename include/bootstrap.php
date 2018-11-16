@@ -30,7 +30,10 @@
  * configuration is initialized and database connection is established.
  */
 
+use App\Autoloader;
 use App\Config;
+use App\Database;
+use App\Database\Adapter;
 use Symfony\Component\Dotenv\Dotenv;
 
 // Dual autoloader until PSR-4 and Composer's autoloader are fully supported.
@@ -39,7 +42,7 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 } else {
     require_once __DIR__.'/../src/Autoloader.php';
 
-    $loader = new App\Autoloader();
+    $loader = new Autoloader();
 
     $loader->addNamespace('App\\', __DIR__.'/../src/');
 
@@ -81,25 +84,27 @@ $config = new Config($configurations);
 date_default_timezone_set('UTC');
 
 // Database access with PDO enabled endpoints
+// TODO: This is in the process of migration from the deprecated PEAR DB package
+// to a PDO handler.
 if (
-    isset($_SERVER['REQUEST_URI'])
-    && in_array($_SERVER['REQUEST_URI'], [
-        '/news/pdo.php'
+    isset($_SERVER['DOCUMENT_ROOT'])
+    && isset($_SERVER['SCRIPT_FILENAME'])
+    && in_array(str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']), [
+        '/account-info.php',
+        '/news/pdo.php',
     ])
 ) {
-    $pdo = new \PDO(
-        'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name').';charset=utf8',
-        $config->get('db_username'),
-        $config->get('db_password'),
-        [
-            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
-            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-            \PDO::ATTR_EMULATE_PREPARES   => false,
-        ]
-    );
+    $pdoDsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name').';charset=utf8';
+
+    $databaseAdapter = new Adapter();
+    $databaseAdapter->setDsn($pdoDsn);
+    $databaseAdapter->setUsername($config->get('db_username'));
+    $databaseAdapter->setPassword($config->get('db_password'));
+
+    $database = new Database($databaseAdapter->getInstance());
 }
 
-// Connect to database using PEAR DB for the rest of the site endpoints
+// Connect to database also using PEAR DB for the rest of the site endpoints.
 $dsn = $config->get('db_scheme');
 $dsn .= '://'.$config->get('db_username');
 $dsn .= ':'.$config->get('db_password');

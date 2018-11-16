@@ -23,6 +23,7 @@
  */
 
 use App\BorderBox;
+use App\Repository\NoteRepository;
 
 $handle = filter_input(INPUT_GET, 'handle', FILTER_SANITIZE_STRING);
 
@@ -110,7 +111,27 @@ $bb->end();
 
 print "<br />\n";
 
-display_user_notes($handle, "100%");
+$bb = new BorderBox("Notes for user $handle", '100%');
+$noteRepository = new NoteRepository($database);
+$notes = $noteRepository->getNotesByUser($handle);
+
+if (!empty($notes)) {
+    print "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
+    foreach ($notes as $nid => $data) {
+    print " <tr>\n";
+    print "  <td>\n";
+    print "   <b>{$data['nby']} {$data['ntime']}:</b>";
+    print "<br />\n";
+    print "   ".htmlspecialchars($data['note'], ENT_QUOTES)."\n";
+    print "  </td>\n";
+    print " </tr>\n";
+    print " <tr><td>&nbsp;</td></tr>\n";
+    }
+    print "</table>\n";
+} else {
+    print "No notes.";
+}
+$bb->end();
 
 print '<br><a href="/account-edit.php?handle='.htmlspecialchars($handle, ENT_QUOTES).'"><img src="/gifs/edit.gif" alt="Edit"></a>';
 

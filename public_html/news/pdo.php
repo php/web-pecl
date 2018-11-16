@@ -43,12 +43,12 @@ $sql = "SELECT packages.id AS id,
             AND packages.package_type = 'pecl'
         ORDER BY releases.releasedate DESC LIMIT 5";
 
-$query = $pdo->prepare($sql);
-$query->execute();
+$statement = $database->run($sql);
 
-foreach ($query as $row) {
+foreach ($statement as $row) {
     $releasedate = $formatDate->utc($row['releasedate'], 'Y-m-d');
     $desc = nl2br(htmlentities(substr($row['releasenotes'], 0, 400)));
+
     if (strlen($row['releasenotes']) > 400) {
         $desc .= ' <a href="/package/' . $row['name'] . '/' . $row['version'] . '">...</a>';
     }

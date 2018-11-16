@@ -458,30 +458,3 @@ function localRedirect($url)
     header('Location: ' . getURL($url));
     exit;
 }
-
-function display_user_notes($user, $width = '50%')
-{
-    global $dbh;
-    $bb = new BorderBox("Notes for user $user", $width);
-    $notes = $dbh->getAssoc("SELECT id,nby,ntime,note FROM notes ".
-                "WHERE uid = ? ORDER BY ntime", true, [$user]);
-    if (!empty($notes)) {
-        print "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
-        foreach ($notes as $nid => $data) {
-        print " <tr>\n";
-        print "  <td>\n";
-        print "   <b>{$data['nby']} {$data['ntime']}:</b>";
-        print "<br />\n";
-        print "   ".htmlspecialchars($data['note'])."\n";
-        print "  </td>\n";
-        print " </tr>\n";
-        print " <tr><td>&nbsp;</td></tr>\n";
-        }
-        print "</table>\n";
-    } else {
-        print "No notes.";
-    }
-    $bb->end();
-
-    return count($notes);
-}

@@ -30,7 +30,7 @@ like to contact them, you can write to
 </p>
 
 <p>It has been built with <a href="https://httpd.apache.org">Apache</a>,
-<a href="https://php.net">PHP <?= phpversion(); ?></a>, <a href="https://www.mysql.com">MySQL</a>
+<a href="https://php.net">PHP</a>, <a href="https://www.mysql.com">MySQL</a>
 and some (as you might have guessed) PEAR packages. The source code of the
 website is <a href="https://git.php.net/?p=web/pecl.git">available via git</a>.
 </p>

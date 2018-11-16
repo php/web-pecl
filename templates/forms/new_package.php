@@ -43,11 +43,11 @@ mailing list and have people agree with you.
 
     <div>
         <label for="name">Package name <abbr title="required">*</abbr></label>
-        <input type="text" name="name" value="<?= htmlspecialchars(get('name'), ENT_QUOTES); ?>" size="20" maxlength="80" required>
+        <input type="text" name="name" value="<?= htmlspecialchars((isset($_POST['name']) ? $_POST['name'] : ''), ENT_QUOTES); ?>" size="20" maxlength="80" required>
     </div>
     <div>
         <label for="license">License <abbr title="required">*</abbr></label>
-        <input type="text" name="license" value="<?= htmlspecialchars(get('license'), ENT_QUOTES); ?>" size="20" maxlength="50" required>
+        <input type="text" name="license" value="<?= htmlspecialchars((isset($_POST['license']) ? $_POST['license'] : ''), ENT_QUOTES); ?>" size="20" maxlength="50" required>
     </div>
     <div>
         <label>Category <abbr title="required">*</abbr></label>
@@ -60,19 +60,19 @@ mailing list and have people agree with you.
     </div>
     <div>
         <label>Summary <abbr title="required">*</abbr></label>
-        <input type="text" name="summary" value="<?= htmlspecialchars(get('summary'), ENT_QUOTES); ?>" size="60" placeholder="Enter a one-liner description" required>
+        <input type="text" name="summary" value="<?= htmlspecialchars((isset($_POST['summary']) ? $_POST['summary'] : ''), ENT_QUOTES); ?>" size="60" placeholder="Enter a one-liner description" required>
     </div>
     <div>
         <label>Full description <abbr title="required">*</abbr></label>
-        <textarea name="desc" cols="60" rows="3" required><?= htmlspecialchars(get('desc'), ENT_QUOTES); ?></textarea>
+        <textarea name="desc" cols="60" rows="3" required><?= htmlspecialchars((isset($_POST['desc']) ? $_POST['desc'] : ''), ENT_QUOTES); ?></textarea>
     </div>
     <div>
         <label>Additional project homepage</label>
-        <input type="text" name="homepage" value="<?= htmlspecialchars(get('homepage'), ENT_QUOTES); ?>" size="40" maxlength="255" placeholder="https://example.com">
+        <input type="text" name="homepage" value="<?= htmlspecialchars((isset($_POST['homepage']) ? $_POST['homepage'] : ''), ENT_QUOTES); ?>" size="40" maxlength="255" placeholder="https://example.com">
     </div>
     <div>
         <label>Browse Source URL</label>
-        <input type="text" name="cvs_link" value="<?= htmlspecialchars(get('cvs_link'), ENT_QUOTES); ?>" size="40" maxlength="255" placeholder="https://git.php.net/?p=pecl/php/operator.git">
+        <input type="text" name="cvs_link" value="<?= htmlspecialchars((isset($_POST['cvs_link']) ? $_POST['cvs_link'] : ''), ENT_QUOTES); ?>" size="40" maxlength="255" placeholder="https://git.php.net/?p=pecl/php/operator.git">
     </div>
     <div>
         <label>&nbsp;</label>

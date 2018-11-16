@@ -45,17 +45,6 @@ if ($config->get('env') === 'prod') {
 require_once __DIR__.'/pear-format-html.php';
 require_once __DIR__.'/pear-auth.php';
 
-function get($name)
-{
-    if (!empty($_GET[$name])) {
-        return $_GET[$name];
-    } else if (!empty($_POST[$name])) {
-        return $_POST[$name];
-    } else {
-        return "";
-    }
-}
-
 $filesystem = new Filesystem();
 $formatDate = new FormatDate();
 $imageSize = new ImageSize();

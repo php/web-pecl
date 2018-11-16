@@ -30,11 +30,9 @@ $display_form = true;
 $errorMsg = "";
 $jumpto = "name";
 
-// May seem like overkill, but the prepended get() function checks both GET and POST
 $valid_args = ['submit', 'name','category','license','summary','desc','homepage','cvs_link'];
 foreach($valid_args as $arg) {
         if(isset($_POST[$arg])) $_POST[$arg] = htmlspecialchars($_POST[$arg], ENT_QUOTES);
-        if(isset($_GET[$arg])) $_GET[$arg] = htmlspecialchars($_GET[$arg], ENT_QUOTES);
 }
 
 $submit = isset($_POST['submit']) ? true : false;
@@ -106,8 +104,6 @@ if ($display_form) {
         print "document.forms[1].$jumpto.focus();\n";
         print "</script>\n";
     }
-
-    print "</form>\n";
 }
 
 response_footer();

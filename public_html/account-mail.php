@@ -71,7 +71,7 @@ response_header('Contact');
 
 $row = $userRepository->findByHandle($handle);
 
-if ($row === false) {
+if (!$row) {
     PEAR::raiseError('No account information found!');
 }
 

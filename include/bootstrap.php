@@ -108,6 +108,7 @@ if (
     && in_array(str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']), [
         '/account-info.php',
         '/account-mail.php',
+        '/json.php',
         '/news/pdo.php',
         '/package-new.php',
         '/package-stats.php',

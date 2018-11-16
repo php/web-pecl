@@ -19,31 +19,33 @@
 */
 
 use App\Package;
+use App\Repository\PackageRepository;
 
 // Only support package maintainer for now, needed for bugs.php.net
-$package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
+$packageIdOrName = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 
-if (!$package) {
-    header("HTTP/1.0 404 Not Found");
-    echo "$package not found";
+if (!$packageIdOrName) {
+    header('HTTP/1.0 404 Not Found');
+    echo "Package $packageIdOrName not found";
+
     exit();
 }
 
 // Package data
-$pkg = Package::info($package);
-if (!$pkg) {
+$package = Package::info($packageIdOrName);
+
+if (!$package || !isset($package['packageid'])) {
     header("HTTP/1.0 404 Not Found");
-    echo "$package not found";
+    echo "Package $packageIdOrName not found";
+
     exit();
 }
-$pacid = $pkg['packageid'];
-$dbh->setFetchmode(DB_FETCHMODE_OBJECT);
-$sth = $dbh->query("SELECT u.handle".
-                   " FROM maintains m, users u".
-                   " WHERE m.package = $pacid".
-                   " AND m.handle = u.handle");
+
+$packageRepository = new PackageRepository($database);
+
 $maintainers = [];
-while ($row = $sth->fetchRow()) {
-    $maintainers[] = $row->handle;
+foreach ($packageRepository->getMaintainersByPackageId($package['packageid']) as $maintainer) {
+    $maintainers[] = $maintainer['handle'];
 }
+
 echo json_encode($maintainers);

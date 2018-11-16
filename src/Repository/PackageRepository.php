@@ -56,4 +56,19 @@ class PackageRepository
 
         return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
+
+    /**
+     * Get all maintainers by given package id.
+     */
+    public function getMaintainersByPackageId($id)
+    {
+        $sql = "SELECT u.handle
+                FROM maintains m, users u
+                WHERE m.package = :package_id
+                AND m.handle = u.handle";
+
+        $statement = $this->database->run($sql, [':package_id' => $id]);
+
+        return $statement->fetchAll();
+    }
 }

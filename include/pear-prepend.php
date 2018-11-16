@@ -33,7 +33,6 @@ use App\Utils\Filesystem;
 use App\Utils\FormatDate;
 use App\Utils\ImageSize;
 use App\Rest;
-use \DB as DB;
 
 require_once __DIR__.'/bootstrap.php';
 

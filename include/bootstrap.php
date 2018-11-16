@@ -35,6 +35,7 @@ use App\Config;
 use App\Database;
 use App\Database\Adapter;
 use Symfony\Component\Dotenv\Dotenv;
+use \DB as DB;
 
 // Dual autoloader until PSR-4 and Composer's autoloader are fully supported.
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {

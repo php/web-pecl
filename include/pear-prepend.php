@@ -35,12 +35,6 @@ use App\Utils\ImageSize;
 use App\Rest;
 
 require_once __DIR__.'/bootstrap.php';
-
-// Silence the notices for production
-if ($config->get('env') === 'prod') {
-    error_reporting(error_reporting()&~E_NOTICE);
-}
-
 require_once __DIR__.'/pear-format-html.php';
 require_once __DIR__.'/pear-auth.php';
 

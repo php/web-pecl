@@ -35,12 +35,6 @@ use \Archive_Tar as Archive_Tar;
 
 require_once __DIR__.'/../include/bootstrap.php';
 
-if ($config->get('env') === 'dev') {
-    error_reporting(E_ALL);
-} else {
-    error_reporting(E_ALL ^ E_NOTICE);
-}
-
 $filesystem = new Filesystem();
 
 if (!isset($rest)) {

@@ -52,6 +52,35 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
     $loader->addClassmap('GroupBarPlot', __DIR__.'/jpgraph/jpgraph_bar.php');
 }
 
+// Configuration initialization
+if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {
+    $dotenv = new Dotenv();
+    $dotenv->load(__DIR__.'/../.env');
+    $configurations = require __DIR__.'/../config/app.php';
+} else {
+    $configurations = array_merge(
+        require __DIR__.'/../config/app.php',
+        require __DIR__.'/../config/app_prod.php'
+    );
+}
+
+$config = new Config($configurations);
+
+// Set how PHP errors are reported
+if ($config->get('env') === 'dev') {
+    // Report all errors in development environment
+    error_reporting(E_ALL);
+
+    // Display errors also to screen
+    ini_set('display_errors', 1);
+} else {
+    // Report errors set by default php.ini without E_NOTICE
+    error_reporting(error_reporting() & ~E_NOTICE);
+
+    // Don't display errors, errors should be logged in a file via php.ini
+    ini_set('display_errors', 0);
+}
+
 // TODO: check if something better can be done.
 // Some of these classes define constants in global scope and need to be included
 // separately before requiring other classes.
@@ -66,20 +95,6 @@ require_once 'PEAR/PackageFile.php';
 require_once 'Net/URL2.php';
 require_once 'Pager/Pager.php';
 require_once 'HTTP/Upload.php';
-
-// Configuration initialization
-if (class_exists(Dotenv::class) && file_exists(__DIR__.'/../.env')) {
-    $dotenv = new Dotenv();
-    $dotenv->load(__DIR__.'/../.env');
-    $configurations = require __DIR__.'/../config/app.php';
-} else {
-    $configurations = array_merge(
-        require __DIR__.'/../config/app.php',
-        require __DIR__.'/../config/app_prod.php'
-    );
-}
-
-$config = new Config($configurations);
 
 // Set application default time zone to UTC for all dates.
 date_default_timezone_set('UTC');

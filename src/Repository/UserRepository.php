@@ -51,4 +51,18 @@ class UserRepository
 
         return $statement->fetch();
     }
+
+    /**
+     * Retrieve user's wishlist URL.
+     */
+    public function getWishlistByHandle($handle)
+    {
+        $sql = "SELECT wishlist FROM users WHERE handle = :handle";
+
+        $statement = $this->database->run($sql, [':handle' => $handle]);
+
+        $result = $statement->fetch();
+
+        return isset($result['wishlist']) ? $result['wishlist'] : null;
+    }
 }

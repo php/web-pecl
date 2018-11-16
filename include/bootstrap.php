@@ -111,6 +111,7 @@ if (
         '/news/pdo.php',
         '/package-new.php',
         '/package-stats.php',
+        '/wishlist.php',
     ])
 ) {
     $pdoDsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name').';charset=utf8';

@@ -18,24 +18,28 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Repository\UserRepository;
+
 if (empty($user)) {
     $user = isset($_GET['handle']) ? $_GET['handle'] : null;
 }
+
 if (empty($user)) {
     $user = basename($_SERVER['PATH_INFO']);
 }
 
 PEAR::setErrorHandling(PEAR_ERROR_RETURN);
-$url = $dbh->getOne('SELECT wishlist FROM users WHERE handle = ?',
-                    [$user]);
-if (empty($url) || PEAR::isError($url)) {
+
+$userRepository = new UserRepository($database);
+
+$wishlistUrl = $userRepository->getWishlistByHandle($user);
+
+if (empty($wishlistUrl) || PEAR::isError($wishlistUrl)) {
     header("HTTP/1.0 404 Not found");
+
     die("<h1>User not found</h1>\n");
 }
 
-header("Location: $url");
+header("Location: $wishlistUrl");
 
-printf("<a href=\"%s\">click here to go to %s's wishlist</a>",
-       $url,
-       $user
-       );
+printf("<a href=\"%s\">click here to go to %s's wishlist</a>", $wishlistUrl, $user);

@@ -359,7 +359,7 @@ if ($display_form) {
             echo 'Version '
                 . htmlspecialchars($info['version'], ENT_QUOTES)
                 . ' of '
-                . htmlspecialchars($info['package'], ENT_QUITES)
+                . htmlspecialchars($info['package'], ENT_QUOTES)
                 . ' has been successfully released, and its promotion cycle has started.';
         } else {
             echo 'Version '

@@ -58,11 +58,11 @@ if (!DB::isError($name) && !empty($name)) {
 
 // Check less strictly if nothing has been found previously
 $sql = "SELECT p.id, p.name, p.summary
-            FROM packages p
-            WHERE package_type = 'pecl' AND approved = 1 AND name LIKE ?
-            ORDER BY p.name";
+        FROM packages p
+        WHERE package_type = 'pecl' AND approved = 1 AND name LIKE ?
+        ORDER BY p.name";
 $term = "%" . basename($pkg) . "%";
-$packages = $dbh->getAll($sql, [$term], DB_FETCHMODE_ASSOC);
+$packages = $database->run($sql, [$term])->fetchAll();
 
 if (count($packages) > 3) {
     $packages = [$packages[0], $packages[1], $packages[2]];

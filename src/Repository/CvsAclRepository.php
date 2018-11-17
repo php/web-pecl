@@ -47,7 +47,7 @@ class CvsAclRepository
     {
         $sql = "SELECT path FROM cvs_acl WHERE username = :username";
 
-        $result = $this->database->run($sql, [':username' => $username])->fetch();
+        $result = $this->database->run($sql, [':username' => $username])->fetchAll(\PDO::FETCH_COLUMN);
 
         return !$result ? [] : $result;
     }

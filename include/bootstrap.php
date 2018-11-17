@@ -33,7 +33,11 @@
 use App\Autoloader;
 use App\Config;
 use App\Database;
+use App\Rest;
 use App\Database\Adapter;
+use App\Utils\Filesystem;
+use App\Utils\FormatDate;
+use App\Utils\ImageSize;
 use Symfony\Component\Dotenv\Dotenv;
 use \DB as DB;
 
@@ -150,3 +154,13 @@ $options = [
 
 $dbh = DB::connect($dsn, $options);
 $dbh->query('SET NAMES utf8');
+
+// Initialization of some services
+$filesystem = new Filesystem();
+$formatDate = new FormatDate();
+$imageSize = new ImageSize();
+
+$rest = new Rest($dbh, $filesystem);
+$rest->setDirectory($config->get('rest_dir'));
+$rest->setScheme($config->get('scheme'));
+$rest->setHost($config->get('host'));

@@ -29,25 +29,9 @@
  * Application bootstrap and session initialization.
  */
 
-use App\Utils\Filesystem;
-use App\Utils\FormatDate;
-use App\Utils\ImageSize;
-use App\Rest;
-
 require_once __DIR__.'/bootstrap.php';
 require_once __DIR__.'/pear-format-html.php';
 require_once __DIR__.'/pear-auth.php';
-
-$filesystem = new Filesystem();
-$formatDate = new FormatDate();
-$imageSize = new ImageSize();
-
-if (!isset($rest)) {
-    $rest = new Rest($dbh, $filesystem);
-    $rest->setDirectory($config->get('rest_dir'));
-    $rest->setScheme($config->get('scheme'));
-    $rest->setHost($config->get('host'));
-}
 
 $tmp = filectime($_SERVER['SCRIPT_FILENAME']);
 $LAST_UPDATED = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';

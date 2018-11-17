@@ -58,6 +58,21 @@ class PackageRepository
     }
 
     /**
+     * Get all packages maintained by given username.
+     */
+    public function findPackagesMaintainedByHandle($handle)
+    {
+        $sql = "SELECT p.id, p.name, m.role
+                FROM packages p, maintains m
+                WHERE m.handle = :handle
+                AND p.id = m.package
+                AND p.package_type = 'pecl'
+                ORDER BY p.name";
+
+        return $this->database->run($sql, [':handle' => $handle])->fetchAll();
+    }
+
+    /**
      * Get all maintainers by given package id.
      */
     public function getMaintainersByPackageId($id)

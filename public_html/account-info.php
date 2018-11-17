@@ -24,6 +24,9 @@
 
 use App\BorderBox;
 use App\Repository\NoteRepository;
+use App\Repository\UserRepository;
+use App\Repository\PackageRepository;
+use App\Repository\CvsAclRepository;
 
 $handle = filter_input(INPUT_GET, 'handle', FILTER_SANITIZE_STRING);
 
@@ -32,19 +35,15 @@ if (empty($handle)) {
     localRedirect("/accounts.php");
 }
 
-$dbh->setFetchmode(DB_FETCHMODE_ASSOC);
+$userRepository = new UserRepository($database);
 
-$row = $dbh->getRow("SELECT * FROM users WHERE registered = 1 ".
-                    "AND handle = ?", [$handle]);
+$row = $userRepository->findByHandle($handle);
 
-if ($row === null) {
+if (!$row) {
     // XXX: make_404();
     header('HTTP/1.0 404 Not Found');
     PEAR::raiseError("No account information found!");
 }
-
-$access = $dbh->getCol("SELECT path FROM cvs_acl WHERE username = ?", 0,
-                       [$handle]);
 
 response_header($row['name']);
 
@@ -74,6 +73,10 @@ if ($row['homepage'] != "") {
 //XXX: Remove entirely?
 //$bb->horizHeadRow("Registered since:", $row['created']);
 $bb->horizHeadRow("Additional information:", empty($row['userinfo'])?"&nbsp;":$row['userinfo']);
+
+$cvsAclRepository = new CvsAclRepository($database);
+$access = $cvsAclRepository->getPathByUsername($handle);
+
 $bb->horizHeadRow("VCS Access:", implode("<br />", $access));
 
 if ($row['wishlist'] != "") {
@@ -84,26 +87,22 @@ if ($row['admin'] == 1) {
     $bb->fullRow("$row[name] is a PECL administrator.");
 }
 
-$query = "SELECT p.id, p.name, m.role
-          FROM packages p, maintains m
-          WHERE m.handle = '$handle'
-          AND p.id = m.package
-          AND p.package_type = 'pecl'
-          ORDER BY p.name";
-
-$sth = $dbh->query($query);
-
 $bb->end();
 
 print "</td><td valign=\"top\">\n";
 
 $bb = new BorderBox("Maintaining These Packages:", "100%", "", 2, true);
 
-if ($sth->numRows() > 0) {
+$packageRepository = new PackageRepository($database);
+$packages = $packageRepository->findPackagesMaintainedByHandle($handle);
+
+if (isset($packages) && count($packages) > 0) {
     $bb->headRow("Package Name", "Role");
-    while (is_array($row = $sth->fetchRow())) {
-        $bb->plainRow("<a href=\"/package/" . $row['name'] . "\">" . $row['name'] . "</a>",
-                      $row['role']);
+
+    foreach ($packages as $package) {
+        $name = htmlspecialchars($package['name'], ENT_QUOTES);
+        $role = htmlspecialchars($package['role'], ENT_QUOTES);
+        $bb->plainRow('<a href="/package/'.$name.'">'.$name.'</a>', $role);
     }
 }
 

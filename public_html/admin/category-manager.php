@@ -27,38 +27,37 @@
 
 use App\Category;
 use \PEAR as PEAR;
-use \HTML_TreeMenu as HTML_TreeMenu;
-use \HTML_TreeNode as HTML_TreeNode;
-use \HTML_TreeMenu_DHTML as HTML_TreeMenu_DHTML;
+use App\TreeMenu\TreeMenu;
+use App\TreeMenu\TreeNode;
+use App\TreeMenu\DynamicHtml;
 
 auth_require(true);
-
-// TODO: this is required manually per request due to no PSR-4 support and
-// possible error caused due to legacy code used in the class. Until future
-// refactorings.
-require_once 'HTML/TreeMenu.php';
 
 /**
  * Function to recurse thru the tree adding nodes to treemenu
  */
-function parseTree(&$structure, $parent = null)
+function parseTree($structure, $parent = null)
 {
-    global $dbh;
+    global $database;
 
-    $parent = is_null($parent) ? 'IS NULL' : '= ' . $parent;
+    $arguments = [];
 
-    // Get categories
-    $categories = $dbh->getAll(sprintf('SELECT id, parent, name, description, npackages '
-                                       . 'FROM categories WHERE parent %s ORDER BY name, id',
-                                       $parent
-                                       ),
-                               null,
-                               DB_FETCHMODE_ASSOC
-                               );
+    $sql = 'SELECT id, parent, name, description, npackages FROM categories WHERE parent';
+
+    if ($parent === null) {
+        $sql .= ' IS NULL';
+    } else {
+        $sql .= ' = :parent';
+        $arguments[':parent'] = $parent;
+    }
+
+    $sql .= ' ORDER BY name, id';
+
+    $categories = $database->run($sql, $arguments)->fetchAll();
 
     if (count($categories)) {
         foreach ($categories as $cat) {
-            $newNode = $structure->addItem(new HTML_TreeNode(['text' => htmlspecialchars($cat['name']),
+            $newNode = $structure->addItem(new TreeNode(['text' => htmlspecialchars($cat['name']),
                                                                     'icon' => 'folder.gif'],
                                                               ['onclick' => 'category_click(event, this, ' . $cat['id'] . ')']
                                                               )
@@ -109,7 +108,7 @@ if (!empty($_POST)) {
 }
 
 // Create the menu, set the db to assoc mode
-$treeMenu = new HTML_TreeMenu();
+$treeMenu = new TreeMenu();
 
 // Get the categories
 parseTree($treeMenu);
@@ -123,7 +122,7 @@ if (!empty($_SESSION['category_manager']['error_msg'])) {
     unset($_SESSION['category_manager']['error_msg']);
 }
 
-$categories   = $dbh->getAll('SELECT id, name, description FROM categories ORDER BY id', null, DB_FETCHMODE_ASSOC);
-$treeMenuPres = new HTML_TreeMenu_DHTML($treeMenu, ['images' => '../img/TreeMenu', 'defaultClass' => 'treeMenuOff']);
+$categories   = $database->run('SELECT id, name, description FROM categories ORDER BY id')->fetchAll();
+$treeMenuPres = new DynamicHtml($treeMenu, ['images' => '../img/TreeMenu', 'defaultClass' => 'treeMenuOff']);
 
 include __DIR__.'/../../templates/category-manager.php';

@@ -37,7 +37,7 @@ if (empty($handle)) {
 
 $userRepository = new UserRepository($database);
 
-$row = $userRepository->findByHandle($handle);
+$row = $userRepository->findActiveByHandle($handle);
 
 if (!$row) {
     // XXX: make_404();

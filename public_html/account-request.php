@@ -19,7 +19,7 @@
 */
 
 use App\BorderBox;
-use App\Entity\User as UserEntity;
+use App\Repository\UserRepository;
 use App\Utils\PhpMasterClient;
 
 function display_error($msg)
@@ -105,17 +105,23 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
-            PEAR::setErrorHandling(PEAR_ERROR_RETURN);
-
             $handle = strtolower($handle);
 
             $purpose .= "\n\nSponsor:\n" . $sponsor;
 
-            $obj = new UserEntity($dbh, $handle);
+            $userRepository = new UserRepository($database);
 
-            if (isset($obj->created)) {
+            if ($userRepository->findByHandle($handle)) {
                 display_error("Sorry, that username is already taken");
                 $jumpto = "handle";
+
+                break;
+            }
+
+            if ($userRepository->findByEmail($email)) {
+                display_error("Sorry, that email is already registered in the database");
+                $jumpto = "email";
+
                 break;
             }
 
@@ -128,22 +134,22 @@ if (isset($_POST['submit'])) {
             // column
             $userinfo = serialize([$purpose, $moreinfo]);
             $created_at = gmdate('Y-m-d H:i');
-            $sth = $dbh->prepare("INSERT INTO users
-                    (handle, name, email, password, registered, showemail, homepage, userinfo, from_site, active, created)
-                    VALUES(?, ?, ?, ?, 0, ?, ?, ?, 'pecl', 0, ?)");
-            $res = $dbh->execute($sth, [$handle, $name, $email, $hash, $showemail, $homepage, $userinfo, $created_at]);
-
-            if (DB::isError($res)) {
-                // Constraint violation, only email and handle(username) is unique
-                if($res->getCode() == -3){
-                    display_error("Username or Email already taken");
-                }
-                else{
-                    display_error("$handle: " . DB::errorMessage($res));
-                }
-                $jumpto = "handle";
-                break;
-            }
+            $sql = "INSERT INTO users (
+                        handle,
+                        name,
+                        email,
+                        password,
+                        registered,
+                        showemail,
+                        homepage,
+                        userinfo,
+                        from_site,
+                        active,
+                        created
+                    ) VALUES(
+                        ?, ?, ?, ?, 0, ?, ?, ?, 'pecl', 0, ?)
+            ";
+            $result = $database->run($sql, [$handle, $name, $email, $hash, $showemail ? 1 : 0, $homepage, $userinfo, $created_at]);
 
             // Now do the SVN stuff
             if ($needsvn) {

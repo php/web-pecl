@@ -41,15 +41,33 @@ class UserRepository
     }
 
     /**
-     * Get user by given username.
+     * Get registered (active) user by given username.
      */
-    public function findByHandle($handle)
+    public function findActiveByHandle($handle)
     {
         $sql = "SELECT * FROM users WHERE registered = 1 AND handle = :handle";
 
-        $statement = $this->database->run($sql, [':handle' => $handle]);
+        return $this->database->run($sql, [':handle' => $handle])->fetch();
+    }
 
-        return $statement->fetch();
+    /**
+     * Get user by given email.
+     */
+    public function findByEmail($email)
+    {
+        $sql = "SELECT * FROM users WHERE email = :email";
+
+        return $this->database->run($sql, [':email' => $email])->fetch();
+    }
+
+    /**
+     * Get any user by given username.
+     */
+    public function findByHandle($handle)
+    {
+        $sql = "SELECT * FROM users WHERE handle = :handle";
+
+        return $this->database->run($sql, [':handle' => $handle])->fetch();
     }
 
     /**

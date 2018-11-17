@@ -69,7 +69,7 @@ function printForm($data = [])
 
 response_header('Contact');
 
-$row = $userRepository->findByHandle($handle);
+$row = $userRepository->findActiveByHandle($handle);
 
 if (!$row) {
     PEAR::raiseError('No account information found!');

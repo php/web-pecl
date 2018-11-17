@@ -24,28 +24,14 @@
  */
 
 use App\Category;
-use App\Rest;
 use App\Package;
 use App\Repository\UserRepository;
-use App\Utils\Filesystem;
-use \DB as DB;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
 use \PEAR_PackageFile as PEAR_PackageFile;
 use \Archive_Tar as Archive_Tar;
 
 require_once __DIR__.'/../include/bootstrap.php';
-
-$filesystem = new Filesystem();
-
-if (!isset($rest)) {
-    $rest = new Rest($dbh, $filesystem);
-    $rest->setDirectory($config->get('rest_dir'));
-    $rest->setScheme($config->get('scheme'));
-    $rest->setHost($config->get('host'));
-}
-
-PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
 $filesystem->delete($config->get('rest_dir'));
 

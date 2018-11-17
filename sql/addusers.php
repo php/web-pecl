@@ -18,7 +18,10 @@
   +----------------------------------------------------------------------+
 */
 
-print "Adding users...\n";
+echo "Adding users...\n";
+
+// Drops all current users and add sample users
+$database->query('DELETE FROM users');
 
 $hardcoded_users = '
 alexmerz;*;Alexander Merz;;0
@@ -45,9 +48,11 @@ thies;;;;1
 $users = [];
 foreach (explode("\n", $hardcoded_users) as $line) {
     $line = trim($line);
+
     if (empty($line)) {
         continue;
     }
+
     $tmp = explode(";", trim($line));
     $users[$tmp[0]]['user'] = $tmp[0];
     $users[$tmp[0]]['pw'] = $tmp[1];
@@ -60,15 +65,20 @@ $fp = @fopen("cvsusers", "r");
 if (empty($fp)) {
     $fp = @fopen("/repository/CVSROOT/cvsusers", "r");
 }
+
 if (is_resource($fp)) {
     while ($line = fgets($fp, 1024)) {
-        if (!trim($line)) continue;
+        if (!trim($line)) {
+            continue;
+        }
+
         list($user,$name,$email) = explode(":", trim($line));
         $name = preg_replace('/\s\s+/', ' ', $name);
         $users[$user]['user'] = $user;
         $users[$user]['name'] = $name;
         $users[$user]['email'] = $email;
     }
+
     fclose($fp);
 }
 
@@ -76,34 +86,73 @@ $fp = @fopen("passwd", "r");
 if (empty($fp)) {
     $fp = @fopen("/repository/CVSROOT/passwd", "r");
 }
+
 if (is_resource($fp)) {
     while ($line = fgets($fp, 1024)) {
-        if (!trim($line)) continue;
+        if (!trim($line)) {
+            continue;
+        }
+
         list($user,$pw,$groups) = explode(":", trim($line));
         $users[$user]['pw'] = $pw;
     }
+
     fclose($fp);
 }
 
-$sth = $dbh->prepare("INSERT INTO users ".
-             "(handle,password,name,email,registered,showemail," .
-             "created,createdby,admin)".
-             " VALUES(?,?,?,?,1,1,?,?,?)");
+$sql = "INSERT INTO users (
+            handle,
+            `password`,
+            `name`,
+            email,
+            registered,
+            showemail,
+            created,
+            createdby,
+            `admin`
+        ) VALUES (
+            :handle,
+            :password,
+            :name,
+            :email,
+            1,
+            1,
+            :created,
+            :createdby,
+            :admin
+        )
+";
+
 $users_added = 0;
+
 foreach ($users as $username => $info) {
     $user = $username;
     $pw = $info['pw'];
     $name = $info['name'];
+
     if (empty($info['email'])) {
         $email = "$user@php.net";
     } else {
         $email = $info['email'];
     }
-    $admin = (bool)$info['admin'];
+
+    $admin = (int)$info['admin'];
+
     if (empty($email)) {
         $email = "{$user}@php.net";
     }
-    $dbh->execute($sth, [$user,$pw,$name,$email,$now,$me,$admin]);
+
+    $database->run($sql, [
+        ':handle'    => $user,
+        ':password'  => $pw,
+        ':name'      => $name,
+        ':email'     => $email,
+        ':created'   => gmdate("Y-m-d H:i:s"),
+        ':createdby' => 'imported',
+        ':admin'     => $admin,
+    ]);
+
     $users_added++;
 }
-print "$users_added users added.\n";
+
+echo "$users_added users added.\n";

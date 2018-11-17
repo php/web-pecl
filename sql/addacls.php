@@ -18,8 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-use \PEAR as PEAR;
-
 $acl_paths = [];
 $acl_users = [];
 $group_members = [];
@@ -44,38 +42,35 @@ if (is_resource($m4)) {
     }
     fclose($m4);
 } else {
-    print "not a resource: \$m4\n";
+    echo "not a resource: \$m4\n";
 }
 
-$gh1 = $dbh->prepare("INSERT INTO cvs_groups (groupname,description) ".
-                     "VALUES(?,?)");
-$gh2 = $dbh->prepare("INSERT INTO cvs_group_membership (groupname,".
-                     "username,granted_when,granted_by) VALUES(?,?,?,?)");
-$dupes = 0;
+$gh1 = $database->prepare("INSERT INTO cvs_groups (groupname, description) VALUES (?,?)");
+$gh2 = $database->prepare("INSERT INTO cvs_group_membership (groupname, username, granted_when, granted_by) VALUES (?,?,?,?)");
+
 foreach ($group_comment as $group => $comment) {
-    $dbh->execute($gh1, [$group, $comment]);
+    $gh1->execute([$group, $comment]);
     $members = $group_members[$group];
+
     foreach ($members as $member) {
-        $dbh->expectError(DB_ERROR_ALREADY_EXISTS);
-        $err = $dbh->execute($gh2, [$group, $member, $now, $me]);
-        if (PEAR::isError($err) && $err->getCode() == DB_ERROR_ALREADY_EXISTS)
-            $dupes++;
-        $dbh->popExpect();
+        $gh2->execute([$group, $member, gmdate("Y-m-d H:i:s"), 'imported']);
     }
-    print "$group ($comment): ";
-    print count($members);
-    print " members added\n";
+
+    echo "$group ($comment): ";
+    echo count($members);
+    echo " members added\n";
 }
-print "$dupes duplicate memberships\n";
 
 if (is_resource($avail)) {
     while ($line = fgets($avail, 10240)) {
         if (substr($line, 0, 6) != "avail|") {
             continue;
         }
+
         list(,$user,$path) = explode("|", trim($line));
         $ua = explode(",", $user);
         $pa = explode(",", $path);
+
         foreach ($ua as $u) {
             foreach ($pa as $p) {
                 $acl_paths[$p][$u] = true;
@@ -83,17 +78,19 @@ if (is_resource($avail)) {
             }
         }
     }
+
     fclose($avail);
-    print "Setting up CVS ACLs...";
-    $sth = $dbh->prepare("INSERT INTO cvs_acl (username,usertype,path,access)".
-                         " VALUES(?,?,?,?)");
+    echo "Setting up CVS ACLs...";
+
+    $sth = $database->prepare("INSERT INTO cvs_acl (username, usertype, path, access) VALUES (?,?,?,?)");
     $ent = 0;
     foreach ($acl_paths as $path => $acldata) {
         foreach ($acldata as $user => $foo) {
             $type = isset($group_comment[$user]) ? 'group' : 'user';
-            $dbh->execute($sth, [$user, $type, $path, 1]);
+            $sth->execute([$user, $type, $path, 1]);
             $ent++;
         }
     }
-    print "$ent entries\n";
+
+    echo "$ent entries\n";
 }

@@ -18,28 +18,9 @@
   +----------------------------------------------------------------------+
 */
 
-use \DB as DB;
-use \PEAR as PEAR;
-
-require_once __DIR__.'/../include/pear-prepend.php';
-
-extract($_SERVER);
-
-PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "data_error_handler");
-
-$me = getenv("USER");
-$now = gmdate("Y-m-d H:i:s");
+require_once __DIR__.'/../include/bootstrap.php';
 
 include __DIR__.'/addusers.php';
 include __DIR__.'/addcategories.php';
 include __DIR__.'/addpackages.php';
 include __DIR__.'/addacls.php';
-
-function data_error_handler($obj) {
-    print "Error when adding users: ";
-    print $obj->getMessage();
-    print "\nMore info: ";
-    print $obj->getUserInfo();
-    print "\n";
-    exit;
-}

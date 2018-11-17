@@ -22,10 +22,8 @@ use App\Category;
 
 print "Adding categories...\n";
 
-$dbh->expectError(DB_ERROR_NOSUCHTABLE);
-$dbh->query('DELETE FROM categories');
-$dbh->dropSequence('categories');
-$dbh->popExpect();
+// Empty previous data
+$database->query('DELETE FROM categories');
 
 $categories = '
 Authentication;;
@@ -58,12 +56,16 @@ foreach (explode("\n", $categories) as $line) {
     if (trim($line) == '') {
         continue;
     }
+
     list($name, $desc, $parent) = explode(";", trim($line));
     $params = ['name' => $name, 'desc' => $desc];
+
     if (!empty($parent)) {
         $params['parent'] = $catids[$parent];
     }
+
     $catid = Category::add($params);
     $catids[$name] = $catid;
+
     print "Category: $name\n";
 }

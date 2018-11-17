@@ -20,13 +20,10 @@
 
 use App\Package;
 
-print "Adding packages...\n";
+echo "Adding packages...\n";
 
 // Drops all packages and adds sample packages
-$dbh->expectError(DB_ERROR_NOSUCHTABLE);
-$dbh->query('DELETE FROM packages');
-$dbh->dropSequence('packages');
-$dbh->popExpect();
+$database->query('DELETE FROM packages');
 
 $packages = '
 Auth_HTTP;Authentication;mj;Methods for doing HTTP authentication
@@ -50,27 +47,32 @@ XML_sql2xml;XML;chregu;Represent DB results with XML
 XML_Tree;XML;sebastian;Represent XML data in a tree structure
 ';
 
-$catmap = $dbh->getAssoc("SELECT name,id FROM categories");
+$catmap = $database->run("SELECT name, id FROM categories")->fetchAll(\PDO::FETCH_KEY_PAIR);
 
 foreach (explode("\n", $packages) as $line) {
     if (trim($line) == '') {
         continue;
     }
+
     list($name,$category,$lead,$summary) = explode(";", trim($line));
+
     if (empty($catmap[$category])) {
-        print "Package: $name: skipped - unknown category `$category'\n";
+        echo "Package: $name: skipped - unknown category $category\n";
+
         continue;
     } else {
         $catid = $catmap[$category];
     }
+
     Package::add([
         'name'        => $name,
-        'type'        => 'pear',
-        'license'     => 'PEAR License',
+        'type'        => 'pecl',
+        'license'     => 'PHP License',
         'description' => '',
         'summary'     => $summary,
         'category'    => $catid,
         'lead'        => $lead
     ]);
-    print "Package: $name\n";
+
+    echo "Package: $name\n";
 }

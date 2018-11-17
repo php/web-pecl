@@ -73,4 +73,26 @@ class ReleaseRepository
 
         return $this->database->run($sql, [':limit' => $max])->fetchAll();
     }
+
+    /**
+     * Find all releases by package id.
+     */
+    public function findByPackageId($packageId)
+    {
+        $sql = "SELECT id, version FROM releases WHERE package = :package_id";
+
+        $releases = $this->database->run($sql, ['package_id' => $packageId])->fetchAll();
+
+        usort($releases, [$this, 'sortVersions']);
+
+        return $releases;
+    }
+
+    /**
+     * Sorting function for usort.
+     */
+    private function sortVersions($a, $b)
+    {
+        return version_compare($b['version'], $a['version']);
+    }
 }

@@ -22,6 +22,7 @@
 use App\BorderBox;
 use App\Repository\PackageRepository;
 use App\Repository\PackageStatsRepository;
+use App\Repository\ReleaseRepository;
 use App\Category;
 use App\Package;
 
@@ -103,17 +104,19 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
     echo "  <select onchange=\"javascript:reloadMe();\" name=\"rid\" size=\"1\">\n";
     echo '   <option value="">All releases</option>'."\n";
 
-    $query = "SELECT id, version FROM releases WHERE package = '" . $_GET['pid'] . "'";
-    $rows = $dbh->getAll($query, DB_FETCHMODE_ASSOC);
+    $releaseRepository = new ReleaseRepository($database);
+    $rows = $releaseRepository->findByPackageId($_GET['pid']);
 
-    usort($rows, create_function('$a,$b', 'return version_compare($b[\'version\'],$a[\'version\']);'));
     foreach ($rows as $row) {
         $selected = '';
+
         if (isset($_GET['rid']) && $_GET['rid'] == $row['id']) {
             $selected = ' selected="selected"';
         }
+
         echo '    <option value="' . $row['id'] . '"' . $selected . '>' . $row['version'] . "</option>\n";
     }
+
     $releases = $rows;
     echo "  </select>\n";
 } else {
@@ -188,8 +191,8 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
                isset($_GET['rid']) ? (int)$_GET['rid'] : ''
                );
 
-    // Print the graph control stuff
-    $releases = $dbh->getAll('SELECT id, version FROM releases WHERE package = ' . $_GET['pid'], DB_FETCHMODE_ASSOC);
+        // Print the graph control stuff
+        $releases = $database->run('SELECT id, version FROM releases WHERE package = ?', [$_GET['pid']])->fetchAll();
     ?>
 <br /><br />
 
@@ -301,30 +304,30 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
 // Category based statistics
 } elseif (!empty($_GET['cid'])) {
 
-    $category_name     = $dbh->getOne(sprintf("SELECT name FROM categories WHERE id = %d", $_GET['cid']));
-    $total_packages    = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT pid) FROM package_stats WHERE cid = %d", $_GET['cid']));
-    $total_maintainers = $dbh->getOne(sprintf("SELECT COUNT(DISTINCT m.handle) FROM maintains m, packages p WHERE m.package = p.id AND p.category = %d", $_GET['cid']));
-    $total_releases    = $dbh->getOne(sprintf("SELECT COUNT(*) FROM package_stats WHERE cid = %d", $_GET['cid']));
-    $total_categories  = $dbh->getOne(sprintf("SELECT COUNT(*) FROM categories WHERE parent = %d", $_GET['cid']));
+    $category_name     = $database->run("SELECT name FROM categories WHERE id = ?", [$_GET['cid']])->fetch()['name'];
+    $total_packages    = $database->run("SELECT COUNT(DISTINCT pid) AS count FROM package_stats WHERE cid = ?", [$_GET['cid']])->fetch()['count'];
+    $total_maintainers = $database->run("SELECT COUNT(DISTINCT m.handle) AS count FROM maintains m, packages p WHERE m.package = p.id AND p.category = ?", [$_GET['cid']])->fetch()['count'];
+    $total_releases    = $database->run("SELECT COUNT(*) AS count FROM package_stats WHERE cid = ?", [$_GET['cid']])->fetch()['count'];
+    $total_categories  = $database->run("SELECT COUNT(*) AS count FROM categories WHERE parent = ?", [$_GET['cid']])->fetch()['count'];
 
     // Query to get package list from package_stats_table
     $query = sprintf("SELECT SUM(ps.dl_number) AS dl_number, ps.package, ps.release, ps.pid, ps.rid, ps.cid
                       FROM package_stats ps, packages p
                       WHERE p.package_type = 'pecl' AND p.id = ps.pid AND
                       p.category = %s GROUP BY ps.pid ORDER BY ps.dl_number DESC",
-                     $_GET['cid']
+                     (int)$_GET['cid']
                      );
 
 // Global stats
 } else {
 
-    $total_packages    = number_format($dbh->getOne('SELECT COUNT(id) FROM packages WHERE package_type="pecl"'), 0, '.', ',');
-    $total_maintainers = number_format($dbh->getOne('SELECT COUNT(DISTINCT handle) FROM maintains'), 0, '.', ',');
-    $total_releases    = number_format($dbh->getOne('SELECT COUNT(*) FROM releases r, packages p
-                       WHERE r.package = p.id AND p.package_type="pecl"'), 0, '.', ',');
-    $total_categories  = number_format($dbh->getOne('SELECT COUNT(*) FROM categories'), 0, '.', ',');
-    $total_downloads   = number_format($dbh->getOne('SELECT SUM(dl_number) FROM package_stats, packages p
-                       WHERE package_stats.pid = p.id AND p.package_type="pecl"'), 0, '.', ',');
+    $total_packages    = number_format($database->run('SELECT COUNT(id) AS count FROM packages WHERE package_type="pecl"')->fetch()['count'], 0, '.', ',');
+    $total_maintainers = number_format($database->run('SELECT COUNT(DISTINCT handle) AS count FROM maintains')->fetch()['count'], 0, '.', ',');
+    $total_releases    = number_format($database->run('SELECT COUNT(*) AS count FROM releases r, packages p
+                       WHERE r.package = p.id AND p.package_type="pecl"')->fetch()['count'], 0, '.', ',');
+    $total_categories  = number_format($database->run('SELECT COUNT(*) AS count FROM categories')->fetch()['count'], 0, '.', ',');
+    $total_downloads   = number_format($database->run('SELECT SUM(dl_number) AS downloads FROM package_stats, packages p
+                       WHERE package_stats.pid = p.id AND p.package_type="pecl"')->fetch()['downloads'], 0, '.', ',');
     $query             = "SELECT sum(ps.dl_number) as dl_number, ps.package, ps.pid, ps.rid, ps.cid
                           FROM package_stats ps, packages p
                           WHERE p.id = ps.pid AND p.package_type = 'pecl'
@@ -363,10 +366,10 @@ if (@!$_GET['pid']) {
 
     $bb = new BorderBox('Package Statistics');
 
-    $sth  = $dbh->query($query); //$query defined above
-    $rows = $sth->numRows();
+    $statement  = $database->run($query); //$query defined above
+    $results = $statement->fetchAll();
 
-    if (PEAR::isError($sth)) {
+    if (PEAR::isError($statement)) {
         PEAR::raiseError('unable to generate stats');
     }
 
@@ -379,7 +382,7 @@ if (@!$_GET['pid']) {
 
     $lastPackage = "";
 
-    while ($row = $sth->fetchRow(DB_FETCHMODE_ASSOC)) {
+    foreach ($results as $row) {
         if ($row['package'] == $lastPackage) {
             $row['package'] = '';
         } else {

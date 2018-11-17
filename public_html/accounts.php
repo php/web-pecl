@@ -19,6 +19,7 @@
 */
 
 response_header("Accounts");
+
 $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : null;
 $letter = isset($_GET['letter']) ? strip_tags($_GET['letter']) : null;
 
@@ -26,15 +27,18 @@ $page_size = 20;
 
 print "<h1>Accounts</h1>\n";
 
-$all_firstletters = $dbh->getCol('SELECT SUBSTRING(handle,1,1) FROM users '.
-                                 'WHERE registered = 1 ORDER BY handle');
+$sql = "SELECT SUBSTRING(handle,1,1) FROM users WHERE registered = 1 ORDER BY handle";
+$allFirstLetters = $database->run($sql)->fetchAll(\PDO::FETCH_COLUMN);
+
 // I wish there was a way to do this in mysql...
 $first_letter_offsets = [];
-for ($i = 0; $i < count($all_firstletters); $i++) {
-    $l = $all_firstletters[$i];
+for ($i = 0; $i < count($allFirstLetters); $i++) {
+    $l = $allFirstLetters[$i];
+
     if (isset($first_letter_offsets[$l])) {
         continue;
     }
+
     $first_letter_offsets[$l] = $i;
 }
 
@@ -48,66 +52,75 @@ if (empty($show)) {
 } else {
     settype($show, "integer");
 }
+
 settype($offset, "integer");
 
-$naccounts = $dbh->getOne("SELECT COUNT(handle) FROM users ".
-                          "WHERE registered = 1");
+$accountsCount = $database->run("SELECT COUNT(handle) AS count FROM users WHERE registered = 1")->fetch()['count'];
 
-$last_shown = $offset + $page_size - 1;
+$lastShown = $offset + $page_size - 1;
 
-$firstletters = array_unique($all_firstletters);
+$firstletters = array_unique($allFirstLetters);
 
 $last = $offset - $page_size;
 $lastlink = htmlspecialchars($_SERVER['PHP_SELF']) . "?offset=$last";
 $next = $offset + $page_size;
 $nextlink = htmlspecialchars($_SERVER['PHP_SELF']) . "?offset=$next";
+
 print "<table border=\"0\" cellspacing=\"1\" cellpadding=\"5\">\n";
 print " <tr bgcolor=\"#cccccc\">\n";
 print "  <th>";
+
 if ($offset > 0) {
     print "<a href=\"$lastlink\">&lt;&lt; Last $page_size</a>";
 } else {
     print "&nbsp;";
 }
+
 print "</th>\n";
 print "  <td colspan=\"3\">";
 
 print '<table border="0" width="100%"><tr><td>';
+
 foreach ($firstletters as $fl) {
     $o = $first_letter_offsets[$fl];
-    if ($o >= $offset && $o <= $last_shown) {
+
+    if ($o >= $offset && $o <= $lastShown) {
         printf('<b>%s</b> ', strtoupper($fl));
     } else {
         printf('<a href="%s?letter=%s">%s</a> ',
                htmlspecialchars($_SERVER['PHP_SELF']), $fl, strtoupper($fl));
     }
 }
+
 print '</td><td rowspan="2" align="right">';
 print '<form><input type="button" onclick="';
+
 $gourl = "http://" . $_SERVER['SERVER_NAME'];
+
 if ($_SERVER['SERVER_PORT'] != 80) {
     $gourl .= ":".$_SERVER['SERVER_PORT'];
 }
+
 $gourl .= "/user/";
 print "u=prompt('Go to account:','');if(u)location.href='$gourl'+u;";
 print '" value="Go to account.." /></td></tr><tr><td>';
 printf("Displaying accounts %d - %d of %d<br />\n",
-       $offset, min($offset+$show, $naccounts), $naccounts);
-$sth = $dbh->limitQuery('SELECT handle,name,email,homepage,showemail '.
-                        'FROM users WHERE registered = 1 ORDER BY handle',
-                        $offset, $show);
-if (DB::isError($sth)) {
-    die("query failed: ".DB::errorMessage($dbh)."<br />\n");
-}
+       $offset, min($offset+$show, $accountsCount), $accountsCount);
+
+$sql = "SELECT handle,name,email,homepage,showemail FROM users WHERE registered = 1 ORDER BY handle LIMIT :limit OFFSET :offset";
+$statement = $database->run($sql, [':limit' => $show, ':offset' => $offset]);
+
 print "</td></tr></table>\n";
 print "</td>\n";
 print "  <th>";
-if ($offset + $page_size < $naccounts) {
-    $nn = min($page_size, $naccounts - $offset - $page_size);
+
+if ($offset + $page_size < $accountsCount) {
+    $nn = min($page_size, $accountsCount - $offset - $page_size);
     print "<a href=\"$nextlink\">Next $nn &gt;&gt;</a>";
 } else {
     print "&nbsp;";
 }
+
 print "</th>\n";
 print " </tr>\n";
 
@@ -120,13 +133,15 @@ print "  <th>Commands</th>\n";
 print " </tr>\n";
 
 $rowno = 0;
-while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
+foreach ($statement->fetchAll() as $row) {
     extract($row);
+
     if (++$rowno % 2) {
         print " <tr bgcolor=\"#e8e8e8\">\n";
     } else {
         print " <tr bgcolor=\"#e0e0e0\">\n";
     }
+
     print '  <td><a href="/user/'.$handle.'">'.$handle.'</a></td>'."\n";
     print "  <td>$name</td>\n";
 
@@ -135,22 +150,26 @@ while (is_array($row = $sth->fetchRow(DB_FETCHMODE_ASSOC))) {
     } else {
         print "  <td>(not shown)</td>\n";
     }
+
     if (!empty($homepage)) {
         print "<td><a href=\"$homepage\">$homepage</a></td>";
     } else {
         print '<td>&nbsp;</td>';
     }
+
     print "\n  <td><a href=\"account-edit.php?handle=".$row['handle']."\">[Edit]</a></td>\n";
     print " </tr>\n";
 }
 
 print " <tr bgcolor=\"#cccccc\">\n";
 print "  <th>";
+
 if ($offset > 0) {
     print "<a href=\"$lastlink\">&lt;&lt; Last $page_size</a>";
 } else {
     print "&nbsp;";
 }
+
 print "</th>\n";
 print "  <td colspan=\"3\">";
 
@@ -159,12 +178,14 @@ print '</td><td rowspan="2">&nbsp;';
 print "</td></tr></table>\n";
 print "</td>\n";
 print "  <th>";
-if ($offset + $page_size < $naccounts) {
-    $nn = min($page_size, $naccounts - $offset - $page_size);
+
+if ($offset + $page_size < $accountsCount) {
+    $nn = min($page_size, $accountsCount - $offset - $page_size);
     print "<a href=\"$nextlink\">Next $nn &gt;&gt;</a>";
 } else {
     print "&nbsp;";
 }
+
 print "</th>\n";
 print " </tr>\n";
 

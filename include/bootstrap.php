@@ -115,6 +115,7 @@ if (
         '/public_html/account-info.php',
         '/public_html/account-mail.php',
         '/public_html/account-request.php',
+        '/public_html/accounts.php',
         '/public_html/index.php',
         '/public_html/feeds/feeds.php',
         '/public_html/json.php',

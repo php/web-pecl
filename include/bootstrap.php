@@ -120,6 +120,7 @@ if (
         '/public_html/news/index.php',
         '/public_html/package-new.php',
         '/public_html/package-stats.php',
+        '/public_html/package-stats-graph.php',
         '/public_html/wishlist.php',
     ])
 ) {

@@ -32,6 +32,7 @@
 use \BarPlot as BarPlot;
 use \Graph as Graph;
 use \GroupBarPlot as GroupBarPlot;
+use App\Repository\AgregatedPackageStatsRepository;
 
 // TODO: these are required manually due to no PSR-4 support yet
 require_once __DIR__.'/../include/jpgraph/jpgraph.php';
@@ -68,24 +69,15 @@ foreach ($releases as $release) {
         $y_axis[$key] = 0;
     }
 
-    $sql = sprintf("SELECT YEAR(yearmonth) AS dyear, MONTH(yearmonth) AS dmonth, SUM(downloads) AS downloads
-                        FROM aggregated_package_stats a, releases r
-                        WHERE a.package_id = %d
-                            AND r.id = a.release_id
-                            AND r.package = a.package_id
-                            AND yearmonth > (now() - INTERVAL 1 YEAR)
-                            %s
-                        GROUP BY dyear, dmonth
-                        ORDER BY dyear DESC, dmonth DESC",
-                   (int) $_GET['pid'],
-                   $release_clause = $rid > 0 ? 'AND a.release_id = ' . (int) $rid : '');
+    $repository = new AgregatedPackageStatsRepository($database);
 
-    if ($result = $dbh->query($sql)) {
-        while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) {
-            $key = sprintf('%04d%02d', $row['dyear'], $row['dmonth']);
-            if (isset($y_axis[$key])) {
-                $y_axis[$key] = $row['downloads'];
-            }
+    $results = $repository->find($_GET['pid'], $rid);
+
+    foreach ($results as $result) {
+        $key = sprintf('%04d%02d', $result['dyear'], $result['dmonth']);
+
+        if (isset($y_axis[$key])) {
+            $y_axis[$key] = $result['downloads'];
         }
     }
 
@@ -102,8 +94,8 @@ $x_axis = array_values($x_axis);
 $bplots = array_values($bplots);
 
 // Get package name
-$package_name = $dbh->getOne('SELECT name FROM packages WHERE id = ' . (int)$_GET['pid']);
-$package_rel  = !empty($_GET['rid']) ? $dbh->getOne('SELECT version FROM releases WHERE id = ' . (int)$_GET['rid']) : '';
+$package_name = $database->run('SELECT name FROM packages WHERE id = ?', [$_GET['pid']])->fetch()['name'];
+$package_rel  = !empty($_GET['rid']) ? $database->run('SELECT version FROM releases WHERE id = ?', $_GET['rid'])->fetch()['version'] : '';
 
 // Go through setting up the graph
 if ($config->get('env') === 'prod') {

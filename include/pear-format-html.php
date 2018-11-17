@@ -393,27 +393,30 @@ function error_handler($errobj, $title = 'Error')
 */
 function html_category_urhere($id, $link_lastest = false)
 {
+    global $database;
+
     $html = "<a href=\"/packages.php\">Top Level</a>";
+
     if ($id !== null) {
-        global $dbh;
-        $res = $dbh->query("SELECT c.id, c.name
+        $results = $database->run("SELECT c.id, c.name
                             FROM categories c, categories cat
-                            WHERE cat.id = $id
+                            WHERE cat.id = :id
                             AND c.cat_left <= cat.cat_left
-                            AND c.cat_right >= cat.cat_right");
-        $nrows = $res->numRows();
+                            AND c.cat_right >= cat.cat_right", [':id' => $id])->fetchAll();
+        $nrows = count($results);
+
         $i = 0;
-        while ($res->fetchInto($row, DB_FETCHMODE_ASSOC)) {
+        foreach ($results as $row) {
             if (!$link_lastest && $i >= $nrows -1) {
                 break;
             }
-            $html .= "  :: ".
-                     "<a href=\"/packages.php?catpid={$row['id']}&catname={$row['name']}\">".
-                     "{$row['name']}</a>";
+
+            $html .= '  :: <a href="/packages.php?catpid='.$row['id'].'&catname='.$row['name'].'">'.$row['name'].'</a>';
             $i++;
         }
+
         if (!$link_lastest) {
-            $html .= "  :: <b>".$row['name']."</b>";
+            $html .= '  :: <b>'.$row['name'].'</b>';
         }
     }
     print $html;

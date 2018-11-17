@@ -21,7 +21,6 @@
 auth_require(true);
 
 header("Content-type: text/plain; charset=utf-8");
-$dbh->setErrorHandling(PEAR_ERROR_DIE);
 
 print htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES)."\n\n";
 

@@ -25,12 +25,14 @@
 
 namespace App\Repository;
 
+use App\Database;
+
 /**
  * Repository class for releases.
  */
-class Release
+class ReleaseRepository
 {
-    private $dbh;
+    private $database;
 
     /**
      * Number of recent releases returned.
@@ -40,9 +42,9 @@ class Release
     /**
      * Class constructor.
      */
-    public function __construct($dbh)
+    public function __construct(Database $database)
     {
-        $this->dbh = $dbh;
+        $this->database = $database;
     }
 
     /**
@@ -51,31 +53,24 @@ class Release
      * @param  integer Number of releases to return
      * @return array
      */
-    public function getRecent($max = self::MAX_ITEMS_RETURNED)
+    public function findRecent($max = self::MAX_ITEMS_RETURNED)
     {
         $sql = "SELECT packages.id AS id,
-                packages.name AS name,
-                packages.summary AS summary,
-                releases.version AS version,
-                releases.releasedate AS releasedate,
-                releases.releasenotes AS releasenotes,
-                releases.doneby AS doneby,
-                releases.state AS state
-            FROM packages, releases
-            WHERE packages.id = releases.package
+                    packages.name AS name,
+                    packages.summary AS summary,
+                    releases.version AS version,
+                    releases.releasedate AS releasedate,
+                    releases.releasenotes AS releasenotes,
+                    releases.doneby AS doneby,
+                    releases.state AS state
+                FROM packages, releases
+                WHERE packages.id = releases.package
                 AND packages.approved = 1
                 AND packages.package_type = 'pecl'
-            ORDER BY releases.releasedate DESC";
+                ORDER BY releases.releasedate DESC
+                LIMIT :limit
+        ";
 
-        $sth = $this->dbh->limitQuery($sql, 0, $max);
-
-        $recent = [];
-
-        // XXX Fixme when DB gets limited getAll()
-        while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
-            $recent[] = $row;
-        }
-
-        return $recent;
+        return $this->database->run($sql, [':limit' => $max])->fetchAll();
     }
 }

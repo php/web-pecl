@@ -18,7 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Repository\Release;
+use App\Repository\ReleaseRepository;
 use App\Package;
 use App\User;
 use App\Category;
@@ -117,8 +117,8 @@ if (!empty($url_redirect)) {
 
 switch ($type) {
     case 'latest':
-        $releaseRepository = new Release($dbh);
-        $items = $releaseRepository->getRecent(10);
+        $releaseRepository = new ReleaseRepository($database);
+        $items = $releaseRepository->findRecent(10);
         $channel_title = 'PECL: Latest releases';
         $channel_description = 'The latest releases in PECL.';
         break;

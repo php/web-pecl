@@ -18,11 +18,11 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Repository\Release;
+use App\Repository\ReleaseRepository;
 
-$releaseRepository = new Release($dbh);
+$releaseRepository = new ReleaseRepository($database);
 
-$recent = $releaseRepository->getRecent();
+$recent = $releaseRepository->findRecent();
 if (@count($recent) > 0) {
     $RSIDEBAR_DATA = "<strong>Recent&nbsp;Releases:</strong>\n";
     $RSIDEBAR_DATA .= '<table class="sidebar-releases">' . "\n";

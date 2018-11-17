@@ -26,11 +26,11 @@ require_once __DIR__.'/../../include/bootstrap.php';
 
 $packageDll = new PackageDll($config->get('tmp_dir'));
 
-$data = $dbh->getAll("SELECT packages.name, releases.version, releases.releasedate
-                        FROM packages, releases
-                        WHERE packages.id = releases.package",
-                    NULL,
-                    DB_FETCHMODE_ASSOC);
+$sql = "SELECT packages.name, releases.version, releases.releasedate
+        FROM packages, releases
+        WHERE packages.id = releases.package";
+
+$data = $database->run($sql)->fetchAll();
 
 if ($packageDll->isResetOverdue()) {
     if (!$packageDll->resetDllDownloadCache()) {

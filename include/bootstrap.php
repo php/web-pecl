@@ -103,16 +103,22 @@ date_default_timezone_set('UTC');
 // TODO: This is in the process of migration from the deprecated PEAR DB package
 // to a PDO handler.
 if (
-    isset($_SERVER['DOCUMENT_ROOT'])
-    && isset($_SERVER['SCRIPT_FILENAME'])
-    && in_array(str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']), [
-        '/account-info.php',
-        '/account-mail.php',
-        '/json.php',
-        '/news/pdo.php',
-        '/package-new.php',
-        '/package-stats.php',
-        '/wishlist.php',
+    isset($_SERVER['SCRIPT_FILENAME'])
+    && in_array(str_replace(realpath(__DIR__.'/..'), '', realpath($_SERVER["SCRIPT_FILENAME"])), [
+        '/bin/cron/update-win-pkg-cache.php',
+        '/bin/cleanup-user.php',
+        '/bin/drop-unused-tables.php',
+        '/bin/export.php',
+        '/bin/generate-rest.php',
+        '/bin/update-karma.php',
+        '/bin/update-vcs-link.php',
+        '/public_html/account-info.php',
+        '/public_html/account-mail.php',
+        '/public_html/json.php',
+        '/public_html/news/pdo.php',
+        '/public_html/package-new.php',
+        '/public_html/package-stats.php',
+        '/public_html/wishlist.php',
     ])
 ) {
     $pdoDsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name').';charset=utf8';

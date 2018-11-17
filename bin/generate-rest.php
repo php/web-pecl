@@ -26,6 +26,7 @@
 use App\Category;
 use App\Rest;
 use App\Package;
+use App\Repository\UserRepository;
 use App\Utils\Filesystem;
 use \DB as DB;
 use \PEAR as PEAR;
@@ -52,55 +53,74 @@ mkdir($config->get('rest_dir'), 0777, true);
 chmod($config->get('rest_dir'), 0777);
 
 echo "Generating Category REST...\n";
+
 foreach (Category::listAll() as $category) {
     echo "  $category[name]...";
     $rest->saveCategory($category['name']);
     echo "done\n";
 }
+
 $rest->saveAllCategories();
+
 echo "Generating Maintainer REST...\n";
-$maintainers = $dbh->getAll('SELECT * FROM users', [], DB_FETCHMODE_ASSOC);
-foreach ($maintainers as $maintainer) {
+
+$userRepository = new UserRepository($database);
+
+foreach ($userRepository->findAll() as $maintainer) {
     echo "  $maintainer[handle]...";
     $rest->saveMaintainer($maintainer['handle']);
     echo "done\n";
 }
+
 echo "Generating All Maintainers REST...\n";
 $rest->saveAllMaintainers();
 echo "done\n";
+
 echo "Generating Package REST...\n";
 $rest->saveAllPackages();
 
 $pearConfig = PEAR_Config::singleton();
 $pkg = new PEAR_PackageFile($pearConfig);
+
 foreach (Package::listAll(false, false, false) as $package => $info) {
     echo "  $package\n";
     $rest->savePackage($package);
     echo "     Maintainers...";
     $rest->savePackageMaintainer($package);
     echo "...done\n";
+
     $releases = Package::info($package, 'releases');
+
     if ($releases) {
         echo "     Processing All Releases...";
         $rest->saveAllReleases($package);
         echo "done\n";
-        foreach ($releases as $version => $blah) {
-            $fileinfo = $dbh->getOne('SELECT fullpath FROM files WHERE release = ?',
-                [$blah['id']]);
+
+        foreach ($releases as $version => $release) {
+            $sql = "SELECT fullpath FROM files WHERE `release` = :release_id";
+
+            $statement = $database->run($sql, [':release_id' => $release['id']]);
+            $result = $statement->fetch();
+
+            $fileinfo = isset($result['fullpath']) ? $result['fullpath'] : [];
+
             if (!$fileinfo) {
                 echo "     Skipping INVALID Version $version (corrupt in database!)\n";
                 continue;
             }
+
             $tar = new Archive_Tar($fileinfo);
+
             if ($pxml = $tar->extractInString('package2.xml')) {
             } elseif ($pxml = $tar->extractInString('package.xml'));
+
             PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
             $pf = $pkg->fromAnyFile($fileinfo, PEAR_VALIDATE_NORMAL);
             PEAR::popErrorHandling();
+
             if (!PEAR::isError($pf)) {
                 echo "     Version $version...";
-                $rest->saveRelease($fileinfo, $pxml, $pf, $blah['doneby'],
-                    $blah['id']);
+                $rest->saveRelease($fileinfo, $pxml, $pf, $release['doneby'], $release['id']);
                 echo "done\n";
             } else {
                 echo "     Skipping INVALID Version $version\n";
@@ -111,7 +131,9 @@ foreach (Package::listAll(false, false, false) as $package => $info) {
         echo "  done\n";
     }
 }
+
 echo "Generating Category Package REST...\n";
+
 foreach (Category::listAll() as $category) {
     echo "  $category[name]...";
     $rest->savePackagesCategory($category['name']);

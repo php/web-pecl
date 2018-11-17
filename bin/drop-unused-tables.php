@@ -31,6 +31,4 @@ DROP TABLE IF EXISTS
 elections, election_votes_single, election_votes_multiple, election_votes_abstain, election_results, election_handle_votes, election_choices, election_account_request, zendinfo, trackbacks, apidoc_queue, tagnames, tag_package_link, `comments`, manual_notes
 ';
 
-$dsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name');
-$dh = new \PDO($dsn, $config->get('db_username'), $config->get('db_password'));
-$res = $dh->query($sql);
+$res = $database->query($sql);

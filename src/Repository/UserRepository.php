@@ -53,6 +53,18 @@ class UserRepository
     }
 
     /**
+     * Get all users.
+     */
+    public function findAll()
+    {
+        $sql = "SELECT * FROM users";
+
+        $statement = $this->database->run($sql);
+
+        return $statement->fetchAll();
+    }
+
+    /**
      * Retrieve user's wishlist URL.
      */
     public function getWishlistByHandle($handle)

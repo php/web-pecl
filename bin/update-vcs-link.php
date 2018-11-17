@@ -44,10 +44,8 @@ IF (cvs_link REGEXP('cvs.php.net\/cvs.php(.*)'),
 where package_type='pecl' and cvs_link like '%cvs.php.net%';
 ";
 
-$dsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name');
-$dh = new \PDO($dsn, $config->get('db_username'), $config->get('db_password'));
+$res = $database->query($sql_movetosvn);
 
-$res = $dh->query($sql_movetosvn);
 if (!$res) {
-    var_dump($dh->errorInfo());
+    var_dump($database->errorInfo());
 }

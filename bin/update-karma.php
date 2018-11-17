@@ -25,14 +25,11 @@
 
 require_once __DIR__.'/../include/bootstrap.php';
 
-$dsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name');
-$dh = new \PDO($dsn, $config->get('db_username'), $config->get('db_password'));
-
 $sql = "update karma set level='developer' where level='pear.dev' or level='pecl.dev';";
-$res = $dh->query($sql);
+$res = $database->query($sql);
 
 $sql = "update karma set level='admin' where level='pear.admin';";
-$res = $dh->query($sql);
+$res = $database->query($sql);
 
 $sql = "delete from karma where level='pear.pepr' or level='pear.pepr' or level='pear.pepr.admin' or level='pear.doc.chm-upload' or level='pear.election' or level='pear.planet.admin' or level='pear.group' or level='pear.voter';";
-$res = $dh->query($sql);
+$res = $database->query($sql);

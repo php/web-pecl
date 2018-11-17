@@ -36,15 +36,12 @@ array_walk($svn_accounts, 'nonl');
 
 $sql = 'select handle from users  where handle NOT IN (select handle from maintains)';
 
-$dsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name');
-$dh = new \PDO($dsn, $config->get('db_username'), $config->get('db_password'));
-
-$res = $dh->query($sql);
+$res = $database->query($sql);
 $sql_del = 'DELETE FROM users WHERE handle=';
 $del = 0;
 foreach ($res as $row) {
     if (!in_array($row['handle'], $svn_accounts)) {
-        $res = $dh->query($sql_del . "'" . $row['handle'] . "'");
+        $res = $database->query($sql_del . "'" . $row['handle'] . "'");
         if ($res) $del++;
     }
 }

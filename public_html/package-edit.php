@@ -282,7 +282,7 @@ foreach ($row['releases'] as $version => $item) {
     $msg = "Are you sure that you want to delete the release?";
 
     echo "<a href=\"javascript:confirmed_goto('$url', '$msg')\">"
-         . '<img src="/gifs/delete.gif" alt="Delete">'
+         . '<img src="/img/delete.gif" alt="Delete">'
          . "</a>\n";
 
     echo "</td>\n";

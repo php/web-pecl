@@ -146,7 +146,7 @@ if (!empty($_GET)) {
         $params['itemData'] = range(0, $numrows - 1);
         $pager = Pager::factory($params);
         list($from, $to) = $pager->getOffsetByPageId();
-        $links = $pager->getLinks('<img src="gifs/prev.gif" border="0" alt="&lt;&lt;" width="10" height="10">Prev', 'Next<img src="gifs/next.gif" border="0" alt="&gt;&gt;" width="10" height="10">');
+        $links = $pager->getLinks('<img src="img/prev.gif" border="0" alt="&lt;&lt;" width="10" height="10">Prev', 'Next<img src="img/next.gif" border="0" alt="&gt;&gt;" width="10" height="10">');
 
         // Row number
         $rownum = $from - 1;

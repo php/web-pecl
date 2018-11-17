@@ -323,7 +323,7 @@ do {
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', nl2br($account_purpose)),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', ($rejected ? "rejected" : "<font color=\"#c00000\"><strong>Outstanding</strong></font>")),
                               sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', $created_at),
-                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', '<a onmousedown="event.cancelBubble = true" href="'.htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES).'?acreq='.htmlspecialchars($handle, ENT_QUOTES).'"><img src="/gifs/edit.gif" alt="Edit"></a>')
+                              sprintf('<span style="cursor: hand" onmousedown="highlightAccountRow(this)">%s</span>', '<a onmousedown="event.cancelBubble = true" href="'.htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES).'?acreq='.htmlspecialchars($handle, ENT_QUOTES).'"><img src="/img/edit.gif" alt="Edit"></a>')
                               );
             }
 

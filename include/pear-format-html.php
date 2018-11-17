@@ -125,7 +125,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
 <table class="head" cellspacing="0" cellpadding="0" width="100%">
  <tr>
   <td class="head-logo">
-    <a href="/"><img src="/gifs/peclsmall.gif" alt="PECL :: The PHP Extension Community Library" <?= $imageSize->getSize('/gifs/peclsmall.gif'); ?> style="margin: 5px;"></a><br/>
+    <a href="/"><img src="/img/peclsmall.gif" alt="PECL :: The PHP Extension Community Library" <?= $imageSize->getSize('/img/peclsmall.gif'); ?> style="margin: 5px;"></a><br/>
   </td>
 
   <td class="head-menu">
@@ -165,7 +165,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
      <option value="pecl-dev">Developer mailing list</option>
      <option value="pecl-cvs">SVN commits mailing list</option>
     </select>
-    <input type="image" src="/gifs/small_submit_white.gif" alt="search" style="vertical-align: middle;" />&nbsp;<br />
+    <input type="image" src="/img/small_submit_white.gif" alt="search" style="vertical-align: middle;" />&nbsp;<br />
     </p>
    </form>
   </td>

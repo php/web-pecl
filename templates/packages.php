@@ -78,8 +78,8 @@
         Sub-categories: <?php echo $subCategories; ?><br /><br />
     <?php } ?>
 
-    <a href="<?php echo $hideMoreInfoLink; ?>" title="Hide all more info"><img src="gifs/moreinfo-no.gif" width="17" height="17" border="0" vspace="3" /></a>
-    <a href="<?php echo $showMoreInfoLink; ?>" title="Show all more info"><img src="gifs/moreinfo-yes.gif" width="17" height="17" border="0" vspace="3" /></a>
+    <a href="<?php echo $hideMoreInfoLink; ?>" title="Hide all more info"><img src="img/moreinfo-no.gif" width="17" height="17" border="0" vspace="3" /></a>
+    <a href="<?php echo $showMoreInfoLink; ?>" title="Show all more info"><img src="img/moreinfo-yes.gif" width="17" height="17" border="0" vspace="3" /></a>
 
     <table border="0" style="border: solid 1px black" cellspacing="0" cellpadding="0">
         <tr>
@@ -111,7 +111,7 @@
                             <td valign="top"><?php echo $p['summary']; ?></td>
                             <td valign="top">
                                 <a href="#" onclick="toggleMoreInfo(<?php echo "'".$p['name']."'"; ?>,<?php echo $p['id']; ?>); return false" onmouseover="window.status = 'View more info about <?php echo $p['name']; ?>'; return true" onmouseout="window.status = ''" title="View more info about <?php echo $p['name']; ?>">
-                                    <img src="gifs/moreinfo.gif" border="0" />
+                                    <img src="img/moreinfo.gif" border="0" />
                                 </a>
                             </td>
                         </tr>
@@ -124,7 +124,7 @@
                                     <tr>
                                         <td><span class="moreInfoText">More information</span></td>
                                         <td align="right">
-                                            <a href="javascript: toggleMoreInfo(<?php echo "'".$p['name']."'"; ?>,<?php echo $p['id']; ?>)"><img class="closeButton" src="gifs/close.gif" border="0" /></a>
+                                            <a href="javascript: toggleMoreInfo(<?php echo "'".$p['name']."'"; ?>,<?php echo $p['id']; ?>)"><img class="closeButton" src="img/close.gif" border="0" /></a>
                                         </td>
                                     </tr>
                                 </table>

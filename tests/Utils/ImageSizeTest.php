@@ -43,7 +43,7 @@ class ImageSizeTest extends TestCase
     public function dateProvider()
     {
         return [
-            ['/gifs/peclsmall.gif', 'width="106" height="55"'],
+            ['/img/peclsmall.gif', 'width="106" height="55"'],
             ['/nonexisting/nonexisting.gif', ''],
             ['/notimage/../composer.json', ''],
         ];

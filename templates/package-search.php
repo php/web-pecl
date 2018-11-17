@@ -292,7 +292,7 @@ response_header('Package Search');
     <?php endforeach?>
    </select>
    <script>
-     calendarReleasedOn = new dynCalendar('calendarReleasedOn', 'setDateFromCalendar_released_on', 'gifs/');
+     calendarReleasedOn = new dynCalendar('calendarReleasedOn', 'setDateFromCalendar_released_on', 'img/');
    </script>
   </td>
  </tr>
@@ -314,7 +314,7 @@ response_header('Package Search');
     <?php endforeach?>
    </select>
    <script>
-     calendarReleasedBefore = new dynCalendar('calendarReleasedBefore', 'setDateFromCalendar_released_before', 'gifs/');
+     calendarReleasedBefore = new dynCalendar('calendarReleasedBefore', 'setDateFromCalendar_released_before', 'img/');
    </script>
   </td>
  </tr>
@@ -336,7 +336,7 @@ response_header('Package Search');
     <?php endforeach?>
    </select>
    <script>
-    calendarReleasedSince = new dynCalendar('calendarReleasedSince', 'setDateFromCalendar_released_since', 'gifs/');
+    calendarReleasedSince = new dynCalendar('calendarReleasedSince', 'setDateFromCalendar_released_since', 'img/');
    </script>
   </td>
  </tr>

@@ -110,7 +110,7 @@ ul.side_pages {
     margin-bottom: 1.5em;
     margin-left: 1em;
     padding-left: 1em;
-    list-style: url(/gifs/box-0.gif) square;
+    list-style: url(/img/box-0.gif) square;
 }
 
 li.side_page {
@@ -483,7 +483,7 @@ form.pecl-form div.info {
 a.item,
 a.item:visited,
 a.item:link {
-    background-image: url(../gifs/pecl_item.gif);
+    background-image: url(../img/pecl_item.gif);
     background-repeat: no-repeat;
     background-position: left center;
     font-weight: bold;

@@ -160,7 +160,7 @@ while ($sth->fetchInto($row)) {
     }
 
     if (count($sub_links) >= $max_sub_links) {
-        $sub_links = implode(', ', $sub_links).' <img src="/gifs/caret-r.gif" alt="[more]">';
+        $sub_links = implode(', ', $sub_links).' <img src="/img/caret-r.gif" alt="[more]">';
     } else {
         $sub_links = implode(', ', $sub_links);
     }
@@ -203,7 +203,7 @@ if (!empty($catpid)) {
     $total = count($packages);
     $pager = Pager::factory(['totalItems' => $total, 'perPage' => 15]);
     list($first, $last) = $pager->getOffsetByPageId();
-    list($prev, $pages, $next) = $pager->getLinks('<nobr><img src="gifs/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</nobr>', '<nobr>Next<img src="gifs/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></nobr>');
+    list($prev, $pages, $next) = $pager->getLinks('<nobr><img src="img/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</nobr>', '<nobr>Next<img src="img/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></nobr>');
 
     $currentPage = $pager->getCurrentPageID();
     $numPages    = $pager->numPages();

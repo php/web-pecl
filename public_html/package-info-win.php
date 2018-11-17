@@ -208,9 +208,9 @@ if ($relid) {
 if (!empty($auth_user)) {
     $bb->fullRow("<div align=\"right\">" .
                  '<a href="/package-edit.php?id='.$pacid.'">'.
-                           '<img src="/gifs/edit.gif" alt="Edit package information"></a>'.
+                           '<img src="/img/edit.gif" alt="Edit package information"></a>'.
                  ($auth_user->isAdmin() ? '&nbsp;<a href="/package-delete.php?id='.$pacid.'">'.
-                                      '<img src="/gifs/delete.gif" alt="Delete package"></a>' : '').
+                                      '<img src="/img/delete.gif" alt="Delete package"></a>' : '').
                  '&nbsp;[<a href="/admin/package-maintainers.php?pid='.$pacid.'">Edit maintainers</a>]</div>');
 }
 
@@ -315,7 +315,7 @@ if (!$relid) {
                 $urls = $packageDll->getDllDownloadUrls($pkg['name'], $r_version, $pkg['releases'][$r_version]['releasedate']);
                 if ($urls) {
                     $downloads_html .= "&nbsp;&nbsp;<a href=\"/package/$pkg[name]/$r_version/windows\">"
-                                    . "<img src=\"/gifs/windows-icon.png\" />DLL</a>";
+                                    . "<img src=\"/img/windows-icon.png\" />DLL</a>";
                 }
             }
 

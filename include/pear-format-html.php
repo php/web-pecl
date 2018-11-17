@@ -100,7 +100,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
 <html lang="en">
 <head>
  <title>PECL :: <?php echo $title; ?></title>
- <link rel="shortcut icon" href="/gifs/pecl-favicon.ico" />
+ <link rel="shortcut icon" href="/favicon.ico" />
  <link rel="stylesheet" href="/css/style.css" />
 <?php
     foreach ($extra_styles as $style_file) {

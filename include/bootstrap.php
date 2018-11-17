@@ -104,43 +104,16 @@ require_once 'HTTP/Upload.php';
 date_default_timezone_set('UTC');
 
 // Database access with PDO enabled endpoints
-// TODO: This is in the process of migration from the deprecated PEAR DB package
-// to a PDO handler.
-if (
-    isset($_SERVER['SCRIPT_FILENAME'])
-    && in_array(str_replace(realpath(__DIR__.'/..'), '', realpath($_SERVER["SCRIPT_FILENAME"])), [
-        '/bin/cron/update-win-pkg-cache.php',
-        '/bin/cleanup-user.php',
-        '/bin/drop-unused-tables.php',
-        '/bin/export.php',
-        '/bin/generate-rest.php',
-        '/bin/update-karma.php',
-        '/bin/update-vcs-link.php',
-        '/public_html/account-info.php',
-        '/public_html/account-mail.php',
-        '/public_html/account-request.php',
-        '/public_html/accounts.php',
-        '/public_html/index.php',
-        '/public_html/feeds/feeds.php',
-        '/public_html/json.php',
-        '/public_html/news/index.php',
-        '/public_html/package-new.php',
-        '/public_html/package-stats.php',
-        '/public_html/package-stats-graph.php',
-        '/public_html/wishlist.php',
-    ])
-) {
-    $pdoDsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name').';charset=utf8';
-
-    $databaseAdapter = new Adapter();
-    $databaseAdapter->setDsn($pdoDsn);
-    $databaseAdapter->setUsername($config->get('db_username'));
-    $databaseAdapter->setPassword($config->get('db_password'));
-
-    $database = new Database($databaseAdapter->getInstance());
-}
+$pdoDsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name').';charset=utf8';
+$databaseAdapter = new Adapter();
+$databaseAdapter->setDsn($pdoDsn);
+$databaseAdapter->setUsername($config->get('db_username'));
+$databaseAdapter->setPassword($config->get('db_password'));
+$database = new Database($databaseAdapter->getInstance());
 
 // Connect to database also using PEAR DB for the rest of the site endpoints.
+// TODO: This is in the process of migration from the deprecated PEAR DB package
+// to above PDO handler.
 $dsn = $config->get('db_scheme');
 $dsn .= '://'.$config->get('db_username');
 $dsn .= ':'.$config->get('db_password');

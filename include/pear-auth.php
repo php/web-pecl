@@ -154,7 +154,7 @@ function auth_verify($user, $passwd)
  */
 function auth_check($atom)
 {
-    global $dbh;
+    global $database;
     static $karma;
 
     global $auth_user;
@@ -179,13 +179,10 @@ function auth_check($atom)
     }
 
     if (!isset($karma)) {
-        $karma = new Karma($dbh);
+        $karma = new Karma($database);
     }
-    $a = $karma->has($auth_user->handle, $atom);
-    if (PEAR::isError($a)) {
-        return false;
-    }
-    return $a;
+
+    return $karma->has($auth_user->handle, $atom);
 }
 
 function auth_require($admin = false)

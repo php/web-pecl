@@ -20,6 +20,8 @@
 
 namespace App;
 
+use App\Database;
+
 /**
  * Class to manage the user permissions system
  *
@@ -29,16 +31,16 @@ namespace App;
  */
 class Karma
 {
-    private $dbh;
+    private $database;
 
     /**
      * Class constructor.
      *
-     * @param object Instance of PEAR::DB
+     * @param object Instance of Database
      */
-    public function __construct($dbh)
+    public function __construct(Database $database)
     {
-        $this->dbh = $dbh;
+        $this->database = $database;
     }
 
     /**
@@ -91,9 +93,17 @@ class Karma
             break;
         }
 
-        $query = 'SELECT * FROM karma WHERE user = ? AND level IN (!)';
-        $sth = $this->dbh->query($query, [$user, "'" . implode("','", $levels) . "'"]);
+        $sql = 'SELECT *
+                FROM karma
+                WHERE user = :user
+                AND level IN (:levels)
+        ';
 
-        return ($sth->numRows() > 0);
+        $results = $statement = $this->database->run($sql, [
+            ':user'   => $user,
+            ':levels' => "'".implode("','", $levels)."'"
+        ])->fetchAll();
+
+        return (count($results) > 0);
     }
 }

@@ -21,6 +21,7 @@
 namespace App;
 
 use App\Category;
+use App\Database;
 use App\Karma;
 use App\Package;
 use App\User;
@@ -35,17 +36,24 @@ use \PEAR_PackageFile_Parser_v2 as PEAR_PackageFile_Parser_v2;
 class Rest
 {
     private $dir;
-    private $dbh;
+    private $database;
     private $filesystem;
     private $scheme = 'http';
     private $host;
 
     /**
-     * Class constructor.
+     * Set database handler.
      */
-    public function __construct($dbh, Filesystem $filesystem)
+    public function setDatabase($database)
     {
-        $this->dbh = $dbh;
+        $this->database = $database;
+    }
+
+    /**
+     * Set filesystem service.
+     */
+    public function setFilesystem(Filesystem $filesystem)
+    {
         $this->filesystem = $filesystem;
     }
 
@@ -122,8 +130,7 @@ class Rest
             @chmod($cdir, 0777);
         }
 
-        $category = $this->dbh->getAll('SELECT * FROM categories WHERE name = ?', [$category], DB_FETCHMODE_ASSOC);
-        $category = $category[0];
+        $category = $this->database->run('SELECT * FROM categories WHERE `name` = ?', [$category])->fetch();
 
         $categoryDir = $cdir.'/'.urlencode($category['name']);
         if (!file_exists($categoryDir)) {
@@ -159,12 +166,10 @@ class Rest
             "WHERE p.package_type = 'pecl' " .
             "AND p.category = c.id AND c.name = ? AND p.approved = 1";
 
-        $sth = $this->dbh->getAll($query, [$category['name']], DB_FETCHMODE_ASSOC);
+        $results = $this->database->run($query, [$category['name']])->fetchAll();
 
-        foreach ($sth as $package) {
-            $list .= ' <p xlink:href="' . $extra . 'p/' . strtolower($package['name']) . '">' .
-                $package['name'] . '</p>
-';
+        foreach ($results as $package) {
+            $list .= ' <p xlink:href="'.$extra.'p/'.strtolower($package['name']).'">'.$package['name'].'</p>';
         }
 
         $list .= '</l>';
@@ -322,8 +327,8 @@ class Rest
             @chmod($packageDir, 0777);
         }
 
-        $catinfo = $this->dbh->getOne('SELECT c.name FROM packages, categories c WHERE
-            c.id = ?', [$package['categoryid']], DB_FETCHMODE_ASSOC);
+        $catinfo = $this->database->run('SELECT c.name AS category_name FROM packages, categories c WHERE
+            c.id = ?', [$package['categoryid']])->fetch()['category_name'];
         if (isset($package['parent']) && $package['parent']) {
             $parent = '
  <pa xlink:href="' . $extra . 'p/' . $package['parent'] . '">' .
@@ -396,7 +401,7 @@ class Rest
     {
         $extra = '/rest/';
         $pid = Package::info($package, 'id');
-        $releases = $this->dbh->getAll('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC', [$pid], DB_FETCHMODE_ASSOC);
+        $releases = $this->database->run('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC', [$pid])->fetchAll();
         $rdir = $this->dir.'/r';
 
         if (!file_exists($rdir)) {
@@ -414,8 +419,8 @@ class Rest
         $info = $this->getAllReleasesRESTProlog($package);
 
         foreach ($releases as $release) {
-            $packagexml = $this->dbh->getOne('SELECT packagexml FROM files WHERE package = ? AND
-                `release` = ?', [$pid, $release['id']]);
+            $packagexml = $this->database->run('SELECT packagexml FROM files WHERE package = ? AND
+                `release` = ?', [$pid, $release['id']])->fetch()['packagexml'];
             $extra = '';
 
             if (strpos($packagexml, ' version="2.0"')) {
@@ -547,7 +552,7 @@ class Rest
             @chmod($packageDir, 0777);
         }
 
-        $releasedate = $this->dbh->getOne('SELECT releasedate FROM releases WHERE id = ?', [$id]);
+        $releasedate = $this->database->run('SELECT releasedate FROM releases WHERE id = ?', [$id])->fetch()['releasedate'];
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <r xmlns="http://pear.php.net/dtd/rest.release"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -593,7 +598,7 @@ class Rest
     public function savePackageMaintainer($package)
     {
         $pid = Package::info($package, 'id');
-        $maintainers = $this->dbh->getAll('SELECT * FROM maintains WHERE package = ?', [$pid], DB_FETCHMODE_ASSOC);
+        $maintainers = $this->database->run('SELECT * FROM maintains WHERE package = ?', [$pid])->fetchAll();
         $extra = '/rest/';
 
         if (count($maintainers)) {
@@ -637,9 +642,7 @@ class Rest
      */
     public function saveMaintainer($maintainer)
     {
-        $maintainer = $this->dbh->getAll('SELECT * FROM users WHERE handle = ?',
-            [$maintainer], DB_FETCHMODE_ASSOC);
-        $maintainer = $maintainer[0];
+        $maintainer = $this->database->run('SELECT * FROM users WHERE handle = ?', [$maintainer])->fetch();
         $extra = '/rest/';
         $mdir = $this->dir.'/m';
 
@@ -690,7 +693,7 @@ class Rest
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allmaintainers
     http://pear.php.net/dtd/rest.allmaintainers.xsd">' . "\n";
 
-        $karma = new Karma($this->dbh);
+        $karma = new Karma($this->database);
 
         foreach ($maintainers as $maintainer) {
             if (!$karma->has($maintainer['handle'], 'pear.dev')) {

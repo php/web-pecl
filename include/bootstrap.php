@@ -133,7 +133,9 @@ $filesystem = new Filesystem();
 $formatDate = new FormatDate();
 $imageSize = new ImageSize();
 
-$rest = new Rest($dbh, $filesystem);
+$rest = new Rest();
+$rest->setDatabase($database);
+$rest->setFilesystem($filesystem);
 $rest->setDirectory($config->get('rest_dir'));
 $rest->setScheme($config->get('scheme'));
 $rest->setHost($config->get('host'));

@@ -491,22 +491,29 @@ if ($display_verification) {
 
 response_footer();
 
-function checkUser($user, $pacid = null)
+function checkUser($user, $packageId = null)
 {
-    global $dbh;
-
-    $add = ($pacid) ? 'AND p.id = ' . $dbh->quoteSmart($pacid) : '';
+    global $database;
 
     // It's a lead or user of the package
-    $query = "SELECT m.handle
-              FROM packages p, maintains m
-              WHERE
-                 m.handle = ? AND
-                 p.id = m.package $add AND
-                 (m.role IN ('lead', 'developer'))";
-    $res = $dbh->getOne($query, [$user]);
+    $sql = "SELECT m.handle
+            FROM packages p, maintains m
+            WHERE
+                m.handle = :handle AND
+                p.id = m.package";
 
-    if ($res !== null) {
+    $arguments = [':handle' => $user];
+
+    if ($packageId) {
+        $sql .= ' AND p.id = :package_id';
+        $arguments[':package_id'] = $packageId;
+    }
+
+    $sql .= " AND (m.role IN ('lead', 'developer'))";
+
+    $res = $database->run($sql, $arguments)->fetch();
+
+    if ($res) {
         return true;
     }
 

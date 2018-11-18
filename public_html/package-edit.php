@@ -83,15 +83,13 @@ if (isset($_POST['submit'])) {
 
         if (!empty($_POST['newpk_id'])) {
             $_POST['new_channel'] = 'pecl.php.net';
-            $_POST['new_package'] = $dbh->getOne('SELECT name from packages WHERE id = ?',
-                    [$_POST['newpk_id']]);
+            $_POST['new_package'] = $database->run('SELECT name from packages WHERE id = ?', [$_POST['newpk_id']])->fetch('name');
             if (!$_POST['new_package']) {
                 $_POST['new_channel'] = $_POST['newpk_id'] = null;
             }
         } else {
             if ($_POST['new_channel'] == 'pecl.php.net') {
-                $_POST['newpk_id'] = $dbh->getOne('SELECT id from packages WHERE name = ?',
-                        [$_POST['new_package']]);
+                $_POST['newpk_id'] = $database->run('SELECT id from packages WHERE name = ?', [$_POST['new_package']])->fetch()['id'];
                 if (!$_POST['newpk_id']) {
                     $_POST['new_channel'] = $_POST['new_package'] = null;
                 }
@@ -114,16 +112,12 @@ if (isset($_POST['submit'])) {
                   $_GET['id']
     ];
 
-    $sth = $dbh->query($query, $qparams);
+    $statement = $database->run($query, $qparams);
 
-    if (PEAR::isError($sth)) {
-        PEAR::raiseError("Unable to save data!");
-    } else {
-        $rest->savePackage($_POST['name']);
-        $rest->savePackagesCategory(Package::info($_POST['name'], 'category'));
-        echo "<b>Package information successfully updated.</b><br /><br />\n";
-    }
-} else if (isset($_GET['action'])) {
+    $rest->savePackage($_POST['name']);
+    $rest->savePackagesCategory(Package::info($_POST['name'], 'category'));
+    echo "<b>Package information successfully updated.</b><br /><br />\n";
+} elseif (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case "release_remove" :
             if (!isset($_GET['release'])) {
@@ -184,10 +178,10 @@ $bb = new BorderBox("Edit package information");
     <td>
     <select name="category" size="1">
         <?php
-        $sth = $dbh->query('SELECT id, name FROM categories ORDER BY name');
-        while ($cat_row = $sth->fetchRow(DB_FETCHMODE_ASSOC)): ?>
+        $sth = $database->query('SELECT id, name FROM categories ORDER BY name');
+        foreach ($sth->fetchAll() as $cat_row): ?>
         <option value="<?= $cat_row['id']; ?>" <?= (int)$row['categoryid'] == $cat_row['id'] ? ' selected' : ''; ?>><?= $cat_row['name']; ?></option>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </select>
     </td>
 </tr>
@@ -227,10 +221,10 @@ $bb = new BorderBox("Edit package information");
         <select name="new_package" size="1">
         <option value="" <?= $row['new_package'] == '' ? 'selected' : ''; ?>>Select package</option>
         <?php
-        $sth = $dbh->query('SELECT name FROM packages WHERE package_type="pecl" ORDER BY name');
-        while ($package = $sth->fetchRow(DB_FETCHMODE_ASSOC)): ?>
+        $sth = $database->query('SELECT name FROM packages WHERE package_type="pecl" ORDER BY name');
+        foreach ($sth->fetchAll() as $package): ?>
         <option value="<?= $package['name']; ?>" <?= $row['new_package'] == $package['name'] ? 'selected' : '';?>><?= $package['name']; ?></option>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
         </select>
     </td>
 </tr>

@@ -61,8 +61,6 @@ if (empty($package) || !isset($pkg['name'])) {
     exit();
 }
 
-$dbh->setFetchmode(DB_FETCHMODE_ASSOC);
-
 $name         = $pkg['name'];
 $summary      = stripslashes($pkg['summary']);
 $license      = $pkg['license'];
@@ -81,12 +79,12 @@ if ($moved_out) {
 }
 
 // Accounts data
-$sth = $dbh->query("SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role".
+$statement = $database->run("SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role".
                    " FROM maintains m, users u".
-                   " WHERE m.package = $pacid".
-                   " AND m.handle = u.handle");
+                   " WHERE m.package = :package_id".
+                   " AND m.handle = u.handle", [':package_id' => $pacid]);
 $accounts  = '';
-while ($row = $sth->fetchRow()) {
+foreach ($statement->fetchAll() as $row) {
     $accounts .= "{$row['name']}";
     if ($row['showemail'] == 1) {
         $accounts .= " &lt;<a href=\"mailto:{$row['email']}\">{$row['email']}</a>&gt;";
@@ -101,13 +99,15 @@ while ($row = $sth->fetchRow()) {
 if (!$relid) {
     $downloads = [];
 
-    $sth = $dbh->query("SELECT f.id AS `id`, f.release AS `release`,".
+    $statement = $database->run("SELECT f.id AS `id`, f.release AS `release`,".
                        " f.platform AS platform, f.format AS format,".
                        " f.md5sum AS md5sum, f.basename AS basename,".
                        " f.fullpath AS fullpath, r.version AS version".
                        " FROM files f, releases r".
-                       " WHERE f.package = $pacid AND f.release = r.id");
-    while ($sth->fetchInto($row)) {
+                       " WHERE f.package = :package_id AND f.release = r.id", [
+                           ':package_id' => $pacid
+                       ]);
+    foreach ($statement->fetchAll() as $row) {
         $downloads[$row['version']][] = $row;
     }
 }
@@ -327,7 +327,7 @@ if (count ($rels) > 3) {
     $rels = array_slice($rels, 0, 3);
 }
 
-if ($sth->numRows() == 0) {
+if ($statement->rowCount() == 0) {
     print "<i>No releases yet.</i>";
 } else {
     $rel_trans = [
@@ -374,17 +374,15 @@ if ($sth->numRows() == 0) {
                 }
 
                 // fix up wrong dep types here, until it is fixed in the db, we only have the pecl packages in the db now
-                if ($row['type'] == 'pkg' && $dbh->getRow(sprintf("SELECT id, package_type FROM packages WHERE name = '%s'", $row['name']))) {
+                if ($row['type'] == 'pkg' && $database->run("SELECT id, package_type FROM packages WHERE name = ?", [$row['name']])->fetch()) {
                     $row['type'] = 'pkg_pecl';
                 }
 
                 if ($row['type'] == 'pkg_pecl') {
                     $dep_name_html = sprintf('<a href="/package/%s">%s</a>', $row['name'], $row['name']);
-                }
-                elseif ($row['type'] == 'pkg') {
+                } elseif ($row['type'] == 'pkg') {
                     $dep_name_html = sprintf('<a href="https://pear.php.net/package/%s">%s</a>', $row['name'], $row['name']);
-                }
-                else {
+                } else {
                     $dep_name_html = $row['name'];
                 }
 

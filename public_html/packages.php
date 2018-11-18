@@ -90,10 +90,8 @@ if (empty($catpid)) {
 }
 
 // Main part of script
-$dbh->setFetchmode(DB_FETCHMODE_ASSOC);
-
 if ($catpid) {
-    $catname = $dbh->getOne('SELECT name FROM categories WHERE id=' . $catpid);
+    $catname = $database->run('SELECT name FROM categories WHERE id=:id', [':id' => $catpid])->fetch()['name'];
     $category_title = "Package Browser :: " . htmlspecialchars($catname, ENT_QUOTES);
 } else {
     $category_title = 'Package Browser :: Top Level';
@@ -102,57 +100,56 @@ if ($catpid) {
 response_header($category_title);
 
 // 1) Show categories of this level
-$sth = $dbh->query('SELECT c.*, COUNT(p.id) AS npackages' .
-                   ' FROM categories c' .
-                   ' LEFT JOIN packages p ON p.category = c.id ' .
-                   " WHERE p.package_type = 'pecl'" .
-                   "  AND c.parent $category_where " .
-                   ' GROUP BY c.id ' .
-                   'ORDER BY name');
+$statement = $database->run("SELECT c.*, COUNT(p.id) AS npackages
+                   FROM categories c
+                   LEFT JOIN packages p ON p.category = c.id
+                   WHERE p.package_type = 'pecl'
+                   AND c.parent ".$category_where."
+                   GROUP BY c.id ORDER BY name");
 
 // Get names of sub-categories
-$subcats = $dbh->getAssoc("SELECT p.id AS pid, c.id AS id, c.name AS name, c.summary AS summary".
+$subcats = $database->run("SELECT p.id AS pid, c.id AS id, c.name AS name, c.summary AS summary".
                           "  FROM categories c, categories p ".
                           " WHERE p.parent $category_where ".
-                          "   AND c.parent = p.id ORDER BY c.name",
-                          false, null, DB_FETCHMODE_ASSOC, true);
+                          "   AND c.parent = p.id ORDER BY c.name")->fetchAll();
 
 // Get names of sub-packages
-$subpkgs = $dbh->getAssoc("SELECT p.category, p.id AS id, p.name AS name, p.summary AS summary".
+$subpkgs = $database->run("SELECT p.category, p.id AS id, p.name AS name, p.summary AS summary".
                           "  FROM packages p, categories c".
                           " WHERE c.parent $category_where ".
                           "   AND p.package_type = 'pecl' ".
-                          "   AND p.category = c.id ORDER BY p.name",
-                          false, null, DB_FETCHMODE_ASSOC, true);
+                          "   AND p.category = c.id ORDER BY p.name")->fetchAll();
 
 $max_sub_links = 4;
 $totalpackages = 0;
 $categories = [];
 
-while ($sth->fetchInto($row)) {
+foreach ($statement->fetchAll() as $row) {
     extract($row);
-    $ncategories = ($cat_right - $cat_left - 1) / 2;
 
     // Show only categories with packages
-    if (!$showempty AND $npackages < 1) {
+    if (!$showempty AND $row['npackages'] < 1) {
         continue;
     }
 
     $sub_links = [];
-    if (isset($subcats[$id])) {
-        foreach ($subcats[$id] as $subcat) {
-            $sub_links[] = '<b><a href="'. $script_name .'?catpid='.$subcat['id'].'&amp;catname='.
-                            urlencode($subcat['name']).'" title="'.htmlspecialchars($subcat['summary'], ENT_QUOTES).'">'.$subcat['name'].'</a></b>';
+
+    foreach ($subcats as $subcat) {
+        if ($subcat['pid'] === $row['id']) {
+            $sub_links[] = '<b><a href="'.$script_name.'?catpid='.$subcat['id'].'&amp;catname='
+                         . urlencode($subcat['name'])
+                         . '" title="'.htmlspecialchars($subcat['summary'], ENT_QUOTES).'">'
+                         . $subcat['name'].'</a></b>';
             if (count($sub_links) >= $max_sub_links) {
                 break;
             }
         }
     }
 
-    if (isset($subpkgs[$id])) {
-        foreach ($subpkgs[$id] as $subpkg) {
-            $sub_links[] = '<a href="/package/' . $subpkg['name'] .'" title="'.
-                            htmlspecialchars($subpkg['summary'], ENT_QUOTES).'">'.$subpkg['name'].'</a>';
+    foreach ($subpkgs as $subpkg) {
+        if ($subpkg['category'] === $row['id']) {
+            $sub_links[] = '<a href="/package/'.$subpkg['name'].'" title="'
+                         . htmlspecialchars($subpkg['summary'], ENT_QUOTES).'">'.$subpkg['name'].'</a>';
             if (count($sub_links) >= $max_sub_links) {
                 break;
             }
@@ -166,7 +163,6 @@ while ($sth->fetchInto($row)) {
     }
 
     settype($npackages, 'string');
-    settype($ncategories, 'string');
 
     $data  = '<font size="+1"><b><a href="'. $script_name .'?catpid='.$id.'&amp;catname='.urlencode($name).'">'.$name.'</a></b></font> ('.$npackages.')<br />';
     $data .= $sub_links.'<br />';
@@ -180,8 +176,12 @@ while ($sth->fetchInto($row)) {
 if (!empty($catpid)) {
     // Subcategories list
     $minPackages = ($showempty) ? 0 : 1;
-    $subcats = $dbh->getAll("SELECT id, name, summary FROM categories WHERE " .
-                            "parent = $catpid AND npackages >= $minPackages", DB_FETCHMODE_ASSOC);
+    $sql = "SELECT id, name, summary FROM categories WHERE parent = :parent AND npackages >= :min_packages";
+    $arguments = [
+        ':parent' => $catpid,
+        ':min_packages' => $minPackages
+    ];
+    $subcats = $database->run($sql, $arguments)->fetchAll();
 
     if (count($subcats) > 0) {
         foreach ($subcats as $subcat) {
@@ -197,7 +197,7 @@ if (!empty($catpid)) {
     }
 
     // Package list
-    $packages = $dbh->getAll("SELECT id, name, summary, license FROM packages WHERE category=$catpid AND package_type = 'pecl' ORDER BY name");
+    $packages = $database->run("SELECT id, name, summary, license FROM packages WHERE category = ? AND package_type = 'pecl' ORDER BY name", [$catpid])->fetchAll();
 
     // Paging
     $total = count($packages);
@@ -210,9 +210,9 @@ if (!empty($catpid)) {
     $packages = array_slice($packages, $first - 1, 15);
 
     foreach ($packages as $key => $pkg) {
-        $extendedInfo['numReleases'] = $dbh->getOne('SELECT COUNT(*) FROM releases WHERE package = ' . $pkg['id']);
-        $extendedInfo['status']      = $dbh->getOne('SELECT state FROM releases WHERE package = ' . $pkg['id'] . ' ORDER BY id DESC LIMIT 1');
-        $extendedInfo['license']     = $dbh->getOne('SELECT license FROM packages WHERE id = ' . $pkg['id'] . ' ORDER BY id DESC LIMIT 1');
+        $extendedInfo['numReleases'] = $database->run('SELECT COUNT(*) AS count FROM releases WHERE package = ?', [$pkg['id']])->fetch()['count'];
+        $extendedInfo['status']      = $database->run('SELECT state FROM releases WHERE package = ? ORDER BY id DESC LIMIT 1', [$pkg['id']])->fetch()['state'];
+        $extendedInfo['license']     = $database->run('SELECT license FROM packages WHERE id = ? ORDER BY id DESC LIMIT 1', [$pkg['id']])->fetch()['license'];
 
 
         // Make status coloured

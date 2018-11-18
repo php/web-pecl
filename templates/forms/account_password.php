@@ -47,7 +47,7 @@ foreach ($vars as $key => $value) {
 
     <div>
         <label>Remember username and password?</label>
-        <input type="checkbox" name="PEAR_PERSIST">
+        <input type="checkbox" name="PECL_PERSIST">
     </div>
 
     <div>
@@ -57,5 +57,5 @@ foreach ($vars as $key => $value) {
 
     <input type="hidden" name="handle" value="<?= $vars['handle']; ?>">
     <input type="hidden" name="command" value="change_password">
-    <input type="hidden" name="_fields" value="password:PEAR_PERSIST:submit:handle:command">
+    <input type="hidden" name="_fields" value="password:PECL_PERSIST:submit:handle:command">
 </form>

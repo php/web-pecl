@@ -38,7 +38,7 @@ function auth_reject($message = null)
 
     response_header('Login');
 
-    $GLOBALS['ONLOAD'] = "document.login.PEAR_USER.focus();";
+    $GLOBALS['ONLOAD'] = "document.login.PECL_USER.focus();";
     if ($message) {
         report_error($message);
     }
@@ -48,18 +48,18 @@ function auth_reject($message = null)
     print '  <th class="form-label_left">';
     print 'Use<span class="accesskey">r</span>name:</th>' . "\n";
     print '  <td class="form-input">';
-    print '<input size="20" name="PEAR_USER" accesskey="r" /></td>' . "\n";
+    print '<input size="20" name="PECL_USER" accesskey="r" /></td>' . "\n";
     print " </tr>\n";
     print " <tr>\n";
     print '  <th class="form-label_left">Password:</th>' . "\n";
     print '  <td class="form-input">';
-    print '<input size="20" name="PEAR_PW" type="password" /></td>' . "\n";
+    print '<input size="20" name="PECL_PW" type="password" /></td>' . "\n";
     print " </tr>\n";
     print " <tr>\n";
     print '  <th class="form-label_left">&nbsp;</th>' . "\n";
     print '  <td class="form-input" style="white-space: nowrap">';
-    print '<input type="checkbox" name="PEAR_PERSIST" value="on" id="pear_persist_chckbx" '.((!empty($_COOKIE['REMEMBER_ME']) || !empty($_POST['PEAR_PERSIST']))?'checked="checked " ':'').'/> ';
-    print '<label for="pear_persist_chckbx">Remember username and password.</label></td>' . "\n";
+    print '<input type="checkbox" name="PECL_PERSIST" value="on" id="pecl_persist_chckbx" '.((!empty($_COOKIE['REMEMBER_ME']) || !empty($_POST['PECL_PERSIST']))?'checked="checked " ':'').'/> ';
+    print '<label for="pecl_persist_chckbx">Remember username and password.</label></td>' . "\n";
     print " </tr>\n";
     print " <tr>\n";
     print '  <th class="form-label_left">&nbsp;</td>' . "\n";
@@ -249,7 +249,7 @@ function init_auth_user()
 {
     global $auth_user, $dbh;
 
-    if (empty($_SESSION['PEAR_USER'])) {
+    if (empty($_SESSION['PECL_USER'])) {
         $auth_user = null;
 
         return false;
@@ -259,7 +259,7 @@ function init_auth_user()
         return true;
     }
 
-    $auth_user = new UserEntity($dbh, $_SESSION['PEAR_USER']);
+    $auth_user = new UserEntity($dbh, $_SESSION['PECL_USER']);
 
     if (is_logged_in()) {
         return true;

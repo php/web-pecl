@@ -23,7 +23,7 @@
  * To figure out cookies are REALLY off, check to see if the person came
  * from within the PECL website or just submitted the login form.
  */
-if (!isset($_COOKIE[session_name()]) && isset($_POST['PEAR_USER']) && isset($_POST['PEAR_PW'])) {
+if (!isset($_COOKIE[session_name()]) && isset($_POST['PECL_USER']) && isset($_POST['PECL_PW'])) {
 //    auth_reject('Cookies must be enabled to log in.');
 }
 
@@ -35,8 +35,8 @@ if (!empty($auth_user)) {
     exit;
 }
 
-if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_USER'], @$_POST['PEAR_PW'])) {
-    if (!empty($_POST['PEAR_PERSIST'])) {
+if (isset($_POST['PECL_USER'], $_POST['PECL_PW']) && auth_verify(@$_POST['PECL_USER'], @$_POST['PECL_PW'])) {
+    if (!empty($_POST['PECL_PERSIST'])) {
         setcookie('REMEMBER_ME', 1, 2147483647, '/');
         setcookie(session_name(), session_id(), 2147483647, '/');
     } else {
@@ -45,17 +45,17 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
         setcookie(session_name(), session_id(), null, '/');
     }
 
-    $_SESSION['PEAR_USER'] = $_POST['PEAR_USER'];
+    $_SESSION['PECL_USER'] = $_POST['PECL_USER'];
 
     // Update users lastlogin
     $sql = 'UPDATE users SET lastlogin = NOW() WHERE handle = ?';
-    $database->run($sql, [$_POST['PEAR_USER']]);
+    $database->run($sql, [$_POST['PECL_USER']]);
 
     // Update users password if it is held in the db crypt()ed. The $auth_user
     // comes from auth_verify() function.
     if (strlen(@$auth_user->password) == 13) {
         $sql = 'UPDATE users SET password = ? WHERE handle = ?';
-        $database->run($sql, [md5($_POST['PEAR_PW']), $_POST['PEAR_USER']]);
+        $database->run($sql, [md5($_POST['PECL_PW']), $_POST['PECL_USER']]);
     }
 
     // Determine URL
@@ -71,7 +71,7 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
 }
 
 $msg = '';
-if (isset($_POST['PEAR_USER']) || isset($_POST['PEAR_PW'])) {
+if (isset($_POST['PECL_USER']) || isset($_POST['PECL_PW'])) {
     $msg = 'Invalid username or password.';
 }
 

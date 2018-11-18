@@ -144,7 +144,7 @@ switch ($command) {
 
         $user->set('password', md5($_POST['password']));
         if ($user->store()) {
-            if (!empty($_POST['PEAR_PERSIST'])) {
+            if (!empty($_POST['PECL_PERSIST'])) {
                 $expire = 2147483647;
             } else {
                 $expire = 0;

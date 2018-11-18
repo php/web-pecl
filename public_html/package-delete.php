@@ -57,25 +57,26 @@ if (!isset($_POST['confirm'])) {
     // XXX: Implement backup functionality
     // make_backup($_GET['id']);
 
-    $tables = ["releases" => "package", "maintains" => "package",
-                    "deps" => "package", "files" => "package",
-                    "packages" => "id"];
+    $tables = [
+        'releases'  => 'package',
+        'maintains' => 'package',
+        'deps'      => 'package',
+        'files'     => 'package',
+        'packages'  => 'id'
+    ];
 
     echo "<pre>\n";
 
     $file_rm = 0;
 
-    $query = "SELECT p.name, r.version FROM packages p, releases r
-                WHERE p.id = r.package AND r.package = '" . $_GET['id'] . "'";
+    $sql = "SELECT p.name, r.version FROM packages p, releases r
+            WHERE p.id = r.package AND r.package = :id";
 
-    $row = $dbh->getAll($query);
-
-    foreach ($row as $value) {
+    foreach ($database->run($sql, [':id' => $_GET['id']])->fetchAll() as $value) {
         $file = sprintf("%s/%s-%s.tgz",
                         $config->get('packages_dir'),
                         $value[0],
                         $value[1]);
-
 
         if (@unlink($file)) {
             echo "Deleting release archive \"" . $file . "\"\n";
@@ -90,19 +91,15 @@ if (!isset($_POST['confirm'])) {
     $catid = Package::info($_GET['id'], 'categoryid');
     $catname = Package::info($_GET['id'], 'category');
     $packagename = Package::info($_GET['id'], 'name');
-    $dbh->query("UPDATE categories SET npackages = npackages-1 WHERE id=$catid");
+    $database->query("UPDATE categories SET npackages = npackages-1 WHERE id=$catid");
 
-    foreach ($tables as $table => $field) {
-        $query = sprintf("DELETE FROM %s WHERE %s = '%s'",
-                         $table,
-                         $field,
-                         $_GET['id']
-                         );
+    foreach ($tables as $table => $column) {
+        $sql = "DELETE FROM $table WHERE $column = :id";
+        echo 'Removing package information from table "'.$table.'": ';
 
-        echo "Removing package information from table \"" . $table . "\": ";
-        $dbh->query($query);
+        $statement = $database->run($sql, [':id' => $_GET['id']]);
 
-        echo "<b>" . $dbh->affectedRows() . "</b> rows affected.\n";
+        echo '<b>'.$statement->rowCount()."</b> rows affected.\n";
     }
 
     $rest->deletePackage($packagename);

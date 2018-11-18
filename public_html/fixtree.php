@@ -18,10 +18,15 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Entity\Category;
+
 auth_require(true);
 
-header("Content-type: text/plain; charset=utf-8");
+header('Content-type: text/plain; charset=utf-8');
 
 print htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES)."\n\n";
 
-Category::renumberVisitations(true);
+$category = new Category();
+$category->setDatabase($database);
+$category->setRest($rest);
+$category->renumberVisitations(true);

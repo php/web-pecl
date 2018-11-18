@@ -58,6 +58,18 @@ class PackageRepository
     }
 
     /**
+     * Return a list of packages by category name
+     */
+    public function findAllByCategoryName($categoryName)
+    {
+        $sql = 'SELECT p.id, p.name
+                FROM packages p, categories c
+                WHERE p.category = c.id AND c.name = ?';
+
+        return $this->database->run($sql, [$categoryName])->fetchAll();
+    }
+
+    /**
      * Get all packages maintained by given username.
      */
     public function findPackagesMaintainedByHandle($handle)

@@ -75,6 +75,39 @@ class ReleaseRepository
     }
 
     /**
+     * Get list of recent releases for the given category
+     *
+     * @param  string Name of the category
+     * @param  int Number of releases to return
+     * @return array
+     */
+    public function findRecentByCategoryName($categoryName, $max = self::MAX_ITEMS_RETURNED)
+    {
+        $sql = "SELECT p.id AS id,
+                    p.name AS name,
+                    p.summary AS summary,
+                    r.version AS version,
+                    r.releasedate AS releasedate,
+                    r.releasenotes AS releasenotes,
+                    r.doneby AS doneby,
+                    r.state AS state
+                FROM packages p, releases r, categories c
+                WHERE p.id = r.package
+                AND p.package_type = 'pecl'
+                AND p.category = c.id
+                AND c.name = :category
+                ORDER BY r.releasedate DESC
+                LIMIT :limit";
+
+        $arguments = [
+            ':category' => $categoryName,
+            ':limit'    => $max
+        ];
+
+        return $this->database->run($sql, $arguments)->fetchAll();
+    }
+
+    /**
      * Find all releases by package id.
      */
     public function findByPackageId($packageId)

@@ -20,12 +20,12 @@
 
 namespace App;
 
-use App\Category;
 use App\Database;
 use App\Karma;
 use App\Package;
 use App\User;
 use App\Repository\CategoryRepository;
+use App\Repository\PackageRepository;
 use App\Utils\Filesystem;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
@@ -42,6 +42,7 @@ class Rest
     private $scheme = 'http';
     private $host;
     private $categoryRepository;
+    private $packageRepository;
 
     /**
      * Set database handler.
@@ -83,9 +84,20 @@ class Rest
         $this->host = $host;
     }
 
+    /**
+     * Set categories repository.
+     */
     public function setCategoryRepository(CategoryRepository $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * Set packages repository.
+     */
+    public function setPackageRepository(PackageRepository $packageRepository)
+    {
+        $this->packageRepository = $packageRepository;
     }
 
     /**
@@ -189,7 +201,7 @@ class Rest
     /**
      * Regenerate packages category info.
      */
-    public function savePackagesCategory($category)
+    public function savePackagesCategory($categoryName)
     {
         $cdir = $this->dir.'/c';
 
@@ -199,7 +211,9 @@ class Rest
 
         $pdir = $this->dir.'/p';
         $rdir = $this->dir.'/r';
-        $packages = Category::listPackages($category);
+
+        $packages = $this->packageRepository->findAllByCategoryName($categoryName);
+
         $fullpackageinfo = '<?xml version="1.0" encoding="UTF-8" ?>
 <f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -245,7 +259,8 @@ class Rest
         $fullpackageinfo .= '</f>';
 
         // List packages in a category
-        $categoryDir = $cdir.'/'.urlencode($category);
+        $categoryDir = $cdir.'/'.urlencode($categoryName);
+
         if (!file_exists($categoryDir)) {
             mkdir($categoryDir, 0777, true);
             @chmod($categoryDir, 0777);

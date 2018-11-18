@@ -21,7 +21,12 @@
 use App\Repository\ReleaseRepository;
 use App\Package;
 use App\User;
-use App\Category;
+use App\Entity\Category;
+
+$releaseRepository = new ReleaseRepository($database);
+$category = new Category();
+$category->setDatabase($database);
+$category->setRest($rest);
 
 function rss_bailout() {
     header('HTTP/1.0 404 Not Found');
@@ -32,7 +37,6 @@ function rss_bailout() {
 // If file is given, the file will be used to store the rss feed
 function rss_create($items, $channel_title, $channel_description, $dest_file=false, $config) {
     if (is_array($items) && count($items)>0) {
-
         $rss_top = <<<EOT
 <?xml version="1.0" encoding="utf-8"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -117,7 +121,6 @@ if (!empty($url_redirect)) {
 
 switch ($type) {
     case 'latest':
-        $releaseRepository = new ReleaseRepository($database);
         $items = $releaseRepository->findRecent(10);
         $channel_title = 'PECL: Latest releases';
         $channel_description = 'The latest releases in PECL.';
@@ -149,15 +152,17 @@ switch ($type) {
         break;
 
     case 'cat':
-        $category = $argument;
-        if (Category::isValid($category) == false) {
+        $categoryName = $argument;
+
+        if ($category->isValid($categoryName) === false) {
             rss_bailout();
         }
 
-        $channel_title = 'PECL: Latest releases in category '.$category;
-        $channel_description = "The latest releases in the category " . $category;
+        $channel_title = 'PECL: Latest releases in category '.$categoryName;
+        $channel_description = 'The latest releases in the category '.$categoryName;
 
-        $items = Category::getRecent(10, $category);
+        $items = $releaseRepository->findRecentByCategoryName($categoryName, 10);
+
         break;
 
     case 'bugs':

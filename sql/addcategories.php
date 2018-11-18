@@ -18,7 +18,11 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Category;
+use App\Entity\Category;
+
+$category = new Category();
+$category->setDatabase($database);
+$category->setRest($rest);
 
 print "Adding categories...\n";
 
@@ -64,7 +68,7 @@ foreach (explode("\n", $categories) as $line) {
         $params['parent'] = $catids[$parent];
     }
 
-    $catid = Category::add($params);
+    $catid = $category->add($params);
     $catids[$name] = $catid;
 
     print "Category: $name\n";

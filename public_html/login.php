@@ -48,14 +48,14 @@ if (isset($_POST['PEAR_USER'], $_POST['PEAR_PW']) && auth_verify(@$_POST['PEAR_U
     $_SESSION['PEAR_USER'] = $_POST['PEAR_USER'];
 
     // Update users lastlogin
-    $query = 'UPDATE users SET lastlogin = NOW() WHERE handle = ?';
-    $dbh->query($query, [$_POST['PEAR_USER']]);
+    $sql = 'UPDATE users SET lastlogin = NOW() WHERE handle = ?';
+    $database->run($sql, [$_POST['PEAR_USER']]);
 
     // Update users password if it is held in the db crypt()ed. The $auth_user
     // comes from auth_verify() function.
     if (strlen(@$auth_user->password) == 13) {
-        $query = 'UPDATE users SET password = ? WHERE handle = ?';
-        $dbh->query($query, [md5($_POST['PEAR_PW']), $_POST['PEAR_USER']]);
+        $sql = 'UPDATE users SET password = ? WHERE handle = ?';
+        $database->run($sql, [md5($_POST['PEAR_PW']), $_POST['PEAR_USER']]);
     }
 
     // Determine URL

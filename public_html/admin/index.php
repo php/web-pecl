@@ -134,9 +134,11 @@ do {
     // approve account request form
     if (!empty($acreq)) {
         $requser = new UserEntity($dbh, $acreq);
+
         if (empty($requser->name)) {
             break;
         }
+
         list($purpose, $moreinfo) = @unserialize($requser->userinfo);
 
         $bb = new BorderBox("Account request from " . htmlspecialchars($requser->name, ENT_QUOTES)
@@ -151,28 +153,39 @@ do {
 
         print "<br />\n";
         $bb = new BorderBox("Notes for user " . htmlspecialchars($requser->handle, ENT_QUOTES));
-        $notes = $dbh->getAssoc("SELECT id,nby,UNIX_TIMESTAMP(ntime) AS ntime,note FROM notes ".
-                    "WHERE uid = ? ORDER BY ntime", true,
-                    [$requser->handle]);
+
+        $sql = "SELECT id, nby, UNIX_TIMESTAMP(ntime) AS ntime, note
+                FROM notes WHERE uid = ? ORDER BY ntime
+        ";
+        $notes = $database->run($sql, [$requser->handle])->fetchAll();
+
         $i = "      ";
         if (is_array($notes) && count($notes) > 0) {
             print "$i<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
-            foreach ($notes as $nid => $data) {
-                list($nby, $ntime, $note) = $data;
+
+            foreach ($notes as $data) {
+                $id = $data['id'];
+                $nby = $data['nby'];
+                $ntime = $data['ntime'];
+                $note = $data['note'];
+
                 print "$i <tr>\n";
                 print "$i  <td>\n";
                 print "$i   <b>$nby " . date('H:i jS F Y', $ntime) . ":</b>";
+
                 if ($nby == $auth_user->handle) {
-                    $url = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES) . "?acreq=$acreq&cmd=Delete+note&id=$nid";
+                    $url = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES).'?acreq='.$acreq.'&cmd=Delete+note&id='.$id;
                     $msg = "Are you sure you want to delete this note?";
                     print "[<a href=\"javascript:confirmed_goto('$url', '$msg')\">delete your note</a>]";
                 }
+
                 print "<br />\n";
                 print "$i   ".htmlspecialchars($note, ENT_QUOTES)."\n";
                 print "$i  </td>\n";
                 print "$i </tr>\n";
                 print "$i <tr><td>&nbsp;</td></tr>\n";
             }
+
             print "$i</table>\n";
         } else {
             print "No notes.";
@@ -295,15 +308,25 @@ do {
         <input type="hidden" value="" name="cmd"/>
         <?php
         $bb = new BorderBox("Account Requests", "100%", "", 7, true);
-        $requests = $dbh->getAssoc("SELECT u.handle,u.name,n.note,u.userinfo,u.created FROM users u ".
-                                   "LEFT JOIN notes n ON n.uid = u.handle ".
-                                   "WHERE u.registered = 0 ".
-                                   "ORDER BY created ASC");
+
+        $sql = "SELECT u.handle,u.name,n.note,u.userinfo,u.created
+                FROM users u
+                LEFT JOIN notes n ON n.uid = u.handle
+                WHERE u.registered = 0
+                ORDER BY created ASC
+        ";
+
+        $requests = $database->run($sql)->fetchAll();
+
         if (is_array($requests) && count($requests) > 0) {
             $bb->headRow("<font face=\"Marlett\"><a href=\"#\" onclick=\"toggleSelectAll(this)\">6</a></font>", "Name", "Handle", "Account Purpose", "Status", "Created at", "&nbsp;");
 
-            foreach ($requests as $handle => $data) {
-                list($name, $note, $userinfo,$created_at) = $data;
+            foreach ($requests as $data) {
+                $handle = $data['handle'];
+                $name = $data['name'];
+                $note = $data['note'];
+                $userinfo = $data['userinfo'];
+                $created_at = $data['created'];
 
                 // Grab userinfo/request purpose
                 if (@unserialize($userinfo)) {

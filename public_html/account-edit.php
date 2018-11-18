@@ -91,8 +91,8 @@ switch ($command) {
 
         $user = User::update($user_data_post);
 
-        $old_acl = $dbh->getCol('SELECT path FROM cvs_acl '.
-                                'WHERE username = ' . "'$handle'" . ' AND access = 1', 0);
+        $sql = 'SELECT path FROM cvs_acl WHERE username = ? AND access = 1';
+        $old_acl = $database->run($sql, [$handle])->fetchAll(\PDO::FETCH_COLUMN);
 
         $new_acl = preg_split("/[\r\n]+/", trim(strip_tags($_POST['cvs_acl'])));
 
@@ -100,21 +100,19 @@ switch ($command) {
         $new_entries = array_diff($new_acl, $old_acl);
 
         if (count($lost_entries) > 0) {
-            $sth = $dbh->prepare("DELETE FROM cvs_acl WHERE username = ? ".
-                                 "AND path = ?");
+            $statement = $database->prepare("DELETE FROM cvs_acl WHERE username = ? AND path = ?");
+
             foreach ($lost_entries as $ent) {
-                $del = $dbh->affectedRows();
                 print "Removing CVS access to $ent for $handle...<br />\n";
-                $dbh->execute($sth, [$handle, $ent]);
+                $statement->execute([$handle, $ent]);
             }
         }
 
         if (count($new_entries) > 0) {
-            $sth = $dbh->prepare("INSERT INTO cvs_acl (username,path,access) ".
-                                 "VALUES(?,?,?)");
+            $statement = $database->prepare("INSERT INTO cvs_acl (username, path, access) VALUES(?,?,?)");
             foreach ($new_entries as $ent) {
                 print "Adding CVS access to $ent for $handle...<br />\n";
-                $dbh->execute($sth, [$handle, $ent, 1]);
+                $statement->execute([$handle, $ent, 1]);
             }
         }
 
@@ -156,13 +154,10 @@ switch ($command) {
 }
 
 
-$dbh->setFetchmode(DB_FETCHMODE_ASSOC);
+$row = $database->run('SELECT * FROM users WHERE handle = ?', [$handle])->fetch();
 
-$row = $dbh->getRow('SELECT * FROM users WHERE handle = ?', [$handle]);
+$cvs_acl_arr = $database->run('SELECT path FROM cvs_acl WHERE username = ? AND access = 1', [$handle])->fetchAll(\PDO::FETCH_COLUMN);
 
-$cvs_acl_arr = $dbh->getCol('SELECT path FROM cvs_acl'
-                            . ' WHERE username = ? AND access = 1', 0,
-                            [$handle]);
 $cvs_acl = implode("\n", $cvs_acl_arr);
 
 if ($row === null) {

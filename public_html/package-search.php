@@ -57,7 +57,7 @@ if (!empty($_GET['pkg_category'])) {
 }
 
 // Fetch list of users/maintainers
-$users = $dbh->getAll('SELECT u.handle, u.name FROM users u, maintains m WHERE u.handle = m.handle GROUP BY handle ORDER BY u.name', DB_FETCHMODE_ASSOC);
+$users = $database->run('SELECT u.handle, u.name FROM users u, maintains m WHERE u.handle = m.handle GROUP BY handle ORDER BY u.name')->fetchAll();
 for ($i=0; $i<count($users); $i++) {
     if (empty($users[$i]['name'])) {
         $users[$i]['name'] = $users[$i]['handle'];
@@ -67,22 +67,21 @@ for ($i=0; $i<count($users); $i++) {
 // Is form submitted? Do search and show results.
 $numrows = 0;
 if (!empty($_GET)) {
-    $dbh->setFetchmode(DB_FETCHMODE_ASSOC);
     $where = [];
 
     // Build package name part of query
     if (!empty($_GET['pkg_name'])) {
-        $where[] = '(name LIKE'.$dbh->quote('%'.$_GET['pkg_name'].'%').' OR summary LIKE '.$dbh->quote('%'.$_GET['pkg_name'].'%').')';
+        $where[] = '(name LIKE'.$database->quote('%'.$_GET['pkg_name'].'%').' OR p.summary LIKE '.$database->quote('%'.$_GET['pkg_name'].'%').')';
     }
 
     // Build maintainer part of query
     if (!empty($_GET['pkg_maintainer'])) {
-        $where[] = sprintf("handle LIKE %s", $dbh->quote('%' . $_GET['pkg_maintainer'] . '%'));
+        $where[] = sprintf("handle LIKE %s", $database->quote('%' . $_GET['pkg_maintainer'] . '%'));
     }
 
     // Build category part of query
     if (!empty($_GET['pkg_category'])) {
-        $where[] = sprintf("category = %s", $dbh->quote($_GET['pkg_category']));
+        $where[] = sprintf("category = %s", $database->quote($_GET['pkg_category']));
     }
 
     // Any release date checking?
@@ -135,12 +134,12 @@ if (!empty($_GET)) {
                           $release_join
                     WHERE p.id = m.package " . $where . "
                  AND p.package_type='pecl'
-                 ORDER BY p.name LIKE ".$dbh->quote('%'.$_GET['pkg_name'].'%')." DESC, p.name";
+                 ORDER BY p.name LIKE ".$database->quote('%'.$_GET['pkg_name'].'%')." DESC, p.name";
 
-    $result = $dbh->query($sql);
+    $statement = $database->query($sql);
 
     // Run through any results
-    if (($numrows = $result->numRows()) > 0) {
+    if (($numrows = $statement->rowCount()) > 0) {
 
         // Paging
         $params['itemData'] = range(0, $numrows - 1);
@@ -165,7 +164,13 @@ if (!empty($_GET)) {
                                $numrows,
                                $links['next']);
 
-        while ($row = $result->fetchRow(DB_FETCHMODE_ASSOC, $rownum++) AND $rownum <= $to) {
+        foreach ($statement->fetchAll() as $row) {
+            if ($rownum > $to) {
+                break;
+            }
+
+            $rownum++;
+
             // If name or summary was searched on, highlight the search string
             $row['raw_name']    = $row['name'];
             if (!empty($_GET['pkg_name'])) {

@@ -45,7 +45,7 @@ if (empty($id)) {
 
     $bb->end();
 
-} else if (!empty($_GET['update'])) {
+} elseif (!empty($_GET['update'])) {
     if (!isAllowed($id)) {
         PEAR::raiseError("Only the lead maintainer of the package or PECL
                           administrators can edit the maintainers.");
@@ -61,21 +61,21 @@ if (empty($id)) {
         list($handle, $role) = explode("||", $maintainer);
         $new_list[$handle] = $role;
     }
-    $package = $dbh->getOne('SELECT name FROM packages WHERE id=?', [$id]);
 
+    $package = $database->run('SELECT name FROM packages WHERE id=?', [$id])->fetch()['name'];
 
     // Perform databases operations
-    $query = "SELECT role FROM maintains WHERE handle = ? AND package = ?";
-    $check = $dbh->prepare($query);
+    $sql = "SELECT role FROM maintains WHERE handle = ? AND package = ?";
+    $check = $database->prepare($sql);
 
-    $query  = "INSERT INTO maintains VALUES (?, ?, ?, 1)";
-    $insert = $dbh->prepare($query);
+    $sql  = "INSERT INTO maintains VALUES (?, ?, ?, 1)";
+    $insert = $database->prepare($sql);
 
-    $query  = "UPDATE maintains SET role = ? WHERE handle = ? AND package = ?";
-    $update = $dbh->prepare($query);
+    $sql  = "UPDATE maintains SET role = ? WHERE handle = ? AND package = ?";
+    $update = $database->prepare($sql);
 
-    $query  = "DELETE FROM maintains WHERE handle = ? AND package = ?";
-    $delete = $dbh->prepare($query);
+    $sql  = "DELETE FROM maintains WHERE handle = ? AND package = ?";
+    $delete = $database->prepare($sql);
 
     // In a first run, we delete all maintainers which are not in the new list.
     // This isn't the best solution, but for now it works.
@@ -83,31 +83,35 @@ if (empty($id)) {
         if (isset($new_list[$handle])) {
             continue;
         }
+
         echo 'Deleting user <b>' . $handle . '</b> ...<br />';
-        $result = $dbh->execute($delete, [$handle, $id]);
+        $delete->execute([$handle, $id]);
     }
 
     // Update/Insert existing maintainers
     foreach ($new_list as $handle => $role) {
-        $result = $dbh->execute($check, [$handle, $id]);
+        $check->execute([$handle, $id]);
 
-        $row = $result->fetchRow(DB_FETCHMODE_ASSOC);
+        $row = $check->fetch();
         if (!is_array($row)) {
             // Insert new maintainer
             echo 'Adding user <b>' . $handle . '</b> ...<br />';
-            $result = $dbh->execute($insert, [$handle, $id, $role]);
+            $insert->execute([$handle, $id, $role]);
         } else if ($role != $row['role']) {
             // Update role
             echo 'Updating user <b>' . $handle . '</b> ...<br />';
-            $result = $dbh->execute($update, [$role, $handle, $id]);
+            $update->execute([$role, $handle, $id]);
         }
     }
 
     $rest->savePackageMaintainer($package);
+
     $url = $self;
+
     if (!empty($_GET['pid'])) {
         $url .= "?pid=" . urlencode(strip_tags($_GET['pid']));
     }
+
     echo '<br /><b>Done</b><br />';
     echo '<a href="' . $url . '">Back</a>';
 } else {
@@ -118,7 +122,9 @@ if (empty($id)) {
         exit();
     }
 
-    $package = htmlentities($dbh->getOne('SELECT name FROM packages WHERE id=?', [$id]), ENT_QUOTES);
+    $package = $database->run('SELECT name FROM packages WHERE id=?', [$id])->fetch()['name'];
+
+    $package = htmlentities($package, ENT_QUOTES);
 
     $bb = new BorderBox("Manage maintainers for $package", "100%");
 
@@ -138,16 +144,19 @@ if (empty($id)) {
     echo '  <select onChange="activateAdd();" name="accounts" size="10">';
 
     $users = User::listAll();
+
     foreach ($users as $user) {
         if (empty($user['handle'])) {
             continue;
         }
+
         printf('<option value="%s">%s (%s)</option>',
                $user['handle'],
                $user['name'],
                $user['handle']
                );
     }
+
     echo '  </select>';
     echo '  </td>';
 
@@ -176,6 +185,7 @@ if (empty($id)) {
                $role['role']
                );
     }
+
     echo '  </select>';
     echo '  </td>';
     echo '</tr>';
@@ -197,7 +207,9 @@ if (empty($id)) {
 function isAllowed($package)
 {
     global $auth_user;
+
     auth_require();
+
     $lead = in_array($auth_user->handle, array_keys(Maintainer::get($package, true)));
     $admin = $auth_user->isAdmin();
 

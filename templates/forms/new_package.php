@@ -53,8 +53,8 @@ mailing list and have people agree with you.
         <label>Category <abbr title="required">*</abbr></label>
         <select name="category" size="1" required>
             <option value="">--Select Category--</option>
-            <?php foreach ($categories as $key=>$option): ?>
-            <option value="<?= htmlspecialchars($key, ENT_QUOTES); ?>"><?= htmlspecialchars($option, ENT_QUOTES); ?></option>
+            <?php foreach ($categories as $category): ?>
+            <option value="<?= htmlspecialchars($category['id'], ENT_QUOTES); ?>"><?= htmlspecialchars($category['name'], ENT_QUOTES); ?></option>
             <?php endforeach; ?>
         </select>
     </div>

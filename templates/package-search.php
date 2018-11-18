@@ -262,8 +262,8 @@ response_header('Package Search');
   <td class="form-input">
    <select name="pkg_category">
     <option value=""></option>
-    <?php foreach($category_rows as $c):?>
-     <option value="<?php echo $c['id']; ?>" <?php echo $c['selected']; ?>><?php echo $c['name']; ?></option>
+    <?php foreach($categories as $category):?>
+     <option value="<?php echo $category['id']; ?>" <?php echo (!isset($category['selected']) ? '' : $category['selected'] ); ?>><?php echo $category['name']; ?></option>
     <?php endforeach?>
    </select>
   </td>

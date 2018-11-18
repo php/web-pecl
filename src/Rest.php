@@ -25,6 +25,7 @@ use App\Database;
 use App\Karma;
 use App\Package;
 use App\User;
+use App\Repository\CategoryRepository;
 use App\Utils\Filesystem;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
@@ -40,6 +41,7 @@ class Rest
     private $filesystem;
     private $scheme = 'http';
     private $host;
+    private $categoryRepository;
 
     /**
      * Set database handler.
@@ -81,6 +83,11 @@ class Rest
         $this->host = $host;
     }
 
+    public function setCategoryRepository(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
     /**
      * Regenerate all categories info.
      */
@@ -94,7 +101,7 @@ class Rest
             @chmod($cdir, 0777);
         }
 
-        $categories = Category::listAll();
+        $categories = $this->categoryRepository->findAll();
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <a xmlns="http://pear.php.net/dtd/rest.allcategories"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

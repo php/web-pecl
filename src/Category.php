@@ -126,18 +126,6 @@ class Category
     }
 
     /**
-     * List all categories
-     *
-     * @return array
-     */
-    public static function listAll()
-    {
-        global $dbh;
-
-        return $dbh->getAll('SELECT * FROM categories ORDER BY name', null, DB_FETCHMODE_ASSOC);
-    }
-
-    /**
      * Return a list of packages in this category
      *
      * @param string $category

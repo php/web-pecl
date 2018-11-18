@@ -23,8 +23,8 @@
  * Generate static REST files for PECL from existing data
  */
 
-use App\Category;
 use App\Package;
+use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
@@ -40,7 +40,10 @@ chmod($config->get('rest_dir'), 0777);
 
 echo "Generating Category REST...\n";
 
-foreach (Category::listAll() as $category) {
+$categoryRepository = new CategoryRepository($database);
+$categories = $categoryRepository->findAll();
+
+foreach ($categories as $category) {
     echo "  $category[name]...";
     $rest->saveCategory($category['name']);
     echo "done\n";
@@ -120,7 +123,7 @@ foreach (Package::listAll(false, false, false) as $package => $info) {
 
 echo "Generating Category Package REST...\n";
 
-foreach (Category::listAll() as $category) {
+foreach ($categories as $category) {
     echo "  $category[name]...";
     $rest->savePackagesCategory($category['name']);
     echo "done\n";

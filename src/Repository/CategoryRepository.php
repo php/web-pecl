@@ -41,14 +41,12 @@ class CategoryRepository
     }
 
     /**
-     * Get all categories.
+     * Find all categories.
      */
     public function findAll()
     {
-        $sql = "SELECT id, name FROM categories ORDER BY name";
+        $sql = "SELECT * FROM categories ORDER BY name";
 
-        $statement = $this->database->run($sql);
-
-        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        return $this->database->run($sql)->fetchAll();
     }
 }

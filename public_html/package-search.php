@@ -28,7 +28,7 @@
 *  o Release date (on/before/after)
 */
 
-use App\Category;
+use App\Repository\CategoryRepository;
 use \Pager as Pager;
 
 // Months for released date dropdowns
@@ -47,11 +47,13 @@ $months[11] = 'November';
 $months[12] = 'December';
 
 // Code to fetch the current category list
-$category_rows = Category::listAll();
+$categoryRepository = new CategoryRepository($database);
+
+$categories = $categoryRepository->findAll();
 if (!empty($_GET['pkg_category'])) {
-    for ($i=0; $i<count($category_rows); $i++) {
-        if ($_GET['pkg_category'] == $category_rows[$i]['id']) {
-            $category_rows[$i]['selected'] = 'selected="selected"';
+    foreach ($categories as $key => $category) {
+        if ($_GET['pkg_category'] == $category['id']) {
+            $categories[$key]['selected'] = 'selected="selected"';
         }
     }
 }

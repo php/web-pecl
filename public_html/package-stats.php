@@ -20,10 +20,10 @@
 */
 
 use App\BorderBox;
+use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 use App\Repository\PackageStatsRepository;
 use App\Repository\ReleaseRepository;
-use App\Category;
 use App\Package;
 
 $packageRepository = new PackageRepository($database);
@@ -64,12 +64,13 @@ echo '  <tr>'."\n";
 echo '  <td>'."\n";
 echo '   <select name="cid" onchange="javascript:reloadMe();">'."\n";
 echo '    <option value="">Select category ...</option>'."\n";
-foreach (Category::listAll() as $value) {
+$categoryRepository = new CategoryRepository($database);
+foreach ($categoryRepository->findAll() as $category) {
     $selected = '';
-    if (isset($_GET['cid']) && $_GET['cid'] == $value['id']) {
+    if (isset($_GET['cid']) && $_GET['cid'] == $category['id']) {
         $selected = ' selected="selected"';
     }
-    echo '    <option value="' . $value['id'] . '"' . $selected . '>' . $value['name'] . "</option>\n";
+    echo '    <option value="' . $category['id'] . '"' . $selected . '>' . $category['name'] . "</option>\n";
 }
 
 echo "  </select>\n";

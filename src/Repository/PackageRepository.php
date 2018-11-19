@@ -114,4 +114,131 @@ class PackageRepository
 
         return $this->database->run($sql)->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
+
+    /**
+     * List all packages for exporting to XML files.
+     *
+     * @param boolean Only list released packages?
+     * @param boolean If listing released packages only, only list stable releases?
+     * @param boolean List also PEAR packages
+     * @return array
+     */
+    public function listAll()
+    {
+        $sql = "SELECT p.name, p.id AS packageid,
+                    c.id AS categoryid,
+                    c.name AS category,
+                    p.license AS license,
+                    p.summary AS summary,
+                    p.description AS description,
+                    m.handle AS lead
+                FROM packages p, categories c, maintains m
+                WHERE p.package_type = 'pecl'
+                    AND p.approved = 1
+                    AND c.id = p.category
+                    AND p.id = m.package
+                    AND m.role = 'lead'
+                ORDER BY p.name";
+
+        $packageinfo = $this->database->run($sql)->fetchAll();
+
+        $results = [];
+        foreach($packageinfo as $item) {
+            // Reset package stability state
+            $item['stable'] = false;
+
+            $results[$item['name']] = $item;
+        }
+        $packageinfo = $results;
+
+        $sql = "SELECT p.name, r.id AS rid,
+                    r.version AS stable,
+                    r.state AS state
+                FROM packages p, releases r
+                WHERE p.package_type = 'pecl'
+                    AND p.approved = 1
+                    AND p.id = r.package
+                ORDER BY r.releasedate ASC ";
+
+        $allreleases = $this->database->run($sql)->fetchAll();
+        $results = [];
+        foreach($allreleases as $item) {
+            $results[$item['name']] = $item;
+        }
+        $allreleases = $results;
+
+        $sql = "SELECT p.name, r.id AS rid,
+                    r.version AS stable,
+                    r.state AS state
+                FROM packages p, releases r
+                WHERE p.package_type = 'pecl'
+                    AND p.approved = 1
+                    AND p.id = r.package
+                ORDER BY r.releasedate ASC";
+        $stablereleases = $this->database->run($sql)->fetchAll();
+
+        $results = [];
+        foreach($stablereleases as $item) {
+            $results[$item['name']] = $item;
+        }
+        $stablereleases = $results;
+
+        $sql = "SELECT package, `release` , type, relation, version, name FROM deps";
+        $deps = $this->database->run($sql)->fetchAll();
+
+        foreach ($stablereleases as $pkg => $stable) {
+            if (isset($packageinfo[$pkg])) {
+                $packageinfo[$pkg]['stable'] = $stable['stable'];
+                $packageinfo[$pkg]['unstable'] = false;
+                $packageinfo[$pkg]['state']  = $stable['state'];
+            }
+        }
+
+        foreach ($allreleases as $pkg => $stable) {
+            if ($stable['state'] == 'stable') {
+                if (version_compare($packageinfo[$pkg]['stable'], $stable['stable'], '<')) {
+                    // Only change it if the version number is newer
+                    $packageinfo[$pkg]['stable'] = $stable['stable'];
+                }
+            } else {
+                if (!isset($packageinfo[$pkg]['unstable'])
+                    || version_compare($packageinfo[$pkg]['unstable'], $stable['stable'], '<')
+                ) {
+                    // Only change it if the version number is newer
+                    $packageinfo[$pkg]['unstable'] = $stable['stable'];
+                }
+            }
+
+            $packageinfo[$pkg]['state']  = $stable['state'];
+
+            if (isset($packageinfo[$pkg]['unstable']) && !$packageinfo[$pkg]['stable']) {
+                $packageinfo[$pkg]['stable'] = $packageinfo[$pkg]['unstable'];
+            }
+        }
+
+        foreach(array_keys($packageinfo) as $pkg) {
+            $_deps = [];
+
+            foreach($deps as $dep) {
+                if ($dep['package'] == $packageinfo[$pkg]['packageid']
+                    && isset($allreleases[$pkg])
+                    && $dep['release'] == $allreleases[$pkg]['rid'])
+                {
+                    unset($dep['rid']);
+                    unset($dep['release']);
+
+                    if ($dep['type'] == 'pkg' && isset($packageinfo[$dep['name']])) {
+                        $dep['package'] = $packageinfo[$dep['name']]['packageid'];
+                    } else {
+                        $dep['package'] = 0;
+                    }
+
+                    $_deps[] = $dep;
+                };
+            };
+            $packageinfo[$pkg]['deps'] = $_deps;
+        };
+
+        return $packageinfo;
+    }
 }

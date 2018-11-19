@@ -24,6 +24,7 @@
 
 use App\Package;
 use App\Repository\CategoryRepository;
+use App\Repository\PackageRepository;
 use App\Repository\UserRepository;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
@@ -33,13 +34,15 @@ use \Archive_Tar as Archive_Tar;
 require_once __DIR__.'/../include/bootstrap.php';
 
 $filesystem->delete($config->get('rest_dir'));
+$categoryRepository = new CategoryRepository($database);
+$packageRepository = new PackageRepository($database);
+$userRepository = new UserRepository($database);
 
 mkdir($config->get('rest_dir'), 0777, true);
 chmod($config->get('rest_dir'), 0777);
 
 echo "Generating Category REST...\n";
 
-$categoryRepository = new CategoryRepository($database);
 $categories = $categoryRepository->findAll();
 
 foreach ($categories as $category) {
@@ -51,8 +54,6 @@ foreach ($categories as $category) {
 $rest->saveAllCategories();
 
 echo "Generating Maintainer REST...\n";
-
-$userRepository = new UserRepository($database);
 
 foreach ($userRepository->findAll() as $maintainer) {
     echo "  $maintainer[handle]...";
@@ -70,7 +71,7 @@ $rest->saveAllPackages();
 $pearConfig = PEAR_Config::singleton();
 $pkg = new PEAR_PackageFile($pearConfig);
 
-foreach (Package::listAll(false, false, false) as $package => $info) {
+foreach ($packageRepository->listAll() as $package => $info) {
     echo "  $package\n";
     $rest->savePackage($package);
     echo "     Maintainers...";

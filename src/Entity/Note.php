@@ -22,74 +22,81 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
+namespace App\Entity;
 
-use \DB as DB;
+use App\Database;
 
 /**
- * Class to handle notes.
+ * Entity class representing notes table row.
  */
 class Note
 {
+    private $database;
+    private $authUser;
+
+    /**
+     * Array of valid column names to use in SQL query.
+     */
+    private $validKeys = ['uid', 'rid', 'cid', 'pid'];
+
+    /**
+     * Set database handler.
+     */
+    public function setDatabase(Database $database)
+    {
+        $this->database = $database;
+    }
+
+    /**
+     * Set database handler.
+     */
+    public function setAuthUser($authUser)
+    {
+        $this->authUser = $authUser;
+    }
+
     /**
      * Create a new note.
      */
-    public static function add($key, $value, $note, $author = "")
+    public function add($key, $value, $note, $author = "")
     {
-        global $dbh, $auth_user;
-
         if (empty($author)) {
-            $author = $auth_user->handle;
+            $author = $this->authUser->handle;
         }
 
-        if (!in_array($key, ['uid', 'rid', 'cid', 'pid'], true)) {
-            // bad hackers not allowed
+        // Validate key
+        if (!in_array($key, $this->validKeys, true)) {
             $key = 'uid';
         }
 
-        $nid = $dbh->nextId("notes");
-        $stmt = $dbh->prepare("INSERT INTO notes (id,$key,nby,ntime,note) ".
-                              "VALUES(?,?,?,?,?)");
-        $res = $dbh->execute($stmt, [$nid, $value, $author,
-                             gmdate('Y-m-d H:i'), $note]);
+        $sql = "SELECT id FROM notes ORDER by id DESC";
+        $id = $this->database->run($sql)->fetch()['id'];
+        $id = !$id ? 1 : $id + 1;
 
-        if (DB::isError($res)) {
-            return $res;
-        }
+        $sql = "INSERT INTO notes (id, $key, nby, ntime, note) VALUES (?, ?, ?, ?, ?)";
+        $arguments = [$id, $value, $author, gmdate('Y-m-d H:i'), $note];
 
-        return true;
+        return $this->database->run($sql, $arguments);
     }
 
     /**
      * Remove note.
      */
-    public static function remove($id)
+    public function remove($id)
     {
-        global $dbh;
-
-        $id = (int)$id;
-        $res = $dbh->query("DELETE FROM notes WHERE id = $id");
-
-        if (DB::isError($res)) {
-            return $res;
-        }
-
-        return true;
+        return $this->database->run("DELETE FROM notes WHERE id = ?", [(int)$id]);
     }
 
     /**
      * Remove all notes by key.
      */
-    public static function removeAll($key, $value)
+    public function removeAll($key, $value)
     {
-        global $dbh;
-
-        $res = $dbh->query("DELETE FROM notes WHERE $key = ". $dbh->quote($value));
-
-        if (DB::isError($res)) {
-            return $res;
+        // Validate key
+        if (!in_array($key, $this->validKeys, true)) {
+            $key = 'uid';
         }
 
-        return true;
+        return $this->database->run("DELETE FROM notes WHERE $key = ?", [$value]);
     }
 }

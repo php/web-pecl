@@ -19,7 +19,7 @@
 */
 
 use App\BorderBox;
-use App\Note;
+use App\Entity\Note;
 use App\Entity\User as UserEntity;
 use App\User;
 
@@ -48,18 +48,18 @@ echo '<br>';
 echo '<a href="/admin/category-manager.php" class="item">Manage categories</a>';
 echo '<hr>';
 
+$note = new Note();
+$note->setDatabase($database);
+$note->setAuthUser($auth_user);
+
 // adding and deleting notes
 if (!empty($_REQUEST['cmd'])) {
     if ($_REQUEST['cmd'] == "Add note" && !empty($_REQUEST['note']) && !empty($_REQUEST['key']) && !empty($_REQUEST['id'])) {
-        Note::add($_REQUEST['key'], $_REQUEST['id'], $_REQUEST['note']);
+        $note->add($_REQUEST['key'], $_REQUEST['id'], $_REQUEST['note']);
         unset($_REQUEST['cmd']);
-
     } elseif ($_REQUEST['cmd'] == "Delete note" && !empty($_REQUEST['id'])) {
-        /**
-         * Delete note
-         */
-        Note::remove($_REQUEST['id']);
-
+        // Delete note
+        $note->remove($_REQUEST['id']);
     } elseif ($_REQUEST['cmd'] == "Open Account" && !empty($_REQUEST['uid'])) {
         /**
          * Open account

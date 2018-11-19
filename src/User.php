@@ -24,7 +24,7 @@
 
 namespace App;
 
-use App\Note;
+use App\Entity\Note;
 use App\Entity\User as UserEntity;
 use App\Package;
 
@@ -34,13 +34,28 @@ use App\Package;
 class User
 {
     /**
+     * Get a note entity object.
+     */
+    private static function getNote()
+    {
+        global $database, $auth_user;
+
+        $note = new Note();
+
+        $note->setDatabase($database);
+        $note->setAuthUser($auth_user);
+
+        return $note;
+    }
+
+    /**
      * Remove user.
      */
     public static function remove($uid)
     {
         global $dbh, $rest;
 
-        Note::removeAll("uid", $uid);
+        self::getNote()->removeAll('uid', $uid);
 
         $rest->deleteMaintainerREST($uid);
         $rest->saveAllMaintainers();
@@ -59,7 +74,7 @@ class User
 
         list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?', [$uid]);
 
-        Note::add("uid", $uid, "Account rejected: $reason");
+        self::getNote()->add('uid', $uid, "Account rejected: $reason");
 
         $msg = "Your PECL account request was rejected by " . $auth_user->handle . ":\n"."$reason\n";
         $xhdr = "From: " . $auth_user->handle . "@php.net";
@@ -83,7 +98,9 @@ class User
         }
 
         @$arr = unserialize($user->userinfo);
-        Note::removeAll("uid", $uid);
+
+        self::getNote()->removeAll('uid', $uid);
+
         $user->set('registered', 1);
 
         if (is_array($arr)) {
@@ -94,7 +111,8 @@ class User
         $user->set('createdby', $auth_user->handle);
         $user->set('registered', 1);
         $user->store();
-        Note::add("uid", $uid, "Account opened");
+
+        self::getNote()->add('uid', $uid, 'Account opened');
 
         $rest->saveMaintainer($user->handle);
         $rest->saveAllmaintainers();

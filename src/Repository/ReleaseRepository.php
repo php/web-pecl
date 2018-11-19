@@ -128,4 +128,30 @@ class ReleaseRepository
     {
         return version_compare($b['version'], $a['version']);
     }
+
+    /**
+     * Get recent releases for the given user
+     *
+     * @param  string Handle of the user
+     * @param  int    Number of releases
+     * @return array
+     */
+    public function getRecentByUser($handle, $max = MAX_ITEMS_RETURNED)
+    {
+        $sql = "SELECT p.id AS id,
+                    p.name AS name,
+                    p.summary AS summary,
+                    r.version AS version,
+                    r.releasedate AS releasedate,
+                    r.releasenotes AS releasenotes,
+                    r.doneby AS doneby,
+                    r.state AS state
+                FROM packages p, releases r, maintains m
+                WHERE p.package_type = 'pecl' AND p.id = r.package
+                AND p.id = m.package AND m.handle = :handle
+                ORDER BY r.releasedate DESC
+                LIMIT :limit";
+
+        return $this->database->run($sql, [':handle' => $handle, ':limit' => $max])->fetchAll();
+    }
 }

@@ -135,7 +135,7 @@ switch ($type) {
         $name = User::info($user, "name");
         $channel_title = 'PECL: Latest releases for '.$user;
         $channel_description = "The latest releases for the developer " . $user . " (" . $name['name'] . ")";
-        $items = User::getRecentReleases($user);
+        $items = $releaseRepository->getRecentByUser($user, 10);
         break;
 
     case 'pkg':

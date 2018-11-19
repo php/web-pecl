@@ -44,7 +44,7 @@ return [
     'db_dsn' => isset($_SERVER['PEAR_DATABASE_DSN']) ? $_SERVER['PEAR_DATABASE_DSN'] : '',
 
     // REST static files directory
-    'rest_dir' => isset($_SERVER['PECL_REST_DIR']) ? $_SERVER['PECL_REST_DIR'] : '/var/lib/peclweb/rest',
+    'rest_dir' => isset($_SERVER['PEAR_REST_DIR']) ? $_SERVER['PEAR_REST_DIR'] : '/var/lib/peclweb/rest',
 
     // Temporary generated application files
     'tmp_dir' => isset($_SERVER['PECL_TMP_DIR']) ? $_SERVER['PECL_TMP_DIR'] : '/var/tmp/pear',

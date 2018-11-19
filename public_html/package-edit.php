@@ -28,7 +28,7 @@ use App\Release;
 use App\User;
 
 $release = new Release();
-$release->setDbh($dbh);
+$release->setDatabase($database);
 $release->setAuthUser($auth_user);
 $release->setRest($rest);
 $release->setPackagesDir($config->get('packages_dir'));

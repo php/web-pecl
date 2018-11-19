@@ -42,21 +42,22 @@
 
 use App\Release;
 use \PEAR as PEAR;
-use \DB as DB;
 
 $release = new Release();
-$release->setDbh($dbh);
+$release->setDatabase($database);
 $release->setAuthUser($auth_user);
 $release->setRest($rest);
 $release->setPackagesDir($config->get('packages_dir'));
 
 function error_404($obj) {
     header('HTTP/1.0 404 Not Found');
+
     if (is_object($obj)) {
         echo htmlentities($obj->getMessage());
     } else {
         print htmlentities($obj);
     }
+
     exit;
 }
 
@@ -65,13 +66,16 @@ PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'error_404');
 if (!isset($_SERVER['PATH_INFO']) || $_SERVER['PATH_INFO'] == '/') {
     PEAR::raiseError('no package selected');
 }
+
 $opts = explode('/', $_SERVER['PATH_INFO']);
 $ok = false;
+
 if (isset($_GET['uncompress']) && in_array($_GET['uncompress'], ['1', 'yes', 'on'])) {
     $uncompress = true;
 } else {
     $uncompress = false;
 }
+
 switch (count($opts)) {
     case 2: {
         if (preg_match('/^([a-zA-Z0-9_]+)-(.+)\.(tar|tgz)$/', $opts[1], $matches)) {

@@ -31,7 +31,7 @@ use \PEAR_Common as PEAR_Common;
 auth_require('pear.dev');
 
 $release = new Release();
-$release->setDbh($dbh);
+$release->setDatabase($database);
 $release->setAuthUser($auth_user);
 $release->setRest($rest);
 $release->setPackagesDir($config->get('packages_dir'));

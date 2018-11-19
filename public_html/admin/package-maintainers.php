@@ -19,11 +19,16 @@
 */
 
 use App\BorderBox;
-use App\Maintainer;
+use App\Entity\Maintainer;
 use App\Package;
 use App\User;
 use App\Repository\UserRepository;
 use App\Repository\PackageRepository;
+
+$maintainer = new Maintainer();
+$maintainer->setDatabase($database);
+$maintainer->setRest($rest);
+$maintainer->setAuthUser($auth_user);
 
 response_header("PECL Administration - Package maintainers");
 
@@ -49,14 +54,14 @@ if (empty($id)) {
     $bb->end();
 
 } elseif (!empty($_GET['update'])) {
-    if (!isAllowed($id)) {
+    if (!isAllowed($id, $maintainer)) {
         PEAR::raiseError("Only the lead maintainer of the package or PECL
                           administrators can edit the maintainers.");
         response_footer();
         exit();
     }
 
-    $all = Maintainer::get($id);
+    $all = $maintainer->get($id);
 
     // Transform
     $new_list = [];
@@ -82,13 +87,14 @@ if (empty($id)) {
 
     // In a first run, we delete all maintainers which are not in the new list.
     // This isn't the best solution, but for now it works.
-    foreach ($all as $handle => $role) {
-        if (isset($new_list[$handle])) {
+    foreach ($all as $role) {
+        if (isset($new_list[$role['handle']])) {
             continue;
         }
 
-        echo 'Deleting user <b>' . $handle . '</b> ...<br />';
-        $delete->execute([$handle, $id]);
+        echo 'Deleting user <b>' . $role['handle'] . '</b> ...<br />';
+
+        $delete->execute([$role['handle'], $id]);
     }
 
     // Update/Insert existing maintainers
@@ -118,7 +124,7 @@ if (empty($id)) {
     echo '<br /><b>Done</b><br />';
     echo '<a href="' . $url . '">Back</a>';
 } else {
-    if (!isAllowed($id)) {
+    if (!isAllowed($id, $maintainer)) {
         PEAR::raiseError("Only the lead maintainer of the package or PECL
                           administrators can edit the maintainers.");
         response_footer();
@@ -177,17 +183,18 @@ if (empty($id)) {
     echo '  <td>';
     echo '  <select multiple="yes" name="maintainers[]" onChange="activateRemove();" size="10">';
 
-    $maintainers = Maintainer::get($id);
-    foreach ($maintainers as $handle => $role) {
+    $maintainers = $maintainer->get($id);
+    foreach ($maintainers as $role) {
         // XXX: This sucks
-        $info = User::info($handle, "name");
-        printf('<option value="%s||%s">%s (%s, %s)</option>',
-               $handle,
-               $role['role'],
-               $info['name'],
-               $handle,
-               $role['role']
-               );
+        $info = User::info($role['handle'], "name");
+        printf(
+            '<option value="%s||%s">%s (%s, %s)</option>',
+            $role['handle'],
+            $role['role'],
+            $info['name'],
+            $role['handle'],
+            $role['role']
+        );
     }
 
     echo '  </select>';
@@ -208,13 +215,23 @@ if (empty($id)) {
     $bb->end();
 }
 
-function isAllowed($package)
+function isAllowed($package, $maintainer)
 {
     global $auth_user;
 
     auth_require();
 
-    $lead = in_array($auth_user->handle, array_keys(Maintainer::get($package, true)));
+    $maintainers = $maintainer->get($package, true);
+
+    $lead = false;
+
+    foreach ($maintainers as $item) {
+        if ($auth_user->handle === $item['handle']) {
+            $lead = true;
+            break;
+        }
+    }
+
     $admin = $auth_user->isAdmin();
 
     return ($lead || $admin);

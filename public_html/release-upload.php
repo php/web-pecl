@@ -18,7 +18,7 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Maintainer;
+use App\Entity\Maintainer;
 use App\Package;
 use App\Release;
 use App\User;
@@ -35,6 +35,11 @@ $release->setDatabase($database);
 $release->setAuthUser($auth_user);
 $release->setRest($rest);
 $release->setPackagesDir($config->get('packages_dir'));
+
+$maintainer = new Maintainer();
+$maintainer->setDatabase($database);
+$maintainer->setRest($rest);
+$maintainer->setAuthUser($auth_user);
 
 $display_form         = true;
 $display_verification = false;
@@ -232,7 +237,7 @@ do {
                     ];
                 }
 
-                $e = Maintainer::updateAll($pacid, $users);
+                $e = $maintainer->updateAll($pacid, $users);
 
                 if (PEAR::isError($e)) {
                     $errors[] = $e->getMessage();
@@ -287,7 +292,7 @@ do {
                 ];
             }
 
-            $e = Maintainer::updateAll($pacid, $users);
+            $e = $maintainer->updateAll($pacid, $users);
 
             if (PEAR::isError($e)) {
                 $errors[] = $e->getMessage();

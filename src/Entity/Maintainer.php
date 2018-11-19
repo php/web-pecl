@@ -22,12 +22,13 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
+namespace App\Entity;
 
 use App\Package;
 use App\User;
+use App\Database;
+use App\Rest;
 use \PEAR as PEAR;
-use \DB as DB;
 use \PEAR_Common as PEAR_Common;
 
 /**
@@ -35,6 +36,34 @@ use \PEAR_Common as PEAR_Common;
  */
 class Maintainer
 {
+    private $database;
+    private $rest;
+    private $authUser;
+
+    /**
+     * Set database handler.
+     */
+    public function setDatabase(Database $database)
+    {
+        $this->database = $database;
+    }
+
+    /**
+     * Set rest generator.
+     */
+    public function setRest(Rest $rest)
+    {
+        $this->rest = $rest;
+    }
+
+    /**
+     * Set auth user.
+     */
+    public function setAuthUser($authUser)
+    {
+        $this->authUser = $authUser;
+    }
+
     /**
      * Add new maintainer
      *
@@ -44,10 +73,8 @@ class Maintainer
      * @param  integer Is the developer actively working on the project?
      * @return mixed True or PEAR error object
      */
-    public static function add($package, $user, $role, $active = 1)
+    public function add($package, $user, $role, $active = 1)
     {
-        global $dbh, $rest;
-
         if (!User::exists($user)) {
             return PEAR::raiseError("User $user does not exist");
         }
@@ -56,15 +83,15 @@ class Maintainer
             $package = Package::info($package, 'id');
         }
 
-        $err = $dbh->query("INSERT INTO maintains (handle, package, role, active) VALUES (?, ?, ?, ?)",
-                           [$user, $package, $role, (int)$active]);
+        $sql = "INSERT INTO maintains (handle, package, role, active) VALUES (?, ?, ?, ?)";
+        $result = $this->database->run($sql, [$user, $package, $role, (int)$active]);
 
-        if (DB::isError($err)) {
-            return $err;
+        if (!$result) {
+            return $result;
         }
 
         $packagename = Package::info($package, 'name');
-        $rest->savePackageMaintainer($packagename);
+        $this->rest->savePackageMaintainer($packagename);
 
         return true;
     }
@@ -76,23 +103,28 @@ class Maintainer
      * @param  boolean Only return lead maintainers?
      * @return array
      */
-    public static function get($package, $lead = false)
+    public function get($package, $lead = false)
     {
-        global $dbh;
-
         if (is_string($package)) {
             $package = Package::info($package, 'id');
         }
 
-        $query = 'SELECT handle, role, active FROM maintains WHERE package = ?';
+        $sql = 'SELECT handle, role, active FROM maintains WHERE package = ?';
 
         if ($lead) {
-            $query .= " AND role = 'lead'";
+            $sql .= " AND role = 'lead'";
         }
 
-        $query .= ' ORDER BY active DESC';
+        $sql .= ' ORDER BY active DESC';
 
-        return $dbh->getAssoc($query, true, [$package], DB_FETCHMODE_ASSOC);
+        $results = $this->database->run($sql, [$package])->fetchAll();
+
+        $maintainers = [];
+        foreach ($results as $result) {
+            $maintainers[$result['handle']] = $result;
+        }
+
+        return $maintainers;
     }
 
     /**
@@ -101,7 +133,7 @@ class Maintainer
      * @param string Name of the role
      * @return boolean
      */
-    private static function isValidRole($role)
+    private function isValidRole($role)
     {
         static $roles;
 
@@ -119,11 +151,9 @@ class Maintainer
      * @param  string Handle of the user
      * @return True or PEAR error object
      */
-    private static function remove($package, $user)
+    private function remove($package, $user)
     {
-        global $dbh, $auth_user;
-
-        if (!$auth_user->isAdmin() && !User::maintains($auth_user->handle, $package, 'lead')) {
+        if (!$this->authUser->isAdmin() && !User::maintains($this->authUser->handle, $package, 'lead')) {
             return PEAR::raiseError('Maintainer::remove: insufficient privileges');
         }
 
@@ -133,7 +163,7 @@ class Maintainer
 
         $sql = 'DELETE FROM maintains WHERE package = ? AND handle = ?';
 
-        return $dbh->query($sql, [$package, $user]);
+        return $this->database->run($sql, [$package, $user]);
     }
 
     /**
@@ -144,14 +174,12 @@ class Maintainer
      *                     in the form: '<user>' => ['role' => '<role>', 'active' => '<active>']
      * @return mixed PEAR_Error or true
      */
-    public static function updateAll($pkgid, $users)
+    public function updateAll($pkgid, $users)
     {
-        global $dbh, $auth_user;
-
-        $admin = $auth_user->isAdmin();
+        $admin = $this->authUser->isAdmin();
 
         // Only admins and leads can do this.
-        if (self::mayUpdate($pkgid) == false) {
+        if ($this->mayUpdate($pkgid) == false) {
             return PEAR::raiseError('Maintainer::updateAll: insufficient privileges');
         }
 
@@ -161,16 +189,16 @@ class Maintainer
             PEAR::raiseError('Maintainer::updateAll: no such package');
         }
 
-        $old = self::get($pkgid);
+        $old = $this->get($pkgid);
 
-        if (DB::isError($old)) {
-            return $old;
+        if (!$old) {
+            return PEAR::raiseError('Maintainer::updateAll: some error occurred');
         }
 
         $old_users = array_keys($old);
         $new_users = array_keys($users);
 
-        if (!$admin && !in_array($auth_user->handle, $new_users)) {
+        if (!$admin && !in_array($this->authUser->handle, $new_users)) {
             return PEAR::raiseError("You can not delete your own maintainer role or you will not ".
                                     "be able to complete the update process. Set your name ".
                                     "in package.xml or let the new lead developer upload ".
@@ -181,27 +209,27 @@ class Maintainer
             $role = $u['role'];
             $active = $u['active'];
 
-            if (!self::isValidRole($role)) {
+            if (!$this->isValidRole($role)) {
                 return PEAR::raiseError("invalid role '$role' for user '$user'");
             }
 
             // The user is not present -> add him
             if (!in_array($user, $old_users)) {
-                $e = self::add($pkgid, $user, $role, $active);
+                $e = $this->add($pkgid, $user, $role, $active);
 
                 if (PEAR::isError($e)) {
-                    return $e;
+                    return PEAR::raiseError($e->getMessage());;
                 }
 
                 continue;
             }
 
             // Users exists but role has changed -> update it
-            if ($role != $old[$user]['role']) {
-                $res = self::update($pkgid, $user, $role, $active);
+            if ($role !== $old[$user]['role']) {
+                $res = $this->update($pkgid, $user, $role, $active);
 
-                if (DB::isError($res)) {
-                    return $res;
+                if (!$res) {
+                    return PEAR::raiseError('Error');
                 }
             }
         }
@@ -209,10 +237,10 @@ class Maintainer
         // Drop users who are no longer maintainers
         foreach ($old_users as $old_user) {
             if (!in_array($old_user, $new_users)) {
-                $res = self::remove($pkgid, $old_user);
+                $res = $this->remove($pkgid, $old_user);
 
-                if (DB::isError($res)) {
-                    return $res;
+                if (!$res) {
+                    return PEAR::raiseError('Error occurred');
                 }
             }
         }
@@ -228,13 +256,11 @@ class Maintainer
      * @param  string Role
      * @param  string Is the developer actively working on the package?
      */
-    public static function update($package, $user, $role, $active)
+    public function update($package, $user, $role, $active)
     {
-        global $dbh;
+        $sql = 'UPDATE maintains SET role = ?, active = ? WHERE package = ? AND handle = ?';
 
-        $query = 'UPDATE maintains SET role = ?, active = ? WHERE package = ? AND handle = ?';
-
-        return $dbh->query($query, [$role, $active, $package, $user]);
+        return $this->database->run($sql, [$role, $active, $package, $user]);
     }
 
     /**
@@ -243,13 +269,11 @@ class Maintainer
      * @param  int  ID of the package
      * @return boolean
      */
-    private static function mayUpdate($package)
+    private function mayUpdate($package)
     {
-        global $auth_user;
+        $admin = $this->authUser->isAdmin();
 
-        $admin = $auth_user->isAdmin();
-
-        if (!$admin && !User::maintains($auth_user->handle, $package, 'lead')) {
+        if (!$admin && !User::maintains($this->authUser->handle, $package, 'lead')) {
             return false;
         }
 

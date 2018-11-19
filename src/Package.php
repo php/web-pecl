@@ -24,7 +24,7 @@
 
 namespace App;
 
-use App\Maintainer;
+use App\Entity\Maintainer;
 use App\User;
 use \DB as DB;
 use \PEAR as PEAR;
@@ -42,7 +42,7 @@ class Package
      */
     public static function add($data)
     {
-        global $dbh, $rest;
+        global $database, $dbh, $rest, $auth_user;
 
         // name, category
         // license, summary, description
@@ -82,8 +82,13 @@ class Package
 
         $rest->savePackage($name);
 
-        if (isset($lead) && DB::isError($err = Maintainer::add($id, $lead, 'lead'))) {
-            return $err;
+        $maintainer = new Maintainer();
+        $maintainer->setDatabase($database);
+        $maintainer->setRest($rest);
+        $maintainer->setAuthUser($auth_user);
+
+        if (isset($lead) && !$maintainer->add($id, $lead, 'lead')) {
+            return PEAR::raiseError("Error with adding lead to the project");
         }
 
         $rest->saveAllPackages();

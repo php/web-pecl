@@ -98,4 +98,20 @@ class PackageRepository
 
         return $statement->fetchAll();
     }
+
+    /**
+     * Lists the IDs and names of all approved PECL packages
+     *
+     * Returns an associative array where the key of each element is
+     * a package ID, while the value is the name of the corresponding
+     * package.
+     *
+     * @return array
+     */
+    public function findAllPeclPackages()
+    {
+        $sql = "SELECT id, name FROM packages WHERE package_type = 'pecl' ORDER BY name";
+
+        return $this->database->run($sql)->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 }

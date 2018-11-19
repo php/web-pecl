@@ -23,6 +23,7 @@ use App\Maintainer;
 use App\Package;
 use App\User;
 use App\Repository\UserRepository;
+use App\Repository\PackageRepository;
 
 response_header("PECL Administration - Package maintainers");
 
@@ -38,7 +39,8 @@ $self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 if (empty($id)) {
     auth_require(true);
 
-    $values = Package::listAllNames();
+    $packageRepository = new PackageRepository($database);
+    $values = $packageRepository->findAllPeclPackages();
 
     $bb = new BorderBox("Select package");
 

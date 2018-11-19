@@ -314,12 +314,15 @@ class Rest
     http://pear.php.net/dtd/rest.allpackages.xsd">
 <c>'.$this->host.'</c>
 ';
-        foreach (Package::listAllNames() as $package)
+
+        foreach ($this->packageRepository->findAllPeclPackages() as $package)
         {
             $info .= ' <p>' . $package . '</p>
 ';
         }
+
         $info .= '</a>';
+
         file_put_contents($pdir.'/packages.xml', $info);
         @chmod($pdir.'/packages.xml', 0666);
     }

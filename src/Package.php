@@ -221,22 +221,6 @@ class Package
     }
 
     /**
-     * Lists the IDs and names of all approved PECL packages
-     *
-     * Returns an associative array where the key of each element is
-     * a package ID, while the value is the name of the corresponding
-     * package.
-     *
-     * @return array
-     */
-    public static function listAllNames()
-    {
-        global $dbh;
-
-        return $dbh->getAssoc("SELECT id, name FROM packages WHERE package_type = 'pecl' ORDER BY name");
-    }
-
-    /**
      * List all packages
      *
      * @param boolean Only list released packages?

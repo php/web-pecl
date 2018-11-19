@@ -18,7 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Package;
 use App\BorderBox;
 
 // expected url vars: pacid package
@@ -28,7 +27,7 @@ if (isset($_GET['package']) && empty($_GET['pacid'])) {
     $pacid = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
 }
 
-$pkg = Package::info($pacid);
+$pkg = $packageEntity->info($pacid);
 
 if (empty($pkg['name'])) {
     response_header("Error");

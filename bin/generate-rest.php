@@ -23,7 +23,6 @@
  * Generate static REST files for PECL from existing data
  */
 
-use App\Package;
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 use App\Repository\UserRepository;
@@ -79,7 +78,7 @@ foreach ($packageRepository->listAll() as $package => $info) {
     $rest->savePackageMaintainer($package);
     echo "...done\n";
 
-    $releases = Package::info($package, 'releases');
+    $releases = $packageEntity->info($package, 'releases');
 
     if ($releases) {
         echo "     Processing All Releases...";

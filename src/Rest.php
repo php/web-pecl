@@ -22,7 +22,7 @@ namespace App;
 
 use App\Database;
 use App\Karma;
-use App\Package;
+use App\Entity\Package;
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 use App\Repository\UserRepository;
@@ -44,6 +44,7 @@ class Rest
     private $categoryRepository;
     private $packageRepository;
     private $userRepository;
+    private $package;
 
     /**
      * Set database handler.
@@ -107,6 +108,14 @@ class Rest
     public function setUserRepository(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
+    }
+
+    /**
+     * Set package entity.
+     */
+    public function setPackage(Package $package)
+    {
+        $this->package = $package;
     }
 
     /**
@@ -346,7 +355,7 @@ class Rest
     public function savePackage($package)
     {
         $extra = '/rest/';
-        $package = Package::info($package);
+        $package = $this->package->info($package);
 
         $pdir = $this->dir.'/p';
 
@@ -434,7 +443,7 @@ class Rest
     public function saveAllReleases($package)
     {
         $extra = '/rest/';
-        $pid = Package::info($package, 'id');
+        $pid = $this->package->info($package, 'id');
         $releases = $this->database->run('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC', [$pid])->fetchAll();
         $rdir = $this->dir.'/r';
 
@@ -631,7 +640,7 @@ class Rest
      */
     public function savePackageMaintainer($package)
     {
-        $pid = Package::info($package, 'id');
+        $pid = $this->package->info($package, 'id');
         $maintainers = $this->database->run('SELECT * FROM maintains WHERE package = ?', [$pid])->fetchAll();
         $extra = '/rest/';
 

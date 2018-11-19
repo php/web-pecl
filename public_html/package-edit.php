@@ -23,7 +23,6 @@
  */
 
 use App\BorderBox;
-use App\Package;
 use App\Release;
 use App\User;
 
@@ -32,6 +31,7 @@ $release->setDatabase($database);
 $release->setAuthUser($auth_user);
 $release->setRest($rest);
 $release->setPackagesDir($config->get('packages_dir'));
+$release->setPackage($packageEntity);
 
 auth_require();
 
@@ -115,7 +115,7 @@ if (isset($_POST['submit'])) {
     $statement = $database->run($query, $qparams);
 
     $rest->savePackage($_POST['name']);
-    $rest->savePackagesCategory(Package::info($_POST['name'], 'category'));
+    $rest->savePackagesCategory($packageEntity->info($_POST['name'], 'category'));
     echo "<b>Package information successfully updated.</b><br /><br />\n";
 } elseif (isset($_GET['action'])) {
     switch ($_GET['action']) {
@@ -135,7 +135,7 @@ if (isset($_POST['submit'])) {
     }
 }
 
-$row = Package::info((int)$_GET['id']);
+$row = $packageEntity->info((int)$_GET['id']);
 
 if (empty($row['name'])) {
     PEAR::raiseError("Illegal package id");

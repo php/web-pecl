@@ -241,4 +241,14 @@ class PackageRepository
 
         return $packageinfo;
     }
+
+    /**
+     * Find package by name.
+     */
+    public function findOneByName($packageName)
+    {
+        $sql = "SELECT * FROM packages WHERE name = ?";
+
+        return $this->database->run($sql, [$packageName])->fetch();
+    }
 }

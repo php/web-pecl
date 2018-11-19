@@ -23,7 +23,6 @@
  */
 
 use App\BorderBox;
-use App\Package;
 
 auth_require(true);
 
@@ -75,8 +74,8 @@ if (!isset($_POST['confirm'])) {
     foreach ($database->run($sql, [':id' => $_GET['id']])->fetchAll() as $value) {
         $file = sprintf("%s/%s-%s.tgz",
                         $config->get('packages_dir'),
-                        $value[0],
-                        $value[1]);
+                        $value['name'],
+                        $value['version']);
 
         if (@unlink($file)) {
             echo "Deleting release archive \"" . $file . "\"\n";
@@ -88,9 +87,9 @@ if (!isset($_POST['confirm'])) {
 
     echo "\n" . $file_rm . " file(s) deleted\n\n";
 
-    $catid = Package::info($_GET['id'], 'categoryid');
-    $catname = Package::info($_GET['id'], 'category');
-    $packagename = Package::info($_GET['id'], 'name');
+    $catid = $packageEntity->info($_GET['id'], 'categoryid');
+    $catname = $packageEntity->info($_GET['id'], 'category');
+    $packagename = $packageEntity->info($_GET['id'], 'name');
     $database->query("UPDATE categories SET npackages = npackages-1 WHERE id=$catid");
 
     foreach ($tables as $table => $column) {

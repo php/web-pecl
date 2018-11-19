@@ -18,8 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Package;
 use App\Repository\CategoryRepository;
+use App\Repository\PackageRepository;
 
 if (!defined('PEAR_COMMON_PACKAGE_NAME_PREG')) {
     define('PEAR_COMMON_PACKAGE_NAME_PREG', '/^([A-Z][a-zA-Z0-9_]+|[a-z][a-z0-9_]+)$/');
@@ -68,24 +68,34 @@ do {
             break;
         }
 
-        $dbh->expectError(DB_ERROR_ALREADY_EXISTS);
-        $pkg = Package::add([
-                                  'name'        => $_POST['name'],
-                                  'type'        => 'pecl',
-                                  'category'    => $_POST['category'],
-                                  'license'     => $_POST['license'],
-                                  'summary'     => $_POST['summary'],
-                                  'description' => $_POST['desc'],
-                                  'homepage'    => $_POST['homepage'],
-                                  'cvs_link'    => $_POST['cvs_link'],
-                                  'lead'        => $auth_user->handle
-        ]);
-        $dbh->popExpect();
-        if (DB::isError($pkg) && $pkg->getCode() == DB_ERROR_ALREADY_EXISTS) {
-            error_handler("The `" . htmlspecialchars($_POST['name'],ENT_QUOTES) . "' package already exists!",
-                          "Package already exists");
-            exit;
+        $packageRepository = new PackageRepository($database);
+        $existing = $packageRepository->findOneByName($_POST['name']);
+        if ($existing) {
+            error_handler(
+                'The '.htmlspecialchars($_POST['name'], ENT_QUOTES).' package already exists!',
+                "Package already exists"
+            );
+        } else {
+            try {
+                $pkg = $packageEntity->add([
+                    'name'        => $_POST['name'],
+                    'type'        => 'pecl',
+                    'category'    => $_POST['category'],
+                    'license'     => $_POST['license'],
+                    'summary'     => $_POST['summary'],
+                    'description' => $_POST['desc'],
+                    'homepage'    => $_POST['homepage'],
+                    'cvs_link'    => $_POST['cvs_link'],
+                    'lead'        => $auth_user->handle
+                ]);
+            } catch (\Exception $e) {
+                error_handler(
+                    'Error occurred',
+                    "Error"
+                );
+            }
         }
+
         $display_form = false;
         response_header("Package Registered");
         print "The package `" . htmlspecialchars($_POST['name'], ENT_QUOTES) . "' has been registered in PECL.<br />\n";

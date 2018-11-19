@@ -19,7 +19,6 @@
 */
 
 use App\Entity\Maintainer;
-use App\Package;
 use App\Release;
 use App\User;
 use \HTTP_Upload as HTTP_Upload;
@@ -35,11 +34,13 @@ $release->setDatabase($database);
 $release->setAuthUser($auth_user);
 $release->setRest($rest);
 $release->setPackagesDir($config->get('packages_dir'));
+$release->setPackage($packageEntity);
 
 $maintainer = new Maintainer();
 $maintainer->setDatabase($database);
 $maintainer->setRest($rest);
 $maintainer->setAuthUser($auth_user);
+$maintainer->setPackage($packageEntity);
 
 $display_form         = true;
 $display_verification = false;
@@ -197,7 +198,7 @@ do {
 
                 break;
             } else {
-                $pacid = Package::info($info->getPackage(), 'id');
+                $pacid = $packageEntity->info($info->getPackage(), 'id');
 
                 if (PEAR::isError($pacid)) {
                     $errors[] = $pacid->getMessage();
@@ -217,7 +218,7 @@ do {
                     $license = $license['_content'];
                 }
 
-                $e = Package::updateInfo($pacid, [
+                $e = $packageEntity->updateInfo($pacid, [
                     'summary'     => $info->getSummary(),
                     'description' => $info->getDescription(),
                     'license'     => $license,
@@ -256,7 +257,7 @@ do {
                 );
             }
         } else {
-            $pacid = Package::info($info['package'], 'id');
+            $pacid = $packageEntity->info($info['package'], 'id');
 
             if (PEAR::isError($pacid)) {
                 $errors[] = $pacid->getMessage();
@@ -271,7 +272,7 @@ do {
                 break;
             }
 
-            $e = Package::updateInfo($pacid, [
+            $e = $packageEntity->updateInfo($pacid, [
                 'summary'     => $info['summary'],
                 'description' => $info['description'],
                 'license'     => $info['release_license'],

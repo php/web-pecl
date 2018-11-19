@@ -35,6 +35,7 @@ use App\Config;
 use App\Database;
 use App\Rest;
 use App\Database\Adapter;
+use App\Entity\Package;
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 use App\Repository\UserRepository;
@@ -148,3 +149,10 @@ $packageRepository = new PackageRepository($database);
 $rest->setPackageRepository($packageRepository);
 $userRepository = new UserRepository($database);
 $rest->setUserRepository($userRepository);
+
+$packageEntity = new Package();
+$packageEntity->setDatabase($database);
+$packageEntity->setRest($rest);
+
+// Inject package entity dependency to REST generator
+$rest->setPackage($packageEntity);

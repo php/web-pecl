@@ -18,7 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Package;
 use App\Repository\PackageRepository;
 
 // Only support package maintainer for now, needed for bugs.php.net
@@ -32,7 +31,7 @@ if (!$packageIdOrName) {
 }
 
 // Package data
-$package = Package::info($packageIdOrName);
+$package = $packageEntity->info($packageIdOrName);
 
 if (!$package || !isset($package['packageid'])) {
     header("HTTP/1.0 404 Not Found");

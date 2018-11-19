@@ -24,7 +24,6 @@ use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 use App\Repository\PackageStatsRepository;
 use App\Repository\ReleaseRepository;
-use App\Package;
 
 $packageRepository = new PackageRepository($database);
 $packageStatsRepository = new PackageStatsRepository($database);
@@ -138,7 +137,7 @@ $bb->end();
 
 if (isset($_GET['pid']) && (int)$_GET['pid']) {
 
-    $info = Package::info($_GET['pid'],null,false);
+    $info = $packageEntity->info($_GET['pid'],null,false);
 
     if (isset($info['releases']) && count($info['releases'])>0) {
         echo '<h2>&raquo; Statistics for Package &quot;<a href="/package/' . $info['name'] . '">' . $info['name'] . "</a>&quot;</h2>\n";

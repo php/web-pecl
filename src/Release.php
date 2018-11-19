@@ -24,8 +24,8 @@
 
 namespace App;
 
+use App\Entity\Package;
 use App\User;
-use App\Package;
 use App\Database;
 use App\Rest;
 use \PEAR as PEAR;
@@ -43,6 +43,7 @@ class Release
     private $authUser;
     private $rest;
     private $packagesDir;
+    private $package;
 
     /**
      * Set database handler.
@@ -74,6 +75,14 @@ class Release
     public function setPackagesDir($dir)
     {
         $this->packagesDir = $dir;
+    }
+
+    /**
+     * Set package entity.
+     */
+    public function setPackage(Package $package)
+    {
+        $this->package = $package;
     }
 
     /**
@@ -122,7 +131,7 @@ class Release
         }
 
         // (2) verify that package exists
-        $package_id = Package::info($package, 'id');
+        $package_id = $this->package->info($package, 'id');
         if (PEAR::isError($package_id) || empty($package_id)) {
             return PEAR::raiseError("package `$package' must be registered first");
         }
@@ -384,7 +393,7 @@ class Release
             return $res;
         }
 
-        $res = $this->rest->savePackagesCategory(Package::info($package, 'category'));
+        $res = $this->rest->savePackagesCategory($this->package->info($package, 'category'));
 
         if (PEAR::isError($res)) {
             $this->database->query('DELETE FROM deps WHERE `release` = '.$release_id);
@@ -409,7 +418,7 @@ class Release
      */
     public function HTTPdownload($package, $version = null, $file = null, $uncompress = false)
     {
-        $package_id = Package::info($package, 'packageid', true);
+        $package_id = $this->package->info($package, 'packageid', true);
 
         // If no package id has been set, check if this is package alias maybe
         if (!$package_id) {
@@ -551,7 +560,7 @@ class Release
 
         $this->database->run($sql, [$package, $release_id, date('Y-m-01')]);
 
-        $pkg_info = Package::info($package, null);
+        $pkg_info = $this->package->info($package, null);
 
         $sql = 'SELECT version FROM releases WHERE package = ? AND id = ?';
         $version = $this->database->run($sql, [$package, $release_id])->fetch()['version'];
@@ -587,8 +596,8 @@ class Release
             return;
         }
 
-        $pacid   = Package::info($pkginfo['package'], 'packageid');
-        $authors = Package::info($pkginfo['package'], 'authors');
+        $pacid   = $this->package->info($pkginfo['package'], 'packageid');
+        $authors = $this->package->info($pkginfo['package'], 'authors');
         $txt_authors = '';
 
         foreach ($authors as $a) {
@@ -644,8 +653,8 @@ END;
             return;
         }
 
-        $pacid   = Package::info($pkginfo->getPackage(), 'packageid');
-        $authors = Package::info($pkginfo->getPackage(), 'authors');
+        $pacid   = $this->package->info($pkginfo->getPackage(), 'packageid');
+        $authors = $this->package->info($pkginfo->getPackage(), 'authors');
         $txt_authors = '';
 
         foreach ($authors as $a) {
@@ -714,7 +723,7 @@ Authors
         $sql = "DELETE FROM `files` WHERE `package` = ? AND `release` = ?";
         $this->database->run($sql, [$package, $release]);
 
-        $pname = Package::info($package, 'name');
+        $pname = $this->package->info($package, 'name');
 
         $sql = 'SELECT version from releases WHERE package = ? and id = ?';
         $version = $this->database->run($sql, [$package, $release])->fetch()['version'];
@@ -724,7 +733,7 @@ Authors
 
         $this->rest->saveAllReleases($pname);
         $this->rest->deleteRelease($pname, $version);
-        $this->rest->savePackagesCategory(Package::info($pname, 'category'));
+        $this->rest->savePackagesCategory($this->package->info($pname, 'category'));
 
         return $statement;
     }

@@ -18,8 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Package;
-
 /**
  * On 404 error this will search for a package with the same
  * name as the requested document. Thus enabling urls such as:
@@ -41,12 +39,12 @@ $pkg = strtr($_SERVER['REDIRECT_URL'], '-','_');
 $pinfo_url = '/package/';
 
 // Check strictly
-$name = Package::info(basename($pkg), 'name');
+$name = $packageEntity->info(basename($pkg), 'name');
 if (!DB::isError($name) && !empty($name)) {
     if (!empty($name)) {
         localRedirect($pinfo_url . $name);
     } else {
-        $name = Package::info(basename($pkg), 'name', true);
+        $name = $packageEntity->info(basename($pkg), 'name', true);
         if (!empty($name)) {
             header('HTTP/1.0 301 Moved Permanently');
             header('Location: https://pear.php.net/package/' . $name);

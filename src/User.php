@@ -26,7 +26,6 @@ namespace App;
 
 use App\Entity\Note;
 use App\Entity\User as UserEntity;
-use App\Package;
 
 /**
  * User service class.
@@ -158,9 +157,9 @@ class User
      */
     public static function maintains($user, $pkgid, $role = 'any')
     {
-        global $dbh;
+        global $dbh, $packageEntity;
 
-        $package_id = Package::info($pkgid, 'id');
+        $package_id = $packageEntity->info($pkgid, 'id');
 
         if ($role == 'any') {
             return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? '.

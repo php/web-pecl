@@ -24,7 +24,7 @@
 
 namespace App\Entity;
 
-use App\Package;
+use App\Entity\Package;
 use App\User;
 use App\Database;
 use App\Rest;
@@ -39,6 +39,7 @@ class Maintainer
     private $database;
     private $rest;
     private $authUser;
+    private $package;
 
     /**
      * Set database handler.
@@ -65,6 +66,14 @@ class Maintainer
     }
 
     /**
+     * Set package entity.
+     */
+    public function setPackage(Package $package)
+    {
+        $this->package = $package;
+    }
+
+    /**
      * Add new maintainer
      *
      * @param  mixed  Name of the package or it's ID
@@ -80,7 +89,7 @@ class Maintainer
         }
 
         if (is_string($package)) {
-            $package = Package::info($package, 'id');
+            $package = $this->package->info($package, 'id');
         }
 
         $sql = "INSERT INTO maintains (handle, package, role, active) VALUES (?, ?, ?, ?)";
@@ -90,7 +99,7 @@ class Maintainer
             return $result;
         }
 
-        $packagename = Package::info($package, 'name');
+        $packagename = $this->package->info($package, 'name');
         $this->rest->savePackageMaintainer($packagename);
 
         return true;
@@ -106,7 +115,7 @@ class Maintainer
     public function get($package, $lead = false)
     {
         if (is_string($package)) {
-            $package = Package::info($package, 'id');
+            $package = $this->package->info($package, 'id');
         }
 
         $sql = 'SELECT handle, role, active FROM maintains WHERE package = ?';
@@ -158,7 +167,7 @@ class Maintainer
         }
 
         if (is_string($package)) {
-            $package = Package::info($package, 'id');
+            $package = $this->package->info($package, 'id');
         }
 
         $sql = 'DELETE FROM maintains WHERE package = ? AND handle = ?';
@@ -183,7 +192,7 @@ class Maintainer
             return PEAR::raiseError('Maintainer::updateAll: insufficient privileges');
         }
 
-        $pkg_name = Package::info((int)$pkgid, "name", true); // Needed for logging
+        $pkg_name = $this->package->info((int)$pkgid, "name", true); // Needed for logging
 
         if (empty($pkg_name)) {
             PEAR::raiseError('Maintainer::updateAll: no such package');

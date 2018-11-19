@@ -19,7 +19,6 @@
 */
 
 use App\Repository\ReleaseRepository;
-use App\Package;
 use App\User;
 use App\Entity\Category;
 
@@ -140,7 +139,7 @@ switch ($type) {
 
     case 'pkg':
         $package = $argument;
-        if (Package::isValid($package) == false) {
+        if ($packageEntity->isValid($package) == false) {
             rss_bailout();
             return PEAR::raiseError("The requested URL " . $_SERVER['REQUEST_URI'] . " was not found on this server.");
         }

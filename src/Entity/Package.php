@@ -22,11 +22,12 @@
   +----------------------------------------------------------------------+
 */
 
-namespace App;
+namespace App\Entity;
 
+use App\Database;
 use App\Entity\Maintainer;
+use App\Rest;
 use App\User;
-use \DB as DB;
 use \PEAR as PEAR;
 
 /**
@@ -34,15 +35,34 @@ use \PEAR as PEAR;
  */
 class Package
 {
+    private $database;
+    private $rest;
+
+    /**
+     * Set database handler.
+     */
+    public function setDatabase(Database $database)
+    {
+        $this->database = $database;
+    }
+
+    /**
+     * Set REST generator.
+     */
+    public function setRest(Rest $rest)
+    {
+        $this->rest = $rest;
+    }
+
     /**
      * Add new package
      *
      * @param array
      * @return mixed ID of new package or PEAR error object
      */
-    public static function add($data)
+    public function add($data)
     {
-        global $database, $dbh, $rest, $auth_user;
+        global $auth_user;
 
         // name, category
         // license, summary, description
@@ -54,7 +74,7 @@ class Package
         }
 
         if (!empty($category) && (int)$category == 0) {
-            $category = $dbh->getOne("SELECT id FROM categories WHERE name = ?", [$category]);
+            $category = $this->database->run("SELECT id FROM categories WHERE name = ?", [$category])->fetch()['id'];
         }
 
         if (empty($category)) {
@@ -66,33 +86,41 @@ class Package
         }
 
         // NOTE WELL! PECL packages are always approved
-        $query = "INSERT INTO packages (id,name,package_type,category,license,summary,description,homepage,cvs_link,approved) VALUES(?,?,?,?,?,?,?,?,?,1)";
-        $id = $dbh->nextId("packages");
-        $err = $dbh->query($query, [$id, $name, $type, $category, $license, $summary, $description, $homepage, $cvs_link]);
+        $sql = "INSERT INTO packages
+                    (id, name, package_type, category, license, summary, description, homepage, cvs_link, approved)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
 
-        if (DB::isError($err)) {
-            return $err;
+        $id = $this->database->run("SELECT id FROM packages ORDER by id DESC")->fetch()['id'];
+        $id = !$id ? 1 : $id + 1;
+
+        $result = $this->database->run($sql, [$id, $name, $type, $category, $license, $summary, $description, $homepage, $cvs_link]);
+
+        if (!$result) {
+            return PEAR::raiseError('Package::add: Error when adding package');
         }
 
-        $sql = "UPDATE categories SET npackages = npackages + 1 WHERE id = $category";
+        $sql = "UPDATE categories SET npackages = npackages + 1 WHERE id = ?";
 
-        if (DB::isError($err = $dbh->query($sql))) {
-            return $err;
+        $result = $this->database->run($sql, [$category]);
+
+        if (!$result) {
+            return PEAR::raiseError('Package::add: Error when updating categories');
         }
 
-        $rest->savePackage($name);
+        $this->rest->savePackage($name);
 
         $maintainer = new Maintainer();
-        $maintainer->setDatabase($database);
-        $maintainer->setRest($rest);
+        $maintainer->setDatabase($this->database);
+        $maintainer->setRest($this->rest);
         $maintainer->setAuthUser($auth_user);
+        $maintainer->setPackage($this);
 
         if (isset($lead) && !$maintainer->add($id, $lead, 'lead')) {
             return PEAR::raiseError("Error with adding lead to the project");
         }
 
-        $rest->saveAllPackages();
-        $rest->savePackagesCategory(self::info($name, 'category'));
+        $this->rest->saveAllPackages();
+        $this->rest->savePackagesCategory($this->info($name, 'category'));
 
         return $id;
     }
@@ -107,10 +135,8 @@ class Package
      * @param  boolean Should PEAR packages also be taken into account?
      * @return mixed
      */
-    public static function info($pkg, $field = null, $allow_pear = false)
+    public function info($pkg, $field = null, $allow_pear = false)
     {
-        global $dbh;
-
         if (is_numeric($pkg)) {
             $what = "id";
         } else {
@@ -140,7 +166,7 @@ class Package
              "WHERE " . $package_type . " c.id = p.category AND p.{$what} = ?";
 
         $rel_sql = "SELECT version, id, doneby, license, summary, ".
-             "description, releasedate, releasenotes, state " . //, packagexmlversion ".
+             "description, releasedate, releasenotes, state " .
              "FROM releases ".
              "WHERE package = ? ".
              "ORDER BY releasedate DESC";
@@ -150,76 +176,87 @@ class Package
                      WHERE `package` = ? ORDER BY `optional` ASC";
 
         if ($field === null) {
-            $info = $dbh->getRow($pkg_sql, [$pkg], DB_FETCHMODE_ASSOC);
+            $info = $this->database->run($pkg_sql, [$pkg])->fetch();
 
-            $info['releases'] =
-                 $dbh->getAssoc($rel_sql, false, [$info['packageid']],
-                 DB_FETCHMODE_ASSOC);
+            $info['releases'] = $this->database->run($rel_sql, [$info['packageid']])->fetchAll();
+            $results = [];
+            foreach ($info['releases'] as $item) {
+                $results[$item['version']] = $item;
+            }
+            $info['releases'] = $results;
+
             $rels = count($info['releases']) ? array_keys($info['releases']) : [''];
             $info['stable'] = $rels[0];
-            $info['notes'] =
-                 $dbh->getAssoc($notes_sql, false, [@$info['packageid']],
-                 DB_FETCHMODE_ASSOC);
-            $deps =
-                 $dbh->getAll($deps_sql, [@$info['packageid']],
-                 DB_FETCHMODE_ASSOC);
+            $info['notes'] = $this->database->run($notes_sql, [@$info['packageid']])->fetchAll();
+            $results = [];
+            foreach ($info['notes'] as $item) {
+                $results[$item['id']] = $item;
+            }
+            $info['notes'] = $results;
+
+            $deps = $this->database->run($deps_sql, [@$info['packageid']])->fetchAll();
             foreach($deps as $dep) {
                 $rel_version = null;
                 foreach($info['releases'] as $version => $rel) {
                     if ($rel['id'] == $dep['release']) {
                         $rel_version = $version;
                         break;
-                    };
-                };
+                    }
+                }
+
                 if ($rel_version !== null) {
                     unset($dep['release']);
                     $info['releases'][$rel_version]['deps'][] = $dep;
-                };
-            };
-        } else {
-            // get a single field
-            if ($field == 'releases' || $field == 'notes') {
-                if ($what == "name") {
-                    $pid = $dbh->getOne("SELECT p.id FROM packages p ".
-                                        "WHERE " . $package_type . " p.name = ?", [$pkg]);
-                } else {
-                    $pid = $pkg;
                 }
-
-                if ($field == 'releases') {
-                    $info = $dbh->getAssoc($rel_sql, false, [$pid],
-                    DB_FETCHMODE_ASSOC);
-                } elseif ($field == 'notes') {
-                    $info = $dbh->getAssoc($notes_sql, false, [$pid],
-                    DB_FETCHMODE_ASSOC);
-                }
-
-            } elseif ($field == 'category') {
-                $sql = "SELECT c.name FROM categories c, packages p ".
-                     "WHERE c.id = p.category AND " . $package_type . " p.{$what} = ?";
-                $info = $dbh->getOne($sql, [$pkg]);
-            } elseif ($field == 'description') {
-                $sql = "SELECT description FROM packages p WHERE " . $package_type . " p.{$what} = ?";
-                $info = $dbh->query($sql, [$pkg]);
-            } elseif ($field == 'authors') {
-                $sql = "SELECT u.handle, u.name, u.email, u.showemail, m.active, m.role
-                        FROM maintains m, users u, packages p
-                        WHERE " . $package_type ." m.package = p.id
-                        AND p.$what = ?
-                        AND m.handle = u.handle";
-                $info = $dbh->getAll($sql, [$pkg], DB_FETCHMODE_ASSOC);
-            } else {
-                if ($field == 'categoryid') {
-                    $dbfield = 'category';
-                } elseif ($field == 'packageid') {
-                    $dbfield = 'id';
-                } else {
-                    $dbfield = $field;
-                }
-
-                $sql = "SELECT $dbfield FROM packages p WHERE " . $package_type ." p.{$what} = ?";
-                $info = $dbh->getOne($sql, [$pkg]);
             }
+        } elseif (in_array($field, ['releases', 'notes'])) {
+            if ($what == "name") {
+                $pid = $this->database->run("SELECT p.id FROM packages p ".
+                                    "WHERE " . $package_type . " p.name = ?", [$pkg])->fetch()['id'];
+            } else {
+                $pid = $pkg;
+            }
+
+            if ($field == 'releases') {
+                $info = $this->database->run($rel_sql, [$pid])->fetchAll();
+                $results = [];
+                foreach ($info as $item) {
+                    $results[$item['version']] = $item;
+                }
+                $info = $results;
+            } elseif ($field == 'notes') {
+                $info = $this->database->run($notes_sql, [$pid])->fetchAll();
+                $results = [];
+                foreach ($info as $item) {
+                    $results[$item['id']] = $item;
+                }
+                $info = $results;
+            }
+        } elseif ($field === 'category') {
+            $sql = "SELECT c.name FROM categories c, packages p ".
+                    "WHERE c.id = p.category AND " . $package_type . " p.{$what} = ?";
+            $info = $this->database->run($sql, [$pkg])->fetch()['name'];
+        } elseif ($field === 'description') {
+            $sql = "SELECT description FROM packages p WHERE " . $package_type . " p.{$what} = ?";
+            $info = $this->database->run($sql, [$pkg])->fetch()['description'];
+        } elseif ($field === 'authors') {
+            $sql = "SELECT u.handle, u.name, u.email, u.showemail, m.active, m.role
+                    FROM maintains m, users u, packages p
+                    WHERE " . $package_type ." m.package = p.id
+                    AND p.$what = ?
+                    AND m.handle = u.handle";
+            $info = $this->database->run($sql, [$pkg])->fetchAll();
+        } else {
+            if ($field == 'categoryid') {
+                $dbfield = 'category';
+            } elseif ($field == 'packageid') {
+                $dbfield = 'id';
+            } else {
+                $dbfield = $field;
+            }
+
+            $sql = "SELECT $dbfield FROM packages p WHERE " . $package_type ." p.{$what} = ?";
+            $info = $this->database->run($sql, [$pkg])->fetch()[$dbfield];
         }
 
         return $info;
@@ -232,11 +269,11 @@ class Package
      * @param array $data Assoc in the form 'field' => 'value'.
      * @return mixed True or PEAR_Error
      */
-    public static function updateInfo($pkgid, $data)
+    public function updateInfo($pkgid, $data)
     {
-        global $dbh, $auth_user, $rest;
+        global $auth_user;
 
-        $package_id = self::info($pkgid, 'id');
+        $package_id = $this->info($pkgid, 'id');
 
         if (PEAR::isError($package_id) || empty($package_id)) {
             return PEAR::raiseError("Package not registered. Please register it first with \"New Package\"");
@@ -263,15 +300,14 @@ class Package
             return;
         }
 
-        $sql = 'UPDATE packages SET ' . implode(', ', $fields) .
-               " WHERE id=$package_id";
-        $row = self::info($pkgid, 'name');
+        $sql = 'UPDATE packages SET ' . implode(', ', $fields) . " WHERE id=$package_id";
+        $row = $this->info($pkgid, 'name');
 
-        $rest->saveAllPackages();
-        $rest->savePackage($row);
-        $rest->savePackagesCategory(self::info($pkgid, 'category'));
+        $this->rest->saveAllPackages();
+        $this->rest->savePackage($row);
+        $this->rest->savePackagesCategory($this->info($pkgid, 'category'));
 
-        return $dbh->query($sql, $prep);
+        return $this->database->run($sql, $prep);
     }
 
     /**
@@ -280,15 +316,13 @@ class Package
      * @param  string Name of the package
      * @return array  List of package that depend on $package
      */
-    public static function getDependants($package) {
-        global $dbh;
+    public function getDependants($package) {
+        $sql = "SELECT p.name AS p_name, d.*
+                FROM deps d, packages p
+                WHERE d.package = p.id AND d.type = 'pkg' AND d.name = ?
+                GROUP BY d.package";
 
-        $query = "SELECT p.name AS p_name, d.* FROM deps d, packages p " .
-            "WHERE d.package = p.id AND d.type = 'pkg' " .
-            "      AND d.name = '" . $package . "' " .
-            "GROUP BY d.package";
-
-        return $dbh->getAll($query, null, DB_FETCHMODE_ASSOC);
+        return $this->database->run($sql, [$package])->fetchAll();
     }
 
     /**
@@ -297,14 +331,12 @@ class Package
      * @param  string Name of the package
      * @return  boolean
      */
-    public static function isValid($package)
+    public function isValid($package)
     {
-        global $dbh;
+        $sql = "SELECT id FROM packages WHERE package_type = 'pecl' AND approved = 1 AND name = ?";
+        $results = $this->database->run($sql, [$package])->fetchAll();
 
-        $query = "SELECT id FROM packages WHERE package_type = 'pecl' AND approved = 1 AND name = ?";
-        $sth = $dbh->query($query, [$package]);
-
-        return ($sth->numRows() > 0);
+        return (count($results) > 0);
     }
 
     /**
@@ -315,10 +347,8 @@ class Package
      */
     public function getNotes($package)
     {
-        global $dbh;
+        $sql = 'SELECT * FROM notes WHERE pid = ? ORDER BY ntime';
 
-        $query = 'SELECT * FROM notes WHERE pid = ? ORDER BY ntime';
-
-        return $dbh->getAll($query, [$package], DB_FETCHMODE_ASSOC);
+        return $this->database->run($sql, [$package])->fetchAll();
     }
 }

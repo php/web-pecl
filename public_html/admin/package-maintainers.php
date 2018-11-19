@@ -20,7 +20,6 @@
 
 use App\BorderBox;
 use App\Entity\Maintainer;
-use App\Package;
 use App\User;
 use App\Repository\UserRepository;
 use App\Repository\PackageRepository;
@@ -29,6 +28,7 @@ $maintainer = new Maintainer();
 $maintainer->setDatabase($database);
 $maintainer->setRest($rest);
 $maintainer->setAuthUser($auth_user);
+$maintainer->setPackage($packageEntity);
 
 response_header("PECL Administration - Package maintainers");
 

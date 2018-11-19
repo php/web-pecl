@@ -18,8 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Package;
-
 echo "Adding packages...\n";
 
 // Drops all packages and adds sample packages
@@ -64,7 +62,7 @@ foreach (explode("\n", $packages) as $line) {
         $catid = $catmap[$category];
     }
 
-    Package::add([
+    $packageEntity->add([
         'name'        => $name,
         'type'        => 'pecl',
         'license'     => 'PHP License',

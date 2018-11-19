@@ -21,7 +21,6 @@
 
 use App\BorderBox;
 use App\Utils\Licenser;
-use App\Package;
 use App\PackageDll;
 
 $licenser = new Licenser();
@@ -43,7 +42,7 @@ if (is_numeric($package)) {
 }
 
 // Package data
-$pkg = Package::info($package);
+$pkg = $packageEntity->info($package);
 
 $relid = FALSE;
 if (!empty($version)) {
@@ -438,7 +437,7 @@ if ($statement->rowCount() == 0) {
 $bb->end();
 
 // Dependants
-$dependants = Package::getDependants($name);
+$dependants = $packageEntity->getDependants($name);
 
 if (count($dependants) > 0) {
 

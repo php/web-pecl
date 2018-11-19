@@ -22,6 +22,7 @@ use App\BorderBox;
 use App\Maintainer;
 use App\Package;
 use App\User;
+use App\Repository\UserRepository;
 
 response_header("PECL Administration - Package maintainers");
 
@@ -143,7 +144,8 @@ if (empty($id)) {
     echo '  <td>';
     echo '  <select onChange="activateAdd();" name="accounts" size="10">';
 
-    $users = User::listAll();
+    $userRepository = new UserRepository($database);
+    $users = $userRepository->findAll();
 
     foreach ($users as $user) {
         if (empty($user['handle'])) {

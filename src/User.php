@@ -182,24 +182,6 @@ class User
     }
 
     /**
-     * Get all registered users.
-     */
-    public static function listAll($registered_only = true)
-    {
-        global $dbh;
-
-        $query = "SELECT * FROM users";
-
-        if ($registered_only === true) {
-            $query .= " WHERE registered = 1";
-        }
-
-        $query .= " ORDER BY handle";
-
-        return $dbh->getAll($query, null, DB_FETCHMODE_ASSOC);
-    }
-
-    /**
      * Update user information
      *
      * @param  array User information

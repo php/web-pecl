@@ -23,9 +23,9 @@ namespace App;
 use App\Database;
 use App\Karma;
 use App\Package;
-use App\User;
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
+use App\Repository\UserRepository;
 use App\Utils\Filesystem;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
@@ -43,6 +43,7 @@ class Rest
     private $host;
     private $categoryRepository;
     private $packageRepository;
+    private $userRepository;
 
     /**
      * Set database handler.
@@ -98,6 +99,14 @@ class Rest
     public function setPackageRepository(PackageRepository $packageRepository)
     {
         $this->packageRepository = $packageRepository;
+    }
+
+    /**
+     * Set users repository.
+     */
+    public function setUserRepository(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -707,7 +716,8 @@ class Rest
      */
     public function saveAllMaintainers()
     {
-        $maintainers = User::listAll();
+        $maintainers = $this->userRepository->findAll();
+
         $info = '<?xml version="1.0" encoding="UTF-8" ?>
 <m xmlns="http://pear.php.net/dtd/rest.allmaintainers"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

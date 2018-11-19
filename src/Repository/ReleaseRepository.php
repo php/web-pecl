@@ -154,4 +154,36 @@ class ReleaseRepository
 
         return $this->database->run($sql, [':handle' => $handle, ':limit' => $max])->fetchAll();
     }
+
+    /**
+     * Get list of recent releases for the given package
+     *
+     * @param  string Name of the package
+     * @param  int Number of releases to return
+     * @return array
+     */
+    public function findRecentByPackageName($packageName, $max = MAX_ITEMS_RETURNED)
+    {
+        $sql = "SELECT p.id AS id,
+                    p.name AS name,
+                    p.summary AS summary,
+                    r.version AS version,
+                    r.releasedate AS releasedate,
+                    r.releasenotes AS releasenotes,
+                    r.doneby AS doneby,
+                    r.state AS state
+                FROM packages p, releases r
+                WHERE p.id = r.package
+                AND p.package_type = 'pecl'
+                AND p.approved = 1
+                AND p.name = :package_name
+                ORDER BY r.releasedate DESC LIMIT :limit";
+
+        $arguments = [
+            ':package_name' => $packageName,
+            ':limit'        => $max
+        ];
+
+        return $this->database->run($sql, $arguments)->fetchAll();
+    }
 }

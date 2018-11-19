@@ -414,41 +414,6 @@ class Package
     }
 
     /**
-     * Get list of recent releases for the given package
-     *
-     * @param  int Number of releases to return
-     * @param  string Name of the package
-     * @return array
-     */
-    public static function getRecent($n, $package)
-    {
-        global $dbh;
-
-        $recent = [];
-
-        $query = "SELECT p.id AS id, " .
-            "p.name AS name, " .
-            "p.summary AS summary, " .
-            "r.version AS version, " .
-            "r.releasedate AS releasedate, " .
-            "r.releasenotes AS releasenotes, " .
-            "r.doneby AS doneby, " .
-            "r.state AS state " .
-            "FROM packages p, releases r " .
-            "WHERE p.id = r.package " .
-            "AND p.package_type = 'pecl' AND p.approved = 1 " .
-            "AND p.name = '" . $package . "'" .
-            "ORDER BY r.releasedate DESC";
-
-        $sth = $dbh->limitQuery($query, 0, $n);
-        while ($sth->fetchInto($row, DB_FETCHMODE_ASSOC)) {
-            $recent[] = $row;
-        }
-
-        return $recent;
-    }
-
-    /**
      * Determines if the given package is valid
      *
      * @param  string Name of the package

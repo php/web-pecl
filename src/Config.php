@@ -54,7 +54,6 @@ class Config
 
             $array = $dsnConverter->toArray($this->values['db_dsn']);
 
-            $this->values['db_scheme'] = $array['scheme'];
             $this->values['db_username'] = $array['username'];
             $this->values['db_password'] = $array['password'];
             $this->values['db_host'] = $array['host'];

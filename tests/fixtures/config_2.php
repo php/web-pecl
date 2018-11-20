@@ -23,7 +23,6 @@
  */
 
 return [
-    'db_scheme'   => 'mysql',
     'db_username' => 'root',
     'db_password' => 'secret',
     'db_host'     => 'localhost',

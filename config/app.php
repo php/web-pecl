@@ -49,9 +49,6 @@ return [
     // Database host
     'db_host' => isset($_SERVER['PECL_DB_HOST']) ? $_SERVER['PECL_DB_HOST'] : 'localhost',
 
-    // Database driver
-    'db_scheme' => (function_exists('mysql_connect') ? 'mysql' : (function_exists('mysqli_connect') ? 'mysqli' : '')),
-
     // Database DSN string. Optional and can be overridden by the environment
     // variable. Setting the DSN string also overrides other db_* values. Naming
     // PEAR_DATABASE_DSN key is used historically until production can be changed.

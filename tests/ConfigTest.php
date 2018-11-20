@@ -41,12 +41,10 @@ class ConfigTest extends TestCase
         return [
             [__DIR__.'/fixtures/config.php', 'some_string', 'foo'],
             [__DIR__.'/fixtures/config.php', 'array', ['value_1' => 1]],
-            [__DIR__.'/fixtures/config_2.php', 'db_scheme', 'mysqli'],
             [__DIR__.'/fixtures/config_2.php', 'db_username', 'nobody'],
             [__DIR__.'/fixtures/config_2.php', 'db_password', 'password'],
             [__DIR__.'/fixtures/config_2.php', 'db_host', 'localhost'],
             [__DIR__.'/fixtures/config_2.php', 'db_name', 'pecl'],
-            [__DIR__.'/fixtures/config_3.php', 'db_scheme', 'mysql'],
             [__DIR__.'/fixtures/config_3.php', 'db_username', 'root'],
             [__DIR__.'/fixtures/config_3.php', 'db_password', 'secret'],
             [__DIR__.'/fixtures/config_3.php', 'db_host', 'localhost'],

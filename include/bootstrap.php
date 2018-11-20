@@ -43,7 +43,6 @@ use App\Utils\Filesystem;
 use App\Utils\FormatDate;
 use App\Utils\ImageSize;
 use Symfony\Component\Dotenv\Dotenv;
-use \DB as DB;
 
 // Dual autoloader until PSR-4 and Composer's autoloader are fully supported.
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
@@ -93,8 +92,6 @@ if ($config->get('env') === 'dev') {
 // Some of these classes define constants in global scope and need to be included
 // separately before requiring other classes.
 require_once 'PEAR.php';
-require_once 'DB.php';
-require_once 'DB/storage.php';
 require_once 'PEAR/Common.php';
 require_once 'PEAR/Config.php';
 require_once 'PEAR/PackageFile/Parser/v2.php';
@@ -114,23 +111,6 @@ $databaseAdapter->setDsn($pdoDsn);
 $databaseAdapter->setUsername($config->get('db_username'));
 $databaseAdapter->setPassword($config->get('db_password'));
 $database = new Database($databaseAdapter->getInstance());
-
-// Connect to database also using PEAR DB for the rest of the site endpoints.
-// TODO: This is in the process of migration from the deprecated PEAR DB package
-// to above PDO handler.
-$dsn = $config->get('db_scheme');
-$dsn .= '://'.$config->get('db_username');
-$dsn .= ':'.$config->get('db_password');
-$dsn .= '@'.$config->get('db_host');
-$dsn .= '/'.$config->get('db_name');
-
-$options = [
-    'persistent' => false,
-    'portability' => DB_PORTABILITY_ALL,
-];
-
-$dbh = DB::connect($dsn, $options);
-$dbh->query('SET NAMES utf8');
 
 // Initialization of some services
 $filesystem = new Filesystem();

@@ -53,7 +53,7 @@ if (isset($_POST['PECL_USER'], $_POST['PECL_PW']) && auth_verify(@$_POST['PECL_U
 
     // Update users password if it is held in the db crypt()ed. The $auth_user
     // comes from auth_verify() function.
-    if (strlen(@$auth_user->password) == 13) {
+    if (strlen($auth_user->get('password')) == 13) {
         $sql = 'UPDATE users SET password = ? WHERE handle = ?';
         $database->run($sql, [md5($_POST['PECL_PW']), $_POST['PECL_USER']]);
     }

@@ -133,20 +133,20 @@ function updateRejectReason(selectObj) {
 do {
     // approve account request form
     if (!empty($acreq)) {
-        $requser = new UserEntity($dbh, $acreq);
+        $requser = new UserEntity($database, $acreq);
 
-        if (empty($requser->name)) {
+        if (empty($requser->get('name'))) {
             break;
         }
 
-        list($purpose, $moreinfo) = @unserialize($requser->userinfo);
+        list($purpose, $moreinfo) = @unserialize($requser->get('userinfo'));
 
-        $bb = new BorderBox("Account request from " . htmlspecialchars($requser->name, ENT_QUOTES)
-              . "&lt;" . htmlspecialchars($requser->email, ENT_QUOTES) . "&gt;", "100%", "", 2, true);
-        $bb->horizHeadRow("Requested username:", htmlspecialchars($requser->handle, ENT_QUOTES));
-        $bb->horizHeadRow("Realname:", htmlspecialchars($requser->name, ENT_QUOTES));
-        $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . htmlspecialchars($requser->email, ENT_QUOTES) . "\">" .
-                  htmlspecialchars($requser->email, ENT_QUOTES) . "</a>");
+        $bb = new BorderBox("Account request from " . htmlspecialchars($requser->get('name'), ENT_QUOTES)
+              . "&lt;" . htmlspecialchars($requser->get('email'), ENT_QUOTES) . "&gt;", "100%", "", 2, true);
+        $bb->horizHeadRow("Requested username:", htmlspecialchars($requser->get('handle'), ENT_QUOTES));
+        $bb->horizHeadRow("Realname:", htmlspecialchars($requser->get('name'), ENT_QUOTES));
+        $bb->horizHeadRow("Email address:", "<a href=\"mailto:" . htmlspecialchars($requser->get('email'), ENT_QUOTES) . "\">" .
+                  htmlspecialchars($requser->get('email'), ENT_QUOTES) . "</a>");
         $bb->horizHeadRow("Purpose of account:", nl2br(htmlspecialchars($purpose, ENT_QUOTES)));
         $bb->horizHeadRow("More information:", htmlspecialchars($moreinfo, ENT_QUOTES));
         $bb->end();
@@ -220,7 +220,7 @@ do {
  <tr>
   <td colspan="3">
    If dismissing an account request, enter the reason here
-   (will be emailed to <?php echo $requser->email; ?>):<br />
+   (will be emailed to <?php echo $requser->get('email'); ?>):<br />
    <textarea rows="3" cols="60" name="reason"></textarea><br />
 
     <select onchange="return updateRejectReason(this)">

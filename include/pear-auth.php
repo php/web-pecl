@@ -39,9 +39,11 @@ function auth_reject($message = null)
     response_header('Login');
 
     $GLOBALS['ONLOAD'] = "document.login.PECL_USER.focus();";
+
     if ($message) {
         report_error($message);
     }
+
     print "<form name=\"login\" action=\"/login.php\" method=\"post\">\n";
     print '<table class="form-holder" cellspacing="1">' . "\n";
     print " <tr>\n";
@@ -92,60 +94,75 @@ function auth_reject($message = null)
  */
 function auth_verify($user, $passwd)
 {
-    global $dbh, $auth_user, $config;
+    global $database, $auth_user, $config;
 
     if (empty($auth_user)) {
-        $auth_user = new UserEntity($dbh, $user);
+        $auth_user = new UserEntity($database, $user);
     }
+
     $error = '';
     $ok = false;
-    switch (strlen(@$auth_user->password)) {
+
+    switch (strlen($auth_user->get('password'))) {
         // Handle old-style DES-encrypted passwords
         case 13:
-            $seed = substr($auth_user->password, 0, 2);
+            $seed = substr($auth_user->get('password'), 0, 2);
             $crypted = crypt($passwd, $seed);
-            if ($crypted == @$auth_user->password) {
+
+            if ($crypted === $auth_user->get('password')) {
                 $ok = true;
             } else {
                 $error = "pear-auth: user `$user': invalid password (des)";
             }
+
             break;
 
         // Handle old MD5-hashed passwords and update them to password_hash()
         case 32:
             $crypted = md5($passwd);
 
-            if ($crypted == @$auth_user->password) {
-                $update = $dbh->prepare("UPDATE users SET password = ? WHERE handle = ?");
-                $result = $dbh->execute($update, [password_hash($passwd, PASSWORD_DEFAULT), $user]);
+            if ($crypted === $auth_user->get('password')) {
+                $sql = "UPDATE users SET password = ? WHERE handle = ?";
+                $arguments = [password_hash($passwd, PASSWORD_DEFAULT), $user];
+                $database->run($sql, $arguments);
+
                 $ok = true;
             } else {
                 $error = "pear-auth: user `$user': invalid password (md5)";
             }
+
             break;
 
         default:
-            if (password_verify($passwd, $auth_user->password)) {
+            if (password_verify($passwd, $auth_user->get('password'))) {
                 $ok = true;
             } else {
                 $error = "pear-auth: user `$user': invalid password (password_verify)";
             }
+
             break;
     }
-    if (empty($auth_user->registered)) {
+
+    if (empty($auth_user->get('registered'))) {
         if ($user) {
             $error = "pear-auth: user `$user' not registered";
         }
+
         $ok = false;
     }
+
     if ($ok) {
         $auth_user->_readonly = true;
+
         return auth_check("pear.user");
     }
+
     if ($error) {
         error_log("$error\n", 3, $config->get('tmp_dir').'/pear-errors.log');
     }
+
     $auth_user = null;
+
     return false;
 }
 
@@ -235,7 +252,8 @@ function auth_logout()
 function is_logged_in()
 {
     global $auth_user;
-    if (!$auth_user || !$auth_user->registered) {
+
+    if (!$auth_user || !$auth_user->get('registered')) {
         return false;
     } else {
         return true;
@@ -247,7 +265,7 @@ function is_logged_in()
  */
 function init_auth_user()
 {
-    global $auth_user, $dbh;
+    global $database, $auth_user;
 
     if (empty($_SESSION['PECL_USER'])) {
         $auth_user = null;
@@ -259,7 +277,7 @@ function init_auth_user()
         return true;
     }
 
-    $auth_user = new UserEntity($dbh, $_SESSION['PECL_USER']);
+    $auth_user = new UserEntity($database, $_SESSION['PECL_USER']);
 
     if (is_logged_in()) {
         return true;

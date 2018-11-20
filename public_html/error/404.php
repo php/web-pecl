@@ -40,7 +40,7 @@ $pinfo_url = '/package/';
 
 // Check strictly
 $name = $packageEntity->info(basename($pkg), 'name');
-if (!DB::isError($name) && !empty($name)) {
+if (!PEAR::isError($name) && !empty($name)) {
     if (!empty($name)) {
         localRedirect($pinfo_url . $name);
     } else {

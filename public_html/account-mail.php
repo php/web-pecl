@@ -116,7 +116,7 @@ if (isset($_POST['submit'])) {
 
     // Guess the user if they are logged in
     if (!empty($auth_user)) {
-        $data = ['email' => $auth_user->email, 'name' => $auth_user->name];
+        $data = ['email' => $auth_user->get('email'), 'name' => $auth_user->get('name')];
     } else {
         $data = [];
     }

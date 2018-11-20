@@ -24,23 +24,64 @@
 
 namespace App\Entity;
 
-use \DB_storage as DB_storage;
+use App\Database;
 
 /**
  * User entity class.
  */
-class User extends DB_storage
+class User
 {
+    private $database;
+    public $handle;
+    public $passsword;
+    private $admin = false;
+    public $registered;
+
+    private $schema = [
+        'handle',
+        'password',
+        'name',
+        'email',
+        'homepage',
+        'created',
+        'createdby',
+        'lastlogin',
+        'showemail',
+        'registered',
+        'admin',
+        'userinfo',
+        'pgpkeyid',
+        'pgpkey',
+        'wishlist',
+        'longitude',
+        'latitude',
+        'active',
+        'from_site',
+    ];
+
+    private $values = [];
+
+    private $newValues = [];
+
     /**
      * Class constructor.
      */
-    public function __construct($dbh, $user)
+    public function __construct(Database $database, $handle)
     {
-        parent::__construct("users", "handle", $dbh);
+        $this->database = $database;
+        $this->handle = $handle;
 
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $this->setup($user);
-        $this->popErrorHandling();
+        $row = $this->database->run("SELECT * FROM users WHERE handle = ?", [$this->handle])->fetch();
+
+        if ($row) {
+            foreach ($this->schema as $field) {
+                $this->values[$field] = $row[$field];
+            }
+
+            $this->password = $row['password'];
+            $this->admin = ($row['admin'] === 1);
+            $this->registered = ($row['registered'] === 1);
+        }
     }
 
     /**
@@ -56,6 +97,61 @@ class User extends DB_storage
      */
     public function isAdmin()
     {
-        return ($this->admin == 1);
+        return ($this->admin === true);
+    }
+
+    /**
+     * Setter.
+     */
+    public function set($column, $value)
+    {
+        if (!$this->validateColumn($column)) {
+            return false;
+        }
+
+        $this->newValues[$column] = $value;
+    }
+
+    /**
+     * Getter.
+     */
+    public function get($column)
+    {
+        return isset($this->values[$column]) ? $this->values[$column] : null;
+    }
+
+    /**
+     * Is column valid.
+     */
+    private function validateColumn($column)
+    {
+        return in_array($column, $this->schema);
+    }
+
+    /**
+     * Save data to database.
+     */
+    public function save()
+    {
+        $elements = [];
+        $arguments = [];
+
+        foreach ($this->newValues as $column => $value) {
+            if (in_array($column, ['handle', 'admin'])) {
+                continue;
+            }
+
+            if (!in_array($column, $this->schema)) {
+                continue;
+            }
+
+            $elements[] = $column.' = ?';
+            $arguments[] = $value;
+        }
+
+        $sql = 'UPDATE users SET '.implode(', ', $elements).' WHERE handle = ?;';
+        $arguments[] = $this->handle;
+
+        return $this->database->run($sql, $arguments);
     }
 }

@@ -121,27 +121,30 @@ switch ($command) {
         break;
 
     case 'change_password':
-        $user = new UserEntity($dbh, $handle);
+        $user = new UserEntity($database, $handle);
 
         if (empty($_POST['password_old']) || empty($_POST['password']) ||
             empty($_POST['password2'])) {
 
             PEAR::raiseError('Please fill out all password fields.');
+
             break;
         }
 
         if (!$admin && $user->get('password') != md5($_POST['password_old'])) {
             PEAR::raiseError('You provided a wrong old password.');
+
             break;
         }
 
         if ($_POST['password'] != $_POST['password2']) {
             PEAR::raiseError('The new passwords do not match.');
+
             break;
         }
 
         $user->set('password', md5($_POST['password']));
-        if ($user->store()) {
+        if ($user->save()) {
             if (!empty($_POST['PECL_PERSIST'])) {
                 $expire = 2147483647;
             } else {
@@ -150,6 +153,7 @@ switch ($command) {
 
             echo '<div class="success">Your password was successfully updated.</div>';
         }
+
         break;
 }
 

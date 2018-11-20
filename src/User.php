@@ -52,16 +52,16 @@ class User
      */
     public static function remove($uid)
     {
-        global $dbh, $rest;
+        global $database, $rest;
 
         self::getNote()->removeAll('uid', $uid);
 
         $rest->deleteMaintainerREST($uid);
         $rest->saveAllMaintainers();
 
-        $dbh->query('DELETE FROM users WHERE handle = '. $dbh->quote($uid));
+        $statement = $database->run('DELETE FROM users WHERE handle = ?', [$uid]);
 
-        return ($dbh->affectedRows() > 0);
+        return ($statement->rowCount() > 0);
     }
 
     /**
@@ -69,9 +69,9 @@ class User
      */
     public static function rejectRequest($uid, $reason)
     {
-        global $dbh, $auth_user;
+        global $database, $auth_user;
 
-        list($email) = $dbh->getRow('SELECT email FROM users WHERE handle = ?', [$uid]);
+        $email = $database->run('SELECT email FROM users WHERE handle = ?', [$uid])->fetch()['email'];
 
         self::getNote()->add('uid', $uid, "Account rejected: $reason");
 
@@ -88,15 +88,15 @@ class User
      */
     public static function activate($uid)
     {
-        global $dbh, $auth_user, $rest;
+        global $database, $auth_user, $rest;
 
-        $user = new UserEntity($dbh, $uid);
+        $user = new UserEntity($database, $uid);
 
-        if (@$user->registered) {
+        if ($user->registered) {
             return false;
         }
 
-        @$arr = unserialize($user->userinfo);
+        @$arr = unserialize($user->get('userinfo'));
 
         self::getNote()->removeAll('uid', $uid);
 
@@ -109,7 +109,7 @@ class User
         $user->set('created', gmdate('Y-m-d H:i'));
         $user->set('createdby', $auth_user->handle);
         $user->set('registered', 1);
-        $user->store();
+        $user->save();
 
         self::getNote()->add('uid', $uid, 'Account opened');
 
@@ -121,7 +121,7 @@ class User
              "the top-right menu.\n";
         $xhdr = "From: " . $auth_user->handle . "@php.net";
 
-        mail($user->email, "Your PECL Account Request", $msg, $xhdr, "-f noreply@php.net");
+        mail($user->get('email'), "Your PECL Account Request", $msg, $xhdr, "-f noreply@php.net");
 
         return true;
     }
@@ -131,12 +131,12 @@ class User
      */
     public static function isAdmin($handle)
     {
-        global $dbh;
+        global $database;
 
-        $query = 'SELECT handle FROM users WHERE handle = ? AND admin = 1';
-        $sth = $dbh->query($query, [$handle]);
+        $sql = 'SELECT handle FROM users WHERE handle = ? AND admin = 1';
+        $statement = $database->run($sql, [$handle])->fetch();
 
-        return ($sth->numRows() > 0);
+        return (bool)$statement;
     }
 
     /**
@@ -144,12 +144,12 @@ class User
      */
     public static function exists($handle)
     {
-        global $dbh;
+        global $database;
 
-        $sql = 'SELECT handle FROM users WHERE handle=?';
-        $res = $dbh->query($sql, [$handle]);
+        $sql = 'SELECT handle FROM users WHERE handle = ?';
+        $statement = $database->run($sql, [$handle])->fetch();
 
-        return ($res->numRows() > 0);
+        return (bool)$statement;
     }
 
     /**
@@ -157,22 +157,22 @@ class User
      */
     public static function maintains($user, $pkgid, $role = 'any')
     {
-        global $dbh, $packageEntity;
+        global $database, $packageEntity;
 
         $package_id = $packageEntity->info($pkgid, 'id');
 
         if ($role == 'any') {
-            return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? '.
-                                'AND package = ?', [$user, $package_id]);
+            return $database->run('SELECT role FROM maintains WHERE handle = ? '.
+                                'AND package = ?', [$user, $package_id])->fetch()['role'];
         }
 
         if (is_array($role)) {
-            return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? AND package = ? '.
-                                'AND role IN ("?")', [$user, $package_id, implode('","', $role)]);
+            return $database->run('SELECT role FROM maintains WHERE handle = ? AND package = ? '.
+                                'AND role IN ("?")', [$user, $package_id, implode('","', $role)])->fetch()['role'];
         }
 
-        return $dbh->getOne('SELECT role FROM maintains WHERE handle = ? AND package = ? '.
-                            'AND role = ?', [$user, $package_id, $role]);
+        return $database->run('SELECT role FROM maintains WHERE handle = ? AND package = ? '.
+                            'AND role = ?', [$user, $package_id, $role])->fetch()['role'];
     }
 
     /**
@@ -180,22 +180,42 @@ class User
      */
     public static function info($user, $field = null)
     {
-        global $dbh;
+        global $database;
 
         if ($field === null) {
-            return $dbh->getRow('SELECT * FROM users WHERE handle = ?',
-                                [$user], DB_FETCHMODE_ASSOC);
-            unset($row['password']);
-            return $row;
+            return $database->run('SELECT * FROM users WHERE handle = ?', [$user])->fetch();
         }
 
         if ($field == 'password' || preg_match('/[^a-z]/', $user)) {
             return null;
         }
 
-        return $dbh->getRow('SELECT ! FROM users WHERE handle = ?',
-                            [$field, $user], DB_FETCHMODE_ASSOC);
+        $validFields = [
+            'handle',
+            'name',
+            'email',
+            'homepage',
+            'created',
+            'createdby',
+            'lastlogin',
+            'showemail',
+            'registered',
+            'admin',
+            'userinfo',
+            'pgpkeyid',
+            'pgpkey',
+            'wishlist',
+            'longitude',
+            'latitude',
+            'active',
+            'from_site',
+        ];
 
+        if (!in_array($field, $validFields)) {
+            return null;
+        }
+
+        return $database->run("SELECT $field FROM users WHERE handle = ?", [$user])->fetch()[$field];
     }
 
     /**
@@ -206,11 +226,11 @@ class User
      */
     public static function update($data)
     {
-        global $dbh;
+        global $database;
 
-        $fields = ["name", "email", "homepage", "showemail", "userinfo", "pgpkeyid", "wishlist"];
+        $fields = ['name', 'email', 'homepage', 'showemail', 'userinfo', 'pgpkeyid', 'wishlist'];
 
-        $user = new UserEntity($dbh, $data['handle']);
+        $user = new UserEntity($database, $data['handle']);
 
         foreach ($data as $key => $value) {
             if (!in_array($key, $fields)) {
@@ -220,7 +240,7 @@ class User
             $user->set($key, $value);
         }
 
-        $user->store();
+        $user->save();
 
         return $user;
     }

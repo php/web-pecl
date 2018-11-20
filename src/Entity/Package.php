@@ -64,10 +64,15 @@ class Package
     {
         global $auth_user;
 
-        // name, category
-        // license, summary, description
-        // lead
-        extract($data);
+        $name = isset($data['name']) ? $data['name'] : null;
+        $category = isset($data['category']) ? $data['category'] : null;
+        $license = isset($data['license']) ? $data['license'] : null;
+        $summary = isset($data['summary']) ? $data['summary'] : null;
+        $description = isset($data['description']) ? $data['description'] : null;
+        $lead = isset($data['lead']) ? $data['lead'] : null;
+        $type = isset($data['type']) ? $data['type'] : null;
+        $homepage = isset($data['homepage']) ? $data['homepage'] : null;
+        $cvs_link = isset($data['cvs_link']) ? $data['cvs_link'] : null;
 
         if (empty($license)) {
             $license = "PHP License";

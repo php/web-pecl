@@ -30,7 +30,7 @@ use App\TreeMenu\TreeMenu;
 use App\TreeMenu\TreeNode;
 use App\TreeMenu\DynamicHtml;
 
-auth_require(true);
+$auth->secure(true);
 
 $category = new Category();
 $category->setDatabase($database);

@@ -29,25 +29,19 @@
  * Application bootstrap and session initialization.
  */
 
+use App\Auth;
+
 require_once __DIR__.'/bootstrap.php';
 require_once __DIR__.'/pear-format-html.php';
-require_once __DIR__.'/pear-auth.php';
 
 $tmp = filectime($_SERVER['SCRIPT_FILENAME']);
 $LAST_UPDATED = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';
 
-// Extend the session cookie lifetime
-$params = session_get_cookie_params();
-session_set_cookie_params(
-    (!empty($_COOKIE['REMEMBER_ME'])) ? time()+86400 : null,
-    $params['path'],
-    $params['domain'],
-    $params['secure'],
-    $params['httponly']
-);
+$auth = new Auth();
+$auth->setDatabase($database);
+$auth->setTmpDir($config->get('tmp_dir'));
+$auth_user = $auth->initUser();
 
-session_start();
-init_auth_user();
 if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
-    auth_logout();
+    $auth->logout();
 }

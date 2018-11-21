@@ -21,7 +21,7 @@
 use App\Entity\User as UserEntity;
 use App\User;
 
-auth_require();
+$auth->secure();
 
 if (isset($_GET['handle'])) {
     $handle = $_GET['handle'];
@@ -48,12 +48,12 @@ print '<a href="/user/'. $handle . '">' . $handle . '</a></h1>' . "\n";
 
 print "<ul><li><a href=\"#password\">Manage your password</a></li></ul>";
 
-$admin = $auth_user->isAdmin();
 $user  = $auth_user->is($handle);
 
-if (!$admin && !$user) {
+if (!$auth_user->isAdmin() && !$user) {
     PEAR::raiseError("Only the user or PECL administrators may edit account information.");
     response_footer();
+
     exit();
 }
 
@@ -131,7 +131,7 @@ switch ($command) {
             break;
         }
 
-        if (!$admin && $user->get('password') != md5($_POST['password_old'])) {
+        if (!$auth_user->isAdmin() && !password_verify($_POST['password_old'], $user->get('password'))) {
             PEAR::raiseError('You provided a wrong old password.');
 
             break;
@@ -143,7 +143,7 @@ switch ($command) {
             break;
         }
 
-        $user->set('password', md5($_POST['password']));
+        $user->set('password', password_hash($_POST['password'], PASSWORD_DEFAULT));
         if ($user->save()) {
             if (!empty($_POST['PECL_PERSIST'])) {
                 $expire = 2147483647;
@@ -156,7 +156,6 @@ switch ($command) {
 
         break;
 }
-
 
 $row = $database->run('SELECT * FROM users WHERE handle = ?', [$handle])->fetch();
 

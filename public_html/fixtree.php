@@ -20,7 +20,7 @@
 
 use App\Entity\Category;
 
-auth_require(true);
+$auth->require(true);
 
 header('Content-type: text/plain; charset=utf-8');
 

@@ -23,7 +23,7 @@ use App\Entity\Note;
 use App\Entity\User as UserEntity;
 use App\User;
 
-auth_require(true);
+$auth->require(true);
 
 if (!empty($_GET['phpinfo'])) {
     phpinfo();

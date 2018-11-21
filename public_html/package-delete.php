@@ -24,7 +24,7 @@
 
 use App\BorderBox;
 
-auth_require(true);
+$auth->require(true);
 
 response_header('Delete Package');
 echo '<h1>Delete Package</h1>';

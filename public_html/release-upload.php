@@ -27,7 +27,7 @@ use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
 use \PEAR_Common as PEAR_Common;
 
-auth_require('pear.dev');
+$auth->require('pear.dev');
 
 $release = new Release();
 $release->setDatabase($database);

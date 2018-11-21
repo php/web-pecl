@@ -25,7 +25,7 @@ if (!defined('PEAR_COMMON_PACKAGE_NAME_PREG')) {
     define('PEAR_COMMON_PACKAGE_NAME_PREG', '/^([A-Z][a-zA-Z0-9_]+|[a-z][a-z0-9_]+)$/');
 }
 
-auth_require();
+$auth->require();
 
 $display_form = true;
 $errorMsg = "";

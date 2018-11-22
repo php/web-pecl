@@ -84,7 +84,7 @@ Source code of this application is structured in the following directories:
     ├─ packages/     # Uploaded packages releases static files
     ├─ rest/         # Static REST API generated XML files
     └─ ...
- ├─ sql/             # Database schema and development fixtures
+ ├─ sql/             # Database schema
  ├─ src/             # Application source code classes
  ├─ templates/       # Application templates
  ├─ tests/           # Application automated tests
@@ -142,12 +142,21 @@ pecl.php.net. Configuration precedence order is (first that is encountered):
 
 ### 3. Database
 
-Initial database schema and development data fixtures can be created using the
-scripts in the `sql` directory.
+The database schema is available in the SQL file
+[pecl_full_structure_prod.sql](/sql/pecl_full_structure_prod.sql).
 
 To create the database, run `make create`. To remove the created database run
 `make destroy` in the `sql` directory. On systems where `make` is not available,
 for example, FreeBSD, use `gmake` instead.
+
+Create demo data fixtures for the development environment:
+
+```bash
+bin/console app:generate-fixtures
+```
+
+This will create user `admin` with password `password` to be able to login on
+localhost.
 
 ### 4. Apache configuration
 

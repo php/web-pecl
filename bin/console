@@ -15,13 +15,30 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Authors:                                                             |
+  | Authors: Peter Kokot <petk@php.net>                                  |
   +----------------------------------------------------------------------+
 */
 
+/**
+ * Main command line interface console entry application.
+ */
+
 require_once __DIR__.'/../include/bootstrap.php';
 
-include __DIR__.'/addusers.php';
-include __DIR__.'/addcategories.php';
-include __DIR__.'/addpackages.php';
-include __DIR__.'/addacls.php';
+use App\Command\GenerateFixturesCommand;
+use App\Fixtures\AppFixtures;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+
+$generateFixturesCommand = new GenerateFixturesCommand();
+$generateFixturesCommand->setDatabase($database);
+$generateFixturesCommand->setConfig($config);
+$fixtures = new AppFixtures();
+$fixtures->setDatabase($database);
+$fixtures->setRest($rest);
+$generateFixturesCommand->setFixtures($fixtures);
+
+$application->add($generateFixturesCommand);
+
+$application->run();

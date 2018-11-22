@@ -71,9 +71,6 @@ create: createdb $(SQL_TARGETS) prime
 	    echo "No errors found." ; \
 	fi
 
-prime:
-	@php -q data.php
-
 createdb:
 	@$(SQL_ADMIN_COMMAND) < createdb.sql
 

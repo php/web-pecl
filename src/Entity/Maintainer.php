@@ -28,6 +28,7 @@ use App\Entity\Package;
 use App\User as BaseUser;
 use App\Database;
 use App\Rest;
+use App\Repository\UserRepository;
 use \PEAR as PEAR;
 
 /**
@@ -167,8 +168,7 @@ class Maintainer
             PEAR::raiseError('Maintainer::updateAll: no such package');
         }
 
-        $userRepository = new UserRepository();
-        $userRepository->setDatabase($this->database);
+        $userRepository = new UserRepository($this->database);
         $old = $userRepository->findMaintainersByPackageId($pkgid);
 
         if (!$old) {

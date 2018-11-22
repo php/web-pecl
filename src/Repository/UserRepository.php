@@ -95,4 +95,48 @@ class UserRepository
 
         return isset($result['wishlist']) ? $result['wishlist'] : null;
     }
+
+    /**
+     * Get maintainer(s) for package
+     *
+     * @param  int Package id
+     * @return array
+     */
+    public function findMaintainersByPackageId($packageId)
+    {
+        $sql = "SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role, m.active
+                FROM maintains m, users u
+                WHERE m.package = :package_id
+                AND m.handle = u.handle
+                ORDER BY m.active DESC";
+
+        $results = $this->database->run($sql, [$packageId])->fetchAll();
+
+        $maintainers = [];
+        foreach ($results as $result) {
+            $maintainers[$result['handle']] = $result;
+        }
+
+        return $maintainers;
+    }
+
+    /**
+     * Get all lead maintainers by package id.
+     */
+    public function findLeadMaintainersByPackage($package)
+    {
+        $sql = "SELECT handle, role, active
+                FROM maintains
+                WHERE package = ? AND role = 'lead'
+                ORDER BY active DESC";
+
+        $results = $this->database->run($sql, [$package])->fetchAll();
+
+        $maintainers = [];
+        foreach ($results as $result) {
+            $maintainers[$result['handle']] = $result;
+        }
+
+        return $maintainers;
+    }
 }

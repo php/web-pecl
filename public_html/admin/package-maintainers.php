@@ -19,16 +19,10 @@
 */
 
 use App\BorderBox;
-use App\Entity\Maintainer;
-use App\User;
 use App\Repository\UserRepository;
 use App\Repository\PackageRepository;
 
-$maintainer = new Maintainer();
-$maintainer->setDatabase($database);
-$maintainer->setRest($rest);
-$maintainer->setAuthUser($auth_user);
-$maintainer->setPackage($packageEntity);
+$userRepository = new UserRepository($database);
 
 response_header("PECL Administration - Package maintainers");
 
@@ -54,14 +48,14 @@ if (empty($id)) {
     $bb->end();
 
 } elseif (!empty($_GET['update'])) {
-    if (!isAllowed($id, $maintainer)) {
+    if (!isAllowed($id, $userRepository)) {
         PEAR::raiseError("Only the lead maintainer of the package or PECL
                           administrators can edit the maintainers.");
         response_footer();
         exit();
     }
 
-    $all = $maintainer->get($id);
+    $all = $userRepository->findMaintainersByPackageId($id);
 
     // Transform
     $new_list = [];
@@ -124,7 +118,7 @@ if (empty($id)) {
     echo '<br /><b>Done</b><br />';
     echo '<a href="' . $url . '">Back</a>';
 } else {
-    if (!isAllowed($id, $maintainer)) {
+    if (!isAllowed($id, $userRepository)) {
         PEAR::raiseError("Only the lead maintainer of the package or PECL
                           administrators can edit the maintainers.");
         response_footer();
@@ -152,7 +146,6 @@ if (empty($id)) {
     echo '  <td>';
     echo '  <select onChange="activateAdd();" name="accounts" size="10">';
 
-    $userRepository = new UserRepository($database);
     $users = $userRepository->findAll();
 
     foreach ($users as $user) {
@@ -183,17 +176,15 @@ if (empty($id)) {
     echo '  <td>';
     echo '  <select multiple="yes" name="maintainers[]" onChange="activateRemove();" size="10">';
 
-    $maintainers = $maintainer->get($id);
-    foreach ($maintainers as $role) {
-        // XXX: This sucks
-        $info = User::info($role['handle'], "name");
+    $maintainers = $userRepository->findMaintainersByPackageId($id);
+    foreach ($maintainers as $maintainer) {
         printf(
             '<option value="%s||%s">%s (%s, %s)</option>',
-            $role['handle'],
-            $role['role'],
-            $info['name'],
-            $role['handle'],
-            $role['role']
+            $maintainer['handle'],
+            $maintainer['role'],
+            $maintainer['name'],
+            $maintainer['handle'],
+            $maintainer['role']
         );
     }
 
@@ -215,17 +206,14 @@ if (empty($id)) {
     $bb->end();
 }
 
-function isAllowed($package, $maintainer)
+function isAllowed($packageId, $userRepository)
 {
     global $auth_user, $auth;
 
     $auth->secure();
 
-    $maintainers = $maintainer->get($package, true);
-
     $lead = false;
-
-    foreach ($maintainers as $item) {
+    foreach ($userRepository->findLeadMaintainersByPackage($packageId) as $item) {
         if ($auth_user->handle === $item['handle']) {
             $lead = true;
             break;

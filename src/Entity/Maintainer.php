@@ -111,37 +111,6 @@ class Maintainer
     }
 
     /**
-     * Get maintainer(s) for package
-     *
-     * @param  mixed Name of the package or it's ID
-     * @param  boolean Only return lead maintainers?
-     * @return array
-     */
-    public function get($package, $lead = false)
-    {
-        if (is_string($package)) {
-            $package = $this->package->info($package, 'id');
-        }
-
-        $sql = 'SELECT handle, role, active FROM maintains WHERE package = ?';
-
-        if ($lead) {
-            $sql .= " AND role = 'lead'";
-        }
-
-        $sql .= ' ORDER BY active DESC';
-
-        $results = $this->database->run($sql, [$package])->fetchAll();
-
-        $maintainers = [];
-        foreach ($results as $result) {
-            $maintainers[$result['handle']] = $result;
-        }
-
-        return $maintainers;
-    }
-
-    /**
      * Check if role is valid
      *
      * @param string Name of the role
@@ -198,7 +167,9 @@ class Maintainer
             PEAR::raiseError('Maintainer::updateAll: no such package');
         }
 
-        $old = $this->get($pkgid);
+        $userRepository = new UserRepository();
+        $userRepository->setDatabase($this->database);
+        $old = $userRepository->findMaintainersByPackageId($pkgid);
 
         if (!$old) {
             return PEAR::raiseError('Maintainer::updateAll: some error occurred');

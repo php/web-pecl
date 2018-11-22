@@ -22,6 +22,7 @@
 use App\BorderBox;
 use App\Utils\Licenser;
 use App\PackageDll;
+use App\Repository\UserRepository;
 
 $licenser = new Licenser();
 $packageDll = new PackageDll($config->get('tmp_dir'));
@@ -77,13 +78,11 @@ if ($moved_out) {
     $superseded = 'Y';
 }
 
-// Accounts data
-$statement = $database->run("SELECT u.handle, u.name, u.email, u.showemail, u.wishlist, m.role".
-                   " FROM maintains m, users u".
-                   " WHERE m.package = :package_id".
-                   " AND m.handle = u.handle", [':package_id' => $pacid]);
+// Maintainers data
+$userRepository = new UserRepository($database);
+
 $accounts  = '';
-foreach ($statement->fetchAll() as $row) {
+foreach ($userRepository->findMaintainersByPackageId($pacid) as $row) {
     $accounts .= "{$row['name']}";
     if ($row['showemail'] == 1) {
         $accounts .= " &lt;<a href=\"mailto:{$row['email']}\">{$row['email']}</a>&gt;";

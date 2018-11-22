@@ -641,7 +641,7 @@ class Rest
     public function savePackageMaintainer($package)
     {
         $pid = $this->package->info($package, 'id');
-        $maintainers = $this->database->run('SELECT * FROM maintains WHERE package = ?', [$pid])->fetchAll();
+        $maintainers = $this->userRepository->findMaintainersByPackageId($pid);
         $extra = '/rest/';
 
         if (count($maintainers)) {

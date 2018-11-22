@@ -18,6 +18,8 @@
   +----------------------------------------------------------------------+
 */
 
+use App\User;
+
 /**
  * On 404 error this will search for a package with the same
  * name as the requested document. Thus enabling urls such as:
@@ -36,13 +38,12 @@ if (strlen($_SERVER['REDIRECT_URL']) > 0 && $_SERVER['REDIRECT_URL']{1} == '~') 
 }
 
 $pkg = strtr($_SERVER['REDIRECT_URL'], '-','_');
-$pinfo_url = '/package/';
 
 // Check strictly
 $name = $packageEntity->info(basename($pkg), 'name');
 if (!PEAR::isError($name) && !empty($name)) {
     if (!empty($name)) {
-        localRedirect($pinfo_url . $name);
+        localRedirect('/package/'.urlencode($name));
     } else {
         $name = $packageEntity->info(basename($pkg), 'name', true);
         if (!empty($name)) {
@@ -85,15 +86,15 @@ found on this server.</p>
     <ul>
     <?php foreach($packages as $p) { ?>
         <li>
-            <a href="<?= getURL($pinfo_url . $p['name']); ?>"><?= $p['name']; ?></a><br />
-            <i><?php echo $p['summary']; ?></i><br /><br />
+            <a href="/packages/<?= urlencode($p['name']); ?>"><?= htmlspecialchars($p['name'], ENT_QUOTES); ?></a><br />
+            <i><?php echo htmlspecialchars($p['summary'], ENT_QUOTES); ?></i><br /><br />
         </li>
     <?php } ?>
     </ul>
 
     <?php if($show_search_link) { ?>
         <p align="center">
-            <a href="<?= getURL('/package-search.php?pkg_name='.htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)).'&amp;bool=AND&amp;submit=Search'); ?>">View full search results...</a>
+            <a href="/package-search.php?pkg_name=<?= htmlspecialchars(basename($_SERVER['REQUEST_URI'], ENT_QUOTES)); ?>&amp;bool=AND&amp;submit=Search">View full search results...</a>
         </p>
 <?php
     }

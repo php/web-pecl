@@ -27,7 +27,6 @@
 */
 
 use App\BorderBox;
-use \Net_URL2 as Net_URL2;
 use \PEAR as PEAR;
 
 // Send charset
@@ -143,7 +142,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
         print '<a class="menuWhite" href="/account-edit.php?handle=' . $auth_user->handle . '">Profile</a> | ';
         print '<a class="menuWhite" href="https://bugs.php.net/search.php?cmd=display&amp;status=Open&amp;assign=' . $auth_user->handle . '">Bugs</a>';
         print ")</small><br />\n";
-        echo '<a href="/?logout=1" class="menuBlack">Logout</a>';
+        echo '<a href="?logout=1" class="menuBlack">Logout</a>';
     }
     echo '&nbsp;|&nbsp;';
     echo '<a href="/packages.php" class="menuBlack">Packages</a>';
@@ -426,27 +425,12 @@ function html_category_urhere($id, $link_lastest = false)
 }
 
 /**
-* Returns an absolute URL using Net_URL2
-*
-* @param  string $url All/part of a url
-* @return string      Full url
-*/
-function getURL($url)
-{
-    $obj = new Net_URL2($url);
-    return $obj->getURL();
-}
-
-/**
-* Redirects to the given full or partial URL.
-* will turn the given url into an absolute url
-* using the above getURL() function. This function
-* does not return.
+* Redirects to the given full or partial URL. This function does not return.
 *
 * @param string $url Full/partial url to redirect to
 */
 function localRedirect($url)
 {
-    header('Location: ' . getURL($url));
+    header('Location: '.$url);
     exit;
 }

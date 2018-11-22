@@ -24,7 +24,7 @@
 * o Make headers in package list clickable for ordering
 */
 
-use \Pager as Pager;
+use App\Utils\Pagination;
 
 $script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
@@ -196,24 +196,57 @@ if (!empty($catpid)) {
         $subCategories = implode(', ', $subCategories);
     }
 
-    // Package list
-    $packages = $database->run("SELECT id, name, summary, license FROM packages WHERE category = ? AND package_type = 'pecl' ORDER BY name", [$catpid])->fetchAll();
-
     // Paging
-    $total = count($packages);
-    $pager = Pager::factory(['totalItems' => $total, 'perPage' => 15]);
-    list($first, $last) = $pager->getOffsetByPageId();
-    list($prev, $pages, $next) = $pager->getLinks('<nobr><img src="img/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</nobr>', '<nobr>Next<img src="img/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></nobr>');
+    $total = $database->run("SELECT count(*) FROM packages WHERE category = ? AND package_type='pecl'", [$catpid])->fetchColumn();
+    $pagination = new Pagination();
+    $pagination->setNumberOfItems($total);
+    $currentPage = isset($_GET['pageID']) ? (int)$_GET['pageID'] : 1;
+    $pagination->setCurrentPage($currentPage);
+    $from = $pagination->getFrom();
+    $to = $pagination->getTo();
 
-    $currentPage = $pager->getCurrentPageID();
-    $numPages    = $pager->numPages();
-    $packages = array_slice($packages, $first - 1, 15);
+    $sql = "SELECT id, name, summary, license
+            FROM packages
+            WHERE category = :category_id AND package_type = 'pecl'
+            ORDER BY name
+            LIMIT :limit OFFSET :offset";
+
+    $packages = $database->run($sql, [
+        ':category_id' => $catpid,
+        ':limit' => $pagination->getItemsPerPage(),
+        ':offset' => $from - 1,
+    ])->fetchAll();
+
+    $prev = '';
+    if ($currentPage > 1) {
+        $previousPage = $currentPage - 1;
+
+        $link = str_replace('pageID='.$currentPage, '', $_SERVER['REQUEST_URI']);
+        if (strpos($_SERVER['REQUEST_URI'], 'pageID') === false) {
+            $link .= '&';
+        }
+        $link .= 'pageID='.$previousPage;
+
+        $prev = '<a href="'.$link.'"><img src="img/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</a>';
+    }
+
+    $next = '';
+    if ($to < $total) {
+        $nextPage = $currentPage + 1;
+
+        $link = str_replace('pageID='.$currentPage, '', $_SERVER['REQUEST_URI']);
+        if (strpos($_SERVER['REQUEST_URI'], 'pageID') === false) {
+            $link .= '&';
+        }
+        $link .= 'pageID='.$nextPage;
+
+        $next = '<a href="'.$link.'">Next<img src="img/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></a>';
+    }
 
     foreach ($packages as $key => $pkg) {
         $extendedInfo['numReleases'] = $database->run('SELECT COUNT(*) AS count FROM releases WHERE package = ?', [$pkg['id']])->fetch()['count'];
         $extendedInfo['status']      = $database->run('SELECT state FROM releases WHERE package = ? ORDER BY id DESC LIMIT 1', [$pkg['id']])->fetch()['state'];
         $extendedInfo['license']     = $database->run('SELECT license FROM packages WHERE id = ? ORDER BY id DESC LIMIT 1', [$pkg['id']])->fetch()['license'];
-
 
         // Make status coloured
         switch ($extendedInfo['status']) {

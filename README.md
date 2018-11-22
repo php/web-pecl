@@ -115,7 +115,7 @@ There are some additional dependencies that require PEAR installation:
 
 ```bash
 pear channel-update pear.php.net
-pear install --alldeps HTTP_Upload-1.0.0b4 Pager
+pear install --alldeps HTTP_Upload-1.0.0b4
 ```
 
 ### 2. Configuration

@@ -20,8 +20,7 @@
 */
 
 /**
-* Searches for packages matching various user definable
-* criteria including:
+* Searches for packages matching various user definable criteria including:
 *  o Name
 *  o Maintainer
 *  o Category
@@ -29,7 +28,7 @@
 */
 
 use App\Repository\CategoryRepository;
-use \Pager as Pager;
+use App\Utils\Pagination;
 
 // Months for released date dropdowns
 $months     = [];
@@ -125,6 +124,9 @@ if (!empty($_GET)) {
         }
     }
 
+    // Paging
+    $pagination = new Pagination();
+
     // Compose query and execute
     $where  = !empty($where) ? 'AND '.implode(' AND ', $where) : '';
     $sql    = "SELECT DISTINCT p.id,
@@ -143,11 +145,40 @@ if (!empty($_GET)) {
     // Run through any results
     if (($numrows = $statement->rowCount()) > 0) {
 
-        // Paging
-        $params['itemData'] = range(0, $numrows - 1);
-        $pager = Pager::factory($params);
-        list($from, $to) = $pager->getOffsetByPageId();
-        $links = $pager->getLinks('<img src="img/prev.gif" border="0" alt="&lt;&lt;" width="10" height="10">Prev', 'Next<img src="img/next.gif" border="0" alt="&gt;&gt;" width="10" height="10">');
+        $pagination->setNumberOfItems($numrows);
+        $currentPage = isset($_GET['pageID']) ? (int)$_GET['pageID'] : 1;
+        $pagination->setCurrentPage($currentPage);
+        $from = $pagination->getFrom();
+        $to = $pagination->getTo();
+
+        $sql .= " LIMIT ".$pagination->getItemsPerPage()." OFFSET ".($from -1);
+        $statement = $database->query($sql);
+
+        $prev = '';
+        if ($currentPage > 1) {
+            $previousPage = $currentPage - 1;
+
+            $link = str_replace('pageID='.$currentPage, '', $_SERVER['REQUEST_URI']);
+            if (strpos($_SERVER['REQUEST_URI'], 'pageID') === false) {
+                $link .= '&';
+            }
+            $link .= 'pageID='.$previousPage;
+
+            $prev = '<a href="'.$link.'"><img src="img/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</a>';
+        }
+
+        $next = '';
+        if ($to < $numrows) {
+            $nextPage = $currentPage + 1;
+
+            $link = str_replace('pageID='.$currentPage, '', $_SERVER['REQUEST_URI']);
+            if (strpos($_SERVER['REQUEST_URI'], 'pageID') === false) {
+                $link .= '&';
+            }
+            $link .= 'pageID='.$nextPage;
+
+            $next = '<a href="'.$link.'">Next<img src="img/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></a>';
+        }
 
         // Row number
         $rownum = $from - 1;
@@ -160,11 +191,11 @@ if (!empty($_GET)) {
                                             <td align="right" width="50"><nobr>%s</nobr></td>
                                         </tr>
                                     </table>',
-                               $links['back'],
+                               $prev,
                                $from,
                                $to,
                                $numrows,
-                               $links['next']);
+                               $next);
 
         foreach ($statement->fetchAll() as $row) {
             if ($rownum > $to) {

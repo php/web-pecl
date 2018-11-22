@@ -87,7 +87,7 @@
                 <table border="0" width="100%" cellspacing="0">
                     <tr class="tableHeader">
                         <td class="tableHeader" width="50" align="left">&nbsp;<?php echo $prev; ?></td>
-                        <td class="tableHeader" align="center">Packages (<?php echo $first; ?> - <?php echo $last; ?> of <?php echo $total; ?>)</td>
+                        <td class="tableHeader" align="center">Packages (<?php echo $from; ?> - <?php echo $to; ?> of <?php echo $total; ?>)</td>
                         <td class="tableHeader" width="50" align="right"><?php echo $next; ?>&nbsp;</td>
                     </tr>
                 </table>
@@ -106,7 +106,7 @@
 
                     <?php foreach($packages as $p) { ?>
                         <tr>
-                            <td valign="top"><?php echo ($first++); ?></td>
+                            <td valign="top"><?php echo ($from++); ?></td>
                             <td valign="top"><a href="/package/<?php echo $p['name']; ?>"><strong><?php echo $p['name']; ?></strong></td>
                             <td valign="top"><?php echo $p['summary']; ?></td>
                             <td valign="top">

@@ -25,7 +25,7 @@
 namespace App\Entity;
 
 use App\Entity\Package;
-use App\User;
+use App\User as BaseUser;
 use App\Database;
 use App\Rest;
 use \PEAR as PEAR;
@@ -84,7 +84,7 @@ class Maintainer
      */
     public function add($package, $user, $role, $active = 1)
     {
-        if (!User::exists($user)) {
+        if (!BaseUser::exists($user)) {
             return PEAR::raiseError("User $user does not exist");
         }
 
@@ -162,7 +162,7 @@ class Maintainer
      */
     private function remove($package, $user)
     {
-        if (!$this->authUser->isAdmin() && !User::maintains($this->authUser->handle, $package, 'lead')) {
+        if (!$this->authUser->isAdmin() && !BaseUser::maintains($this->authUser->handle, $package, 'lead')) {
             return PEAR::raiseError('Maintainer::remove: insufficient privileges');
         }
 
@@ -192,7 +192,8 @@ class Maintainer
             return PEAR::raiseError('Maintainer::updateAll: insufficient privileges');
         }
 
-        $pkg_name = $this->package->info((int)$pkgid, "name", true); // Needed for logging
+        // Needed for logging
+        $pkg_name = $this->package->info((int)$pkgid, "name");
 
         if (empty($pkg_name)) {
             PEAR::raiseError('Maintainer::updateAll: no such package');
@@ -282,7 +283,7 @@ class Maintainer
     {
         $admin = $this->authUser->isAdmin();
 
-        if (!$admin && !User::maintains($this->authUser->handle, $package, 'lead')) {
+        if (!$admin && !BaseUser::maintains($this->authUser->handle, $package, 'lead')) {
             return false;
         }
 

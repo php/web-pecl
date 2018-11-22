@@ -42,17 +42,7 @@ $pkg = strtr($_SERVER['REDIRECT_URL'], '-','_');
 // Check strictly
 $name = $packageEntity->info(basename($pkg), 'name');
 if (!PEAR::isError($name) && !empty($name)) {
-    if (!empty($name)) {
-        localRedirect('/package/'.urlencode($name));
-    } else {
-        $name = $packageEntity->info(basename($pkg), 'name', true);
-        if (!empty($name)) {
-            header('HTTP/1.0 301 Moved Permanently');
-            header('Location: https://pear.php.net/package/' . $name);
-            header('Connection: close');
-            exit();
-        }
-    }
+    localRedirect('/package/'.urlencode($name));
 }
 
 // Check less strictly if nothing has been found previously

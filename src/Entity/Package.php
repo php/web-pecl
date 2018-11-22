@@ -137,10 +137,9 @@ class Package
      *
      * @param  mixed   Name of the package or it's ID
      * @param  string  Single field to fetch
-     * @param  boolean Should PEAR packages also be taken into account?
      * @return mixed
      */
-    public function info($pkg, $field = null, $allow_pear = false)
+    public function info($pkg, $field = null)
     {
         if (is_numeric($pkg)) {
             $what = "id";
@@ -148,13 +147,7 @@ class Package
             $what = "name";
         }
 
-        $package_type = '';
-
-        if ($allow_pear) {
-             $package_type = "((p.package_type = 'pear' AND p.approved = 1) OR p.package_type = 'pecl') AND ";
-        } else {
-             $package_type = "p.package_type = 'pecl' AND ";
-        }
+        $package_type = "p.package_type = 'pecl' AND ";
 
         $pkg_sql = "SELECT p.id AS packageid, p.name AS name, ".
              "p.package_type AS type, ".

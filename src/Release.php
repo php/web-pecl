@@ -418,7 +418,7 @@ class Release
      */
     public function HTTPdownload($package, $version = null, $file = null, $uncompress = false)
     {
-        $package_id = $this->package->info($package, 'packageid', true);
+        $package_id = $this->package->info($package, 'packageid');
 
         // If no package id has been set, check if this is package alias maybe
         if (!$package_id) {

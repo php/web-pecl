@@ -29,7 +29,6 @@ use App\User as BaseUser;
 use App\Database;
 use App\Rest;
 use \PEAR as PEAR;
-use \PEAR_Common as PEAR_Common;
 
 /**
  * Class to handle maintainers
@@ -40,6 +39,12 @@ class Maintainer
     private $rest;
     private $authUser;
     private $package;
+
+    /**
+     * In database these are defined as enum type. Additionally there is
+     * a contributor role available which isn't used in the PECL application.
+     */
+    const ROLES = ['lead', 'developer', 'contributor', 'helper'];
 
     /**
      * Set database handler.
@@ -144,13 +149,7 @@ class Maintainer
      */
     private function isValidRole($role)
     {
-        static $roles;
-
-        if (empty($roles)) {
-            $roles = PEAR_Common::getUserRoles();
-        }
-
-        return in_array($role, $roles);
+        return in_array($role, self::ROLES);
     }
 
     /**

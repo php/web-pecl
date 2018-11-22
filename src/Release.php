@@ -29,7 +29,6 @@ use App\User;
 use App\Database;
 use App\Rest;
 use \PEAR as PEAR;
-use \PEAR_Common as PEAR_Common;
 use \Archive_Tar as Archive_Tar;
 use \PEAR_PackageFile as PEAR_PackageFile;
 use \PEAR_Config as PEAR_Config;
@@ -44,6 +43,16 @@ class Release
     private $rest;
     private $packagesDir;
     private $package;
+
+    /**
+     * Valid dependency types.
+     */
+    const DEPENDENCY_TYPES = ['pkg', 'ext', 'php', 'prog', 'ldlib', 'rtlib', 'os', 'websrv', 'sapi'];
+
+    /**
+     * Valid dependency relations.
+     */
+    const DEPENDENCY_RELATIONS = ['has', 'eq', 'lt', 'le', 'gt', 'ge', 'not', 'ne'];
 
     /**
      * Set database handler.
@@ -212,9 +221,6 @@ class Release
      */
     private function confirmUpload($package, $version, $state, $relnotes, $md5sum, $package_id, $file)
     {
-        // TODO: Avoid using globals by using dependency injection.
-        global $_PEAR_Common_dependency_types, $_PEAR_Common_dependency_relations;
-
         $tar = new Archive_Tar($file);
 
         $oldpackagexml = $tar->extractInString('package.xml');
@@ -301,7 +307,7 @@ class Release
                 $prob = [];
 
                 if (empty($dep['type'])
-                    || !in_array($dep['type'], $_PEAR_Common_dependency_types)
+                    || !in_array($dep['type'], self::DEPENDENCY_TYPES)
                 ) {
                     $prob[] = 'type';
                 }
@@ -327,7 +333,7 @@ class Release
                 }
 
                 if (empty($dep['rel'])
-                    || !in_array($dep['rel'], $_PEAR_Common_dependency_relations)
+                    || !in_array($dep['rel'], self::DEPENDENCY_RELATIONS)
                 ) {
                     $prob[] = 'rel';
                 }

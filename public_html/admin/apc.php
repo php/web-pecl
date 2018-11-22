@@ -25,7 +25,7 @@ if (file_exists("apc.conf.php")) include("apc.conf.php");
 ////////////////////////////////////////////////////////
 
 ////////// BEGIN OF DEFAULT CONFIG AREA ///////////////////////////////////////////////////////////
-$auth->require(true);
+auth_require(true);
 /* we do not need the built in auth, admin only has access */
 defaults('USE_AUTHENTIFICATION',0);         // Use (internal) authentification - best choice if
                                             // no other authentification is available

@@ -33,7 +33,7 @@ $release->setRest($rest);
 $release->setPackagesDir($config->get('packages_dir'));
 $release->setPackage($packageEntity);
 
-$auth->require();
+auth_require();
 
 response_header("Edit package");
 ?>

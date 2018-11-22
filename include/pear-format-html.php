@@ -68,7 +68,7 @@ $GLOBALS['_style'] = '';
 
 function response_header($title = 'The PHP Extension Community Library', $style = false)
 {
-    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles, $auth_user, $imageSize, $auth;
+    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles, $auth_user, $imageSize;
 
     if ($_header_done) {
         return;
@@ -85,15 +85,12 @@ function response_header($title = 'The PHP Extension Community Library', $style 
         $SIDEBAR_DATA .= draw_navigation($main_menu);
         $SIDEBAR_DATA .= draw_navigation($docu_menu, 'Documentation:');
         $SIDEBAR_DATA .= draw_navigation($downloads_menu, 'Downloads:');
-
-        if ($auth->isLoggedIn()) {
+        init_auth_user();
+        if (is_logged_in()) {
             global $developer_menu;
-
             $SIDEBAR_DATA .= draw_navigation($developer_menu, 'Developers:');
-
-            if ($auth->check(true)) {
+            if (auth_check(true)) {
                 global $admin_menu;
-
                 $SIDEBAR_DATA .= draw_navigation($admin_menu, 'Administrators:');
             }
         }

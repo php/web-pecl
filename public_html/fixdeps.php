@@ -20,7 +20,7 @@
 
 use App\Utils\DependenciesFixer;
 
-$auth->require(true);
+auth_require(true);
 
 response_header('Fix Dependencies');
 

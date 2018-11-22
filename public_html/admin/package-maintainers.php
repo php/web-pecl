@@ -42,7 +42,7 @@ $self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 
 // Select package first
 if (empty($id)) {
-    $auth->require(true);
+    auth_require(true);
 
     $packageRepository = new PackageRepository($database);
     $values = $packageRepository->findAllPeclPackages();
@@ -217,9 +217,9 @@ if (empty($id)) {
 
 function isAllowed($package, $maintainer)
 {
-    global $auth_user, $auth;
+    global $auth_user;
 
-    $auth->require();
+    auth_require();
 
     $maintainers = $maintainer->get($package, true);
 

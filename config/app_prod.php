@@ -23,26 +23,11 @@
 
 /**
  * Main application production settings that override default distributed
- * config/app.php settings. This allows to have configuration in the file or using
- * the environment variables.
+ * config/app.php settings. This allows to have configuration in the file or
+ * using the environment variables.
  */
 
 return [
-    // Database username
-    'db_username' => isset($_SERVER['PECL_DB_USERNAME']) ? $_SERVER['PECL_DB_USERNAME'] : 'pear',
-
-    // Database password
-    'db_password' => isset($_SERVER['PECL_DB_PASSWORD']) ? $_SERVER['PECL_DB_PASSWORD'] : 'pear',
-
-    // Database name
-    'db_name' => isset($_SERVER['PECL_DB_NAME']) ? $_SERVER['PECL_DB_NAME'] : 'pear',
-
-    // Database host
-    'db_host' => isset($_SERVER['PECL_DB_HOST']) ? $_SERVER['PECL_DB_HOST'] : 'localhost',
-
-    // Database DSN string
-    'db_dsn' => isset($_SERVER['PEAR_DATABASE_DSN']) ? $_SERVER['PEAR_DATABASE_DSN'] : '',
-
     // REST static files directory
     'rest_dir' => isset($_SERVER['PEAR_REST_DIR']) ? $_SERVER['PEAR_REST_DIR'] : '/var/lib/peclweb/rest',
 

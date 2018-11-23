@@ -22,9 +22,12 @@
 */
 
 /**
- * This is a distributed application and infrastructure configuration file.
- * These settings can be overridden either via the config/app_prod.php file in
- * production or the environment variables.
+ * This is an application and infrastructure configuration file with sensible
+ * default configuration settings. These settings can be overridden either via
+ * the environment variables in any environment or in the config/app_prod.php
+ * file for production when environment variables can't be set. In the
+ * development and testing environments the .env* files are used that simulate
+ * the environment variables.
  */
 
 return [
@@ -54,8 +57,9 @@ return [
     // PEAR_DATABASE_DSN key is used historically until production can be changed.
     'db_dsn' => isset($_SERVER['PEAR_DATABASE_DSN']) ? $_SERVER['PEAR_DATABASE_DSN'] : '',
 
-    // REST static files directory
-    'rest_dir' => isset($_SERVER['PECL_REST_DIR']) ? $_SERVER['PECL_REST_DIR'] : __DIR__.'/../public_html/rest',
+    // REST static files directory. The PEAR_ prefix for the key is used
+    // historically from the pearweb application until production can be updated.
+    'rest_dir' => isset($_SERVER['PEAR_REST_DIR']) ? $_SERVER['PEAR_REST_DIR'] : __DIR__.'/../public_html/rest',
 
     // Temporary generated application files
     'tmp_dir' => isset($_SERVER['PECL_TMP_DIR']) ? $_SERVER['PECL_TMP_DIR'] : __DIR__.'/../var',

@@ -94,4 +94,7 @@ return [
      * For example, 18M and 16M.
      */
     'max_file_size' => 16 * 1024 * 1024,
+
+    // Regex pattern for matching valid PECL extension names.
+    'valid_extension_name_regex' => '/^[a-z][a-z0-9_]+$/i',
 ];

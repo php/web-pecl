@@ -21,10 +21,6 @@
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 
-if (!defined('PEAR_COMMON_PACKAGE_NAME_PREG')) {
-    define('PEAR_COMMON_PACKAGE_NAME_PREG', '/^([A-Z][a-zA-Z0-9_]+|[a-z][a-z0-9_]+)$/');
-}
-
 $auth->secure();
 
 $display_form = true;
@@ -62,9 +58,8 @@ do {
               break;
           }
 
-        if (!preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $_POST['name'])) {
-            display_error("Invalid package name.  PECL package names must be ".
-                          "all-lowercase, starting with a letter.");
+        if (!preg_match($config->get('valid_extension_name_regex'), $_POST['name'])) {
+            display_error('Invalid package name. PECL package names must start with a letter and preferably include only lowercase letters. Optionally, numbers and underscores are also allowed.');
             break;
         }
 

@@ -74,45 +74,64 @@ if (isset($_POST['submit'])) {
         PEAR::raiseError("You have to enter values for name, license and summary!");
     }
 
-    $query = 'UPDATE packages SET name = ?, license = ?,
-              summary = ?, description = ?, category = ?,
-              homepage = ?, cvs_link = ?,
-              doc_link = ?, bug_link = ?, unmaintained = ?,
-              newpackagename = ?, newchannel = ?
-              WHERE id = ?';
-
-        if (!empty($_POST['newpk_id'])) {
-            $_POST['new_channel'] = 'pecl.php.net';
-            $_POST['new_package'] = $database->run('SELECT name from packages WHERE id = ?', [$_POST['newpk_id']])->fetch('name');
-            if (!$_POST['new_package']) {
-                $_POST['new_channel'] = $_POST['newpk_id'] = null;
-            }
-        } else {
-            if ($_POST['new_channel'] == 'pecl.php.net') {
-                $_POST['newpk_id'] = $database->run('SELECT id from packages WHERE name = ?', [$_POST['new_package']])->fetch()['id'];
-                if (!$_POST['newpk_id']) {
-                    $_POST['new_channel'] = $_POST['new_package'] = null;
-                }
+    if (!empty($_POST['newpk_id'])) {
+        $_POST['new_channel'] = 'pecl.php.net';
+        $_POST['new_package'] = $database->run('SELECT name from packages WHERE id = ?', [$_POST['newpk_id']])->fetch('name');
+        if (!$_POST['new_package']) {
+            $_POST['new_channel'] = $_POST['newpk_id'] = null;
+        }
+    } else {
+        if ($_POST['new_channel'] == 'pecl.php.net') {
+            $_POST['newpk_id'] = $database->run('SELECT id from packages WHERE name = ?', [$_POST['new_package']])->fetch()['id'];
+            if (!$_POST['newpk_id']) {
+                $_POST['new_channel'] = $_POST['new_package'] = null;
             }
         }
+    }
+
+    // Get current extension data from database
+    $current = $database->run('SELECT name FROM packages WHERE id = ?', [$_GET['id']])->fetch();
+
+    // Check if extension name has changed and is valid
+    if ($current['name'] !== $_POST['name']
+        && !preg_match($config->get('valid_extension_name_regex'), $_POST['name'])
+    ) {
+        PEAR::raiseError('Invalid package name. PECL package names must start with a letter and preferably include only lowercase letters. Optionally, numbers and underscores are also allowed.');
+    }
+
+    $sql = 'UPDATE packages
+            SET
+                name = ?,
+                license = ?,
+                summary = ?,
+                description = ?,
+                category = ?,
+                homepage = ?,
+                cvs_link = ?,
+                doc_link = ?,
+                bug_link = ?,
+                unmaintained = ?,
+                newpackagename = ?,
+                newchannel = ?
+            WHERE id = ?';
 
     $qparams = [
-                  $_POST['name'],
-                  $_POST['license'],
-                  $_POST['summary'],
-                  $_POST['description'],
-                  $_POST['category'],
-                  $_POST['homepage'],
-                  $_POST['cvs_link'],
-                  $_POST['doc_link'],
-                  $_POST['bug_link'],
-                  (isset($_POST['unmaintained']) ? 1 : 0),
-                  $_POST['new_package'],
-                  $_POST['new_channel'],
-                  $_GET['id']
+        $_POST['name'],
+        $_POST['license'],
+        $_POST['summary'],
+        $_POST['description'],
+        $_POST['category'],
+        $_POST['homepage'],
+        $_POST['cvs_link'],
+        $_POST['doc_link'],
+        $_POST['bug_link'],
+        (isset($_POST['unmaintained']) ? 1 : 0),
+        $_POST['new_package'],
+        $_POST['new_channel'],
+        $_GET['id']
     ];
 
-    $statement = $database->run($query, $qparams);
+    $statement = $database->run($sql, $qparams);
 
     $rest->savePackage($_POST['name']);
     $rest->savePackagesCategory($packageEntity->info($_POST['name'], 'category'));

@@ -66,6 +66,6 @@ class Config
      */
     public function get($key)
     {
-        return $this->values[$key];
+        return isset($this->values[$key]) ? $this->values[$key] : '';
     }
 }

@@ -111,13 +111,6 @@ Install dependencies with Composer:
 composer install
 ```
 
-There are some additional dependencies that require PEAR installation:
-
-```bash
-pear channel-update pear.php.net
-pear install --alldeps HTTP_Upload-1.0.0b4
-```
-
 ### 2. Configuration
 
 Application configuration is located in the `config` directory. The main file
@@ -161,7 +154,7 @@ localhost.
 ### 4. Apache configuration
 
 These are typical Apache directives you need to set up for a development site.
-This installation has PEAR dependencies installed in `/usr/share/pear`.
+This installation has PEAR installed in `/usr/share/pear`.
 
 ```apacheconf
 <VirtualHost *>

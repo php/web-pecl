@@ -21,7 +21,7 @@
 use App\Entity\Maintainer;
 use App\Release;
 use App\User;
-use \HTTP_Upload as HTTP_Upload;
+use App\Utils\Uploader;
 use \PEAR_PackageFile as PEAR_PackageFile;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
@@ -53,43 +53,28 @@ if (!file_exists($config->get('tmp_uploads_dir'))) {
     chmod($config->get('tmp_uploads_dir'), 0777);
 }
 
+$uploader = new Uploader();
+$uploader->setMaxFileSize($config->get('max_file_size'));
+$uploader->setValidExtension('tgz');
+$uploader->setDir($config->get('tmp_uploads_dir'));
+
 do {
-    if (isset($_POST['upload'])) {
-        // Upload Button
-        $upload_obj = new HTTP_Upload('en');
-        $file = $upload_obj->getFiles('distfile');
-
-        if (PEAR::isError($file)) {
-            $errors[] = $file->getMessage();
-
-            break;
-        }
-
-        if ($file->isValid()) {
-            $file->setName('uniq', 'pear-');
-            $file->setValidExtensions('tgz', 'accept');
-            $tmpfile = $file->moveTo($config->get('tmp_uploads_dir'));
-
-            if (PEAR::isError($tmpfile)) {
-                $errors[] = $tmpfile->getMessage();
-
-                break;
-            }
-
-            $tmpsize = $file->getProp('size');
-        } elseif ($file->isMissing()) {
-            $errors[] = 'No file has been uploaded.';
-
-            break;
-        } elseif ($file->isError()) {
-            $errors[] = $file->errorMsg();
+    if (
+        isset($_POST['upload'])
+        || (empty($_FILES) && empty($_POST) && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'post')
+    ) {
+        try {
+            $tmpFile = $uploader->upload('distfile');
+        } catch (\Exception $e) {
+            // Some error occurred.
+            $errors[] = $e->getMessage();
 
             break;
         }
 
         $pearConfig = PEAR_Config::singleton();
         $pkg = new PEAR_PackageFile($pearConfig);
-        $info = $pkg->fromTgzFile($config->get('tmp_uploads_dir').'/'.$tmpfile, PEAR_VALIDATE_NORMAL);
+        $info = $pkg->fromTgzFile($tmpFile, PEAR_VALIDATE_NORMAL);
         $errors = $warnings = [];
 
         if (PEAR::isError($info)) {
@@ -116,9 +101,10 @@ do {
         $pkg_xml_ext_version = $info->getVersion();
         $pkg_name = $info->getName();
         $pkg_extname = $info->getProvidesExtension();
+
         foreach ($info->getFileList() as $file_name => $file_data) {
-            // The file we're looking for is usually named like php_myextname.h, but
-            // lets check any .h file in the pkg root.
+            // The file we're looking for is usually named like php_myextname.h,
+            // but lets check any .h file in the pkg root.
             if ("src" != $file_data["role"] ||
                 false !== strstr($file_data["name"], "/") ||
                 ".h" != substr($file_data["name"], -2)) {
@@ -155,6 +141,7 @@ do {
                 $errors[] = "Extension version mismatch between the package.xml ($pkg_xml_ext_version) "
                     . "and the source code ($pkg_found_ext_version). ";
                 $errors[] = "Both version strings have to match. ";
+
                 break;
             } else {
                 $warnings[] = "The compliance between the package version in package.xml and extension source code "
@@ -274,9 +261,9 @@ do {
         $success              = true;
         $display_form         = true;
         $display_verification = false;
-    } elseif (isset($cancel)) {
-        // Cancel Button
-        $distfile = $config->get('tmp_uploads_dir').'/'.basename($distfile);
+    } elseif (isset($_POST['cancel'])) {
+        // Cancel button
+        $distfile = $config->get('tmp_uploads_dir').'/'.basename($_POST['distfile']);
 
         if (@is_file($distfile)) {
             @unlink($distfile);
@@ -312,18 +299,16 @@ if ($display_form) {
         report_error($errors);
     }
 
-    print <<<MSG
-<p>
-Upload a new package distribution file built using &quot;<code>pear
-package</code>&quot; here.  The information from your package.xml file will
-be displayed on the next screen for verification. The maximum file size
-is 16 MB.
-</p>
+    print "
+        <p>
+        Upload a new package distribution file built using &quot;<code>pear
+        package</code>&quot; here. The information from your package.xml file
+        will be displayed on the next screen for verification. The maximum file
+        size is ".round($config->get('max_file_size')/1024/1024)." MB.
+        </p>
 
-<p>
-Uploading new releases is restricted to each package's lead developer(s).
-</p>
-MSG;
+        <p>Uploading new releases is restricted to each package's lead developer(s).</p>
+    ";
 
     include __DIR__.'/../templates/forms/release_upload.php';
 }
@@ -332,7 +317,7 @@ if ($display_verification) {
     response_header('Upload New Release :: Verify');
     $pearConfig = PEAR_Config::singleton();
     $pkg = new PEAR_PackageFile($pearConfig);
-    $info = $pkg->fromTgzFile($config->get('tmp_uploads_dir').'/'.$tmpfile, PEAR_VALIDATE_NORMAL);
+    $info = $pkg->fromTgzFile($tmpFile, PEAR_VALIDATE_NORMAL);
     $errors = $warnings = [];
 
     if (PEAR::isError($info)) {
@@ -422,7 +407,7 @@ if ($display_verification) {
         'notes' => $info->getNotes(),
         'type' => $type,
         'errors' => $errors,
-        'tmpfile' => $tmpfile,
+        'tmp_file' => basename($tmpFile),
     ];
 
     include __DIR__.'/../templates/forms/release_verify.php';

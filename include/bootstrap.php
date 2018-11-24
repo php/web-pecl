@@ -96,7 +96,6 @@ require_once 'PEAR/Config.php';
 require_once 'PEAR/PackageFile/Parser/v2.php';
 require_once 'Archive/Tar.php';
 require_once 'PEAR/PackageFile.php';
-require_once 'HTTP/Upload.php';
 
 // Set application default time zone to UTC for all dates.
 date_default_timezone_set('UTC');

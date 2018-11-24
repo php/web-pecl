@@ -84,4 +84,14 @@ return [
      * https://git.php.net/?p=web/master.git
      */
     'max_username_length' => 16,
+
+    /**
+     * Maximum upload file size for tar gzip archive files in bytes. If the INI
+     * directive upload_max_filesize is less than this setting, the INI
+     * directive will be used. Also the default PHP INI directives need to be
+     * adjusted (upload_max_filesize and max_post_size) accordingly. Set the
+     * max_post_size slightly greater than upload_max_filesize ini directive.
+     * For example, 18M and 16M.
+     */
+    'max_file_size' => 16 * 1024 * 1024,
 ];

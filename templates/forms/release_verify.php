@@ -90,6 +90,6 @@ foreach ($vars as $key => $var) {
         <input type="submit" name="cancel" value="Cancel">
     </div>
 
-    <input type="hidden" name="distfile" value="<?= $vars['tmpfile']; ?>">
+    <input type="hidden" name="distfile" value="<?= $vars['tmp_file']; ?>">
     <input type="hidden" name="_fields" value="verify:cancel:distfile">
 </form>

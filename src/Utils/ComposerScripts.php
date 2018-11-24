@@ -44,7 +44,8 @@ class ComposerScripts
     }
 
     /**
-     * Create application temporary directories.
+     * Create application temporary and upload directories which are not tracked
+     * in Git.
      */
     public static function createDirectories(Event $event)
     {
@@ -74,6 +75,11 @@ class ComposerScripts
         if (!file_exists($config->get('packages_dir'))) {
             mkdir($config->get('packages_dir'), 0777, true);
             chmod($config->get('packages_dir'), 0777);
+        }
+
+        if (!file_exists($config->get('rest_dir'))) {
+            mkdir($config->get('rest_dir'), 0777, true);
+            chmod($config->get('rest_dir'), 0777);
         }
     }
 }

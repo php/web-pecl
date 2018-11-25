@@ -592,7 +592,7 @@ class Release
     /**
      * Promote new release
      *
-     * @param array Coming from PEAR_common::infoFromDescFile('package.xml')
+     * @param array Coming from PEAR_PackageFile->fromTgzFile('package.xml')
      * @param string Filename of the new uploaded release
      * @return void
      */

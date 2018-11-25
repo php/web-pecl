@@ -25,7 +25,6 @@ use \HTTP_Upload as HTTP_Upload;
 use \PEAR_PackageFile as PEAR_PackageFile;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
-use \PEAR_Common as PEAR_Common;
 
 $auth->secure('pear.dev');
 
@@ -181,83 +180,22 @@ do {
             break;
         }
 
-        $util = new PEAR_Common;
-        $info = $util->infoFromTgzFile($distfile);
-        if (class_exists('PEAR_PackageFile')) {
-            $pearConfig = PEAR_Config::singleton();
-            $pkg = new PEAR_PackageFile($pearConfig);
-            $info = $pkg->fromTgzFile($distfile, PEAR_VALIDATE_NORMAL);
-            if (PEAR::isError($info)) {
-                if (is_array($info->getUserInfo())) {
-                    foreach ($info->getUserInfo() as $err) {
-                        $errors[] = $err['message'];
-                    }
+        $pearConfig = PEAR_Config::singleton();
+        $pkg = new PEAR_PackageFile($pearConfig);
+        $info = $pkg->fromTgzFile($distfile, PEAR_VALIDATE_NORMAL);
 
-                    $errors[] = $info->getMessage();
+        if (PEAR::isError($info)) {
+            if (is_array($info->getUserInfo())) {
+                foreach ($info->getUserInfo() as $err) {
+                    $errors[] = $err['message'];
                 }
 
-                break;
-            } else {
-                $pacid = $packageEntity->info($info->getPackage(), 'id');
-
-                if (PEAR::isError($pacid)) {
-                    $errors[] = $pacid->getMessage();
-
-                    break;
-                }
-
-                if (!$auth_user->isAdmin() &&
-                    !User::maintains($auth_user->handle, $pacid, 'lead')) {
-                    $errors[] = 'You don\'t have permissions to upload this release.';
-                    break;
-                }
-
-                $license = $info->getLicense();
-
-                if (is_array($license)) {
-                    $license = $license['_content'];
-                }
-
-                $e = $packageEntity->updateInfo($pacid, [
-                    'summary'     => $info->getSummary(),
-                    'description' => $info->getDescription(),
-                    'license'     => $license,
-                ]);
-
-                if (PEAR::isError($e)) {
-                    $errors[] = $e->getMessage();
-                    break;
-                }
-
-                $users = [];
-
-                foreach ($info->getMaintainers() as $user) {
-                    $users[strtolower($user['handle'])] = [
-                        'role'   => $user['role'],
-                        'active' => !isset($user['active']) || $user['active'] == 'yes',
-                    ];
-                }
-
-                $e = $maintainer->updateAll($pacid, $users);
-
-                if (PEAR::isError($e)) {
-                    $errors[] = $e->getMessage();
-
-                    break;
-                }
-
-                $rest->savePackageMaintainer($info->getPackage());
-                $file = $release->upload(
-                    $info->getPackage(),
-                    $info->getVersion(),
-                    $info->getState(),
-                    $info->getNotes(),
-                    $distfile,
-                    md5_file($distfile)
-                );
+                $errors[] = $info->getMessage();
             }
+
+            break;
         } else {
-            $pacid = $packageEntity->info($info['package'], 'id');
+            $pacid = $packageEntity->info($info->getPackage(), 'id');
 
             if (PEAR::isError($pacid)) {
                 $errors[] = $pacid->getMessage();
@@ -268,28 +206,32 @@ do {
             if (!$auth_user->isAdmin() &&
                 !User::maintains($auth_user->handle, $pacid, 'lead')) {
                 $errors[] = 'You don\'t have permissions to upload this release.';
-
                 break;
             }
 
+            $license = $info->getLicense();
+
+            if (is_array($license)) {
+                $license = $license['_content'];
+            }
+
             $e = $packageEntity->updateInfo($pacid, [
-                'summary'     => $info['summary'],
-                'description' => $info['description'],
-                'license'     => $info['release_license'],
+                'summary'     => $info->getSummary(),
+                'description' => $info->getDescription(),
+                'license'     => $license,
             ]);
 
             if (PEAR::isError($e)) {
                 $errors[] = $e->getMessage();
-
                 break;
             }
 
             $users = [];
 
-            foreach ($info['maintainers'] as $user) {
+            foreach ($info->getMaintainers() as $user) {
                 $users[strtolower($user['handle'])] = [
                     'role'   => $user['role'],
-                    'active' => 1,
+                    'active' => !isset($user['active']) || $user['active'] == 'yes',
                 ];
             }
 
@@ -301,11 +243,12 @@ do {
                 break;
             }
 
+            $rest->savePackageMaintainer($info->getPackage());
             $file = $release->upload(
-                $info['package'],
-                $info['version'],
-                $info['release_state'],
-                $info['release_notes'],
+                $info->getPackage(),
+                $info->getVersion(),
+                $info->getState(),
+                $info->getNotes(),
                 $distfile,
                 md5_file($distfile)
             );

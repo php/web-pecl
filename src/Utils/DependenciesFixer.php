@@ -21,7 +21,8 @@
 namespace App\Utils;
 
 use App\Database;
-use \PEAR_Common as PEAR_Common;
+use \PEAR_Config as PEAR_Config;
+use \PEAR_PackageFile as PEAR_PackageFile;
 
 class DependenciesFixer
 {
@@ -45,8 +46,6 @@ class DependenciesFixer
 
         $statement = $this->database->run("SELECT package, `release`, fullpath FROM files");
 
-        $pc = new PEAR_Common;
-
         foreach ($statement->fetchAll() as $row) {
             printf("<h3>%s (package %d, release %d):</h3>\n",
                 basename($row['fullpath']),
@@ -58,18 +57,28 @@ class DependenciesFixer
                 continue;
             }
 
-            $pkginfo = $pc->infoFromTgzFile($row['fullpath']);
+            $pearConfig = PEAR_Config::singleton();
+            $pkg = new PEAR_PackageFile($pearConfig);
+            $pkginfo = $pkg->fromTgzFile($row['fullpath'], PEAR_VALIDATE_NORMAL);
 
-            if (empty($pkginfo['release_deps'])) {
+            if (empty($pkginfo->getDeps(true))) {
                 printf("%s : no dependencies<br />\n", $releases[$row['release']]);
 
                 continue;
             }
 
-            foreach ($pkginfo['release_deps'] as $dep) {
+            foreach ($pkginfo->getDeps() as $dep) {
                 if ($dep['rel']) {
                     $dep['relation'] = $dep['rel'];
                     unset($dep['rel']);
+                }
+
+                if (isset($dep['optional'])) {
+                    $dep['optional'] = strtolower(trim($dep['optional'])) === 'no' ? 0 : 1;
+                }
+
+                if (isset($dep['channel'])) {
+                    unset($dep['channel']);
                 }
 
                 $fields = implode(',', array_keys($dep));

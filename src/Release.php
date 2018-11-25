@@ -592,63 +592,6 @@ class Release
     /**
      * Promote new release
      *
-     * @param array Coming from PEAR_PackageFile->fromTgzFile('package.xml')
-     * @param string Filename of the new uploaded release
-     * @return void
-     */
-    public function promote($pkginfo, $upload)
-    {
-        if ($_SERVER['SERVER_NAME'] != 'pecl.php.net') {
-            return;
-        }
-
-        $pacid   = $this->package->info($pkginfo['package'], 'packageid');
-        $authors = $this->package->info($pkginfo['package'], 'authors');
-        $txt_authors = '';
-
-        foreach ($authors as $a) {
-            $txt_authors .= $a['name'];
-
-            if ($a['showemail']) {
-                $txt_authors .= " <{$a['email']}>";
-            }
-
-            $txt_authors .= " ({$a['role']})\n";
-        }
-
-        $upload = basename($upload);
-        $release = "{$pkginfo['package']}-{$pkginfo['version']} ({$pkginfo['release_state']})";
-        $txtanounce =<<<END
-The new PECL package $release has been released at https://pecl.php.net/.
-
-Release notes
--------------
-{$pkginfo['release_notes']}
-
-Package Info
--------------
-{$pkginfo['description']}
-
-Related Links
--------------
-Package home: https://pecl.php.net/package/$pkginfo[package]
-   Changelog: https://pecl.php.net/package-changelog.php?package=$pkginfo[package]
-    Download: https://pecl.php.net/get/$upload
-
-Authors
--------------
-$txt_authors
-END;
-        $to   = '"PECL developers list" <pecl-dev@lists.php.net>';
-        $from = '"PECL Announce" <pecl-dev@lists.php.net>';
-        $subject = "[ANNOUNCEMENT] $release Released.";
-
-        mail($to, $subject, $txtanounce, "From: $from", "-f noreply@php.net");
-    }
-
-    /**
-     * Promote new release
-     *
      * @param PEAR_PackageFile_v1|PEAR_PackageFile_v2
      * @param string Filename of the new uploaded release
      * @return void

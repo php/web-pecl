@@ -87,89 +87,89 @@ do {
             break;
         }
 
-    $pearConfig = PEAR_Config::singleton();
-    $pkg = new PEAR_PackageFile($pearConfig);
-    $info = $pkg->fromTgzFile($config->get('tmp_uploads_dir').'/'.$tmpfile, PEAR_VALIDATE_NORMAL);
-    $errors = $warnings = [];
+        $pearConfig = PEAR_Config::singleton();
+        $pkg = new PEAR_PackageFile($pearConfig);
+        $info = $pkg->fromTgzFile($config->get('tmp_uploads_dir').'/'.$tmpfile, PEAR_VALIDATE_NORMAL);
+        $errors = $warnings = [];
 
-    if (PEAR::isError($info)) {
-        if (is_array($info->getUserInfo())) {
-            foreach ($info->getUserInfo() as $err) {
-                if ($err['level'] == 'error') {
-                    $errors[] = $err['message'];
-                } else {
-                    $warnings[] = $err['message'];
+        if (PEAR::isError($info)) {
+            if (is_array($info->getUserInfo())) {
+                foreach ($info->getUserInfo() as $err) {
+                    if ($err['level'] == 'error') {
+                        $errors[] = $err['message'];
+                    } else {
+                        $warnings[] = $err['message'];
+                    }
                 }
             }
-        }
-        $errors[] = $info->getMessage();
-        break;
-    }
-
-    if (version_compare($info->getPackageXmlVersion(), '2.0', '<')) {
-        $errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
-        break;
-    }
-
-    $pkg_version_ok = true;
-    $pkg_version_macros_found = false;
-    $pkg_xml_ext_version = $info->getVersion();
-    $pkg_name = $info->getName();
-    $pkg_extname = $info->getProvidesExtension();
-    foreach ($info->getFileList() as $file_name => $file_data) {
-        // The file we're looking for is usually named like php_myextname.h, but
-        // lets check any .h file in the pkg root.
-        if ("src" != $file_data["role"] ||
-            false !== strstr($file_data["name"], "/") ||
-            ".h" != substr($file_data["name"], -2)) {
-
-            continue;
-        }
-
-        $file_contents = $info->getFileContents($file_data["name"]);
-
-        $pat = ',define\s+PHP_(' . $pkg_name . '|' . $pkg_extname . ')_VERSION\s+"(.*)",i';
-        if (preg_match($pat, $file_contents, $m)) {
-            $pkg_version_macros_found = true;
-            $pkg_found_ext_name = $m[1];
-            $pkg_found_ext_version = $m[2];
-        } else {
-            unset($file_contents);
-
-            continue;
-        }
-
-        if ($pkg_xml_ext_version == $pkg_found_ext_version) {
-            $pkg_version_ok = true;
-
+            $errors[] = $info->getMessage();
             break;
-        } else {
-            $pkg_version_ok = false;
         }
-    }
 
-    if (!$pkg_version_ok) {
-        $name_to_show = $pkg_version_macros_found ? $pkg_found_ext_name : "MYEXTNAME";
-
-        if ($pkg_version_macros_found) {
-            $errors[] = "Extension version mismatch between the package.xml ($pkg_xml_ext_version) "
-                . "and the source code ($pkg_found_ext_version). ";
-            $errors[] = "Both version strings have to match. ";
+        if (version_compare($info->getPackageXmlVersion(), '2.0', '<')) {
+            $errors[] = 'package.xml v1 format is not supported anymore, please update your package.xml to 2.0. ';
             break;
-        } else {
-            $warnings[] = "The compliance between the package version in package.xml and extension source code "
-                . "couldn't be reliably determined. This check fixes the (unintended) "
-                . "version mismatch in phpinfo() and the PECL website. ";
-            $warnings[] = "To pass please "
-                . "#define PHP_" . strtoupper($name_to_show) . "_VERSION \"$pkg_xml_ext_version\" "
-                . "in your php_" . strtolower($name_to_show) . ".h or any other header file "
-                . "and use it for zend_module_entry definition. ";
-            $warnings[] = "Both version strings have to match. ";
         }
-    }
 
-    $display_form = false;
-    $display_verification = true;
+        $pkg_version_ok = true;
+        $pkg_version_macros_found = false;
+        $pkg_xml_ext_version = $info->getVersion();
+        $pkg_name = $info->getName();
+        $pkg_extname = $info->getProvidesExtension();
+        foreach ($info->getFileList() as $file_name => $file_data) {
+            // The file we're looking for is usually named like php_myextname.h, but
+            // lets check any .h file in the pkg root.
+            if ("src" != $file_data["role"] ||
+                false !== strstr($file_data["name"], "/") ||
+                ".h" != substr($file_data["name"], -2)) {
+
+                continue;
+            }
+
+            $file_contents = $info->getFileContents($file_data["name"]);
+
+            $pat = ',define\s+PHP_(' . $pkg_name . '|' . $pkg_extname . ')_VERSION\s+"(.*)",i';
+            if (preg_match($pat, $file_contents, $m)) {
+                $pkg_version_macros_found = true;
+                $pkg_found_ext_name = $m[1];
+                $pkg_found_ext_version = $m[2];
+            } else {
+                unset($file_contents);
+
+                continue;
+            }
+
+            if ($pkg_xml_ext_version == $pkg_found_ext_version) {
+                $pkg_version_ok = true;
+
+                break;
+            } else {
+                $pkg_version_ok = false;
+            }
+        }
+
+        if (!$pkg_version_ok) {
+            $name_to_show = $pkg_version_macros_found ? $pkg_found_ext_name : "MYEXTNAME";
+
+            if ($pkg_version_macros_found) {
+                $errors[] = "Extension version mismatch between the package.xml ($pkg_xml_ext_version) "
+                    . "and the source code ($pkg_found_ext_version). ";
+                $errors[] = "Both version strings have to match. ";
+                break;
+            } else {
+                $warnings[] = "The compliance between the package version in package.xml and extension source code "
+                    . "couldn't be reliably determined. This check fixes the (unintended) "
+                    . "version mismatch in phpinfo() and the PECL website. ";
+                $warnings[] = "To pass please "
+                    . "#define PHP_" . strtoupper($name_to_show) . "_VERSION \"$pkg_xml_ext_version\" "
+                    . "in your php_" . strtolower($name_to_show) . ".h or any other header file "
+                    . "and use it for zend_module_entry definition. ";
+                $warnings[] = "Both version strings have to match. ";
+            }
+        }
+
+        $display_form = false;
+        $display_verification = true;
 
     } elseif (isset($_POST['verify'])) {
         // Verify Button
@@ -267,8 +267,6 @@ do {
 
         if (is_a($info, 'PEAR_PackageFile_v1') || is_a($info, 'PEAR_PackageFile_v2')) {
             $release->promote_v2($info, $file);
-        } else {
-            $release->promote($info, $file);
         }
 
         PEAR::popErrorHandling();
@@ -304,19 +302,11 @@ if ($display_form) {
 
     if ($success) {
         echo '<div class="success">';
-        if (is_array($info)) {
-            echo 'Version '
-                . htmlspecialchars($info['version'], ENT_QUOTES)
-                . ' of '
-                . htmlspecialchars($info['package'], ENT_QUOTES)
-                . ' has been successfully released, and its promotion cycle has started.';
-        } else {
-            echo 'Version '
-                . htmlspecialchars($info->getVersion(), ENT_QUOTES)
-                . ' of '
-                . htmlspecialchars($info->getPackage(), ENT_QUOTES)
-                . ' has been successfully released, and its promotion cycle has started.';
-        }
+        echo 'Version '
+            . htmlspecialchars($info->getVersion(), ENT_QUOTES)
+            . ' of '
+            . htmlspecialchars($info->getPackage(), ENT_QUOTES)
+            . ' has been successfully released, and its promotion cycle has started.';
         echo '</div>';
     } else {
         report_error($errors);

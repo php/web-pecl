@@ -92,6 +92,11 @@ if (isset($_POST['submit'])) {
                 break;
             }
 
+            if (strlen($handle) > $config->get('max_username_length')) {
+                display_error('Username is too long. It must have '.$config->get('max_username_length').' characters or less.');
+                break;
+            }
+
             if ($password != $password2) {
                 display_error("Passwords did not match");
                 $password = $password2 = "";
@@ -352,7 +357,7 @@ if ($display_form) {
 
     print "<form action=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\" method=\"post\" name=\"request_form\">\n";
     $bb = new BorderBox("Request a PECL account", "90%", "", 2, true);
-    $bb->horizHeadRow("Username:", '<input type="text" name="handle" value="'.$handle.'" size="12" />');
+    $bb->horizHeadRow("Username:", '<input type="text" name="handle" value="'.$handle.'" size="12" required maxlength="'.$config->get('max_username_length').'">');
     $bb->horizHeadRow("First Name:", '<input type="text" name="firstname" value="'.$firstname.'" size="20" />');
     $bb->horizHeadRow("Last Name:", '<input type="text" name="lastname" value="'.$lastname.'" size="20" />');
     $bb->horizHeadRow("Password:", '<input type="password" name="password" value="" size="10" />   Again: <input type="password" name="password2" value="" size="10" />');

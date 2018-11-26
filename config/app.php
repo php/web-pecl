@@ -73,6 +73,15 @@ return [
     // Packages directory
     'packages_dir' => isset($_SERVER['PECL_PACKAGES_DIR']) ? $_SERVER['PECL_PACKAGES_DIR'] : __DIR__.'/../public_html/packages',
 
-    // Regex pattern for matching valid PECL accounts usernames
-    'valid_usernames_regex' => '/^[a-z][a-z0-9]+$/i',
+    /**
+     * Regex pattern for matching valid PECL accounts usernames
+     */
+    'valid_usernames_regex' => '/^[a-z][a-z0-9]+$/',
+
+    /**
+     * Maximum username length is limited by the main PHP usernames database
+     * field size of varchar(16) in the web/master application at
+     * https://git.php.net/?p=web/master.git
+     */
+    'max_username_length' => 16,
 ];

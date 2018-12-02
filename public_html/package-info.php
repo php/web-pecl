@@ -94,9 +94,9 @@ foreach ($userRepository->findMaintainersByPackageId($pacid) as $row) {
     $accounts .= " [<a href=\"/user/{$row['handle']}\">details</a>]<br />";
 }
 
-if (!$relid) {
-    $downloads = [];
+$downloads = [];
 
+if (!$relid) {
     $statement = $database->run("SELECT f.id AS `id`, f.release AS `release`,".
                        " f.platform AS platform, f.format AS format,".
                        " f.md5sum AS md5sum, f.basename AS basename,".
@@ -325,7 +325,7 @@ if (count ($rels) > 3) {
     $rels = array_slice($rels, 0, 3);
 }
 
-if ($statement->rowCount() == 0) {
+if (empty($downloads) && !$relid) {
     print "<i>No releases yet.</i>";
 } else {
     $rel_trans = [

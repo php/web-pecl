@@ -31,46 +31,73 @@
  */
 
 return [
-    // Application environment (dev for development, prod for production.)
+    /**
+     * Application environment (dev for development, prod for production.)
+     */
     'env' => isset($_SERVER['PECL_ENV']) ? $_SERVER['PECL_ENV'] : 'prod',
 
-    // PECL channel URL scheme (http or https)
+    /**
+     * PECL channel URL scheme (http or https)
+     */
     'scheme' => isset($_SERVER['PECL_SCHEME']) ? $_SERVER['PECL_SCHEME'] : 'https',
 
-    // PECL channel URL host (domain name)
+    /**
+     * PECL channel URL host (domain name)
+     */
     'host' => isset($_SERVER['PECL_HOST']) ? $_SERVER['PECL_HOST'] : 'pecl.php.net',
 
-    // Database username
+    /**
+     * Database username
+     */
     'db_username' => isset($_SERVER['PECL_DB_USERNAME']) ? $_SERVER['PECL_DB_USERNAME'] : 'nobody',
 
-    // Database password
+    /**
+     * Database password
+     */
     'db_password' => isset($_SERVER['PECL_DB_PASSWORD']) ? $_SERVER['PECL_DB_PASSWORD'] : 'password',
 
-    // Database name
+    /**
+     * Database name
+     */
     'db_name' => isset($_SERVER['PECL_DB_NAME']) ? $_SERVER['PECL_DB_NAME'] : 'pecl',
 
-    // Database host
+    /**
+     * Database host
+     */
     'db_host' => isset($_SERVER['PECL_DB_HOST']) ? $_SERVER['PECL_DB_HOST'] : 'localhost',
 
-    // Database DSN string. Optional and can be overridden by the environment
-    // variable. Setting the DSN string also overrides other db_* values. Naming
-    // PEAR_DATABASE_DSN key is used historically until production can be changed.
+    /**
+     * Database DSN string. Optional and can be overridden by the environment
+     * variable. Setting the DSN string also overrides other db_* values. Naming
+     * PEAR_DATABASE_DSN key is used historically until production can be changed.
+     */
     'db_dsn' => isset($_SERVER['PEAR_DATABASE_DSN']) ? $_SERVER['PEAR_DATABASE_DSN'] : '',
 
-    // REST static files directory. The PEAR_ prefix for the key is used
-    // historically from the pearweb application until production can be updated.
+    /**
+     * REST static files directory. The PEAR_ prefix for the key is used
+     * historically from the pearweb application until production can be updated.
+     */
     'rest_dir' => isset($_SERVER['PEAR_REST_DIR']) ? $_SERVER['PEAR_REST_DIR'] : __DIR__.'/../public_html/rest',
 
-    // Temporary generated application files
+    /**
+     * Temporary generated application files
+     */
     'tmp_dir' => isset($_SERVER['PECL_TMP_DIR']) ? $_SERVER['PECL_TMP_DIR'] : __DIR__.'/../var',
 
-    // Temporary directory for uploaded files
+    /**
+     * Temporary directory for uploaded files
+     */
     'tmp_uploads_dir' => isset($_SERVER['PECL_TMP_UPLOADS_DIR']) ? $_SERVER['PECL_TMP_UPLOADS_DIR'] : __DIR__.'/../var/uploads',
 
-    // Path where new PECL account requests are sent when requesting a SVN account
+    /**
+     * Path where new PECL account requests are sent when requesting also PHP.net
+     * account.
+     */
     'php_master_api_url' => isset($_SERVER['PECL_MASTER_API_URL']) ? $_SERVER['PECL_MASTER_API_URL'] : 'https://master.php.net/entry/svn-account.php',
 
-    // Packages directory
+    /**
+     * Packages directory
+     */
     'packages_dir' => isset($_SERVER['PECL_PACKAGES_DIR']) ? $_SERVER['PECL_PACKAGES_DIR'] : __DIR__.'/../public_html/packages',
 
     /**
@@ -95,6 +122,8 @@ return [
      */
     'max_file_size' => 16 * 1024 * 1024,
 
-    // Regex pattern for matching valid PECL extension names.
+    /**
+     * Regex pattern for matching valid PECL extension names.
+     */
     'valid_extension_name_regex' => '/^[a-z][a-z0-9_]+$/i',
 ];

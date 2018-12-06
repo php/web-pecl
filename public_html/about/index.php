@@ -37,12 +37,5 @@ The source code of the website is
 
 <p>Read the <a href="privacy.php">privacy policy</a>.</p>
 
-<p>Enabled PHP core extensions:</p>
-<ul>
-<?php foreach(get_loaded_extensions() as $ext): ?>
-<li><?= htmlspecialchars($ext, ENT_QUOTES); ?></li>
-<?php endforeach; ?>
-</ul>
-
 <?php
 response_footer();

@@ -28,13 +28,11 @@ if (empty($user)) {
     $user = basename($_SERVER['PATH_INFO']);
 }
 
-PEAR::setErrorHandling(PEAR_ERROR_RETURN);
-
 $userRepository = new UserRepository($database);
 
 $wishlistUrl = $userRepository->getWishlistByHandle($user);
 
-if (empty($wishlistUrl) || PEAR::isError($wishlistUrl)) {
+if (empty($wishlistUrl)) {
     header("HTTP/1.0 404 Not found");
 
     die("<h1>User not found</h1>\n");

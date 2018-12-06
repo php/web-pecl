@@ -41,7 +41,7 @@ $pkg = strtr($_SERVER['REDIRECT_URL'], '-','_');
 
 // Check strictly
 $name = $packageEntity->info(basename($pkg), 'name');
-if (!PEAR::isError($name) && !empty($name)) {
+if (!empty($name)) {
     localRedirect('/package/'.urlencode($name));
 }
 

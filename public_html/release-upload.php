@@ -182,10 +182,10 @@ do {
 
             break;
         } else {
-            $pacid = $packageEntity->info($info->getPackage(), 'id');
-
-            if (PEAR::isError($pacid)) {
-                $errors[] = $pacid->getMessage();
+            try {
+                $pacid = $packageEntity->info($info->getPackage(), 'id');
+            } catch (\Exception $e) {
+                $errors[] = $e->getMessage();
 
                 break;
             }

@@ -273,7 +273,7 @@ class Package
 
         $package_id = $this->info($pkgid, 'id');
 
-        if (PEAR::isError($package_id) || empty($package_id)) {
+        if (empty($package_id)) {
             return PEAR::raiseError("Package not registered. Please register it first with \"New Package\"");
         }
 

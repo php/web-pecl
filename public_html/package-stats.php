@@ -366,10 +366,11 @@ if (@!$_GET['pid']) {
 
     $bb = new BorderBox('Package Statistics');
 
-    $statement  = $database->run($query); //$query defined above
-    $results = $statement->fetchAll();
-
-    if (PEAR::isError($statement)) {
+    try {
+        // The $query is defined above
+        $statement = $database->run($query);
+        $results = $statement->fetchAll();
+    } catch (\Exception $e) {
         PEAR::raiseError('unable to generate stats');
     }
 

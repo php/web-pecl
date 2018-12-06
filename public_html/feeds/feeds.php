@@ -141,7 +141,6 @@ switch ($type) {
         $package = $argument;
         if ($packageEntity->isValid($package) == false) {
             rss_bailout();
-            return PEAR::raiseError("The requested URL " . $_SERVER['REQUEST_URI'] . " was not found on this server.");
         }
 
         $channel_title = 'Latest releases';

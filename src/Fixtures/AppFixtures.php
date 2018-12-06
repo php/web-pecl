@@ -247,6 +247,7 @@ class AppFixtures
     {
         return '
             admin;John Doe;;1
+            user;Jane Doe;;0
             alexmerz;Alexander Merz;;0
             chregu;Christian Stocker;;0
             cox;Tomas V.V.Cox;;1

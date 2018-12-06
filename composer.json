@@ -28,7 +28,9 @@
         "ext-json": "*",
         "ext-pdo": "*",
         "ext-pdo_mysql": "*",
-        "ext-session": "*"
+        "ext-phar": "*",
+        "ext-session": "*",
+        "ext-zlib": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.4",

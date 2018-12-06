@@ -28,8 +28,8 @@ use App\Entity\Package;
 use App\User;
 use App\Database;
 use App\Rest;
+use App\Utils\Extractor;
 use \PEAR as PEAR;
-use \Archive_Tar as Archive_Tar;
 use \PEAR_PackageFile as PEAR_PackageFile;
 use \PEAR_Config as PEAR_Config;
 
@@ -221,11 +221,11 @@ class Release
      */
     private function confirmUpload($package, $version, $state, $relnotes, $md5sum, $package_id, $file)
     {
-        $tar = new Archive_Tar($file);
+        $extractor = new Extractor($file);
 
-        $oldpackagexml = $tar->extractInString('package.xml');
-        if (($packagexml = $tar->extractInString('package2.xml'))
-            || ($packagexml = $tar->extractInString('package.xml'))
+        $oldpackagexml = $extractor->getFileContents('package.xml');
+        if (($packagexml = $extractor->getFileContents('package2.xml'))
+            || ($packagexml = $extractor->getFileContents('package.xml'))
         ) {
             // success
         } else {

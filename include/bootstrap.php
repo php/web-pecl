@@ -94,7 +94,6 @@ if ($config->get('env') === 'dev') {
 require_once 'PEAR.php';
 require_once 'PEAR/Config.php';
 require_once 'PEAR/PackageFile/Parser/v2.php';
-require_once 'Archive/Tar.php';
 require_once 'PEAR/PackageFile.php';
 
 // Set application default time zone to UTC for all dates.

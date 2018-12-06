@@ -23,13 +23,13 @@
  * Generate static REST files for PECL from existing data
  */
 
+use App\Utils\Extractor;
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 use App\Repository\UserRepository;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
 use \PEAR_PackageFile as PEAR_PackageFile;
-use \Archive_Tar as Archive_Tar;
 
 require_once __DIR__.'/../include/bootstrap.php';
 
@@ -98,10 +98,10 @@ foreach ($packageRepository->listAll() as $package => $info) {
                 continue;
             }
 
-            $tar = new Archive_Tar($fileinfo);
+            $extractor = new Extractor($fileinfo);
 
-            if ($pxml = $tar->extractInString('package2.xml')) {
-            } elseif ($pxml = $tar->extractInString('package.xml'));
+            if ($pxml = $extractor->getFileContents('package2.xml')) {
+            } elseif ($pxml = $extractor->getFileContents('package.xml'));
 
             PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
             $pf = $pkg->fromAnyFile($fileinfo, PEAR_VALIDATE_NORMAL);

@@ -118,9 +118,6 @@ class PackageRepository
     /**
      * List all packages for exporting to XML files.
      *
-     * @param boolean Only list released packages?
-     * @param boolean If listing released packages only, only list stable releases?
-     * @param boolean List also PEAR packages
      * @return array
      */
     public function listAll()

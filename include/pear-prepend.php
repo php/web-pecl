@@ -29,17 +29,14 @@
  * Application bootstrap and session initialization.
  */
 
-use App\Auth;
-
 require_once __DIR__.'/bootstrap.php';
 require_once __DIR__.'/pear-format-html.php';
 
 $tmp = filectime($_SERVER['SCRIPT_FILENAME']);
 $LAST_UPDATED = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';
 
-$auth = new Auth();
-$auth->setDatabase($database);
-$auth->setTmpDir($config->get('tmp_dir'));
+// Start session
+$auth->initSession();
 $auth_user = $auth->initUser();
 
 if (!empty($_GET['logout']) && $_GET['logout'] === '1') {

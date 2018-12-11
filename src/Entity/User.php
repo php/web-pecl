@@ -79,8 +79,8 @@ class User
             }
 
             $this->password = $row['password'];
-            $this->admin = ($row['admin'] === 1);
-            $this->registered = ($row['registered'] === 1);
+            $this->admin = (int)$row['admin'] === 1;
+            $this->registered = (int)$row['registered'] === 1;
         }
     }
 

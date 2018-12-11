@@ -30,9 +30,11 @@
  * configuration is initialized and database connection is established.
  */
 
+use App\Auth;
 use App\Autoloader;
 use App\Config;
 use App\Database;
+use App\Karma;
 use App\Rest;
 use App\Database\Adapter;
 use App\Entity\Package;
@@ -112,9 +114,9 @@ $filesystem = new Filesystem();
 $formatDate = new FormatDate();
 $imageSize = new ImageSize();
 
-$rest = new Rest();
-$rest->setDatabase($database);
-$rest->setFilesystem($filesystem);
+$karma = new Karma($database);
+
+$rest = new Rest($database, $filesystem, $karma);
 $rest->setDirectory($config->get('rest_dir'));
 $rest->setScheme($config->get('scheme'));
 $rest->setHost($config->get('host'));
@@ -131,3 +133,6 @@ $packageEntity->setRest($rest);
 
 // Inject package entity dependency to REST generator
 $rest->setPackage($packageEntity);
+
+$auth = new Auth($database, $karma);
+$auth->setTmpDir($config->get('tmp_dir'));

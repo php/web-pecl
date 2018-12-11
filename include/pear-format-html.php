@@ -90,7 +90,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
 
             $SIDEBAR_DATA .= draw_navigation($developer_menu, 'Developers:');
 
-            if ($auth->check(true)) {
+            if ($auth_user->isAdmin()) {
                 global $admin_menu;
 
                 $SIDEBAR_DATA .= draw_navigation($admin_menu, 'Administrators:');

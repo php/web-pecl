@@ -45,21 +45,16 @@ class Rest
     private $packageRepository;
     private $userRepository;
     private $package;
+    private $karma;
 
     /**
-     * Set database handler.
+     * Class constructor with injected dependencies.
      */
-    public function setDatabase($database)
+    public function __construct(Database $database, Filesystem $filesystem, Karma $karma)
     {
         $this->database = $database;
-    }
-
-    /**
-     * Set filesystem service.
-     */
-    public function setFilesystem(Filesystem $filesystem)
-    {
         $this->filesystem = $filesystem;
+        $this->karma = $karma;
     }
 
     /**
@@ -737,10 +732,8 @@ class Rest
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allmaintainers
     http://pear.php.net/dtd/rest.allmaintainers.xsd">' . "\n";
 
-        $karma = new Karma($this->database);
-
         foreach ($maintainers as $maintainer) {
-            if (!$karma->has($maintainer['handle'], 'pear.dev')) {
+            if (!$this->karma->has($maintainer['handle'], 'pear.dev')) {
                 continue;
             }
             $info .= ' <h xlink:href="/rest/m/' . $maintainer['handle'] . '">' .

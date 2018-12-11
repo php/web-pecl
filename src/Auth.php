@@ -41,11 +41,29 @@ class Auth
     private $database;
     private $user;
     private $tmpDir;
+    private $karma;
 
     /**
-     * Class constructor. This sets cookie parameters and starts session.
+     * Class constructor with dependencies injection.
      */
-    public function __construct()
+    public function __construct(Database $database, Karma $karma)
+    {
+        $this->database = $database;
+        $this->karma = $karma;
+    }
+
+    /**
+     * Set temporary directory for logs.
+     */
+    public function setTmpDir($tmpDir)
+    {
+        $this->tmpDir = $tmpDir;
+    }
+
+    /**
+     * Sets cookie parameters and start session.
+     */
+    public function initSession()
     {
         // Extend the session cookie lifetime
         $params = session_get_cookie_params();
@@ -58,22 +76,6 @@ class Auth
         );
 
         session_start();
-    }
-
-    /**
-     * Set database handler.
-     */
-    public function setDatabase(Database $database)
-    {
-        $this->database = $database;
-    }
-
-    /**
-     * Set temporary directory for logs.
-     */
-    public function setTmpDir($tmpDir)
-    {
-        $this->tmpDir = $tmpDir;
     }
 
     /**
@@ -165,10 +167,8 @@ class Auth
      * pearweb application database schema until migrations in the database can
      * be done.
      */
-    public function check($atom)
+    private function check($atom)
     {
-        static $karma;
-
         // Admins are almighty
         if ($this->user->isAdmin()) {
             return true;
@@ -176,7 +176,7 @@ class Auth
 
         // Check for backwards compatibility
         if (is_bool($atom)) {
-            if ($atom == true) {
+            if ($atom === true) {
                 $atom = "pear.admin";
             } else {
                 $atom = "pear.dev";
@@ -188,11 +188,7 @@ class Auth
             return true;
         }
 
-        if (!isset($karma)) {
-            $karma = new Karma($this->database);
-        }
-
-        return $karma->has($this->user->handle, $atom);
+        return $this->karma->has($this->user->handle, $atom);
     }
 
     /**

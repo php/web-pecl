@@ -49,6 +49,14 @@ class Karma
      * The given level is either a concrete karma level or an alias that will be
      * mapped to a karma group in this method.
      *
+     * TODO: The karma levels were once set to be renamed from pear|pecl.* to *.
+     *       The migration script is located in bin/update-karma.php
+     *       Current PECL site uses only two karma levels of users: administrator
+     *       and registered user (maintainer). Extension maintainer roles are
+     *       defined in a separate database table "maintains". Todo: check if
+     *       this will be ever utilized again, or this should be migrated to a
+     *       common php.net accounts procedure using the master.php.net.
+     *
      * @param  string Username
      * @param  string Level
      * @return boolean
@@ -93,16 +101,21 @@ class Karma
             break;
         }
 
+        $placeholders = [];
+        $arguments = [$user];
+
+        foreach ($levels as $level) {
+            $placeholders[] = '?';
+            $arguments[] = $level;
+        }
+
         $sql = 'SELECT *
                 FROM karma
-                WHERE user = :user
-                AND level IN (:levels)
+                WHERE user = ?
+                AND level IN ('.implode(',', $placeholders).')
         ';
 
-        $results = $statement = $this->database->run($sql, [
-            ':user'   => $user,
-            ':levels' => "'".implode("','", $levels)."'"
-        ])->fetchAll();
+        $results = $statement = $this->database->run($sql, $arguments)->fetchAll();
 
         return (count($results) > 0);
     }

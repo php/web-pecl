@@ -26,7 +26,7 @@ use \PEAR_PackageFile as PEAR_PackageFile;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
 
-$auth->secure('pear.dev');
+$auth->secure();
 
 $release = new Release();
 $release->setDatabase($database);

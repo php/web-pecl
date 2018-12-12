@@ -26,17 +26,22 @@
 require_once __DIR__.'/../include/bootstrap.php';
 
 use App\Command\GenerateFixturesCommand;
+use App\Entity\Category;
 use App\Fixtures\AppFixtures;
 use Symfony\Component\Console\Application;
+use Faker\Factory;
 
 $application = new Application();
 
 $generateFixturesCommand = new GenerateFixturesCommand();
 $generateFixturesCommand->setDatabase($database);
 $generateFixturesCommand->setConfig($config);
-$fixtures = new AppFixtures();
-$fixtures->setDatabase($database);
-$fixtures->setRest($rest);
+
+$category = new Category();
+$category->setDatabase($database);
+$category->setRest($rest);
+
+$fixtures = new AppFixtures($database, Factory::create(), $category, $packageEntity);
 $generateFixturesCommand->setFixtures($fixtures);
 
 $application->add($generateFixturesCommand);

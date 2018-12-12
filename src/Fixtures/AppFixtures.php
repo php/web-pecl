@@ -24,8 +24,7 @@ namespace App\Fixtures;
 use App\Database;
 use App\Entity\Category;
 use App\Entity\Package;
-use App\Rest;
-use Faker\Factory;
+use Faker\Generator;
 
 /**
  * Data fixtures for database. It uses Faker library for generating fixtures
@@ -34,22 +33,33 @@ use Faker\Factory;
 class AppFixtures
 {
     private $database;
-    private $rest;
+    private $category;
+    private $package;
 
     /**
-     * Set database handler dependency.
+     * Faker utility.
      */
-    public function setDatabase(Database $database)
+    private $faker;
+
+    /**
+     * Number of generated users.
+     */
+    private const PACKAGES_COUNT = 1000;
+
+    /**
+     * Number of generated users.
+     */
+    private const USERS_COUNT = 500;
+
+    /**
+     * Class constructor to set injected dependencies.
+     */
+    public function __construct(Database $database, Generator $faker, Category $category, Package $package)
     {
         $this->database = $database;
-    }
-
-    /**
-     * Set REST generator dependency.
-     */
-    public function setRest(Rest $rest)
-    {
-        $this->rest = $rest;
+        $this->faker = $faker;
+        $this->category = $category;
+        $this->package = $package;
     }
 
     /**
@@ -57,10 +67,6 @@ class AppFixtures
      */
     public function insertCategories()
     {
-        $category = new Category();
-        $category->setDatabase($this->database);
-        $category->setRest($this->rest);
-
         $catids = [];
         foreach ($this->getCategories() as $key => $item) {
             if (is_array($item)) {
@@ -77,7 +83,7 @@ class AppFixtures
                 $parent = $catids[$parent];
             }
 
-            $catid = $category->add([
+            $catid = $this->category->add([
                 'name' => $name,
                 'description' => $description,
                 'parent' => $parent,
@@ -92,22 +98,6 @@ class AppFixtures
      */
     public function insertUsers()
     {
-        $users = [];
-        foreach (explode("\n", $this->getUsers()) as $line) {
-            $line = trim($line);
-
-            if (empty($line)) {
-                continue;
-            }
-
-            $tmp = explode(";", trim($line));
-            $users[$tmp[0]]['user'] = $tmp[0];
-            $users[$tmp[0]]['pw'] = password_hash('password', PASSWORD_DEFAULT);
-            $users[$tmp[0]]['name'] = $tmp[1];
-            $users[$tmp[0]]['email'] = $tmp[2];
-            $users[$tmp[0]]['admin'] = $tmp[3];
-        }
-
         $sql = "INSERT INTO users (
                     handle,
                     `password`,
@@ -117,7 +107,8 @@ class AppFixtures
                     showemail,
                     created,
                     createdby,
-                    `admin`
+                    `admin`,
+                    homepage
                 ) VALUES (
                     :handle,
                     :password,
@@ -127,25 +118,23 @@ class AppFixtures
                     1,
                     :created,
                     :createdby,
-                    :admin
+                    :admin,
+                    :homepage
                 )
         ";
 
-        foreach ($users as $username => $info) {
-            if (empty($info['email'])) {
-                $email = "$username@example.com";
-            } else {
-                $email = $info['email'];
-            }
+        $users = $this->getUsers();
 
+        foreach ($users as $username => $data) {
             $this->database->run($sql, [
                 ':handle'    => $username,
-                ':password'  => $info['pw'],
-                ':name'      => $info['name'],
-                ':email'     => $email,
+                ':password'  => $data['password'],
+                ':name'      => $data['name'],
+                ':email'     => $data['email'],
                 ':created'   => gmdate("Y-m-d H:i:s"),
                 ':createdby' => 'imported',
-                ':admin'     => (int)$info['admin'],
+                ':admin'     => (int)$data['admin'],
+                ':homepage'  => $data['homepage'],
             ]);
         }
     }
@@ -155,21 +144,16 @@ class AppFixtures
      */
     public function insertPackages()
     {
-        $faker = Factory::create();
-        $packageEntity = new Package();
-        $packageEntity->setDatabase($this->database);
-        $packageEntity->setRest($this->rest);
-
         $categories = $this->database->run("SELECT id, name FROM categories")->fetchAll(\PDO::FETCH_KEY_PAIR);
         $users = $this->database->run("SELECT handle, name FROM users")->fetchAll(\PDO::FETCH_KEY_PAIR);
 
-        for ($i = 1; $i < 1000; $i++) {
-            $packageEntity->add([
-                'name'        => $faker->word.$i,
+        for ($i = 1; $i < self::PACKAGES_COUNT; $i++) {
+            $this->package->add([
+                'name'        => $this->faker->word.$i,
                 'type'        => 'pecl',
                 'license'     => 'PHP License',
-                'summary'     => $faker->sentence,
-                'description' => $faker->text,
+                'summary'     => $this->faker->sentence,
+                'description' => $this->faker->text,
                 'category'    => array_rand($categories, 1),
                 'lead'        => array_rand($users, 1),
             ]);
@@ -241,32 +225,49 @@ class AppFixtures
     }
 
     /**
-     * Get users data.
+     * Get generated demo users data with each user having secret password set to
+     * "password".
      */
     public function getUsers()
     {
-        return '
-            admin;John Doe;;1
-            user;Jane Doe;;0
-            alexmerz;Alexander Merz;;0
-            chregu;Christian Stocker;;0
-            cox;Tomas V.V.Cox;;1
-            jmcastagnetto;Jesus M. Castagnetto;;0
-            jon;Jon Parise;;0
-            kaltroft;Martin Kaltroft;;0
-            mj;Martin Jansen;;1
-            sebastian;Sebastian Bergmann;;0
-            sn;Sebastian Nohn;sn@example.com;0
-            ssb;Stig S. Bakken;ssb@example.com;1
-            zyprexia;Dave Mertens;dmertens@example.com;0
-            jimw;Jim Winstead;jimw@example.com;1
-            andi;Andi Gutmans;andi@example.com;1
-            rasmus;;;1
-            zeev;;;1
-            jimw;;;1
-            andrei;;;1
-            thies;;;1
-        ';
-    }
+        $users = [];
 
+        // Demo secret password is always password for all users
+        $password = password_hash('password', PASSWORD_DEFAULT);
+
+        // Administrator user
+        $users['admin'] = [
+            'name' => 'John Doe',
+            'password' => $password,
+            'email' => 'admin@example.com',
+            'admin' => 1,
+            'homepage' => 'https://example.com',
+        ];
+
+        // Maintainer user
+        $users['user'] = [
+            'name' => 'Jane Doe',
+            'password' => $password,
+            'email' => 'user@example.com',
+            'admin' => 1,
+            'homepage' => 'https://example.org',
+        ];
+
+        // More random maintainer level users
+        for ($i = 0; $i < self::USERS_COUNT; $i++) {
+            $username = $this->faker->unique()->userName;
+            $username = substr($username, 0, 16);
+            $username = str_replace('.', '', $username);
+
+            $users[$username] = [
+                'name' => $this->faker->firstName.' '.$this->faker->lastName,
+                'password' => $password,
+                'email' => $username.'@example.com',
+                'admin' => 0,
+                'homepage' => $this->faker->url,
+            ];
+        }
+
+        return $users;
+    }
 }

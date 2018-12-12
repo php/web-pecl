@@ -30,9 +30,11 @@
  * configuration is initialized and database connection is established.
  */
 
+use App\Auth;
 use App\Autoloader;
 use App\Config;
 use App\Database;
+use App\Karma;
 use App\Rest;
 use App\Database\Adapter;
 use App\Entity\Package;
@@ -129,3 +131,10 @@ $packageEntity->setRest($rest);
 
 // Inject package entity dependency to REST generator
 $rest->setPackage($packageEntity);
+
+// Set karma service
+$karma = new Karma($database);
+
+// Set authentication server
+$auth = new Auth($database, $karma);
+$auth->setTmpDir($config->get('tmp_dir'));

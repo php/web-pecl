@@ -39,13 +39,23 @@ use App\Entity\User;
 class Auth
 {
     private $database;
+    private $karma;
     private $user;
     private $tmpDir;
 
     /**
-     * Class constructor. This sets cookie parameters and starts session.
+     * Class constructor with dependencies injection.
      */
-    public function __construct()
+    public function __construct(Database $database, Karma $karma)
+    {
+        $this->database = $database;
+        $this->karma = $karma;
+    }
+
+    /**
+     * Sets cookie parameters and start session.
+     */
+    public function initSession()
     {
         // Extend the session cookie lifetime
         $params = session_get_cookie_params();
@@ -58,14 +68,6 @@ class Auth
         );
 
         session_start();
-    }
-
-    /**
-     * Set database handler.
-     */
-    public function setDatabase(Database $database)
-    {
-        $this->database = $database;
     }
 
     /**
@@ -167,8 +169,6 @@ class Auth
      */
     public function check($atom)
     {
-        static $karma;
-
         // Admins are almighty
         if ($this->user->isAdmin()) {
             return true;
@@ -188,11 +188,7 @@ class Auth
             return true;
         }
 
-        if (!isset($karma)) {
-            $karma = new Karma($this->database);
-        }
-
-        return $karma->has($this->user->handle, $atom);
+        return $this->karma->has($this->user->handle, $atom);
     }
 
     /**

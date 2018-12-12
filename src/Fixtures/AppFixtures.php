@@ -249,7 +249,7 @@ class AppFixtures
             'name' => 'Jane Doe',
             'password' => $password,
             'email' => 'user@example.com',
-            'admin' => 1,
+            'admin' => 0,
             'homepage' => 'https://example.org',
         ];
 

@@ -83,7 +83,7 @@ if ($row['wishlist'] != "") {
     $bb->horizHeadRow("Wishlist:", '<a href="/wishlist.php/'.$row['handle'].'">Click here to be redirected.</a>');
 }
 
-if ($row['admin'] == 1) {
+if ((int)$row['admin'] === 1) {
     $bb->fullRow("$row[name] is a PECL administrator.");
 }
 

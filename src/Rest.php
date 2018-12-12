@@ -21,7 +21,6 @@
 namespace App;
 
 use App\Database;
-use App\Karma;
 use App\Entity\Package;
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
@@ -45,16 +44,14 @@ class Rest
     private $packageRepository;
     private $userRepository;
     private $package;
-    private $karma;
 
     /**
      * Class constructor with injected dependencies.
      */
-    public function __construct(Database $database, Filesystem $filesystem, Karma $karma)
+    public function __construct(Database $database, Filesystem $filesystem)
     {
         $this->database = $database;
         $this->filesystem = $filesystem;
-        $this->karma = $karma;
     }
 
     /**
@@ -733,9 +730,6 @@ class Rest
     http://pear.php.net/dtd/rest.allmaintainers.xsd">' . "\n";
 
         foreach ($maintainers as $maintainer) {
-            if (!$this->karma->has($maintainer['handle'], 'pear.dev')) {
-                continue;
-            }
             $info .= ' <h xlink:href="/rest/m/' . $maintainer['handle'] . '">' .
                 $maintainer['handle'] . '</h>' . "\n";
         }

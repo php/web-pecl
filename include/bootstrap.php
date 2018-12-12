@@ -114,9 +114,7 @@ $filesystem = new Filesystem();
 $formatDate = new FormatDate();
 $imageSize = new ImageSize();
 
-$karma = new Karma($database);
-
-$rest = new Rest($database, $filesystem, $karma);
+$rest = new Rest($database, $filesystem);
 $rest->setDirectory($config->get('rest_dir'));
 $rest->setScheme($config->get('scheme'));
 $rest->setHost($config->get('host'));
@@ -133,6 +131,8 @@ $packageEntity->setRest($rest);
 
 // Inject package entity dependency to REST generator
 $rest->setPackage($packageEntity);
+
+$karma = new Karma($database);
 
 $auth = new Auth($database, $karma);
 $auth->setTmpDir($config->get('tmp_dir'));

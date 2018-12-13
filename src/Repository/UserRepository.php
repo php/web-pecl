@@ -71,11 +71,11 @@ class UserRepository
     }
 
     /**
-     * Get all users.
+     * Get all active users. Active users have registered table set to 1.
      */
     public function findAll()
     {
-        $sql = "SELECT * FROM users";
+        $sql = "SELECT * FROM users WHERE registered = 1 ORDER BY handle";
 
         $statement = $this->database->run($sql);
 

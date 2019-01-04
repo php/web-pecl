@@ -41,6 +41,7 @@ use App\Entity\Package;
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 use App\Repository\UserRepository;
+use App\Template\Engine;
 use App\Utils\Filesystem;
 use App\Utils\FormatDate;
 use App\Utils\ImageSize;
@@ -138,3 +139,7 @@ $karma = new Karma($database);
 // Set authentication server
 $auth = new Auth($database, $karma);
 $auth->setTmpDir($config->get('tmp_dir'));
+
+// Initialize template engine
+$template = new Engine(__DIR__.'/../templates');
+$template->register('getImageSize', [$imageSize, 'getSize']);

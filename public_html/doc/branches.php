@@ -18,19 +18,6 @@
   +----------------------------------------------------------------------+
 */
 
-use App\Template\Engine;
-
 require_once __DIR__.'/../../include/pear-prepend.php';
 
-$template = new Engine(__DIR__.'/../../templates');
-
-$template->register('getImageSize', [$imageSize, 'getSize']);
-
-echo $template->render('pages/doc/branches.php', [
-    'scheme' => $config->get('scheme'),
-    'host' => $config->get('host'),
-    'auth' => $auth,
-    'authUser' => $auth_user,
-    'lastUpdated' => $LAST_UPDATED,
-    'onloadInlineJavaScript' => isset($GLOBALS['ONLOAD']) ? $GLOBALS['ONLOAD'] : '',
-]);
+echo $template->render('pages/doc/branches.php');

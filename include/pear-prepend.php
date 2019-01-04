@@ -41,3 +41,12 @@ $auth_user = $auth->initUser();
 if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
     $auth->logout();
 }
+
+$template->assign([
+    'scheme' => $config->get('scheme'),
+    'host' => $config->get('host'),
+    'auth' => $auth,
+    'authUser' => $auth_user,
+    'lastUpdated' => $LAST_UPDATED,
+    'onloadInlineJavaScript' => isset($GLOBALS['ONLOAD']) ? $GLOBALS['ONLOAD'] : '',
+]);

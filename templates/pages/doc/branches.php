@@ -1,4 +1,4 @@
-<?php $this->extends('layout.php', ['title' => 'CVS Branches and how they relate to PECL']) ?>
+<?php $this->extend('layout.php', ['title' => 'CVS Branches and how they relate to PECL']) ?>
 
 <?php $this->start('content') ?>
 

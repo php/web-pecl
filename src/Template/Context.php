@@ -98,7 +98,7 @@ class Context
      *
      * @return void
      */
-    public function extends($parent, array $variables = [])
+    public function extend($parent, array $variables = [])
     {
         if (isset($this->tree[$this->current])) {
             throw new \Exception('Extending '.$parent.' is not possible.');
@@ -183,7 +183,7 @@ class Context
      *
      * @return mixed
      */
-    public function include($template)
+    public function insert($template)
     {
         return include $this->dir.'/'.$template;
     }

@@ -66,18 +66,18 @@
 <table class="middle" cellspacing="0" cellpadding="0">
     <tr>
         <td class="sidebar_left">
-            <?php $this->include('menus/main_menu.php') ?>
+            <?php $this->insert('menus/main_menu.php') ?>
 
-            <?php $this->include('menus/documentation_menu.php') ?>
+            <?php $this->insert('menus/documentation_menu.php') ?>
 
-            <?php $this->include('menus/downloads_menu.php') ?>
+            <?php $this->insert('menus/downloads_menu.php') ?>
 
             <?php if ($auth->isLoggedIn()): ?>
-                <?php $this->include('menus/developers_menu.php') ?>
+                <?php $this->insert('menus/developers_menu.php') ?>
             <?php endif ?>
 
             <?php if ($auth->isLoggedIn() && $authUser->isAdmin()): ?>
-                <?php $this->include('menus/admin_menu.php') ?>
+                <?php $this->insert('menus/admin_menu.php') ?>
             <?php endif ?>
         </td>
 

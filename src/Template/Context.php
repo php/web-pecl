@@ -128,7 +128,7 @@ class Context
      *
      * @return void
      */
-    public function start(string $name)
+    public function start($name)
     {
         $this->blocks[$name] = '';
 

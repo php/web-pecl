@@ -18,18 +18,19 @@
   +----------------------------------------------------------------------+
 */
 
-response_header("CVS Branches and how they relate to PECL");
-?>
+use App\Template\Engine;
 
-<p>
-If you have your PECL code in the PHP SVN repository, you need to be aware of
-our branching convention.  The PHP core code is branched like this:
-</p>
+require_once __DIR__.'/../../include/pear-prepend.php';
 
-<p>
-See the <a href="https://wiki.php.net/vcs/svnfaq">PHP SVN FAQ</a> for a detailed
-descriptions about how to use SVN and the concepts of branches and tags.
-</p>
+$template = new Engine(__DIR__.'/../../templates');
 
-<?php
-response_footer();
+$template->register('getImageSize', [$imageSize, 'getSize']);
+
+echo $template->render('pages/doc/branches.php', [
+    'scheme' => $config->get('scheme'),
+    'host' => $config->get('host'),
+    'auth' => $auth,
+    'authUser' => $auth_user,
+    'lastUpdated' => $LAST_UPDATED,
+    'onloadInlineJavaScript' => isset($GLOBALS['ONLOAD']) ? $GLOBALS['ONLOAD'] : '',
+]);

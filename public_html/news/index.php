@@ -20,32 +20,10 @@
 
 use App\Repository\ReleaseRepository;
 
+require_once __DIR__.'/../../include/pear-prepend.php';
+
 $releaseRepository = new ReleaseRepository($database);
 
-response_header("News");
-
-echo "<h1>PECL news</h1>";
-
-echo "<h2><a name=\"recent_releases\"></a>Recent Releases</h2>";
-echo "<ul>";
-
-$recent = $releaseRepository->findRecent();
-foreach ($recent as $release) {
-    $releasedate = $formatDate->utc($release['releasedate'], 'Y-m-d');
-    $desc = nl2br(htmlentities(substr($release['releasenotes'], 0, 400)));
-    if (strlen($release['releasenotes']) > 400) {
-        $desc .= ' <a href="/package/' . $release['name'] . '/' . $release['version'] . '">...</a>';
-    }
-
-    echo "<li><a href=\"/package/" . $release['name'] . "/\">";
-    echo "$release[name] $release[version] ($release[state])</a> <i>$releasedate</i><br/>$desc</li>";
-}
-
-echo "</ul>\n<a href=\"/feeds/\">Syndicate this</a>";
-
-echo "<h2><a name=\"2003\"></a>Year 2003</h2>";
-echo "<ul>";
-echo '<li><a href="https://news.php.net/article.php?group=php.pecl.dev&article=5">Call for PHP Extension authors</a> (September)</li>';
-echo "</ul>";
-
-response_footer();
+echo $template->render('pages/news/index.php', [
+    'recent' => $releaseRepository->findRecent(),
+]);

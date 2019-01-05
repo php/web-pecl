@@ -143,3 +143,7 @@ $auth->setTmpDir($config->get('tmp_dir'));
 // Initialize template engine
 $template = new Engine(__DIR__.'/../templates');
 $template->register('getImageSize', [$imageSize, 'getSize']);
+$template->register('formatDateToUtc', [$formatDate, 'utc']);
+$template->register('nl2br', function ($content) {
+    return str_replace('&NewLine;', '<br>', nl2br($content));
+});

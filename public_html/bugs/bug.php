@@ -25,6 +25,8 @@
  * removed one day in the future.
  */
 
+require_once __DIR__.'/../../include/pear-prepend.php';
+
 $bugs = [
   5 => '55880',
   11 => '55881',

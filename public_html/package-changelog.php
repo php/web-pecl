@@ -18,44 +18,21 @@
   +----------------------------------------------------------------------+
 */
 
-use App\BorderBox;
+require_once __DIR__.'/../include/pear-prepend.php';
 
 // expected url vars: pacid package
 if (isset($_GET['package']) && empty($_GET['pacid'])) {
-    $pacid = $_GET['package'];
+    $key = $_GET['package'];
 } else {
-    $pacid = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
+    $key = (isset($_GET['pacid'])) ? (int) $_GET['pacid'] : null;
 }
 
-$pkg = $packageEntity->info($pacid);
+$package = $packageEntity->info($key);
 
-if (empty($pkg['name'])) {
-    response_header("Error");
+if (empty($package['name'])) {
     PEAR::raiseError('Invalid package');
-    response_footer();
-    exit();
 }
 
-$name = $pkg['name'];
-response_header("$name Changelog");
-print '<p><a href="/'.$name.'">Return</a></p>';
-$bb = new BorderBox("Changelog for " . $name, "90%", "", 2, true);
-
-if (count($pkg['releases']) == 0) {
-    $bb->fullRow('There are no releases for ' . $name . ' yet.');
-} else {
-    $bb->headRow("Release", "What has changed?");
-
-    foreach ($pkg['releases'] as $version => $release) {
-        $link = '<a href="package-info.php?package='.$pkg['name'].'&amp;version='.urlencode($version).'">'.$version.'</a>';
-
-        if (!empty($_GET['release']) && $version == $_GET['release']) {
-            $bb->horizHeadRow($link, nl2br($release['releasenotes']));
-        } else {
-            $bb->plainRow($link, nl2br($release['releasenotes']));
-        }
-    }
-}
-$bb->end();
-print '<p><a href="/'.$name.'">Return</a></p>';
-response_footer();
+echo $template->render('pages/package_changelog.php', [
+    'package' => $package,
+]);

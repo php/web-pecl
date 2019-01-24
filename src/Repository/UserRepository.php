@@ -139,4 +139,48 @@ class UserRepository
 
         return $maintainers;
     }
+
+    /**
+     * Get all first letters of user handles.
+     */
+    public function getFirstLetters()
+    {
+        $sql = "SELECT SUBSTRING(handle, 1, 1)
+                FROM users
+                WHERE registered = 1
+                ORDER BY handle
+        ";
+
+        return $this->database->run($sql)->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    /**
+     * Get number of all registered users.
+     */
+    public function getUsersCount()
+    {
+        $sql = "SELECT COUNT(handle) AS count FROM users WHERE registered = 1";
+
+        return $this->database->run($sql)->fetch()['count'];
+    }
+
+    /**
+     * Find all users by given offset and limit.
+     */
+    public function findAllUsersByOffset($limit, $offset)
+    {
+        $sql = "SELECT handle, name, email, homepage, showemail
+                FROM users
+                WHERE registered = 1
+                ORDER BY handle
+                LIMIT :limit OFFSET :offset
+        ";
+
+        $arguments = [
+            ':limit' => $limit,
+            ':offset' => $offset
+        ];
+
+        return $this->database->run($sql, $arguments)->fetchAll();
+    }
 }

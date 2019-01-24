@@ -85,9 +85,9 @@
             <?= $this->block('content') ?>
         </td>
 
-        <?php if (isset($sidebar)): ?>
+        <?php if ('' !== $this->block('sidebar')): ?>
             <td class="sidebar_right">
-                <?= $sidebar ?>
+                <?= $this->block('sidebar') ?>
             </td>
         <?php endif ?>
 

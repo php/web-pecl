@@ -35,11 +35,7 @@ use App\Config;
 use App\Database;
 use App\Rest;
 use App\Entity\Package;
-use App\Repository\CategoryRepository;
-use App\Repository\PackageRepository;
-use App\Repository\UserRepository;
 use App\Template\Engine;
-use App\Utils\Filesystem;
 use Symfony\Component\Dotenv\Dotenv;
 
 // Dual autoloader until PSR-4 and Composer's autoloader are fully supported.
@@ -103,20 +99,12 @@ $container = require_once __DIR__.'/../config/container.php';
 // Database access with PDO enabled endpoints
 $database = $container->get(Database::class);
 
-$rest = new Rest($database, $container->get(Filesystem::class));
-$rest->setDirectory($config->get('rest_dir'));
-$rest->setScheme($config->get('scheme'));
-$rest->setHost($config->get('host'));
-$rest->setCategoryRepository($container->get(CategoryRepository::class));
-$rest->setPackageRepository($container->get(PackageRepository::class));
-$rest->setUserRepository($container->get(UserRepository::class));
+// Rest XML generator service
+$rest = $container->get(Rest::class);
 
 $packageEntity = new Package();
 $packageEntity->setDatabase($database);
 $packageEntity->setRest($rest);
-
-// Inject package entity dependency to REST generator
-$rest->setPackage($packageEntity);
 
 // Initialize template engine
 $template = $container->get(Engine::class);

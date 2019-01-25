@@ -23,6 +23,7 @@
  * Generate static REST files for PECL from existing data
  */
 
+use App\Rest;
 use App\Utils\Extractor;
 use App\Utils\Filesystem;
 use App\Repository\CategoryRepository;
@@ -33,6 +34,8 @@ use \PEAR_Config as PEAR_Config;
 use \PEAR_PackageFile as PEAR_PackageFile;
 
 require_once __DIR__.'/../include/bootstrap.php';
+
+$rest = $container->get(Rest::class);
 
 $container->get(Filesystem::class)->delete($config->get('rest_dir'));
 
@@ -69,14 +72,16 @@ $rest->saveAllPackages();
 $pearConfig = PEAR_Config::singleton();
 $pkg = new PEAR_PackageFile($pearConfig);
 
-foreach ($container->get(PackageRepository::class)->listAll() as $package => $info) {
+$packageRepository = $container->get(PackageRepository::class);
+
+foreach ($packageRepository->listAll() as $package => $info) {
     echo "  $package\n";
     $rest->savePackage($package);
     echo "     Maintainers...";
     $rest->savePackageMaintainer($package);
     echo "...done\n";
 
-    $releases = $packageEntity->info($package, 'releases');
+    $releases = $packageRepository->find($package, 'releases');
 
     if ($releases) {
         echo "     Processing All Releases...";

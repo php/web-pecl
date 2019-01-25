@@ -119,4 +119,17 @@ $container->set(App\Karma::class, function ($c) {
     return new App\Karma($c->get(App\Database::class));
 });
 
+$container->set(App\Rest::class, function ($c) {
+    $rest = new App\Rest($c->get(App\Database::class), $c->get(App\Utils\Filesystem::class));
+
+    $rest->setDirectory($c->get('rest_dir'));
+    $rest->setScheme($c->get('scheme'));
+    $rest->setHost($c->get('host'));
+    $rest->setCategoryRepository($c->get(App\Repository\CategoryRepository::class));
+    $rest->setPackageRepository($c->get(App\Repository\PackageRepository::class));
+    $rest->setUserRepository($c->get(App\Repository\UserRepository::class));
+
+    return $rest;
+});
+
 return $container;

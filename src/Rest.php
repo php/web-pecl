@@ -43,7 +43,6 @@ class Rest
     private $categoryRepository;
     private $packageRepository;
     private $userRepository;
-    private $package;
 
     /**
      * Class constructor with injected dependencies.
@@ -100,14 +99,6 @@ class Rest
     public function setUserRepository(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-    }
-
-    /**
-     * Set package entity.
-     */
-    public function setPackage(Package $package)
-    {
-        $this->package = $package;
     }
 
     /**
@@ -347,7 +338,7 @@ class Rest
     public function savePackage($package)
     {
         $extra = '/rest/';
-        $package = $this->package->info($package);
+        $package = $this->packageRepository->find($package);
 
         $pdir = $this->dir.'/p';
 
@@ -435,7 +426,7 @@ class Rest
     public function saveAllReleases($package)
     {
         $extra = '/rest/';
-        $pid = $this->package->info($package, 'id');
+        $pid = $this->packageRepository->find($package, 'id');
         $releases = $this->database->run('SELECT * FROM releases WHERE package = ? ORDER BY releasedate DESC', [$pid])->fetchAll();
         $rdir = $this->dir.'/r';
 
@@ -632,7 +623,7 @@ class Rest
      */
     public function savePackageMaintainer($package)
     {
-        $pid = $this->package->info($package, 'id');
+        $pid = $this->packageRepository->find($package, 'id');
         $maintainers = $this->userRepository->findMaintainersByPackageId($pid);
         $extra = '/rest/';
 

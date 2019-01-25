@@ -264,4 +264,134 @@ class PackageRepository
 
         return $this->database->run($sql, [$packageName])->fetchAll();
     }
+
+    /**
+     * Get package information. Implemented $field values:
+     * releases, notes, category, description, authors, categoryid, packageid,
+     * authors.
+     *
+     * @param  mixed   Name of the package or it's ID
+     * @param  string  Single field to fetch
+     * @return mixed
+     */
+    public function find($pkg, $field = null)
+    {
+        if (is_numeric($pkg)) {
+            $what = "id";
+        } else {
+            $what = "name";
+        }
+
+        $package_type = "p.package_type = 'pecl' AND ";
+
+        $pkg_sql = "SELECT p.id AS packageid, p.name AS name, ".
+             "p.package_type AS type, ".
+             "c.id AS categoryid, c.name AS category, ".
+             "p.stablerelease AS stable, p.license AS license, ".
+             "p.summary AS summary, p.homepage AS homepage, ".
+             "p.description AS description, p.cvs_link AS cvs_link, ".
+             "p.doc_link as doc_link, ".
+             "p.bug_link as bug_link, ".
+             "p.unmaintained as unmaintained, ".
+             "p.newpackagename as new_package, ".
+             "p.newchannel as new_channel".
+             " FROM packages p, categories c ".
+             "WHERE " . $package_type . " c.id = p.category AND p.{$what} = ?";
+
+        $rel_sql = "SELECT version, id, doneby, license, summary, ".
+             "description, releasedate, releasenotes, state " .
+             "FROM releases ".
+             "WHERE package = ? ".
+             "ORDER BY releasedate DESC";
+        $notes_sql = "SELECT id, nby, ntime, note FROM notes WHERE pid = ?";
+        $deps_sql = "SELECT type, relation, version, `name`, `release`, optional
+                     FROM deps
+                     WHERE `package` = ? ORDER BY `optional` ASC";
+
+        if ($field === null) {
+            $info = $this->database->run($pkg_sql, [$pkg])->fetch();
+
+            $info['releases'] = $this->database->run($rel_sql, [$info['packageid']])->fetchAll();
+            $results = [];
+            foreach ($info['releases'] as $item) {
+                $results[$item['version']] = $item;
+            }
+            $info['releases'] = $results;
+
+            $rels = count($info['releases']) ? array_keys($info['releases']) : [''];
+            $info['stable'] = $rels[0];
+            $info['notes'] = $this->database->run($notes_sql, [@$info['packageid']])->fetchAll();
+            $results = [];
+            foreach ($info['notes'] as $item) {
+                $results[$item['id']] = $item;
+            }
+            $info['notes'] = $results;
+
+            $deps = $this->database->run($deps_sql, [@$info['packageid']])->fetchAll();
+            foreach($deps as $dep) {
+                $rel_version = null;
+                foreach($info['releases'] as $version => $rel) {
+                    if ($rel['id'] == $dep['release']) {
+                        $rel_version = $version;
+                        break;
+                    }
+                }
+
+                if ($rel_version !== null) {
+                    unset($dep['release']);
+                    $info['releases'][$rel_version]['deps'][] = $dep;
+                }
+            }
+        } elseif (in_array($field, ['releases', 'notes'])) {
+            if ($what == "name") {
+                $pid = $this->database->run("SELECT p.id FROM packages p ".
+                                    "WHERE " . $package_type . " p.name = ?", [$pkg])->fetch()['id'];
+            } else {
+                $pid = $pkg;
+            }
+
+            if ($field == 'releases') {
+                $info = $this->database->run($rel_sql, [$pid])->fetchAll();
+                $results = [];
+                foreach ($info as $item) {
+                    $results[$item['version']] = $item;
+                }
+                $info = $results;
+            } elseif ($field == 'notes') {
+                $info = $this->database->run($notes_sql, [$pid])->fetchAll();
+                $results = [];
+                foreach ($info as $item) {
+                    $results[$item['id']] = $item;
+                }
+                $info = $results;
+            }
+        } elseif ($field === 'category') {
+            $sql = "SELECT c.name FROM categories c, packages p ".
+                    "WHERE c.id = p.category AND " . $package_type . " p.{$what} = ?";
+            $info = $this->database->run($sql, [$pkg])->fetch()['name'];
+        } elseif ($field === 'description') {
+            $sql = "SELECT description FROM packages p WHERE " . $package_type . " p.{$what} = ?";
+            $info = $this->database->run($sql, [$pkg])->fetch()['description'];
+        } elseif ($field === 'authors') {
+            $sql = "SELECT u.handle, u.name, u.email, u.showemail, m.active, m.role
+                    FROM maintains m, users u, packages p
+                    WHERE " . $package_type ." m.package = p.id
+                    AND p.$what = ?
+                    AND m.handle = u.handle";
+            $info = $this->database->run($sql, [$pkg])->fetchAll();
+        } else {
+            if ($field == 'categoryid') {
+                $dbfield = 'category';
+            } elseif ($field == 'packageid') {
+                $dbfield = 'id';
+            } else {
+                $dbfield = $field;
+            }
+
+            $sql = "SELECT $dbfield FROM packages p WHERE " . $package_type ." p.{$what} = ?";
+            $info = $this->database->run($sql, [$pkg])->fetch()[$dbfield];
+        }
+
+        return $info;
+    }
 }

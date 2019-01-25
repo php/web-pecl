@@ -30,4 +30,5 @@ return [
     'scheme' => $config->get('scheme'),
     'host' => $config->get('host'),
     'tmp_dir' => $config->get('tmp_dir'),
+    'rest_dir' => $config->get('rest_dir'),
 ];

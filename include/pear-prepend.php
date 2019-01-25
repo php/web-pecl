@@ -29,13 +29,12 @@
  * Application bootstrap and session initialization.
  */
 
+use App\Auth;
+
 require_once __DIR__.'/bootstrap.php';
 require_once __DIR__.'/pear-format-html.php';
 
-$tmp = filectime($_SERVER['SCRIPT_FILENAME']);
-$LAST_UPDATED = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';
-
-$auth->initSession();
+$auth = $container->get(Auth::class);
 $auth_user = $auth->initUser();
 
 if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
@@ -43,10 +42,5 @@ if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
 }
 
 $template->assign([
-    'scheme' => $config->get('scheme'),
-    'host' => $config->get('host'),
-    'auth' => $auth,
     'authUser' => $auth_user,
-    'lastUpdated' => $LAST_UPDATED,
-    'onloadInlineJavaScript' => isset($GLOBALS['ONLOAD']) ? $GLOBALS['ONLOAD'] : '',
 ]);

@@ -28,9 +28,7 @@ if (empty($user)) {
     $user = basename($_SERVER['PATH_INFO']);
 }
 
-$userRepository = new UserRepository($database);
-
-$wishlistUrl = $userRepository->getWishlistByHandle($user);
+$wishlistUrl = $container->get(UserRepository::class)->getWishlistByHandle($user);
 
 if (empty($wishlistUrl)) {
     header("HTTP/1.0 404 Not found");

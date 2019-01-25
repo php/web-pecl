@@ -24,7 +24,7 @@ use App\User;
 
 require_once __DIR__.'/../../include/pear-prepend.php';
 
-$releaseRepository = new ReleaseRepository($database);
+$releaseRepository = $container->get(ReleaseRepository::class);
 $category = new Category();
 $category->setDatabase($database);
 $category->setRest($rest);
@@ -105,14 +105,14 @@ if (!is_array($items) || 0 === count($items)) {
 // Override empty links
 foreach ($items as $key => $item) {
     if (!isset($item['link'])) {
-        $items[$key]['link'] = $config->get('scheme').'://'.$config->get('host').'/package-changelog.php?package='.$item['name'].'&amp;release='.$item['version'];
+        $items[$key]['link'] = $container->get('scheme').'://'.$container->get('host').'/package-changelog.php?package='.$item['name'].'&amp;release='.$item['version'];
     }
 }
 
 header('Content-Type: text/xml; charset=utf-8');
 
 echo $template->render('pages/feeds/feeds.php', [
-    'url'                => $config->get('scheme').'://'.$config->get('host'),
+    'url'                => $container->get('scheme').'://'.$container->get('host'),
     'items'              => $items,
     'channelTitle'       => $channelTitle,
     'channelDescription' => $channelDescription,

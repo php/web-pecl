@@ -27,7 +27,7 @@ $letter = isset($_GET['letter']) ? strip_tags($_GET['letter']) : null;
 
 $pageSize = 20;
 
-$userRepository = new UserRepository($database);
+$userRepository = $container->get(UserRepository::class);
 $allFirstLetters = $userRepository->getFirstLetters();
 
 $firstLetterOffsets = [];

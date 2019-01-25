@@ -24,6 +24,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 use App\Repository\PackageStatsRepository;
 use App\Repository\ReleaseRepository;
+use App\Utils\FormatDate;
 
 $packageRepository = new PackageRepository($database);
 $packageStatsRepository = new PackageStatsRepository($database);
@@ -175,10 +176,10 @@ if (isset($_GET['pid']) && (int)$_GET['pid']) {
             echo '  <td>' . number_format($value['dl_number'], 0, '.', ',');
             echo "  </td>\n";
             echo '  <td>';
-            echo $formatDate->utc($value['releasedate'], 'Y-m-d');
+            echo $container->get(FormatDate::class)->utc($value['releasedate'], 'Y-m-d');
             echo "  </td>\n";
             echo '  <td>';
-            echo $formatDate->utc($value['last_dl']);
+            echo $container->get(FormatDate::class)->utc($value['last_dl']);
             echo "  </td>\n";
             echo " </tr>\n";
         }

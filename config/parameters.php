@@ -29,4 +29,5 @@ return [
     'db_password' => $config->get('db_password'),
     'scheme' => $config->get('scheme'),
     'host' => $config->get('host'),
+    'tmp_dir' => $config->get('tmp_dir'),
 ];

@@ -30,21 +30,16 @@
  * configuration is initialized and database connection is established.
  */
 
-use App\Auth;
 use App\Autoloader;
 use App\Config;
 use App\Database;
-use App\Karma;
 use App\Rest;
-use App\Database\Adapter;
 use App\Entity\Package;
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 use App\Repository\UserRepository;
 use App\Template\Engine;
 use App\Utils\Filesystem;
-use App\Utils\FormatDate;
-use App\Utils\ImageSize;
 use Symfony\Component\Dotenv\Dotenv;
 
 // Dual autoloader until PSR-4 and Composer's autoloader are fully supported.
@@ -102,29 +97,19 @@ require_once 'PEAR/PackageFile.php';
 // Set application default time zone to UTC for all dates.
 date_default_timezone_set('UTC');
 
+// Initialize dependency injection container
+$container = require_once __DIR__.'/../config/container.php';
+
 // Database access with PDO enabled endpoints
-$pdoDsn = 'mysql:host='.$config->get('db_host').';dbname='.$config->get('db_name').';charset=utf8';
-$databaseAdapter = new Adapter();
-$databaseAdapter->setDsn($pdoDsn);
-$databaseAdapter->setUsername($config->get('db_username'));
-$databaseAdapter->setPassword($config->get('db_password'));
-$database = new Database($databaseAdapter->getInstance());
+$database = $container->get(Database::class);
 
-// Initialization of some services
-$filesystem = new Filesystem();
-$formatDate = new FormatDate();
-$imageSize = new ImageSize();
-
-$rest = new Rest($database, $filesystem);
+$rest = new Rest($database, $container->get(Filesystem::class));
 $rest->setDirectory($config->get('rest_dir'));
 $rest->setScheme($config->get('scheme'));
 $rest->setHost($config->get('host'));
-$categoryRepository = new CategoryRepository($database);
-$rest->setCategoryRepository($categoryRepository);
-$packageRepository = new PackageRepository($database);
-$rest->setPackageRepository($packageRepository);
-$userRepository = new UserRepository($database);
-$rest->setUserRepository($userRepository);
+$rest->setCategoryRepository($container->get(CategoryRepository::class));
+$rest->setPackageRepository($container->get(PackageRepository::class));
+$rest->setUserRepository($container->get(UserRepository::class));
 
 $packageEntity = new Package();
 $packageEntity->setDatabase($database);
@@ -133,17 +118,5 @@ $packageEntity->setRest($rest);
 // Inject package entity dependency to REST generator
 $rest->setPackage($packageEntity);
 
-// Set karma service
-$karma = new Karma($database);
-
-// Set authentication server
-$auth = new Auth($database, $karma);
-$auth->setTmpDir($config->get('tmp_dir'));
-
 // Initialize template engine
-$template = new Engine(__DIR__.'/../templates');
-$template->register('getImageSize', [$imageSize, 'getSize']);
-$template->register('formatDateToUtc', [$formatDate, 'utc']);
-$template->register('nl2br', function ($content) {
-    return str_replace('&NewLine;', '<br>', nl2br($content));
-});
+$template = $container->get(Engine::class);

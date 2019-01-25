@@ -36,8 +36,7 @@ if (empty($handle)) {
     localRedirect('/accounts.php');
 }
 
-$userRepository = new UserRepository($database);
-$user = $userRepository->findActiveByHandle($handle);
+$user = $container->get(UserRepository::class)->findActiveByHandle($handle);
 
 if (!$user) {
     header('HTTP/1.0 404 Not Found');
@@ -49,13 +48,9 @@ if (!empty($user['homepage']) && empty(parse_url($user['homepage'], PHP_URL_SCHE
     $user['homepage'] = 'http://'.$user['homepage'];
 }
 
-$cvsAclRepository = new CvsAclRepository($database);
-$packageRepository = new PackageRepository($database);
-$noteRepository = new NoteRepository($database);
-
 echo $template->render('pages/account_info.php', [
     'user'     => $user,
-    'access'   => $cvsAclRepository->getPathByUsername($handle),
-    'packages' => $packageRepository->findPackagesMaintainedByHandle($handle),
-    'notes'    => $noteRepository->getNotesByUser($handle),
+    'access'   => $container->get(CvsAclRepository::class)->getPathByUsername($handle),
+    'packages' => $container->get(PackageRepository::class)->findPackagesMaintainedByHandle($handle),
+    'notes'    => $container->get(NoteRepository::class)->getNotesByUser($handle),
 ]);

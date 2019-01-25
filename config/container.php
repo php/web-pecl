@@ -56,12 +56,18 @@ $container->set(App\Utils\ImageSize::class, function ($c) {
     return new App\Utils\ImageSize();
 });
 
-$container->set(App\Auth::class, function ($c) use ($auth) {
+$container->set(App\Auth::class, function ($c) {
+    $auth = new App\Auth($c->get(App\Database::class), $c->get(App\Karma::class));
+    $auth->setTmpDir($c->get('tmp_dir'));
+    $auth->initSession();
+
     return $auth;
 });
 
-// Initialize template engine
-$container->set(App\Template\Engine::class, function ($c) use ($auth_user) {
+$tmp = filectime($_SERVER['SCRIPT_FILENAME']);
+$container->set('last_updated', date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC');
+
+$container->set(App\Template\Engine::class, function ($c) {
     $template = new App\Template\Engine(__DIR__.'/../templates');
 
     $template->register('getImageSize', [$c->get(App\Utils\ImageSize::class), 'getSize']);
@@ -70,15 +76,11 @@ $container->set(App\Template\Engine::class, function ($c) use ($auth_user) {
         return str_replace('&NewLine;', '<br>', nl2br($content));
     });
 
-    $tmp = filectime($_SERVER['SCRIPT_FILENAME']);
-    $lastUpdated = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';
-
     $template->assign([
         'scheme' => $c->get('scheme'),
         'host' => $c->get('host'),
         'auth' => $c->get(App\Auth::class),
-        'authUser' => $auth_user,
-        'lastUpdated' => $lastUpdated,
+        'lastUpdated' => $c->get('last_updated'),
         'onloadInlineJavaScript' => isset($GLOBALS['ONLOAD']) ? $GLOBALS['ONLOAD'] : '',
     ]);
 

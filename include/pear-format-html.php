@@ -27,6 +27,7 @@
 */
 
 use App\BorderBox;
+use App\Utils\ImageSize;
 use \PEAR as PEAR;
 
 // Send charset
@@ -67,7 +68,7 @@ $GLOBALS['_style'] = '';
 
 function response_header($title = 'The PHP Extension Community Library', $style = false)
 {
-    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles, $auth_user, $imageSize, $auth;
+    global $_style, $_header_done, $SIDEBAR_DATA, $extra_styles, $auth_user, $container, $auth;
 
     if ($_header_done) {
         return;
@@ -127,7 +128,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
 <table class="head" cellspacing="0" cellpadding="0" width="100%">
  <tr>
   <td class="head-logo">
-    <a href="/"><img src="/img/peclsmall.gif" alt="PECL :: The PHP Extension Community Library" <?= $imageSize->getSize('/img/peclsmall.gif'); ?> style="margin: 5px;"></a><br/>
+    <a href="/"><img src="/img/peclsmall.gif" alt="PECL :: The PHP Extension Community Library" <?= $container->get(ImageSize::class)->getSize('/img/peclsmall.gif'); ?> style="margin: 5px;"></a><br/>
   </td>
 
   <td class="head-menu">
@@ -205,7 +206,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
 
 function response_footer($style = false)
 {
-    global $LAST_UPDATED, $SCRIPT_NAME, $RSIDEBAR_DATA;
+    global $container, $SCRIPT_NAME, $RSIDEBAR_DATA;
 
     static $called;
     if ($called) {
@@ -264,7 +265,7 @@ function response_footer($style = false)
   </td>
   <td class="foot-source">
    <small>
-    Last updated: <?php echo $LAST_UPDATED; ?><br />
+    Last updated: <?php echo $container->get('last_updated'); ?><br />
     Bandwidth and hardware provided by: <a href="https://www.pair.com/">pair Networks</a>
    </small>
   </td>

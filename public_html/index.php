@@ -22,8 +22,6 @@ use App\Repository\ReleaseRepository;
 
 require_once __DIR__.'/../include/pear-prepend.php';
 
-$releaseRepository = new ReleaseRepository($database);
-
 echo $template->render('pages/index.php', [
-    'recent' => $releaseRepository->findRecent(),
+    'recent' => $container->get(ReleaseRepository::class)->findRecent(),
 ]);

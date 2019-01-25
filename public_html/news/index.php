@@ -19,12 +19,9 @@
 */
 
 use App\Repository\ReleaseRepository;
-use App\Template\Engine;
 
 require_once __DIR__.'/../../include/pear-prepend.php';
 
-$container = require_once __DIR__.'/../../config/container.php';
-
-echo $container->get(Engine::class)->render('pages/news/index.php', [
+echo $template->render('pages/news/index.php', [
     'recent' => $container->get(ReleaseRepository::class)->findRecent(),
 ]);

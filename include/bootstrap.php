@@ -102,9 +102,7 @@ $database = $container->get(Database::class);
 // Rest XML generator service
 $rest = $container->get(Rest::class);
 
-$packageEntity = new Package();
-$packageEntity->setDatabase($database);
-$packageEntity->setRest($rest);
+$packageEntity = $container->get(Package::class);
 
 // Initialize template engine
 $template = $container->get(Engine::class);

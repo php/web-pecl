@@ -28,12 +28,7 @@ use \PEAR_Config as PEAR_Config;
 
 $auth->secure();
 
-$release = new Release();
-$release->setDatabase($database);
-$release->setAuthUser($auth_user);
-$release->setRest($rest);
-$release->setPackagesDir($config->get('packages_dir'));
-$release->setPackage($packageEntity);
+$release = $container->get(Release::class);
 
 $maintainer = new Maintainer();
 $maintainer->setDatabase($database);

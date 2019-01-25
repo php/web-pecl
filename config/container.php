@@ -64,8 +64,15 @@ $container->set(App\Auth::class, function ($c) {
     return $auth;
 });
 
-$tmp = filectime($_SERVER['SCRIPT_FILENAME']);
-$container->set('last_updated', date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC');
+$container->set('auth_user', function ($c) {
+    return $c->get(App\Auth::class)->initUser();
+});
+
+$container->set('last_updated', function ($c) {
+    $tmp = filectime($_SERVER['SCRIPT_FILENAME']);
+
+    return date('D M d H:i:s Y', $tmp - date('Z', $tmp)).' UTC';
+});
 
 $container->set(App\Template\Engine::class, function ($c) {
     $template = new App\Template\Engine(__DIR__.'/../templates');
@@ -82,6 +89,7 @@ $container->set(App\Template\Engine::class, function ($c) {
         'auth' => $c->get(App\Auth::class),
         'lastUpdated' => $c->get('last_updated'),
         'onloadInlineJavaScript' => isset($GLOBALS['ONLOAD']) ? $GLOBALS['ONLOAD'] : '',
+        'authUser' => $c->get('auth_user'),
     ]);
 
     return $template;
@@ -142,6 +150,25 @@ $container->set(App\Entity\Category::class, function ($c) {
     $category->setRest($c->get(App\Rest::class));
 
     return $category;
+});
+
+$container->set(App\Entity\Package::class, function ($c) {
+    $packageEntity = new App\Entity\Package();
+    $packageEntity->setDatabase($c->get(App\Database::class));
+    $packageEntity->setRest($c->get(App\Rest::class));
+
+    return $packageEntity;
+});
+
+$container->set(App\Release::class, function ($c) {
+    $release = new App\Release();
+    $release->setDatabase($c->get(App\Database::class));
+    $release->setAuthUser($c->get('auth_user'));
+    $release->setRest($c->get(App\Rest::class));
+    $release->setPackagesDir($c->get('packages_dir'));
+    $release->setPackage($c->get(App\Entity\Package::class));
+
+    return $release;
 });
 
 return $container;

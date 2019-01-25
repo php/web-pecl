@@ -100,6 +100,11 @@ class Container implements ContainerInterface
     {
         $entry = &$this->entries[$id];
 
+        // Entry is not a class but is wrapped in callable.
+        if (!class_exists($id) && is_callable($entry)) {
+            return $entry($this);
+        }
+
         // Entry is a configuration parameter
         if (!class_exists($id)) {
             return $entry;

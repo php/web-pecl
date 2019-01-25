@@ -35,12 +35,8 @@ require_once __DIR__.'/bootstrap.php';
 require_once __DIR__.'/pear-format-html.php';
 
 $auth = $container->get(Auth::class);
-$auth_user = $auth->initUser();
+$auth_user = $container->get('auth_user');
 
 if (!empty($_GET['logout']) && $_GET['logout'] === '1') {
     $auth->logout();
 }
-
-$template->assign([
-    'authUser' => $auth_user,
-]);

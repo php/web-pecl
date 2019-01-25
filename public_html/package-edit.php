@@ -26,12 +26,7 @@ use App\BorderBox;
 use App\Release;
 use App\User;
 
-$release = new Release();
-$release->setDatabase($database);
-$release->setAuthUser($auth_user);
-$release->setRest($rest);
-$release->setPackagesDir($config->get('packages_dir'));
-$release->setPackage($packageEntity);
+$release = $container->get(Release::class);
 
 $auth->secure();
 

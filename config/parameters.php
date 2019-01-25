@@ -31,4 +31,5 @@ return [
     'host' => $config->get('host'),
     'tmp_dir' => $config->get('tmp_dir'),
     'rest_dir' => $config->get('rest_dir'),
+    'packages_dir' => $config->get('packages_dir'),
 ];

@@ -43,12 +43,7 @@
 use App\Release;
 use \PEAR as PEAR;
 
-$release = new Release();
-$release->setDatabase($database);
-$release->setAuthUser($auth_user);
-$release->setRest($rest);
-$release->setPackagesDir($config->get('packages_dir'));
-$release->setPackage($packageEntity);
+$release = $container->get(Release::class);
 
 function error_404($obj) {
     header('HTTP/1.0 404 Not Found');

@@ -1,0 +1,120 @@
+<?php
+
+/*
+  +----------------------------------------------------------------------+
+  | The PECL website                                                     |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 1999-2019 The PHP Group                                |
+  +----------------------------------------------------------------------+
+  | This source file is subject to version 3.01 of the PHP license,      |
+  | that is bundled with this package in the file LICENSE, and is        |
+  | available through the world-wide-web at the following url:           |
+  | https://php.net/license/3_01.txt                                     |
+  | If you did not receive a copy of the PHP license and are unable to   |
+  | obtain it through the world-wide-web, please send a note to          |
+  | license@php.net so we can mail you a copy immediately.               |
+  +----------------------------------------------------------------------+
+  | Authors: Peter Kokot <petk@php.net>                                  |
+  +----------------------------------------------------------------------+
+*/
+
+/**
+ * Container initialization. Each service is created using Container::set()
+ * method and a callable argument for convenience of future customizations or
+ * adjustments beyond the scope of this container. See documentation for more
+ * information.
+ */
+
+use App\Container\Container;
+
+$container = new Container(include __DIR__.'/parameters.php');
+
+$container->set(App\Database\Adapter::class, function ($c) {
+    $pdoDsn = 'mysql:host='.$c->get('db_host').';dbname='.$c->get('db_name').';charset=utf8';
+
+    $databaseAdapter = new App\Database\Adapter();
+    $databaseAdapter->setDsn($pdoDsn);
+    $databaseAdapter->setUsername($c->get('db_username'));
+    $databaseAdapter->setPassword($c->get('db_password'));
+
+    return $databaseAdapter;
+});
+
+$container->set(App\Database::class, function ($c) {
+    return new App\Database($c->get(App\Database\Adapter::class)->getInstance());
+});
+
+$container->set(App\Utils\Filesystem::class, function ($c) {
+    return new App\Utils\Filesystem();
+});
+
+$container->set(App\Utils\FormatDate::class, function ($c) {
+    return new App\Utils\FormatDate();
+});
+
+$container->set(App\Utils\ImageSize::class, function ($c) {
+    return new App\Utils\ImageSize();
+});
+
+$container->set(App\Auth::class, function ($c) use ($auth) {
+    return $auth;
+});
+
+// Initialize template engine
+$container->set(App\Template\Engine::class, function ($c) use ($auth_user) {
+    $template = new App\Template\Engine(__DIR__.'/../templates');
+
+    $template->register('getImageSize', [$c->get(App\Utils\ImageSize::class), 'getSize']);
+    $template->register('formatDateToUtc', [$c->get(App\Utils\FormatDate::class), 'utc']);
+    $template->register('nl2br', function ($content) {
+        return str_replace('&NewLine;', '<br>', nl2br($content));
+    });
+
+    $tmp = filectime($_SERVER['SCRIPT_FILENAME']);
+    $lastUpdated = date('D M d H:i:s Y', $tmp - date('Z', $tmp)) . ' UTC';
+
+    $template->assign([
+        'scheme' => $c->get('scheme'),
+        'host' => $c->get('host'),
+        'auth' => $c->get(App\Auth::class),
+        'authUser' => $auth_user,
+        'lastUpdated' => $lastUpdated,
+        'onloadInlineJavaScript' => isset($GLOBALS['ONLOAD']) ? $GLOBALS['ONLOAD'] : '',
+    ]);
+
+    return $template;
+});
+
+$container->set(App\Repository\AgregatedPackageStatsRepository::class, function ($c) {
+    return new App\Repository\AgregatedPackageStatsRepository($c->get(App\Database::class));
+});
+
+$container->set(App\Repository\CategoryRepository::class, function ($c) {
+    return new App\Repository\CategoryRepository($c->get(App\Database::class));
+});
+
+$container->set(App\Repository\CvsAclRepository::class, function ($c) {
+    return new App\Repository\CvsAclRepository($c->get(App\Database::class));
+});
+
+$container->set(App\Repository\NoteRepository::class, function ($c) {
+    return new App\Repository\NoteRepository($c->get(App\Database::class));
+});
+
+$container->set(App\Repository\PackageRepository::class, function ($c) {
+    return new App\Repository\PackageRepository($c->get(App\Database::class));
+});
+
+$container->set(App\Repository\ReleaseRepository::class, function ($c) {
+    return new App\Repository\ReleaseRepository($c->get(App\Database::class));
+});
+
+$container->set(App\Repository\UserRepository::class, function ($c) {
+    return new App\Repository\UserRepository($c->get(App\Database::class));
+});
+
+$container->set(App\Karma::class, function ($c) {
+    return new App\Karma($c->get(App\Database::class));
+});
+
+return $container;

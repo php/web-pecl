@@ -14,17 +14,19 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Authors: Martin Jansen <mj@php.net>                                  |
+  | Authors: Peter Kokot <petk@php.net>                                  |
   +----------------------------------------------------------------------+
 */
 
-use App\Repository\ReleaseRepository;
-use App\Template\Engine;
+/**
+ * Application configuration parameters.
+ */
 
-require_once __DIR__.'/../../include/pear-prepend.php';
-
-$container = require_once __DIR__.'/../../config/container.php';
-
-echo $container->get(Engine::class)->render('pages/news/index.php', [
-    'recent' => $container->get(ReleaseRepository::class)->findRecent(),
-]);
+return [
+    'db_host' => $config->get('db_host'),
+    'db_name' => $config->get('db_name'),
+    'db_username' => $config->get('db_username'),
+    'db_password' => $config->get('db_password'),
+    'scheme' => $config->get('scheme'),
+    'host' => $config->get('host'),
+];

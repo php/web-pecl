@@ -14,17 +14,39 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Authors: Martin Jansen <mj@php.net>                                  |
+  | Authors: Peter Kokot <petk@php.net>                                  |
   +----------------------------------------------------------------------+
 */
 
-use App\Repository\ReleaseRepository;
-use App\Template\Engine;
+namespace App\Container;
 
-require_once __DIR__.'/../../include/pear-prepend.php';
+/**
+ * Describes the interface of a container that exposes methods to read its entries.
+ */
+interface ContainerInterface
+{
+    /**
+     * Finds an entry of the container by its identifier and returns it.
+     *
+     * @param string $id identifier of the entry to look for
+     *
+     * @throws NotFoundExceptionInterface  no entry was found for **this** identifier
+     * @throws ContainerExceptionInterface error while retrieving the entry
+     *
+     * @return mixed entry
+     */
+    public function get($id);
 
-$container = require_once __DIR__.'/../../config/container.php';
-
-echo $container->get(Engine::class)->render('pages/news/index.php', [
-    'recent' => $container->get(ReleaseRepository::class)->findRecent(),
-]);
+    /**
+     * Returns true if the container can return an entry for the given identifier.
+     * Returns false otherwise.
+     *
+     * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
+     * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
+     *
+     * @param string $id identifier of the entry to look for
+     *
+     * @return bool
+     */
+    public function has($id);
+}

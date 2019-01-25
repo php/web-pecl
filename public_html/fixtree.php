@@ -26,7 +26,4 @@ header('Content-type: text/plain; charset=utf-8');
 
 print htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES)."\n\n";
 
-$category = new Category();
-$category->setDatabase($database);
-$category->setRest($rest);
-$category->renumberVisitations(true);
+$container->get(Category::class)->renumberVisitations(true);

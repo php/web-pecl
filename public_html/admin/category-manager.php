@@ -32,9 +32,7 @@ use App\TreeMenu\DynamicHtml;
 
 $auth->secure(true);
 
-$category = new Category();
-$category->setDatabase($database);
-$category->setRest($rest);
+$category = $container->get(Category::class);
 
 /**
  * Function to recurse thru the tree adding nodes to treemenu

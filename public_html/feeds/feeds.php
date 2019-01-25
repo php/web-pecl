@@ -25,9 +25,6 @@ use App\User;
 require_once __DIR__.'/../../include/pear-prepend.php';
 
 $releaseRepository = $container->get(ReleaseRepository::class);
-$category = new Category();
-$category->setDatabase($database);
-$category->setRest($rest);
 
 function rssBailout() {
     header('HTTP/1.0 404 Not Found');
@@ -84,7 +81,7 @@ switch ($type) {
     case 'cat':
         $categoryName = $argument;
 
-        if (false === $category->isValid($categoryName)) {
+        if (false === $container->get(Category::class)->isValid($categoryName)) {
             rssBailout();
         }
 

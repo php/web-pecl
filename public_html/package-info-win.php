@@ -26,7 +26,7 @@ use App\Repository\PackageRepository;
 use App\Repository\UserRepository;
 
 $licenser = new Licenser();
-$packageDll = new PackageDll($config->get('tmp_dir'));
+$packageDll = $container->get(PackageDll::class);
 
 $package = filter_input(INPUT_GET, 'package', FILTER_SANITIZE_STRING);
 $version = filter_input(INPUT_GET, 'version', FILTER_SANITIZE_STRING);

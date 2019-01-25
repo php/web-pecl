@@ -23,7 +23,7 @@ use App\PackageDll;
 
 require_once __DIR__.'/../../include/bootstrap.php';
 
-$packageDll = new PackageDll($config->get('tmp_dir'));
+$packageDll = $container->get(PackageDll::class);
 
 $sql = "SELECT packages.name, releases.version, releases.releasedate
         FROM packages, releases

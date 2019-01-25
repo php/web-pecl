@@ -132,4 +132,8 @@ $container->set(App\Rest::class, function ($c) {
     return $rest;
 });
 
+$container->set(App\PackageDll::class, function ($c) {
+    return new App\PackageDll($c->get('tmp_dir'));
+});
+
 return $container;

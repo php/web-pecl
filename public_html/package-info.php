@@ -22,6 +22,7 @@
 use App\BorderBox;
 use App\Utils\Licenser;
 use App\PackageDll;
+use App\Repository\PackageRepository;
 use App\Repository\UserRepository;
 
 $licenser = new Licenser();
@@ -406,7 +407,7 @@ if (empty($downloads) && !$relid) {
 $bb->end();
 
 // Dependants
-$dependants = $packageEntity->getDependants($name);
+$dependants = $container->get(PackageRepository::class)->findDependants($name);
 
 if (count($dependants) > 0) {
 

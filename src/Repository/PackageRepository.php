@@ -248,4 +248,20 @@ class PackageRepository
 
         return $this->database->run($sql, [$packageName])->fetch();
     }
+
+    /**
+     * Get packages that depend on the given package
+     *
+     * @param  string Name of the package
+     * @return array  List of package that depend on $package
+     */
+    public function findDependants($packageName)
+    {
+        $sql = "SELECT p.name AS p_name, d.*
+                FROM deps d, packages p
+                WHERE d.package = p.id AND d.type = 'pkg' AND d.name = ?
+                GROUP BY d.package";
+
+        return $this->database->run($sql, [$packageName])->fetchAll();
+    }
 }

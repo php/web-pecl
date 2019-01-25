@@ -309,21 +309,6 @@ class Package
     }
 
     /**
-     * Get packages that depend on the given package
-     *
-     * @param  string Name of the package
-     * @return array  List of package that depend on $package
-     */
-    public function getDependants($package) {
-        $sql = "SELECT p.name AS p_name, d.*
-                FROM deps d, packages p
-                WHERE d.package = p.id AND d.type = 'pkg' AND d.name = ?
-                GROUP BY d.package";
-
-        return $this->database->run($sql, [$package])->fetchAll();
-    }
-
-    /**
      * Determines if the given package is valid
      *
      * @param  string Name of the package

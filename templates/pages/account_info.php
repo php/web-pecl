@@ -26,7 +26,7 @@
                             </td>
                         </tr>
 
-                        <?php if (1 === $user['showemail']): ?>
+                        <?php if (1 === (int) $user['showemail']): ?>
                         <tr>
                             <th valign="top" bgcolor="#cccccc">Email:</th>
                             <td valign="top" bgcolor="#e8e8e8">

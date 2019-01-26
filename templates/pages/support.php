@@ -40,7 +40,7 @@ them have archives available, and they are also available as newsgroups on our
             <td><?= $this->e($list['moderated']) ?></td>
             <td>
                 <?php if($list['archive']): ?>
-                    <a href="http://marc.info/?l=<?= $this->noHtml($list['handle']) ?>">yes</a>
+                    <a href="https://marc.info/?l=<?= $this->noHtml($list['handle']) ?>">yes</a>
                 <?php else: ?>
                     n/a
                 <?php endif ?>

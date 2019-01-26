@@ -18,44 +18,39 @@
   +----------------------------------------------------------------------+
 */
 
-if (!isset($_POST['search_in'])) {
-    response_header("Search");
-    echo "<h2>Search</h2>\n";
-    echo "<font color=\"#990000\"><b>Please use the search system via the search form above.</b></font>\n";
-    response_footer();
-    exit();
-}
+require_once __DIR__.'/../include/pear-prepend.php';
 
-switch ($_POST['search_in']) {
+$query = isset($_POST['search_string']) ? $_POST['search_string'] : '';
+$type = isset($_POST['search_in']) ? $_POST['search_in'] : '';
 
-    case "packages":
-        header('Location: /package-search.php?pkg_name='.urlencode($_POST['search_string']).'&bool=AND&submit=Search');
+switch ($type) {
+    case 'packages':
+        header('Location: /package-search.php?pkg_name='.urlencode($query));
         exit;
-        break;
+    break;
 
     case 'developers':
-        // XXX: Enable searching for names instead of handles
-        localRedirect('/user/' . urlencode($_POST['search_string']));
-        break;
+        // TODO: Enable searching for names instead of handles
+        header('Location: /user/'.urlencode($query));
+        exit;
+    break;
 
-    case "pecl-dev" :
-    case "pecl-cvs" :
-        // We forward the query to the mailing list archive at marc.thaimsgroup.com
-        $location = "http://marc.info/";
-        $query = "l=".$_POST['search_in']."&w=2&r=1&q=b&s=".urlencode($_POST['search_string']);
-        header("Location: ".$location."?".$query);
-
-        break;
+    case 'pecl-dev':
+    case 'pecl-cvs':
+        // We forward the query to the mailing list archives at marc.info
+        header('Location: https://marc.info/?l='.$type.'&w=2&r=1&q=b&s='.urlencode($query));
+        exit;
+    break;
 
     case 'site':
-        header('Location: http://google.com/search?as_sitesearch=pecl.php.net'
-               . '&as_q=' . urlencode($_POST['search_string']));
-        break;
+        header('Location: https://google.com/search?q=site%3Apecl.php.net+'.urlencode($query));
+        exit;
+    break;
 
-    default :
-        response_header("Search");
-        echo "<h2>Search</h2>\n";
-        echo "<font color=\"#990000\"><b>Invalid search target.</b></font>\n";
-        response_footer();
-        break;
+    default:
+        echo $template->render('pages/search.php', [
+            'query' => $query,
+        ]);
+        exit;
+    break;
 }

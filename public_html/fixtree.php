@@ -18,12 +18,16 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Auth;
 use App\Entity\Category;
 
-$auth->secure(true);
+require_once __DIR__.'/../include/pear-prepend.php';
 
-header('Content-type: text/plain; charset=utf-8');
-
-print htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES)."\n\n";
+$container->get(Auth::class)->secure(true);
 
 $container->get(Category::class)->renumberVisitations(true);
+
+echo $template->render('content.php', [
+    'title' => 'Renumber categories',
+    'content' => 'Categories have been renumbered.',
+]);

@@ -171,4 +171,8 @@ $container->set(App\Release::class, function ($c) {
     return $release;
 });
 
+$container->set(App\Utils\DependenciesFixer::class, function ($c) {
+    return new App\Utils\DependenciesFixer($c->get(App\Database::class));
+});
+
 return $container;

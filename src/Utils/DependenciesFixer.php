@@ -35,23 +35,21 @@ class DependenciesFixer
 
     public function fix()
     {
+        $output = '';
+
         $releases = $this->database->run("SELECT r.id, concat_ws('-', p.name, r.version) FROM packages p, releases r WHERE r.package = p.id")->fetchAll(\PDO::FETCH_KEY_PAIR);
 
-        print "<h2>Deleting Existing Dependencies...</h2>\n";
+        $output .= "<h2>Deleting Existing Dependencies...</h2>";
 
         $statement = $this->database->run("DELETE FROM deps");
 
-        print $statement->rowCount()." rows deleted<br />\n";
-        print "<h2>Inserting New Dependencies...</h2>\n";
+        $output .= $statement->rowCount()." rows deleted<br>";
+        $output .= "<h2>Inserting New Dependencies...</h2>";
 
         $statement = $this->database->run("SELECT package, `release`, fullpath FROM files");
 
         foreach ($statement->fetchAll() as $row) {
-            printf("<h3>%s (package %d, release %d):</h3>\n",
-                basename($row['fullpath']),
-                $row['package'],
-                $row['release']
-            );
+            $output .= '<h3>'.basename($row['fullpath']).' (package '.$row['package'].', release '.$row['release'].'):</h3>';
 
             if (!file_exists($row['fullpath'])) {
                 continue;
@@ -62,7 +60,7 @@ class DependenciesFixer
             $pkginfo = $pkg->fromTgzFile($row['fullpath'], PEAR_VALIDATE_NORMAL);
 
             if (empty($pkginfo->getDeps(true))) {
-                printf("%s : no dependencies<br />\n", $releases[$row['release']]);
+                $output .= $releases[$row['release']].' : no dependencies<br>';
 
                 continue;
             }
@@ -92,28 +90,16 @@ class DependenciesFixer
                 $values = array_merge([$row['package'], $row['release']], $values);
 
                 if ($dep['type'] === 'php') {
-                    printf("%s : php %s %s<br />\n",
-                        $releases[$row['release']],
-                        $dep['relation'],
-                        $dep['version']
-                    );
+                    $output .= $releases[$row['release']].' : php '.$dep['relation'].' '.$dep['version'].'<br>';
                 } elseif ($dep['relation'] === 'has') {
-                    printf("%s : (%s) %s %s<br />\n",
-                        $releases[$row['release']],
-                        $dep['type'],
-                        $dep['name']
-                    );
+                    $output .= $releases[$row['release']].' : ('.$dep['type'].') '.$dep['name'].'<br>';
                 } else {
-                    printf("%s : (%s) %s %s %s<br />\n",
-                        $releases[$row['release']],
-                        $dep['type'],
-                        $dep['name'],
-                        $dep['relation'],
-                        $dep['version']
-                    );
+                    $output .= $releases[$row['release']].' : ('.$dep['type'].') '.$dep['name'].' '.$dep['relation'].' '.$dep['version'].'<br>';
                 }
 
                 $statement->execute($values);
+
+                return $output;
             }
         }
     }

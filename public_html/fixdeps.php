@@ -18,13 +18,16 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Auth;
 use App\Utils\DependenciesFixer;
 
-$auth->secure(true);
+require_once __DIR__.'/../include/pear-prepend.php';
 
-response_header('Fix Dependencies');
+$container->get(Auth::class)->secure(true);
 
-$fixer = new DependenciesFixer($database);
-$fixer->fix();
+$output = $container->get(DependenciesFixer::class)->fix();
 
-response_footer();
+echo $template->render('content.php', [
+    'title' => 'Fix Dependencies',
+    'content' => $output,
+]);

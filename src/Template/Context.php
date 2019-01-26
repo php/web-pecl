@@ -183,8 +183,14 @@ class Context
      *
      * @return mixed
      */
-    public function insert($template)
+    public function insert($template, array $variables = [])
     {
+        if (count($variables) > extract($variables, EXTR_SKIP)) {
+            throw new \Exception(
+                'Variables with numeric names $0, $1... cannot be imported to scope '.$template
+            );
+        }
+
         return include $this->dir.'/'.$template;
     }
 

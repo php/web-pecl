@@ -19,13 +19,12 @@
 */
 
 /**
- * Send mail to PECL contributor
+ * Send email to PECL contributor.
  */
 
-use App\BorderBox;
 use App\Repository\UserRepository;
 
-$userRepository = new UserRepository($database);
+require_once __DIR__.'/../include/pear-prepend.php';
 
 // Redirect to the accounts list if no handle was specified
 if (!isset($_GET['handle']) || !preg_match('@^[0-9A-Za-z_]{2,20}$@', $_GET['handle'])) {
@@ -36,92 +35,64 @@ if (!isset($_GET['handle']) || !preg_match('@^[0-9A-Za-z_]{2,20}$@', $_GET['hand
     $message = '';
 }
 
-function printForm($data = [])
-{
-    // The first field that's empty
-    $focus = '';
-
-    foreach (['name', 'email', 'subject', 'text'] as $key) {
-        if (!isset($data[$key])) {
-            $data[$key] = '';
-            ($focus == '') ? $focus = $key : '';
-        }
-    }
-
-    $bb = new BorderBox('Send email');
-
-    $vars = [
-        'handle' => $_GET['handle'],
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'subject' => $data['subject'],
-        'text' => $data['text'],
-    ];
-
-    include __DIR__.'/../templates/forms/send_email.php';
-
-    $bb->end();
-
-    echo "<script>\n";
-    echo "document.forms.contact." . $focus . ".focus();\n";
-    echo "</script>";
-}
-
-response_header('Contact');
-
-$row = $userRepository->findActiveByHandle($handle);
+$row = $container->get(UserRepository::class)->findActiveByHandle($handle);
 
 if (!$row) {
     PEAR::raiseError('No account information found!');
 }
 
-echo '<h1>Contact ' . htmlspecialchars($row['name'], ENT_QUOTES) . '</h1>';
-
 if (isset($_POST['submit'])) {
+    $errors = [];
 
-    // XXX: Add email validation here
-    if ($_POST['name'] == '') {
-        $message .= '<li>You have to specify your name.</li>';
+    if ('' === $_POST['name']) {
+        $errors[] = 'You have to specify your name.';
     }
 
-    if ($_POST['email'] == '') {
-        $message .= '<li>You have to specify your email address.</li>';
+    if ('' === $_POST['email']) {
+        $errors[] = 'You have to specify your email address.';
+    } elseif (false === filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Email address is considered invalid.';
     }
 
-    if ($_POST['subject'] == '') {
-        $message .= '<li>You have to specify the subject of your correspondence.</li>';
+    if ('' === $_POST['subject']) {
+        $errors[] = 'You have to specify the subject of your correspondence.';
     }
 
-    if ($_POST['text'] == '') {
-        $message .= '<li>You have to specify the text of your correspondence.</li>';
+    if ('' === $_POST['text']) {
+        $errors[] = 'You have to specify the text of your correspondence.';
     }
 
-    if ($message == '') {
+    if (0 === count($errors)) {
         $text = "[This message has been brought to you via pecl.php.net.]\n\n";
         $text .= wordwrap($_POST['text'], 72);
 
         if (@mail($row['email'], $_POST['subject'], $text, 'From: "' . $_POST['name'] . '" <' . $_POST['email'] . '>', '-f noreply@php.net')) {
-            echo '<p>Your message has been sent successfully.</p>';
+            echo $template->render('pages/account_mail_success.php', [
+                'name' => $row['name'],
+            ]);
         } else {
             PEAR::raiseError('An error occurred while sending the message!');
         }
     } else {
-        echo '<p><font color=\'#FF0000\'>An error has occurred:<ul>'
-            . $message . '</ul></font></p>';
-        printForm($_POST);
+        echo $template->render('pages/account_mail_error.php', [
+            'name' => $row['name'],
+            'data' => $_POST,
+            'errors' => $errors,
+        ]);
     }
 } else {
-    echo '<p>If you want to get in contact with one of the PECL contributors,'
-        . ' you can do this by filling out the following form.</p>';
-
-    // Guess the user if they are logged in
+    // Check if the user is logged in.
     if (!empty($auth_user)) {
-        $data = ['email' => $auth_user->get('email'), 'name' => $auth_user->get('name')];
+        $data = [
+            'email' => $auth_user->get('email'),
+            'name' => $auth_user->get('name')
+        ];
     } else {
         $data = [];
     }
 
-    printForm($data);
+    echo $template->render('pages/account_mail.php', [
+        'name' => $row['name'],
+        'data' => $data,
+    ]);
 }
-
-response_footer();

@@ -24,6 +24,7 @@
 * o Make headers in package list clickable for ordering
 */
 
+use App\Utils\Breadcrumbs;
 use App\Utils\Pagination;
 
 $script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
@@ -277,6 +278,8 @@ if ($moreinfo) {
     $showMoreInfoLink = getQueryString($catpid, $catname, $showempty, 1);
     $hideMoreInfoLink = '#';
 }
+
+$breadcrumbs = $container->get(Breadcrumbs::class)->getBreadcrumbs($catpid, false);
 
 // Template
 include __DIR__.'/../templates/packages.php';

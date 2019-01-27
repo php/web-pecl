@@ -390,42 +390,6 @@ function error_handler($errobj, $title = 'Error')
 }
 
 /**
-* prints "urhere" menu bar
-* Top Level :: XML :: XML_RPC
-* @param bool $link_lastest If the last category should or not be a link
-*/
-function html_category_urhere($id, $link_lastest = false)
-{
-    global $database;
-
-    $html = "<a href=\"/packages.php\">Top Level</a>";
-
-    if ($id !== null) {
-        $results = $database->run("SELECT c.id, c.name
-                            FROM categories c, categories cat
-                            WHERE cat.id = :id
-                            AND c.cat_left <= cat.cat_left
-                            AND c.cat_right >= cat.cat_right", [':id' => $id])->fetchAll();
-        $nrows = count($results);
-
-        $i = 0;
-        foreach ($results as $row) {
-            if (!$link_lastest && $i >= $nrows -1) {
-                break;
-            }
-
-            $html .= '  :: <a href="/packages.php?catpid='.$row['id'].'&catname='.$row['name'].'">'.$row['name'].'</a>';
-            $i++;
-        }
-
-        if (!$link_lastest) {
-            $html .= '  :: <b>'.$row['name'].'</b>';
-        }
-    }
-    print $html;
-}
-
-/**
 * Redirects to the given full or partial URL. This function does not return.
 *
 * @param string $url Full/partial url to redirect to

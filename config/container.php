@@ -175,4 +175,12 @@ $container->set(App\Utils\DependenciesFixer::class, function ($c) {
     return new App\Utils\DependenciesFixer($c->get(App\Database::class));
 });
 
+$container->set(App\Utils\Licenser::class, function ($c) {
+    return new App\Utils\Licenser();
+});
+
+$container->set(App\Utils\Breadcrumbs::class, function ($c) {
+    return new App\Utils\Breadcrumbs($c->get(App\Database::class));
+});
+
 return $container;

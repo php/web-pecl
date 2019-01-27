@@ -43,7 +43,7 @@
 <table border="0" width="100%">
     <tr>
         <th valign="top" align="left">
-            Contents of :: <?php html_category_urhere($catpid, false); ?>
+            Contents of :: <?= $breadcrumbs ?>
         </th>
         <td valign="top" align="right">
             <?php echo $showempty_link; ?>

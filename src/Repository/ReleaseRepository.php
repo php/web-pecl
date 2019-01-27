@@ -186,4 +186,32 @@ class ReleaseRepository
 
         return $this->database->run($sql, $arguments)->fetchAll();
     }
+
+    /**
+     * Find all releases for download by given package id grouped in an array by
+     * release version.
+     *
+     * @param int $packageId ID of the package.
+     *
+     * @return array
+     */
+    public function findDownloads($packageId)
+    {
+        $sql = "SELECT f.id AS `id`, f.release AS `release`,
+                    f.platform AS platform, f.format AS format,
+                    f.md5sum AS md5sum, f.basename AS basename,
+                    f.fullpath AS fullpath, r.version AS version
+                FROM files f, releases r
+                WHERE f.package = :package_id AND f.release = r.id
+        ";
+
+        $statement = $this->database->run($sql, [':package_id' => $packageId]);
+
+        $downloads = [];
+        foreach ($statement->fetchAll() as $row) {
+            $downloads[$row['version']][] = $row;
+        }
+
+        return $downloads;
+    }
 }

@@ -277,14 +277,17 @@ div.success ul {
 
 a:link, a:visited {
     color: #000066;
+    display: inline-block;
 }
 
 a:hover {
     color: #000033;
+    display: inline-block;
 }
 
 a:active {
     color: #cc00cc;
+    display: inline-block;
 }
 
 th.others {

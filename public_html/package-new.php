@@ -18,106 +18,72 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Auth;
 use App\Repository\CategoryRepository;
 use App\Repository\PackageRepository;
 
-$auth->secure();
+require_once __DIR__.'/../include/pear-prepend.php';
 
-$display_form = true;
-$errorMsg = "";
-$jumpto = "name";
+$container->get(Auth::class)->secure();
 
-$valid_args = ['submit', 'name','category','license','summary','desc','homepage','cvs_link'];
-foreach($valid_args as $arg) {
-        if(isset($_POST[$arg])) $_POST[$arg] = htmlspecialchars($_POST[$arg], ENT_QUOTES);
-}
+$errors = [];
+$jumpTo = 'name';
 
-$submit = isset($_POST['submit']) ? true : false;
+if (isset($_POST['submit'])) {
+    $required = [
+        'name' => 'Please enter the package name.',
+        'license' => 'Please choose a license type.',
+        'category' => 'Please choose a category.',
+        'summary' => 'Please enter the one-liner description.',
+        'desc' => 'Please enter the full description.',
+    ];
 
-do {
-    if (isset($submit)) {
-        $required = ["name" => "enter the package name",
-                          "summary" => "enter the one-liner description",
-                          "desc" => "enter the full description",
-                          "license" => "choose a license type",
-                          "category" => "choose a category"];
-        foreach ($required as $field => $_desc) {
-            if (empty($_POST[$field])) {
-                display_error("Please $_desc!");
-                $jumpto = $field;
-                break 2;
-            }
+    foreach ($required as $field => $desc) {
+        if (empty($_POST[$field])) {
+            $errors[] = $desc;
+            $jumpTo = $field;
         }
-
-          $_POST['license'] = trim($_POST['license']);
-
-          if (!strcasecmp($_POST['license'], "GPL") ||
-                  !strcasecmp($_POST['license'], "LGPL")) {
-              display_error("Illegal license type.  PECL packages CANNOT be GPL/LGPL licensed and thus MUST NOT be linked to GPL code.  Talk to pecl-dev@lists.php.net for more information.");
-              $jumpto = 'license';
-              break;
-          }
-
-        if (!preg_match($config->get('valid_extension_name_regex'), $_POST['name'])) {
-            display_error('Invalid package name. PECL package names must start with a letter and preferably include only lowercase letters. Optionally, numbers and underscores are also allowed.');
-            break;
-        }
-
-        $packageRepository = new PackageRepository($database);
-        $existing = $packageRepository->findOneByName($_POST['name']);
-        if ($existing) {
-            error_handler(
-                'The '.htmlspecialchars($_POST['name'], ENT_QUOTES).' package already exists!',
-                "Package already exists"
-            );
-        } else {
-            try {
-                $pkg = $packageEntity->add([
-                    'name'        => $_POST['name'],
-                    'type'        => 'pecl',
-                    'category'    => $_POST['category'],
-                    'license'     => $_POST['license'],
-                    'summary'     => $_POST['summary'],
-                    'description' => $_POST['desc'],
-                    'homepage'    => $_POST['homepage'],
-                    'cvs_link'    => $_POST['cvs_link'],
-                    'lead'        => $auth_user->handle
-                ]);
-            } catch (\Exception $e) {
-                error_handler(
-                    'Error occurred',
-                    "Error"
-                );
-            }
-        }
-
-        $display_form = false;
-        response_header("Package Registered");
-        print "The package `" . htmlspecialchars($_POST['name'], ENT_QUOTES) . "' has been registered in PECL.<br />\n";
-        print "You have been assigned as lead developer.<br />\n";
     }
-} while (false);
 
-if ($display_form) {
-    response_header('New Package');
+    $_POST['license'] = trim($_POST['license']);
 
-    $categoryRepository = new CategoryRepository($database);
-    $categories = $categoryRepository->findAll();
+    if (
+        !strcasecmp($_POST['license'], 'GPL')
+        || !strcasecmp($_POST['license'], 'LGPL')
+    ) {
+        $errors[] = 'Illegal license type. PECL packages CANNOT be GPL/LGPL licensed and thus MUST NOT be linked to GPL code. Talk to pecl-dev@lists.php.net for more information.';
+        $jumpTo = 'license';
+    }
 
-    include __DIR__.'/../templates/forms/new_package.php';
+    if (!preg_match($container->get('valid_extension_name_regex'), $_POST['name'])) {
+        $errors[] = 'Invalid package name. PECL package names must start with a letter and preferably include only lowercase letters. Optionally, numbers and underscores are also allowed.';
+    }
 
-    if ($jumpto) {
-        print "\n<script>\n";
-        print "document.forms[1].$jumpto.focus();\n";
-        print "</script>\n";
+    if ($container->get(PackageRepository::class)->findOneByName($_POST['name'])) {
+        $errors[] = 'The '.$_POST['name'].' package already exists!';
+    }
+
+    if (0 === count($errors)) {
+        try {
+            $pkg = $packageEntity->add([
+                'name'        => $_POST['name'],
+                'type'        => 'pecl',
+                'category'    => $_POST['category'],
+                'license'     => $_POST['license'],
+                'summary'     => $_POST['summary'],
+                'description' => $_POST['desc'],
+                'homepage'    => $_POST['homepage'],
+                'cvs_link'    => $_POST['cvs_link'],
+                'lead'        => $auth_user->handle
+            ]);
+        } catch (\Exception $e) {
+            $errors[] = 'Error occurred.';
+        }
     }
 }
 
-response_footer();
-
-function display_error($msg)
-{
-    global $errorMsg;
-
-    $errorMsg .= "<font color=\"#cc0000\" size=\"+1\">$msg</font><br />\n";
-}
+echo $template->render('pages/package_new.php', [
+    'categories' => $container->get(CategoryRepository::class)->findAll(),
+    'jumpTo' => $jumpTo,
+    'errors' => $errors,
+]);

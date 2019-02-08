@@ -32,4 +32,5 @@ return [
     'tmp_dir' => $config->get('tmp_dir'),
     'rest_dir' => $config->get('rest_dir'),
     'packages_dir' => $config->get('packages_dir'),
+    'valid_extension_name_regex' => $config->get('valid_extension_name_regex'),
 ];

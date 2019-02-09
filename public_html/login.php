@@ -18,24 +18,29 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Auth;
+
+require_once __DIR__.'/../include/pear-prepend.php';
+
 /*
  * If the PHPSESSID cookie isn't set, the user MAY have cookies turned off.
  * To figure out cookies are REALLY off, check to see if the person came
  * from within the PECL website or just submitted the login form.
  */
 if (!isset($_COOKIE[session_name()]) && isset($_POST['PECL_USER']) && isset($_POST['PECL_PW'])) {
-//    $auth->reject('Cookies must be enabled to log in.');
+//    $container->get(Auth::class)->reject('Cookies must be enabled to log in.');
 }
 
-// If they're already logged in, say so.
-if (!empty($auth_user)) {
-    response_header('Login');
-    echo '<div class="warnings">You are already logged in.</div>';
-    response_footer();
+// If user is already logged in redirect to homepage.
+if (!empty($container->get('auth_user'))) {
+    header('Location: /');
     exit;
 }
 
-if (isset($_POST['PECL_USER'], $_POST['PECL_PW']) && $auth->verify($_POST['PECL_USER'], $_POST['PECL_PW'])) {
+if (
+    isset($_POST['PECL_USER'], $_POST['PECL_PW'])
+    && $container->get(Auth::class)->verify($_POST['PECL_USER'], $_POST['PECL_PW']))
+{
     if (!empty($_POST['PECL_PERSIST'])) {
         setcookie('REMEMBER_ME', 1, 2147483647, '/');
         setcookie(session_name(), session_id(), 2147483647, '/');
@@ -48,12 +53,13 @@ if (isset($_POST['PECL_USER'], $_POST['PECL_PW']) && $auth->verify($_POST['PECL_
     $_SESSION['PECL_USER'] = $_POST['PECL_USER'];
 
     // Determine URL
-    if (isset($_POST['redirect_to']) &&
-        basename($_POST['redirect_to']) != 'login.php')
+    if (
+        isset($_POST['redirect_to'])
+        && 'login.php' !== basename($_POST['redirect_to']))
     {
-        localRedirect($_POST['redirect_to']);
+        header('Location: '.$_POST['redirect_to']);
     } else {
-        localRedirect('index.php');
+        header('Location: /');
     }
 
     exit;
@@ -64,4 +70,4 @@ if (isset($_POST['PECL_USER']) || isset($_POST['PECL_PW'])) {
     $msg = 'Invalid username or password.';
 }
 
-$auth->reject($msg);
+$container->get(Auth::class)->reject($msg);

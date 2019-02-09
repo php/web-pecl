@@ -20,41 +20,55 @@
 
 /**
  * Interface to delete a package.
+ *
+ * TODO: Implement backup functionality.
  */
 
-use App\BorderBox;
+use App\Auth;
+use App\Repository\PackageRepository;
+use App\Rest;
 
-$auth->secure(true);
+require_once __DIR__.'/../include/pear-prepend.php';
 
-response_header('Delete Package');
-echo '<h1>Delete Package</h1>';
+$container->get(Auth::class)->secure(true);
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    report_error('No package ID specified.');
-    response_footer();
+    echo $template->render('error.php', [
+        'errors' => ['No package ID specified.'],
+    ]);
+
     exit;
 }
 
-if (!isset($_POST['confirm'])) {
+$packageRepository = $container->get(PackageRepository::class);
+$packageName = $packageRepository->find($_GET['id'], 'name');
+$content = '';
 
-    $bb = new BorderBox("Confirmation");
+if (!empty($_POST['confirm']) && 'yes' === $_POST['confirm']) {
+    $removedFiles = 0;
 
-    echo '<form action="/package-delete.php?id='.htmlspecialchars($_GET['id'], ENT_QUOTES).'" method="post">'."\n";
-    echo "Are you sure that you want to delete the package?<br /><br />";
-    echo '<input type="submit" name="confirm" value="yes" />'."\n";
-    echo "&nbsp;";
-    echo '<input type="submit" name="confirm" value="no" />'."\n";
-    echo "<br /><br /><font color=\"#ff0000\"><b>Warning:</b> Deleting
-          the package will remove all package information and all
-          releases!</font>";
-    echo '</form>'."\n";
+    $sql = "SELECT p.name, r.version
+            FROM packages p, releases r
+            WHERE p.id = r.package AND r.package = :id";
 
-    $bb->end();
+    foreach ($database->run($sql, [':id' => $_GET['id']])->fetchAll() as $value) {
+        $file = sprintf("%s/%s-%s.tgz",
+                        $container->get('packages_dir'),
+                        $value['name'],
+                        $value['version']);
 
-} else if ($_POST['confirm'] == "yes") {
+        if (@unlink($file)) {
+            $content .= 'Deleting release archive "'.$file."\"\n";
+            $removedFiles++;
+        } else {
+            $content .= '<div style="color:#ff0000">Unable to delete file '.$file.'</div>';
+        }
+    }
 
-    // XXX: Implement backup functionality
-    // make_backup($_GET['id']);
+    $content .= "\n".$removedFiles." file(s) deleted\n\n";
+
+    $categoryId = $packageRepository->find($_GET['id'], 'categoryid');
+    $database->run("UPDATE categories SET npackages = npackages-1 WHERE id=?", [$categoryId]);
 
     $tables = [
         'releases'  => 'package',
@@ -64,50 +78,21 @@ if (!isset($_POST['confirm'])) {
         'packages'  => 'id'
     ];
 
-    echo "<pre>\n";
-
-    $file_rm = 0;
-
-    $sql = "SELECT p.name, r.version FROM packages p, releases r
-            WHERE p.id = r.package AND r.package = :id";
-
-    foreach ($database->run($sql, [':id' => $_GET['id']])->fetchAll() as $value) {
-        $file = sprintf("%s/%s-%s.tgz",
-                        $config->get('packages_dir'),
-                        $value['name'],
-                        $value['version']);
-
-        if (@unlink($file)) {
-            echo "Deleting release archive \"" . $file . "\"\n";
-            $file_rm++;
-        } else {
-            echo "<font color=\"#ff0000\">Unable to delete file " . $file . "</font>\n";
-        }
-    }
-
-    echo "\n" . $file_rm . " file(s) deleted\n\n";
-
-    $catid = $packageEntity->info($_GET['id'], 'categoryid');
-    $catname = $packageEntity->info($_GET['id'], 'category');
-    $packagename = $packageEntity->info($_GET['id'], 'name');
-    $database->query("UPDATE categories SET npackages = npackages-1 WHERE id=$catid");
-
     foreach ($tables as $table => $column) {
-        $sql = "DELETE FROM $table WHERE $column = :id";
-        echo 'Removing package information from table "'.$table.'": ';
+        $content .= 'Removing package information from table "'.$table.'": ';
 
+        $sql = "DELETE FROM $table WHERE $column = :id";
         $statement = $database->run($sql, [':id' => $_GET['id']]);
 
-        echo '<b>'.$statement->rowCount()."</b> rows affected.\n";
+        $content .= '<b>'.$statement->rowCount()."</b> rows affected.\n";
     }
 
-    $rest->deletePackage($packagename);
-    $rest->savePackagesCategory($catname);
-    echo "</pre>\nPackage " . htmlspecialchars($_GET['id'], ENT_QUOTES) . " has been deleted.\n";
-
-} else if ($_POST['confirm'] == "no") {
-    echo "The package has not been deleted.\n<br /><br />\n";
-    echo 'Go back to the <a href="/package-info.php?package='.htmlspecialchars($_GET['id'], ENT_QUOTES).'">package details</a>.';
+    $rest = $container->get(Rest::class);
+    $rest->deletePackage($packageName);
+    $rest->savePackagesCategory($packageRepository->find($_GET['id'], 'category'));
 }
 
-response_footer();
+echo $template->render('pages/package_delete.php', [
+    'content' => isset($content) ? $content : '',
+    'packageName' => $packageName,
+]);

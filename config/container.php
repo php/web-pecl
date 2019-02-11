@@ -115,6 +115,10 @@ $container->set(App\Repository\PackageRepository::class, function ($c) {
     return new App\Repository\PackageRepository($c->get(App\Database::class));
 });
 
+$container->set(App\Repository\PackageStatsRepository::class, function ($c) {
+    return new App\Repository\PackageStatsRepository($c->get(App\Database::class));
+});
+
 $container->set(App\Repository\ReleaseRepository::class, function ($c) {
     return new App\Repository\ReleaseRepository($c->get(App\Database::class));
 });

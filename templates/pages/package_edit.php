@@ -12,6 +12,8 @@ function confirmed_goto(url, message) {
 
 <h1>Edit package</h1>
 
+<p><b><?= $this->e($content) ?></b></p>
+
 <table cellpadding="0" cellspacing="1" style="width: 90%; border: 0px;">
     <tr>
         <td bgcolor="#000000">

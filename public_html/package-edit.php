@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
     $rest = $container->get(Rest::class);
     $rest->savePackage($_POST['name']);
     $rest->savePackagesCategory($packageRepository->find($_POST['name'], 'category'));
-    $content .= '<b>Package information successfully updated.</b><br><br>';
+    $content .= 'Package information successfully updated.';
 } elseif (isset($_GET['action']) && 'release_remove' === $_GET['action']) {
     if (!isset($_GET['release'])) {
         echo $template->render('error.php', [
@@ -144,7 +144,7 @@ if (isset($_POST['submit'])) {
     }
 
     if ($container->get(Release::class)->remove($_GET['id'], $_GET['release'])) {
-        $content .= '<b>Release successfully deleted.</b><br><br>';
+        $content .= 'Release successfully deleted.';
     } else {
         echo $template->render('error.php', [
             'errors' => ['An error occured while deleting the release!'],

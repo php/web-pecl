@@ -27,7 +27,9 @@
 use App\Utils\Breadcrumbs;
 use App\Utils\Pagination;
 
-$script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
+require_once __DIR__.'/../include/pear-prepend.php';
+
+$scriptName = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 
 /**
 * Returns an appropriate query string for a self referencing link
@@ -35,30 +37,29 @@ $script_name = htmlspecialchars($_SERVER['SCRIPT_NAME'], ENT_QUOTES);
 function getQueryString($catpid, $catname, $showempty = false, $moreinfo = false)
 {
     $querystring = [];
-    $entries_cnt = 0;
+    $count = 0;
 
     if ($catpid) {
         $querystring[] = 'catpid='.(int)$catpid;
-        $entries_cnt++;
+        $count++;
     }
 
     if ($catname) {
         $querystring[] = 'catname='.urlencode($catname);
-        $entries_cnt++;
+        $count++;
     }
 
     if ($showempty) {
         $querystring[] = 'showempty='.(int)$showempty;
-        $entries_cnt++;
+        $count++;
     }
 
     if ($moreinfo) {
         $querystring[] = 'moreinfo='.(int)$moreinfo;
-        $entries_cnt++;
+        $count++;
     }
 
-
-    if ($entries_cnt) {
+    if ($count) {
         return '?'.implode('&amp;', $querystring);
     } else {
         return '';
@@ -66,15 +67,15 @@ function getQueryString($catpid, $catname, $showempty = false, $moreinfo = false
 }
 
 // Check input variables. Expected url vars: catpid (category parent id), catname, showempty
-$moreinfo = isset($_GET['moreinfo']) ? (int)$_GET['moreinfo'] : false;
-$catpid  = isset($_GET['catpid'])  ? (int)$_GET['catpid']   : null;
-$showempty = isset($_GET['showempty']) ? (bool)$_GET['showempty'] : false;
+$moreinfo = isset($_GET['moreinfo']) ? (int) $_GET['moreinfo'] : false;
+$catpid  = isset($_GET['catpid']) ? (int) $_GET['catpid'] : null;
+$showempty = isset($_GET['showempty']) ? (bool) $_GET['showempty'] : false;
 
 if (empty($catpid)) {
-    $category_where = "IS NULL";
-    $catname = "Top Level";
+    $categoryWhere = 'IS NULL';
+    $catname = 'Top Level';
 } else {
-    $category_where = "= " . $catpid;
+    $categoryWhere = '= '.$catpid;
 
     if (isset($_GET['catname']) && preg_match('/^[0-9a-z_ ]{1,80}$/i', $_GET['catname'])) {
         $catname = $_GET['catname'];
@@ -85,63 +86,59 @@ if (empty($catpid)) {
 
 // The user is already at the top level
 if (empty($catpid)) {
-    $showempty_link = 'Top Level';
+    $showEmptyLink = 'Top Level';
 } else {
-    $showempty_link = '<a href="'. $script_name . getQueryString($catpid, $catname, !$showempty, $moreinfo) . '">' . ($showempty ? 'Hide empty' : 'Show empty').'</a>';
+    $showEmptyLink = '<a href="'.$scriptName.getQueryString($catpid, $catname, !$showempty, $moreinfo).'">'.($showempty ? 'Hide empty' : 'Show empty').'</a>';
 }
 
 // Main part of script
 if ($catpid) {
     $catname = $database->run('SELECT name FROM categories WHERE id=:id', [':id' => $catpid])->fetch()['name'];
-    $category_title = "Package Browser :: " . htmlspecialchars($catname, ENT_QUOTES);
+    $categoryTitle = "Package Browser :: " . htmlspecialchars($catname, ENT_QUOTES);
 } else {
-    $category_title = 'Package Browser :: Top Level';
+    $categoryTitle = 'Package Browser :: Top Level';
 }
-
-response_header($category_title);
 
 // 1) Show categories of this level
 $statement = $database->run("SELECT c.*, COUNT(p.id) AS npackages
                    FROM categories c
                    LEFT JOIN packages p ON p.category = c.id
                    WHERE p.package_type = 'pecl'
-                   AND c.parent ".$category_where."
+                   AND c.parent $categoryWhere
                    GROUP BY c.id ORDER BY name");
 
 // Get names of sub-categories
-$subcats = $database->run("SELECT p.id AS pid, c.id AS id, c.name AS name, c.summary AS summary".
-                          "  FROM categories c, categories p ".
-                          " WHERE p.parent $category_where ".
-                          "   AND c.parent = p.id ORDER BY c.name")->fetchAll();
+$subcats = $database->run("SELECT p.id AS pid, c.id AS id, c.name AS name, c.summary AS summary
+                          FROM categories c, categories p
+                          WHERE p.parent $categoryWhere
+                          AND c.parent = p.id ORDER BY c.name")->fetchAll();
 
 // Get names of sub-packages
-$subpkgs = $database->run("SELECT p.category, p.id AS id, p.name AS name, p.summary AS summary".
-                          "  FROM packages p, categories c".
-                          " WHERE c.parent $category_where ".
-                          "   AND p.package_type = 'pecl' ".
-                          "   AND p.category = c.id ORDER BY p.name")->fetchAll();
+$subpkgs = $database->run("SELECT p.category, p.id AS id, p.name AS name, p.summary AS summary
+                          FROM packages p, categories c
+                          WHERE c.parent $categoryWhere
+                          AND p.package_type = 'pecl'
+                          AND p.category = c.id ORDER BY p.name")->fetchAll();
 
-$max_sub_links = 4;
-$totalpackages = 0;
+$maxSubLinks = 4;
+$totalPackages = 0;
 $categories = [];
 
 foreach ($statement->fetchAll() as $row) {
-    extract($row);
-
     // Show only categories with packages
-    if (!$showempty AND $row['npackages'] < 1) {
+    if (!$showempty && $row['npackages'] < 1) {
         continue;
     }
 
-    $sub_links = [];
+    $subLinks = [];
 
     foreach ($subcats as $subcat) {
         if ($subcat['pid'] === $row['id']) {
-            $sub_links[] = '<b><a href="'.$script_name.'?catpid='.$subcat['id'].'&amp;catname='
+            $subLinks[] = '<b><a href="'.$scriptName.'?catpid='.$subcat['id'].'&amp;catname='
                          . urlencode($subcat['name'])
                          . '" title="'.htmlspecialchars($subcat['summary'], ENT_QUOTES).'">'
                          . $subcat['name'].'</a></b>';
-            if (count($sub_links) >= $max_sub_links) {
+            if (count($subLinks) >= $maxSubLinks) {
                 break;
             }
         }
@@ -149,28 +146,26 @@ foreach ($statement->fetchAll() as $row) {
 
     foreach ($subpkgs as $subpkg) {
         if ($subpkg['category'] === $row['id']) {
-            $sub_links[] = '<a href="/package/'.$subpkg['name'].'" title="'
+            $subLinks[] = '<a href="/package/'.$subpkg['name'].'" title="'
                          . htmlspecialchars($subpkg['summary'], ENT_QUOTES).'">'.$subpkg['name'].'</a>';
-            if (count($sub_links) >= $max_sub_links) {
+            if (count($subLinks) >= $maxSubLinks) {
                 break;
             }
         }
     }
 
-    if (count($sub_links) >= $max_sub_links) {
-        $sub_links = implode(', ', $sub_links).' <img src="/img/caret-r.gif" alt="[more]">';
+    if (count($subLinks) >= $maxSubLinks) {
+        $subLinks = implode(', ', $subLinks).' <img src="/img/caret-r.gif" alt="[more]">';
     } else {
-        $sub_links = implode(', ', $sub_links);
+        $subLinks = implode(', ', $subLinks);
     }
 
-    settype($npackages, 'string');
+    settype($row['npackages'], 'string');
 
-    $data  = '<font size="+1"><b><a href="'. $script_name .'?catpid='.$id.'&amp;catname='.urlencode($name).'">'.$name.'</a></b></font> ('.$npackages.')<br />';
-    $data .= $sub_links.'<br />';
-
+    $data  = '<font size="+1"><b><a href="'.$scriptName.'?catpid='.$row['id'].'&amp;catname='.urlencode($row['name']).'">'.$row['name'].'</a></b></font> ('.$row['npackages'].')<br>';
+    $data .= $subLinks.'<br>';
     $categories[] = $data;
-
-    $totalpackages += $npackages;
+    $totalPackages += $row['npackages'];
 }
 
 // Begin code for showing packages if we aren't at the top level.
@@ -187,7 +182,7 @@ if (!empty($catpid)) {
     if (count($subcats) > 0) {
         foreach ($subcats as $subcat) {
             $subCategories[] = sprintf('<b><a href="%s?catpid=%d&catname=%s" title="%s">%s</a></b>',
-                                       $script_name,
+                                       $scriptName,
                                        $subcat['id'],
                                        urlencode($subcat['name']),
                                        htmlspecialchars($subcat['summary'], ENT_QUOTES),
@@ -201,7 +196,7 @@ if (!empty($catpid)) {
     $total = $database->run("SELECT count(*) FROM packages WHERE category = ? AND package_type='pecl'", [$catpid])->fetchColumn();
     $pagination = new Pagination();
     $pagination->setNumberOfItems($total);
-    $currentPage = isset($_GET['pageID']) ? (int)$_GET['pageID'] : 1;
+    $currentPage = isset($_GET['pageID']) ? (int) $_GET['pageID'] : 1;
     $pagination->setCurrentPage($currentPage);
     $from = $pagination->getFrom();
     $to = $pagination->getTo();
@@ -228,7 +223,7 @@ if (!empty($catpid)) {
         }
         $link .= 'pageID='.$previousPage;
 
-        $prev = '<a href="'.$link.'"><img src="img/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</a>';
+        $prev = '<a href="'.$link.'"><img src="/img/prev.gif" width="10" height="10" border="0" alt="&lt;&lt;" />Back</a>';
     }
 
     $next = '';
@@ -241,7 +236,7 @@ if (!empty($catpid)) {
         }
         $link .= 'pageID='.$nextPage;
 
-        $next = '<a href="'.$link.'">Next<img src="img/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></a>';
+        $next = '<a href="'.$link.'">Next<img src="/img/next.gif" width="10" height="10" border="0" alt="&gt;&gt;" /></a>';
     }
 
     foreach ($packages as $key => $pkg) {
@@ -279,7 +274,22 @@ if ($moreinfo) {
     $hideMoreInfoLink = '#';
 }
 
-$breadcrumbs = $container->get(Breadcrumbs::class)->getBreadcrumbs($catpid, false);
-
-// Template
-include __DIR__.'/../templates/packages.php';
+echo $template->render('pages/packages.php', [
+    'title' => $categoryTitle,
+    'breadcrumbs' => $container->get(Breadcrumbs::class)->getBreadcrumbs($catpid, false),
+    'showEmptyLink' => $showEmptyLink,
+    'categories' => $categories,
+    'catpid' => $catpid,
+    'packages' => isset($packages) ? $packages : null,
+    'subCategories' => isset($subCategories) ? $subCategories : null,
+    'hideMoreInfoLink' => $hideMoreInfoLink,
+    'showMoreInfoLink' => $showMoreInfoLink,
+    'prev' => isset($prev) ? $prev : null,
+    'from' => isset($from) ? $from : null,
+    'to' => isset($to) ? $to : null,
+    'total' => isset($total) ? $total : null,
+    'next' => isset($next) ? $next : null,
+    'defaultMoreInfoVis' => isset($defaultMoreInfoVis) ? $defaultMoreInfoVis : null,
+    'totalPackages' => $totalPackages,
+    'catname' => $catname,
+]);

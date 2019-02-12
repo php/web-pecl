@@ -18,40 +18,49 @@
   +----------------------------------------------------------------------+
 */
 
+use App\Auth;
 use App\Entity\Maintainer;
+use App\Entity\Package;
 use App\Release;
+use App\Repository\PackageRepository;
+use App\Rest;
 use App\User;
 use App\Utils\Uploader;
-use \PEAR_PackageFile as PEAR_PackageFile;
 use \PEAR as PEAR;
 use \PEAR_Config as PEAR_Config;
+use \PEAR_PackageFile as PEAR_PackageFile;
 
-$auth->secure();
+require_once __DIR__.'/../include/pear-prepend.php';
+
+$container->get(Auth::class)->secure();
 
 $release = $container->get(Release::class);
+$packageEntity = $container->get(Package::class);
+$authUser = $container->get('auth_user');
 
 $maintainer = new Maintainer();
 $maintainer->setDatabase($database);
-$maintainer->setRest($rest);
-$maintainer->setAuthUser($auth_user);
+$maintainer->setRest($container->get(Rest::class));
+$maintainer->setAuthUser($authUser);
 $maintainer->setPackage($packageEntity);
 
-$display_form         = true;
-$display_verification = false;
-$success              = false;
-$errors               = [];
+$displayForm = true;
+$displayVerification = false;
+$success = false;
+$errors = [];
+$warnings = [];
 
 PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
 
-if (!file_exists($config->get('tmp_uploads_dir'))) {
-    mkdir($config->get('tmp_uploads_dir'), 0777, true);
-    chmod($config->get('tmp_uploads_dir'), 0777);
+if (!file_exists($container->get('tmp_uploads_dir'))) {
+    mkdir($container->get('tmp_uploads_dir'), 0777, true);
+    chmod($container->get('tmp_uploads_dir'), 0777);
 }
 
 $uploader = new Uploader();
-$uploader->setMaxFileSize($config->get('max_file_size'));
+$uploader->setMaxFileSize($container->get('max_file_size'));
 $uploader->setValidExtension('tgz');
-$uploader->setDir($config->get('tmp_uploads_dir'));
+$uploader->setDir($container->get('tmp_uploads_dir'));
 
 do {
     if (
@@ -70,7 +79,6 @@ do {
         $pearConfig = PEAR_Config::singleton();
         $pkg = new PEAR_PackageFile($pearConfig);
         $info = $pkg->fromTgzFile($tmpFile, PEAR_VALIDATE_NORMAL);
-        $errors = $warnings = [];
 
         if (PEAR::isError($info)) {
             if (is_array($info->getUserInfo())) {
@@ -91,72 +99,72 @@ do {
             break;
         }
 
-        $pkg_version_ok = true;
-        $pkg_version_macros_found = false;
-        $pkg_xml_ext_version = $info->getVersion();
-        $pkg_name = $info->getName();
-        $pkg_extname = $info->getProvidesExtension();
+        $validPackageVersion = true;
+        $packageVersionMacrosFound = false;
+        $packageXmlExtensionVersion = $info->getVersion();
+        $packageName = $info->getName();
+        $packageExtensionName = $info->getProvidesExtension();
 
-        foreach ($info->getFileList() as $file_name => $file_data) {
+        foreach ($info->getFileList() as $data) {
             // The file we're looking for is usually named like php_myextname.h,
             // but lets check any .h file in the pkg root.
-            if ("src" != $file_data["role"] ||
-                false !== strstr($file_data["name"], "/") ||
-                ".h" != substr($file_data["name"], -2)) {
+            if ('src' != $data['role'] ||
+                false !== strstr($data['name'], '/') ||
+                '.h' != substr($data['name'], -2)) {
 
                 continue;
             }
 
-            $file_contents = $info->getFileContents($file_data["name"]);
+            $fileContents = $info->getFileContents($data['name']);
 
-            $pat = ',define\s+PHP_(' . $pkg_name . '|' . $pkg_extname . ')_VERSION\s+"(.*)",i';
-            if (preg_match($pat, $file_contents, $m)) {
-                $pkg_version_macros_found = true;
-                $pkg_found_ext_name = $m[1];
-                $pkg_found_ext_version = $m[2];
+            $pat = ',define\s+PHP_(' . $packageName . '|' . $packageExtensionName . ')_VERSION\s+"(.*)",i';
+            if (preg_match($pat, $fileContents, $m)) {
+                $packageVersionMacrosFound = true;
+                $packageFoundExtensionName = $m[1];
+                $packageFoundExtensionVersion = $m[2];
             } else {
-                unset($file_contents);
+                unset($fileContents);
 
                 continue;
             }
 
-            if ($pkg_xml_ext_version == $pkg_found_ext_version) {
-                $pkg_version_ok = true;
+            if ($packageXmlExtensionVersion == $packageFoundExtensionVersion) {
+                $validPackageVersion = true;
 
                 break;
             } else {
-                $pkg_version_ok = false;
+                $validPackageVersion = false;
             }
         }
 
-        if (!$pkg_version_ok) {
-            $name_to_show = $pkg_version_macros_found ? $pkg_found_ext_name : "MYEXTNAME";
+        if (!$validPackageVersion) {
+            $nameToShow = $packageVersionMacrosFound ? $packageFoundExtensionName : 'MYEXTNAME';
 
-            if ($pkg_version_macros_found) {
-                $errors[] = "Extension version mismatch between the package.xml ($pkg_xml_ext_version) "
-                    . "and the source code ($pkg_found_ext_version). ";
-                $errors[] = "Both version strings have to match. ";
+            if ($packageVersionMacrosFound) {
+                $errors[] = "Extension version mismatch between the package.xml ($packageXmlExtensionVersion) "
+                    . "and the source code ($packageFoundExtensionVersion). ";
+                $errors[] = 'Both version strings have to match. ';
 
                 break;
             } else {
-                $warnings[] = "The compliance between the package version in package.xml and extension source code "
+                $warnings[] = 'The compliance between the package version in package.xml and extension source code '
                     . "couldn't be reliably determined. This check fixes the (unintended) "
                     . "version mismatch in phpinfo() and the PECL website. ";
                 $warnings[] = "To pass please "
-                    . "#define PHP_" . strtoupper($name_to_show) . "_VERSION \"$pkg_xml_ext_version\" "
-                    . "in your php_" . strtolower($name_to_show) . ".h or any other header file "
-                    . "and use it for zend_module_entry definition. ";
-                $warnings[] = "Both version strings have to match. ";
+                    . "#define PHP_" . strtoupper($nameToShow) . "_VERSION \"$packageXmlExtensionVersion\" "
+                    . "in your php_" . strtolower($nameToShow) . ".h or any other header file "
+                    . 'and use it for zend_module_entry definition. ';
+                $warnings[] = 'Both version strings have to match. ';
             }
         }
 
-        $display_form = false;
-        $display_verification = true;
+        $displayForm = false;
+        $displayVerification = true;
 
     } elseif (isset($_POST['verify'])) {
         // Verify Button
 
-        $distfile = $config->get('tmp_uploads_dir').'/'.basename($_POST['distfile']);
+        $distfile = $container->get('tmp_uploads_dir').'/'.basename($_POST['distfile']);
         if (!@is_file($distfile)) {
             $errors[] = 'No verified file found.';
             break;
@@ -178,15 +186,15 @@ do {
             break;
         } else {
             try {
-                $pacid = $packageEntity->info($info->getPackage(), 'id');
+                $pacid = $container->get(PackageRepository::class)->find($info->getPackage(), 'id');
             } catch (\Exception $e) {
                 $errors[] = $e->getMessage();
 
                 break;
             }
 
-            if (!$auth_user->isAdmin() &&
-                !User::maintains($auth_user->handle, $pacid, 'lead')) {
+            if (!$authUser->isAdmin() &&
+                !User::maintains($authUser->handle, $pacid, 'lead')) {
                 $errors[] = 'You don\'t have permissions to upload this release.';
                 break;
             }
@@ -225,7 +233,7 @@ do {
                 break;
             }
 
-            $rest->savePackageMaintainer($info->getPackage());
+            $container->get(Rest::class)->savePackageMaintainer($info->getPackage());
             $file = $release->upload(
                 $info->getPackage(),
                 $info->getVersion(),
@@ -254,62 +262,34 @@ do {
         PEAR::popErrorHandling();
 
         $success              = true;
-        $display_form         = true;
-        $display_verification = false;
+        $displayForm         = true;
+        $displayVerification = false;
     } elseif (isset($_POST['cancel'])) {
         // Cancel button
-        $distfile = $config->get('tmp_uploads_dir').'/'.basename($_POST['distfile']);
+        $distfile = $container->get('tmp_uploads_dir').'/'.basename($_POST['distfile']);
 
         if (@is_file($distfile)) {
             @unlink($distfile);
         }
 
-        $display_form         = true;
-        $display_verification = false;
+        $displayForm         = true;
+        $displayVerification = false;
     }
 } while (false);
 
 PEAR::popErrorHandling();
 
-if ($display_form) {
+if ($displayForm) {
     $title = 'Upload New Release';
-    response_header($title);
 
     // Remove that code when release-upload also create new packages
-    if (!checkUser($auth_user->handle)) {
+    if (!checkUser($authUser->handle)) {
         $errors[] = 'You are not registered as lead developer for any packages.';
     }
-
-    echo '<h1>' . $title . "</h1>\n";
-
-    if ($success) {
-        echo '<div class="success">';
-        echo 'Version '
-            . htmlspecialchars($info->getVersion(), ENT_QUOTES)
-            . ' of '
-            . htmlspecialchars($info->getPackage(), ENT_QUOTES)
-            . ' has been successfully released, and its promotion cycle has started.';
-        echo '</div>';
-    } else {
-        report_error($errors);
-    }
-
-    print "
-        <p>
-        Upload a new package distribution file built using &quot;<code>pear
-        package</code>&quot; here. The information from your package.xml file
-        will be displayed on the next screen for verification. The maximum file
-        size is ".round($config->get('max_file_size')/1024/1024)." MB.
-        </p>
-
-        <p>Uploading new releases is restricted to each package's lead developer(s).</p>
-    ";
-
-    include __DIR__.'/../templates/forms/release_upload.php';
 }
 
-if ($display_verification) {
-    response_header('Upload New Release :: Verify');
+if ($displayVerification) {
+    $title = 'Upload New Release :: Verify';
     $pearConfig = PEAR_Config::singleton();
     $pkg = new PEAR_PackageFile($pearConfig);
     $info = $pkg->fromTgzFile($tmpFile, PEAR_VALIDATE_NORMAL);
@@ -361,54 +341,34 @@ if ($display_verification) {
                 'pear.php.net supports php packages';
     }
 
-    $license_found = false;
+    $licenseFound = false;
 
-    foreach ($info->getFileList() as $file_name => $file_data) {
-        if ("doc" != $file_data["role"]) {
+    foreach ($info->getFileList() as $data) {
+        if ('doc' != $data['role']) {
             continue;
         }
 
-        // Don't compare with basename($file_data['name']), the license has to
-        // be in the package root.
-        $lic_fnames = [
-                "LICENSE", "license",
-                "LICENSE.md", "license.md",
-                "COPYING", "copying",
-                "COPYING.md", "copying.md",
-                "LICENSE.txt", "license.txt",
-                "COPYING.txt", "copying.txt"
+        // Don't compare with basename($data['name']), the license must be in
+        // the package root.
+        $validLicenseFiles = [
+            'LICENSE', 'license',
+            'LICENSE.md', 'license.md',
+            'COPYING', 'copying',
+            'COPYING.md', 'copying.md',
+            'LICENSE.txt', 'license.txt',
+            'COPYING.txt', 'copying.txt'
         ];
 
-        if (in_array($file_data["name"], $lic_fnames)) {
-            $license_found = true;
+        if (in_array($data['name'], $validLicenseFiles)) {
+            $licenseFound = true;
             break;
         }
     }
 
-    if (!$license_found) {
-        $warnings[] = "No LICENSE or COPYING file was found in the root of the package. ";
+    if (!$licenseFound) {
+        $warnings[] = 'No LICENSE or COPYING file was found in the root of the package. ';
     }
-
-    report_error($errors, 'errors','ERRORS:<br>You must correct your package.xml file:');
-    report_error($warnings, 'warnings', 'RECOMMENDATIONS:<br>You may want to correct your package.xml file:');
-
-    $vars = [
-        'package' => $info->getPackage(),
-        'version' => $info->getVersion(),
-        'summary' => $info->getSummary(),
-        'description' => $info->getDescription(),
-        'state' => $info->getState(),
-        'date' => $info->getDate(),
-        'notes' => $info->getNotes(),
-        'type' => $type,
-        'errors' => $errors,
-        'tmp_file' => basename($tmpFile),
-    ];
-
-    include __DIR__.'/../templates/forms/release_verify.php';
 }
-
-response_footer();
 
 function checkUser($user, $packageId = null)
 {
@@ -441,3 +401,16 @@ function checkUser($user, $packageId = null)
 
     return ($res === true);
 }
+
+echo $template->render('pages/release_upload.php', [
+    'title' => $title,
+    'displayForm' => $displayForm,
+    'success' => $success,
+    'maxFileUploadSize' => $container->get('max_file_size'),
+    'info' => isset($info) ? $info : null,
+    'displayVerification' => $displayVerification,
+    'type' => isset($type) ? $type : null,
+    'errors' => $errors,
+    'warnings' => $warnings,
+    'tmpFile' => isset($tmpFile) ? $tmpFile : null,
+]);

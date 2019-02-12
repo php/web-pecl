@@ -36,4 +36,6 @@ return [
     'max_username_length' => $config->get('max_username_length'),
     'php_master_api_url' => $config->get('php_master_api_url'),
     'valid_usernames_regex' => $config->get('valid_usernames_regex'),
+    'max_file_size' => $config->get('max_file_size'),
+    'tmp_uploads_dir' => $config->get('tmp_uploads_dir'),
 ];

@@ -149,7 +149,7 @@
                 <tr>
                 <td>
 
-                <form action="<?= $this->e($_SERVER['PHP_SELF']) ?>" method="post" name="request_form" class="pecl-form" novalidate>
+                <form action="<?= $this->e($_SERVER['PHP_SELF']) ?>" method="post" name="request_form" class="pecl-form">
 
                 <div>
                     <label>Username:</label>
@@ -192,7 +192,7 @@
                 </div>
 
                 <div>
-                    <label>Purpose of your PECL account<br />(No account is needed for using PECL or PECL packages):</label>
+                    <label>Purpose of your PECL account<br>(No account is needed for using PECL or PECL packages):</label>
                     <textarea name="purpose" cols="40" rows="5" required><?= $this->e($purpose) ?></textarea>
                 </div>
 

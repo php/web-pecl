@@ -12,4 +12,8 @@
     <li class="side_page">
         <a href="/admin/category-manager.php" <?php if ('/admin/category-manager.php' === $_SERVER['PHP_SELF']): ?> style="font-weight: bold" <?php endif ?>>Categories</a>
     </li>
+
+    <li class="side_page">
+        <a href="/admin/phpinfo.php">phpinfo()</a>
+    </li>
 </ul>

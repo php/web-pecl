@@ -18,50 +18,43 @@
   +----------------------------------------------------------------------+
 */
 
-use App\BorderBox;
+use App\Auth;
 use App\Repository\UserRepository;
 use App\Repository\PackageRepository;
+use App\Rest;
 
-$userRepository = new UserRepository($database);
+require_once __DIR__.'/../../include/pear-prepend.php';
 
-response_header("PECL Administration - Package maintainers");
+$userRepository = $container->get(UserRepository::class);
 
-if (isset($_GET['pid'])) {
-    $id = (int)$_GET['pid'];
-} else {
-    $id = 0;
-}
+$id = isset($_GET['pid']) ? (int) $_GET['pid'] : 0;
 
 $self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 
 // Select package first
 if (empty($id)) {
-    $auth->secure(true);
+    $container->get(Auth::class)->secure(true);
 
-    $packageRepository = new PackageRepository($database);
-    $values = $packageRepository->findAllPeclPackages();
-
-    $bb = new BorderBox("Select package");
-
-    include __DIR__.'/../../templates/forms/admin_select_package.php';
-
-    $bb->end();
+    echo $template->render('pages/admin/maintainers/index.php', [
+        'packages' => $container->get(PackageRepository::class)->findAllPeclPackages(),
+    ]);
 
 } elseif (!empty($_GET['update'])) {
     if (!isAllowed($id, $userRepository)) {
-        PEAR::raiseError("Only the lead maintainer of the package or PECL
-                          administrators can edit the maintainers.");
-        response_footer();
-        exit();
+        echo $template->render('error.php', [
+            'errors' => ['Only the lead maintainer of the package or PECL administrators can edit the maintainers.'],
+        ]);
+
+        exit;
     }
 
     $all = $userRepository->findMaintainersByPackageId($id);
 
     // Transform
-    $new_list = [];
-    foreach ((array)$_GET['maintainers'] as $maintainer) {
+    $newList = [];
+    foreach ((array) $_GET['maintainers'] as $maintainer) {
         list($handle, $role) = explode("||", $maintainer);
-        $new_list[$handle] = $role;
+        $newList[$handle] = $role;
     }
 
     $package = $database->run('SELECT name FROM packages WHERE id=?', [$id])->fetch()['name'];
@@ -79,131 +72,66 @@ if (empty($id)) {
     $sql  = "DELETE FROM maintains WHERE handle = ? AND package = ?";
     $delete = $database->prepare($sql);
 
+    $content = '';
+
     // In a first run, we delete all maintainers which are not in the new list.
     // This isn't the best solution, but for now it works.
     foreach ($all as $role) {
-        if (isset($new_list[$role['handle']])) {
+        if (isset($newList[$role['handle']])) {
             continue;
         }
 
-        echo 'Deleting user <b>' . $role['handle'] . '</b> ...<br />';
+        $content .= 'Deleting user <b>'.$role['handle'].'</b> ...<br>';
 
         $delete->execute([$role['handle'], $id]);
     }
 
     // Update/Insert existing maintainers
-    foreach ($new_list as $handle => $role) {
+    foreach ($newList as $handle => $role) {
         $check->execute([$handle, $id]);
 
         $row = $check->fetch();
         if (!is_array($row)) {
             // Insert new maintainer
-            echo 'Adding user <b>' . $handle . '</b> ...<br />';
+            $content .= 'Adding user <b>'.$handle.'</b> ...<br>';
             $insert->execute([$handle, $id, $role]);
         } else if ($role != $row['role']) {
             // Update role
-            echo 'Updating user <b>' . $handle . '</b> ...<br />';
+            $content .= 'Updating user <b>'.$handle.'</b> ...<br>';
             $update->execute([$role, $handle, $id]);
         }
     }
 
-    $rest->savePackageMaintainer($package);
+    $container->get(Rest::class)->savePackageMaintainer($package);
 
     $url = $self;
 
     if (!empty($_GET['pid'])) {
-        $url .= "?pid=" . urlencode(strip_tags($_GET['pid']));
+        $url .= "?pid=".urlencode(strip_tags($_GET['pid']));
     }
 
-    echo '<br /><b>Done</b><br />';
-    echo '<a href="' . $url . '">Back</a>';
+    $content .= '<br><b>Done</b><br>';
+    $content .= '<a href="'.$url.'">Back</a>';
+
+    echo $template->render('pages/admin/maintainers/update.php', [
+        'content' => $content,
+    ]);
 } else {
     if (!isAllowed($id, $userRepository)) {
-        PEAR::raiseError("Only the lead maintainer of the package or PECL
-                          administrators can edit the maintainers.");
-        response_footer();
-        exit();
+        echo $template->render('error.php', [
+            'errors' => ['Only the lead maintainer of the package or PECL administrators can edit the maintainers.'],
+        ]);
+
+        exit;
     }
 
-    $package = $database->run('SELECT name FROM packages WHERE id=?', [$id])->fetch()['name'];
-
-    $package = htmlentities($package, ENT_QUOTES);
-
-    $bb = new BorderBox("Manage maintainers for $package", "100%");
-
-    echo '<script src="/js/package-maintainers.js"></script>';
-    echo '<form onSubmit="beforeSubmit()" name="form" method="get" action="' . $self . '">';
-    echo '<input type="hidden" name="update" value="yes" />';
-    echo '<input type="hidden" name="pid" value="' . $id . '" />';
-    echo '<table border="0" cellpadding="0" cellspacing="4" border="0" width="100%">';
-    echo '<tr>';
-    echo '  <th>All users:</th>';
-    echo '  <th></th>';
-    echo '  <th>Package maintainers:</th>';
-    echo '</tr>';
-
-    echo '<tr>';
-    echo '  <td>';
-    echo '  <select onChange="activateAdd();" name="accounts" size="10">';
-
-    $users = $userRepository->findAll();
-
-    foreach ($users as $user) {
-        if (empty($user['handle'])) {
-            continue;
-        }
-
-        printf('<option value="%s">%s (%s)</option>',
-               $user['handle'],
-               $user['name'],
-               $user['handle']
-               );
-    }
-
-    echo '  </select>';
-    echo '  </td>';
-
-    echo '  <td>';
-    echo '  <input type="button" onClick="addMaintainer(); return false" name="add" value="Add as" />';
-    echo '  <select name="role" size="1">';
-    echo '    <option value="lead">lead</option>';
-    echo '    <option value="developer">developer</option>';
-    echo '    <option value="helper">helper</option>';
-    echo '  </select><br /><br />';
-    echo '  <input type="button" onClick="removeMaintainer(); return false" name="remove" value="Remove" />';
-    echo '  </td>';
-
-    echo '  <td>';
-    echo '  <select multiple="yes" name="maintainers[]" onChange="activateRemove();" size="10">';
-
-    $maintainers = $userRepository->findMaintainersByPackageId($id);
-    foreach ($maintainers as $maintainer) {
-        printf(
-            '<option value="%s||%s">%s (%s, %s)</option>',
-            $maintainer['handle'],
-            $maintainer['role'],
-            $maintainer['name'],
-            $maintainer['handle'],
-            $maintainer['role']
-        );
-    }
-
-    echo '  </select>';
-    echo '  </td>';
-    echo '</tr>';
-    echo '<tr>';
-    echo '  <td colspan="3"><input type="submit" /></td>';
-    echo '</tr>';
-    echo '</table>';
-    echo '</form>';
-
-    echo '<script>';
-    echo 'document.form.remove.disabled = true;';
-    echo 'document.form.add.disabled = true;';
-    echo 'document.form.role.disabled = true;';
-    echo '</script>';
-
-    $bb->end();
+    echo $template->render('pages/admin/maintainers/package.php', [
+        'package' => $database->run('SELECT name FROM packages WHERE id=?', [$id])->fetch()['name'],
+        'self' => $self,
+        'id' => $id,
+        'users' => $userRepository->findAll(),
+        'maintainers' => $userRepository->findMaintainersByPackageId($id),
+    ]);
 }
 
 function isAllowed($packageId, $userRepository)
@@ -224,5 +152,3 @@ function isAllowed($packageId, $userRepository)
 
     return ($lead || $admin);
 }
-
-response_footer();

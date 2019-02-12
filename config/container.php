@@ -164,6 +164,14 @@ $container->set(App\Entity\Package::class, function ($c) {
     return $packageEntity;
 });
 
+$container->set(App\Entity\Note::class, function ($c) {
+    $note = new App\Entity\Note();
+    $note->setDatabase($c->get(App\Database::class));
+    $note->setAuthUser($c->get('auth_user'));
+
+    return $note;
+});
+
 $container->set(App\Release::class, function ($c) {
     $release = new App\Release();
     $release->setDatabase($c->get(App\Database::class));
@@ -189,6 +197,14 @@ $container->set(App\Utils\Licenser::class, function ($c) {
 
 $container->set(App\Utils\Breadcrumbs::class, function ($c) {
     return new App\Utils\Breadcrumbs($c->get(App\Database::class));
+});
+
+$container->set(App\TreeMenu\TreeMenu::class, function ($c) {
+    return new App\TreeMenu\TreeMenu();
+});
+
+$container->set(App\Utils\TreeMenuParser::class, function ($c) {
+    return new App\Utils\TreeMenuParser($c->get(App\Database::class), $c->get(App\TreeMenu\TreeMenu::class));
 });
 
 return $container;

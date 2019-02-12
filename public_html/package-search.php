@@ -183,7 +183,7 @@ if (!empty($_GET)) {
         // Row number
         $rownum = $from - 1;
 
-        // Title html for results BorderBox obj. Eww.
+        // Title html for results. Eww.
         $titleHtml = sprintf(
             '<table border="0" width="100%%" cellspacing="0" cellpadding="0">
                 <tr>

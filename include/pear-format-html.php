@@ -26,7 +26,6 @@
   +----------------------------------------------------------------------+
 */
 
-use App\BorderBox;
 use App\Utils\ImageSize;
 use \PEAR as PEAR;
 

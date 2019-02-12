@@ -19,25 +19,14 @@
 */
 
 /**
- * Template snippet form for selecting packages in administration.
+ * Page with phpinfo() output for administrators and maintainers of PECL website.
  */
 
-?>
+use App\Auth;
 
-<form action="/admin/package-maintainers.php" method="get" class="pecl-form">
-    <div>
-        <label>Package:</label>
-        <select name="pid" size="1">
-            <?php foreach ($values as $key=>$option): ?>
-            <option value="<?= htmlspecialchars($key, ENT_QUOTES); ?>"><?= htmlspecialchars($option, ENT_QUOTES); ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+require_once __DIR__.'/../../include/pear-prepend.php';
 
-    <div>
-        <label>&nbsp;</label>
-        <input type="submit" name="submit" value="Submit Changes">
-    </div>
+// Restricted to administrators only.
+$container->get(Auth::class)->secure(true);
 
-    <input type="hidden" name="_fields" value="pid:submit">
-</form>
+phpinfo();

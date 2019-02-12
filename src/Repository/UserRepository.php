@@ -197,4 +197,21 @@ class UserRepository
 
         return $this->database->run($sql)->fetchAll();
     }
+
+    /**
+     * Find all account requests pending administrator actions.
+     *
+     * @return array
+     */
+    public function findRequests()
+    {
+        $sql = "SELECT u.handle, u.name, n.note, u.userinfo, u.created
+                FROM users u
+                LEFT JOIN notes n ON n.uid = u.handle
+                WHERE u.registered = 0
+                ORDER BY created ASC
+        ";
+
+        return $this->database->run($sql)->fetchAll();
+    }
 }

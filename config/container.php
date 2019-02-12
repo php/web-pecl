@@ -175,6 +175,10 @@ $container->set(App\Release::class, function ($c) {
     return $release;
 });
 
+$container->set(App\Utils\PhpMasterClient::class, function ($c) {
+    return new App\Utils\PhpMasterClient($c->get('php_master_api_url'));
+});
+
 $container->set(App\Utils\DependenciesFixer::class, function ($c) {
     return new App\Utils\DependenciesFixer($c->get(App\Database::class));
 });

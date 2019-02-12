@@ -33,4 +33,7 @@ return [
     'rest_dir' => $config->get('rest_dir'),
     'packages_dir' => $config->get('packages_dir'),
     'valid_extension_name_regex' => $config->get('valid_extension_name_regex'),
+    'max_username_length' => $config->get('max_username_length'),
+    'php_master_api_url' => $config->get('php_master_api_url'),
+    'valid_usernames_regex' => $config->get('valid_usernames_regex'),
 ];

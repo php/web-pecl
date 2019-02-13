@@ -183,4 +183,18 @@ class UserRepository
 
         return $this->database->run($sql, $arguments)->fetchAll();
     }
+
+    /**
+     * Finds all package maintainers.
+     */
+    public function findAllMaintainers()
+    {
+        $sql = "SELECT u.handle, u.name
+                FROM users u, maintains m
+                WHERE u.handle = m.handle
+                GROUP BY handle ORDER BY u.name
+        ";
+
+        return $this->database->run($sql)->fetchAll();
+    }
 }

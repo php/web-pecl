@@ -44,7 +44,7 @@
         </li>
         <li>
             We strongly encourage you to use the
-            <a href="https://git.php.net/?p=php-src.git;a=blob_plain;f=CODING_STANDARDS;hb=HEAD">PHP Coding Standards</a>
+            <a href="https://git.php.net/?p=php-src.git;a=blob_plain;f=CODING_STANDARDS.md;hb=HEAD">PHP Coding Standards</a>
             for your code, as it will help the QA team (and others) help maintain
             the extension.
         </li>

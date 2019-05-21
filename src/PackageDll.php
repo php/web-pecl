@@ -48,6 +48,10 @@ class PackageDll
      * NOTE when edit here, don't forget to remove the cache file
      */
     private $zip_name_parts = [
+        '7.4' => [
+            ['crt' => 'vs16', 'arch' => 'x64'],
+            ['crt' => 'vs16', 'arch' => 'x86'],
+        ],
         '7.3' => [
             ['crt' => 'vc15', 'arch' => 'x64'],
             ['crt' => 'vc15', 'arch' => 'x86'],

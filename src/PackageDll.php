@@ -49,8 +49,8 @@ class PackageDll
      */
     private $zip_name_parts = [
         '7.4' => [
-            ['crt' => 'vs16', 'arch' => 'x64'],
-            ['crt' => 'vs16', 'arch' => 'x86'],
+            ['crt' => 'vc15', 'arch' => 'x64'],
+            ['crt' => 'vc15', 'arch' => 'x86'],
         ],
         '7.3' => [
             ['crt' => 'vc15', 'arch' => 'x64'],

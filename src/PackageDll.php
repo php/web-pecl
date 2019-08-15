@@ -84,6 +84,8 @@ class PackageDll
         ],
     ];
 
+    private $ts_only_dlls = ['parallel', 'pthreads'];
+
     /**
      * Class constructor.
      */
@@ -211,7 +213,8 @@ class PackageDll
     }
 
     /**
-     * Need always both ts/nts for each branch.
+     * Need always both ts/nts for each branch,
+     * except for explicitly listed ts only exts.
      */
     private function getZipFileList($name, $version)
     {
@@ -228,7 +231,9 @@ class PackageDll
                 if (!isset($ret[$branch][$set["arch"]])) {
                     $ret[$branch][$set["arch"]] = [];
                 }
-                $ret[$branch][$set["arch"]][] = strtolower($pref . "-nts-" . $suf);
+                if (!in_array($name, $this->ts_only_dlls, true)) {
+                    $ret[$branch][$set["arch"]][] = strtolower($pref . "-nts-" . $suf);
+                }
                 $ret[$branch][$set["arch"]][] = strtolower($pref . "-ts-" . $suf);
             }
         }

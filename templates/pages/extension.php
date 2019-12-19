@@ -173,6 +173,7 @@
             </td>
         </tr>
     </table>
+    <p>In case of missing DLLs, consider to contact the <a href="https://windows.php.net/team/">PHP for Windows Team</a>.</p>
 <?php endif ?>
 
 <br>

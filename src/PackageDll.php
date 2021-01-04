@@ -294,7 +294,7 @@ class PackageDll
     public function makeNiceLinkNameFromZipName($zip_name)
     {
         // Name looks like php_taint-1.1.0-5.4-nts-vc9-x86.zip
-        if (!preg_match(",php_([^-]+)-([a-z0-9\.]+)-([0-9\.]+)-(ts|nts)-(vc\d+)-(x86|x64)\.zip,", $zip_name, $part)) {
+        if (!preg_match(",php_([^-]+)-([a-z0-9\.]+)-([0-9\.]+)-(ts|nts)-(v[cs]\d+)-(x86|x64)\.zip,", $zip_name, $part)) {
             return $zip_name;
         }
 

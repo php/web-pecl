@@ -94,6 +94,9 @@ class PackageDll
     public function __construct($tmpDir)
     {
         $this->tmpDir = $tmpDir;
+        if (!file_exists($tmpDir)) {
+            mkdir($tmpDir, 0777, true);
+        }
         $this->cacheDbFile = $this->tmpDir.'/pecl_dll_url.cache';
         $this->lastResetFile = $this->tmpDir.'/pecl_dll_last_reset';
         $this->cacheResetLockFile = $this->tmpDir.'/pecl_dll_url_cache_reset.lock';

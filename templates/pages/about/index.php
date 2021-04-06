@@ -13,7 +13,7 @@ like to contact them, you can write to
 <p>It has been built with <a href="https://httpd.apache.org">Apache</a>,
 <a href="https://php.net">PHP</a>, and <a href="https://www.mysql.com">MySQL</a>.
 The source code of the website is
-<a href="https://git.php.net/?p=web/pecl.git">available via git</a>.
+<a href="https://github.com/php/web-pecl">available via git</a>.
 </p>
 
 <p>Read the <a href="/about/privacy.php">privacy policy</a>.</p>

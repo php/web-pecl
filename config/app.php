@@ -93,7 +93,7 @@ return [
      * Path where new PECL account requests are sent when requesting also PHP.net
      * account.
      */
-    'php_master_api_url' => isset($_SERVER['PECL_MASTER_API_URL']) ? $_SERVER['PECL_MASTER_API_URL'] : 'https://master.php.net/entry/svn-account.php',
+    'php_master_api_url' => isset($_SERVER['PECL_MASTER_API_URL']) ? $_SERVER['PECL_MASTER_API_URL'] : 'https://main.php.net/entry/svn-account.php',
 
     /**
      * Packages directory

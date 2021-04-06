@@ -55,7 +55,7 @@ class Karma
      *       and registered user (maintainer). Extension maintainer roles are
      *       defined in a separate database table "maintains". Todo: check if
      *       this will be ever utilized again, or this should be migrated to a
-     *       common php.net accounts procedure using the master.php.net.
+     *       common php.net accounts procedure using the main.php.net.
      *
      * @param  string Username
      * @param  string Level

@@ -21,7 +21,7 @@
 namespace App\Utils;
 
 /**
- * Service class to post data to the central master.php.net server which can
+ * Service class to post data to the central main.php.net server which can
  * store the data in the database and/or mail notices or requests to PHP.net
  * stuff and servers.
  */

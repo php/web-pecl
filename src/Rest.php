@@ -235,10 +235,10 @@ class Rest
 
             if (file_exists($rdir.'/'.strtolower($package['name']).'/allreleases.xml')) {
                 $fullpackageinfo .= str_replace(
-                    $this->getAllReleasesRESTProlog($package['name']), '
-<a>
-',
-                file_get_contents($rdir.'/'.strtolower($package['name']).'/allreleases.xml'));
+                    '<?xml version="1.0" encoding="UTF-8" ?>',
+                    '',
+                    file_get_contents($rdir.'/'.strtolower($package['name']).'/allreleases.xml')
+                );
 
                 $dirhandle = opendir($rdir.'/'.strtolower($package['name']));
 

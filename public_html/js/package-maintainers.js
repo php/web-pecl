@@ -17,12 +17,12 @@
 */
 
 function stripName(name) {
-    pos = name.indexOf("(");
+    var pos = name.indexOf("(");
     return name.substr(0, pos-1);
 }
 
 function getRole() {
-    for (z = 0; z < document.form.role.length; z++) {
+    for (var z = 0; z < document.form.role.length; z++) {
         if (document.form.role.options[z].selected == true) {
             return document.form.role.options[z].value;
         }
@@ -31,21 +31,21 @@ function getRole() {
 }
 
 function addMaintainer() {
-    for (i = 0; i < document.form.accounts.length; i++) {
+    for (var i = 0; i < document.form.accounts.length; i++) {
         if (document.form.accounts.options[i].selected == true) {
-            name = stripName(document.form.accounts.options[i].text);
-            role = getRole();
-            handle = document.form.accounts.options[i].value;
-            value = handle + "||" + role;
-            item = new Option(name + " (" + handle + ", " + role + ")", value);
+            var name = stripName(document.form.accounts.options[i].text);
+            var role = getRole();
+            var handle = document.form.accounts.options[i].value;
+            var value = handle + "||" + role;
+            var item = new Option(name + " (" + handle + ", " + role + ")", value);
             document.form['maintainers[]'].options[document.form['maintainers[]'].length] = item;
         }
     }
 }
 
  function removeMaintainer() {
-    for (i = 0; i < document.form['maintainers[]'].length; i++) {
-        field = document.form['maintainers[]'].options[i];
+    for (var i = 0; i < document.form['maintainers[]'].length; i++) {
+        var field = document.form['maintainers[]'].options[i];
         if (field.selected == true) {
             if (document.form['maintainers[]'].length == 1) {
                 alert('Removing the only maintainer is not possible!');
@@ -59,8 +59,8 @@ function addMaintainer() {
 }
 
 function beforeSubmit() {
-    for (i = 0; i < document.form['maintainers[]'].length; i++) {
-        field = document.form['maintainers[]'].options[i].selected = true;
+    for (var i = 0; i < document.form['maintainers[]'].length; i++) {
+        document.form['maintainers[]'].options[i].selected = true;
     }
 }
 

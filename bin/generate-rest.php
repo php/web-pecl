@@ -104,7 +104,7 @@ foreach ($packageRepository->listAll() as $package => $info) {
             $extractor = new Extractor($fileinfo);
 
             if ($pxml = $extractor->getFileContents('package2.xml')) {
-            } elseif ($pxml = $extractor->getFileContents('package.xml'));
+            } elseif ($pxml = $extractor->getFileContents('package.xml'))
 
             PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
             $pf = $pkg->fromAnyFile($fileinfo, PEAR_VALIDATE_NORMAL);

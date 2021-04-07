@@ -104,9 +104,9 @@ class Karma
         $placeholders = [];
         $arguments = [$user];
 
-        foreach ($levels as $level) {
+        foreach ($levels as $levelItem) {
             $placeholders[] = '?';
-            $arguments[] = $level;
+            $arguments[] = $levelItem;
         }
 
         $sql = 'SELECT *
@@ -115,7 +115,7 @@ class Karma
                 AND level IN ('.implode(',', $placeholders).')
         ';
 
-        $results = $statement = $this->database->run($sql, $arguments)->fetchAll();
+        $results = $this->database->run($sql, $arguments)->fetchAll();
 
         return (count($results) > 0);
     }

@@ -53,7 +53,7 @@ foreach ($vars as $key => $var) {
 
         <?php // Don't show the next step button when errors found ?>
         <?php if (!count($vars['errors'])): ?>
-            <input type="submit" name="verify" value="Verify Release">
+            <input type="submit" name="verify" value="Verify and Release">
         <?php endif; ?>
 
         <input type="submit" name="cancel" value="Cancel">

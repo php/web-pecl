@@ -117,9 +117,9 @@
                     <tr>
                         <td style="background-color: #e8e8e8" colspan="2">
                             <div style="text-align:right">
-                                <a href="/package-edit.php?id=<?= $this->noHtml($package['packageid']) ?>">
-                                    <img src="/img/edit.gif" alt="Edit package information">
-                                </a>
+                                [<a href="/package-edit.php?id=<?= $this->noHtml($package['packageid']) ?>">
+                                    Edit info
+                                </a>]
                                 <?php if ($authUser->isAdmin()): ?>
                                     &nbsp;<a href="/package-delete.php?id=<?= $this->noHtml($package['packageid']) ?>">
                                         <img src="/img/delete.gif" alt="Delete package"></a>

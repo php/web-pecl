@@ -296,12 +296,12 @@ class Auth
         print '  <th class="form-label_left">';
         print 'Use<span class="accesskey">r</span>name:</th>' . "\n";
         print '  <td class="form-input">';
-        print '<input size="20" name="PECL_USER" accesskey="r" /></td>' . "\n";
+        print '<input size="20" name="PECL_USER" accesskey="r" autocomplete="username" required="" /></td>' . "\n";
         print " </tr>\n";
         print " <tr>\n";
         print '  <th class="form-label_left">Password:</th>' . "\n";
         print '  <td class="form-input">';
-        print '<input size="20" name="PECL_PW" type="password" /></td>' . "\n";
+        print '<input size="20" name="PECL_PW" type="password" autocomplete="current-password" required="" /></td>' . "\n";
         print " </tr>\n";
         print " <tr>\n";
         print '  <th class="form-label_left">&nbsp;</th>' . "\n";

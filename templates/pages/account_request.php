@@ -172,11 +172,6 @@
                 </div>
 
                 <div>
-                    <label>Need a php.net account?</label>
-                    <input type="checkbox" name="needphp" <?= $needphp ? 'checked' : '' ?>>
-                </div>
-
-                <div>
                     <label>Email address:</label>
                     <input type="text" name="email" value="<?= $this->e($email) ?>" size="20" required>
                 </div>

@@ -38,7 +38,6 @@ $fields = [
     'email',
     'moreinfo',
     'homepage',
-    'needphp',
     'showemail',
     'password',
     'password2',
@@ -105,7 +104,6 @@ if (isset($_POST['submit'])) {
     if (0 === count($errors)) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $showemail = @(bool) $showemail;
-        $needphp = @(bool) $needphp;
 
         // Hack to temporarily embed the purpose in the user's userinfo column
         $purpose .= "\n\nSponsor:\n".$sponsor;
@@ -127,29 +125,11 @@ if (isset($_POST['submit'])) {
         ";
         $result = $database->run($sql, [$handle, $name, $email, $hash, $showemail ? 1 : 0, $homepage, $userinfo, gmdate('Y-m-d H:i')]);
 
-        // Send request for PHP.net account.
-        if ($needphp) {
-            $error = $container->get(PhpMasterClient::class)->post([
-                'username' => $handle,
-                'name'     => $name,
-                'email'    => $email,
-                'passwd'   => $password,
-                'note'     => $purpose,
-                'group'    => 'pecl',
-                'yesno'    => 'yes',
-            ]);
-
-            if ($error) {
-                $requestError = "Problem submitting the php.net account request: $error";
-            }
-        }
-
         $msg = "Requested from:   {$_SERVER['REMOTE_ADDR']}\n".
                 "Username:         {$handle}\n".
                 "Real Name:        {$name}\n".
                 "Email:            {$email}".
                 (@$showemail ? " (show address)" : " (hide address)") . "\n".
-                "Need php.net Account: " . (@$needphp ? "yes" : "no") . "\n".
                 "Purpose:\n".
                 "$purpose\n\n".
                 'To handle: '.$container->get('scheme').'://'.$container->get('host')."/admin/?acreq={$handle}\n";
@@ -179,6 +159,5 @@ echo $template->render('pages/account_request.php', [
     'email' => $email,
     'moreinfo' => $moreinfo,
     'homepage' => $homepage,
-    'needphp' => $needphp,
     'showemail' => $showemail,
 ]);

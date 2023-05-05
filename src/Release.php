@@ -245,7 +245,8 @@ class Release
                     ?, ?, ?, ?, ?, NOW(), ?
                 )";
 
-        $id = $this->database->run("SELECT id FROM releases ORDER BY id DESC")->fetch()['id'];
+        $old = $this->database->run("SELECT id FROM releases ORDER BY id DESC")->fetch();
+        $id = $old ? $old['id'] : 0;
         $release_id = (!$id) ? 1 : $id + 1;
 
         $statement = $this->database->run($sql, [$release_id, $package_id, $version, $state, $this->authUser->handle, $relnotes]);
@@ -255,7 +256,8 @@ class Release
                     (`id`,`package`,`release`,`md5sum`,`basename`,`fullpath`,`packagexml`)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        $id = $this->database->run("SELECT id FROM files ORDER BY id DESC")->fetch()['id'];
+        $old = $this->database->run("SELECT id FROM files ORDER BY id DESC")->fetch();
+        $id = $old ? $old['id'] : 0;
         $file_id = !$id ? 1 : $id + 1;
 
         // TODO: Code duplication with deps error. Should be dropped sooner or later

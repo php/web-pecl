@@ -442,6 +442,11 @@ class Rest
             return;
         }
 
+        // See https://marc.info/?m=168137915918907
+        if ($this->canSortReleasesByVersion($releases)) {
+            $releases = $this->sortReleasesByVersion($releases);
+        }
+
         $info = $this->getAllReleasesRESTProlog($package);
 
         foreach ($releases as $release) {
@@ -735,5 +740,27 @@ class Rest
 
         file_put_contents($mdir.'/allmaintainers.xml', $info);
         @chmod($mdir.'/allmaintainers.xml', 0666);
+    }
+
+    private function canSortReleasesByVersion(array $releases): bool
+    {
+        foreach ($releases as $release) {
+            $version = $release['version'];
+            if (!is_string($version) || !preg_match('/^\\d+(\\.\\d+)*([a-zA-Z]+\\d*)?$/', $version)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function sortReleasesByVersion(array $releases): array
+    {
+        usort(
+            $releases,
+            static function (array $a, array $b): int {
+                return version_compare($b['version'], $a['version']);
+            }
+        );
+        return $releases;
     }
 }

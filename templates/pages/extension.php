@@ -65,12 +65,15 @@
                     <td valign="top" style="background-color: #e8e8e8">
                         <?php foreach ($maintainers as $maintainer): ?>
                             <?= $this->e($maintainer['name']) ?>
-                            <?php if (1 === (int) $maintainer['showemail']): ?>
+                            <?php if ((1 === (int) $maintainer['showemail']) && (1 === (int) $maintainer['active'])): ?>
                                 &lt;<a href="/account-mail.php?handle=<?= $this->noHtml($maintainer['handle']) ?>">
                                     <?= $this->e(str_replace(["@", "."], [" at ", " dot "], $maintainer['email'])) ?>
                                 </a>&gt;
                             <?php endif ?>
                             (<?= $this->e($maintainer['role']) ?>)
+                            <?php if (1 !== (int) $maintainer['active']): ?>
+                                [inactive]
+                            <?php endif ?>
                             <?php if (!empty($maintainer['wishlist'])): ?>
                                 [<a href="/wishlist.php/<?= $this->e($maintainer['handle']) ?>">wishlist</a>]
                             <?php endif ?>

@@ -742,7 +742,7 @@ class Rest
         @chmod($mdir.'/allmaintainers.xml', 0666);
     }
 
-    private function canSortReleasesByVersion(array $releases): bool
+    private function canSortReleasesByVersion(array $releases)
     {
         foreach ($releases as $release) {
             $version = $release['version'];
@@ -753,11 +753,11 @@ class Rest
         return true;
     }
 
-    private function sortReleasesByVersion(array $releases): array
+    private function sortReleasesByVersion(array $releases)
     {
         usort(
             $releases,
-            static function (array $a, array $b): int {
+            static function (array $a, array $b) {
                 return version_compare($b['version'], $a['version']);
             }
         );

@@ -267,7 +267,9 @@ class Release
 
             @unlink($file);
 
-            return;
+            $res = PEAR::raiseError('Could not insert file information: '. $e->getMessage());
+
+            return $res;
         }
 
         // Update dependency table

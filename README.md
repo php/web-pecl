@@ -101,7 +101,7 @@ Source code of this application is structured in the following directories:
 
 ## Installation
 
-The pecl.php.net is written for PHP 5.6+, MySQL, and Apache 2.4.
+The pecl.php.net is written for PHP 7.2+, MySQL, and Apache 2.4.
 
 ### 1. Dependencies
 

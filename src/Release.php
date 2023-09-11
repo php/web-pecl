@@ -249,7 +249,15 @@ class Release
         $id = $old ? $old['id'] : 0;
         $release_id = (!$id) ? 1 : $id + 1;
 
-        $statement = $this->database->run($sql, [$release_id, $package_id, $version, $state, $this->authUser->handle, $relnotes]);
+        try {
+            $statement = $this->database->run($sql, [$release_id, $package_id, $version, $state, $this->authUser->handle, $relnotes]);
+        } catch (\PDOException $e) {
+            @unlink($file);
+
+            $res = PEAR::raiseError('Could not insert file information: '. $e->getMessage());
+
+            return $res;
+        }
 
         // Update files table
         $sql = "INSERT INTO files

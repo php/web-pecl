@@ -255,7 +255,7 @@ class PackageDll
         $ret = [];
 
         $ctx = stream_context_create(["http" => ["header" => "User-Agent: WebPecl/1.0"]]);
-        $r = file_get_contents("https://$host$uri/", false, $ctx);
+        $r = @file_get_contents("https://$host$uri/", false, $ctx);
         if (false === $r) {
             return NULL;
         }

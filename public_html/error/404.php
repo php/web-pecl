@@ -30,7 +30,7 @@ require_once __DIR__.'/../../include/pear-prepend.php';
 
 // Requesting something like /~foobar will redirect to the account information
 // page of the user "foobar".
-if (strlen($_SERVER['REDIRECT_URL']) > 0 && $_SERVER['REDIRECT_URL']{1} == '~') {
+if (strlen($_SERVER['REDIRECT_URL']) > 0 && $_SERVER['REDIRECT_URL'][1] == '~') {
     $user = substr($_SERVER['REDIRECT_URL'], 2);
 
     if (preg_match($container->get('valid_usernames_regex'), $user) && User::exists($user)) {

@@ -48,6 +48,14 @@ class PackageDll
      * NOTE when edit here, don't forget to remove the cache file
      */
     private $zip_name_parts = [
+        '8.3' => [
+            ['crt' => 'vs16', 'arch' => 'x64'],
+            ['crt' => 'vs16', 'arch' => 'x86'],
+        ],
+        '8.2' => [
+            ['crt' => 'vs16', 'arch' => 'x64'],
+            ['crt' => 'vs16', 'arch' => 'x86'],
+        ],
         '8.1' => [
             ['crt' => 'vs16', 'arch' => 'x64'],
             ['crt' => 'vs16', 'arch' => 'x86'],
@@ -249,12 +257,12 @@ class PackageDll
 
     private function fetchDllDownloadUrls($name, $version)
     {
-        $host = 'windows.php.net';
+        $host = 'downloads.php.net';
         $port = 80;
-        $uri = "/downloads/pecl/releases/" . strtolower($name) . "/" . $version;
+        $uri = "/~windows/pecl/releases/" . strtolower($name) . "/" . $version;
         $ret = [];
 
-        $ctx = stream_context_create(["http" => ["header" => "User-Agent: WebPecl/1.0"]]);
+        $ctx = stream_context_create(["http" => ["header" => "User-Agent: WebPecl/1.1"]]);
         $r = @file_get_contents("https://$host$uri/", false, $ctx);
         if (false === $r) {
             return NULL;

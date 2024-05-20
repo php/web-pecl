@@ -62,7 +62,7 @@ switch ($type) {
 
         $name = User::info($user, 'name');
         $channelTitle = 'PECL: Latest releases for '.$user;
-        $channelDescription = 'The latest releases for the developer '.$user.' ('.$name['name'].')';
+        $channelDescription = 'The latest releases for the developer '.$user.' ('.$name.')';
         $items = $releaseRepository->getRecentByUser($user, 10);
     break;
 

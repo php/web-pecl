@@ -68,7 +68,7 @@ And to instead receive digested (daily) pecl-dev email, use
 
 <p>
 There are a variety of commands you can use to modify your subscription. Send a
-message to <code>pecl-dev-help@lists.php.net</code> to retrieve a list with
+message to <code>pecl-dev+help@lists.php.net</code> to retrieve a list with
 options.
 </p>
 

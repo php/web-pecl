@@ -176,7 +176,9 @@
             </td>
         </tr>
     </table>
-    <p>In case of missing DLLs, consider to contact the <a href="https://windows.php.net/team/">PHP for Windows Team</a>.</p>
+    <p>In case of missing DLLs, consider to contact the
+    <a href="https://www.php.net/mailing-lists.php#internals">Windows Internals List</a>
+    (subscribe first).</p>
 <?php endif ?>
 
 <br>

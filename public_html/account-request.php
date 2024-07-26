@@ -138,7 +138,7 @@ if (isset($_POST['submit'])) {
             $msg .= "\nMore info:\n$moreinfo\n";
         }
 
-        $xhdr = "From: $name <$email>";
+        $xhdr = "From: $name <noreply@php.net>";
         $subject = "PECL Account Request: {$handle}";
         $mailSent = mail('pecl-dev@lists.php.net', $subject, $msg, $xhdr, '-f noreply@php.net');
     }

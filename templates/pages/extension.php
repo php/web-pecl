@@ -27,7 +27,8 @@
 <?php if ($superseded || $unmaintained): ?>
     <div class="warnings">
         <?php if ($superseded && $unmaintained): ?>
-            This package is not maintained anymore and has been superseded.
+            This package is not maintained anymore and has been superseded by
+            <a href="/package/<?= $this->noHtml($package['new_package']) ?>"><?= $this->noHtml($package['new_package']) ?></a>.
         <?php elseif ($superseded && !$unmaintained): ?>
             This package has been superseded, but is still maintained for bugs and security fixes.
         <?php elseif (!$superseded && $unmaintained): ?>

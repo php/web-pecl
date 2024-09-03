@@ -125,11 +125,11 @@ if (isset($_POST['submit'])) {
         ";
         $result = $database->run($sql, [$handle, $name, $email, $hash, $showemail ? 1 : 0, $homepage, $userinfo, gmdate('Y-m-d H:i')]);
 
+        $address = @$showemail ? $email : "(address hidden)";
         $msg = "Requested from:   {$_SERVER['REMOTE_ADDR']}\n".
                 "Username:         {$handle}\n".
                 "Real Name:        {$name}\n".
-                "Email:            {$email}".
-                (@$showemail ? " (show address)" : " (hide address)") . "\n".
+                "Email:            {$address}\n".
                 "Purpose:\n".
                 "$purpose\n\n".
                 'To handle: '.$container->get('scheme').'://'.$container->get('host')."/admin/?acreq={$handle}\n";

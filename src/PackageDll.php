@@ -271,7 +271,15 @@ class PackageDll
         $uri = "/~windows/pecl/releases/" . strtolower($name) . "/" . $version;
         $ret = [];
 
-        $ctx = stream_context_create(["http" => ["header" => "User-Agent: WebPecl/1.1"]]);
+        $ctx = stream_context_create([
+            "http" => [
+                "header" => "User-Agent: WebPecl/1.1"
+            ],
+            "ssl" => [
+                "allow_self_signed" => true,
+                "verify_peer_name" => false,
+            ],
+        ]);
         $r = @file_get_contents("https://$host$uri/", false, $ctx);
         if (false === $r) {
             return NULL;

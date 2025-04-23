@@ -151,7 +151,7 @@
                         <th colspan="2">DLL List</th>
                     </tr>
 
-                    <?php if (0 === count($urls) || !$urls): ?>
+                    <?php if (!$urls || 0 === count($urls)): ?>
                         <tr>
                             <td style="background-color: #e8e8e8" colspan="2">
                                 <i>No DLL available</i>

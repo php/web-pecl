@@ -266,7 +266,7 @@ class PackageDll
 
     private function fetchDllDownloadUrls($name, $version)
     {
-        $host = 'downloads.php.net';
+        $host = 'downloads.internal.php.net';
         $port = 80;
         $uri = "/~windows/pecl/releases/" . strtolower($name) . "/" . $version;
         $ret = [];

@@ -266,7 +266,8 @@ class PackageDll
 
     private function fetchDllDownloadUrls($name, $version)
     {
-        $host = 'downloads.internal.php.net';
+        $internalHost = 'downloads.internal.php.net';
+        $host = 'downloads.php.net';
         $port = 80;
         $uri = "/~windows/pecl/releases/" . strtolower($name) . "/" . $version;
         $ret = [];
@@ -280,7 +281,7 @@ class PackageDll
                 "verify_peer_name" => false,
             ],
         ]);
-        $r = @file_get_contents("https://$host$uri/", false, $ctx);
+        $r = @file_get_contents("https://$internalHost$uri/", false, $ctx);
         if (false === $r) {
             return NULL;
         }

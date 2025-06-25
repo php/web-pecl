@@ -99,6 +99,7 @@ echo $template->render('pages/extension.php', [
     'downloads'    => $container->get(ReleaseRepository::class)->findDownloads($package['packageid']),
     'unmaintained' => (bool) $package['unmaintained'],
     'superseded'   => !empty($package['new_channel']) ? true : (bool) $package['new_package'],
+    'packagesDir'  => $container->get('packages_dir'),
     'packageDll'   => $packageDll,
     'dependants'   => $packageRepository->findDependants($package['name']),
     'host'         => $container->get('host'),

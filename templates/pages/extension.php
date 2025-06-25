@@ -277,7 +277,7 @@
             $downloads_html = '';
             foreach ($downloads[$releaseVersion] as $dl) {
                 $downloads_html .= "<a href=\"/get/$dl[basename]\">".
-                                   "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($dl['fullpath'])/1024.0).")";
+                                   "$dl[basename]</a> (".sprintf("%.1fkB",@filesize($packagesDir.'/'.$dl['basename'])/1024.0).")";
 
                 $urls = $packageDll->getDllDownloadUrls($package['name'], $releaseVersion, $package['releases'][$releaseVersion]['releasedate']);
                 if ($urls) {

@@ -115,29 +115,29 @@ class PackageDll
         if (!file_exists($tmpDir)) {
             mkdir($tmpDir, 0777, true);
         }
-        $this->cacheDbFile = $this->tmpDir.'/pecl_dll_url.cache';
-        $this->lastResetFile = $this->tmpDir.'/pecl_dll_last_reset';
-        $this->cacheResetLockFile = $this->tmpDir.'/pecl_dll_url_cache_reset.lock';
+        $this->cacheDbFile = $this->tmpDir.'/pecl_dll_url.cache.';
+        $this->lastResetFile = $this->tmpDir.'/pecl_dll_last_reset.';
+        $this->cacheResetLockFile = $this->tmpDir.'/pecl_dll_url_cache_reset.lock.';
     }
 
-    public function resetDllDownloadCache()
+    public function resetDllDownloadCache($name)
     {
         clearstatcache();
-        if (file_exists($this->cacheResetLockFile)) {
+        if (file_exists($this->cacheResetLockFile . md5($name))) {
             // Reset is started by some other process in that small time gap.
             // That's still not full atomic, but reduces the risks significantly.
             return false;
         }
 
-        touch($this->cacheResetLockFile);
+        touch($this->cacheResetLockFile . md5($name));
 
-        if (!file_exists($this->lastResetFile)) {
-            touch($this->lastResetFile);
+        if (!file_exists($this->lastResetFile . md5($name))) {
+            touch($this->lastResetFile . md5($name));
         }
-        file_put_contents($this->lastResetFile, time(), LOCK_EX);
-        file_put_contents($this->cacheDbFile, serialize([]), LOCK_EX);
+        file_put_contents($this->lastResetFile . md5($name), time(), LOCK_EX);
+        file_put_contents($this->cacheDbFile . md5($name), serialize([]), LOCK_EX);
 
-        unlink($this->cacheResetLockFile);
+        unlink($this->cacheResetLockFile . md5($name));
 
         return true;
     }
@@ -155,17 +155,17 @@ class PackageDll
 
         // If cache reset lock exists, some reset is running right now. Deliver
         // the live results then and don't cache.
-        $cache = $cache && !file_exists($this->cacheResetLockFile);
+        $cache = $cache && !file_exists($this->cacheResetLockFile . md5($name));
 
         do {
             if ($cache) {
-                if ($this->isResetOverdue()) {
-                    $cache = $this->resetDllDownloadCache();
+                if ($this->isResetOverdue($name)) {
+                    $cache = $this->resetDllDownloadCache($name);
                 }
             }
 
-            if (file_exists($this->cacheDbFile)) {
-                $db = (array)unserialize(file_get_contents($this->cacheDbFile));
+            if (file_exists($this->cacheDbFile . md5($name))) {
+                $db = (array)unserialize(file_get_contents($this->cacheDbFile . md5($name)));
             }
 
             foreach($db as $ext => $data) {
@@ -198,8 +198,8 @@ class PackageDll
     {
         $db = [];
 
-        if (file_exists($this->cacheDbFile)) {
-            $db = (array)unserialize(file_get_contents($this->cacheDbFile));
+        if (file_exists($this->cacheDbFile . md5($name))) {
+            $db = (array)unserialize(file_get_contents($this->cacheDbFile . md5($name)));
         }
 
         foreach($db as $ext => $data) {
@@ -222,8 +222,8 @@ class PackageDll
     {
         $db = [];
 
-        if (file_exists($this->cacheDbFile)) {
-            $db = (array)unserialize(file_get_contents($this->cacheDbFile));
+        if (file_exists($this->cacheDbFile . md5($name))) {
+            $db = (array)unserialize(file_get_contents($this->cacheDbFile . md5($name)));
         }
 
         if (!isset($db[$name])) {
@@ -232,7 +232,7 @@ class PackageDll
 
         $db[$name][$version] = $data;
 
-        return false !== file_put_contents($this->cacheDbFile, serialize($db), LOCK_EX);
+        return false !== file_put_contents($this->cacheDbFile . md5($name), serialize($db), LOCK_EX);
     }
 
     /**
@@ -343,13 +343,13 @@ class PackageDll
         return "$branch $zts_str (" . strtoupper($zts) . ") $arch";
     }
 
-    public function isResetOverdue()
+    public function isResetOverdue($name)
     {
-        if (!file_exists($this->lastResetFile)) {
-            file_put_contents($this->lastResetFile, 0, LOCK_EX);
+        if (!file_exists($this->lastResetFile . md5($name))) {
+            file_put_contents($this->lastResetFile . md5($name), 0, LOCK_EX);
         }
 
-        $ts = (int)file_get_contents($this->lastResetFile);
+        $ts = (int)file_get_contents($this->lastResetFile . md5($name));
 
         if (time() - $ts > $this->reset_period) {
             return true;

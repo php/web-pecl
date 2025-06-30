@@ -540,7 +540,7 @@ class Release
 
             header('Content-Disposition: attachment;filename=' . $basename);
             header('Content-type: application/octet-stream');
-            header('X-Sendfile: ' . '/local/www/sites/pecl.php.net/public_html/packages/' . $basename);
+            header('X-Sendfile: ' . $_SERVER['CONTEXT_DOCUMENT_ROOT'] . '/packages/' . $basename);
 
             return true;
         }

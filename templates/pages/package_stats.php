@@ -303,7 +303,7 @@
         selectedRelease = graphForm.releases.options[graphForm.releases.selectedIndex];
         selectedColour  = graphForm.colours.options[graphForm.colours.selectedIndex];
 
-        if (selectedRelease.value != "" && selectedColour.value != "" && selectedRelease.value != "Select..." && selectedColor.value != "Select...") {
+        if (selectedRelease.value != "" && selectedColour.value != "" && selectedRelease.value != "Select..." && selectedColour.value != "Select...") {
             newText  = 'Release ' + selectedRelease.text + ' in ' + selectedColour.text;
             newValue = selectedRelease.value + '_' + selectedColour.value;
             graphForm.graph_list.options[graphForm.graph_list.options.length] = new Option(newText, newValue);

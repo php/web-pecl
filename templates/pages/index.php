@@ -4,6 +4,8 @@
 
 <h3>What is PECL?</h3>
 
+<?php $this->insert('includes/pie.php'); ?>
+
 <p>
 <acronym title="PHP Extension Community Library">PECL</acronym> is a repository
 for PHP Extensions, providing a directory of all known extensions and hosting

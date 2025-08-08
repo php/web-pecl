@@ -6,6 +6,8 @@
 
     <h1>Publishing in PECL</h1>
 
+    <?php $this->insert('includes/pie.php'); ?>
+
     <p>A few reasons why you might apply for a PECL account:</p>
 
     <ul>

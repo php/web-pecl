@@ -5,6 +5,8 @@
 <?php if (!isset($_POST['submit']) || 0 < count($errors)): ?>
     <h1>New package</h1>
 
+    <?php $this->insert('includes/pie.php'); ?>
+
     <p>Use this form to register a new PECL package.</p>
 
     <p><b>Before proceeding</b>, make sure you pick the right name for your

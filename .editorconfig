@@ -13,3 +13,6 @@ insert_final_newline     = true
 
 [Makefile]
 indent_style             = tab
+
+[compose.yml]
+indent_size              = 2

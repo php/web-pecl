@@ -8,14 +8,19 @@
 
     <?php $this->insert('includes/pie.php'); ?>
 
-    <p>A few reasons why you might apply for a PECL account:</p>
+    <p>A single suggested reason why you might apply for a PECL account:</p>
 
     <ul>
-        <li>You have written a PHP extension and would like it listed within the
-        PECL directory</li>
-        <li>You would like to use php.net for version control and hosting</li>
         <li>You would like to help maintain a current PECL extension</li>
     </ul>
+
+    <div class="explain">
+        <p style="font-weight: normal;"><strong>No accounts will be accepted
+            for new PECL packages</strong>. Accounts will only be accepted for
+            new maintainers for <em>existing</em> PECL packages.</p>
+        <p style="font-weight: normal;">If you are developing a new extension, you cannot add it to PECL, as it is deprecated.</p>
+        <p style="font-weight: normal;">Please follow the instructions to add your extension to the &#x1F967; PIE ecosystem: <a href="https://github.com/php/pie/blob/main/docs/extension-maintainers.md">PIE for Extension Maintainers</a>.</p>
+    </div>
 
     <p>
         You do <b>not</b> need an account if you want to download, install and/or
@@ -29,44 +34,7 @@
 
     <ul>
         <li>Introduce yourself</li>
-        <li>Introduce your new extension or the extension you would like to help
-        maintain</li>
-        <li>Link to the code, if applicable</li>
-    </ul>
-
-    <p>Also, here is a list of suggestions:</p>
-
-    <ul>
-        <li>
-            We strongly encourage contributors to choose the
-            <a href="https://php.net/license/3_01.txt">PHP License 3.01</a>
-            for their extensions, in order to avoid possible troubles for
-            end-users of the extension. Other solid options are BSD and Apache
-            type licenses.
-        </li>
-        <li>
-            We strongly encourage you to use the
-            <a href="https://github.com/php/php-src/raw/master/CODING_STANDARDS.md">PHP Coding Standards</a>
-            for your code, as it will help the QA team (and others) help maintain
-            the extension.
-        </li>
-        <li>
-            We strongly encourage you to commit documentation for the extension,
-            as it will make the extension more visible (in the official PHP manual)
-            and also teach users how to use it. See the
-            <a href="https://wiki.php.net/doc/howto/pecldocs">PECL Docs Howto</a>
-            for more information. Submitted documentation will always be under the
-            <a href="https://php.net/manual/en/cc.license.php">Creative Commons Attribution License</a>.
-        </li>
-        <li>
-            Note: wrappers for GPL (all versions) or LGPLv3 libraries will not
-            be accepted. Wrappers for libraries licensed under LGPLv2 are however
-            allowed while being discouraged.
-        </li>
-        <li>
-            Note: Wrappers for libraries with license fees or closed sources
-            libraries without licenses fees are allowed.
-        </li>
+        <li>Indicate the extension you would like to help maintain</li>
     </ul>
 
     <p>And after submitting the form:</p>
@@ -99,7 +67,7 @@
                     document.getElementById('reason_table').style.border = '2px dashed red';
                 }
 
-                alert('Reminder: please only request a PECL account if you will maintain a PECL extension, and have followed the guidelines above.');
+                alert('Reminder: please only request a PECL account if you will maintain an existing PECL extension, and have followed the guidelines above.');
                 enableForm(false);
             }
         }
@@ -119,11 +87,18 @@
             <td valign="top"><input type="radio" name="reason" value="pkg" id="reason_pkg" onclick="reasonClick('pkg')"></td>
             <td>
                 <label for="reason_pkg">
-                    I have already discussed the topic of maintaining and/or
-                    adding a PECL extension on the pecl-dev@lists.php.net mailing
-                    list, and we determined it's time for me to have a PECL
-                    account.
+                    I have already discussed the topic of maintaining an
+                    existing PECL extension on the pecl-dev@lists.php.net
+                    mailing list, and we determined it's time for me to have a
+                    PECL account.
                 </label>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top"><input type="radio" name="reason" value="new" id="reason_new" onclick="reasonClick('new')"></td>
+            <td>
+                <label for="reason_new">I would like to submit a new extension to PECL.</label>
             </td>
         </tr>
 

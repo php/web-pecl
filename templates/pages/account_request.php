@@ -84,16 +84,16 @@
         </tr>
 
         <tr>
-            <td valign="top"><input type="radio" name="reason" value="new" id="reason_new" onclick="reasonClick('new')"></td>
+            <td valign="top"><input type="radio" name="reason" value="other" id="reason_other" onclick="reasonClick('other')"></td>
             <td>
-                <label for="reason_new">I would like to submit a new extension to PECL.</label>
+                <label for="reason_other">I am the maintainer of an <strong>already listed, existing</strong> PECL extension.</label>
             </td>
         </tr>
 
         <tr>
-            <td valign="top"><input type="radio" name="reason" value="other" id="reason_other" onclick="reasonClick('other')"></td>
+            <td valign="top"><input type="radio" name="reason" value="new" id="reason_new" onclick="reasonClick('new')"></td>
             <td>
-                <label for="reason_other">I desire this PECL account for another reason.</label>
+                <label for="reason_new">I would like to submit a <strong>new extension</strong> to PECL (stop here; new extensions are no longer accepted!).</label>
             </td>
         </tr>
     </table>

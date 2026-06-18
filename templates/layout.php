@@ -61,6 +61,11 @@
             </form>
         </td>
     </tr>
+    <tr>
+        <td colspan="2">
+            <?php $this->insert('includes/pie.php'); ?>
+        </td>
+    </tr>
 </table>
 
 <table class="middle" cellspacing="0" cellpadding="0">

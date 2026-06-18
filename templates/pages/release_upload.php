@@ -5,8 +5,6 @@
 <?php if ($displayForm): ?>
     <h1>Upload New Release</h1>
 
-    <?php $this->insert('includes/pie.php'); ?>
-
     <?php if ($success): ?>
         <div class="success">
             Version

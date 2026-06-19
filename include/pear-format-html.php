@@ -175,7 +175,7 @@ function response_header($title = 'The PHP Extension Community Library', $style 
  </tr>
  <tr>
     <td colspan="2">
-        <?php include '../templates/includes/pie.php'; ?>
+        <?php include __DIR__.'/../templates/includes/pie.php'; ?>
     </td>
  </tr>
 </table>

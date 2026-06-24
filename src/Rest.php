@@ -353,7 +353,7 @@ class Rest
             @chmod($packageDir, 0777);
         }
 
-        $catinfo = $this->database->run('SELECT c.name AS category_name FROM packages, categories c WHERE
+        $catinfo = $this->database->run('SELECT c.name AS category_name FROM categories c WHERE
             c.id = ?', [$package['categoryid']])->fetch()['category_name'];
         if (isset($package['parent']) && $package['parent']) {
             $parent = '
